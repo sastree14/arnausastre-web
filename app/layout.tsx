@@ -16,38 +16,39 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.arnausastre.com"),
+  metadataBase: new URL("https://sc-analytics.io"),
   title: {
-    default: "Arnau Sastre Analytics",
-    template: "%s | Arnau Sastre Analytics",
+    default: "SC Analytics",
+    template: "%s | SC Analytics",
   },
   description:
-    "Advanced decision systems for business: forecasting, optimization, machine learning, analytics automation and mathematical modeling.",
+    "Quantitative decision systems for business: demand forecasting, mathematical optimization, machine learning pipelines and analytics automation. Rigorous methodology, measurable operational impact.",
   keywords: [
-    "data science consultant",
-    "machine learning consultant",
-    "forecasting consultant",
-    "optimization consultant",
-    "analytics automation",
+    "analytics consulting",
+    "demand forecasting",
+    "business optimization",
+    "machine learning consulting",
     "decision systems",
-    "business analytics consultant",
     "predictive analytics",
-    "mathematical optimization",
+    "quantitative consulting",
+    "forecasting models",
+    "operational analytics",
+    "mathematical modeling",
   ],
   openGraph: {
-    title: "Arnau Sastre Analytics",
+    title: "SC Analytics",
     description:
-      "Advanced decision systems for business: forecasting, optimization, machine learning, analytics automation and mathematical modeling.",
-    url: "https://www.arnausastre.com",
-    siteName: "Arnau Sastre Analytics",
+      "Quantitative decision systems for business: demand forecasting, mathematical optimization, machine learning pipelines and analytics automation.",
+    url: "https://sc-analytics.io",
+    siteName: "SC Analytics",
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Arnau Sastre Analytics",
+    title: "SC Analytics",
     description:
-      "Advanced decision systems for business: forecasting, optimization, machine learning, analytics automation and mathematical modeling.",
+      "Quantitative decision systems for business: demand forecasting, mathematical optimization, machine learning pipelines and analytics automation.",
   },
 };
 
