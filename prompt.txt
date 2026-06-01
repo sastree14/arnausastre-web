@@ -1,0 +1,249 @@
+I want to redesign the homepage only.
+
+Do not modify any other page.
+
+Do not create new routes.
+
+Do not change the overall visual identity of the website.
+
+Keep the existing SC-Analytics visual style:
+
+- elegant
+- professional
+- classical
+- serious
+- trustworthy
+- restrained
+- blue and white palette
+- generous white space
+- engineering-oriented
+- consulting-oriented
+
+Avoid:
+
+- startup aesthetics
+- flashy effects
+- exaggerated marketing language
+- futuristic AI imagery
+- aggressive sales language
+
+Use the branding assets already available in:
+
+/public/brand/
+
+- logo-horizontal.png
+- logo-circular.png
+- Monograma-simple.png
+- hero-banner.png
+
+Implement:
+
+- logo-horizontal.png in the navbar
+- logo-circular.png in the footer
+- Monograma-simple.png as favicon
+
+The homepage should be completely rethought around the concept:
+
+"Decision Systems in Production"
+
+SC-Analytics should not be positioned as:
+
+- an AI agency
+- a machine learning consultancy
+- a dashboard company
+- an automation agency
+
+Instead, SC-Analytics should be positioned as a company that helps businesses make better decisions by designing, implementing and maintaining decision systems.
+
+The homepage should communicate:
+
+=================================================
+CORE PHILOSOPHY
+=================================================
+
+Technology is not the objective.
+
+The objective is better decisions.
+
+Technology is a tool.
+
+We start with the business problem and then determine the most appropriate solution.
+
+Not every problem requires artificial intelligence.
+
+Not every process should be automated.
+
+Not every company needs a complex analytical system.
+
+The simplest solution that reliably solves the problem is usually the best solution.
+
+One of the central philosophies of SC-Analytics is:
+
+"The real challenge is not creating complex solutions.
+The real challenge is finding simple solutions to complex problems."
+
+This concept should be clearly visible on the homepage.
+
+=================================================
+HOW WE THINK
+=================================================
+
+Every company starts from a different point.
+
+Some companies lack visibility.
+
+Some companies already know their problems.
+
+Some companies need forecasting.
+
+Some companies need optimisation.
+
+Some companies need automation.
+
+Some companies need better decision processes.
+
+We do not apply predefined templates.
+
+We first understand:
+
+- what decision needs to improve
+- how it is currently made
+- what constraints exist
+- what business objective matters
+
+Only then do we design the solution.
+
+=================================================
+WHAT WE DO
+=================================================
+
+The homepage should explain Decision Systems in a way that a CEO can understand.
+
+A Decision System should be presented as:
+
+A structured process that combines information, analysis and operational execution to improve important business decisions.
+
+Technology is always presented as supporting the decision.
+
+Never as the objective.
+
+=================================================
+DISCIPLINES
+=================================================
+
+The homepage should include a section describing:
+
+- Visualisation
+- Modelling
+- Forecasting
+- Optimisation
+- Automation
+
+These should be explained in business language.
+
+Do NOT explain them in technical language.
+
+Do NOT present them as isolated services.
+
+Present them as complementary approaches that can be combined depending on the problem.
+
+Emphasise that most real-world solutions combine several disciplines.
+
+Machine Learning and Artificial Intelligence should not be highlighted.
+
+If mentioned at all, they should only appear as tools that may be used when appropriate.
+
+=================================================
+TRANSPARENCY
+=================================================
+
+A key value of SC-Analytics is transparency.
+
+The homepage should communicate:
+
+- every model has assumptions
+- every forecast has uncertainty
+- every system has limitations
+
+These limitations should be acknowledged honestly.
+
+Avoid exaggerated claims.
+
+Avoid promising unrealistic outcomes.
+
+=================================================
+IMPLEMENTATION
+=================================================
+
+We do not stop at recommendations.
+
+We build systems that run.
+
+The homepage should communicate:
+
+- design
+- implementation
+- integration
+- monitoring
+- continuous improvement
+
+The value is created when the system is operating inside the business.
+
+Not when it exists in a presentation.
+
+=================================================
+TRUST
+=================================================
+
+The desired perception should be:
+
+- rigorous
+- thoughtful
+- honest
+- trustworthy
+- business-oriented
+- long-term focused
+
+A visitor should feel:
+
+"These people understand business problems.
+They seem sensible.
+They seem rigorous.
+I would like to have a conversation with them."
+
+=================================================
+HOMEPAGE STRUCTURE
+=================================================
+
+Propose a homepage with approximately:
+
+1. Hero
+2. The Problem
+3. What Is a Decision System
+4. How We Work
+5. Our Disciplines
+6. Why SC-Analytics
+7. Case Studies Preview
+8. Final Call To Action
+
+=================================================
+IMPORTANT
+=================================================
+
+Before writing any code:
+
+1. Show me the complete homepage proposal.
+2. Show section hierarchy.
+3. Show content hierarchy.
+4. Explain the purpose of each section.
+5. Explain how the hero section will work with hero-banner.png.
+6. Explain how the new homepage supports navigation towards:
+   - Services
+   - Case Studies
+   - Insights
+   - About
+   - Contact
+
+Do not modify any files yet.
+
+Wait for approval before making any code changes.
