@@ -1,149 +1,190 @@
-Apply the following corrections.
+We need to make three homepage improvements.
 
-Do not modify any sections below "Un Sistema de Decisión no es software. Es un proceso diseñado."
-
-=================================================
-1. HERO LOGO FIX
-=================================================
-
-The current logo implementation is incorrect.
-
-Current issue:
-
-A beige/grey image background is visible behind the logo.
-
-This breaks the visual identity.
-
-Required behaviour:
-
-- Remove the beige image completely.
-- Remove any visible image background.
-- Remove any image card/container.
-
-The hero must remain a single continuous dark blue surface.
-
-The logo should appear directly on the blue background.
-
-Use only the white logo artwork.
-
-The logo should:
-
-- be approximately 30% larger than before
-- be more visible
-- remain elegant
-- remain subtle
-- not overpower the title
-
-Think of it as a premium brand mark integrated into the hero background.
-
-The logo should look like part of the page design, not an inserted image.
+Do not modify any other sections.
 
 =================================================
-2. DECIDIR MEJOR SECTION ALIGNMENT
+1. HERO LOGO REPLACEMENT
 =================================================
 
-Current issue:
+A new image has been uploaded:
 
-The left column ends significantly higher than the right column.
+ChatGPT Image 1 jun 2026, 18_40_55.png
 
-The visual balance is poor.
+Use this file as the Hero logo.
 
-Adjust the layout so that:
+Requirements:
 
-- the left column content extends lower
-- the highlighted statements remain under the challenge list
-- both columns finish at approximately the same vertical height
+- Replace the current logo shown on the right side of the Hero.
+- Remove the current processed logo completely.
+- Use the new uploaded image instead.
+- Keep the dark blue hero background.
+- No card.
+- No container.
+- No border.
+- No shadow.
+- No background box.
 
-Do not remove any cards.
+The logo should appear directly integrated into the hero background.
 
-Do not remove any icons.
+Increase its size approximately 10-15% compared to the current version.
 
-Do not remove any content.
+The logo should remain elegant and not compete with the title.
 
 =================================================
-3. ADD NEW SECTION:
-NO EMPEZAMOS POR LA TECNOLOGÍA
+2. "NO EMPEZAMOS POR LA TECNOLOGÍA"
 =================================================
 
-Insert a new section between:
+The text on the right currently appears as paragraphs.
 
-"Decidir mejor en entornos cada vez más complejos"
+Convert it into a structured list using checkmarks.
 
-and
+Use this structure:
 
-"Un Sistema de Decisión no es software. Es un proceso diseñado."
-
-Section title:
-
-No empezamos por la tecnología.
-Empezamos por el problema.
-
-Intro text:
+✓ Comprender el contexto
 
 Cada organización tiene objetivos, restricciones y procesos diferentes.
 
-Por eso no creemos en soluciones estándar ni en aplicar tecnología porque esté de moda.
+✓ Evitar soluciones genéricas
+
+No creemos en soluciones estándar ni en aplicar tecnología porque esté de moda.
+
+✓ Diseñar la solución adecuada
 
 Nuestro trabajo consiste en comprender el contexto, identificar qué decisión necesita mejorar y diseñar la solución adecuada para cada situación.
 
-Create four visual blocks.
+Requirements:
+
+- Premium consulting style.
+- Easy to scan.
+- More visual hierarchy.
+- Keep the section elegant and professional.
 
 =================================================
-BLOCK 1
+3. NEW SECTION
 =================================================
 
-Entender
+Insert a new section AFTER:
 
-Comprender el problema antes de hablar de herramientas.
+"No empezamos por la tecnología. Empezamos por el problema."
 
-=================================================
-BLOCK 2
-=================================================
+and BEFORE:
 
-Diseñar
-
-Evaluar alternativas y seleccionar el enfoque adecuado para la realidad del negocio.
+"Un Sistema de Decisión no es software. Es un proceso diseñado."
 
 =================================================
-BLOCK 3
+TITLE
 =================================================
 
-Implementar
-
-Construir sistemas que funcionen en operaciones reales y no únicamente en presentaciones o pruebas de concepto.
+Diferentes problemas requieren diferentes enfoques.
 
 =================================================
-BLOCK 4
+SUBTITLE
 =================================================
 
-Mejorar
-
-Monitorizar resultados, aprender del comportamiento del sistema y evolucionarlo con el tiempo.
+El enfoque adecuado depende de la decisión que se quiere mejorar.
 
 =================================================
-DESIGN REQUIREMENTS
+LAYOUT
 =================================================
 
-This section should become one of the strongest sections on the homepage.
+Create five premium cards.
 
-Visual style:
+Card 1
 
-- premium consulting firm
-- elegant
-- structured
-- generous spacing
-- icons allowed
-- no startup aesthetics
-- no AI agency aesthetics
+VISUALIZACIÓN
 
-The section should clearly communicate how SC-Analytics approaches problems.
+Comprender qué está ocurriendo.
+
+• Control
+• Indicadores
+• Monitorización
+• Visibilidad
+
+-------------------------------------------------
+
+Card 2
+
+MODELIZACIÓN
+
+Entender cómo funciona el sistema.
+
+• Escenarios
+• Relaciones
+• Simulación
+• Explicabilidad
+
+-------------------------------------------------
+
+Card 3
+
+FORECASTING
+
+Anticipar lo que podría ocurrir.
+
+• Tendencias
+• Escenarios
+• Riesgo
+• Planificación
+
+-------------------------------------------------
+
+Card 4
+
+OPTIMIZACIÓN
+
+Elegir la mejor alternativa posible.
+
+• Recursos
+• Planificación
+• Eficiencia
+• Priorización
+
+-------------------------------------------------
+
+Card 5
+
+AUTOMATIZACIÓN
+
+Convertir el análisis en operaciones reales.
+
+• Workflows
+• Integración
+• Infraestructura de datos
+• Escalabilidad
 
 =================================================
-IMPORTANT
+FINAL STATEMENT
 =================================================
 
-After implementation:
+Below the cards add:
 
-1. Run npm run build
-2. Check desktop layout
-3. Show me screenshots
+La mayoría de sistemas de decisión combinan varias de estas disciplinas en una única solución integrada.
+
+=================================================
+DESIGN GOAL
+=================================================
+
+The section should feel:
+
+- Executive-friendly
+- Professional
+- Mathematical
+- Structured
+- Premium
+
+Not:
+
+- Startup
+- AI agency
+- Software house
+
+The user should understand:
+
+Different problems require different approaches.
+Different approaches can be combined into one decision system.
+
+=================================================
+FINAL
+=================================================
+
+Run npm run build.
