@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { BarChart3, Network, TrendingUp, Target, Workflow } from 'lucide-react'
 import { useLanguage } from '@/components/LanguageProvider'
 import { translations } from '@/lib/translations'
 import { useRevealChildren } from '@/hooks/useScrollAnimation'
@@ -26,6 +27,20 @@ const ArrowIcon = () => (
     <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
+
+function DisciplineCard({ icon, name, desc, tags }: { icon: React.ReactNode; name: string; desc: string; tags: string }) {
+  return (
+    <div className="w-full rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+      <div className="h-0.5 bg-indigo-500" />
+      <div className="p-5 flex flex-col gap-3">
+        <div className="text-slate-500">{icon}</div>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-900">{name}</p>
+        <p className="text-xs leading-5 text-slate-600" style={{ fontFamily: 'var(--font-playfair)' }}>{desc}</p>
+        <p className="text-[11px] leading-5 text-slate-400">{tags}</p>
+      </div>
+    </div>
+  )
+}
 
 export default function Home() {
   const { lang } = useLanguage()
@@ -335,61 +350,110 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ── 4. DIFFERENT APPROACHES ──────────────────────────────────── */}
+      {/* ── 4. DIFFERENT APPROACHES — hub and spoke ─────────────────── */}
       <Section className="bg-white border-b border-slate-200">
         <div className="mx-auto max-w-7xl px-6 py-24">
 
-          {/* Header */}
-          <div className="mb-14 max-w-3xl">
+          {/* Centred header */}
+          <div className="reveal text-center max-w-3xl mx-auto mb-16">
             <h2
-              className="reveal text-4xl md:text-5xl leading-tight text-slate-900"
+              className="text-4xl md:text-5xl leading-tight text-slate-900"
               style={{ fontFamily: 'var(--font-playfair)' }}
             >
               {t.approachTitle}
             </h2>
-            <p className="reveal reveal-delay-1 mt-5 text-lg leading-8 text-slate-500">
-              {t.approachSub}
-            </p>
+            <p className="mt-5 text-xl font-medium text-slate-700">{t.approachSub}</p>
+            <p className="mt-3 text-base leading-8 text-slate-500">{t.approachSub2}</p>
           </div>
 
-          {/* Five cards */}
-          <div className="grid gap-5 md:grid-cols-3 xl:grid-cols-5">
-            {([
-              { name: t.appr1Name, desc: t.appr1Desc, tags: t.appr1Tags },
-              { name: t.appr2Name, desc: t.appr2Desc, tags: t.appr2Tags },
-              { name: t.appr3Name, desc: t.appr3Desc, tags: t.appr3Tags },
-              { name: t.appr4Name, desc: t.appr4Desc, tags: t.appr4Tags },
-              { name: t.appr5Name, desc: t.appr5Desc, tags: t.appr5Tags },
-            ] as { name: string; desc: string; tags: string }[]).map((card, i) => (
-              <div
-                key={card.name}
-                className={`reveal reveal-delay-${Math.min(i + 1, 4)} flex flex-col rounded-xl border border-slate-200 bg-slate-50 overflow-hidden card-lift`}
+          {/* ── Desktop hub-and-spoke diagram ── */}
+          <div className="reveal hidden lg:block">
+            <div
+              className="relative mx-auto"
+              style={{ maxWidth: '900px', aspectRatio: '900 / 560' }}
+            >
+              {/* SVG connecting lines — rendered behind cards */}
+              <svg
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                viewBox="0 0 900 560"
+                preserveAspectRatio="none"
+                fill="none"
               >
-                {/* Top accent */}
-                <div className="h-0.5 w-full bg-indigo-500" />
-                <div className="flex flex-col flex-1 p-6 gap-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-900">
-                    {card.name}
-                  </p>
-                  <p
-                    className="text-base leading-7 text-slate-700"
-                    style={{ fontFamily: 'var(--font-playfair)' }}
-                  >
-                    {card.desc}
-                  </p>
-                  <div className="mt-auto pt-4 border-t border-slate-200">
-                    <p className="text-xs leading-6 text-slate-400">{card.tags}</p>
+                {/* hub centre → top (Modelización) */}
+                <line x1="450" y1="280" x2="450" y2="93" stroke="#cbd5e1" strokeWidth="1" />
+                {/* hub centre → left (Visualización) */}
+                <line x1="450" y1="280" x2="150" y2="280" stroke="#cbd5e1" strokeWidth="1" />
+                {/* hub centre → right (Forecasting) */}
+                <line x1="450" y1="280" x2="750" y2="280" stroke="#cbd5e1" strokeWidth="1" />
+                {/* hub centre → bottom-left (Optimización) */}
+                <line x1="450" y1="280" x2="150" y2="467" stroke="#cbd5e1" strokeWidth="1" />
+                {/* hub centre → bottom-right (Automatización) */}
+                <line x1="450" y1="280" x2="750" y2="467" stroke="#cbd5e1" strokeWidth="1" />
+              </svg>
+
+              {/* 3×3 grid — cards sit on top of SVG lines */}
+              <div
+                className="absolute inset-0 grid grid-cols-3"
+                style={{ gridTemplateRows: '1fr 1fr 1fr' }}
+              >
+                {/* Row 1: empty · MODELIZACIÓN · empty */}
+                <div />
+                <div className="flex items-center justify-center p-4">
+                  <DisciplineCard icon={<Network size={20} />} name={t.appr2Name} desc={t.appr2Desc} tags={t.appr2Tags} />
+                </div>
+                <div />
+
+                {/* Row 2: VISUALIZACIÓN · HUB · FORECASTING */}
+                <div className="flex items-center justify-center p-4">
+                  <DisciplineCard icon={<BarChart3 size={20} />} name={t.appr1Name} desc={t.appr1Desc} tags={t.appr1Tags} />
+                </div>
+                <div className="flex items-center justify-center">
+                  <div className="flex flex-col items-center justify-center text-center rounded-full border-2 border-indigo-300 bg-slate-900 shadow-lg" style={{ width: '148px', height: '148px' }}>
+                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-white leading-tight whitespace-pre-line">{t.approachHubTitle}</p>
+                    <div className="mt-2 h-px w-10 bg-indigo-400" />
+                    <p className="mt-2 text-[10px] tracking-widest text-indigo-300 uppercase">{t.approachHubSub}</p>
                   </div>
                 </div>
+                <div className="flex items-center justify-center p-4">
+                  <DisciplineCard icon={<TrendingUp size={20} />} name={t.appr3Name} desc={t.appr3Desc} tags={t.appr3Tags} />
+                </div>
+
+                {/* Row 3: OPTIMIZACIÓN · empty · AUTOMATIZACIÓN */}
+                <div className="flex items-center justify-center p-4">
+                  <DisciplineCard icon={<Target size={20} />} name={t.appr4Name} desc={t.appr4Desc} tags={t.appr4Tags} />
+                </div>
+                <div />
+                <div className="flex items-center justify-center p-4">
+                  <DisciplineCard icon={<Workflow size={20} />} name={t.appr5Name} desc={t.appr5Desc} tags={t.appr5Tags} />
+                </div>
               </div>
+            </div>
+          </div>
+
+          {/* ── Mobile fallback ── */}
+          <div className="lg:hidden grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
+            <div className="sm:col-span-2 flex justify-center mb-2">
+              <div className="flex flex-col items-center justify-center text-center rounded-full border-2 border-indigo-300 bg-slate-900" style={{ width: '120px', height: '120px' }}>
+                <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-white leading-tight whitespace-pre-line">{t.approachHubTitle}</p>
+                <div className="mt-1.5 h-px w-8 bg-indigo-400" />
+                <p className="mt-1.5 text-[9px] tracking-widest text-indigo-300 uppercase">{t.approachHubSub}</p>
+              </div>
+            </div>
+            {([
+              { icon: <BarChart3 size={18} />, name: t.appr1Name, desc: t.appr1Desc, tags: t.appr1Tags },
+              { icon: <Network size={18} />, name: t.appr2Name, desc: t.appr2Desc, tags: t.appr2Tags },
+              { icon: <TrendingUp size={18} />, name: t.appr3Name, desc: t.appr3Desc, tags: t.appr3Tags },
+              { icon: <Target size={18} />, name: t.appr4Name, desc: t.appr4Desc, tags: t.appr4Tags },
+              { icon: <Workflow size={18} />, name: t.appr5Name, desc: t.appr5Desc, tags: t.appr5Tags },
+            ] as { icon: React.ReactNode; name: string; desc: string; tags: string }[]).map((card) => (
+              <DisciplineCard key={card.name} icon={card.icon} name={card.name} desc={card.desc} tags={card.tags} />
             ))}
           </div>
 
-          {/* Final statement */}
-          <div className="reveal mt-10 rounded-xl border border-slate-200 bg-slate-50 px-7 py-5">
-            <p className="text-sm leading-7 text-slate-600">
-              <span className="font-semibold text-slate-800">— </span>
-              {t.approachNote}
+          {/* Centred bottom statement */}
+          <div className="reveal mt-14 text-center">
+            <p className="mx-auto max-w-2xl text-sm leading-7 text-slate-500 italic" style={{ fontFamily: 'var(--font-playfair)' }}>
+              &ldquo;{t.approachNote}&rdquo;
             </p>
           </div>
 

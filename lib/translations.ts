@@ -90,7 +90,10 @@ export const translations = {
       noTechB4Desc: 'Monitoring results, learning from the system\'s behaviour and evolving it over time.',
 
       approachTitle: 'Different problems require different approaches.',
-      approachSub: 'The right approach depends on the decision you want to improve.',
+      approachSub: 'Not all problems are solved in the same way.',
+      approachSub2: 'Each situation requires a distinct combination of information, analysis, prediction, optimisation and execution.',
+      approachHubTitle: 'Decision\nSystems',
+      approachHubSub: 'SC-Analytics',
       appr1Name: 'Visualisation',
       appr1Desc: 'Understanding what is happening.',
       appr1Tags: 'Control · Indicators · Monitoring · Visibility',
@@ -514,7 +517,10 @@ export const translations = {
       noTechB4Desc: 'Monitorizar resultados, aprender del comportamiento del sistema y evolucionarlo con el tiempo.',
 
       approachTitle: 'Diferentes problemas requieren diferentes enfoques.',
-      approachSub: 'El enfoque adecuado depende de la decisión que se quiere mejorar.',
+      approachSub: 'No todos los problemas se resuelven de la misma manera.',
+      approachSub2: 'Cada situación requiere una combinación distinta de información, análisis, predicción, optimización y ejecución.',
+      approachHubTitle: 'Sistemas de\nDecisión',
+      approachHubSub: 'SC-Analytics',
       appr1Name: 'Visualización',
       appr1Desc: 'Comprender qué está ocurriendo.',
       appr1Tags: 'Control · Indicadores · Monitorización · Visibilidad',
