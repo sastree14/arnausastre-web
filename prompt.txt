@@ -1,249 +1,157 @@
-I want to redesign the homepage only.
+Implement the following homepage hero changes.
 
-Do not modify any other page.
+Modify only the homepage hero section.
 
-Do not create new routes.
+Keep the current visual identity of SC-Analytics:
 
-Do not change the overall visual identity of the website.
-
-Keep the existing SC-Analytics visual style:
-
-- elegant
 - professional
 - classical
-- serious
+- elegant
 - trustworthy
-- restrained
-- blue and white palette
-- generous white space
 - engineering-oriented
 - consulting-oriented
+- blue and white palette
+- generous white space
 
-Avoid:
-
-- startup aesthetics
-- flashy effects
-- exaggerated marketing language
-- futuristic AI imagery
-- aggressive sales language
-
-Use the branding assets already available in:
-
-/public/brand/
-
-- logo-horizontal.png
-- logo-circular.png
-- Monograma-simple.png
-- hero-banner.png
-
-Implement:
-
-- logo-horizontal.png in the navbar
-- logo-circular.png in the footer
-- Monograma-simple.png as favicon
-
-The homepage should be completely rethought around the concept:
-
-"Decision Systems in Production"
-
-SC-Analytics should not be positioned as:
-
-- an AI agency
-- a machine learning consultancy
-- a dashboard company
-- an automation agency
-
-Instead, SC-Analytics should be positioned as a company that helps businesses make better decisions by designing, implementing and maintaining decision systems.
-
-The homepage should communicate:
+Do not introduce flashy effects, gradients, startup aesthetics or AI-themed imagery.
 
 =================================================
-CORE PHILOSOPHY
+LAYOUT
 =================================================
 
-Technology is not the objective.
+I want to redesign the hero layout.
 
-The objective is better decisions.
+Current issues:
 
-Technology is a tool.
+1. The logo/background branding overlaps visually with the text.
+2. The hero feels visually crowded.
+3. The hierarchy between branding and message is unclear.
 
-We start with the business problem and then determine the most appropriate solution.
+New layout:
 
-Not every problem requires artificial intelligence.
+- All textual content should be aligned on the LEFT side.
+- Branding artwork (hero-banner.png and logo elements) should be positioned on the RIGHT side.
+- The text must always be the primary focus.
+- The branding should support the message, not compete with it.
+- The hero should feel balanced, clean and premium.
 
-Not every process should be automated.
+I want a split layout:
 
-Not every company needs a complex analytical system.
+LEFT SIDE:
+- Title
+- Subtitle
+- Description
 
-The simplest solution that reliably solves the problem is usually the best solution.
+RIGHT SIDE:
+- Branding artwork
+- Hero banner elements
+- SC-Analytics visual identity
 
-One of the central philosophies of SC-Analytics is:
+Use the existing asset:
 
-"The real challenge is not creating complex solutions.
-The real challenge is finding simple solutions to complex problems."
+/public/brand/hero-banner.png
 
-This concept should be clearly visible on the homepage.
+but integrate it in a way that does not interfere with readability.
 
-=================================================
-HOW WE THINK
-=================================================
+The background can remain predominantly blue.
 
-Every company starts from a different point.
-
-Some companies lack visibility.
-
-Some companies already know their problems.
-
-Some companies need forecasting.
-
-Some companies need optimisation.
-
-Some companies need automation.
-
-Some companies need better decision processes.
-
-We do not apply predefined templates.
-
-We first understand:
-
-- what decision needs to improve
-- how it is currently made
-- what constraints exist
-- what business objective matters
-
-Only then do we design the solution.
+The text area should remain clean and highly readable.
 
 =================================================
-WHAT WE DO
+REMOVE
 =================================================
 
-The homepage should explain Decision Systems in a way that a CEO can understand.
+Remove the current hero badge/tagline that appears above the title.
 
-A Decision System should be presented as:
+I do not want any small label above the main title.
 
-A structured process that combines information, analysis and operational execution to improve important business decisions.
-
-Technology is always presented as supporting the decision.
-
-Never as the objective.
+The hero should begin directly with the title.
 
 =================================================
-DISCIPLINES
+TITLE
 =================================================
 
-The homepage should include a section describing:
+Replace the current title with:
 
-- Visualisation
-- Modelling
-- Forecasting
-- Optimisation
-- Automation
+Mejores decisiones.
+Mejores resultados empresariales.
 
-These should be explained in business language.
+This must be the main visual focus of the hero.
 
-Do NOT explain them in technical language.
+Large typography.
 
-Do NOT present them as isolated services.
+Strong hierarchy.
 
-Present them as complementary approaches that can be combined depending on the problem.
-
-Emphasise that most real-world solutions combine several disciplines.
-
-Machine Learning and Artificial Intelligence should not be highlighted.
-
-If mentioned at all, they should only appear as tools that may be used when appropriate.
+Elegant spacing.
 
 =================================================
-TRANSPARENCY
+SUBTITLE
 =================================================
 
-A key value of SC-Analytics is transparency.
+Replace the current subtitle with:
 
-The homepage should communicate:
+Cada empresa es diferente.
 
-- every model has assumptions
-- every forecast has uncertainty
-- every system has limitations
+Entendemos el problema antes de proponer la solución.
 
-These limitations should be acknowledged honestly.
+Creemos en construir soluciones útiles, proporcionadas y alineadas con las necesidades reales de cada organización.
 
-Avoid exaggerated claims.
+This should appear directly below the title.
 
-Avoid promising unrealistic outcomes.
+Readable but secondary to the title.
+
+=================================================
+DESCRIPTION
+=================================================
+
+Below the subtitle add:
+
+Cada empresa llega con retos diferentes.
+
+Algunas buscan crecer con mayor control. Otras necesitan mejorar la rentabilidad, asignar mejor sus recursos, planificar con mayor confianza o adaptarse a un entorno cada vez más complejo e incierto.
+
+Nuestro trabajo consiste en entender el contexto, identificar lo que realmente importa y diseñar soluciones alineadas con los objetivos y la realidad de cada organización.
+
+This section should act as a bridge to the next homepage sections.
+
+Its purpose is to encourage visitors to continue scrolling and discovering how we work.
+
+=================================================
+VISUAL GOAL
+=================================================
+
+The overall feeling should be:
+
+- clear
+- rigorous
+- trustworthy
+- thoughtful
+- professional
+- calm
+- executive
+
+A CEO should immediately understand that:
+
+- we focus on business problems
+- we do not oversell technology
+- we believe in tailored solutions
+- we prioritise long-term value
+- we approach problems with rigor and judgement
 
 =================================================
 IMPLEMENTATION
 =================================================
 
-We do not stop at recommendations.
+Apply the changes directly.
 
-We build systems that run.
+After implementation:
 
-The homepage should communicate:
+1. Run the project locally.
+2. Verify the hero layout on desktop.
+3. Verify text readability.
+4. Verify branding placement.
+5. Verify that the logo/background no longer competes with the title.
+6. Show me a summary of all modifications made.
 
-- design
-- implementation
-- integration
-- monitoring
-- continuous improvement
-
-The value is created when the system is operating inside the business.
-
-Not when it exists in a presentation.
-
-=================================================
-TRUST
-=================================================
-
-The desired perception should be:
-
-- rigorous
-- thoughtful
-- honest
-- trustworthy
-- business-oriented
-- long-term focused
-
-A visitor should feel:
-
-"These people understand business problems.
-They seem sensible.
-They seem rigorous.
-I would like to have a conversation with them."
-
-=================================================
-HOMEPAGE STRUCTURE
-=================================================
-
-Propose a homepage with approximately:
-
-1. Hero
-2. The Problem
-3. What Is a Decision System
-4. How We Work
-5. Our Disciplines
-6. Why SC-Analytics
-7. Case Studies Preview
-8. Final Call To Action
-
-=================================================
-IMPORTANT
-=================================================
-
-Before writing any code:
-
-1. Show me the complete homepage proposal.
-2. Show section hierarchy.
-3. Show content hierarchy.
-4. Explain the purpose of each section.
-5. Explain how the hero section will work with hero-banner.png.
-6. Explain how the new homepage supports navigation towards:
-   - Services
-   - Case Studies
-   - Insights
-   - About
-   - Contact
-
-Do not modify any files yet.
-
-Wait for approval before making any code changes.
+Do not modify any other homepage sections.
+Only update the hero section.
