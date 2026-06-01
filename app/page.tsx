@@ -74,15 +74,15 @@ export default function Home() {
               </div>
             </HeroReveal>
 
-            {/* RIGHT — transparent logo, artwork inverted to white */}
+            {/* RIGHT — white logo on transparent background */}
             <div className="hidden lg:flex items-center justify-center">
               <Image
-                src="/brand/logo-horizontal-transparent.png"
+                src="/brand/logo-white.png"
                 alt="SC-Analytics"
-                width={344}
-                height={224}
-                className="w-[32rem] h-auto"
-                style={{ filter: 'invert(1) brightness(0.82)', opacity: 0.75 }}
+                width={1536}
+                height={1024}
+                className="w-[36rem] h-auto"
+                style={{ opacity: 0.72 }}
                 priority
               />
             </div>
@@ -335,7 +335,68 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ── 4. WHAT IS A DECISION SYSTEM ─────────────────────────────── */}
+      {/* ── 4. DIFFERENT APPROACHES ──────────────────────────────────── */}
+      <Section className="bg-white border-b border-slate-200">
+        <div className="mx-auto max-w-7xl px-6 py-24">
+
+          {/* Header */}
+          <div className="mb-14 max-w-3xl">
+            <h2
+              className="reveal text-4xl md:text-5xl leading-tight text-slate-900"
+              style={{ fontFamily: 'var(--font-playfair)' }}
+            >
+              {t.approachTitle}
+            </h2>
+            <p className="reveal reveal-delay-1 mt-5 text-lg leading-8 text-slate-500">
+              {t.approachSub}
+            </p>
+          </div>
+
+          {/* Five cards */}
+          <div className="grid gap-5 md:grid-cols-3 xl:grid-cols-5">
+            {([
+              { name: t.appr1Name, desc: t.appr1Desc, tags: t.appr1Tags },
+              { name: t.appr2Name, desc: t.appr2Desc, tags: t.appr2Tags },
+              { name: t.appr3Name, desc: t.appr3Desc, tags: t.appr3Tags },
+              { name: t.appr4Name, desc: t.appr4Desc, tags: t.appr4Tags },
+              { name: t.appr5Name, desc: t.appr5Desc, tags: t.appr5Tags },
+            ] as { name: string; desc: string; tags: string }[]).map((card, i) => (
+              <div
+                key={card.name}
+                className={`reveal reveal-delay-${Math.min(i + 1, 4)} flex flex-col rounded-xl border border-slate-200 bg-slate-50 overflow-hidden card-lift`}
+              >
+                {/* Top accent */}
+                <div className="h-0.5 w-full bg-indigo-500" />
+                <div className="flex flex-col flex-1 p-6 gap-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-900">
+                    {card.name}
+                  </p>
+                  <p
+                    className="text-base leading-7 text-slate-700"
+                    style={{ fontFamily: 'var(--font-playfair)' }}
+                  >
+                    {card.desc}
+                  </p>
+                  <div className="mt-auto pt-4 border-t border-slate-200">
+                    <p className="text-xs leading-6 text-slate-400">{card.tags}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Final statement */}
+          <div className="reveal mt-10 rounded-xl border border-slate-200 bg-slate-50 px-7 py-5">
+            <p className="text-sm leading-7 text-slate-600">
+              <span className="font-semibold text-slate-800">— </span>
+              {t.approachNote}
+            </p>
+          </div>
+
+        </div>
+      </Section>
+
+      {/* ── 5. WHAT IS A DECISION SYSTEM ─────────────────────────────── */}
       <Section className="bg-slate-50 border-b border-slate-200">
         <div className="mx-auto max-w-7xl px-6 py-20">
           <div className="grid gap-14 md:grid-cols-2">
