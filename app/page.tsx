@@ -32,11 +32,16 @@ function DisciplineCard({ icon, name, desc, tags }: { icon: React.ReactNode; nam
   return (
     <div className="w-full rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
       <div className="h-0.5 bg-indigo-500" />
-      <div className="p-5 flex flex-col gap-3">
-        <div className="text-slate-500">{icon}</div>
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-900">{name}</p>
-        <p className="text-xs leading-5 text-slate-600" style={{ fontFamily: 'var(--font-playfair)' }}>{desc}</p>
-        <p className="text-[11px] leading-5 text-slate-400">{tags}</p>
+      <div className="p-5 flex flex-col gap-3.5">
+        {/* Icon + name on same line */}
+        <div className="flex items-center gap-2.5">
+          <span className="text-indigo-500 flex-shrink-0">{icon}</span>
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-900 leading-tight">{name}</p>
+        </div>
+        {/* Description — larger and clearer */}
+        <p className="text-sm leading-6 text-slate-700" style={{ fontFamily: 'var(--font-playfair)' }}>{desc}</p>
+        {/* Tags */}
+        <p className="text-xs leading-5 text-slate-400 border-t border-slate-100 pt-3">{tags}</p>
       </div>
     </div>
   )
@@ -370,25 +375,25 @@ export default function Home() {
           <div className="reveal hidden lg:block">
             <div
               className="relative mx-auto"
-              style={{ maxWidth: '900px', aspectRatio: '900 / 560' }}
+              style={{ maxWidth: '900px', aspectRatio: '900 / 680' }}
             >
               {/* SVG connecting lines — rendered behind cards */}
               <svg
                 className="absolute inset-0 w-full h-full pointer-events-none"
-                viewBox="0 0 900 560"
+                viewBox="0 0 900 680"
                 preserveAspectRatio="none"
                 fill="none"
               >
-                {/* hub centre → top (Modelización) */}
-                <line x1="450" y1="280" x2="450" y2="93" stroke="#cbd5e1" strokeWidth="1" />
-                {/* hub centre → left (Visualización) */}
-                <line x1="450" y1="280" x2="150" y2="280" stroke="#cbd5e1" strokeWidth="1" />
-                {/* hub centre → right (Forecasting) */}
-                <line x1="450" y1="280" x2="750" y2="280" stroke="#cbd5e1" strokeWidth="1" />
-                {/* hub centre → bottom-left (Optimización) */}
-                <line x1="450" y1="280" x2="150" y2="467" stroke="#cbd5e1" strokeWidth="1" />
-                {/* hub centre → bottom-right (Automatización) */}
-                <line x1="450" y1="280" x2="750" y2="467" stroke="#cbd5e1" strokeWidth="1" />
+                {/* hub centre (450, 340) → top — Modelización */}
+                <line x1="450" y1="340" x2="450" y2="113" stroke="#cbd5e1" strokeWidth="1" />
+                {/* hub centre → left — Visualización */}
+                <line x1="450" y1="340" x2="150" y2="340" stroke="#cbd5e1" strokeWidth="1" />
+                {/* hub centre → right — Forecasting */}
+                <line x1="450" y1="340" x2="750" y2="340" stroke="#cbd5e1" strokeWidth="1" />
+                {/* hub centre → bottom-left — Optimización */}
+                <line x1="450" y1="340" x2="150" y2="567" stroke="#cbd5e1" strokeWidth="1" />
+                {/* hub centre → bottom-right — Automatización */}
+                <line x1="450" y1="340" x2="750" y2="567" stroke="#cbd5e1" strokeWidth="1" />
               </svg>
 
               {/* 3×3 grid — cards sit on top of SVG lines */}
@@ -451,8 +456,8 @@ export default function Home() {
           </div>
 
           {/* Centred bottom statement */}
-          <div className="reveal mt-14 text-center">
-            <p className="mx-auto max-w-2xl text-sm leading-7 text-slate-500 italic" style={{ fontFamily: 'var(--font-playfair)' }}>
+          <div className="reveal mt-20 pt-12 border-t border-slate-200 text-center">
+            <p className="mx-auto max-w-2xl text-base leading-8 text-slate-700 italic" style={{ fontFamily: 'var(--font-playfair)' }}>
               &ldquo;{t.approachNote}&rdquo;
             </p>
           </div>
