@@ -74,15 +74,15 @@ export default function Home() {
               </div>
             </HeroReveal>
 
-            {/* RIGHT — logo branding, blended into dark hero */}
+            {/* RIGHT — transparent logo, artwork inverted to white */}
             <div className="hidden lg:flex items-center justify-center">
               <Image
-                src="/brand/logo-horizontal.png"
+                src="/brand/logo-horizontal-transparent.png"
                 alt="SC-Analytics"
                 width={344}
                 height={224}
-                className="w-[32rem] h-auto mix-blend-screen"
-                style={{ filter: 'invert(1) brightness(0.78)', opacity: 0.82 }}
+                className="w-[32rem] h-auto"
+                style={{ filter: 'invert(1) brightness(0.82)', opacity: 0.75 }}
                 priority
               />
             </div>
