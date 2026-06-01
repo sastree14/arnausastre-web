@@ -1,37 +1,26 @@
-Modify only the homepage hero section and the section currently labelled "El desafío".
+Redesign the homepage Hero and the first section below it to match this visual direction:
 
-Do not modify any other homepage sections.
+- Dark navy hero section.
+- Left side: strong title, subtitle and short philosophy text.
+- Right side: SC-Analytics logo/brand mark, larger and more visible than now, but elegant and not overwhelming.
+- Below the hero: white section with a clean two-column layout.
+- Left side: main challenge title and explanatory paragraph.
+- Right side: visual cards with simple line icons.
+- Use a classical, serious, premium consulting style.
+- Do not use emojis.
+- Use simple inline SVG icons or lucide-react icons if available.
+- Keep the design clean, not flashy.
 
 =================================================
-HERO CHANGES
+HERO
 =================================================
 
-Current problems:
-
-1. The hero-banner image creates two different blue tones.
-2. The branding image looks like a separate cropped card.
-3. The background does not feel continuous.
-4. The text and branding compete visually.
-5. The small blue label above the title should not appear.
-
-New hero requirements:
-
-- Remove hero-banner.png from the hero.
-- Do not use the full banner image.
-- Use a single continuous dark blue background for the whole hero.
-- The background must feel smooth, clean and uniform.
-- Do not create any framed image, rounded card, border or cropped banner on the right side.
-
-Use only:
-
-/brand/logo-horizontal.png
-
-Place it on the RIGHT side of the hero as a branding element.
-
-The left side must contain only:
+Use this title:
 
 Mejores decisiones.
 Mejores resultados empresariales.
+
+Use this subtitle:
 
 Cada empresa es diferente.
 
@@ -39,58 +28,98 @@ Entendemos el problema antes de proponer la solución.
 
 Creemos en construir soluciones útiles, proporcionadas y alineadas con las necesidades reales de cada organización.
 
-Important:
+Hero layout:
 
-- Remove the small label/tag above the hero title completely.
-- The hero should start directly with the main title.
-- Keep the title large, elegant and readable.
-- Keep all text aligned on the left.
-- Put logo-horizontal.png on the right.
-- The logo should not look like a separate image card.
-- It should blend naturally with the dark blue background.
-- If needed, use opacity, spacing and positioning to make it elegant and non-intrusive.
-- The hero must feel classical, serious, calm and premium.
+- Left column: title and subtitle.
+- Right column: logo-horizontal.png or logo mark, larger and clearer than currently.
+- Make the logo white/near-white and more visible, but still elegant.
+- Remove any small label above the title.
+- Keep the background a single continuous dark navy color.
+- Do not use hero-banner.png as a framed card.
+- Do not create visible image boxes, borders or rounded cards inside the hero.
 
 =================================================
-CHALLENGE SECTION CHANGES
+FIRST SECTION BELOW HERO
 =================================================
 
-Modify the section currently labelled "El desafío".
+Replace the current “Decidir mejor…” section with a more visual section inspired by the mockup.
 
-Remove the small blue label above the title.
-
-Do not show "EL DESAFÍO" or any small uppercase label.
-
-Replace the title with:
+Title:
 
 Decidir mejor en entornos cada vez más complejos.
 
-Replace the body text with:
+Intro paragraph:
 
-Cada empresa llega con retos diferentes. Algunas buscan crecer con mayor control. Otras necesitan mejorar la rentabilidad, asignar mejor sus recursos, planificar con mayor confianza o adaptarse a un entorno cada vez más incierto.
+Cada empresa llega con retos diferentes. Algunas buscan crecer con mayor control. Otras necesitan mejorar la rentabilidad, asignar mejor sus recursos, planificar con mayor confianza o adaptarse a un entorno cada vez más complejo e incierto.
 
-Sin embargo, muchas decisiones importantes siguen dependiendo de procesos poco sistemáticos: hojas de cálculo difíciles de mantener, criterios no documentados, información incompleta o decisiones que dependen demasiado de la experiencia individual.
+Then create visual cards/items for common business challenges:
 
+1. Procesos poco sistemáticos
+Text:
+Hojas de cálculo difíciles de mantener, criterios no documentados e información incompleta.
+
+2. Dependencia de personas clave
+Text:
+Decisiones que dependen demasiado de la experiencia individual y del conocimiento implícito.
+
+3. Falta de consistencia y control
+Text:
+Dificultad para explicar por qué se decide algo, medir el impacto o mejorar el proceso de forma continua.
+
+4. Incertidumbre y escenarios cambiantes
+Text:
+Necesidad de anticipar riesgos, comparar escenarios y preparar decisiones antes de que el contexto cambie.
+
+5. Asignación de recursos
+Text:
+Decidir dónde invertir tiempo, presupuesto, capacidad o inventario con restricciones reales.
+
+6. Simulación de escenarios
+Text:
+Evaluar qué podría ocurrir bajo diferentes hipótesis antes de comprometer recursos importantes.
+
+After the cards, add two highlighted horizontal statements:
+
+Statement 1:
 Nuestro trabajo consiste en entender el contexto, identificar lo que realmente importa y diseñar soluciones alineadas con los objetivos y la realidad de cada organización.
 
+Statement 2:
 No se trata de añadir más tecnología. Se trata de construir el sistema adecuado para tomar mejores decisiones.
 
-Design requirements for this section:
+=================================================
+DESIGN DETAILS
+=================================================
 
-- Keep it clean and readable.
-- Use generous white space.
-- Make the section feel like a natural continuation of the hero.
-- Keep the tone serious, elegant and consultative.
-- Avoid excessive decoration.
-- Do not use technical jargon.
+Use:
+
+- Clean white background for the section below the hero.
+- Large elegant serif heading on the left.
+- Cards or compact blocks on the right.
+- Subtle light blue / slate icon containers.
+- Thin separators where useful.
+- Generous spacing.
+- No clutter.
+- No excessive text density.
+- The section should look structured and executive-friendly.
+
+The goal is that a CEO understands quickly:
+
+- what types of problems we understand,
+- why decision-making becomes complex,
+- why technology alone is not the solution,
+- and why SC-Analytics starts from diagnosis and business reality.
 
 =================================================
 IMPORTANT
 =================================================
 
-After making the changes:
+Modify only:
 
-1. Run npm run build.
-2. Fix any build errors if they appear.
-3. Show me a summary of the files modified.
-4. Do not push until I confirm the visual result.
+- homepage hero
+- first section below hero
+
+Do not modify the rest of the homepage yet.
+
+Run npm run build after changes.
+
+Do not push until I review the result.
