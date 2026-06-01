@@ -1,95 +1,78 @@
-We need to make three homepage improvements.
+Redesign the entire "Diferentes problemas requieren diferentes enfoques" section.
 
-Do not modify any other sections.
+IMPORTANT:
 
-=================================================
-1. HERO LOGO REPLACEMENT
-=================================================
+The current design looks like a services catalog.
 
-A new image has been uploaded:
+That is NOT the message we want to communicate.
 
-ChatGPT Image 1 jun 2026, 18_40_55.png
+SC-Analytics does not sell isolated services.
 
-Use this file as the Hero logo.
+We design decision systems that combine different analytical disciplines depending on the business problem.
 
-Requirements:
+────────────────────────────
 
-- Replace the current logo shown on the right side of the Hero.
-- Remove the current processed logo completely.
-- Use the new uploaded image instead.
-- Keep the dark blue hero background.
-- No card.
-- No container.
-- No border.
-- No shadow.
-- No background box.
-
-The logo should appear directly integrated into the hero background.
-
-Increase its size approximately 10-15% compared to the current version.
-
-The logo should remain elegant and not compete with the title.
-
-=================================================
-2. "NO EMPEZAMOS POR LA TECNOLOGÍA"
-=================================================
-
-The text on the right currently appears as paragraphs.
-
-Convert it into a structured list using checkmarks.
-
-Use this structure:
-
-✓ Comprender el contexto
-
-Cada organización tiene objetivos, restricciones y procesos diferentes.
-
-✓ Evitar soluciones genéricas
-
-No creemos en soluciones estándar ni en aplicar tecnología porque esté de moda.
-
-✓ Diseñar la solución adecuada
-
-Nuestro trabajo consiste en comprender el contexto, identificar qué decisión necesita mejorar y diseñar la solución adecuada para cada situación.
-
-Requirements:
-
-- Premium consulting style.
-- Easy to scan.
-- More visual hierarchy.
-- Keep the section elegant and professional.
-
-=================================================
-3. NEW SECTION
-=================================================
-
-Insert a new section AFTER:
-
-"No empezamos por la tecnología. Empezamos por el problema."
-
-and BEFORE:
-
-"Un Sistema de Decisión no es software. Es un proceso diseñado."
-
-=================================================
-TITLE
-=================================================
+SECTION TITLE
 
 Diferentes problemas requieren diferentes enfoques.
 
-=================================================
-SUBTITLE
-=================================================
+Subtitle:
 
-El enfoque adecuado depende de la decisión que se quiere mejorar.
+No todos los problemas se resuelven de la misma manera.
 
-=================================================
-LAYOUT
-=================================================
+Cada situación requiere una combinación distinta de información, análisis, predicción, optimización y ejecución.
 
-Create five premium cards.
+Center both title and subtitle.
 
-Card 1
+Use generous spacing.
+
+────────────────────────────
+
+VISUAL DESIGN
+
+Replace the current horizontal cards layout.
+
+Create a central hub-and-spoke diagram.
+
+In the center:
+
+"SISTEMAS DE DECISIÓN"
+
+Small subtitle:
+
+"SC-ANALYTICS"
+
+The central element should be visually dominant.
+
+Around it place five connected blocks arranged in a circular structure.
+
+Top:
+MODELIZACIÓN
+
+Left:
+VISUALIZACIÓN
+
+Right:
+FORECASTING
+
+Bottom left:
+OPTIMIZACIÓN
+
+Bottom right:
+AUTOMATIZACIÓN
+
+Connect all blocks to the center using elegant thin lines.
+
+The design should feel like a system, not a list of services.
+
+Clean.
+Executive.
+Premium.
+Corporate.
+
+────────────────────────────
+
+CONTENT
 
 VISUALIZACIÓN
 
@@ -100,9 +83,7 @@ Comprender qué está ocurriendo.
 • Monitorización
 • Visibilidad
 
--------------------------------------------------
-
-Card 2
+────────────────────────────
 
 MODELIZACIÓN
 
@@ -113,9 +94,7 @@ Entender cómo funciona el sistema.
 • Simulación
 • Explicabilidad
 
--------------------------------------------------
-
-Card 3
+────────────────────────────
 
 FORECASTING
 
@@ -126,9 +105,7 @@ Anticipar lo que podría ocurrir.
 • Riesgo
 • Planificación
 
--------------------------------------------------
-
-Card 4
+────────────────────────────
 
 OPTIMIZACIÓN
 
@@ -139,9 +116,7 @@ Elegir la mejor alternativa posible.
 • Eficiencia
 • Priorización
 
--------------------------------------------------
-
-Card 5
+────────────────────────────
 
 AUTOMATIZACIÓN
 
@@ -152,39 +127,40 @@ Convertir el análisis en operaciones reales.
 • Infraestructura de datos
 • Escalabilidad
 
-=================================================
-FINAL STATEMENT
-=================================================
+────────────────────────────
 
-Below the cards add:
+ICONS
 
-La mayoría de sistemas de decisión combinan varias de estas disciplinas en una única solución integrada.
+Use elegant Lucide icons.
 
-=================================================
+Visualization → BarChart3
+Modeling → Network
+Forecasting → TrendingUp
+Optimization → Target
+Automation → Workflow
+
+Icons should be clearly visible and integrated into each block.
+
+────────────────────────────
+
+BOTTOM STATEMENT
+
+Below the diagram add:
+
+"La mayoría de sistemas de decisión combinan varias de estas disciplinas en una única solución integrada."
+
+Centered.
+
+Elegant.
+
+Visually separated from the diagram.
+
+────────────────────────────
+
 DESIGN GOAL
-=================================================
 
-The section should feel:
+When a CEO looks at this section, the conclusion should be:
 
-- Executive-friendly
-- Professional
-- Mathematical
-- Structured
-- Premium
+"They are not selling tools.
 
-Not:
-
-- Startup
-- AI agency
-- Software house
-
-The user should understand:
-
-Different problems require different approaches.
-Different approaches can be combined into one decision system.
-
-=================================================
-FINAL
-=================================================
-
-Run npm run build.
+They are showing me how different disciplines work together to improve decisions."
