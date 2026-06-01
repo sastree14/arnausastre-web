@@ -75,13 +75,14 @@ export default function Home() {
             </HeroReveal>
 
             {/* RIGHT — logo branding, white on dark background */}
-            <div className="hidden lg:flex items-center justify-center">
+            <div className="hidden lg:flex items-center justify-center" style={{ background: 'transparent' }}>
               <Image
                 src="/brand/logo-horizontal.png"
                 alt="SC-Analytics"
                 width={344}
                 height={224}
-                className="w-96 h-auto brightness-0 invert opacity-60"
+                className="w-[30rem] h-auto"
+                style={{ filter: 'invert(1) brightness(0.85)', opacity: 0.72 }}
                 priority
               />
             </div>
@@ -97,17 +98,46 @@ export default function Home() {
           {/* Two-column header */}
           <div className="grid gap-16 lg:grid-cols-2 lg:items-start">
 
-            {/* Left — title + intro */}
-            <div>
+            {/* Left — title + highlighted sentence + list + statements */}
+            <div className="flex flex-col gap-8">
               <h2
                 className="reveal text-4xl leading-tight text-slate-900"
                 style={{ fontFamily: 'var(--font-playfair)' }}
               >
                 {t.problemTitle}
               </h2>
-              <p className="reveal reveal-delay-1 mt-6 text-lg leading-8 text-slate-600">
-                {t.problemP1}
-              </p>
+
+              {/* Highlighted sentence */}
+              <div className="reveal reveal-delay-1 border-l-4 border-indigo-500 pl-5">
+                <p className="text-xl font-semibold text-slate-800" style={{ fontFamily: 'var(--font-playfair)' }}>
+                  {t.probHighlight}
+                </p>
+              </div>
+
+              {/* Executive list */}
+              <div className="reveal reveal-delay-2">
+                <p className="text-sm uppercase tracking-[0.14em] text-slate-400 font-medium mb-4">
+                  {t.probListIntro}
+                </p>
+                <ul className="space-y-2.5">
+                  {[t.probItem1, t.probItem2, t.probItem3, t.probItem4, t.probItem5, t.probItem6, t.probItem7].map((item) => (
+                    <li key={item} className="flex items-center gap-3 text-slate-700 text-sm leading-6">
+                      <span className="flex-shrink-0 h-1.5 w-1.5 rounded-full bg-indigo-400" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Statements */}
+              <div className="reveal reveal-delay-3 space-y-4">
+                <div className="rounded-lg bg-slate-50 border border-slate-200 px-5 py-4">
+                  <p className="text-sm leading-7 text-slate-700">{t.problemSt1}</p>
+                </div>
+                <div className="rounded-lg bg-indigo-50 border border-indigo-100 px-5 py-4">
+                  <p className="text-sm leading-7 font-semibold text-slate-800">{t.problemSt2}</p>
+                </div>
+              </div>
             </div>
 
             {/* Right — 6 challenge cards, 2-col grid */}
@@ -197,15 +227,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Closing statements */}
-          <div className="mt-14 space-y-5">
-            <div className="reveal border-l-4 border-indigo-500 pl-6 py-1">
-              <p className="text-base leading-8 text-slate-700">{t.problemSt1}</p>
-            </div>
-            <div className="reveal reveal-delay-1 border-l-4 border-slate-300 pl-6 py-1">
-              <p className="text-base leading-8 font-semibold text-slate-900">{t.problemSt2}</p>
-            </div>
-          </div>
 
         </div>
       </Section>
@@ -268,23 +289,28 @@ export default function Home() {
 
       {/* ── 4. HOW WE WORK ──────────────────────────────────────────────── */}
       <Section className="bg-white border-b border-slate-200">
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          <div className="mb-14">
+        <div className="mx-auto max-w-7xl px-6 py-24">
+          <div className="mb-16">
             <p className="reveal text-xs uppercase tracking-[0.2em] text-indigo-600 font-medium">
               {t.howLabel}
             </p>
             <h2
-              className="reveal reveal-delay-1 mt-4 max-w-2xl text-4xl text-slate-900"
+              className="reveal reveal-delay-1 mt-4 max-w-2xl text-5xl leading-tight text-slate-900"
               style={{ fontFamily: 'var(--font-playfair)' }}
             >
               {t.howTitle}
             </h2>
-            <p className="reveal reveal-delay-2 mt-4 text-lg text-slate-600">
+            <p className="reveal reveal-delay-2 mt-5 max-w-2xl text-lg leading-8 text-slate-500">
               {t.howSub}
             </p>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-3 xl:grid-cols-5">
+          <div className="relative grid gap-4 md:grid-cols-3 xl:grid-cols-5">
+            {/* Subtle horizontal process connector — desktop only */}
+            <div className="pointer-events-none absolute top-10 left-10 right-10 hidden xl:block">
+              <div className="h-px bg-slate-200" />
+            </div>
+
             {[
               { num: t.how1Num, title: t.how1Title, desc: t.how1Desc },
               { num: t.how2Num, title: t.how2Title, desc: t.how2Desc },
@@ -294,21 +320,21 @@ export default function Home() {
             ].map((step, i) => (
               <div
                 key={step.num}
-                className={`reveal reveal-delay-${Math.min(i + 1, 4)} group rounded-2xl border border-slate-200 bg-slate-50 p-6 card-lift`}
+                className={`reveal reveal-delay-${Math.min(i + 1, 4)} group relative rounded-xl border border-slate-200 bg-slate-50 p-6 card-lift`}
               >
                 <p
-                  className="text-3xl font-light text-slate-200 transition group-hover:text-indigo-200"
+                  className="text-4xl font-light text-slate-300 transition group-hover:text-indigo-300"
                   style={{ fontFamily: 'var(--font-playfair)' }}
                 >
                   {step.num}
                 </p>
-                <h3 className="mt-3 text-base font-semibold text-slate-900">{step.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{step.desc}</p>
+                <h3 className="mt-4 text-sm font-semibold text-slate-900 leading-snug">{step.title}</h3>
+                <p className="mt-3 text-xs leading-6 text-slate-500">{step.desc}</p>
               </div>
             ))}
           </div>
 
-          <div className="mt-10 reveal">
+          <div className="mt-12 reveal">
             <Link
               href="/about"
               className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-800 transition"
