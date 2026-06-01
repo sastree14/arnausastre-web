@@ -1,166 +1,132 @@
-Redesign the entire "Diferentes problemas requieren diferentes enfoques" section.
+We are finalising the Home page.
 
-IMPORTANT:
-
-The current design looks like a services catalog.
-
-That is NOT the message we want to communicate.
-
-SC-Analytics does not sell isolated services.
-
-We design decision systems that combine different analytical disciplines depending on the business problem.
+Please apply the following changes.
 
 ────────────────────────────
 
-SECTION TITLE
+PHILOSOPHY SECTION
 
-Diferentes problemas requieren diferentes enfoques.
+Replace the entire current section:
 
-Subtitle:
+"Nuestro concepto central"
 
-No todos los problemas se resuelven de la misma manera.
+with a completely new section.
 
-Cada situación requiere una combinación distinta de información, análisis, predicción, optimización y ejecución.
+TITLE:
 
-Center both title and subtitle.
+"Soluciones sencillas para problemas complejos."
 
-Use generous spacing.
+SUBTITLE:
 
-────────────────────────────
+"Comprender antes de construir.
 
-VISUAL DESIGN
+Tecnología cuando aporta valor.
 
-Replace the current horizontal cards layout.
+Decisiones mejores, sistemas más sólidos."
 
-Create a central hub-and-spoke diagram.
+Create four elegant cards:
 
-In the center:
+1. Comprender antes de construir
 
-"SISTEMAS DE DECISIÓN"
+Antes de proponer una solución entendemos la decisión, el contexto y las restricciones.
 
-Small subtitle:
+2. Tecnología cuando aporta valor
 
-"SC-ANALYTICS"
+No aplicamos herramientas porque estén de moda. Las utilizamos cuando aportan una mejora real.
 
-The central element should be visually dominant.
+3. Soluciones proporcionadas
 
-Around it place five connected blocks arranged in a circular structure.
+No sobredimensionamos los problemas. Diseñamos soluciones alineadas con las necesidades reales de cada organización.
 
-Top:
-MODELIZACIÓN
+4. Valor empresarial antes que tecnología
 
-Left:
-VISUALIZACIÓN
+El éxito no se mide por la complejidad del sistema. Se mide por la mejora de la decisión.
 
-Right:
-FORECASTING
+Design requirements:
 
-Bottom left:
-OPTIMIZACIÓN
-
-Bottom right:
-AUTOMATIZACIÓN
-
-Connect all blocks to the center using elegant thin lines.
-
-The design should feel like a system, not a list of services.
-
-Clean.
-Executive.
-Premium.
-Corporate.
+* Premium and executive style.
+* Plenty of whitespace.
+* Four balanced cards.
+* Short texts.
+* Easy to scan.
 
 ────────────────────────────
 
-CONTENT
+USE CASES SECTION
 
-VISUALIZACIÓN
+Remove the current sections:
 
-Comprender qué está ocurriendo.
+"Nuestras herramientas"
+"Por qué SC-Analytics"
+"En la práctica"
 
-• Control
-• Indicadores
-• Monitorización
-• Visibilidad
+Replace them with a single section.
 
-────────────────────────────
+TITLE:
 
-MODELIZACIÓN
+"Un mismo enfoque puede aplicarse a situaciones muy diferentes."
 
-Entender cómo funciona el sistema.
+SUBTITLE:
 
-• Escenarios
-• Relaciones
-• Simulación
-• Explicabilidad
+"Los principios son los mismos.
+Los problemas, sectores y organizaciones son distintos."
 
-────────────────────────────
+Create three visual cards:
 
-FORECASTING
+1. Planificación y previsión
 
-Anticipar lo que podría ocurrir.
+Forecasting, escenarios, planificación y reducción de incertidumbre.
 
-• Tendencias
-• Escenarios
-• Riesgo
-• Planificación
+2. Optimización de recursos
 
-────────────────────────────
+Capacidad, inventario, presupuesto, logística y priorización.
 
-OPTIMIZACIÓN
+3. Sistemas de decisión en producción
 
-Elegir la mejor alternativa posible.
+Integración de datos, análisis y automatización en procesos reales.
 
-• Recursos
-• Planificación
-• Eficiencia
-• Priorización
+Add a centered button:
+
+"Ver casos prácticos →"
+
+Link to the Cases page.
 
 ────────────────────────────
 
-AUTOMATIZACIÓN
+FINAL CTA
 
-Convertir el análisis en operaciones reales.
+Replace the entire current final CTA section.
 
-• Workflows
-• Integración
-• Infraestructura de datos
-• Escalabilidad
+TITLE:
 
-────────────────────────────
+"No todas las empresas necesitan más tecnología.
 
-ICONS
+Algunas simplemente necesitan mejores decisiones."
 
-Use elegant Lucide icons.
+TEXT:
 
-Visualization → BarChart3
-Modeling → Network
-Forecasting → TrendingUp
-Optimization → Target
-Automation → Workflow
+"Si tu empresa se enfrenta a un problema, una ineficiencia, una oportunidad de mejora o una decisión que podría tomarse con mayor control y confianza, estaremos encantados de analizar la situación contigo.
 
-Icons should be clearly visible and integrated into each block.
+La primera conversación consiste únicamente en entender el contexto, sin compromiso y sin asumir ninguna solución de antemano."
 
-────────────────────────────
+Primary button:
 
-BOTTOM STATEMENT
+"Cuéntanos el problema"
 
-Below the diagram add:
+Secondary button:
 
-"La mayoría de sistemas de decisión combinan varias de estas disciplinas en una única solución integrada."
-
-Centered.
-
-Elegant.
-
-Visually separated from the diagram.
+"Cómo trabajamos"
 
 ────────────────────────────
 
-DESIGN GOAL
+GLOBAL OBJECTIVE
 
-When a CEO looks at this section, the conclusion should be:
+The Home page should communicate:
 
-"They are not selling tools.
+* We understand before we build.
+* We apply technology when it creates value.
+* We design decision systems.
+* We avoid unnecessary complexity.
+* We focus on business outcomes.
 
-They are showing me how different disciplines work together to improve decisions."
+The result should feel like a serious decision-systems consultancy, not a software agency.
