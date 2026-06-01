@@ -74,14 +74,14 @@ export default function Home() {
               </div>
             </HeroReveal>
 
-            {/* RIGHT — logo branding, blended on dark background */}
+            {/* RIGHT — logo branding, white on dark background */}
             <div className="hidden lg:flex items-center justify-center">
               <Image
                 src="/brand/logo-horizontal.png"
                 alt="SC-Analytics"
                 width={344}
                 height={224}
-                className="w-80 h-auto opacity-[0.18]"
+                className="w-96 h-auto brightness-0 invert opacity-60"
                 priority
               />
             </div>
@@ -93,20 +93,120 @@ export default function Home() {
       {/* ── 2. THE CHALLENGE ────────────────────────────────────────────── */}
       <Section className="bg-white border-b border-slate-200">
         <div className="mx-auto max-w-7xl px-6 py-20">
-          <div className="max-w-3xl">
-            <h2
-              className="reveal text-4xl text-slate-900"
-              style={{ fontFamily: 'var(--font-playfair)' }}
-            >
-              {t.problemTitle}
-            </h2>
-            <div className="mt-8 space-y-5">
-              <p className="reveal reveal-delay-1 text-lg leading-8 text-slate-600">{t.problemP1}</p>
-              <p className="reveal reveal-delay-2 text-lg leading-8 text-slate-600">{t.problemP2}</p>
-              <p className="reveal reveal-delay-3 text-lg leading-8 text-slate-600">{t.problemP3}</p>
-              <p className="reveal reveal-delay-4 text-lg leading-8 text-slate-800 font-medium">{t.problemP4}</p>
+
+          {/* Two-column header */}
+          <div className="grid gap-16 lg:grid-cols-2 lg:items-start">
+
+            {/* Left — title + intro */}
+            <div>
+              <h2
+                className="reveal text-4xl leading-tight text-slate-900"
+                style={{ fontFamily: 'var(--font-playfair)' }}
+              >
+                {t.problemTitle}
+              </h2>
+              <p className="reveal reveal-delay-1 mt-6 text-lg leading-8 text-slate-600">
+                {t.problemP1}
+              </p>
+            </div>
+
+            {/* Right — 6 challenge cards, 2-col grid */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+
+              {/* Card 1 */}
+              <div className="reveal reveal-delay-1 rounded-xl border border-slate-200 bg-slate-50 p-5">
+                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <rect x="1" y="1" width="7" height="7" rx="1" stroke="#64748b" strokeWidth="1.4"/>
+                    <rect x="10" y="1" width="7" height="7" rx="1" stroke="#64748b" strokeWidth="1.4"/>
+                    <rect x="1" y="10" width="7" height="7" rx="1" stroke="#64748b" strokeWidth="1.4"/>
+                    <rect x="10" y="10" width="7" height="7" rx="1" stroke="#64748b" strokeWidth="1.4"/>
+                  </svg>
+                </div>
+                <h3 className="text-sm font-semibold text-slate-900">{t.prob1Title}</h3>
+                <p className="mt-2 text-xs leading-5 text-slate-500">{t.prob1Desc}</p>
+              </div>
+
+              {/* Card 2 */}
+              <div className="reveal reveal-delay-2 rounded-xl border border-slate-200 bg-slate-50 p-5">
+                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <circle cx="9" cy="5" r="3" stroke="#64748b" strokeWidth="1.4"/>
+                    <path d="M2 16c0-3.314 3.134-6 7-6s7 2.686 7 6" stroke="#64748b" strokeWidth="1.4" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <h3 className="text-sm font-semibold text-slate-900">{t.prob2Title}</h3>
+                <p className="mt-2 text-xs leading-5 text-slate-500">{t.prob2Desc}</p>
+              </div>
+
+              {/* Card 3 */}
+              <div className="reveal reveal-delay-3 rounded-xl border border-slate-200 bg-slate-50 p-5">
+                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <line x1="2" y1="5" x2="16" y2="5" stroke="#64748b" strokeWidth="1.4" strokeLinecap="round"/>
+                    <circle cx="6" cy="5" r="2" fill="white" stroke="#64748b" strokeWidth="1.4"/>
+                    <line x1="2" y1="13" x2="16" y2="13" stroke="#64748b" strokeWidth="1.4" strokeLinecap="round"/>
+                    <circle cx="12" cy="13" r="2" fill="white" stroke="#64748b" strokeWidth="1.4"/>
+                  </svg>
+                </div>
+                <h3 className="text-sm font-semibold text-slate-900">{t.prob3Title}</h3>
+                <p className="mt-2 text-xs leading-5 text-slate-500">{t.prob3Desc}</p>
+              </div>
+
+              {/* Card 4 */}
+              <div className="reveal reveal-delay-4 rounded-xl border border-slate-200 bg-slate-50 p-5">
+                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <path d="M9 2L16 15H2L9 2Z" stroke="#64748b" strokeWidth="1.4" strokeLinejoin="round"/>
+                    <line x1="9" y1="7" x2="9" y2="11" stroke="#64748b" strokeWidth="1.4" strokeLinecap="round"/>
+                    <circle cx="9" cy="13" r="0.7" fill="#64748b"/>
+                  </svg>
+                </div>
+                <h3 className="text-sm font-semibold text-slate-900">{t.prob4Title}</h3>
+                <p className="mt-2 text-xs leading-5 text-slate-500">{t.prob4Desc}</p>
+              </div>
+
+              {/* Card 5 */}
+              <div className="reveal reveal-delay-1 rounded-xl border border-slate-200 bg-slate-50 p-5">
+                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <rect x="2" y="10" width="3" height="6" rx="0.5" stroke="#64748b" strokeWidth="1.4"/>
+                    <rect x="7.5" y="6" width="3" height="10" rx="0.5" stroke="#64748b" strokeWidth="1.4"/>
+                    <rect x="13" y="2" width="3" height="14" rx="0.5" stroke="#64748b" strokeWidth="1.4"/>
+                  </svg>
+                </div>
+                <h3 className="text-sm font-semibold text-slate-900">{t.prob5Title}</h3>
+                <p className="mt-2 text-xs leading-5 text-slate-500">{t.prob5Desc}</p>
+              </div>
+
+              {/* Card 6 */}
+              <div className="reveal reveal-delay-2 rounded-xl border border-slate-200 bg-slate-50 p-5">
+                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <circle cx="4" cy="9" r="2" stroke="#64748b" strokeWidth="1.4"/>
+                    <circle cx="14" cy="4" r="2" stroke="#64748b" strokeWidth="1.4"/>
+                    <circle cx="14" cy="14" r="2" stroke="#64748b" strokeWidth="1.4"/>
+                    <line x1="6" y1="8.3" x2="12" y2="5" stroke="#64748b" strokeWidth="1.4" strokeLinecap="round"/>
+                    <line x1="6" y1="9.7" x2="12" y2="13" stroke="#64748b" strokeWidth="1.4" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <h3 className="text-sm font-semibold text-slate-900">{t.prob6Title}</h3>
+                <p className="mt-2 text-xs leading-5 text-slate-500">{t.prob6Desc}</p>
+              </div>
+
             </div>
           </div>
+
+          {/* Closing statements */}
+          <div className="mt-14 space-y-5">
+            <div className="reveal border-l-4 border-indigo-500 pl-6 py-1">
+              <p className="text-base leading-8 text-slate-700">{t.problemSt1}</p>
+            </div>
+            <div className="reveal reveal-delay-1 border-l-4 border-slate-300 pl-6 py-1">
+              <p className="text-base leading-8 font-semibold text-slate-900">{t.problemSt2}</p>
+            </div>
+          </div>
+
         </div>
       </Section>
 
