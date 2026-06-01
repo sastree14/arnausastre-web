@@ -46,10 +46,11 @@ export const translations = {
       heroCta1: 'How we work',
       heroCta2: 'Get in touch',
 
-      problemLabel: 'The challenge',
-      problemTitle: 'Most business decisions are not as systematic as they appear.',
-      problemP1: 'Pricing reviews happen in spreadsheets that have grown beyond anyone\'s control. Demand planning relies on the knowledge of one person who has been there for years. Operational decisions are made with last week\'s data. When something goes wrong, it is difficult to explain why — because the process was never designed to be auditable.',
-      problemP2: 'This is not a technology problem. It is a design problem. The processes that drive important decisions were never built with rigor, feedback or long-term performance in mind.',
+      problemTitle: 'Making better decisions in increasingly complex environments.',
+      problemP1: 'Every company arrives with different challenges. Some seek to grow with greater control. Others need to improve profitability, allocate resources better, plan with greater confidence or adapt to an increasingly uncertain environment.',
+      problemP2: 'Yet many important decisions still depend on unsystematic processes: spreadsheets that are difficult to maintain, undocumented criteria, incomplete information or decisions that rely too heavily on individual experience.',
+      problemP3: 'Our work is to understand the context, identify what really matters and design solutions aligned with the objectives and reality of each organisation.',
+      problemP4: 'It is not about adding more technology. It is about building the right system to make better decisions.',
 
       dsLabel: 'Our core concept',
       dsTitle: 'A Decision System is not software. It is a designed process.',
@@ -413,10 +414,11 @@ export const translations = {
       heroCta1: 'Cómo trabajamos',
       heroCta2: 'Contactar',
 
-      problemLabel: 'El desafío',
-      problemTitle: 'La mayoría de las decisiones empresariales no son tan sistemáticas como parecen.',
-      problemP1: 'Las revisiones de precios se hacen en hojas de cálculo que han crecido más allá del control de nadie. La planificación de la demanda depende del conocimiento de una persona que lleva años en la empresa. Las decisiones operativas se toman con datos de la semana pasada. Cuando algo va mal, es difícil explicar por qué — porque el proceso nunca fue diseñado para ser auditable.',
-      problemP2: 'Este no es un problema de tecnología. Es un problema de diseño. Los procesos que impulsan las decisiones importantes nunca se construyeron con rigor, retroalimentación ni rendimiento a largo plazo en mente.',
+      problemTitle: 'Decidir mejor en entornos cada vez más complejos.',
+      problemP1: 'Cada empresa llega con retos diferentes. Algunas buscan crecer con mayor control. Otras necesitan mejorar la rentabilidad, asignar mejor sus recursos, planificar con mayor confianza o adaptarse a un entorno cada vez más incierto.',
+      problemP2: 'Sin embargo, muchas decisiones importantes siguen dependiendo de procesos poco sistemáticos: hojas de cálculo difíciles de mantener, criterios no documentados, información incompleta o decisiones que dependen demasiado de la experiencia individual.',
+      problemP3: 'Nuestro trabajo consiste en entender el contexto, identificar lo que realmente importa y diseñar soluciones alineadas con los objetivos y la realidad de cada organización.',
+      problemP4: 'No se trata de añadir más tecnología. Se trata de construir el sistema adecuado para tomar mejores decisiones.',
 
       dsLabel: 'Nuestro concepto central',
       dsTitle: 'Un Sistema de Decisión no es software. Es un proceso diseñado.',

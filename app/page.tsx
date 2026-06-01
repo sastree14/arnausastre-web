@@ -37,7 +37,7 @@ export default function Home() {
       {/* ── 1. HERO ─────────────────────────────────────────────────────── */}
       <section className="bg-slate-900 text-white overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 py-24 md:py-32">
-          <div className="grid items-start gap-16 lg:grid-cols-2">
+          <div className="grid items-center gap-16 lg:grid-cols-2">
 
             {/* LEFT — text */}
             <HeroReveal>
@@ -57,12 +57,6 @@ export default function Home() {
                   <p className="text-base text-slate-400">{t.heroSubL3}</p>
                 </div>
 
-                <div className="reveal reveal-delay-2 mt-8 space-y-3 text-sm leading-7 text-slate-400 max-w-lg">
-                  <p>{t.heroDescP1}</p>
-                  <p>{t.heroDescP2}</p>
-                  <p>{t.heroDescP3}</p>
-                </div>
-
                 <div className="reveal reveal-delay-3 mt-10 flex flex-wrap gap-4">
                   <Link
                     href="/about"
@@ -80,42 +74,38 @@ export default function Home() {
               </div>
             </HeroReveal>
 
-            {/* RIGHT — branding */}
-            <div className="hidden lg:block relative h-[520px] rounded-2xl overflow-hidden ring-1 ring-white/10">
+            {/* RIGHT — logo branding, blended on dark background */}
+            <div className="hidden lg:flex items-center justify-center">
               <Image
-                src="/brand/hero-banner.png"
+                src="/brand/logo-horizontal.png"
                 alt="SC-Analytics"
-                fill
-                className="object-cover object-center"
+                width={344}
+                height={224}
+                className="w-80 h-auto opacity-[0.18]"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-slate-900/30" />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent" />
             </div>
 
           </div>
         </div>
       </section>
 
-      {/* ── 2. THE PROBLEM ──────────────────────────────────────────────── */}
+      {/* ── 2. THE CHALLENGE ────────────────────────────────────────────── */}
       <Section className="bg-white border-b border-slate-200">
         <div className="mx-auto max-w-7xl px-6 py-20">
           <div className="max-w-3xl">
-            <p className="reveal text-xs uppercase tracking-[0.2em] text-indigo-600 font-medium">
-              {t.problemLabel}
-            </p>
             <h2
-              className="reveal reveal-delay-1 mt-4 text-4xl text-slate-900"
+              className="reveal text-4xl text-slate-900"
               style={{ fontFamily: 'var(--font-playfair)' }}
             >
               {t.problemTitle}
             </h2>
-            <p className="reveal reveal-delay-2 mt-8 text-lg leading-8 text-slate-600">
-              {t.problemP1}
-            </p>
-            <p className="reveal reveal-delay-3 mt-6 text-lg leading-8 text-slate-500 border-l-2 border-indigo-200 pl-5 italic">
-              {t.problemP2}
-            </p>
+            <div className="mt-8 space-y-5">
+              <p className="reveal reveal-delay-1 text-lg leading-8 text-slate-600">{t.problemP1}</p>
+              <p className="reveal reveal-delay-2 text-lg leading-8 text-slate-600">{t.problemP2}</p>
+              <p className="reveal reveal-delay-3 text-lg leading-8 text-slate-600">{t.problemP3}</p>
+              <p className="reveal reveal-delay-4 text-lg leading-8 text-slate-800 font-medium">{t.problemP4}</p>
+            </div>
           </div>
         </div>
       </Section>
