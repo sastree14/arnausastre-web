@@ -6,7 +6,6 @@ import { BarChart3, Network, TrendingUp, Target, Workflow } from 'lucide-react'
 import { useLanguage } from '@/components/LanguageProvider'
 import { translations } from '@/lib/translations'
 import { useRevealChildren } from '@/hooks/useScrollAnimation'
-import { caseStudies } from '@/lib/case-studies'
 
 function Section({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const ref = useRevealChildren()
@@ -259,7 +258,7 @@ export default function Home() {
           <div className="grid gap-16 lg:grid-cols-2 lg:items-start mb-20">
             <div>
               <h2
-                className="reveal text-4xl md:text-5xl leading-tight text-white"
+                className="text-4xl md:text-5xl leading-tight text-white"
                 style={{ fontFamily: 'var(--font-playfair)' }}
               >
                 {t.noTechTitle1}<br />
@@ -272,7 +271,7 @@ export default function Home() {
                 { label: t.noTechL2, body: t.noTechP2, delay: 'reveal-delay-1' },
                 { label: t.noTechL3, body: t.noTechP3, delay: 'reveal-delay-2' },
               ] as { label: string; body: string; delay: string }[]).map((item) => (
-                <div key={item.label} className={`reveal ${item.delay} flex gap-5`}>
+                <div key={item.label} className="flex gap-5">
                   <div className="mt-1 flex-shrink-0">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                       <polyline points="4,12 9,17 20,6" stroke="#f1f5f9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -465,59 +464,50 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ── 5. WHAT IS A DECISION SYSTEM ─────────────────────────────── */}
+      {/* ── 5. PHILOSOPHY ────────────────────────────────────────────── */}
       <Section className="bg-slate-50 border-b border-slate-200">
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          <div className="grid gap-14 md:grid-cols-2">
-            <div>
-              <p className="reveal text-xs uppercase tracking-[0.2em] text-indigo-600 font-medium">
-                {t.dsLabel}
-              </p>
-              <h2
-                className="reveal reveal-delay-1 mt-4 text-4xl text-slate-900"
-                style={{ fontFamily: 'var(--font-playfair)' }}
-              >
-                {t.dsTitle}
-              </h2>
-              <p className="reveal reveal-delay-2 mt-6 text-lg leading-8 text-slate-600">
-                {t.dsSub}
-              </p>
-              <blockquote className="reveal reveal-delay-3 mt-8 border-l-4 border-indigo-500 pl-5">
-                <p
-                  className="text-xl leading-8 text-slate-700 italic"
-                  style={{ fontFamily: 'var(--font-playfair)' }}
-                >
-                  &ldquo;{t.dsQuote}&rdquo;
-                </p>
-              </blockquote>
-              <div className="reveal reveal-delay-4 mt-8">
-                <Link
-                  href="/case-studies"
-                  className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-800 transition"
-                >
-                  {t.dsCta}
-                  <ArrowIcon />
-                </Link>
-              </div>
-            </div>
+        <div className="mx-auto max-w-7xl px-6 py-24">
 
-            <div className="grid gap-5 content-start">
-              {[
-                { title: t.dsAttr1Title, desc: t.dsAttr1Desc },
-                { title: t.dsAttr2Title, desc: t.dsAttr2Desc },
-                { title: t.dsAttr3Title, desc: t.dsAttr3Desc },
-              ].map((attr, i) => (
-                <div
-                  key={attr.title}
-                  className={`reveal reveal-delay-${i + 1} rounded-2xl border border-slate-200 bg-white p-6 card-lift`}
-                >
-                  <div className="mb-3 h-px w-8 bg-indigo-400" />
-                  <h3 className="text-lg font-semibold text-slate-900">{attr.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-600">{attr.desc}</p>
-                </div>
-              ))}
+          {/* Centered header */}
+          <div className="reveal text-center max-w-3xl mx-auto mb-16">
+            <h2
+              className="text-4xl md:text-5xl leading-tight text-slate-900"
+              style={{ fontFamily: 'var(--font-playfair)' }}
+            >
+              {t.philTitle}
+            </h2>
+            <div className="mt-6 space-y-1.5">
+              <p className="text-lg font-semibold text-slate-700">{t.philSub1}</p>
+              <p className="text-lg text-slate-500">{t.philSub2}</p>
+              <p className="text-lg text-slate-500">{t.philSub3}</p>
             </div>
           </div>
+
+          {/* Four cards */}
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {([
+              { num: '01', title: t.phil1Title, desc: t.phil1Desc },
+              { num: '02', title: t.phil2Title, desc: t.phil2Desc },
+              { num: '03', title: t.phil3Title, desc: t.phil3Desc },
+              { num: '04', title: t.phil4Title, desc: t.phil4Desc },
+            ] as { num: string; title: string; desc: string }[]).map((card, i) => (
+              <div
+                key={card.num}
+                className={`reveal reveal-delay-${Math.min(i + 1, 4)} rounded-2xl border border-slate-200 bg-white p-8 card-lift flex flex-col`}
+              >
+                <span
+                  className="text-3xl font-light text-slate-200 mb-4"
+                  style={{ fontFamily: 'var(--font-playfair)' }}
+                >
+                  {card.num}
+                </span>
+                <div className="mb-4 h-px w-8 bg-indigo-400" />
+                <h3 className="text-base font-semibold text-slate-900 leading-snug">{card.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600">{card.desc}</p>
+              </div>
+            ))}
+          </div>
+
         </div>
       </Section>
 
@@ -580,189 +570,78 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ── 5. DISCIPLINES ──────────────────────────────────────────────── */}
-      <Section className="bg-slate-50 border-b border-slate-200">
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          <div className="mb-14 max-w-3xl">
-            <p className="reveal text-xs uppercase tracking-[0.2em] text-indigo-600 font-medium">
-              {t.discLabel}
-            </p>
-            <h2
-              className="reveal reveal-delay-1 mt-4 text-4xl text-slate-900"
-              style={{ fontFamily: 'var(--font-playfair)' }}
-            >
-              {t.discTitle}
-            </h2>
-            <p className="reveal reveal-delay-2 mt-4 text-lg leading-8 text-slate-600">
-              {t.discIntro}
-            </p>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {[
-              { name: t.disc1Name, desc: t.disc1Desc },
-              { name: t.disc2Name, desc: t.disc2Desc },
-              { name: t.disc3Name, desc: t.disc3Desc },
-              { name: t.disc4Name, desc: t.disc4Desc },
-              { name: t.disc5Name, desc: t.disc5Desc },
-            ].map((disc, i) => (
-              <div
-                key={disc.name}
-                className={`reveal reveal-delay-${Math.min(i + 1, 4)} rounded-2xl border border-slate-200 bg-white p-6 card-lift`}
-              >
-                <div className="mb-3 h-px w-8 bg-indigo-400" />
-                <h3 className="text-base font-semibold text-slate-900">{disc.name}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{disc.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="reveal mt-8 rounded-2xl border border-indigo-100 bg-indigo-50/50 px-6 py-5">
-            <p className="text-sm leading-7 text-slate-600">
-              <span className="font-semibold text-slate-900">Note. </span>
-              {t.discNote}
-            </p>
-          </div>
-
-          <div className="mt-8 reveal">
-            <Link
-              href="/services"
-              className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-800 transition"
-            >
-              {t.discCta}
-              <ArrowIcon />
-            </Link>
-          </div>
-        </div>
-      </Section>
-
-      {/* ── 6. WHY SC-ANALYTICS ─────────────────────────────────────────── */}
+      {/* ── 6. USE CASES ─────────────────────────────────────────────── */}
       <Section className="bg-white border-b border-slate-200">
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          <div className="grid gap-14 md:grid-cols-3">
-            <div>
-              <p className="reveal text-xs uppercase tracking-[0.2em] text-indigo-600 font-medium">
-                {t.whyLabel}
-              </p>
-              <h2
-                className="reveal reveal-delay-1 mt-4 text-4xl text-slate-900"
-                style={{ fontFamily: 'var(--font-playfair)' }}
-              >
-                {t.whyTitle}
-              </h2>
-              <div className="reveal reveal-delay-2 mt-6">
-                <Link
-                  href="/about"
-                  className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-800 transition"
-                >
-                  {t.whyCta}
-                  <ArrowIcon />
-                </Link>
-              </div>
-            </div>
+        <div className="mx-auto max-w-7xl px-6 py-24">
 
-            <div className="md:col-span-2 grid gap-5 md:grid-cols-2">
-              {[
-                { title: t.why1Title, desc: t.why1Desc },
-                { title: t.why2Title, desc: t.why2Desc },
-                { title: t.why3Title, desc: t.why3Desc },
-                { title: t.why4Title, desc: t.why4Desc },
-              ].map((item, i) => (
-                <div
-                  key={item.title}
-                  className={`reveal reveal-delay-${i + 1} rounded-2xl border border-slate-200 bg-slate-50 p-6 card-lift`}
-                >
-                  <h3 className="text-base font-semibold text-slate-900">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-600">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* ── 7. CASE STUDIES PREVIEW ─────────────────────────────────────── */}
-      <Section className="bg-slate-50 border-b border-slate-200">
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          <div className="mb-14">
-            <p className="reveal text-xs uppercase tracking-[0.2em] text-indigo-600 font-medium">
-              {t.csLabel}
-            </p>
+          {/* Centered header */}
+          <div className="reveal text-center max-w-3xl mx-auto mb-16">
             <h2
-              className="reveal reveal-delay-1 mt-4 max-w-2xl text-4xl text-slate-900"
+              className="text-4xl md:text-5xl leading-tight text-slate-900"
               style={{ fontFamily: 'var(--font-playfair)' }}
             >
-              {t.csTitle}
+              {t.useCasesTitle}
             </h2>
+            <div className="mt-5 space-y-1.5">
+              <p className="text-lg text-slate-600">{t.useCasesSub1}</p>
+              <p className="text-lg text-slate-500">{t.useCasesSub2}</p>
+            </div>
           </div>
 
+          {/* Three cards */}
           <div className="grid gap-6 md:grid-cols-3">
-            {caseStudies.slice(0, 3).map((cs, i) => (
+            {([
+              { num: '01', title: t.useCase1Title, desc: t.useCase1Desc },
+              { num: '02', title: t.useCase2Title, desc: t.useCase2Desc },
+              { num: '03', title: t.useCase3Title, desc: t.useCase3Desc },
+            ] as { num: string; title: string; desc: string }[]).map((card, i) => (
               <div
-                key={cs.slug}
-                className={`reveal reveal-delay-${i + 1} flex flex-col rounded-2xl border border-slate-200 bg-white p-7 card-lift`}
+                key={card.num}
+                className={`reveal reveal-delay-${i + 1} rounded-2xl border border-slate-200 bg-slate-50 p-8 card-lift`}
               >
-                <p className="text-xs uppercase tracking-[0.16em] text-indigo-600 font-medium">
-                  {lang === 'es' ? cs.industryEs : cs.industry}
-                </p>
-                <h3
-                  className="mt-3 text-xl text-slate-900 flex-1"
+                <span
+                  className="text-3xl font-light text-slate-300"
                   style={{ fontFamily: 'var(--font-playfair)' }}
                 >
-                  {lang === 'es' ? cs.titleEs : cs.titleEn}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600 line-clamp-3">
-                  {lang === 'es' ? cs.excerptEs : cs.excerptEn}
-                </p>
-                <div className="mt-6 pt-5 border-t border-slate-100">
-                  <div className="flex flex-col gap-1.5 mb-5">
-                    {cs.results.slice(0, 2).map((r) => (
-                      <p key={r.metric} className="text-xs text-slate-500">
-                        <span className="font-semibold text-slate-800">{r.value}</span>
-                        {' — '}
-                        {lang === 'es' ? r.metricEs : r.metric}
-                      </p>
-                    ))}
-                  </div>
-                  <Link
-                    href={`/case-studies/${cs.slug}`}
-                    className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-800 transition"
-                  >
-                    {translations[lang].common.viewCaseStudy}
-                    <ArrowIcon />
-                  </Link>
-                </div>
+                  {card.num}
+                </span>
+                <div className="mt-4 mb-4 h-px w-8 bg-indigo-400" />
+                <h3 className="text-lg font-semibold text-slate-900">{card.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600">{card.desc}</p>
               </div>
             ))}
           </div>
 
-          <div className="mt-10 reveal">
+          {/* Centered CTA */}
+          <div className="mt-14 flex justify-center reveal">
             <Link
               href="/case-studies"
-              className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-800 transition"
+              className="inline-flex items-center gap-2 rounded-md border border-slate-300 px-7 py-3.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:border-slate-400"
             >
-              {t.csCta}
-              <ArrowIcon />
+              {t.useCasesCta}
             </Link>
           </div>
+
         </div>
       </Section>
 
-      {/* ── 8. FINAL CTA ────────────────────────────────────────────────── */}
+      {/* ── 7. FINAL CTA ────────────────────────────────────────────────── */}
       <section className="bg-slate-900 text-white">
-        <div className="mx-auto max-w-7xl px-6 py-24">
+        <div className="mx-auto max-w-7xl px-6 py-32">
           <div className="max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.2em] text-indigo-400 font-medium">
-              {t.ctaLabel}
-            </p>
             <h2
-              className="mt-5 text-4xl md:text-5xl leading-tight"
+              className="text-4xl md:text-5xl leading-tight"
               style={{ fontFamily: 'var(--font-playfair)' }}
             >
               {t.ctaTitle}
+              <br />
+              <span className="italic text-slate-300">{t.ctaTitle2}</span>
             </h2>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-400">
+            <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-400">
               {t.ctaSub}
+            </p>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-500">
+              {t.ctaSub2}
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-6">
               <Link
