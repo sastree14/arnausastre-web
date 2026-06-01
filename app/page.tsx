@@ -246,10 +246,24 @@ export default function Home() {
                 <span className="italic text-slate-300">{t.noTechTitle2}</span>
               </h2>
             </div>
-            <div className="space-y-5">
-              <p className="reveal text-base leading-8 text-slate-400">{t.noTechP1}</p>
-              <p className="reveal reveal-delay-1 text-base leading-8 text-slate-400">{t.noTechP2}</p>
-              <p className="reveal reveal-delay-2 text-base leading-8 text-slate-300 font-medium">{t.noTechP3}</p>
+            <div className="space-y-8">
+              {([
+                { label: t.noTechL1, body: t.noTechP1, delay: '' },
+                { label: t.noTechL2, body: t.noTechP2, delay: 'reveal-delay-1' },
+                { label: t.noTechL3, body: t.noTechP3, delay: 'reveal-delay-2' },
+              ] as { label: string; body: string; delay: string }[]).map((item) => (
+                <div key={item.label} className={`reveal ${item.delay} flex gap-4`}>
+                  <div className="mt-0.5 flex-shrink-0">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                      <polyline points="3,9 7,13 15,5" stroke="#818cf8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-white tracking-wide">{item.label}</p>
+                    <p className="mt-1.5 text-sm leading-7 text-slate-400">{item.body}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
