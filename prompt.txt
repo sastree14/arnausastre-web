@@ -1,189 +1,149 @@
-Apply the following homepage refinements.
+Apply the following corrections.
 
-Do not modify any sections below "Empezamos por la decisión, no por la tecnología".
-
-Only modify:
-
-1. Hero section
-2. "Decidir mejor en entornos cada vez más complejos"
-3. Visual refinements of the "Empezamos por la decisión, no por la tecnología" section
+Do not modify any sections below "Un Sistema de Decisión no es software. Es un proceso diseñado."
 
 =================================================
-1. HERO FIXES
+1. HERO LOGO FIX
 =================================================
 
-Current problem:
+The current logo implementation is incorrect.
 
-There is a visible light-grey/white rectangle behind the logo on the right side.
+Current issue:
 
-This should not exist.
+A beige/grey image background is visible behind the logo.
 
-The logo must blend naturally with the dark blue hero background.
+This breaks the visual identity.
 
-Tasks:
+Required behaviour:
 
-- Remove any background box, placeholder, card, container or image frame behind the logo.
-- The hero background must be a single continuous dark blue surface.
-- The logo should appear directly on the hero background.
-- Increase logo size approximately 25-35%.
-- Increase logo visibility.
-- Make the logo slightly brighter and more readable.
-- Keep it elegant and subtle.
-- Do not make it pure white.
-- Do not overpower the title.
+- Remove the beige image completely.
+- Remove any visible image background.
+- Remove any image card/container.
 
-Goal:
+The hero must remain a single continuous dark blue surface.
 
-The logo should feel like a premium branding element, not an image inserted into a page.
+The logo should appear directly on the blue background.
 
-=================================================
-2. DECIDIR MEJOR EN ENTORNOS CADA VEZ MÁS COMPLEJOS
-=================================================
+Use only the white logo artwork.
 
-Current situation:
+The logo should:
 
-The right side cards are excellent.
+- be approximately 30% larger than before
+- be more visible
+- remain elegant
+- remain subtle
+- not overpower the title
 
-Keep all cards.
+Think of it as a premium brand mark integrated into the hero background.
 
-Keep all icons.
-
-Keep all card content.
-
-Do not remove:
-
-- Procesos poco sistemáticos
-- Dependencia de personas clave
-- Falta de consistencia y control
-- Incertidumbre y escenarios cambiantes
-- Asignación de recursos
-- Simulación de escenarios
-
-The LEFT column needs improvement.
+The logo should look like part of the page design, not an inserted image.
 
 =================================================
-LEFT COLUMN REWORK
+2. DECIDIR MEJOR SECTION ALIGNMENT
 =================================================
 
-Immediately below the title:
+Current issue:
 
-Decidir mejor en entornos cada vez más complejos.
+The left column ends significantly higher than the right column.
 
-Add a highlighted introduction.
+The visual balance is poor.
 
-Example style:
+Adjust the layout so that:
 
-Small vertical accent line or highlighted paragraph.
+- the left column content extends lower
+- the highlighted statements remain under the challenge list
+- both columns finish at approximately the same vertical height
 
-Text:
+Do not remove any cards.
 
-Cada empresa llega con retos diferentes.
+Do not remove any icons.
 
-This sentence should stand out visually.
-
-It is one of the key messages.
-
-=================================================
-BUSINESS CHALLENGES LIST
-=================================================
-
-After that, replace the current long paragraph block with a more structured visual list.
-
-Introduce:
-
-Algunas organizaciones necesitan:
-
-Then create a concise executive list:
-
-• Crecer con mayor control
-• Mejorar la rentabilidad
-• Asignar mejor sus recursos
-• Planificar con mayor confianza
-• Reducir la incertidumbre en decisiones importantes
-• Adaptarse a entornos cambiantes
-• Evaluar escenarios antes de actuar
-
-Use clean icons, bullets or visual markers.
-
-Make it easy to scan.
-
-The objective is that a CEO understands the value proposition in 5 seconds.
+Do not remove any content.
 
 =================================================
-HIGHLIGHTED STATEMENTS
+3. ADD NEW SECTION:
+NO EMPEZAMOS POR LA TECNOLOGÍA
 =================================================
 
-Move the following two statements below the left column content.
+Insert a new section between:
 
-They should appear as two highlighted blocks or quotes.
+"Decidir mejor en entornos cada vez más complejos"
 
-Statement 1:
+and
 
-Nuestro trabajo consiste en entender el contexto, identificar lo que realmente importa y diseñar soluciones alineadas con los objetivos y la realidad de cada organización.
+"Un Sistema de Decisión no es software. Es un proceso diseñado."
 
-Statement 2:
+Section title:
 
-No se trata de añadir más tecnología. Se trata de construir el sistema adecuado para tomar mejores decisiones.
+No empezamos por la tecnología.
+Empezamos por el problema.
 
-These statements should feel important and memorable.
+Intro text:
 
-=================================================
-3. EMPEZAMOS POR LA DECISIÓN, NO POR LA TECNOLOGÍA
-=================================================
+Cada organización tiene objetivos, restricciones y procesos diferentes.
 
-The structure is good.
+Por eso no creemos en soluciones estándar ni en aplicar tecnología porque esté de moda.
 
-The philosophy is correct.
+Nuestro trabajo consiste en comprender el contexto, identificar qué decisión necesita mejorar y diseñar la solución adecuada para cada situación.
 
-Keep the five steps.
-
-Keep the order.
-
-Keep the content.
-
-Refine only the visual hierarchy.
-
-Improvements:
-
-- Make the title slightly more prominent.
-- Improve spacing.
-- Improve readability.
-- Make the process feel more premium.
-- Slightly increase contrast of the numbers.
-- Ensure the cards feel connected as a single process.
-
-Optional:
-
-Add a subtle horizontal process line behind the cards if it improves the design.
-
-Do not make it flashy.
+Create four visual blocks.
 
 =================================================
-GENERAL DESIGN GOAL
+BLOCK 1
 =================================================
 
-The homepage should feel like:
+Entender
 
-- a serious consultancy
-- an engineering firm
-- a quantitative advisory company
+Comprender el problema antes de hablar de herramientas.
 
-not:
+=================================================
+BLOCK 2
+=================================================
 
-- a startup
-- an AI agency
-- a software house
+Diseñar
 
-The homepage should communicate:
+Evaluar alternativas y seleccionar el enfoque adecuado para la realidad del negocio.
 
-clarity
-judgement
-rigor
-trust
-business value
-long-term thinking
+=================================================
+BLOCK 3
+=================================================
 
-Run locally after modifications.
+Implementar
 
-Show me the summary of changes.
+Construir sistemas que funcionen en operaciones reales y no únicamente en presentaciones o pruebas de concepto.
 
+=================================================
+BLOCK 4
+=================================================
+
+Mejorar
+
+Monitorizar resultados, aprender del comportamiento del sistema y evolucionarlo con el tiempo.
+
+=================================================
+DESIGN REQUIREMENTS
+=================================================
+
+This section should become one of the strongest sections on the homepage.
+
+Visual style:
+
+- premium consulting firm
+- elegant
+- structured
+- generous spacing
+- icons allowed
+- no startup aesthetics
+- no AI agency aesthetics
+
+The section should clearly communicate how SC-Analytics approaches problems.
+
+=================================================
+IMPORTANT
+=================================================
+
+After implementation:
+
+1. Run npm run build
+2. Check desktop layout
+3. Show me screenshots
