@@ -35,46 +35,65 @@ export default function Home() {
     <main className="bg-slate-50 text-slate-900 page-enter">
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden min-h-[540px] md:min-h-[640px] flex items-center">
-        <Image
-          src="/brand/hero-banner.png"
-          alt=""
-          fill
-          className="object-cover object-center"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/88 via-slate-900/65 to-slate-900/25" />
-        <div className="relative z-10 mx-auto max-w-7xl px-6 py-24 md:py-36 w-full">
-          <HeroReveal>
-            <div className="max-w-2xl">
-              <p className="reveal mb-5 text-xs uppercase tracking-[0.2em] text-indigo-300 font-medium">
-                {t.heroLabel}
-              </p>
-              <h1
-                className="reveal reveal-delay-1 text-5xl leading-[1.1] md:text-6xl text-white"
-                style={{ fontFamily: 'var(--font-playfair)' }}
-              >
-                {t.heroTitle}
-              </h1>
-              <p className="reveal reveal-delay-2 mt-8 max-w-xl text-lg leading-8 text-slate-300">
-                {t.heroSub}
-              </p>
-              <div className="reveal reveal-delay-3 mt-10 flex flex-wrap gap-4">
-                <Link
-                  href="/about"
-                  className="rounded-md bg-white px-6 py-3 text-sm font-medium text-slate-900 transition hover:bg-slate-100"
+      <section className="bg-slate-900 text-white overflow-hidden">
+        <div className="mx-auto max-w-7xl px-6 py-24 md:py-32">
+          <div className="grid items-start gap-16 lg:grid-cols-2">
+
+            {/* LEFT — text */}
+            <HeroReveal>
+              <div>
+                <h1
+                  className="reveal text-5xl leading-[1.1] md:text-6xl text-white"
+                  style={{ fontFamily: 'var(--font-playfair)' }}
                 >
-                  {t.heroCta1}
-                </Link>
-                <Link
-                  href="/contact"
-                  className="rounded-md border border-white/30 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10"
-                >
-                  {t.heroCta2}
-                </Link>
+                  {t.heroTitle}
+                  <br />
+                  <span className="italic text-slate-300">{t.heroTitleLine2}</span>
+                </h1>
+
+                <div className="reveal reveal-delay-1 mt-8 border-l-2 border-indigo-500 pl-5 space-y-2">
+                  <p className="text-base font-semibold text-white">{t.heroSubL1}</p>
+                  <p className="text-base text-slate-300">{t.heroSubL2}</p>
+                  <p className="text-base text-slate-400">{t.heroSubL3}</p>
+                </div>
+
+                <div className="reveal reveal-delay-2 mt-8 space-y-3 text-sm leading-7 text-slate-400 max-w-lg">
+                  <p>{t.heroDescP1}</p>
+                  <p>{t.heroDescP2}</p>
+                  <p>{t.heroDescP3}</p>
+                </div>
+
+                <div className="reveal reveal-delay-3 mt-10 flex flex-wrap gap-4">
+                  <Link
+                    href="/about"
+                    className="rounded-md bg-white px-6 py-3 text-sm font-medium text-slate-900 transition hover:bg-slate-100"
+                  >
+                    {t.heroCta1}
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="rounded-md border border-white/30 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10"
+                  >
+                    {t.heroCta2}
+                  </Link>
+                </div>
               </div>
+            </HeroReveal>
+
+            {/* RIGHT — branding */}
+            <div className="hidden lg:block relative h-[520px] rounded-2xl overflow-hidden ring-1 ring-white/10">
+              <Image
+                src="/brand/hero-banner.png"
+                alt="SC-Analytics"
+                fill
+                className="object-cover object-center"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-slate-900/30" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent" />
             </div>
-          </HeroReveal>
+
+          </div>
         </div>
       </section>
 
