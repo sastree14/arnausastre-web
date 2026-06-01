@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { useLanguage } from './LanguageProvider'
 import { translations } from '@/lib/translations'
@@ -22,13 +23,13 @@ export default function Footer() {
     <footer className="border-t border-slate-200 bg-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-3">
         <div>
-          <h3
-            className="text-xl text-slate-900"
-            style={{ fontFamily: 'var(--font-playfair)' }}
-          >
-            Arnau Sastre{' '}
-            <span className="text-indigo-600">Analytics</span>
-          </h3>
+          <Image
+            src="/brand/logo-circular.png"
+            alt="Arnau Sastre Analytics"
+            width={316}
+            height={260}
+            className="h-14 w-auto"
+          />
           <p className="mt-4 max-w-sm leading-7 text-slate-500 text-sm">
             {t.footer.tagline}
           </p>

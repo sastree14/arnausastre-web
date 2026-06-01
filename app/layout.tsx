@@ -50,6 +50,9 @@ export const metadata: Metadata = {
     description:
       "Quantitative decision systems for business: demand forecasting, mathematical optimization, machine learning pipelines and analytics automation.",
   },
+  icons: {
+    icon: "/brand/Monograma-simple.png",
+  },
 };
 
 export default function RootLayout({

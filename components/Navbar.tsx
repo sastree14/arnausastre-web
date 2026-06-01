@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useLanguage } from './LanguageProvider'
@@ -57,13 +58,15 @@ export default function Navbar() {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           {/* Logo */}
-          <Link
-            href="/"
-            className="text-lg font-semibold tracking-tight text-slate-900 transition hover:opacity-75"
-            style={{ fontFamily: 'var(--font-playfair)' }}
-          >
-            Arnau Sastre
-            <span className="ml-1 text-indigo-600">Analytics</span>
+          <Link href="/" className="transition hover:opacity-75">
+            <Image
+              src="/brand/logo-horizontal.png"
+              alt="Arnau Sastre Analytics"
+              width={344}
+              height={224}
+              className="h-9 w-auto"
+              priority
+            />
           </Link>
 
           {/* Desktop nav */}
