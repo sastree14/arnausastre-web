@@ -74,15 +74,15 @@ export default function Home() {
               </div>
             </HeroReveal>
 
-            {/* RIGHT — logo branding, white on dark background */}
-            <div className="hidden lg:flex items-center justify-center" style={{ background: 'transparent' }}>
+            {/* RIGHT — logo branding, blended into dark hero */}
+            <div className="hidden lg:flex items-center justify-center">
               <Image
                 src="/brand/logo-horizontal.png"
                 alt="SC-Analytics"
                 width={344}
                 height={224}
-                className="w-[30rem] h-auto"
-                style={{ filter: 'invert(1) brightness(0.85)', opacity: 0.72 }}
+                className="w-[32rem] h-auto mix-blend-screen"
+                style={{ filter: 'invert(1) brightness(0.78)', opacity: 0.82 }}
                 priority
               />
             </div>
@@ -96,10 +96,10 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-6 py-20">
 
           {/* Two-column header */}
-          <div className="grid gap-16 lg:grid-cols-2 lg:items-start">
+          <div className="grid gap-16 lg:grid-cols-2 lg:items-stretch">
 
             {/* Left — title + highlighted sentence + list + statements */}
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-8 justify-between">
               <h2
                 className="reveal text-4xl leading-tight text-slate-900"
                 style={{ fontFamily: 'var(--font-playfair)' }}
@@ -231,7 +231,97 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ── 3. WHAT IS A DECISION SYSTEM ────────────────────────────────── */}
+      {/* ── 3. NO EMPEZAMOS POR LA TECNOLOGÍA ──────────────────────────── */}
+      <Section className="bg-slate-900 text-white border-b border-slate-800">
+        <div className="mx-auto max-w-7xl px-6 py-24">
+
+          {/* Title + intro */}
+          <div className="grid gap-16 lg:grid-cols-2 lg:items-start mb-20">
+            <div>
+              <h2
+                className="reveal text-4xl md:text-5xl leading-tight text-white"
+                style={{ fontFamily: 'var(--font-playfair)' }}
+              >
+                {t.noTechTitle1}<br />
+                <span className="italic text-slate-300">{t.noTechTitle2}</span>
+              </h2>
+            </div>
+            <div className="space-y-5">
+              <p className="reveal text-base leading-8 text-slate-400">{t.noTechP1}</p>
+              <p className="reveal reveal-delay-1 text-base leading-8 text-slate-400">{t.noTechP2}</p>
+              <p className="reveal reveal-delay-2 text-base leading-8 text-slate-300 font-medium">{t.noTechP3}</p>
+            </div>
+          </div>
+
+          {/* Four blocks */}
+          <div className="grid gap-px bg-slate-700 border border-slate-700 rounded-2xl overflow-hidden md:grid-cols-2 xl:grid-cols-4">
+            {[
+              {
+                num: '01', title: t.noTechB1Title, desc: t.noTechB1Desc,
+                icon: (
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                    <circle cx="10" cy="10" r="6" stroke="#818cf8" strokeWidth="1.5"/>
+                    <line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#818cf8" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                )
+              },
+              {
+                num: '02', title: t.noTechB2Title, desc: t.noTechB2Desc,
+                icon: (
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                    <rect x="3" y="3" width="16" height="12" rx="2" stroke="#818cf8" strokeWidth="1.5"/>
+                    <line x1="7" y1="19" x2="15" y2="19" stroke="#818cf8" strokeWidth="1.5" strokeLinecap="round"/>
+                    <line x1="11" y1="15" x2="11" y2="19" stroke="#818cf8" strokeWidth="1.5" strokeLinecap="round"/>
+                    <line x1="7" y1="8" x2="15" y2="8" stroke="#818cf8" strokeWidth="1.2" strokeLinecap="round"/>
+                    <line x1="7" y1="11" x2="12" y2="11" stroke="#818cf8" strokeWidth="1.2" strokeLinecap="round"/>
+                  </svg>
+                )
+              },
+              {
+                num: '03', title: t.noTechB3Title, desc: t.noTechB3Desc,
+                icon: (
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                    <path d="M4 17L8 13L11 16L15 9L18 12" stroke="#818cf8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <rect x="3" y="3" width="16" height="16" rx="2" stroke="#818cf8" strokeWidth="1.5"/>
+                  </svg>
+                )
+              },
+              {
+                num: '04', title: t.noTechB4Title, desc: t.noTechB4Desc,
+                icon: (
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                    <path d="M11 4v3M11 15v3M4 11H7M15 11h3" stroke="#818cf8" strokeWidth="1.5" strokeLinecap="round"/>
+                    <circle cx="11" cy="11" r="4" stroke="#818cf8" strokeWidth="1.5"/>
+                    <circle cx="11" cy="11" r="1.5" fill="#818cf8"/>
+                  </svg>
+                )
+              },
+            ].map((block, i) => (
+              <div
+                key={block.num}
+                className={`reveal reveal-delay-${Math.min(i + 1, 4)} bg-slate-800 p-8 flex flex-col gap-5`}
+              >
+                <div className="flex items-center justify-between">
+                  <span
+                    className="text-4xl font-light text-slate-700"
+                    style={{ fontFamily: 'var(--font-playfair)' }}
+                  >
+                    {block.num}
+                  </span>
+                  {block.icon}
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white">{block.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-400">{block.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </Section>
+
+      {/* ── 4. WHAT IS A DECISION SYSTEM ─────────────────────────────── */}
       <Section className="bg-slate-50 border-b border-slate-200">
         <div className="mx-auto max-w-7xl px-6 py-20">
           <div className="grid gap-14 md:grid-cols-2">
