@@ -246,21 +246,21 @@ export default function Home() {
                 <span className="italic text-slate-300">{t.noTechTitle2}</span>
               </h2>
             </div>
-            <div className="space-y-8">
+            <div className="space-y-10">
               {([
                 { label: t.noTechL1, body: t.noTechP1, delay: '' },
                 { label: t.noTechL2, body: t.noTechP2, delay: 'reveal-delay-1' },
                 { label: t.noTechL3, body: t.noTechP3, delay: 'reveal-delay-2' },
               ] as { label: string; body: string; delay: string }[]).map((item) => (
-                <div key={item.label} className={`reveal ${item.delay} flex gap-4`}>
-                  <div className="mt-0.5 flex-shrink-0">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                      <polyline points="3,9 7,13 15,5" stroke="#818cf8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                <div key={item.label} className={`reveal ${item.delay} flex gap-5`}>
+                  <div className="mt-1 flex-shrink-0">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <polyline points="4,12 9,17 20,6" stroke="#f1f5f9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-white tracking-wide">{item.label}</p>
-                    <p className="mt-1.5 text-sm leading-7 text-slate-400">{item.body}</p>
+                    <p className="text-lg font-bold text-white leading-snug">{item.label}</p>
+                    <p className="mt-2 text-sm leading-7 text-slate-400">{item.body}</p>
                   </div>
                 </div>
               ))}
