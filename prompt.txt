@@ -1,94 +1,37 @@
-Implement the following homepage hero changes.
+Modify only the homepage hero section and the section currently labelled "El desafío".
 
-Modify only the homepage hero section.
-
-Keep the current visual identity of SC-Analytics:
-
-- professional
-- classical
-- elegant
-- trustworthy
-- engineering-oriented
-- consulting-oriented
-- blue and white palette
-- generous white space
-
-Do not introduce flashy effects, gradients, startup aesthetics or AI-themed imagery.
+Do not modify any other homepage sections.
 
 =================================================
-LAYOUT
+HERO CHANGES
 =================================================
 
-I want to redesign the hero layout.
+Current problems:
 
-Current issues:
+1. The hero-banner image creates two different blue tones.
+2. The branding image looks like a separate cropped card.
+3. The background does not feel continuous.
+4. The text and branding compete visually.
+5. The small blue label above the title should not appear.
 
-1. The logo/background branding overlaps visually with the text.
-2. The hero feels visually crowded.
-3. The hierarchy between branding and message is unclear.
+New hero requirements:
 
-New layout:
+- Remove hero-banner.png from the hero.
+- Do not use the full banner image.
+- Use a single continuous dark blue background for the whole hero.
+- The background must feel smooth, clean and uniform.
+- Do not create any framed image, rounded card, border or cropped banner on the right side.
 
-- All textual content should be aligned on the LEFT side.
-- Branding artwork (hero-banner.png and logo elements) should be positioned on the RIGHT side.
-- The text must always be the primary focus.
-- The branding should support the message, not compete with it.
-- The hero should feel balanced, clean and premium.
+Use only:
 
-I want a split layout:
+/brand/logo-horizontal.png
 
-LEFT SIDE:
-- Title
-- Subtitle
-- Description
+Place it on the RIGHT side of the hero as a branding element.
 
-RIGHT SIDE:
-- Branding artwork
-- Hero banner elements
-- SC-Analytics visual identity
-
-Use the existing asset:
-
-/public/brand/hero-banner.png
-
-but integrate it in a way that does not interfere with readability.
-
-The background can remain predominantly blue.
-
-The text area should remain clean and highly readable.
-
-=================================================
-REMOVE
-=================================================
-
-Remove the current hero badge/tagline that appears above the title.
-
-I do not want any small label above the main title.
-
-The hero should begin directly with the title.
-
-=================================================
-TITLE
-=================================================
-
-Replace the current title with:
+The left side must contain only:
 
 Mejores decisiones.
 Mejores resultados empresariales.
-
-This must be the main visual focus of the hero.
-
-Large typography.
-
-Strong hierarchy.
-
-Elegant spacing.
-
-=================================================
-SUBTITLE
-=================================================
-
-Replace the current subtitle with:
 
 Cada empresa es diferente.
 
@@ -96,62 +39,58 @@ Entendemos el problema antes de proponer la solución.
 
 Creemos en construir soluciones útiles, proporcionadas y alineadas con las necesidades reales de cada organización.
 
-This should appear directly below the title.
+Important:
 
-Readable but secondary to the title.
+- Remove the small label/tag above the hero title completely.
+- The hero should start directly with the main title.
+- Keep the title large, elegant and readable.
+- Keep all text aligned on the left.
+- Put logo-horizontal.png on the right.
+- The logo should not look like a separate image card.
+- It should blend naturally with the dark blue background.
+- If needed, use opacity, spacing and positioning to make it elegant and non-intrusive.
+- The hero must feel classical, serious, calm and premium.
 
 =================================================
-DESCRIPTION
+CHALLENGE SECTION CHANGES
 =================================================
 
-Below the subtitle add:
+Modify the section currently labelled "El desafío".
 
-Cada empresa llega con retos diferentes.
+Remove the small blue label above the title.
 
-Algunas buscan crecer con mayor control. Otras necesitan mejorar la rentabilidad, asignar mejor sus recursos, planificar con mayor confianza o adaptarse a un entorno cada vez más complejo e incierto.
+Do not show "EL DESAFÍO" or any small uppercase label.
+
+Replace the title with:
+
+Decidir mejor en entornos cada vez más complejos.
+
+Replace the body text with:
+
+Cada empresa llega con retos diferentes. Algunas buscan crecer con mayor control. Otras necesitan mejorar la rentabilidad, asignar mejor sus recursos, planificar con mayor confianza o adaptarse a un entorno cada vez más incierto.
+
+Sin embargo, muchas decisiones importantes siguen dependiendo de procesos poco sistemáticos: hojas de cálculo difíciles de mantener, criterios no documentados, información incompleta o decisiones que dependen demasiado de la experiencia individual.
 
 Nuestro trabajo consiste en entender el contexto, identificar lo que realmente importa y diseñar soluciones alineadas con los objetivos y la realidad de cada organización.
 
-This section should act as a bridge to the next homepage sections.
+No se trata de añadir más tecnología. Se trata de construir el sistema adecuado para tomar mejores decisiones.
 
-Its purpose is to encourage visitors to continue scrolling and discovering how we work.
+Design requirements for this section:
 
-=================================================
-VISUAL GOAL
-=================================================
-
-The overall feeling should be:
-
-- clear
-- rigorous
-- trustworthy
-- thoughtful
-- professional
-- calm
-- executive
-
-A CEO should immediately understand that:
-
-- we focus on business problems
-- we do not oversell technology
-- we believe in tailored solutions
-- we prioritise long-term value
-- we approach problems with rigor and judgement
+- Keep it clean and readable.
+- Use generous white space.
+- Make the section feel like a natural continuation of the hero.
+- Keep the tone serious, elegant and consultative.
+- Avoid excessive decoration.
+- Do not use technical jargon.
 
 =================================================
-IMPLEMENTATION
+IMPORTANT
 =================================================
 
-Apply the changes directly.
+After making the changes:
 
-After implementation:
-
-1. Run the project locally.
-2. Verify the hero layout on desktop.
-3. Verify text readability.
-4. Verify branding placement.
-5. Verify that the logo/background no longer competes with the title.
-6. Show me a summary of all modifications made.
-
-Do not modify any other homepage sections.
-Only update the hero section.
+1. Run npm run build.
+2. Fix any build errors if they appear.
+3. Show me a summary of the files modified.
+4. Do not push until I confirm the visual result.
