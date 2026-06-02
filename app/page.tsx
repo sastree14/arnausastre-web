@@ -128,7 +128,7 @@ export default function Home() {
 
               {/* Highlighted sentence */}
               <div className="reveal reveal-delay-1 border-l-4 border-indigo-500 pl-5">
-                <p className="text-xl font-semibold text-slate-800" style={{ fontFamily: 'var(--font-playfair)' }}>
+                <p className="text-lg font-semibold text-slate-800 leading-snug" style={{ fontFamily: 'var(--font-playfair)' }}>
                   {t.probHighlight}
                 </p>
               </div>
@@ -380,8 +380,8 @@ export default function Home() {
             >
               {t.approachTitle}
             </h2>
-            <p className="mt-5 text-xl font-medium text-slate-700">{t.approachSub}</p>
-            <p className="mt-3 text-base leading-8 text-slate-500">{t.approachSub2}</p>
+            <p className="mt-6 text-base font-medium text-slate-700">{t.approachSub}</p>
+            <p className="mt-2 text-sm leading-7 text-slate-500 max-w-xl mx-auto">{t.approachSub2}</p>
           </div>
 
           {/* ── Desktop hub-and-spoke diagram ── */}
@@ -483,18 +483,13 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-6 py-24">
 
           {/* Centered header */}
-          <div className="reveal text-center max-w-3xl mx-auto mb-16">
+          <div className="reveal text-center max-w-3xl mx-auto mb-12">
             <h2
               className="text-4xl md:text-5xl leading-tight text-white"
               style={{ fontFamily: 'var(--font-playfair)' }}
             >
               {t.philTitle}
             </h2>
-            <div className="mt-6 space-y-1.5">
-              <p className="text-lg font-semibold text-slate-200">{t.philSub1}</p>
-              <p className="text-lg text-slate-400">{t.philSub2}</p>
-              <p className="text-lg text-slate-400">{t.philSub3}</p>
-            </div>
           </div>
 
           {/* Four cards */}
@@ -537,14 +532,14 @@ export default function Home() {
             >
               {t.useCasesTitle}
             </h2>
-            <div className="mt-5 space-y-1.5">
-              <p className="text-lg text-slate-600">{t.useCasesSub1}</p>
-              <p className="text-lg text-slate-500">{t.useCasesSub2}</p>
+            <div className="mt-6">
+              <p className="text-base font-medium text-slate-700">{t.useCasesSub1}</p>
+              <p className="mt-2 text-sm text-slate-500">{t.useCasesSub2}</p>
             </div>
           </div>
 
-          {/* Six cards */}
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Desktop: horizontal flow with arrows */}
+          <div className="reveal hidden lg:flex items-start">
             {([
               { num: '01', title: t.useCase1Title, desc: t.useCase1Desc },
               { num: '02', title: t.useCase2Title, desc: t.useCase2Desc },
@@ -552,20 +547,41 @@ export default function Home() {
               { num: '04', title: t.useCase4Title, desc: t.useCase4Desc },
               { num: '05', title: t.useCase5Title, desc: t.useCase5Desc },
               { num: '06', title: t.useCase6Title, desc: t.useCase6Desc },
-            ] as { num: string; title: string; desc: string }[]).map((card, i) => (
-              <div
-                key={card.num}
-                className={`reveal reveal-delay-${Math.min(i + 1, 4)} rounded-2xl border border-slate-200 bg-slate-50 p-8 card-lift`}
-              >
-                <span
-                  className="text-3xl font-light text-slate-300"
-                  style={{ fontFamily: 'var(--font-playfair)' }}
-                >
-                  {card.num}
-                </span>
-                <div className="mt-4 mb-4 h-px w-8 bg-indigo-400" />
-                <h3 className="text-lg font-semibold text-slate-900">{card.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{card.desc}</p>
+            ] as { num: string; title: string; desc: string }[]).map((item, i, arr) => (
+              <div key={item.num} className="flex flex-1 items-start min-w-0">
+                <div className="flex-1 text-center px-2 min-w-0">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-600 mb-2">{item.num}</p>
+                  <div className="mb-3 h-px w-6 bg-indigo-300 mx-auto" />
+                  <p className="text-sm font-semibold text-slate-900 leading-snug">{item.title}</p>
+                  <p className="mt-2 text-xs leading-5 text-slate-500">{item.desc}</p>
+                </div>
+                {i < arr.length - 1 && (
+                  <div className="flex-shrink-0 flex items-start pt-5 text-slate-300">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path d="M1 7h10M7 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Mobile: vertical list */}
+          <div className="lg:hidden divide-y divide-slate-200">
+            {([
+              { num: '01', title: t.useCase1Title, desc: t.useCase1Desc },
+              { num: '02', title: t.useCase2Title, desc: t.useCase2Desc },
+              { num: '03', title: t.useCase3Title, desc: t.useCase3Desc },
+              { num: '04', title: t.useCase4Title, desc: t.useCase4Desc },
+              { num: '05', title: t.useCase5Title, desc: t.useCase5Desc },
+              { num: '06', title: t.useCase6Title, desc: t.useCase6Desc },
+            ] as { num: string; title: string; desc: string }[]).map((item) => (
+              <div key={item.num} className="flex gap-5 items-start py-5">
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-600 mt-0.5 flex-shrink-0 w-6">{item.num}</p>
+                <div>
+                  <p className="text-sm font-semibold text-slate-900 leading-snug">{item.title}</p>
+                  <p className="mt-1.5 text-xs leading-5 text-slate-500">{item.desc}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -595,33 +611,72 @@ export default function Home() {
             >
               {t.dataTitle}
             </h2>
-            <div className="mt-6 space-y-2">
-              <p className="text-lg text-slate-300">{t.dataSub1}</p>
-              <p className="text-base text-slate-400">{t.dataSub2}</p>
+            <div className="mt-6 max-w-xl mx-auto">
+              <p className="text-base font-medium text-slate-300 leading-7">{t.dataSub1}</p>
+              <p className="mt-3 text-sm leading-7 text-slate-400">{t.dataSub2}</p>
             </div>
           </div>
 
-          {/* Four cards */}
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          {/* Desktop: conceptual cross map */}
+          <div className="reveal hidden lg:block relative max-w-3xl mx-auto" style={{ height: '520px' }}>
+            {/* Horizontal rule */}
+            <div className="absolute inset-x-0 top-1/2 h-px bg-slate-700 pointer-events-none" style={{ transform: 'translateY(-0.5px)' }} />
+            {/* Vertical rule */}
+            <div className="absolute inset-y-0 left-1/2 w-px bg-slate-700 pointer-events-none" style={{ transform: 'translateX(-0.5px)' }} />
+            {/* Center indigo dot */}
+            <div
+              className="absolute top-1/2 left-1/2 w-3 h-3 rounded-full bg-indigo-500 z-10"
+              style={{ transform: 'translate(-50%, -50%)', boxShadow: '0 0 0 5px rgba(99,102,241,0.15)' }}
+            />
+
+            {/* 3×3 grid overlay */}
+            <div className="absolute inset-0 grid grid-cols-3 grid-rows-3">
+              {/* Row 1 */}
+              <div />
+              <div className="flex flex-col items-center justify-center px-8 text-center">
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">02</p>
+                <p className="text-sm font-semibold text-white leading-snug">{t.data2Title}</p>
+                <p className="mt-2 text-xs leading-5 text-slate-400">{t.data2Desc}</p>
+              </div>
+              <div />
+
+              {/* Row 2 */}
+              <div className="flex flex-col items-end justify-center pr-10 text-right">
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">01</p>
+                <p className="text-sm font-semibold text-white leading-snug">{t.data1Title}</p>
+                <p className="mt-2 text-xs leading-5 text-slate-400">{t.data1Desc}</p>
+              </div>
+              <div />
+              <div className="flex flex-col items-start justify-center pl-10">
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">04</p>
+                <p className="text-sm font-semibold text-white leading-snug">{t.data4Title}</p>
+                <p className="mt-2 text-xs leading-5 text-slate-400">{t.data4Desc}</p>
+              </div>
+
+              {/* Row 3 */}
+              <div />
+              <div className="flex flex-col items-center justify-center px-8 text-center">
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">03</p>
+                <p className="text-sm font-semibold text-white leading-snug">{t.data3Title}</p>
+                <p className="mt-2 text-xs leading-5 text-slate-400">{t.data3Desc}</p>
+              </div>
+              <div />
+            </div>
+          </div>
+
+          {/* Mobile: 2×2 grid */}
+          <div className="reveal lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-5">
             {([
               { num: '01', title: t.data1Title, desc: t.data1Desc },
               { num: '02', title: t.data2Title, desc: t.data2Desc },
               { num: '03', title: t.data3Title, desc: t.data3Desc },
               { num: '04', title: t.data4Title, desc: t.data4Desc },
-            ] as { num: string; title: string; desc: string }[]).map((card, i) => (
-              <div
-                key={card.num}
-                className={`reveal reveal-delay-${i + 1} rounded-2xl border border-slate-700 bg-slate-800 p-8 flex flex-col`}
-              >
-                <span
-                  className="text-3xl font-light text-slate-600 mb-4"
-                  style={{ fontFamily: 'var(--font-playfair)' }}
-                >
-                  {card.num}
-                </span>
-                <div className="mb-4 h-px w-8 bg-indigo-400" />
-                <h3 className="text-base font-semibold text-white leading-snug">{card.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-400">{card.desc}</p>
+            ] as { num: string; title: string; desc: string }[]).map((card) => (
+              <div key={card.num} className="rounded-2xl border border-slate-700 bg-slate-800 p-7 flex flex-col">
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-3">{card.num}</p>
+                <div className="mb-3 h-px w-6 bg-indigo-500" />
+                <p className="text-sm font-semibold text-white leading-snug">{card.title}</p>
+                <p className="mt-2 text-xs leading-5 text-slate-400">{card.desc}</p>
               </div>
             ))}
           </div>
