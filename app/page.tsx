@@ -243,6 +243,20 @@ export default function Home() {
                 <p className="mt-2 text-xs leading-5 text-slate-500">{t.prob6Desc}</p>
               </div>
 
+              {/* Card 7 — Untapped opportunities */}
+              <div className="reveal reveal-delay-3 rounded-xl border border-slate-200 bg-slate-50 p-5 sm:col-span-2">
+                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <circle cx="8" cy="8" r="5" stroke="#64748b" strokeWidth="1.4"/>
+                    <line x1="12" y1="12" x2="16" y2="16" stroke="#64748b" strokeWidth="1.4" strokeLinecap="round"/>
+                    <line x1="8" y1="5.5" x2="8" y2="10.5" stroke="#64748b" strokeWidth="1.4" strokeLinecap="round"/>
+                    <line x1="5.5" y1="8" x2="10.5" y2="8" stroke="#64748b" strokeWidth="1.4" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <h3 className="text-sm font-semibold text-slate-900">{t.prob7Title}</h3>
+                <p className="mt-2 text-xs leading-5 text-slate-500">{t.prob7Desc}</p>
+              </div>
+
             </div>
           </div>
 
@@ -465,21 +479,21 @@ export default function Home() {
       </Section>
 
       {/* ── 5. PHILOSOPHY ────────────────────────────────────────────── */}
-      <Section className="bg-slate-50 border-b border-slate-200">
+      <Section className="bg-slate-900 text-white border-b border-slate-800">
         <div className="mx-auto max-w-7xl px-6 py-24">
 
           {/* Centered header */}
           <div className="reveal text-center max-w-3xl mx-auto mb-16">
             <h2
-              className="text-4xl md:text-5xl leading-tight text-slate-900"
+              className="text-4xl md:text-5xl leading-tight text-white"
               style={{ fontFamily: 'var(--font-playfair)' }}
             >
               {t.philTitle}
             </h2>
             <div className="mt-6 space-y-1.5">
-              <p className="text-lg font-semibold text-slate-700">{t.philSub1}</p>
-              <p className="text-lg text-slate-500">{t.philSub2}</p>
-              <p className="text-lg text-slate-500">{t.philSub3}</p>
+              <p className="text-lg font-semibold text-slate-200">{t.philSub1}</p>
+              <p className="text-lg text-slate-400">{t.philSub2}</p>
+              <p className="text-lg text-slate-400">{t.philSub3}</p>
             </div>
           </div>
 
@@ -493,80 +507,21 @@ export default function Home() {
             ] as { num: string; title: string; desc: string }[]).map((card, i) => (
               <div
                 key={card.num}
-                className={`reveal reveal-delay-${Math.min(i + 1, 4)} rounded-2xl border border-slate-200 bg-white p-8 card-lift flex flex-col`}
+                className={`reveal reveal-delay-${Math.min(i + 1, 4)} rounded-2xl border border-slate-700 bg-slate-800 p-8 card-lift flex flex-col`}
               >
                 <span
-                  className="text-3xl font-light text-slate-200 mb-4"
+                  className="text-3xl font-light text-slate-600 mb-4"
                   style={{ fontFamily: 'var(--font-playfair)' }}
                 >
                   {card.num}
                 </span>
                 <div className="mb-4 h-px w-8 bg-indigo-400" />
-                <h3 className="text-base font-semibold text-slate-900 leading-snug">{card.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{card.desc}</p>
+                <h3 className="text-base font-semibold text-white leading-snug">{card.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-400">{card.desc}</p>
               </div>
             ))}
           </div>
 
-        </div>
-      </Section>
-
-      {/* ── 4. HOW WE WORK ──────────────────────────────────────────────── */}
-      <Section className="bg-white border-b border-slate-200">
-        <div className="mx-auto max-w-7xl px-6 py-24">
-          <div className="mb-16">
-            <p className="reveal text-xs uppercase tracking-[0.2em] text-indigo-600 font-medium">
-              {t.howLabel}
-            </p>
-            <h2
-              className="reveal reveal-delay-1 mt-4 max-w-2xl text-5xl leading-tight text-slate-900"
-              style={{ fontFamily: 'var(--font-playfair)' }}
-            >
-              {t.howTitle}
-            </h2>
-            <p className="reveal reveal-delay-2 mt-5 max-w-2xl text-lg leading-8 text-slate-500">
-              {t.howSub}
-            </p>
-          </div>
-
-          <div className="relative grid gap-4 md:grid-cols-3 xl:grid-cols-5">
-            {/* Subtle horizontal process connector — desktop only */}
-            <div className="pointer-events-none absolute top-10 left-10 right-10 hidden xl:block">
-              <div className="h-px bg-slate-200" />
-            </div>
-
-            {[
-              { num: t.how1Num, title: t.how1Title, desc: t.how1Desc },
-              { num: t.how2Num, title: t.how2Title, desc: t.how2Desc },
-              { num: t.how3Num, title: t.how3Title, desc: t.how3Desc },
-              { num: t.how4Num, title: t.how4Title, desc: t.how4Desc },
-              { num: t.how5Num, title: t.how5Title, desc: t.how5Desc },
-            ].map((step, i) => (
-              <div
-                key={step.num}
-                className={`reveal reveal-delay-${Math.min(i + 1, 4)} group relative rounded-xl border border-slate-200 bg-slate-50 p-6 card-lift`}
-              >
-                <p
-                  className="text-4xl font-light text-slate-300 transition group-hover:text-indigo-300"
-                  style={{ fontFamily: 'var(--font-playfair)' }}
-                >
-                  {step.num}
-                </p>
-                <h3 className="mt-4 text-sm font-semibold text-slate-900 leading-snug">{step.title}</h3>
-                <p className="mt-3 text-xs leading-6 text-slate-500">{step.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-12 reveal">
-            <Link
-              href="/about"
-              className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-800 transition"
-            >
-              {t.howCta}
-              <ArrowIcon />
-            </Link>
-          </div>
         </div>
       </Section>
 
@@ -588,16 +543,19 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Three cards */}
-          <div className="grid gap-6 md:grid-cols-3">
+          {/* Six cards */}
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {([
               { num: '01', title: t.useCase1Title, desc: t.useCase1Desc },
               { num: '02', title: t.useCase2Title, desc: t.useCase2Desc },
               { num: '03', title: t.useCase3Title, desc: t.useCase3Desc },
+              { num: '04', title: t.useCase4Title, desc: t.useCase4Desc },
+              { num: '05', title: t.useCase5Title, desc: t.useCase5Desc },
+              { num: '06', title: t.useCase6Title, desc: t.useCase6Desc },
             ] as { num: string; title: string; desc: string }[]).map((card, i) => (
               <div
                 key={card.num}
-                className={`reveal reveal-delay-${i + 1} rounded-2xl border border-slate-200 bg-slate-50 p-8 card-lift`}
+                className={`reveal reveal-delay-${Math.min(i + 1, 4)} rounded-2xl border border-slate-200 bg-slate-50 p-8 card-lift`}
               >
                 <span
                   className="text-3xl font-light text-slate-300"
@@ -625,19 +583,65 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ── 7. FINAL CTA ────────────────────────────────────────────────── */}
-      <section className="bg-slate-900 text-white">
+      {/* ── 7. WHAT YOUR DATA ALREADY KNOWS ──────────────────────────── */}
+      <Section className="bg-slate-900 text-white border-b border-slate-800">
+        <div className="mx-auto max-w-7xl px-6 py-24">
+
+          {/* Centered header */}
+          <div className="reveal text-center max-w-3xl mx-auto mb-16">
+            <h2
+              className="text-4xl md:text-5xl leading-tight text-white"
+              style={{ fontFamily: 'var(--font-playfair)' }}
+            >
+              {t.dataTitle}
+            </h2>
+            <div className="mt-6 space-y-2">
+              <p className="text-lg text-slate-300">{t.dataSub1}</p>
+              <p className="text-base text-slate-400">{t.dataSub2}</p>
+            </div>
+          </div>
+
+          {/* Four cards */}
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {([
+              { num: '01', title: t.data1Title, desc: t.data1Desc },
+              { num: '02', title: t.data2Title, desc: t.data2Desc },
+              { num: '03', title: t.data3Title, desc: t.data3Desc },
+              { num: '04', title: t.data4Title, desc: t.data4Desc },
+            ] as { num: string; title: string; desc: string }[]).map((card, i) => (
+              <div
+                key={card.num}
+                className={`reveal reveal-delay-${i + 1} rounded-2xl border border-slate-700 bg-slate-800 p-8 flex flex-col`}
+              >
+                <span
+                  className="text-3xl font-light text-slate-600 mb-4"
+                  style={{ fontFamily: 'var(--font-playfair)' }}
+                >
+                  {card.num}
+                </span>
+                <div className="mb-4 h-px w-8 bg-indigo-400" />
+                <h3 className="text-base font-semibold text-white leading-snug">{card.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-400">{card.desc}</p>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </Section>
+
+      {/* ── 8. FINAL CTA ────────────────────────────────────────────────── */}
+      <section className="bg-white border-t border-slate-200">
         <div className="mx-auto max-w-7xl px-6 py-32">
           <div className="max-w-3xl">
             <h2
-              className="text-4xl md:text-5xl leading-tight"
+              className="text-4xl md:text-5xl leading-tight text-slate-900"
               style={{ fontFamily: 'var(--font-playfair)' }}
             >
               {t.ctaTitle}
               <br />
-              <span className="italic text-slate-300">{t.ctaTitle2}</span>
+              <span className="italic text-slate-600">{t.ctaTitle2}</span>
             </h2>
-            <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-400">
+            <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-600">
               {t.ctaSub}
             </p>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-500">
@@ -646,13 +650,13 @@ export default function Home() {
             <div className="mt-10 flex flex-wrap items-center gap-6">
               <Link
                 href="/contact"
-                className="inline-block rounded-md bg-white px-7 py-3.5 text-sm font-medium text-slate-900 transition hover:bg-slate-100"
+                className="inline-block rounded-md bg-slate-900 px-7 py-3.5 text-sm font-medium text-white transition hover:bg-slate-800"
               >
                 {t.ctaBtn}
               </Link>
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition"
+                className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition"
               >
                 {t.ctaSecondary}
                 <ArrowIcon />
