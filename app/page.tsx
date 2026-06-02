@@ -388,31 +388,31 @@ export default function Home() {
           <div className="reveal hidden lg:block">
             <div
               className="relative mx-auto"
-              style={{ maxWidth: '900px', aspectRatio: '900 / 680' }}
+              style={{ maxWidth: '900px', aspectRatio: '900 / 800' }}
             >
-              {/* SVG connecting lines — rendered behind cards */}
+              {/* SVG connecting lines — hub at (450,300), 4 equal rows of 200px */}
               <svg
                 className="absolute inset-0 w-full h-full pointer-events-none"
-                viewBox="0 0 900 680"
+                viewBox="0 0 900 800"
                 preserveAspectRatio="none"
                 fill="none"
               >
-                {/* hub centre (450, 340) → top — Modelización */}
-                <line x1="450" y1="340" x2="450" y2="113" stroke="#cbd5e1" strokeWidth="1" />
-                {/* hub centre → left — Visualización */}
-                <line x1="450" y1="340" x2="150" y2="340" stroke="#cbd5e1" strokeWidth="1" />
-                {/* hub centre → right — Forecasting */}
-                <line x1="450" y1="340" x2="750" y2="340" stroke="#cbd5e1" strokeWidth="1" />
-                {/* hub centre → bottom-left — Optimización */}
-                <line x1="450" y1="340" x2="150" y2="567" stroke="#cbd5e1" strokeWidth="1" />
-                {/* hub centre → bottom-right — Automatización */}
-                <line x1="450" y1="340" x2="750" y2="567" stroke="#cbd5e1" strokeWidth="1" />
+                {/* hub centre (450,300) → top — Modelización (450,100) */}
+                <line x1="450" y1="300" x2="450" y2="100" stroke="#cbd5e1" strokeWidth="1" />
+                {/* hub → left — Visualización (150,300) */}
+                <line x1="450" y1="300" x2="150" y2="300" stroke="#cbd5e1" strokeWidth="1" />
+                {/* hub → right — Forecasting (750,300) */}
+                <line x1="450" y1="300" x2="750" y2="300" stroke="#cbd5e1" strokeWidth="1" />
+                {/* hub → bottom-left — Optimización (150,700) — row 4, no overlap */}
+                <line x1="450" y1="300" x2="150" y2="700" stroke="#cbd5e1" strokeWidth="1" />
+                {/* hub → bottom-right — Automatización (750,700) — row 4, no overlap */}
+                <line x1="450" y1="300" x2="750" y2="700" stroke="#cbd5e1" strokeWidth="1" />
               </svg>
 
-              {/* 3×3 grid — cards sit on top of SVG lines */}
+              {/* 3×4 grid — row 3 is spacer so diagonals clear the middle cards */}
               <div
                 className="absolute inset-0 grid grid-cols-3"
-                style={{ gridTemplateRows: '1fr 1fr 1fr' }}
+                style={{ gridTemplateRows: '1fr 1fr 0.4fr 1fr' }}
               >
                 {/* Row 1: empty · MODELIZACIÓN · empty */}
                 <div />
@@ -436,7 +436,10 @@ export default function Home() {
                   <DisciplineCard icon={<TrendingUp size={20} />} name={t.appr3Name} desc={t.appr3Desc} tags={t.appr3Tags} />
                 </div>
 
-                {/* Row 3: OPTIMIZACIÓN · empty · AUTOMATIZACIÓN */}
+                {/* Row 3: empty spacer — gives diagonals room to clear row 2 cards */}
+                <div /><div /><div />
+
+                {/* Row 4: OPTIMIZACIÓN · empty · AUTOMATIZACIÓN */}
                 <div className="flex items-center justify-center p-4">
                   <DisciplineCard icon={<Target size={20} />} name={t.appr4Name} desc={t.appr4Desc} tags={t.appr4Tags} />
                 </div>
@@ -470,7 +473,7 @@ export default function Home() {
 
           {/* Centred bottom statement */}
           <div className="reveal mt-20 pt-12 border-t border-slate-200 text-center">
-            <p className="mx-auto max-w-2xl text-base leading-8 text-slate-700 italic" style={{ fontFamily: 'var(--font-playfair)' }}>
+            <p className="mx-auto max-w-2xl text-lg leading-9 text-slate-700 italic" style={{ fontFamily: 'var(--font-playfair)' }}>
               &ldquo;{t.approachNote}&rdquo;
             </p>
           </div>
@@ -538,32 +541,56 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Desktop: horizontal flow with arrows */}
-          <div className="reveal hidden lg:flex items-start">
-            {([
-              { num: '01', title: t.useCase1Title, desc: t.useCase1Desc },
-              { num: '02', title: t.useCase2Title, desc: t.useCase2Desc },
-              { num: '03', title: t.useCase3Title, desc: t.useCase3Desc },
-              { num: '04', title: t.useCase4Title, desc: t.useCase4Desc },
-              { num: '05', title: t.useCase5Title, desc: t.useCase5Desc },
-              { num: '06', title: t.useCase6Title, desc: t.useCase6Desc },
-            ] as { num: string; title: string; desc: string }[]).map((item, i, arr) => (
-              <div key={item.num} className="flex flex-1 items-start min-w-0">
-                <div className="flex-1 text-center px-2 min-w-0">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-600 mb-2">{item.num}</p>
-                  <div className="mb-3 h-px w-6 bg-indigo-300 mx-auto" />
-                  <p className="text-sm font-semibold text-slate-900 leading-snug">{item.title}</p>
-                  <p className="mt-2 text-xs leading-5 text-slate-500">{item.desc}</p>
-                </div>
-                {i < arr.length - 1 && (
-                  <div className="flex-shrink-0 flex items-start pt-5 text-slate-300">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                      <path d="M1 7h10M7 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
+          {/* Desktop: 2×3 horizontal flow with arrows */}
+          <div className="reveal hidden lg:block space-y-10">
+            {/* Row 1: 01 → 02 → 03 */}
+            <div className="flex items-start">
+              {([
+                { num: '01', title: t.useCase1Title, desc: t.useCase1Desc },
+                { num: '02', title: t.useCase2Title, desc: t.useCase2Desc },
+                { num: '03', title: t.useCase3Title, desc: t.useCase3Desc },
+              ] as { num: string; title: string; desc: string }[]).map((item, i) => (
+                <div key={item.num} className="flex flex-1 items-start min-w-0">
+                  <div className="flex-1 text-center px-6 min-w-0">
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-indigo-600 mb-3">{item.num}</p>
+                    <div className="mb-3 h-px w-8 bg-indigo-300 mx-auto" />
+                    <p className="text-base font-semibold text-slate-900 leading-snug">{item.title}</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-500">{item.desc}</p>
                   </div>
-                )}
-              </div>
-            ))}
+                  {i < 2 && (
+                    <div className="flex-shrink-0 flex items-start pt-7 text-slate-300">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M1 8h12M9 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            {/* Row 2: 04 → 05 → 06 */}
+            <div className="flex items-start pt-6 border-t border-slate-100">
+              {([
+                { num: '04', title: t.useCase4Title, desc: t.useCase4Desc },
+                { num: '05', title: t.useCase5Title, desc: t.useCase5Desc },
+                { num: '06', title: t.useCase6Title, desc: t.useCase6Desc },
+              ] as { num: string; title: string; desc: string }[]).map((item, i) => (
+                <div key={item.num} className="flex flex-1 items-start min-w-0">
+                  <div className="flex-1 text-center px-6 min-w-0">
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-indigo-600 mb-3">{item.num}</p>
+                    <div className="mb-3 h-px w-8 bg-indigo-300 mx-auto" />
+                    <p className="text-base font-semibold text-slate-900 leading-snug">{item.title}</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-500">{item.desc}</p>
+                  </div>
+                  {i < 2 && (
+                    <div className="flex-shrink-0 flex items-start pt-7 text-slate-300">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M1 8h12M9 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Mobile: vertical list */}
@@ -619,46 +646,59 @@ export default function Home() {
 
           {/* Desktop: conceptual cross map */}
           <div className="reveal hidden lg:block relative max-w-3xl mx-auto" style={{ height: '520px' }}>
-            {/* Horizontal rule */}
-            <div className="absolute inset-x-0 top-1/2 h-px bg-slate-700 pointer-events-none" style={{ transform: 'translateY(-0.5px)' }} />
-            {/* Vertical rule */}
-            <div className="absolute inset-y-0 left-1/2 w-px bg-slate-700 pointer-events-none" style={{ transform: 'translateX(-0.5px)' }} />
-            {/* Center indigo dot */}
-            <div
-              className="absolute top-1/2 left-1/2 w-3 h-3 rounded-full bg-indigo-500 z-10"
-              style={{ transform: 'translate(-50%, -50%)', boxShadow: '0 0 0 5px rgba(99,102,241,0.15)' }}
-            />
+            {/* SVG lines — contained within center cell only, never cross concept boxes */}
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              viewBox="0 0 768 520"
+              preserveAspectRatio="none"
+              fill="none"
+            >
+              <line x1="384" y1="260" x2="256" y2="260" stroke="#334155" strokeWidth="1" />
+              <line x1="384" y1="260" x2="512" y2="260" stroke="#334155" strokeWidth="1" />
+              <line x1="384" y1="260" x2="384" y2="173" stroke="#334155" strokeWidth="1" />
+              <line x1="384" y1="260" x2="384" y2="347" stroke="#334155" strokeWidth="1" />
+              <circle cx="384" cy="260" r="5" fill="#6366f1" />
+              <circle cx="384" cy="260" r="9" fill="none" stroke="#6366f1" strokeWidth="1" strokeOpacity="0.25" />
+            </svg>
 
             {/* 3×3 grid overlay */}
             <div className="absolute inset-0 grid grid-cols-3 grid-rows-3">
-              {/* Row 1 */}
+              {/* Row 1: empty · top box · empty */}
               <div />
-              <div className="flex flex-col items-center justify-center px-8 text-center">
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">02</p>
-                <p className="text-sm font-semibold text-white leading-snug">{t.data2Title}</p>
-                <p className="mt-2 text-xs leading-5 text-slate-400">{t.data2Desc}</p>
+              <div className="flex items-center justify-center p-3">
+                <div className="w-full rounded-2xl border border-slate-600 bg-slate-800 px-4 py-4 text-center">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">02</p>
+                  <p className="text-sm font-semibold text-white leading-snug">{t.data2Title}</p>
+                  <p className="mt-2 text-xs leading-5 text-slate-400">{t.data2Desc}</p>
+                </div>
               </div>
               <div />
 
-              {/* Row 2 */}
-              <div className="flex flex-col items-end justify-center pr-10 text-right">
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">01</p>
-                <p className="text-sm font-semibold text-white leading-snug">{t.data1Title}</p>
-                <p className="mt-2 text-xs leading-5 text-slate-400">{t.data1Desc}</p>
+              {/* Row 2: left box · center (dot only) · right box */}
+              <div className="flex items-center justify-center p-3">
+                <div className="w-full rounded-2xl border border-slate-600 bg-slate-800 px-4 py-4 text-right">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">01</p>
+                  <p className="text-sm font-semibold text-white leading-snug">{t.data1Title}</p>
+                  <p className="mt-2 text-xs leading-5 text-slate-400">{t.data1Desc}</p>
+                </div>
               </div>
               <div />
-              <div className="flex flex-col items-start justify-center pl-10">
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">04</p>
-                <p className="text-sm font-semibold text-white leading-snug">{t.data4Title}</p>
-                <p className="mt-2 text-xs leading-5 text-slate-400">{t.data4Desc}</p>
+              <div className="flex items-center justify-center p-3">
+                <div className="w-full rounded-2xl border border-slate-600 bg-slate-800 px-4 py-4">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">04</p>
+                  <p className="text-sm font-semibold text-white leading-snug">{t.data4Title}</p>
+                  <p className="mt-2 text-xs leading-5 text-slate-400">{t.data4Desc}</p>
+                </div>
               </div>
 
-              {/* Row 3 */}
+              {/* Row 3: empty · bottom box · empty */}
               <div />
-              <div className="flex flex-col items-center justify-center px-8 text-center">
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">03</p>
-                <p className="text-sm font-semibold text-white leading-snug">{t.data3Title}</p>
-                <p className="mt-2 text-xs leading-5 text-slate-400">{t.data3Desc}</p>
+              <div className="flex items-center justify-center p-3">
+                <div className="w-full rounded-2xl border border-slate-600 bg-slate-800 px-4 py-4 text-center">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">03</p>
+                  <p className="text-sm font-semibold text-white leading-snug">{t.data3Title}</p>
+                  <p className="mt-2 text-xs leading-5 text-slate-400">{t.data3Desc}</p>
+                </div>
               </div>
               <div />
             </div>
