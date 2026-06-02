@@ -1,334 +1,241 @@
-SC-ANALYTICS HOMEPAGE REFINEMENT
+SC-ANALYTICS HOMEPAGE – VISUAL DIFFERENTIATION REFINEMENT
 
-Before making any modifications, review the project context and positioning already implemented across the website.
+The homepage content is now largely correct.
 
-The goal of this update is NOT to redesign the homepage.
+The next objective is not to add more content.
 
-The goal is to refine the existing homepage so that it better reflects the strategic positioning of SC-Analytics.
+The objective is to improve visual storytelling and reduce repetition.
 
-Maintain the current visual identity, typography, spacing philosophy, premium consultancy feel and minimalist aesthetic.
+Currently several sections follow exactly the same structure:
 
-──────────────────────────────────────────────
-1. ALTERNATING SECTION BACKGROUNDS
-──────────────────────────────────────────────
+- Large title
+- Small subtitle
+- Grid of cards
 
-I want a clearer visual rhythm throughout the homepage.
+Although the content is different, the visual experience begins to feel repetitive.
 
-Sections should alternate between:
+I want each major section to communicate its idea through a different visual structure while preserving the minimalist, executive and premium consultancy aesthetic.
 
-- Dark Navy Background
-- Light Background
+Do not redesign the website.
 
-whenever possible.
+Do not introduce animations.
 
-Target structure:
+Do not introduce modern startup aesthetics.
 
-1. Hero → Dark
-2. Business Challenges → Light
-3. How We Work → Dark
-4. Disciplines Framework → Light
-5. Philosophy → Dark
-6. Applications / Use Cases → Light
-7. Hidden Opportunities in Data → Dark
-8. Final CTA → Light
-
-The objective is to improve visual hierarchy and create a more elegant executive reading experience.
-
-Avoid long sequences of sections sharing the same background color.
+Maintain the current SC-Analytics visual identity.
 
 ──────────────────────────────────────────────
-2. REMOVE THE SECTION:
-"EMPEZAMOS POR LA DECISIÓN, NO POR LA TECNOLOGÍA"
+1. PHILOSOPHY SECTION
 ──────────────────────────────────────────────
 
-Remove the entire section beginning with:
+Section title:
 
-"Empezamos por la decisión, no por la tecnología."
+"Soluciones sencillas para problemas complejos."
 
-including:
+Remove completely the three supporting lines below the title:
 
-- the title
-- the supporting text
-- the 5 process cards
-- the related CTA
+- Comprender antes de construir.
+- Tecnología cuando aporta valor.
+- Decisiones mejores, sistemas más sólidos.
 
 Reason:
 
-The same idea is already communicated by:
+The cards already communicate these principles.
 
-"No empezamos por la tecnología. Empezamos por el problema."
+The supporting text creates unnecessary repetition.
 
-The homepage currently repeats the same concept too many times.
+The section should feel more confident and minimalist.
 
-Removing this section will improve clarity and reduce redundancy.
+Desired structure:
 
-──────────────────────────────────────────────
-3. REWORK THE APPLICATIONS / USE CASES SECTION
-──────────────────────────────────────────────
+Title
 
-Current title:
+Directly below:
+4 philosophy cards
 
-"Un mismo enfoque puede aplicarse a situaciones muy diferentes."
+No additional explanatory text.
 
-Keep the title.
-
-Keep the supporting message.
-
-However, replace the current cards completely.
-
-The current cards feel too service-oriented and too specific.
-
-The new cards should be generic enough to apply to virtually any industry, company size or business context.
-
-Create 6 cards instead of 3.
-
-Suggested structure:
-
-01
-Crecimiento
-
-Tomar decisiones con mayor control a medida que aumenta la complejidad del negocio.
-
-02
-Eficiencia
-
-Reducir desperdicios, mejorar procesos y utilizar mejor los recursos disponibles.
-
-03
-Planificación
-
-Anticipar escenarios futuros y prepararse para diferentes posibilidades.
-
-04
-Coordinación
-
-Alinear información, equipos y procesos para mejorar la ejecución.
-
-05
-Control
-
-Comprender qué está ocurriendo realmente y detectar desviaciones antes.
-
-06
-Oportunidades
-
-Identificar patrones, relaciones y posibilidades de mejora que todavía no son visibles.
-
-The cards should visually match the existing design language.
+Allow the cards to carry the message.
 
 ──────────────────────────────────────────────
-4. INTRODUCE THE "DISCOVERING OPPORTUNITIES" NARRATIVE
+2. REWORK:
+"UN MISMO ENFOQUE PUEDE APLICARSE A SITUACIONES MUY DIFERENTES"
 ──────────────────────────────────────────────
 
-Currently the homepage focuses heavily on:
+This is currently another:
 
-- solving problems
-- reducing uncertainty
-- improving decisions
+Title
+Subtitle
+Cards
 
-This should remain the primary narrative.
+This should become one of the most visually distinctive sections on the homepage.
 
-However, there is an important secondary narrative that is currently missing:
+The purpose of this section is not to present services.
 
-Many organisations already possess valuable information but are not yet extracting its full potential.
+The purpose is to communicate that the same decision-making philosophy can be applied across many different business situations.
 
-SC-Analytics should not only help solve known problems.
+Replace the current card layout.
 
-SC-Analytics should also help discover opportunities that are currently hidden within data, processes and operations.
+Create a horizontal progression structure.
 
-This concept should be introduced subtly across multiple sections.
+Concept:
 
-Do NOT make it sound like a BI company.
+A single methodology.
 
-Do NOT make it sound like a dashboard company.
+Many applications.
 
-Do NOT use startup-style language.
+Visual direction:
 
-Do NOT use buzzwords.
+01 Crecimiento
+      →
+02 Eficiencia
+      →
+03 Planificación
+      →
+04 Coordinación
+      →
+05 Control
+      →
+06 Oportunidades
 
-Instead position it as:
+Each item should contain:
 
-"understanding more"
+- title
+- short supporting text
 
-"seeing patterns"
+The arrows should visually connect the concepts.
 
-"identifying opportunities"
+The section should read like a flow.
 
-"finding relationships"
+The visitor should immediately understand:
 
-"improving decisions"
+"Different situations. Same underlying approach."
 
-──────────────────────────────────────────────
-5. UPDATE THE HERO SUPPORTING TEXT
-──────────────────────────────────────────────
+Maintain elegant spacing and readability.
 
-Current message focuses on understanding the problem before proposing a solution.
+Desktop first.
 
-Keep that philosophy.
-
-However introduce a subtle reference to discovering opportunities.
-
-Example direction:
-
-We understand the problem before proposing a solution.
-
-We design solutions aligned with the reality of each organisation.
-
-We also help uncover opportunities that often remain hidden within operational processes and business information.
-
-Do not use this wording literally.
-
-Create a better version consistent with the website tone.
+Stack gracefully on mobile.
 
 ──────────────────────────────────────────────
-6. UPDATE THE BUSINESS CHALLENGES SECTION
-──────────────────────────────────────────────
-
-The current challenge cards focus mostly on problems.
-
-Add one additional challenge card.
-
-Suggested topic:
-
-"Oportunidades desaprovechadas"
-
-Description direction:
-
-Valuable information exists within the organisation but is not being used to improve decisions, anticipate outcomes or identify improvement opportunities.
-
-Keep wording concise.
-
-Maintain consistency with existing cards.
-
-──────────────────────────────────────────────
-7. UPDATE THE DISCIPLINES FRAMEWORK
-──────────────────────────────────────────────
-
-Keep the current disciplines:
-
-- Visualización
-- Modelización
-- Forecasting
-- Optimización
-- Automatización
-
-Do not change the structure.
-
-Do not change the visual concept.
-
-However revise descriptions so they subtly communicate that these disciplines help not only solve problems but also reveal opportunities and relationships that are not immediately visible.
-
-Examples of direction:
-
-Visualización:
-Understanding what is happening and identifying patterns that may otherwise go unnoticed.
-
-Modelización:
-Understanding how systems behave and revealing relationships that are not immediately obvious.
-
-Forecasting:
-Anticipating future scenarios and recognising opportunities before they materialise.
-
-Optimización:
-Discovering better alternatives and more efficient ways of operating.
-
-Keep descriptions concise and elegant.
-
-──────────────────────────────────────────────
-8. ADD A NEW SECTION:
+3. REWORK:
 "LO QUE TUS DATOS YA SABEN"
 ──────────────────────────────────────────────
 
-Insert a completely new section after:
+This section currently repeats the same visual pattern:
 
-"Un mismo enfoque puede aplicarse a situaciones muy diferentes."
+Title
+Text
+4 cards
 
-and before the final CTA.
+The content is good.
 
-Background:
-Dark Navy
+The visual structure should become more distinctive.
 
-Title:
+The objective is to communicate:
 
-"Lo que tus datos ya saben."
+Hidden knowledge already exists inside the organisation.
 
-Subtitle direction:
+Do not use another card grid.
 
-Every organisation generates information continuously.
+Create a visual structure closer to a conceptual map.
 
-Sales.
-Operations.
-Production.
-Customers.
-Resources.
-Processes.
+Possible direction:
 
-Many companies use data only to describe what has already happened.
+                Comprender patrones
 
-Often there is much more value hidden beneath the surface.
+Detectar oportunidades         Encontrar palancas de valor
 
-The purpose of this section is NOT to sell AI.
+                Anticipar riesgos
 
-The purpose is NOT to sell dashboards.
+The four concepts should feel connected.
 
-The purpose is to communicate that valuable business knowledge is often already present inside the organisation.
+Subtle connecting lines are acceptable.
 
-Create four cards:
+Minimalist design.
 
-01
-Detectar oportunidades
+Executive design.
 
-02
-Comprender patrones
+Avoid looking like a startup infographic.
 
-03
-Anticipar riesgos
+Avoid looking like a marketing diagram.
 
-04
-Encontrar palancas de valor
+The section should feel analytical and structured.
 
-Write concise descriptions for each.
+The visual message should be:
 
-Maintain the premium consultancy tone.
+These ideas are interconnected.
+
+Together they create better decisions.
 
 ──────────────────────────────────────────────
-9. FINAL CTA
+4. IMPROVE VISUAL EMPHASIS OF SUBTITLES
 ──────────────────────────────────────────────
 
-Keep the existing CTA concept.
+Several sections contain supporting text beneath large titles.
 
-The current CTA is strong.
+Currently these subtitles visually disappear because:
 
-Only make adjustments if necessary to improve consistency after introducing the new section.
+- typography hierarchy is weak
+- spacing is too uniform
+- titles dominate excessively
 
-The CTA should remain:
+Review subtitle styling throughout the homepage.
 
-calm
-professional
-consultative
-non-salesy
+Without making them larger, improve readability through:
 
-The objective is to invite a conversation, not push for a conversion.
+- spacing
+- alignment
+- line length
+- hierarchy
+- contrast
+
+The supporting message should be easy to read and clearly intentional.
+
+Avoid large blocks of text.
+
+Keep everything concise.
 
 ──────────────────────────────────────────────
-10. IMPORTANT POSITIONING RULES
+5. GLOBAL DESIGN OBJECTIVE
 ──────────────────────────────────────────────
 
-Do not position SC-Analytics as:
+The homepage should feel like a carefully designed strategic consultancy website.
 
-- an AI agency
-- a software development company
-- a dashboard provider
-- a data visualization company
+Not every section should communicate information in the same way.
 
-Always position SC-Analytics as:
+Different sections should use different visual structures:
 
-A consultancy that designs and implements Decision Systems.
+Business Challenges
+→ Cards
 
-Technology is a tool.
+How We Work
+→ Process / methodology
 
-Business decisions are the objective.
+Disciplines Framework
+→ Connected system diagram
 
-Everything on the homepage should reinforce:
+Philosophy
+→ Principle cards
 
-"Better decisions lead to better business outcomes."
+Applications
+→ Horizontal flow with arrows
+
+Data Opportunities
+→ Conceptual map
+
+CTA
+→ Clean text section
+
+The user should feel progression while scrolling.
+
+Each section should reveal a different aspect of the SC-Analytics philosophy.
+
+The result should feel:
+
+More sophisticated.
+More intentional.
+Less repetitive.
+More memorable.
+
+Maintain the minimalist, classical, executive and trustworthy visual identity already established across the site.
