@@ -665,8 +665,8 @@ export default function Home() {
             <div className="absolute inset-0 grid grid-cols-3 grid-rows-3">
               {/* Row 1: empty · top box · empty */}
               <div />
-              <div className="flex items-center justify-center p-3">
-                <div className="w-full rounded-2xl border border-slate-600 bg-slate-800 px-4 py-4 text-center">
+              <div className="p-3 flex flex-col">
+                <div className="flex-1 rounded-2xl border border-slate-600 bg-slate-800 px-4 flex flex-col items-center justify-center text-center">
                   <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">02</p>
                   <p className="text-sm font-semibold text-white leading-snug">{t.data2Title}</p>
                   <p className="mt-2 text-xs leading-5 text-slate-400">{t.data2Desc}</p>
@@ -675,16 +675,16 @@ export default function Home() {
               <div />
 
               {/* Row 2: left box · center (dot only) · right box */}
-              <div className="flex items-center justify-center p-3">
-                <div className="w-full rounded-2xl border border-slate-600 bg-slate-800 px-4 py-4 text-right">
+              <div className="p-3 flex flex-col">
+                <div className="flex-1 rounded-2xl border border-slate-600 bg-slate-800 px-4 flex flex-col items-center justify-center text-center">
                   <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">01</p>
                   <p className="text-sm font-semibold text-white leading-snug">{t.data1Title}</p>
                   <p className="mt-2 text-xs leading-5 text-slate-400">{t.data1Desc}</p>
                 </div>
               </div>
               <div />
-              <div className="flex items-center justify-center p-3">
-                <div className="w-full rounded-2xl border border-slate-600 bg-slate-800 px-4 py-4">
+              <div className="p-3 flex flex-col">
+                <div className="flex-1 rounded-2xl border border-slate-600 bg-slate-800 px-4 flex flex-col items-center justify-center text-center">
                   <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">04</p>
                   <p className="text-sm font-semibold text-white leading-snug">{t.data4Title}</p>
                   <p className="mt-2 text-xs leading-5 text-slate-400">{t.data4Desc}</p>
@@ -693,8 +693,8 @@ export default function Home() {
 
               {/* Row 3: empty · bottom box · empty */}
               <div />
-              <div className="flex items-center justify-center p-3">
-                <div className="w-full rounded-2xl border border-slate-600 bg-slate-800 px-4 py-4 text-center">
+              <div className="p-3 flex flex-col">
+                <div className="flex-1 rounded-2xl border border-slate-600 bg-slate-800 px-4 flex flex-col items-center justify-center text-center">
                   <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">03</p>
                   <p className="text-sm font-semibold text-white leading-snug">{t.data3Title}</p>
                   <p className="mt-2 text-xs leading-5 text-slate-400">{t.data3Desc}</p>
