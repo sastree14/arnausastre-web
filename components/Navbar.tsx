@@ -36,10 +36,9 @@ export default function Navbar() {
   const navLinks = [
     { href: '/', label: t.home },
     { href: '/services', label: t.services },
-    { href: '/about', label: t.about },
-    { href: '/insights', label: t.insights },
     { href: '/case-studies', label: t.caseStudies },
-    { href: '/tools', label: t.tools },
+    { href: '/insights', label: t.insights },
+    { href: '/about', label: t.about },
   ]
 
   const isActive = (href: string) => {
