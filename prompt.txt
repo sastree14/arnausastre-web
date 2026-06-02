@@ -1,132 +1,334 @@
-We are finalising the Home page.
+SC-ANALYTICS HOMEPAGE REFINEMENT
 
-Please apply the following changes.
+Before making any modifications, review the project context and positioning already implemented across the website.
 
-────────────────────────────
+The goal of this update is NOT to redesign the homepage.
 
-PHILOSOPHY SECTION
+The goal is to refine the existing homepage so that it better reflects the strategic positioning of SC-Analytics.
 
-Replace the entire current section:
+Maintain the current visual identity, typography, spacing philosophy, premium consultancy feel and minimalist aesthetic.
 
-"Nuestro concepto central"
+──────────────────────────────────────────────
+1. ALTERNATING SECTION BACKGROUNDS
+──────────────────────────────────────────────
 
-with a completely new section.
+I want a clearer visual rhythm throughout the homepage.
 
-TITLE:
+Sections should alternate between:
 
-"Soluciones sencillas para problemas complejos."
+- Dark Navy Background
+- Light Background
 
-SUBTITLE:
+whenever possible.
 
-"Comprender antes de construir.
+Target structure:
 
-Tecnología cuando aporta valor.
+1. Hero → Dark
+2. Business Challenges → Light
+3. How We Work → Dark
+4. Disciplines Framework → Light
+5. Philosophy → Dark
+6. Applications / Use Cases → Light
+7. Hidden Opportunities in Data → Dark
+8. Final CTA → Light
 
-Decisiones mejores, sistemas más sólidos."
+The objective is to improve visual hierarchy and create a more elegant executive reading experience.
 
-Create four elegant cards:
+Avoid long sequences of sections sharing the same background color.
 
-1. Comprender antes de construir
+──────────────────────────────────────────────
+2. REMOVE THE SECTION:
+"EMPEZAMOS POR LA DECISIÓN, NO POR LA TECNOLOGÍA"
+──────────────────────────────────────────────
 
-Antes de proponer una solución entendemos la decisión, el contexto y las restricciones.
+Remove the entire section beginning with:
 
-2. Tecnología cuando aporta valor
+"Empezamos por la decisión, no por la tecnología."
 
-No aplicamos herramientas porque estén de moda. Las utilizamos cuando aportan una mejora real.
+including:
 
-3. Soluciones proporcionadas
+- the title
+- the supporting text
+- the 5 process cards
+- the related CTA
 
-No sobredimensionamos los problemas. Diseñamos soluciones alineadas con las necesidades reales de cada organización.
+Reason:
 
-4. Valor empresarial antes que tecnología
+The same idea is already communicated by:
 
-El éxito no se mide por la complejidad del sistema. Se mide por la mejora de la decisión.
+"No empezamos por la tecnología. Empezamos por el problema."
 
-Design requirements:
+The homepage currently repeats the same concept too many times.
 
-* Premium and executive style.
-* Plenty of whitespace.
-* Four balanced cards.
-* Short texts.
-* Easy to scan.
+Removing this section will improve clarity and reduce redundancy.
 
-────────────────────────────
+──────────────────────────────────────────────
+3. REWORK THE APPLICATIONS / USE CASES SECTION
+──────────────────────────────────────────────
 
-USE CASES SECTION
-
-Remove the current sections:
-
-"Nuestras herramientas"
-"Por qué SC-Analytics"
-"En la práctica"
-
-Replace them with a single section.
-
-TITLE:
+Current title:
 
 "Un mismo enfoque puede aplicarse a situaciones muy diferentes."
 
-SUBTITLE:
+Keep the title.
 
-"Los principios son los mismos.
-Los problemas, sectores y organizaciones son distintos."
+Keep the supporting message.
 
-Create three visual cards:
+However, replace the current cards completely.
 
-1. Planificación y previsión
+The current cards feel too service-oriented and too specific.
 
-Forecasting, escenarios, planificación y reducción de incertidumbre.
+The new cards should be generic enough to apply to virtually any industry, company size or business context.
 
-2. Optimización de recursos
+Create 6 cards instead of 3.
 
-Capacidad, inventario, presupuesto, logística y priorización.
+Suggested structure:
 
-3. Sistemas de decisión en producción
+01
+Crecimiento
 
-Integración de datos, análisis y automatización en procesos reales.
+Tomar decisiones con mayor control a medida que aumenta la complejidad del negocio.
 
-Add a centered button:
+02
+Eficiencia
 
-"Ver casos prácticos →"
+Reducir desperdicios, mejorar procesos y utilizar mejor los recursos disponibles.
 
-Link to the Cases page.
+03
+Planificación
 
-────────────────────────────
+Anticipar escenarios futuros y prepararse para diferentes posibilidades.
 
-FINAL CTA
+04
+Coordinación
 
-Replace the entire current final CTA section.
+Alinear información, equipos y procesos para mejorar la ejecución.
 
-TITLE:
+05
+Control
 
-"No todas las empresas necesitan más tecnología.
+Comprender qué está ocurriendo realmente y detectar desviaciones antes.
 
-Algunas simplemente necesitan mejores decisiones."
+06
+Oportunidades
 
-TEXT:
+Identificar patrones, relaciones y posibilidades de mejora que todavía no son visibles.
 
-"Si tu empresa se enfrenta a un problema, una ineficiencia, una oportunidad de mejora o una decisión que podría tomarse con mayor control y confianza, estaremos encantados de analizar la situación contigo.
+The cards should visually match the existing design language.
 
-La primera conversación consiste únicamente en entender el contexto, sin compromiso y sin asumir ninguna solución de antemano."
+──────────────────────────────────────────────
+4. INTRODUCE THE "DISCOVERING OPPORTUNITIES" NARRATIVE
+──────────────────────────────────────────────
 
-Primary button:
+Currently the homepage focuses heavily on:
 
-"Cuéntanos el problema"
+- solving problems
+- reducing uncertainty
+- improving decisions
 
-Secondary button:
+This should remain the primary narrative.
 
-"Cómo trabajamos"
+However, there is an important secondary narrative that is currently missing:
 
-────────────────────────────
+Many organisations already possess valuable information but are not yet extracting its full potential.
 
-GLOBAL OBJECTIVE
+SC-Analytics should not only help solve known problems.
 
-The Home page should communicate:
+SC-Analytics should also help discover opportunities that are currently hidden within data, processes and operations.
 
-* We understand before we build.
-* We apply technology when it creates value.
-* We design decision systems.
-* We avoid unnecessary complexity.
-* We focus on business outcomes.
+This concept should be introduced subtly across multiple sections.
 
-The result should feel like a serious decision-systems consultancy, not a software agency.
+Do NOT make it sound like a BI company.
+
+Do NOT make it sound like a dashboard company.
+
+Do NOT use startup-style language.
+
+Do NOT use buzzwords.
+
+Instead position it as:
+
+"understanding more"
+
+"seeing patterns"
+
+"identifying opportunities"
+
+"finding relationships"
+
+"improving decisions"
+
+──────────────────────────────────────────────
+5. UPDATE THE HERO SUPPORTING TEXT
+──────────────────────────────────────────────
+
+Current message focuses on understanding the problem before proposing a solution.
+
+Keep that philosophy.
+
+However introduce a subtle reference to discovering opportunities.
+
+Example direction:
+
+We understand the problem before proposing a solution.
+
+We design solutions aligned with the reality of each organisation.
+
+We also help uncover opportunities that often remain hidden within operational processes and business information.
+
+Do not use this wording literally.
+
+Create a better version consistent with the website tone.
+
+──────────────────────────────────────────────
+6. UPDATE THE BUSINESS CHALLENGES SECTION
+──────────────────────────────────────────────
+
+The current challenge cards focus mostly on problems.
+
+Add one additional challenge card.
+
+Suggested topic:
+
+"Oportunidades desaprovechadas"
+
+Description direction:
+
+Valuable information exists within the organisation but is not being used to improve decisions, anticipate outcomes or identify improvement opportunities.
+
+Keep wording concise.
+
+Maintain consistency with existing cards.
+
+──────────────────────────────────────────────
+7. UPDATE THE DISCIPLINES FRAMEWORK
+──────────────────────────────────────────────
+
+Keep the current disciplines:
+
+- Visualización
+- Modelización
+- Forecasting
+- Optimización
+- Automatización
+
+Do not change the structure.
+
+Do not change the visual concept.
+
+However revise descriptions so they subtly communicate that these disciplines help not only solve problems but also reveal opportunities and relationships that are not immediately visible.
+
+Examples of direction:
+
+Visualización:
+Understanding what is happening and identifying patterns that may otherwise go unnoticed.
+
+Modelización:
+Understanding how systems behave and revealing relationships that are not immediately obvious.
+
+Forecasting:
+Anticipating future scenarios and recognising opportunities before they materialise.
+
+Optimización:
+Discovering better alternatives and more efficient ways of operating.
+
+Keep descriptions concise and elegant.
+
+──────────────────────────────────────────────
+8. ADD A NEW SECTION:
+"LO QUE TUS DATOS YA SABEN"
+──────────────────────────────────────────────
+
+Insert a completely new section after:
+
+"Un mismo enfoque puede aplicarse a situaciones muy diferentes."
+
+and before the final CTA.
+
+Background:
+Dark Navy
+
+Title:
+
+"Lo que tus datos ya saben."
+
+Subtitle direction:
+
+Every organisation generates information continuously.
+
+Sales.
+Operations.
+Production.
+Customers.
+Resources.
+Processes.
+
+Many companies use data only to describe what has already happened.
+
+Often there is much more value hidden beneath the surface.
+
+The purpose of this section is NOT to sell AI.
+
+The purpose is NOT to sell dashboards.
+
+The purpose is to communicate that valuable business knowledge is often already present inside the organisation.
+
+Create four cards:
+
+01
+Detectar oportunidades
+
+02
+Comprender patrones
+
+03
+Anticipar riesgos
+
+04
+Encontrar palancas de valor
+
+Write concise descriptions for each.
+
+Maintain the premium consultancy tone.
+
+──────────────────────────────────────────────
+9. FINAL CTA
+──────────────────────────────────────────────
+
+Keep the existing CTA concept.
+
+The current CTA is strong.
+
+Only make adjustments if necessary to improve consistency after introducing the new section.
+
+The CTA should remain:
+
+calm
+professional
+consultative
+non-salesy
+
+The objective is to invite a conversation, not push for a conversion.
+
+──────────────────────────────────────────────
+10. IMPORTANT POSITIONING RULES
+──────────────────────────────────────────────
+
+Do not position SC-Analytics as:
+
+- an AI agency
+- a software development company
+- a dashboard provider
+- a data visualization company
+
+Always position SC-Analytics as:
+
+A consultancy that designs and implements Decision Systems.
+
+Technology is a tool.
+
+Business decisions are the objective.
+
+Everything on the homepage should reinforce:
+
+"Better decisions lead to better business outcomes."
