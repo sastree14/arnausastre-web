@@ -1,241 +1,167 @@
-SC-ANALYTICS HOMEPAGE – VISUAL DIFFERENTIATION REFINEMENT
+SC-ANALYTICS – NAVIGATION REFINEMENT ONLY
 
-The homepage content is now largely correct.
+IMPORTANT:
 
-The next objective is not to add more content.
+At this stage do NOT redesign pages.
 
-The objective is to improve visual storytelling and reduce repetition.
+Do NOT rewrite page content.
 
-Currently several sections follow exactly the same structure:
+Do NOT create new sections.
 
-- Large title
-- Small subtitle
-- Grid of cards
+Do NOT modify the positioning, messaging or structure of existing pages.
 
-Although the content is different, the visual experience begins to feel repetitive.
-
-I want each major section to communicate its idea through a different visual structure while preserving the minimalist, executive and premium consultancy aesthetic.
-
-Do not redesign the website.
-
-Do not introduce animations.
-
-Do not introduce modern startup aesthetics.
-
-Maintain the current SC-Analytics visual identity.
+The objective of this task is ONLY to improve navigation consistency and website architecture.
 
 ──────────────────────────────────────────────
-1. PHILOSOPHY SECTION
+1. REMOVE THE "HERRAMIENTAS" PAGE
 ──────────────────────────────────────────────
 
-Section title:
+Remove the "Herramientas" page completely.
 
-"Soluciones sencillas para problemas complejos."
+Remove:
 
-Remove completely the three supporting lines below the title:
-
-- Comprender antes de construir.
-- Tecnología cuando aporta valor.
-- Decisiones mejores, sistemas más sólidos.
+- Navigation item
+- Route
+- Footer references
+- Mobile navigation references
+- Any internal links pointing to this page
 
 Reason:
 
-The cards already communicate these principles.
-
-The supporting text creates unnecessary repetition.
-
-The section should feel more confident and minimalist.
-
-Desired structure:
-
-Title
-
-Directly below:
-4 philosophy cards
-
-No additional explanatory text.
-
-Allow the cards to carry the message.
+This page is no longer part of the website architecture.
 
 ──────────────────────────────────────────────
-2. REWORK:
-"UN MISMO ENFOQUE PUEDE APLICARSE A SITUACIONES MUY DIFERENTES"
+2. RENAME "SERVICIOS"
 ──────────────────────────────────────────────
 
-This is currently another:
+Change:
 
-Title
-Subtitle
-Cards
+Servicios
 
-This should become one of the most visually distinctive sections on the homepage.
+to:
 
-The purpose of this section is not to present services.
+Cómo trabajamos
 
-The purpose is to communicate that the same decision-making philosophy can be applied across many different business situations.
+This change should affect:
 
-Replace the current card layout.
+- Desktop navigation
+- Mobile navigation
+- Footer navigation
+- Any internal navigation references
 
-Create a horizontal progression structure.
+IMPORTANT:
 
-Concept:
+Do NOT modify the page content itself.
 
-A single methodology.
-
-Many applications.
-
-Visual direction:
-
-01 Crecimiento
-      →
-02 Eficiencia
-      →
-03 Planificación
-      →
-04 Coordinación
-      →
-05 Control
-      →
-06 Oportunidades
-
-Each item should contain:
-
-- title
-- short supporting text
-
-The arrows should visually connect the concepts.
-
-The section should read like a flow.
-
-The visitor should immediately understand:
-
-"Different situations. Same underlying approach."
-
-Maintain elegant spacing and readability.
-
-Desktop first.
-
-Stack gracefully on mobile.
+Only rename the navigation label and related references.
 
 ──────────────────────────────────────────────
-3. REWORK:
-"LO QUE TUS DATOS YA SABEN"
+3. RENAME "SOBRE MÍ"
 ──────────────────────────────────────────────
 
-This section currently repeats the same visual pattern:
+Change:
 
-Title
-Text
-4 cards
+Sobre mí
 
-The content is good.
+to:
 
-The visual structure should become more distinctive.
+Sobre nosotros
 
-The objective is to communicate:
+This change should affect:
 
-Hidden knowledge already exists inside the organisation.
+- Desktop navigation
+- Mobile navigation
+- Footer navigation
+- Any internal navigation references
 
-Do not use another card grid.
+IMPORTANT:
 
-Create a visual structure closer to a conceptual map.
+Do NOT modify the page content itself.
 
-Possible direction:
-
-                Comprender patrones
-
-Detectar oportunidades         Encontrar palancas de valor
-
-                Anticipar riesgos
-
-The four concepts should feel connected.
-
-Subtle connecting lines are acceptable.
-
-Minimalist design.
-
-Executive design.
-
-Avoid looking like a startup infographic.
-
-Avoid looking like a marketing diagram.
-
-The section should feel analytical and structured.
-
-The visual message should be:
-
-These ideas are interconnected.
-
-Together they create better decisions.
+Only rename the navigation label and related references.
 
 ──────────────────────────────────────────────
-4. IMPROVE VISUAL EMPHASIS OF SUBTITLES
+4. REVIEW EXISTING BUTTONS
 ──────────────────────────────────────────────
 
-Several sections contain supporting text beneath large titles.
+Review all CTA buttons currently present across the website.
 
-Currently these subtitles visually disappear because:
+The objective is not to redesign them.
 
-- typography hierarchy is weak
-- spacing is too uniform
-- titles dominate excessively
+The objective is to ensure consistency with the new navigation structure.
 
-Review subtitle styling throughout the homepage.
+If a button currently points to:
 
-Without making them larger, improve readability through:
+Servicios
 
-- spacing
-- alignment
-- line length
-- hierarchy
-- contrast
+it should now point to:
 
-The supporting message should be easy to read and clearly intentional.
+Cómo trabajamos
 
-Avoid large blocks of text.
+If a button currently references:
 
-Keep everything concise.
+Sobre mí
+
+it should now reference:
+
+Sobre nosotros
+
+Review:
+
+- Homepage buttons
+- Footer buttons
+- Navigation buttons
+- Internal section links
 
 ──────────────────────────────────────────────
-5. GLOBAL DESIGN OBJECTIVE
+5. DO NOT ADD NEW CONTENT
 ──────────────────────────────────────────────
 
-The homepage should feel like a carefully designed strategic consultancy website.
+At this stage:
 
-Not every section should communicate information in the same way.
+- Do not add new buttons
+- Do not remove existing buttons unless they are broken
+- Do not redesign sections
+- Do not change page layouts
+- Do not rewrite content
 
-Different sections should use different visual structures:
+Only update the architecture and ensure consistency.
 
-Business Challenges
-→ Cards
+──────────────────────────────────────────────
+6. FINAL NAVIGATION STRUCTURE
+──────────────────────────────────────────────
 
-How We Work
-→ Process / methodology
+The final navigation should be:
 
-Disciplines Framework
-→ Connected system diagram
+Inicio
 
-Philosophy
-→ Principle cards
+Cómo trabajamos
 
-Applications
-→ Horizontal flow with arrows
+Casos prácticos
 
-Data Opportunities
-→ Conceptual map
+Artículos
 
-CTA
-→ Clean text section
+Sobre nosotros
 
-The user should feel progression while scrolling.
+Contacto
 
-Each section should reveal a different aspect of the SC-Analytics philosophy.
+Ensure this structure is consistent across:
 
-The result should feel:
+- Desktop navigation
+- Mobile navigation
+- Footer navigation
+- Internal references
 
-More sophisticated.
-More intentional.
-Less repetitive.
-More memorable.
+──────────────────────────────────────────────
+7. OUTPUT
+──────────────────────────────────────────────
 
-Maintain the minimalist, classical, executive and trustworthy visual identity already established across the site.
+After implementing the changes:
+
+Provide a short summary of:
+
+- Navigation items changed
+- Buttons updated
+- Links updated
+- Any inconsistencies detected
+- Any pages or components that may require manual review
