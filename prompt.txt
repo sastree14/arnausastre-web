@@ -1,266 +1,176 @@
-SC-ANALYTICS – COMPLETE REBUILD OF THE "CÓMO TRABAJAMOS" PAGE
+SC-ANALYTICS – CREATE THE "SOBRE NOSOTROS" PAGE
 
 IMPORTANT
 
-I want to completely rebuild the current "Cómo trabajamos" page.
+Create a completely new "Sobre nosotros" page.
 
-Do not try to preserve the existing structure.
+Do not approach this page as a personal biography.
 
-Do not try to adapt the current content.
+Do not create a traditional "About Me" page.
 
-Remove the current page content entirely and create a new version from scratch.
+Do not focus on academic credentials, technologies, programming languages or personal history.
 
-The objective is not to create a traditional services page.
+The purpose of this page is to explain:
 
-The objective is to explain what it is like to work with SC-Analytics from the client's perspective.
+* Why SC-Analytics exists.
+* What principles guide our work.
+* What kind of problems we help organisations solve.
+* What vision we have for the future.
 
-The visitor should finish the page understanding:
+The page should feel consistent with both the homepage and the "Cómo trabajamos" page.
 
-- How a collaboration typically begins.
-- What happens during a project.
-- How decisions are made.
-- What values guide our recommendations.
-- Why our approach is different from a traditional technology consultancy.
+Maintain the same visual language:
 
-──────────────────────────────────────────────
-DESIGN DIRECTION
-──────────────────────────────────────────────
+* Elegant
+* Minimalist
+* Professional
+* Executive
+* High-trust
+* Premium consultancy
 
-Use the same design language already established on the homepage:
+Alternate dark and light sections as done throughout the website.
 
-- Elegant
-- Professional
-- Minimalist
-- Executive
-- Premium consultancy feel
-
-Avoid:
-
-- Startup aesthetics
-- Excessive animations
-- Buzzwords
-- AI hype
-- Generic consulting jargon
-
-The page should feel like a natural continuation of the homepage.
-
-Alternate visual structures where appropriate.
-
-Not every section should be a card grid.
-
-Create hierarchy, rhythm and progression.
-
-The page should feel like a journey.
+Avoid startup aesthetics, marketing language and exaggerated claims.
 
 ──────────────────────────────────────────────
-PAGE HERO
+SECTION 1 – HERO
 ──────────────────────────────────────────────
 
 Title:
 
-Cómo trabajamos
+Sobre nosotros
 
-Supporting message direction:
+The hero should communicate that SC-Analytics was created around a simple idea:
+
+Better decisions require more than technology.
+
+They require understanding, analysis and a rigorous understanding of reality.
+
+The hero should establish trust and clearly connect with the philosophy already presented on the homepage.
+
+──────────────────────────────────────────────
+SECTION 2 – WHY SC-ANALYTICS EXISTS
+──────────────────────────────────────────────
+
+Title suggestion:
+
+Por qué existe SC-Analytics
+
+Purpose:
+
+Explain that many organisations generate valuable information every day but struggle to transform it into better decisions.
+
+Explain that SC-Analytics exists to help bridge the gap between:
+
+* Data and action
+* Information and decisions
+* Analysis and implementation
+
+The focus should be on helping organisations operate with greater clarity, control and confidence.
+
+──────────────────────────────────────────────
+SECTION 3 – OUR WAY OF THINKING
+──────────────────────────────────────────────
+
+Title suggestion:
+
+Nuestra forma de pensar
+
+Present the principles that guide every recommendation and every project.
+
+Suggested principles:
+
+* Comprender antes de construir
+* Tecnología cuando aporta valor
+* Honestidad profesional
+* Soluciones proporcionadas
+* Valor empresarial antes que complejidad
+
+Important:
+
+Do not present them as slogans.
+
+Explain what they mean in practice and how they influence decisions.
+
+──────────────────────────────────────────────
+SECTION 4 – WHAT WE HELP ORGANISATIONS IMPROVE
+──────────────────────────────────────────────
+
+IMPORTANT
+
+Do NOT present this as a list of services.
+
+Do NOT use words such as:
+
+* Forecasting
+* Machine Learning
+* Optimisation
+* Automation
+
+as the primary message.
+
+Instead focus on outcomes and business challenges.
+
+Examples:
+
+* Reducir incertidumbre
+* Mejorar la calidad de las decisiones
+* Optimizar el uso de recursos
+* Incrementar la visibilidad operativa
+* Detectar oportunidades ocultas
+* Mejorar la planificación
+* Convertir información en acción
+
+The visitor should recognise their challenges, not our tools.
+
+──────────────────────────────────────────────
+SECTION 5 – OUR VISION
+──────────────────────────────────────────────
+
+This should be one of the most important sections.
+
+Use the following ideas as inspiration and preserve their meaning:
+
+"Creemos que las mejores decisiones surgen cuando se combina experiencia, análisis y una comprensión rigurosa de la realidad.
+
+Nuestro objetivo es seguir desarrollando sistemas que ayuden a las organizaciones a operar con mayor control, claridad y confianza.
+
+A medida que SC-Analytics evolucione, mantendremos el mismo principio que guía nuestro trabajo desde el inicio:
+
+Comprender antes de construir."
+
+Expand and refine this message while maintaining its essence.
+
+Important:
+
+Do not talk about becoming a large company.
+
+Do not talk about growth for the sake of growth.
+
+Focus on quality, trust, impact and long-term value.
+
+──────────────────────────────────────────────
+FINAL CTA
+──────────────────────────────────────────────
+
+Create a final section consistent with the rest of the website.
+
+The CTA should feel consultative rather than sales-oriented.
+
+Possible direction:
 
 Cada organización es diferente.
 
-La forma de abordar problemas complejos no debería serlo.
+Si quieres compartir una situación, problema u oportunidad, estaremos encantados de conocerla y analizarla contigo.
 
-Nuestro trabajo consiste en comprender la situación, evaluar alternativas y construir únicamente aquello que aporte valor real.
-
-Create the final wording yourself while remaining aligned with this idea.
+Keep it elegant, professional and aligned with the philosophy of SC-Analytics.
 
 ──────────────────────────────────────────────
-SECTION 1
-CONVERSACIÓN INICIAL
+IMPORTANT FINAL NOTE
 ──────────────────────────────────────────────
 
-Purpose:
+This page should not feel like a founder profile.
 
-Explain that every collaboration begins with understanding.
+It should feel like the presentation of a consultancy and the philosophy that guides it.
 
-Topics to communicate:
-
-- Understanding the organisation
-- Understanding the industry
-- Understanding the context
-- Understanding motivations
-- Understanding objectives
-- Understanding current challenges or opportunities
-
-Important:
-
-We do not begin by discussing technology.
-
-We begin by understanding the situation.
-
-──────────────────────────────────────────────
-SECTION 2
-COMPRENDER LA INFORMACIÓN DISPONIBLE
-──────────────────────────────────────────────
-
-Purpose:
-
-Explain that before proposing solutions we analyse what already exists.
-
-Topics:
-
-- Available information
-- Data sources
-- Historical records
-- Data quality
-- Data completeness
-- Existing systems
-- Existing tools
-- Current infrastructure
-
-Communicate that many opportunities and limitations become visible during this phase.
-
-──────────────────────────────────────────────
-SECTION 3
-EVALUAR ALTERNATIVAS
-──────────────────────────────────────────────
-
-Purpose:
-
-Explain that there is rarely a single valid solution.
-
-Topics:
-
-- Different approaches
-- Different levels of complexity
-- Different implementation paths
-- Cost vs value
-- Risk vs benefit
-
-Communicate that solutions should fit the reality of the organisation.
-
-──────────────────────────────────────────────
-SECTION 4
-DECIDIR QUÉ MERECE LA PENA CONSTRUIR
-──────────────────────────────────────────────
-
-This is one of the most important sections of the page.
-
-Communicate clearly:
-
-Not every idea should become a project.
-
-Not every project should be developed.
-
-If we believe something is unlikely to generate value, we will say so.
-
-If expectations are unrealistic, we will communicate it.
-
-If we believe a simpler alternative exists, we will recommend it.
-
-Important message:
-
-Our objective is not to maximise project volume.
-
-Our objective is to help organisations make better decisions.
-
-This section should become one of the strongest trust-building sections on the website.
-
-──────────────────────────────────────────────
-SECTION 5
-DESARROLLO E IMPLEMENTACIÓN
-──────────────────────────────────────────────
-
-Purpose:
-
-Explain how projects are developed once approved.
-
-Topics:
-
-- Initial versions
-- Validation
-- Iteration
-- Integration
-- Production deployment
-
-Communicate that solutions should operate in real environments and support real decisions.
-
-──────────────────────────────────────────────
-SECTION 6
-ENTREGA Y TRANSFERENCIA
-──────────────────────────────────────────────
-
-Purpose:
-
-Explain that delivery is more than handing over a tool.
-
-Topics:
-
-- Documentation
-- Technical explanations
-- Knowledge transfer
-- Training
-- Adoption
-
-Communicate that a solution is only valuable if people can actually use it.
-
-──────────────────────────────────────────────
-SECTION 7
-SEGUIMIENTO Y MEJORA
-──────────────────────────────────────────────
-
-Purpose:
-
-Explain post-delivery support.
-
-Topics:
-
-- Monitoring
-- Validation
-- Improvements
-- Evolution
-- Long-term value
-
-Communicate commitment and continuity.
-
-──────────────────────────────────────────────
-VALUES SECTION
-──────────────────────────────────────────────
-
-Create a dedicated section communicating the principles that guide our work.
-
-Suggested values:
-
-- Honestidad
-- Transparencia
-- Compromiso
-- Rigor
-- Responsabilidad profesional
-
-Important:
-
-Do not present them as marketing slogans.
-
-Explain how they influence decisions and recommendations.
-
-──────────────────────────────────────────────
-KEY MESSAGE
-──────────────────────────────────────────────
-
-At some point in the page, incorporate the idea that:
-
-"We do not build solutions because they are complex or interesting.
-
-We build solutions because we believe they can create real value."
-
-This idea should become one of the defining messages of the page.
-
-──────────────────────────────────────────────
-IMPORTANT
-──────────────────────────────────────────────
-
-This is Version 1 of the page.
-
-Build a strong foundation.
-
-Prioritise structure, clarity and presentation quality.
-
-Do not try to make the page perfect.
-
-Create something professional, elegant and coherent with the homepage that can be refined and expanded later.
+The objective is to build trust, credibility and clarity.
