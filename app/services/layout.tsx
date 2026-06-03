@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Services',
+  title: 'Cómo trabajamos',
   description:
-    'Demand forecasting, mathematical optimization, machine learning pipelines and analytics automation — rigorous quantitative systems designed for measurable operational impact.',
+    'Cómo trabajamos con organizaciones para entender su situación, evaluar alternativas y construir únicamente aquello que crea valor real.',
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {
