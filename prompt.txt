@@ -1,167 +1,266 @@
-SC-ANALYTICS – NAVIGATION REFINEMENT ONLY
+SC-ANALYTICS – COMPLETE REBUILD OF THE "CÓMO TRABAJAMOS" PAGE
 
-IMPORTANT:
+IMPORTANT
 
-At this stage do NOT redesign pages.
+I want to completely rebuild the current "Cómo trabajamos" page.
 
-Do NOT rewrite page content.
+Do not try to preserve the existing structure.
 
-Do NOT create new sections.
+Do not try to adapt the current content.
 
-Do NOT modify the positioning, messaging or structure of existing pages.
+Remove the current page content entirely and create a new version from scratch.
 
-The objective of this task is ONLY to improve navigation consistency and website architecture.
+The objective is not to create a traditional services page.
 
-──────────────────────────────────────────────
-1. REMOVE THE "HERRAMIENTAS" PAGE
-──────────────────────────────────────────────
+The objective is to explain what it is like to work with SC-Analytics from the client's perspective.
 
-Remove the "Herramientas" page completely.
+The visitor should finish the page understanding:
 
-Remove:
-
-- Navigation item
-- Route
-- Footer references
-- Mobile navigation references
-- Any internal links pointing to this page
-
-Reason:
-
-This page is no longer part of the website architecture.
+- How a collaboration typically begins.
+- What happens during a project.
+- How decisions are made.
+- What values guide our recommendations.
+- Why our approach is different from a traditional technology consultancy.
 
 ──────────────────────────────────────────────
-2. RENAME "SERVICIOS"
+DESIGN DIRECTION
 ──────────────────────────────────────────────
 
-Change:
+Use the same design language already established on the homepage:
 
-Servicios
+- Elegant
+- Professional
+- Minimalist
+- Executive
+- Premium consultancy feel
 
-to:
+Avoid:
+
+- Startup aesthetics
+- Excessive animations
+- Buzzwords
+- AI hype
+- Generic consulting jargon
+
+The page should feel like a natural continuation of the homepage.
+
+Alternate visual structures where appropriate.
+
+Not every section should be a card grid.
+
+Create hierarchy, rhythm and progression.
+
+The page should feel like a journey.
+
+──────────────────────────────────────────────
+PAGE HERO
+──────────────────────────────────────────────
+
+Title:
 
 Cómo trabajamos
 
-This change should affect:
+Supporting message direction:
 
-- Desktop navigation
-- Mobile navigation
-- Footer navigation
-- Any internal navigation references
+Cada organización es diferente.
 
-IMPORTANT:
+La forma de abordar problemas complejos no debería serlo.
 
-Do NOT modify the page content itself.
+Nuestro trabajo consiste en comprender la situación, evaluar alternativas y construir únicamente aquello que aporte valor real.
 
-Only rename the navigation label and related references.
+Create the final wording yourself while remaining aligned with this idea.
 
 ──────────────────────────────────────────────
-3. RENAME "SOBRE MÍ"
+SECTION 1
+CONVERSACIÓN INICIAL
 ──────────────────────────────────────────────
 
-Change:
+Purpose:
 
-Sobre mí
+Explain that every collaboration begins with understanding.
 
-to:
+Topics to communicate:
 
-Sobre nosotros
+- Understanding the organisation
+- Understanding the industry
+- Understanding the context
+- Understanding motivations
+- Understanding objectives
+- Understanding current challenges or opportunities
 
-This change should affect:
+Important:
 
-- Desktop navigation
-- Mobile navigation
-- Footer navigation
-- Any internal navigation references
+We do not begin by discussing technology.
 
-IMPORTANT:
-
-Do NOT modify the page content itself.
-
-Only rename the navigation label and related references.
+We begin by understanding the situation.
 
 ──────────────────────────────────────────────
-4. REVIEW EXISTING BUTTONS
+SECTION 2
+COMPRENDER LA INFORMACIÓN DISPONIBLE
 ──────────────────────────────────────────────
 
-Review all CTA buttons currently present across the website.
+Purpose:
 
-The objective is not to redesign them.
+Explain that before proposing solutions we analyse what already exists.
 
-The objective is to ensure consistency with the new navigation structure.
+Topics:
 
-If a button currently points to:
+- Available information
+- Data sources
+- Historical records
+- Data quality
+- Data completeness
+- Existing systems
+- Existing tools
+- Current infrastructure
 
-Servicios
-
-it should now point to:
-
-Cómo trabajamos
-
-If a button currently references:
-
-Sobre mí
-
-it should now reference:
-
-Sobre nosotros
-
-Review:
-
-- Homepage buttons
-- Footer buttons
-- Navigation buttons
-- Internal section links
+Communicate that many opportunities and limitations become visible during this phase.
 
 ──────────────────────────────────────────────
-5. DO NOT ADD NEW CONTENT
+SECTION 3
+EVALUAR ALTERNATIVAS
 ──────────────────────────────────────────────
 
-At this stage:
+Purpose:
 
-- Do not add new buttons
-- Do not remove existing buttons unless they are broken
-- Do not redesign sections
-- Do not change page layouts
-- Do not rewrite content
+Explain that there is rarely a single valid solution.
 
-Only update the architecture and ensure consistency.
+Topics:
 
-──────────────────────────────────────────────
-6. FINAL NAVIGATION STRUCTURE
-──────────────────────────────────────────────
+- Different approaches
+- Different levels of complexity
+- Different implementation paths
+- Cost vs value
+- Risk vs benefit
 
-The final navigation should be:
-
-Inicio
-
-Cómo trabajamos
-
-Casos prácticos
-
-Artículos
-
-Sobre nosotros
-
-Contacto
-
-Ensure this structure is consistent across:
-
-- Desktop navigation
-- Mobile navigation
-- Footer navigation
-- Internal references
+Communicate that solutions should fit the reality of the organisation.
 
 ──────────────────────────────────────────────
-7. OUTPUT
+SECTION 4
+DECIDIR QUÉ MERECE LA PENA CONSTRUIR
 ──────────────────────────────────────────────
 
-After implementing the changes:
+This is one of the most important sections of the page.
 
-Provide a short summary of:
+Communicate clearly:
 
-- Navigation items changed
-- Buttons updated
-- Links updated
-- Any inconsistencies detected
-- Any pages or components that may require manual review
+Not every idea should become a project.
+
+Not every project should be developed.
+
+If we believe something is unlikely to generate value, we will say so.
+
+If expectations are unrealistic, we will communicate it.
+
+If we believe a simpler alternative exists, we will recommend it.
+
+Important message:
+
+Our objective is not to maximise project volume.
+
+Our objective is to help organisations make better decisions.
+
+This section should become one of the strongest trust-building sections on the website.
+
+──────────────────────────────────────────────
+SECTION 5
+DESARROLLO E IMPLEMENTACIÓN
+──────────────────────────────────────────────
+
+Purpose:
+
+Explain how projects are developed once approved.
+
+Topics:
+
+- Initial versions
+- Validation
+- Iteration
+- Integration
+- Production deployment
+
+Communicate that solutions should operate in real environments and support real decisions.
+
+──────────────────────────────────────────────
+SECTION 6
+ENTREGA Y TRANSFERENCIA
+──────────────────────────────────────────────
+
+Purpose:
+
+Explain that delivery is more than handing over a tool.
+
+Topics:
+
+- Documentation
+- Technical explanations
+- Knowledge transfer
+- Training
+- Adoption
+
+Communicate that a solution is only valuable if people can actually use it.
+
+──────────────────────────────────────────────
+SECTION 7
+SEGUIMIENTO Y MEJORA
+──────────────────────────────────────────────
+
+Purpose:
+
+Explain post-delivery support.
+
+Topics:
+
+- Monitoring
+- Validation
+- Improvements
+- Evolution
+- Long-term value
+
+Communicate commitment and continuity.
+
+──────────────────────────────────────────────
+VALUES SECTION
+──────────────────────────────────────────────
+
+Create a dedicated section communicating the principles that guide our work.
+
+Suggested values:
+
+- Honestidad
+- Transparencia
+- Compromiso
+- Rigor
+- Responsabilidad profesional
+
+Important:
+
+Do not present them as marketing slogans.
+
+Explain how they influence decisions and recommendations.
+
+──────────────────────────────────────────────
+KEY MESSAGE
+──────────────────────────────────────────────
+
+At some point in the page, incorporate the idea that:
+
+"We do not build solutions because they are complex or interesting.
+
+We build solutions because we believe they can create real value."
+
+This idea should become one of the defining messages of the page.
+
+──────────────────────────────────────────────
+IMPORTANT
+──────────────────────────────────────────────
+
+This is Version 1 of the page.
+
+Build a strong foundation.
+
+Prioritise structure, clarity and presentation quality.
+
+Do not try to make the page perfect.
+
+Create something professional, elegant and coherent with the homepage that can be refined and expanded later.
