@@ -1,176 +1,203 @@
-SC-ANALYTICS – CREATE THE "SOBRE NOSOTROS" PAGE
+SC-ANALYTICS – CONTACT PAGE CONVERSION REFINEMENT
 
-IMPORTANT
+Objective:
 
-Create a completely new "Sobre nosotros" page.
+Refine the Contact page so that it feels easier, warmer and less demanding for a potential client to start a conversation.
 
-Do not approach this page as a personal biography.
+The goal is not to collect a complete project brief.
 
-Do not create a traditional "About Me" page.
+The goal is to make the visitor think:
 
-Do not focus on academic credentials, technologies, programming languages or personal history.
+"I lose nothing by contacting them."
 
-The purpose of this page is to explain:
+The page should reduce friction and make the first step feel simple, professional and low-risk.
 
-* Why SC-Analytics exists.
-* What principles guide our work.
-* What kind of problems we help organisations solve.
-* What vision we have for the future.
+Maintain the existing SC-Analytics visual identity:
 
-The page should feel consistent with both the homepage and the "Cómo trabajamos" page.
+- Elegant
+- Minimalist
+- Professional
+- Executive
+- Trustworthy
+- Calm
 
-Maintain the same visual language:
+Do not redesign the entire website.
 
-* Elegant
-* Minimalist
-* Professional
-* Executive
-* High-trust
-* Premium consultancy
-
-Alternate dark and light sections as done throughout the website.
-
-Avoid startup aesthetics, marketing language and exaggerated claims.
+Focus only on the Contact page.
 
 ──────────────────────────────────────────────
-SECTION 1 – HERO
+1. MAIN MESSAGE
 ──────────────────────────────────────────────
 
-Title:
+The page should clearly communicate:
 
-Sobre nosotros
+The first conversation has no commitment.
 
-The hero should communicate that SC-Analytics was created around a simple idea:
+Its purpose is simply to understand the situation, answer initial questions and evaluate whether SC-Analytics can genuinely help.
 
-Better decisions require more than technology.
+Use this idea near the top of the contact form.
 
-They require understanding, analysis and a rigorous understanding of reality.
+Suggested wording direction:
 
-The hero should establish trust and clearly connect with the philosophy already presented on the homepage.
+"La primera conversación no tiene ningún compromiso.
+
+Su único objetivo es comprender la situación, resolver dudas iniciales y valorar si podemos aportar ayuda."
+
+You may refine the wording, but preserve the meaning.
 
 ──────────────────────────────────────────────
-SECTION 2 – WHY SC-ANALYTICS EXISTS
+2. SIMPLIFY THE CONTACT FORM
 ──────────────────────────────────────────────
+
+Reduce the form to the minimum necessary fields.
+
+Use only:
+
+- Nombre
+- Empresa or Organización (optional)
+- Email
+- Mensaje
+
+Remove the current "Tipo de proyecto" / service selector.
+
+Reason:
+
+We do not want visitors to choose a predefined service before we understand the situation.
+
+This is consistent with the SC-Analytics philosophy:
+
+Understand before building.
+
+Technology and services come later.
+
+──────────────────────────────────────────────
+3. MESSAGE FIELD
+──────────────────────────────────────────────
+
+Rename or guide the message field so it feels conversational.
+
+Suggested label:
+
+"Situación, problema u oportunidad"
+
+Suggested placeholder:
+
+"Describe brevemente qué te gustaría mejorar, qué problema quieres resolver o qué oportunidad te gustaría explorar. No hace falta entrar en detalles; la primera conversación sirve precisamente para entender el contexto."
+
+The message field should invite a short, simple explanation.
+
+It should not feel like a formal project brief.
+
+──────────────────────────────────────────────
+4. CTA BUTTON
+──────────────────────────────────────────────
+
+Replace the current button text:
+
+"Enviar mensaje"
+
+with a more consultative CTA.
+
+Preferred option:
+
+"Iniciar conversación"
+
+Alternative acceptable option:
+
+"Solicitar primera conversación"
+
+The CTA should feel calm and professional, not aggressive.
+
+──────────────────────────────────────────────
+5. RIGHT-SIDE INFORMATION PANEL
+──────────────────────────────────────────────
+
+Simplify the current contact information panel.
+
+Keep only practical information:
+
+- Email
+- LinkedIn
+- Expected response time
+
+Add:
+
+"Respuesta habitual: 24–48 horas"
+
+Remove or reduce the sections:
+
+- Especialización
+- Forma de trabajar
+
+Reason:
+
+These ideas are already explained throughout the website.
+
+The Contact page should focus on making the next step easy.
+
+──────────────────────────────────────────────
+6. GUIDANCE SECTION
+──────────────────────────────────────────────
+
+Keep a lightweight guidance section, but make it less demanding.
+
+Current structure feels like instructions for completing a business analysis.
+
+Instead, make it feel like optional help.
 
 Title suggestion:
 
-Por qué existe SC-Analytics
+"Algunas preguntas que pueden ayudarte"
 
-Purpose:
+Include 4 short prompts:
 
-Explain that many organisations generate valuable information every day but struggle to transform it into better decisions.
-
-Explain that SC-Analytics exists to help bridge the gap between:
-
-* Data and action
-* Information and decisions
-* Analysis and implementation
-
-The focus should be on helping organisations operate with greater clarity, control and confidence.
-
-──────────────────────────────────────────────
-SECTION 3 – OUR WAY OF THINKING
-──────────────────────────────────────────────
-
-Title suggestion:
-
-Nuestra forma de pensar
-
-Present the principles that guide every recommendation and every project.
-
-Suggested principles:
-
-* Comprender antes de construir
-* Tecnología cuando aporta valor
-* Honestidad profesional
-* Soluciones proporcionadas
-* Valor empresarial antes que complejidad
+- ¿Qué situación te gustaría mejorar?
+- ¿Qué decisión te gustaría tomar con mayor confianza?
+- ¿Qué limitación está afectando actualmente al negocio?
+- ¿Existe alguna oportunidad que crees que no estás aprovechando?
 
 Important:
 
-Do not present them as slogans.
+Make clear that answering all of these is not required.
 
-Explain what they mean in practice and how they influence decisions.
+Suggested supporting text:
 
-──────────────────────────────────────────────
-SECTION 4 – WHAT WE HELP ORGANISATIONS IMPROVE
-──────────────────────────────────────────────
-
-IMPORTANT
-
-Do NOT present this as a list of services.
-
-Do NOT use words such as:
-
-* Forecasting
-* Machine Learning
-* Optimisation
-* Automation
-
-as the primary message.
-
-Instead focus on outcomes and business challenges.
-
-Examples:
-
-* Reducir incertidumbre
-* Mejorar la calidad de las decisiones
-* Optimizar el uso de recursos
-* Incrementar la visibilidad operativa
-* Detectar oportunidades ocultas
-* Mejorar la planificación
-* Convertir información en acción
-
-The visitor should recognise their challenges, not our tools.
+"No es necesario responder a todo. Una breve explicación es suficiente para iniciar la conversación."
 
 ──────────────────────────────────────────────
-SECTION 5 – OUR VISION
+7. TONE
 ──────────────────────────────────────────────
 
-This should be one of the most important sections.
+The tone should be:
 
-Use the following ideas as inspiration and preserve their meaning:
+- Simple
+- Trustworthy
+- Consultative
+- Low-pressure
+- Professional
 
-"Creemos que las mejores decisiones surgen cuando se combina experiencia, análisis y una comprensión rigurosa de la realidad.
+Avoid:
 
-Nuestro objetivo es seguir desarrollando sistemas que ayuden a las organizaciones a operar con mayor control, claridad y confianza.
+- Sales language
+- "Book a demo"
+- "Schedule your strategy session"
+- Aggressive conversion language
+- Overly technical wording
 
-A medida que SC-Analytics evolucione, mantendremos el mismo principio que guía nuestro trabajo desde el inicio:
+This is not a sales funnel.
 
-Comprender antes de construir."
-
-Expand and refine this message while maintaining its essence.
-
-Important:
-
-Do not talk about becoming a large company.
-
-Do not talk about growth for the sake of growth.
-
-Focus on quality, trust, impact and long-term value.
+This is the beginning of a professional conversation.
 
 ──────────────────────────────────────────────
-FINAL CTA
+8. FINAL OBJECTIVE
 ──────────────────────────────────────────────
 
-Create a final section consistent with the rest of the website.
+The Contact page should make it very easy for a CEO, founder or operations manager to reach out even if they do not yet know exactly how to define the project.
 
-The CTA should feel consultative rather than sales-oriented.
+The visitor should feel:
 
-Possible direction:
-
-Cada organización es diferente.
-
-Si quieres compartir una situación, problema u oportunidad, estaremos encantados de conocerla y analizarla contigo.
-
-Keep it elegant, professional and aligned with the philosophy of SC-Analytics.
-
-──────────────────────────────────────────────
-IMPORTANT FINAL NOTE
-──────────────────────────────────────────────
-
-This page should not feel like a founder profile.
-
-It should feel like the presentation of a consultancy and the philosophy that guides it.
-
-The objective is to build trust, credibility and clarity.
+- I do not need to know the solution.
+- I do not need to write a perfect brief.
+- I can simply explain the situation.
+- The first conversation is without commitment.
+- SC-Analytics will help me understand whether there is value in moving forward.
