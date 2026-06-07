@@ -140,65 +140,40 @@ export default function ContactPage() {
               )}
             </div>
 
-            {/* ── Right: Info + Guidance ── */}
-            <div className="space-y-6">
+            {/* ── Right: What happens next ── */}
+            <div className="reveal rounded-2xl border border-slate-200 bg-white p-8 md:p-10 flex flex-col">
 
-              {/* Contact info panel */}
-              <div className="reveal rounded-2xl border border-slate-200 bg-white p-8">
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{t.infoLabel}</p>
-                <h2
-                  className="mt-3 text-2xl text-slate-900"
-                  style={{ fontFamily: 'var(--font-playfair)' }}
-                >
-                  {t.infoTitle}
-                </h2>
-                <div className="mt-7 space-y-5">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.14em] text-slate-400">{t.emailLabel}</p>
-                    <a
-                      href="mailto:contact@arnausastre.com"
-                      className="mt-2 block text-base font-medium text-slate-900 hover:text-indigo-600 transition"
+              <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{t.nextLabel}</p>
+              <h2
+                className="mt-3 text-2xl text-slate-900"
+                style={{ fontFamily: 'var(--font-playfair)' }}
+              >
+                {t.nextTitle}
+              </h2>
+
+              {/* 3 numbered steps */}
+              <ol className="mt-8 space-y-7 flex-1">
+                {([t.next1, t.next2, t.next3] as string[]).map((step, i) => (
+                  <li key={i} className="flex gap-5 items-start">
+                    <span
+                      className="text-2xl font-light text-slate-200 flex-shrink-0 leading-none"
+                      style={{ fontFamily: 'var(--font-playfair)' }}
                     >
-                      contact@arnausastre.com
-                    </a>
-                  </div>
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.14em] text-slate-400">{t.linkedinLabel}</p>
-                    <a
-                      href="https://linkedin.com/in/arnausastre"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-2 block text-base font-medium text-slate-900 hover:text-indigo-600 transition"
-                    >
-                      linkedin.com/in/arnausastre
-                    </a>
-                  </div>
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.14em] text-slate-400">{t.responseTimeLabel}</p>
-                    <p className="mt-2 text-base font-medium text-slate-900">{t.responseTimeDesc}</p>
-                  </div>
-                </div>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <p className="text-sm leading-7 text-slate-600 pt-0.5">{step}</p>
+                  </li>
+                ))}
+              </ol>
+
+              {/* Trust block */}
+              <div className="mt-8 rounded-xl border border-indigo-100 bg-indigo-50 px-6 py-5">
+                <p className="text-sm font-semibold text-indigo-900 leading-6">{t.nextTrust1}</p>
+                <p className="mt-1.5 text-sm leading-6 text-indigo-700">{t.nextTrust2}</p>
               </div>
 
-              {/* Guidance section */}
-              <div className="reveal rounded-2xl border border-slate-200 bg-slate-50 p-8">
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{t.guidanceLabel}</p>
-                <h2
-                  className="mt-3 text-xl text-slate-900"
-                  style={{ fontFamily: 'var(--font-playfair)' }}
-                >
-                  {t.guidanceTitle}
-                </h2>
-                <p className="mt-3 text-sm leading-6 text-slate-500">{t.guidanceNote}</p>
-                <ul className="mt-6 space-y-3">
-                  {([t.g1, t.g2, t.g3, t.g4] as string[]).map((q) => (
-                    <li key={q} className="flex items-start gap-3">
-                      <span className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-indigo-400" />
-                      <p className="text-sm leading-6 text-slate-700">{q}</p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {/* Footer note */}
+              <p className="mt-5 text-xs text-slate-400">{t.nextFooter}</p>
 
             </div>
           </div>
