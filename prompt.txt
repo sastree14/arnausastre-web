@@ -1,203 +1,102 @@
-SC-ANALYTICS – CONTACT PAGE CONVERSION REFINEMENT
-
-Objective:
-
-Refine the Contact page so that it feels easier, warmer and less demanding for a potential client to start a conversation.
-
-The goal is not to collect a complete project brief.
-
-The goal is to make the visitor think:
-
-"I lose nothing by contacting them."
-
-The page should reduce friction and make the first step feel simple, professional and low-risk.
-
-Maintain the existing SC-Analytics visual identity:
-
-- Elegant
-- Minimalist
-- Professional
-- Executive
-- Trustworthy
-- Calm
-
-Do not redesign the entire website.
-
-Focus only on the Contact page.
-
-──────────────────────────────────────────────
-1. MAIN MESSAGE
-──────────────────────────────────────────────
-
-The page should clearly communicate:
-
-The first conversation has no commitment.
-
-Its purpose is simply to understand the situation, answer initial questions and evaluate whether SC-Analytics can genuinely help.
-
-Use this idea near the top of the contact form.
-
-Suggested wording direction:
-
-"La primera conversación no tiene ningún compromiso.
-
-Su único objetivo es comprender la situación, resolver dudas iniciales y valorar si podemos aportar ayuda."
-
-You may refine the wording, but preserve the meaning.
-
-──────────────────────────────────────────────
-2. SIMPLIFY THE CONTACT FORM
-──────────────────────────────────────────────
-
-Reduce the form to the minimum necessary fields.
-
-Use only:
-
-- Nombre
-- Empresa or Organización (optional)
-- Email
-- Mensaje
-
-Remove the current "Tipo de proyecto" / service selector.
-
-Reason:
-
-We do not want visitors to choose a predefined service before we understand the situation.
-
-This is consistent with the SC-Analytics philosophy:
-
-Understand before building.
-
-Technology and services come later.
-
-──────────────────────────────────────────────
-3. MESSAGE FIELD
-──────────────────────────────────────────────
-
-Rename or guide the message field so it feels conversational.
-
-Suggested label:
-
-"Situación, problema u oportunidad"
-
-Suggested placeholder:
-
-"Describe brevemente qué te gustaría mejorar, qué problema quieres resolver o qué oportunidad te gustaría explorar. No hace falta entrar en detalles; la primera conversación sirve precisamente para entender el contexto."
-
-The message field should invite a short, simple explanation.
-
-It should not feel like a formal project brief.
-
-──────────────────────────────────────────────
-4. CTA BUTTON
-──────────────────────────────────────────────
-
-Replace the current button text:
-
-"Enviar mensaje"
-
-with a more consultative CTA.
-
-Preferred option:
-
-"Iniciar conversación"
-
-Alternative acceptable option:
-
-"Solicitar primera conversación"
-
-The CTA should feel calm and professional, not aggressive.
-
-──────────────────────────────────────────────
-5. RIGHT-SIDE INFORMATION PANEL
-──────────────────────────────────────────────
-
-Simplify the current contact information panel.
-
-Keep only practical information:
-
-- Email
-- LinkedIn
-- Expected response time
-
-Add:
-
-"Respuesta habitual: 24–48 horas"
-
-Remove or reduce the sections:
-
-- Especialización
-- Forma de trabajar
-
-Reason:
-
-These ideas are already explained throughout the website.
-
-The Contact page should focus on making the next step easy.
-
-──────────────────────────────────────────────
-6. GUIDANCE SECTION
-──────────────────────────────────────────────
-
-Keep a lightweight guidance section, but make it less demanding.
-
-Current structure feels like instructions for completing a business analysis.
-
-Instead, make it feel like optional help.
-
-Title suggestion:
-
-"Algunas preguntas que pueden ayudarte"
-
-Include 4 short prompts:
-
-- ¿Qué situación te gustaría mejorar?
-- ¿Qué decisión te gustaría tomar con mayor confianza?
-- ¿Qué limitación está afectando actualmente al negocio?
-- ¿Existe alguna oportunidad que crees que no estás aprovechando?
-
-Important:
-
-Make clear that answering all of these is not required.
-
-Suggested supporting text:
-
-"No es necesario responder a todo. Una breve explicación es suficiente para iniciar la conversación."
-
-──────────────────────────────────────────────
-7. TONE
-──────────────────────────────────────────────
-
-The tone should be:
-
-- Simple
-- Trustworthy
-- Consultative
-- Low-pressure
-- Professional
-
-Avoid:
-
-- Sales language
-- "Book a demo"
-- "Schedule your strategy session"
-- Aggressive conversion language
-- Overly technical wording
-
-This is not a sales funnel.
-
-This is the beginning of a professional conversation.
-
-──────────────────────────────────────────────
-8. FINAL OBJECTIVE
-──────────────────────────────────────────────
-
-The Contact page should make it very easy for a CEO, founder or operations manager to reach out even if they do not yet know exactly how to define the project.
-
-The visitor should feel:
-
-- I do not need to know the solution.
-- I do not need to write a perfect brief.
-- I can simply explain the situation.
-- The first conversation is without commitment.
-- SC-Analytics will help me understand whether there is value in moving forward.
+CONTEXTO DEL PROYECTO
+
+Este repo (arnausastre-web) es la web de SC-Analytics, una consultora de
+datos/ML. Está construido en Next.js 16 (App Router) + React 19 + TypeScript.
+Los artículos del blog ("insights") viven como objetos TypeScript tipados en
+lib/articles.ts (interfaz Article: slug, titleEn, titleEs, date, readingTime,
+tagsEn, tagsEs, excerptEn, excerptEs, bodyEn, bodyEs). No hay MDX. El cuerpo es
+texto plano con **negrita** estilo markdown ligero. NO existe todavía un campo
+de imagen en la interfaz — lo añadiremos en esta tarea.
+
+Brand kit oficial (no inventar otros colores):
+  Fondo:        #0D1B2A
+  Azul medio:   #1E3A5F
+  Línea azul:   #496C8A
+  Blanco roto:  #F5F7FA
+Tipografía: serif clásica (Georgia o similar) para títulos, con la cursiva
+reservada para énfasis editorial (igual que el home: "Better business
+outcomes." en cursiva). El monograma "SC" ya vive en public/brand/.
+
+OBJETIVO DE ESTA TAREA
+
+Quiero un primer workflow MANUAL (workflow_dispatch, no cron todavía) que se
+pueda ejecutar a mano desde la pestaña Actions de GitHub, y que haga lo
+siguiente, paso a paso, deteniéndose si algo falla en vez de continuar a
+ciegas:
+
+1. Lea mi Google Sheet "SC-Analytics — Editorial System" (pestañas: Content
+   Pipeline, Topics Bank, Industries, Prompts, Published Content, Content
+   Strategy) usando la API de Google Sheets con una Service Account.
+
+2. Determine qué temas/industrias de la pestaña "Topics Bank" todavía NO
+   tienen una entrada correspondiente en "Content Pipeline" (es decir, no se
+   ha escrito artículo sobre ellos todavía). Si "Topics Bank" está vacía o
+   todo ya está cubierto, el workflow debe terminar con un mensaje claro en
+   los logs ("no hay temas pendientes") y no fallar de forma confusa.
+
+3. De entre los temas pendientes, elija UNO al azar (random, pero registra la
+   semilla/elección en el log para que sea trazable).
+
+4. Investigue por internet cómo se aplica el análisis de datos / forecasting /
+   optimización / ML a esa industria concreta, usando la Brave Search API
+   (api key vía secret de GitHub llamado BRAVE_API_KEY). Necesito 3-5
+   resultados relevantes y recientes, no solo el primero que salga.
+
+5. NO escriba el artículo todavía en esta primera versión — el objetivo de
+   esta tarea es solo validar los pasos 1-4 funcionando de punta a punta.
+   Como resultado final, el workflow debe:
+   a) imprimir en el log un resumen claro: tema elegido, industria, ángulo
+      sugerido, y un resumen de 3-5 líneas de lo que encontró en la
+      investigación web (con las URLs fuente)
+   b) escribir ese mismo resumen como un comentario en un Issue de GitHub
+      creado automáticamente (título: "Borrador propuesto: [tema] — [fecha]"),
+      para que yo pueda revisarlo desde el móvil sin tener que mirar logs de
+      Actions
+
+ANTES DE ESCRIBIR CÓDIGO
+
+Por favor, antes de generar nada:
+- Pregúntame por la estructura EXACTA de columnas que ya existen en mis hojas
+  "Content Pipeline" y "Topics Bank" (puedo pegarte la cabecera de cada una).
+- Pregúntame el ID de la Google Sheet (lo sacamos juntos de la URL).
+- Explícame, paso a paso y en términos sencillos, cómo crear la Service
+  Account de Google Cloud y cómo compartir la Sheet con su email, antes de
+  asumir que ya existe.
+- Explícame cómo crear la cuenta de Brave Search API y dónde pego la key como
+  secret de GitHub.
+- Confirma conmigo el nombre exacto del repo y la rama por defecto antes de
+  crear ningún workflow.
+
+REQUISITOS DE CÓDIGO
+
+- Lenguaje: Python (no Node), porque el resto del content engine que viene
+  después también será Python.
+- Estructura de carpetas propuesta (ajústala si el repo ya tiene convención
+  distinta, pero dime cuál y por qué):
+    scripts/content_engine/
+      sheets_client.py      (lectura/escritura de Google Sheets)
+      web_research.py       (cliente de Brave Search)
+      pick_topic.py         (lógica de selección de tema pendiente)
+      run_research_draft.py (orquestador, entry point del workflow)
+    .github/workflows/
+      content-research-draft.yml
+- Todas las credenciales vía GitHub Secrets, nunca hardcodeadas ni committeadas
+  (ni siquiera de ejemplo con valores reales).
+- Maneja errores de forma explícita: si falta un secret, si la Sheet no tiene
+  las columnas esperadas, si la API de búsqueda no responde — el workflow
+  debe fallar con un mensaje humano-legible, no con un stacktrace críptico.
+- No instales librerías de más "por si acaso" — solo lo estrictamente
+  necesario (probablemente: google-api-python-client, google-auth, requests).
+
+NO HACER EN ESTA TAREA (para no desbordar el alcance)
+
+- No generes el cron semanal todavía — esto es solo workflow_dispatch manual.
+- No escribas el cuerpo del artículo todavía.
+- No generes imágenes todavía.
+- No toques lib/articles.ts ni la interfaz Article todavía.
+- No conectes LinkedIn ni ninguna otra red social todavía.
+
+Cuando tengas las respuestas a las preguntas de arriba, procede a implementar
+y luego dime exactamente qué Secrets tengo que crear en GitHub (Settings →
+Secrets and variables → Actions) con sus nombres exactos, y los pasos para
+probarlo manualmente antes de confiar en que funciona.
