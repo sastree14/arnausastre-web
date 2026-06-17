@@ -1,7 +1,7 @@
-"""Drafts a full bilingual article via the Anthropic (Claude) API.
+"""Drafts a full bilingual article via the Gemini API (gemini-2.5-flash).
 
-Uses plain `requests` against the Messages API instead of the `anthropic` SDK,
-to avoid adding a dependency that isn't strictly necessary.
+Uses plain `requests` against the generateContent REST endpoint instead of
+the `google-genai` SDK, to avoid adding a dependency that isn't strictly necessary.
 """
 
 from __future__ import annotations
@@ -16,10 +16,9 @@ import requests
 from pick_topic import PendingTopic
 from web_research import SearchResult
 
-ANTHROPIC_ENDPOINT = "https://api.anthropic.com/v1/messages"
-ANTHROPIC_VERSION = "2023-06-01"
-MODEL = "claude-sonnet-4-6"
-MAX_TOKENS = 8000
+GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_ENDPOINT = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
+MAX_OUTPUT_TOKENS = 8000
 REQUEST_TIMEOUT_SECONDS = 180
 
 BRAND_TONE_GUIDE = """\
@@ -43,16 +42,15 @@ REQUIRED_FIELDS = [
 
 
 class ArticleGenerationError(Exception):
-    """Raised when the Claude API is misconfigured, unreachable, or returns something unusable."""
+    """Raised when the Gemini API is misconfigured, unreachable, or returns something unusable."""
 
 
-def get_anthropic_api_key() -> str:
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+def get_gemini_api_key() -> str:
+    api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         raise ArticleGenerationError(
-            "Falta el secret ANTHROPIC_API_KEY. Crea una key en https://console.anthropic.com/ "
-            "(Settings -> API Keys) y guárdala en GitHub Settings -> Secrets and variables -> "
-            "Actions con el nombre ANTHROPIC_API_KEY."
+            "Falta el secret GEMINI_API_KEY. Crea una key en https://aistudio.google.com/app/apikey "
+            "y guárdala en GitHub Settings -> Secrets and variables -> Actions con el nombre GEMINI_API_KEY."
         )
     return api_key
 
@@ -135,39 +133,49 @@ def _strip_code_fences(text: str) -> str:
     return stripped.strip()
 
 
-def call_claude(prompt: str, api_key: str) -> str:
+def call_gemini(prompt: str, api_key: str) -> str:
     try:
         response = requests.post(
-            ANTHROPIC_ENDPOINT,
+            GEMINI_ENDPOINT,
             headers={
-                "x-api-key": api_key,
-                "anthropic-version": ANTHROPIC_VERSION,
+                "x-goog-api-key": api_key,
                 "content-type": "application/json",
             },
             json={
-                "model": MODEL,
-                "max_tokens": MAX_TOKENS,
-                "messages": [{"role": "user", "content": prompt}],
+                "contents": [{"parts": [{"text": prompt}]}],
+                "generationConfig": {
+                    "maxOutputTokens": MAX_OUTPUT_TOKENS,
+                    "responseMimeType": "application/json",
+                },
             },
             timeout=REQUEST_TIMEOUT_SECONDS,
         )
     except requests.RequestException as exc:
-        raise ArticleGenerationError(f"La API de Anthropic no respondió. Detalle: {exc}") from exc
+        raise ArticleGenerationError(f"La API de Gemini no respondió. Detalle: {exc}") from exc
 
-    if response.status_code == 401:
-        raise ArticleGenerationError("La API de Anthropic rechazó la API key (401). Verifica ANTHROPIC_API_KEY.")
+    if response.status_code == 401 or response.status_code == 403:
+        raise ArticleGenerationError(
+            f"La API de Gemini rechazó la API key ({response.status_code}). Verifica GEMINI_API_KEY."
+        )
     if response.status_code == 429:
-        raise ArticleGenerationError("La API de Anthropic devolvió 429 (rate limit / cuota agotada).")
+        raise ArticleGenerationError("La API de Gemini devolvió 429 (rate limit / cuota agotada).")
     if response.status_code != 200:
         raise ArticleGenerationError(
-            f"La API de Anthropic devolvió un error: HTTP {response.status_code} — {response.text[:500]}"
+            f"La API de Gemini devolvió un error: HTTP {response.status_code} — {response.text[:500]}"
         )
 
     payload = response.json()
-    blocks = payload.get("content", [])
-    text_blocks = [block.get("text", "") for block in blocks if block.get("type") == "text"]
+    candidates = payload.get("candidates", [])
+    if not candidates:
+        block_reason = payload.get("promptFeedback", {}).get("blockReason")
+        raise ArticleGenerationError(
+            f"La API de Gemini no devolvió ningún candidate (blockReason={block_reason!r})."
+        )
+
+    parts = candidates[0].get("content", {}).get("parts", [])
+    text_blocks = [part.get("text", "") for part in parts if "text" in part]
     if not text_blocks:
-        raise ArticleGenerationError("La respuesta de Anthropic no contenía texto utilizable.")
+        raise ArticleGenerationError("La respuesta de Gemini no contenía texto utilizable.")
     return "\n".join(text_blocks)
 
 
@@ -177,13 +185,13 @@ def parse_article_json(raw_text: str) -> dict:
         data = json.loads(cleaned)
     except json.JSONDecodeError as exc:
         raise ArticleGenerationError(
-            "Claude no devolvió un JSON válido para el artículo. "
+            "Gemini no devolvió un JSON válido para el artículo. "
             f"Primeros 300 caracteres de la respuesta: {cleaned[:300]!r}"
         ) from exc
 
     missing = [field for field in REQUIRED_FIELDS if field not in data or data[field] in (None, "")]
     if missing:
-        raise ArticleGenerationError(f"El JSON del artículo generado por Claude no incluye: {missing}")
+        raise ArticleGenerationError(f"El JSON del artículo generado por Gemini no incluye: {missing}")
 
     if not isinstance(data["tagsEn"], list) or not isinstance(data["tagsEs"], list):
         raise ArticleGenerationError("tagsEn/tagsEs deben ser arrays de strings en el JSON generado.")
@@ -195,8 +203,8 @@ def parse_article_json(raw_text: str) -> dict:
 
 
 def generate_article(topic: PendingTopic, industry_context: dict | None, research: list[SearchResult], lib_articles_path: Path) -> dict:
-    api_key = get_anthropic_api_key()
+    api_key = get_gemini_api_key()
     style_reference = load_style_reference(lib_articles_path)
     prompt = build_prompt(topic, industry_context, research, style_reference)
-    raw_response = call_claude(prompt, api_key)
+    raw_response = call_gemini(prompt, api_key)
     return parse_article_json(raw_response)

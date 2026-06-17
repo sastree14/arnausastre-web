@@ -7,7 +7,7 @@ Order of operations (mirrors the workflow spec):
   2. Read Content Pipeline, compute pending topics.
   3. Pick one pending topic at random (seed logged).
   4. Research it via Brave Search.
-  5. Draft the bilingual article via Claude.
+  5. Draft the bilingual article via Gemini.
   6. Generate its deterministic SVG header image.
   7. Insert the article into lib/articles.ts (+ patch the article page layout once).
   8. Append a row to Content Pipeline.

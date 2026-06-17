@@ -28,7 +28,7 @@ jobs:
           [ -z "${GOOGLE_SHEETS_CREDENTIALS}" ] && missing+=("GOOGLE_SHEETS_CREDENTIALS")
           [ -z "${EDITORIAL_SHEET_ID}" ] && missing+=("EDITORIAL_SHEET_ID")
           [ -z "${BRAVE_API_KEY}" ] && missing+=("BRAVE_API_KEY")
-          [ -z "${ANTHROPIC_API_KEY}" ] && missing+=("ANTHROPIC_API_KEY")
+          [ -z "${GEMINI_API_KEY}" ] && missing+=("GEMINI_API_KEY")
           if [ ${#missing[@]} -gt 0 ]; then
             echo "::error::Faltan secrets en este repo: ${missing[*]}. Ve a Settings > Secrets and variables > Actions y créalos antes de volver a ejecutar este workflow."
             exit 1
@@ -37,7 +37,7 @@ jobs:
           GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
           EDITORIAL_SHEET_ID: ${{ secrets.EDITORIAL_SHEET_ID }}
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
       - name: Run research + draft pipeline
         id: pipeline
@@ -46,7 +46,7 @@ jobs:
           GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
           EDITORIAL_SHEET_ID: ${{ secrets.EDITORIAL_SHEET_ID }}
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
       - name: Check whether there was anything to do
         id: check_output
