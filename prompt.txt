@@ -1,217 +1,56 @@
-CONTEXTO DEL PROYECTO
+CAMBIO DE PROVEEDOR DE LLM: Anthropic → Gemini
 
-Este repo (arnausastre-web) es la web de SC-Analytics, una consultora de
-datos/ML. Next.js 16 (App Router) + React 19 + TypeScript. Los artículos del
-blog ("insights") viven como objetos TypeScript tipados en lib/articles.ts:
+Decisión tomada: el redactado del artículo debe usar la Gemini API
+(modelo gemini-2.5-flash) en lugar de la API de Anthropic, por tener tier
+gratuito que cubre nuestro volumen real (~1 artículo/semana). Por favor,
+aplica SOLO este cambio — no toques el resto del pipeline que ya construiste
+(sheets_client.py, web_research.py, pick_topic.py, generate_header_svg.py,
+insert_article.py, run_pipeline.py, el workflow YAML, etc. quedan igual).
 
-  export interface Article {
-    slug: string
-    titleEn: string
-    titleEs: string
-    date: string
-    readingTime: number
-    tagsEn: string[]
-    tagsEs: string[]
-    excerptEn: string
-    excerptEs: string
-    bodyEn: string
-    bodyEs: string
-  }
+QUÉ CAMBIAR EXACTAMENTE
 
-No hay MDX. bodyEn/bodyEs son template strings de texto plano con **negrita**
-estilo markdown ligero. NO existe todavía un campo image — hay que añadirlo en
-esta tarea como `image: string` (ruta relativa dentro de public/, p.ej.
-"/insights/why-x-fails.svg").
+1. scripts/content_engine/write_article.py:
+   - Sustituye la llamada a la Messages API de Anthropic por una llamada a
+     la Gemini API (endpoint generateContent del modelo gemini-2.5-flash),
+     usando `requests` igual que ya haces (no añadas el SDK de google-genai
+     como dependencia nueva si se puede evitar con requests directo a la
+     API REST — pero si el SDK oficial simplifica mucho el manejo de
+     respuestas estructuradas/JSON, puedes usarlo y lo añades a
+     requirements.txt con su versión fijada).
+   - El prompt de sistema (tono de marca, instrucciones de formato JSON
+     estricto con los 12 campos de Article) debe mantenerse funcionalmente
+     igual al que ya escribiste — solo cambia el mecanismo de llamada y el
+     parseo de la respuesta al formato que devuelve Gemini.
+   - Variable de entorno: usa GEMINI_API_KEY en vez de ANTHROPIC_API_KEY.
+   - Mantén el mismo manejo de errores explícito y humano-legible que ya
+     tenías (si la respuesta no es JSON válido, si faltan campos, etc.).
 
-Brand kit oficial — paleta fija, no inventar otros colores:
-  Fondo:        #0D1B2A
-  Azul medio:   #1E3A5F
-  Línea azul:   #496C8A
-  Blanco roto:  #F5F7FA
-Tipografía: serif clásica (Georgia o similar) para títulos, cursiva reservada
-para énfasis editorial (igual que el home: "Better business outcomes." en
-cursiva). El monograma "SC" ya vive en public/brand/ — no lo regeneres, solo
-puedes referenciarlo como marca de agua discreta si encaja.
+2. .github/workflows/content-pipeline.yml:
+   - En el paso "Check required secrets are present" (o como se llame),
+     sustituye la comprobación de ANTHROPIC_API_KEY por GEMINI_API_KEY.
+   - En cualquier `env:` donde pases ANTHROPIC_API_KEY al script, cámbialo
+     por GEMINI_API_KEY.
 
-Tono de marca (extraído de los 4 artículos ya publicados, respétalo en todo
-texto que generes): frases cortas y declarativas, sin adjetivos de relleno,
-mucha contraposición tipo "la tecnología rara vez es el problema" / "no es
-una cuestión de X, es de Y", títulos en formato "Why most X fail in
-practice" / "The hidden cost of Y" / "Building Z that companies actually
-use". Nunca tono de venta agresivo ni superlativos vacíos ("revolucionario",
-"game-changing", etc.).
+3. requirements.txt: actualiza si añadiste el SDK de Google (google-genai
+   o el que corresponda), o déjalo igual si te quedaste con requests puro.
 
-CREDENCIALES YA EXISTENTES (no expliques cómo crearlas, ya están)
+4. Cualquier mención a "Claude" o "Anthropic" en comentarios/docstrings de
+   write_article.py debe actualizarse para reflejar que ahora es Gemini —
+   no dejes comentarios desincronizados con el código real.
 
-GitHub Secrets ya configurados en este repo:
-  GOOGLE_SHEETS_CREDENTIALS  → JSON completo de una service account de Google
-                                con acceso de Editor a la Sheet de abajo
-  EDITORIAL_SHEET_ID         → ID de la Google Sheet "SC-Analytics — Editorial
-                                System"
-  BRAVE_API_KEY              → API key de Brave Search (plan Search, $5/mes
-                                gratis, $5 por 1000 requests)
-  ANTHROPIC_API_KEY          → si no existe todavía, dímelo explícitamente y
-                                dime cómo crearla — la necesitamos para que el
-                                script redacte el artículo vía API de Claude
+NO HACER
 
-ESTRUCTURA REAL DE LA GOOGLE SHEET (no preguntes esto, ya está mapeado)
+- No toques sheets_client.py, web_research.py, pick_topic.py,
+  generate_header_svg.py, insert_article.py, update_pipeline_status.py,
+  build_pr_text.py, ni print_summary.py — ninguno de ellos depende del
+  proveedor de LLM, así que no deberían necesitar cambios.
+- No hagas commit todavía si no lo habías hecho ya — sigue esperando mi
+  revisión antes de eso, como ya habíamos acordado.
 
-Pestaña "Topics Bank" — columnas en este orden:
-  Theme | Possible Title | Industry | Decision Problem | Business Value |
-  Analytical Background | CEO Relevance | Difficulty | Notes
-Esta pestaña la rellena el usuario a mano con ideas candidatas. El script SOLO
-LEE de aquí, nunca escribe.
-
-Pestaña "Content Pipeline" — columnas en este orden:
-  ID | Status | Content Type | Title | Slug | Industry | Theme | Audience |
-  Objective | Angle | Sources Needed | Language | Priority | Draft Doc URL |
-  MDX File Name | LinkedIn Version | Publication Date | GitHub Status | Notes
-El script DEBE escribir una fila nueva aquí cada vez que genera un artículo.
-Mapeo de campos al generar la fila:
-  ID              → siguiente entero secuencial (mira la última fila existente)
-  Status          → "Generated" (luego el usuario lo cambia a mano a
-                     "Reviewed"/"Published" cuando corresponda)
-  Content Type    → "Article"
-  Title           → titleEn
-  Slug            → slug
-  Industry        → tomado de la fila de Topics Bank usada
-  Theme           → tomado de la fila de Topics Bank usada
-  Audience        → deja en blanco o "Business decision-makers" por defecto
-  Objective       → deja en blanco, lo rellena el usuario a mano
-  Angle           → el ángulo concreto que decidiste para el artículo
-  Sources Needed  → las URLs investigadas, separadas por coma
-  Language        → "EN/ES" (siempre generamos ambos)
-  Priority        → deja en blanco
-  Draft Doc URL   → deja en blanco (no usamos Google Docs en este flujo)
-  MDX File Name   → deja en blanco (no aplica, no usamos MDX)
-  LinkedIn Version → deja en blanco (eso es una tarea futura, no esta)
-  Publication Date → deja en blanco hasta que el usuario haga merge del PR
-  GitHub Status   → "PR open" + número de PR cuando se cree
-  Notes           → cualquier cosa relevante que quieras dejar anotada
-
-Pestaña "Industries" — columnas en este orden:
-  Industry | Common Decisions | Typical Data | Business Risks |
-  Relevant Methods | Example Article Angles
-Ya tiene 9 industrias en la primera columna (E-commerce, Retail,
-Manufacturing, Logistics, Healthcare, Pharma, Finance, Professional Services,
-Real Estate) pero el resto de columnas están vacías todavía. El script SOLO
-LEE de aquí — si la fila de la industria elegida tiene columnas vacías, usa
-igualmente lo que haya y complementa con la investigación web; no es
-bloqueante.
-
-Las pestañas "Prompts", "Published Content" y "Content Strategy" EXISTEN pero
-NO las toques en esta tarea — quedan fuera de alcance por ahora.
-
-OBJETIVO DE ESTA TAREA — pipeline completo de UN artículo, de punta a punta
-
-Quiero un workflow ejecutable manualmente (workflow_dispatch) que haga todo
-esto, en este orden, parando con un error claro si cualquier paso falla en
-vez de continuar a ciegas con datos parciales:
-
-1. LEE "Topics Bank" de la Sheet. Si está vacía, falla con mensaje claro
-   ("Topics Bank no tiene filas — añade al menos una idea antes de
-   ejecutar este workflow") y termina ahí, sin crear PR ni Issue de error
-   confuso.
-
-2. LEE "Content Pipeline" para saber qué filas de Topics Bank ya están
-   cubiertas (cruza por Theme+Industry). Construye la lista de temas
-   pendientes.
-
-3. Si hay temas pendientes, ELIGE UNO al azar (registra en el log qué
-   semilla/criterio se usó, para que sea trazable). Si no hay ninguno
-   pendiente, termina con mensaje claro, sin error.
-
-4. INVESTIGA por internet usando Brave Search API: 3-5 queries relevantes
-   sobre cómo se aplica análisis de datos / forecasting / optimización / ML
-   a esa industria y ese "Decision Problem" concreto de Topics Bank. Guarda
-   las URLs fuente.
-
-5. REDACTA el artículo completo, bilingüe (inglés y español), usando la API
-   de Anthropic (Claude), con:
-   - El tono de marca descrito arriba como contexto fijo del prompt
-   - El contenido de Industries (si existe) + lo investigado en el paso 4
-     como contexto factual
-   - Longitud objetivo similar a los 4 artículos ya existentes (puedes leer
-     lib/articles.ts para calibrar longitud real, no asumas un número)
-   - Debe producir TODOS los campos de la interfaz Article, en el formato
-     TypeScript exacto, listo para insertar en el array
-
-6. GENERA el objeto Article en TypeScript y lo INSERTA en lib/articles.ts,
-   añadiendo también el campo `image` apuntando a la ruta que generarás en
-   el paso 7. No reescribas el archivo entero a mano — usa una inserción
-   quirúrgica que preserve el resto de artículos intactos. Actualiza también
-   la interfaz Article para incluir `image: string` si no existe ya.
-
-7. GENERA la imagen de cabecera como SVG estático (no uses ninguna API de
-   generación de imagen, esto es composición geométrica programática):
-   - Fondo #0D1B2A a pantalla completa
-   - Zona izquierda (~42% del ancho) vacía, sin elementos gráficos — se
-     reserva para que el HTML real del título se monte encima
-   - Zona derecha: un motivo de líneas finas y nodos en #496C8A con puntos
-     de énfasis en #F5F7FA, generado con una semilla determinista derivada
-     del slug (mismo slug → misma composición siempre, usa por ejemplo
-     sha256 del slug como semilla de un RNG simple, no uses random() puro)
-   - Guárdalo en public/insights/{slug}.svg
-
-8. RENDERIZA esa imagen en app/insights/[slug]/page.tsx replicando el patrón
-   compositivo del home (texto a la izquierda, visual a la derecha) — mira
-   cómo está hecho app/page.tsx para mantener consistencia, no inventes un
-   layout nuevo desde cero.
-
-9. ESCRIBE una fila nueva en "Content Pipeline" con el mapeo de campos
-   especificado arriba.
-
-10. ABRE un Pull Request (no hagas commit directo a main) con todos los
-    cambios: lib/articles.ts actualizado, la imagen SVG nueva, y el page.tsx
-    si lo tocaste. Título del PR: "New article: [titleEn]". Cuerpo del PR
-    debe incluir: el excerpt en ambos idiomas, las fuentes investigadas, y
-    un recordatorio de que hay que revisar el contenido antes de hacer merge.
-
-ANTES DE ESCRIBIR CÓDIGO
-
-Antes de generar nada, por favor:
-- Lee lib/articles.ts y lib/case-studies.ts completos para calibrar tono,
-  longitud real y estilo — no asumas, verifica contra el contenido real.
-- Lee app/page.tsx para entender el patrón de layout texto-izquierda/
-  visual-derecha que hay que replicar en el artículo.
-- Confírmame si ANTHROPIC_API_KEY ya existe como secret o no.
-- Confirma conmigo el nombre exacto del repo y la rama por defecto.
-- Si algo de la estructura de carpetas que propongas no encaja con cómo está
-  organizado hoy el repo, dime cuál usarás y por qué.
-
-REQUISITOS DE CÓDIGO
-
-- Python para toda la lógica de orquestación (lectura de Sheets, búsqueda
-  web, llamada a la API de Claude, generación del SVG).
-- Estructura sugerida (ajústala si no encaja, pero dime por qué):
-    scripts/content_engine/
-      sheets_client.py       (lectura/escritura de Google Sheets)
-      web_research.py        (cliente de Brave Search)
-      pick_topic.py          (selección de tema pendiente)
-      write_article.py       (llamada a la API de Claude + construcción del
-                               objeto Article)
-      generate_header_svg.py (composición geométrica determinista)
-      insert_article.py      (inserción quirúrgica en lib/articles.ts)
-      run_pipeline.py         (orquestador, entry point)
-    .github/workflows/
-      content-pipeline.yml
-- Todas las credenciales vía GitHub Secrets, nunca hardcodeadas.
-- Errores explícitos y humano-legibles en cada paso, nunca un stacktrace sin
-  contexto.
-- No instales dependencias de más — solo lo estrictamente necesario.
-- El SVG generado debe ser determinista (mismo slug = mismo resultado),
-  para que sea reproducible y diffable en git.
-
-NO HACER EN ESTA TAREA
-
-- No conectes LinkedIn ni ninguna otra red social — eso es una tarea futura.
-- No toques las pestañas Prompts, Published Content, ni Content Strategy.
-- No uses ninguna API de generación de imagen (gpt-image-1, DALL-E, etc.) —
-  la imagen es SVG programático únicamente en esta tarea.
-- No generes el cron semanal todavía — esto es solo workflow_dispatch manual.
-- No hagas commit directo a main bajo ninguna circunstancia — siempre PR.
-
-Cuando termines, dime exactamente: qué Secret(s) adicionales tengo que crear
-si ANTHROPIC_API_KEY no existía, los pasos para ejecutar el workflow
-manualmente desde la pestaña Actions, y cómo verifico que el PR resultante
-tiene todo correcto antes de hacer merge.
+Cuando termines, dime:
+- Si tuviste que añadir alguna dependencia nueva a requirements.txt y por
+  qué fue necesaria.
+- Los pasos exactos para crear GEMINI_API_KEY (de dónde se saca, en qué
+  consola) y dónde pegarla como GitHub Secret.
+- Confirma que ANTHROPIC_API_KEY ya no aparece referenciada en ningún sitio
+  del pipeline (puedes verificarlo con un grep).
