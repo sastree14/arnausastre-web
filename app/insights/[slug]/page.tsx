@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { useLanguage } from '@/components/LanguageProvider'
 import { translations } from '@/lib/translations'
@@ -68,7 +69,7 @@ export default function ArticlePage() {
 
   return (
     <main className="bg-slate-50 text-slate-900 page-enter">
-      <article className="mx-auto max-w-4xl px-6 py-20">
+      <div className="mx-auto max-w-6xl px-6 pt-20">
         <Link
           href="/insights"
           className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 transition mb-10"
@@ -76,30 +77,50 @@ export default function ArticlePage() {
           {tc.backToInsights}
         </Link>
 
-        <div className="flex flex-wrap gap-2 mb-6">
-          {tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-md bg-indigo-50 border border-indigo-100 px-2.5 py-1 text-xs font-medium text-indigo-700"
+        {/* CONTENT_ENGINE: header image */}
+        <div className="grid items-center gap-12 pb-8 border-b border-slate-200 lg:grid-cols-2">
+          <div>
+            <div className="flex flex-wrap gap-2 mb-6">
+              {tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-md bg-indigo-50 border border-indigo-100 px-2.5 py-1 text-xs font-medium text-indigo-700"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            <h1
+              className="text-4xl leading-tight md:text-5xl text-slate-900"
+              style={{ fontFamily: 'var(--font-playfair)' }}
             >
-              {tag}
-            </span>
-          ))}
+              {title}
+            </h1>
+
+            <div className="mt-5 flex items-center gap-6">
+              <p className="text-sm text-slate-500">{article.date}</p>
+              <p className="text-sm text-slate-500">{article.readingTime} {tc.minRead}</p>
+            </div>
+          </div>
+
+          {article.image && (
+            <div className="hidden lg:block overflow-hidden rounded-2xl">
+              <Image
+                src={article.image}
+                alt={title}
+                width={1200}
+                height={800}
+                className="w-full h-auto"
+                priority
+              />
+            </div>
+          )}
         </div>
+      </div>
 
-        <h1
-          className="text-4xl leading-tight md:text-5xl text-slate-900"
-          style={{ fontFamily: 'var(--font-playfair)' }}
-        >
-          {title}
-        </h1>
-
-        <div className="mt-5 flex items-center gap-6 border-b border-slate-200 pb-8">
-          <p className="text-sm text-slate-500">{article.date}</p>
-          <p className="text-sm text-slate-500">{article.readingTime} {tc.minRead}</p>
-        </div>
-
-        <div className="mt-10 prose-like">
+      <article className="mx-auto max-w-4xl px-6 py-20">
+        <div className="prose-like">
           {renderBody(body)}
         </div>
       </article>
