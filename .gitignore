@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# content engine — transient hand-off file between pipeline steps, never committed
+scripts/content_engine/.pipeline_output.json
+scripts/content_engine/__pycache__/
+scripts/content_engine/venv/
