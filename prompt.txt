@@ -1,117 +1,281 @@
-Quiero crear un sistema manual y estructurado para Projects.
+Quiero hacer una revisión importante de la sección Knowledge para alinearla con la identidad de SC-Analytics.
 
-No quiero automatización con Gemini para Projects.
+Objetivo general:
 
-Objetivo:
-Yo subiré manualmente una carpeta por proyecto con:
+La sección Knowledge debe parecer la biblioteca de conocimiento de una consultora especializada en sistemas de decisión empresariales.
 
-* un archivo project.txt
-* una imagen sin fondo, normalmente cover.png o cover.svg
+No debe parecer un blog genérico ni una web de marketing.
 
-La web debe leer esos archivos y construir automáticamente:
+Debe transmitir:
 
-1. La página /projects con tarjetas de proyectos.
-2. Cada página individual /projects/{slug}.
+* rigor
+* experiencia práctica
+* claridad
+* orientación a negocio
+* profesionalidad
+* estilo clásico SC-Analytics
 
-Estructura deseada:
+Mantener:
 
-content/projects/
-ecommerce-forecasting-inventory/
-project.txt
+* fondo blanco
+* estética azul/blanco
+* diseño limpio
+* navegación simple
 
-public/projects/
-ecommerce-forecasting-inventory/
-cover.png
+---
 
-Formato de project.txt:
+1. TAXONOMÍA DE INDUSTRIAS
 
-Headline:
-Forecasting and Inventory Optimization System
+---
 
-Industry:
-E-commerce
+Actualmente hay muy pocas industrias.
 
-Capability:
-Forecasting, Simulation, Inventory Optimization
+Quiero ampliar significativamente el catálogo.
 
-Challenge:
-Demand Planning
+Industries:
 
-Description:
-Short public description of the project.
+* Retail
+* E-commerce
+* Manufacturing
+* Logistics
+* Financial Services
+* Banking
+* Insurance
+* Real Estate
+* Healthcare
+* Pharmaceutical
+* Energy
+* Utilities
+* Telecommunications
+* Professional Services
+* SaaS
+* Technology
+* Hospitality
+* Food & Beverage
+* Distribution
+* Transportation
+* Public Sector
 
-Metrics:
+El sistema debe escalar fácilmente para añadir nuevas industrias.
 
-* WAPE: 0.31
-* Horizons: 30, 91, 182 days
-* ASINs: 2,100+
-* Simulations: 250 scenarios
+---
 
-Image:
-cover.png
+2. RETOS MÁS GENERALES
 
-Status:
-Published
+---
 
-Sections:
-Context:
-...
+Los retos actuales son demasiado específicos.
 
-Problem:
-...
+Quiero categorías más estratégicas y reutilizables.
 
-Approach:
-...
+Challenges:
 
-System Developed:
-...
+* Forecasting
+* Planning
+* Optimization
+* Resource Allocation
+* Pricing
+* Risk Management
+* Customer Analytics
+* Operations
+* Automation
+* Decision Systems
+* Inventory Management
+* Supply Chain
+* Fraud Detection
+* Performance Management
+* Business Intelligence
+* Data Quality
+* Compliance
+* Growth Strategy
 
-Results:
-...
+El objetivo es que cualquier artículo encaje fácilmente.
 
-Confidentiality:
-Client name, internal data and operational details anonymized.
+---
 
-Requirements:
+3. AUDIENCIAS MÁS EXPLÍCITAS
 
-* Create a parser that reads every content/projects/{slug}/project.txt.
-* Extract Headline, Industry, Capability, Challenge, Description, Metrics, Image, Status and Sections.
-* Only show projects with Status: Published.
-* The image path should resolve automatically to /projects/{slug}/{image}.
-* Images may have transparent background, so display them inside a sober SC-Analytics card/background.
-* Do not modify the images themselves.
-* The design must be classic, sober, professional, blue/white, consistent with SC-Analytics.
-* /projects should show square or rectangular cards with:
+---
 
-  * image
-  * headline
-  * industry
-  * capability
-  * short description
-  * 3 to 5 metric boxes
-* On click, open /projects/{slug}.
-* The project detail page should show:
+No quiero categorías genéricas.
 
-  * Hero with headline and image
-  * Industry / Capability / Challenge
-  * Description
-  * Metric boxes
-  * Sections from project.txt
-  * Confidentiality note
-  * CTA to Contact
+Quiero cargos reales.
 
-Important:
+Audience:
 
-* Projects are curated manually.
-* No Gemini.
-* No Google Sheet dependency.
-* No automatic generation.
-* No private code, datasets, client names or sensitive information should be exposed.
-* The system should be scalable to 20–30 projects, but optimized for quality over quantity.
+* CEO
+* COO
+* CFO
+* CTO
+* CIO
+* CDO
+* Operations Director
+* Supply Chain Director
+* Finance Director
+* Commercial Director
+* Analytics Manager
+* Data Scientist
+* Data Analyst
+* Planning Manager
+* Risk Manager
 
-Before implementing:
+---
 
-1. Explain what files you will modify.
-2. Explain the final folder structure.
-3. Then implement.
-4. Run npm run build.
+4. GOOGLE SHEETS
+
+---
+
+Quiero revisar todo el pipeline editorial.
+
+Verificar:
+
+* que el Google Sheet correcto se utiliza
+* que EDITORIAL_SHEET_ID es el correcto
+* que los artículos se escriben correctamente
+* que los estados se actualizan
+* que los metadatos aparecen completos
+
+Si existe cualquier error silencioso, corregirlo.
+
+Añadir logs claros.
+
+---
+
+5. FILTROS
+
+---
+
+No quiero chips horizontales.
+
+Quiero filtros desplegables.
+
+Formato:
+
+Industry ▼
+
+Challenge ▼
+
+Audience ▼
+
+Cada selector debe ser elegante y profesional.
+
+Mantener posibilidad de selección rápida.
+
+---
+
+6. ESTILO VISUAL DE FILTROS
+
+---
+
+Los filtros actuales parecen demasiado ligeros.
+
+Quiero:
+
+* cajas rectangulares
+* bordes definidos
+* estética ejecutiva
+* coherente con SC-Analytics
+
+Nada parecido a una app startup.
+
+---
+
+7. REDISEÑO DE TARJETAS DE ARTÍCULOS
+
+---
+
+No me gusta la presentación actual.
+
+Quiero un diseño más clásico.
+
+Cada artículo debe mostrar:
+
+* Industry
+* Challenge
+* Audience
+* Título
+* Extracto
+* Fecha
+* Tiempo de lectura
+* CTA
+
+Diseño:
+
+* tarjetas horizontales
+* más espacio para lectura
+* mejor jerarquía tipográfica
+* menos aspecto de blog genérico
+
+Inspiración:
+
+consultoría, research, executive insights.
+
+No estilo Medium.
+
+No estilo startup.
+
+---
+
+8. IMAGEN DE LOS ARTÍCULOS
+
+---
+
+No quiero seguir utilizando la imagen SVG abstracta generada automáticamente.
+
+Quiero utilizar el branding de SC-Analytics.
+
+Usar:
+
+public/brand/logo-horizontal.png
+
+o preferiblemente:
+
+public/brand/logo-horizontal-transparent.png
+
+si existe transparencia.
+
+Cada tarjeta de artículo debe utilizar este branding como visual principal.
+
+Crear una composición elegante utilizando el logo.
+
+No generar imágenes abstractas nuevas.
+
+No generar ilustraciones automáticas.
+
+Mantener consistencia visual.
+
+---
+
+9. ESCALABILIDAD
+
+---
+
+Diseñar pensando en:
+
+* 200+ artículos
+* múltiples industrias
+* múltiples audiencias
+* múltiples retos
+
+La experiencia debe seguir siendo clara incluso con cientos de artículos.
+
+Priorizar:
+
+* filtrado
+* búsqueda
+* ordenación futura
+
+---
+
+10. IMPLEMENTACIÓN
+
+---
+
+Antes de modificar código:
+
+1. Explica qué archivos vas a tocar.
+2. Explica cómo quedará la arquitectura final.
+3. Explica cómo escalará a cientos de artículos.
+4. Después implementa.
+5. Ejecuta npm run build.
+6. Corrige cualquier error hasta que compile correctamente.
