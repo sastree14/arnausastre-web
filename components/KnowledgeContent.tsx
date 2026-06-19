@@ -203,14 +203,23 @@ function ArticleCard({ article, lang, tc }: {
 
 // ── Main component ────────────────────────────────────────────────────────────
 
+const PAGE_SIZE = 4
+
 export default function KnowledgeContent({ articles }: { articles: Article[] }) {
   const { lang } = useLanguage()
   const tc = translations[lang].common
   const [industry, setIndustry] = useState<string | null>(null)
   const [challenge, setChallenge] = useState<string | null>(null)
   const [audience, setAudience] = useState<string | null>(null)
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
   const hasFilters = industry !== null || challenge !== null || audience !== null
+
+  // Reset pagination whenever a filter changes
+  const setIndustryAndReset = (v: string | null) => { setIndustry(v); setVisibleCount(PAGE_SIZE) }
+  const setChallengeAndReset = (v: string | null) => { setChallenge(v); setVisibleCount(PAGE_SIZE) }
+  const setAudienceAndReset = (v: string | null) => { setAudience(v); setVisibleCount(PAGE_SIZE) }
+  const clearAll = () => { setIndustry(null); setChallenge(null); setAudience(null); setVisibleCount(PAGE_SIZE) }
 
   const filtered = articles.filter((a) => {
     if (industry && a.industry !== industry) return false
@@ -218,6 +227,9 @@ export default function KnowledgeContent({ articles }: { articles: Article[] }) 
     if (audience && a.audience !== audience) return false
     return true
   })
+
+  const visible = filtered.slice(0, visibleCount)
+  const hasMore = visibleCount < filtered.length
 
   const emptyTitle = lang === 'en'
     ? 'No articles available for this selection.'
@@ -236,7 +248,7 @@ export default function KnowledgeContent({ articles }: { articles: Article[] }) 
             label={lang === 'en' ? 'Industry' : 'Industria'}
             options={INDUSTRIES}
             value={industry}
-            onChange={setIndustry}
+            onChange={setIndustryAndReset}
             lang={lang}
             map={INDUSTRY_ES}
           />
@@ -244,7 +256,7 @@ export default function KnowledgeContent({ articles }: { articles: Article[] }) 
             label={lang === 'en' ? 'Challenge' : 'Reto'}
             options={CHALLENGES}
             value={challenge}
-            onChange={setChallenge}
+            onChange={setChallengeAndReset}
             lang={lang}
             map={CHALLENGE_ES}
           />
@@ -252,13 +264,13 @@ export default function KnowledgeContent({ articles }: { articles: Article[] }) 
             label={lang === 'en' ? 'Audience' : 'Audiencia'}
             options={AUDIENCES}
             value={audience}
-            onChange={setAudience}
+            onChange={setAudienceAndReset}
             lang={lang}
             map={AUDIENCE_ES}
           />
           {hasFilters && (
             <button
-              onClick={() => { setIndustry(null); setChallenge(null); setAudience(null) }}
+              onClick={clearAll}
               className="px-5 py-2.5 text-xs font-medium text-slate-500 bg-white hover:bg-slate-50 hover:text-slate-900 transition whitespace-nowrap border-l border-slate-200"
             >
               {lang === 'en' ? 'Clear' : 'Limpiar'}
@@ -290,7 +302,7 @@ export default function KnowledgeContent({ articles }: { articles: Article[] }) 
           <p className="mt-2 max-w-sm text-xs leading-6 text-slate-400">{emptyBody}</p>
           {hasFilters && (
             <button
-              onClick={() => { setIndustry(null); setChallenge(null); setAudience(null) }}
+              onClick={clearAll}
               className="mt-5 text-xs font-medium text-indigo-600 hover:underline"
             >
               {lang === 'en' ? 'Clear filters' : 'Limpiar filtros'}
@@ -298,11 +310,26 @@ export default function KnowledgeContent({ articles }: { articles: Article[] }) 
           )}
         </div>
       ) : (
-        <div className="border border-slate-200 bg-white px-8">
-          {filtered.map((article) => (
-            <ArticleCard key={article.slug} article={article} lang={lang} tc={tc} />
-          ))}
-        </div>
+        <>
+          <div className="border border-slate-200 bg-white px-8">
+            {visible.map((article) => (
+              <ArticleCard key={article.slug} article={article} lang={lang} tc={tc} />
+            ))}
+          </div>
+
+          {hasMore && (
+            <div className="mt-6 flex justify-center">
+              <button
+                onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+                className="border border-slate-300 bg-white px-8 py-3 text-sm font-medium text-slate-700 hover:border-slate-900 hover:text-slate-900 transition"
+              >
+                {lang === 'en'
+                  ? `Load more — ${filtered.length - visibleCount} remaining`
+                  : `Cargar más — ${filtered.length - visibleCount} restantes`}
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   )
