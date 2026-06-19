@@ -25,13 +25,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${BASE_URL}/insights`,
+      url: `${BASE_URL}/knowledge`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
-      url: `${BASE_URL}/case-studies`,
+      url: `${BASE_URL}/projects`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,
@@ -45,18 +45,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   const articleRoutes: MetadataRoute.Sitemap = articles.map((article) => ({
-    url: `${BASE_URL}/insights/${article.slug}`,
+    url: `${BASE_URL}/knowledge/${article.slug}`,
     lastModified: new Date(article.date),
     changeFrequency: 'monthly',
     priority: 0.6,
   }))
 
-  const caseStudyRoutes: MetadataRoute.Sitemap = caseStudies.map((cs) => ({
-    url: `${BASE_URL}/case-studies/${cs.slug}`,
+  const projectRoutes: MetadataRoute.Sitemap = caseStudies.map((cs) => ({
+    url: `${BASE_URL}/projects/${cs.slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
     priority: 0.7,
   }))
 
-  return [...staticRoutes, ...articleRoutes, ...caseStudyRoutes]
+  return [...staticRoutes, ...articleRoutes, ...projectRoutes]
 }

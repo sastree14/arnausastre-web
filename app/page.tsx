@@ -616,7 +616,7 @@ export default function Home() {
           {/* Centered CTA */}
           <div className="mt-14 flex justify-center reveal">
             <Link
-              href="/case-studies"
+              href="/projects"
               className="inline-flex items-center gap-2 rounded-md border border-slate-300 px-7 py-3.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:border-slate-400"
             >
               {t.useCasesCta}

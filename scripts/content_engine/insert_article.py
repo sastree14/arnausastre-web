@@ -138,7 +138,7 @@ HEADER_IMAGE_BLOCK = """\
 ORIGINAL_HEADER_BLOCK = """\
       <article className="mx-auto max-w-4xl px-6 py-20">
         <Link
-          href="/insights"
+          href="/knowledge"
           className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 transition mb-10"
         >
           {tc.backToInsights}
@@ -173,7 +173,7 @@ ORIGINAL_HEADER_BLOCK = """\
 NEW_OPENING_WRAPPER = """\
       <div className="mx-auto max-w-6xl px-6 pt-20">
         <Link
-          href="/insights"
+          href="/knowledge"
           className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 transition mb-10"
         >
           {tc.backToInsights}

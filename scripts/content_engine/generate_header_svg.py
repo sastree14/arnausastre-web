@@ -95,7 +95,7 @@ def generate_svg_markup(slug: str) -> str:
 
 
 def write_header_svg(slug: str, public_dir: Path) -> Path:
-    output_dir = public_dir / "insights"
+    output_dir = public_dir / "knowledge"
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / f"{slug}.svg"
     output_path.write_text(generate_svg_markup(slug), encoding="utf-8", newline="\n")

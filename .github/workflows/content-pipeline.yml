@@ -66,7 +66,7 @@ jobs:
           git config user.name "sc-analytics-content-bot"
           git config user.email "content-bot@users.noreply.github.com"
           git checkout -b "$branch"
-          git add lib/articles.ts "public/insights/${slug}.svg" "app/insights/[slug]/page.tsx"
+          git add lib/articles.ts "public/knowledge/${slug}.svg" "app/knowledge/[slug]/page.tsx"
           git commit -m "feat(content): new article draft — ${slug}"
           git push origin "$branch"
           echo "branch=$branch" >> "$GITHUB_OUTPUT"

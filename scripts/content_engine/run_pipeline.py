@@ -35,7 +35,7 @@ from write_article import ArticleGenerationError
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 LIB_ARTICLES_PATH = REPO_ROOT / "lib" / "articles.ts"
-PAGE_TSX_PATH = REPO_ROOT / "app" / "insights" / "[slug]" / "page.tsx"
+PAGE_TSX_PATH = REPO_ROOT / "app" / "knowledge" / "[slug]" / "page.tsx"
 PUBLIC_DIR = REPO_ROOT / "public"
 OUTPUT_JSON_PATH = REPO_ROOT / "scripts" / "content_engine" / ".pipeline_output.json"
 
@@ -158,7 +158,7 @@ def main() -> None:
 
     print(f"[INFO] Artículo generado: '{article['titleEn']}' (slug={article['slug']})")
 
-    image_path = f"/insights/{article['slug']}.svg"
+    image_path = f"/knowledge/{article['slug']}.svg"
     try:
         write_header_svg(article["slug"], PUBLIC_DIR)
         insert_article_into_file(LIB_ARTICLES_PATH, article, image_path)
