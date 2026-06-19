@@ -1,261 +1,105 @@
-You are responsible for designing and implementing the complete editorial system for SC-Analytics.
+Quiero que estas observaciones no se apliquen únicamente a este artículo.
 
-Context
+Quiero convertirlas en reglas permanentes del sistema editorial.
 
-SC-Analytics is not a content marketing company.
+Analiza tu evaluación y actualiza:
 
-SC-Analytics helps organizations make better business decisions through forecasting, optimization, automation, analytics and decision systems.
+* content/editorial/editorial_voice.md
+* content/editorial/article_structure.md
 
-The objective of the editorial system is not to generate SEO content at scale.
+Objetivo:
 
-The objective is to build a high-quality business knowledge library that reinforces expertise, credibility and trust.
+Que los próximos artículos nazcan ya con estas mejoras incorporadas.
 
-Every design decision must prioritize long-term maintainability, editorial quality and business relevance.
+Cambios a introducir:
 
----
+1. Prohibir meta-etiquetas explícitas
 
-EDITORIAL DATABASE
+No quiero estructuras como:
 
-The file:
+* A concrete scenario
+* A genuine trade-off
+* Operational implication
+* Recommendation
 
-SC_Analytics_Editorial_System_Final.xlsx
+La estructura debe existir pero ser invisible para el lector.
 
-is the editorial source of truth.
+2. Añadir causalidad organizativa
 
-The workbook contains:
+Cuando se describa un problema empresarial, no basta con explicar que existe.
 
-* Content Pipeline
-* Topics Bank
-* Industries
-* Prompts
-* Published Content
-* Content Strategy
-* Projects
+El artículo debe explicar por qué persiste:
 
-All editorial workflows must read and update this workbook.
+* incentivos
+* KPIs
+* presupuestos
+* estructuras organizativas
+* ownership
 
-When an article is generated, metadata must be updated inside the workbook.
+Quiero que los artículos expliquen los mecanismos que generan el problema.
 
-When an article is published, the workbook must be updated.
+3. Completar las cadenas de consecuencias
 
-The workbook is the operational control layer.
+Cuando aparezca un escenario concreto, no quiero que se detenga en la anécdota.
 
----
+Debe desarrollarse:
 
-CONTENT STORAGE
+evento → consecuencia operativa → consecuencia económica → consecuencia organizativa
 
-Do not store articles inside large TypeScript arrays.
+4. Trade-offs de la solución obligatorios
 
-Create a scalable architecture.
+No quiero artículos que simplemente recomienden una solución.
 
-Use:
+Toda solución propuesta debe incluir:
 
-content/articles/
+* coste
+* complejidad
+* tiempo de implantación
+* riesgos
+* limitaciones
 
-Each article must be stored as an individual MDX file.
+Si una solución no tiene inconvenientes, el artículo está incompleto.
 
-Each article must contain metadata including:
+5. Sustituir lenguaje genérico de transformación digital
 
-* title
-* slug
-* industry
-* challenge
-* audience
-* level
-* theme
-* date
-* readingTime
-* published
-* language
+Evitar patrones tipo:
 
-The website must automatically discover articles from this folder.
+* data lakes
+* digital transformation
+* centralized data
+* modern enterprises
 
-The architecture must support hundreds of articles.
+salvo que sean imprescindibles.
 
----
+Quiero observaciones específicas del dominio.
 
-BRANCH STRATEGY
+6. Introducir experiencia práctica
 
-Do not create one branch per article.
+Los artículos deben contener observaciones que parezcan surgir de proyectos reales.
 
-Use a single branch:
+Ejemplos:
 
-editorial
+* errores frecuentes
+* resistencias organizativas
+* problemas de adopción
+* decisiones que suelen tomarse mal
 
-Workflow:
+No quiero únicamente explicación técnica.
 
-Excel
-→ Article generation
-→ Commit to editorial
-→ Vercel preview
-→ Manual review
-→ Manual merge to main
-→ Production
+7. Introducir afirmaciones defendibles
 
-Publication must always require manual approval.
+Cada artículo debería contener al menos una afirmación que pueda discutirse.
 
-Never publish directly to production.
+Ejemplo:
 
----
+"Many companies automate the wrong thing first."
 
-KNOWLEDGE PAGE
+o
 
-The Knowledge section is not a traditional blog.
+"Most forecasting failures are not forecasting problems."
 
-It is a business knowledge library.
+No busco polémica artificial.
 
-Top section:
+Busco punto de vista.
 
-Knowledge
-
-Practical insights on decision systems that create measurable business impact.
-
-Primary navigation:
-
-1. Industry
-2. Business Challenge
-3. Audience
-
-Examples:
-
-Industry:
-
-* Retail
-* E-commerce
-* Logistics
-* Manufacturing
-* Finance
-* Real Estate
-
-Business Challenge:
-
-* Forecasting
-* Inventory Management
-* Resource Allocation
-* Pricing
-* Route Planning
-* Automation
-* Fraud Detection
-* Decision Making
-
-Audience:
-
-* CEO
-* Operations
-* Finance
-* Analytics
-
-Articles must be filtered dynamically.
-
----
-
-EMPTY STATES
-
-If a filter combination contains no articles:
-
-show a professional empty state.
-
-Example:
-
-No articles available yet.
-
-We are currently expanding our knowledge base in this area.
-New content will be published soon.
-
-Never show blank sections.
-
----
-
-PROJECTS
-
-Projects must follow the same architectural principles.
-
-Use:
-
-content/projects/
-
-Projects are not blog posts.
-
-Projects are practical examples of implemented systems.
-
-Initially support:
-
-* Forecasting & Inventory Optimization
-* Banking Risk Analytics
-* Investment Analytics Platform
-* Quantitative Trading Framework
-* Business Intelligence & Decision Systems
-
-The architecture must support future growth.
-
----
-
-EDITORIAL STYLE
-
-This is the most important requirement.
-
-Articles must not sound AI-generated.
-
-Avoid:
-
-* generic AI wording
-* startup buzzwords
-* exaggerated claims
-* sensationalism
-* unnecessary hype
-
-Writing style should be:
-
-* calm
-* analytical
-* precise
-* practical
-* business-oriented
-* honest
-* explanatory
-
-The goal is to help readers understand a problem and possible approaches.
-
-Not to impress them with technology.
-
-Technology should appear only when it contributes to business outcomes.
-
-The writing must reflect the philosophy:
-
-Better decisions.
-Better business outcomes.
-
----
-
-STYLE LEARNING
-
-Create a system capable of learning writing style from examples.
-
-If writing samples from Arnau Sastre are available:
-
-* analyze tone
-* analyze vocabulary
-* analyze sentence structure
-* analyze explanation patterns
-* create an Editorial Voice Profile
-
-Future articles should follow this profile.
-
-The objective is not to imitate perfectly.
-
-The objective is to preserve consistency and authenticity.
-
----
-
-IMPLEMENTATION
-
-Before making changes:
-
-1. Analyze current architecture.
-2. Explain proposed modifications.
-3. List files that will be changed.
-4. Implement incrementally.
-5. Run build validation.
-6. Ensure scalability.
-7. Ensure maintainability.
-8. Preserve existing design quality.
+Después de actualizar las reglas editoriales, explica exactamente qué cambios se han realizado y cómo afectarán a los futuros artículos.
