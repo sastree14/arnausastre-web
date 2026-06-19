@@ -1,56 +1,47 @@
-CAMBIO DE PROVEEDOR DE LLM: Anthropic → Gemini
+Necesito aplicar una reestructuración de contenido en la web.
 
-Decisión tomada: el redactado del artículo debe usar la Gemini API
-(modelo gemini-2.5-flash) en lugar de la API de Anthropic, por tener tier
-gratuito que cubre nuestro volumen real (~1 artículo/semana). Por favor,
-aplica SOLO este cambio — no toques el resto del pipeline que ya construiste
-(sheets_client.py, web_research.py, pick_topic.py, generate_header_svg.py,
-insert_article.py, run_pipeline.py, el workflow YAML, etc. quedan igual).
+Cambios principales:
 
-QUÉ CAMBIAR EXACTAMENTE
+1. Cambiar la navegación:
+- "Case Studies" debe pasar a llamarse "Projects"
+- "Insights" debe pasar a llamarse "Knowledge"
 
-1. scripts/content_engine/write_article.py:
-   - Sustituye la llamada a la Messages API de Anthropic por una llamada a
-     la Gemini API (endpoint generateContent del modelo gemini-2.5-flash),
-     usando `requests` igual que ya haces (no añadas el SDK de google-genai
-     como dependencia nueva si se puede evitar con requests directo a la
-     API REST — pero si el SDK oficial simplifica mucho el manejo de
-     respuestas estructuradas/JSON, puedes usarlo y lo añades a
-     requirements.txt con su versión fijada).
-   - El prompt de sistema (tono de marca, instrucciones de formato JSON
-     estricto con los 12 campos de Article) debe mantenerse funcionalmente
-     igual al que ya escribiste — solo cambia el mecanismo de llamada y el
-     parseo de la respuesta al formato que devuelve Gemini.
-   - Variable de entorno: usa GEMINI_API_KEY en vez de ANTHROPIC_API_KEY.
-   - Mantén el mismo manejo de errores explícito y humano-legible que ya
-     tenías (si la respuesta no es JSON válido, si faltan campos, etc.).
+2. Eliminar el contenido placeholder actual de Case Studies y Insights.
+Concretamente, eliminar o dejar de mostrar casos/artículos ficticios como:
+- NordMart
+- Translink Mediterranean
+- el artículo de AVMs inmobiliarios
+- cualquier métrica inventada o demasiado específica que no esté basada en proyectos reales aprobados
 
-2. .github/workflows/content-pipeline.yml:
-   - En el paso "Check required secrets are present" (o como se llame),
-     sustituye la comprobación de ANTHROPIC_API_KEY por GEMINI_API_KEY.
-   - En cualquier `env:` donde pases ANTHROPIC_API_KEY al script, cámbialo
-     por GEMINI_API_KEY.
+3. Crear una nueva página "Knowledge" pensada para escalar a muchos artículos.
+Debe incluir:
+- título claro
+- subtítulo orientado a CEOs y equipos directivos
+- sistema de filtros o categorías visuales
+- grid de artículos
+- cada artículo debe mostrar título, excerpt, categoría, industria, fecha y tiempo de lectura
 
-3. requirements.txt: actualiza si añadiste el SDK de Google (google-genai
-   o el que corresponda), o déjalo igual si te quedaste con requests puro.
+4. Preparar la estructura de datos para que sea escalable.
+Cada artículo debería poder tener:
+- slug
+- titleEn / titleEs
+- excerptEn / excerptEs
+- bodyEn / bodyEs
+- date
+- readingTime
+- topics
+- industries
+- audience
+- type
+- image opcional
 
-4. Cualquier mención a "Claude" o "Anthropic" en comentarios/docstrings de
-   write_article.py debe actualizarse para reflejar que ahora es Gemini —
-   no dejes comentarios desincronizados con el código real.
+5. No quiero que se rompa el diseño actual.
+Mantener estética sobria, clásica, azul/blanco, minimalista y profesional.
 
-NO HACER
+6. Antes de modificar, dime qué archivos vas a tocar.
+Después aplica los cambios mínimos necesarios.
 
-- No toques sheets_client.py, web_research.py, pick_topic.py,
-  generate_header_svg.py, insert_article.py, update_pipeline_status.py,
-  build_pr_text.py, ni print_summary.py — ninguno de ellos depende del
-  proveedor de LLM, así que no deberían necesitar cambios.
-- No hagas commit todavía si no lo habías hecho ya — sigue esperando mi
-  revisión antes de eso, como ya habíamos acordado.
+7. Finalmente ejecuta:
+npm run build
 
-Cuando termines, dime:
-- Si tuviste que añadir alguna dependencia nueva a requirements.txt y por
-  qué fue necesaria.
-- Los pasos exactos para crear GEMINI_API_KEY (de dónde se saca, en qué
-  consola) y dónde pegarla como GitHub Secret.
-- Confirma que ANTHROPIC_API_KEY ya no aparece referenciada en ningún sitio
-  del pipeline (puedes verificarlo con un grep).
+Y corrige cualquier error hasta que el build pase.
