@@ -87,10 +87,11 @@ CASES: list[tuple[str, str, bool]] = [
         True,
     ),
     (
-        "JSON missing tail fields (angle/challenge/audience/level cut off)",
-        # Simulates truncation: article JSON without the tail fields
+        "JSON missing soft fields (angle/challenge/audience/level cut off)",
+        # Simulates truncation: article JSON without the soft fields.
+        # These are now auto-filled by _apply_soft_defaults(), so extraction SUCCEEDS.
         json.dumps({k: v for k, v in ARTICLE.items() if k not in ("angle", "challenge", "audience", "level")}),
-        False,  # should fail _has_required_fields — we expect None from _best_json_from_text
+        True,  # _has_required_fields only checks HARD_REQUIRED_FIELDS now
     ),
     (
         "completely invalid — no JSON at all",

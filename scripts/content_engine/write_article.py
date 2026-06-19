@@ -35,12 +35,18 @@ REQUEST_TIMEOUT_SECONDS = 180
 
 EDITORIAL_DIR_RELATIVE = "content/editorial"
 
-BASE_REQUIRED_FIELDS = [
+# Fields that MUST come from Gemini — no sensible default exists.
+HARD_REQUIRED_FIELDS = [
     "slug", "titleEn", "titleEs", "date", "readingTime",
     "tagsEn", "tagsEs", "excerptEn", "excerptEs",
-    "bodyEn", "bodyEs", "angle",
-    "challenge", "audience", "level",
+    "bodyEn", "bodyEs",
 ]
+
+# Fields that are requested from Gemini but can be auto-filled if missing.
+SOFT_FIELDS = ["angle", "challenge", "audience", "level"]
+
+# Combined list used for the _has_required_fields check in the extractor.
+BASE_REQUIRED_FIELDS = HARD_REQUIRED_FIELDS + SOFT_FIELDS
 
 
 class ArticleGenerationError(Exception):
@@ -276,8 +282,11 @@ def _extract_all_json_objects(text: str) -> list[str]:
 
 
 def _has_required_fields(data: dict) -> bool:
-    """Quick check: does this dict contain the minimum article fields?"""
-    return all(f in data and data[f] not in (None, "") for f in BASE_REQUIRED_FIELDS)
+    """Quick check: does this dict contain the hard-required content fields?
+    Soft fields (angle, challenge, audience, level) are filled in by _apply_soft_defaults()
+    if Gemini omits them, so they are not checked here.
+    """
+    return all(f in data and data[f] not in (None, "") for f in HARD_REQUIRED_FIELDS)
 
 
 def _repair_call(raw_text: str, api_key: str) -> str:
@@ -449,26 +458,73 @@ def call_gemini(prompt: str, api_key: str) -> str:
     return "\n".join(text_blocks)
 
 
-# ── Validation ────────────────────────────────────────────────────────────────
+# ── Validation & defaults ─────────────────────────────────────────────────────
 
-def validate_article(data: dict, taxonomy: dict[str, list[str]]) -> dict:
-    """Validate required fields and taxonomy values. Returns the validated dict."""
-    missing = [f for f in BASE_REQUIRED_FIELDS if f not in data or data[f] in (None, "")]
+def _best_challenge_match(text: str, challenges: list[str]) -> str:
+    """Keyword-match topic text against challenge categories; fall back to last item."""
+    lower = text.lower()
+    keywords: dict[str, list[str]] = {
+        "Forecasting": ["forecast", "predict", "demand", "planning"],
+        "Inventory Management": ["inventory", "stock", "sku", "replenish"],
+        "Resource Allocation": ["resource", "allocat", "budget", "capacity"],
+        "Pricing": ["pric", "margin", "revenue"],
+        "Route Planning": ["route", "fleet", "logistics", "delivery"],
+        "Automation": ["automat", "workflow", "manual process"],
+        "Fraud Detection": ["fraud", "risk", "anomal", "detect"],
+        "Decision Making": ["decision", "report", "insight", "analytic", "executive"],
+    }
+    for challenge in challenges:
+        for kw in keywords.get(challenge, []):
+            if kw in lower:
+                return challenge
+    return challenges[-1] if challenges else "Decision Making"
+
+
+def _apply_soft_defaults(data: dict, taxonomy: dict[str, list[str]], topic: "PendingTopic") -> dict:
+    """Fill in soft fields that Gemini omitted, using topic context as a signal.
+
+    Logs a warning for each field that is auto-filled so the issue is visible
+    in the workflow output without crashing the pipeline.
+    """
+    challenges = taxonomy.get("Challenge", ["Decision Making"])
+    audiences = taxonomy.get("Audience", ["CEO"])
+    levels = taxonomy.get("Level", ["Strategic"])
+
+    if not data.get("angle"):
+        data["angle"] = f"Practical implications of {topic.theme.lower()} in {topic.industry.lower()} operations."
+        print(f"[WARN] 'angle' missing — auto-filled: {data['angle']!r}")
+
+    if not data.get("challenge") or data["challenge"] not in challenges:
+        search_text = f"{topic.theme} {topic.decision_problem} {topic.business_value}"
+        data["challenge"] = _best_challenge_match(search_text, challenges)
+        print(f"[WARN] 'challenge' missing or invalid — auto-filled: {data['challenge']!r}")
+
+    if not data.get("audience") or data["audience"] not in audiences:
+        data["audience"] = "CEO"
+        print(f"[WARN] 'audience' missing or invalid — auto-filled: {data['audience']!r}")
+
+    if not data.get("level") or data["level"] not in levels:
+        data["level"] = "Strategic"
+        print(f"[WARN] 'level' missing or invalid — auto-filled: {data['level']!r}")
+
+    return data
+
+
+def validate_article(data: dict, taxonomy: dict[str, list[str]], topic: "PendingTopic") -> dict:
+    """Validate hard-required fields; auto-fill soft fields if missing."""
+    # Hard fields — no defaults possible, must abort if missing
+    missing = [f for f in HARD_REQUIRED_FIELDS if f not in data or data[f] in (None, "")]
     if missing:
         raise ArticleGenerationError(
-            f"El JSON generado por Gemini no incluye los campos requeridos: {missing}"
+            f"El JSON generado por Gemini no incluye campos de contenido obligatorios: {missing}\n"
+            "Estos campos no pueden rellenarse automáticamente."
         )
 
-    if not isinstance(data["tagsEn"], list) or not isinstance(data["tagsEs"], list):
+    if not isinstance(data.get("tagsEn"), list) or not isinstance(data.get("tagsEs"), list):
         raise ArticleGenerationError("tagsEn/tagsEs deben ser arrays de strings.")
 
-    for field, section in (("challenge", "Challenge"), ("audience", "Audience"), ("level", "Level")):
-        valid = taxonomy.get(section, [])
-        if valid and data.get(field) not in valid:
-            raise ArticleGenerationError(
-                f"El campo '{field}' generado ('{data.get(field)}') no es válido según taxonomy.md. "
-                f"Valores permitidos: {valid}"
-            )
+    # Soft fields — auto-fill from topic context if missing or invalid
+    data = _apply_soft_defaults(data, taxonomy, topic)
 
     if not data.get("slug"):
         data["slug"] = _slugify(data["titleEn"])
@@ -493,7 +549,7 @@ def generate_article(
     prompt = build_prompt(topic, industry_context, research, style_reference, editorial_docs, taxonomy)
     raw_response = call_gemini(prompt, api_key)
     data = extract_json_with_fallbacks(raw_response, api_key)
-    article = validate_article(data, taxonomy)
+    article = validate_article(data, taxonomy, topic)
     article["industry"] = topic.industry
     article["theme"] = topic.theme
     return article
