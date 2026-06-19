@@ -142,6 +142,8 @@ def build_prompt(
     return f"""You are the editorial writer for SC-Analytics, a data and analytics consultancy.
 Write ONE new bilingual article (English and Spanish) for the SC-Analytics knowledge library.
 
+Read the following editorial documents carefully. They are not suggestions — they are requirements.
+
 ===== EDITORIAL VOICE =====
 {editorial_docs['editorial_voice']}
 
@@ -161,11 +163,31 @@ Write ONE new bilingual article (English and Spanish) for the SC-Analytics knowl
 {industry_block}
 
 ===== RECENT WEB RESEARCH =====
-Use as factual context. Do not quote sources verbatim.
+Use as factual context. Do not quote sources verbatim. Ground specific claims in what the research shows.
 {research_block}
 
 ===== STYLE AND LENGTH CALIBRATION =====
 {style_reference}
+
+===== MANDATORY CHECKLIST — verify before writing the final JSON =====
+
+Before producing the output, confirm the article satisfies ALL of the following.
+If any item is not satisfied, rewrite the relevant section.
+
+[ ] The title makes a specific, non-obvious claim — not a topic description
+[ ] The excerpt states the article's central argument, not what the article is about
+[ ] The opening section makes a substantive point immediately — does not restate the title
+[ ] The body contains at least one concrete business scenario with: company type + realistic size/context + specific situation + what was at stake or what happened
+[ ] The body contains at least one genuine trade-off: doing X produces Y, and Y creates a specific operational or organisational problem
+[ ] The body contains at least one operational implication: what this means for a specific person (CFO, operations manager, planning team) in a specific situation
+[ ] The body contains at least one recommendation specific enough that someone could act on it and verify whether it worked
+[ ] The closing ends with a specific insight or diagnostic — not a summary or a platitude
+[ ] None of these phrases appear anywhere in the article:
+    "In today's fast-paced", "companies increasingly recognise", "it is important to note",
+    "what actually works is", "the key is to", "ultimately, the goal is",
+    "consistently outperform", "the question is whether your organisation is prepared",
+    "investing in X is valuable but", "with the right approach"
+[ ] No section merely states that something is difficult or important without explaining specifically how or why
 
 ===== OUTPUT INSTRUCTIONS =====
 Respond ONLY with a valid JSON object. No text before or after. No markdown code block.
