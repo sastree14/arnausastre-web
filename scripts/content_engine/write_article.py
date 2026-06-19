@@ -190,7 +190,7 @@ Return ONLY a single valid JSON object. Nothing before it. Nothing after it.
 No markdown. No code fence. No commentary. No checklist output.
 Your response must start with {{ and end with }}.
 
-Required keys:
+Required keys, in this exact order (put bodyEn and bodyEs last):
 
   slug         kebab-case English string derived from titleEn
   titleEn      string
@@ -201,12 +201,12 @@ Required keys:
   tagsEs       array of exactly 3 strings in Spanish
   excerptEn    string, 1-2 sentences
   excerptEs    string — faithful Spanish translation
-  bodyEn       string — paragraphs with **bold** subtitles, no meta-labels
-  bodyEs       string — faithful natural Spanish translation, same format
   angle        string, 1 sentence: the specific argumentative angle chosen
   challenge    string — MUST be exactly one of: {opts('Challenge')}
   audience     string — MUST be exactly one of: {opts('Audience')}
   level        string — MUST be exactly one of: {opts('Level')}
+  bodyEn       string — paragraphs with **bold** subtitles, no meta-labels
+  bodyEs       string — faithful natural Spanish translation, same format
 
 Do not use backticks or the sequence ${{ inside any string value."""
 
@@ -222,45 +222,6 @@ def _strip_code_fences(text: str) -> str:
     return s.strip()
 
 
-def _extract_json_object(text: str) -> str | None:
-    """Find and return the first complete {...} JSON object in text.
-
-    Uses a character-level brace counter so it correctly handles:
-    - text or commentary before or after the JSON
-    - nested objects
-    - strings containing brace characters
-    - escaped characters inside strings
-    """
-    start = text.find("{")
-    if start == -1:
-        return None
-
-    depth = 0
-    in_string = False
-    escape_next = False
-
-    for i, ch in enumerate(text[start:], start):
-        if escape_next:
-            escape_next = False
-            continue
-        if ch == "\\" and in_string:
-            escape_next = True
-            continue
-        if ch == '"':
-            in_string = not in_string
-            continue
-        if in_string:
-            continue
-        if ch == "{":
-            depth += 1
-        elif ch == "}":
-            depth -= 1
-            if depth == 0:
-                return text[start : i + 1]
-
-    return None
-
-
 def _try_parse(text: str) -> dict | None:
     """Attempt json.loads; return None on failure."""
     try:
@@ -269,16 +230,73 @@ def _try_parse(text: str) -> dict | None:
         return None
 
 
+def _extract_all_json_objects(text: str) -> list[str]:
+    """Find ALL top-level {...} JSON objects in text using a character-level brace counter.
+
+    Returns them in order of appearance. This handles:
+    - text or commentary before or after the JSON
+    - Gemini emitting a checklist/verification object BEFORE the article object
+    - nested objects, strings containing braces, escaped characters
+    """
+    objects = []
+    i = 0
+    while i < len(text):
+        start = text.find("{", i)
+        if start == -1:
+            break
+        depth = 0
+        in_string = False
+        escape_next = False
+        end = None
+        for j, ch in enumerate(text[start:], start):
+            if escape_next:
+                escape_next = False
+                continue
+            if ch == "\\" and in_string:
+                escape_next = True
+                continue
+            if ch == '"':
+                in_string = not in_string
+                continue
+            if in_string:
+                continue
+            if ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    end = j
+                    break
+        if end is not None:
+            objects.append(text[start : end + 1])
+            i = end + 1
+        else:
+            break
+    return objects
+
+
+def _has_required_fields(data: dict) -> bool:
+    """Quick check: does this dict contain the minimum article fields?"""
+    return all(f in data and data[f] not in (None, "") for f in BASE_REQUIRED_FIELDS)
+
+
 def _repair_call(raw_text: str, api_key: str) -> str:
-    """Ask Gemini to extract and return only the JSON from a malformed response."""
+    """Ask Gemini to reconstruct the complete JSON from a malformed response.
+
+    Passes the full raw_text (no truncation) and names every required field
+    explicitly so Gemini doesn't omit tail fields like angle/challenge/audience/level.
+    """
+    required_fields = ", ".join(BASE_REQUIRED_FIELDS)
     repair_prompt = (
-        "The following text contains a JSON object but may have extra content "
-        "before or after it, or minor formatting issues.\n\n"
-        "Extract the JSON object and return it exactly as-is, with no changes to values.\n"
-        "Return ONLY the raw JSON. No markdown. No explanation. No code fence.\n"
-        "Your response must start with { and end with }.\n\n"
-        "Text to repair:\n"
-        + raw_text[:12000]
+        "The following text should contain a JSON object for an article, "
+        "but it may have extra content, formatting issues, or be partially malformed.\n\n"
+        f"The JSON MUST contain ALL of these fields: {required_fields}\n\n"
+        "Return ONLY the complete, valid JSON object. "
+        "No markdown. No explanation. No code fence. No commentary. "
+        "Your response must start with { and end with }. "
+        "Do not omit any fields. Do not change any values.\n\n"
+        "Text:\n"
+        + raw_text  # no truncation — tail fields may be at the end
     )
     try:
         response = requests.post(
@@ -297,7 +315,9 @@ def _repair_call(raw_text: str, api_key: str) -> str:
             timeout=REQUEST_TIMEOUT_SECONDS,
         )
     except requests.RequestException as exc:
-        raise ArticleGenerationError(f"La llamada de reparación a Gemini falló. Detalle: {exc}") from exc
+        raise ArticleGenerationError(
+            f"La llamada de reparación a Gemini falló. Detalle: {exc}"
+        ) from exc
 
     if response.status_code != 200:
         raise ArticleGenerationError(
@@ -313,50 +333,67 @@ def _repair_call(raw_text: str, api_key: str) -> str:
     return "\n".join(part.get("text", "") for part in parts if "text" in part)
 
 
+def _best_json_from_text(text: str) -> dict | None:
+    """Try to extract a valid article JSON from text.
+
+    Tries ALL JSON objects found in the text (not just the first), returning the
+    first one that contains all required article fields. This handles the case
+    where Gemini emits a checklist/verification object before the article object.
+    """
+    cleaned = _strip_code_fences(text)
+    # Try direct parse first (fastest path)
+    result = _try_parse(cleaned)
+    if result is not None and _has_required_fields(result):
+        return result
+
+    # Try all JSON objects in the text
+    for candidate_text in _extract_all_json_objects(cleaned) + _extract_all_json_objects(text):
+        result = _try_parse(candidate_text)
+        if result is not None and _has_required_fields(result):
+            return result
+
+    # Last chance: any parseable JSON (validation will catch missing fields later)
+    for candidate_text in _extract_all_json_objects(cleaned) + _extract_all_json_objects(text):
+        result = _try_parse(candidate_text)
+        if result is not None:
+            return result
+
+    return None
+
+
 def extract_json_with_fallbacks(raw_text: str, api_key: str) -> dict:
     """Three-stage extraction chain. Aborts with a clear error if all stages fail.
 
-    Stage 1: strip code fences + direct json.loads
-    Stage 2: extract outermost {...} block + json.loads
-    Stage 3: second Gemini call (repair) + stages 1 and 2 again
+    Stage 1: strip code fences + try all JSON objects in the response
+    Stage 2: repair call to Gemini + try all JSON objects in the repaired response
+    Stage 3: abort with diagnostic showing both responses
     """
     # Stage 1
-    cleaned = _strip_code_fences(raw_text)
-    result = _try_parse(cleaned)
+    result = _best_json_from_text(raw_text)
     if result is not None:
-        return result
+        if not _has_required_fields(result):
+            print("[WARN] Stage 1: found JSON but missing required fields. Trying repair...")
+        else:
+            return result
 
-    print("[WARN] Stage 1 (direct parse) failed. Trying brace extraction...")
+    if result is None:
+        print("[WARN] Stage 1 (parse + extraction) failed. Attempting repair call to Gemini...")
 
     # Stage 2
-    extracted = _extract_json_object(cleaned) or _extract_json_object(raw_text)
-    if extracted:
-        result = _try_parse(extracted)
-        if result is not None:
-            print("[INFO] Stage 2 (brace extraction) succeeded.")
-            return result
-
-    print("[WARN] Stage 2 (brace extraction) failed. Attempting repair call to Gemini...")
-
-    # Stage 3
     repaired_text = _repair_call(raw_text, api_key)
-    cleaned_repair = _strip_code_fences(repaired_text)
-    result = _try_parse(cleaned_repair)
+    result = _best_json_from_text(repaired_text)
     if result is not None:
-        print("[INFO] Stage 3 (repair call) succeeded.")
+        if _has_required_fields(result):
+            print("[INFO] Stage 2 (repair call) succeeded.")
+            return result
+        print("[WARN] Stage 2: repair call returned JSON but still missing required fields.")
+        # Return it anyway — validate_article will give the specific error
         return result
 
-    extracted_repair = _extract_json_object(cleaned_repair) or _extract_json_object(repaired_text)
-    if extracted_repair:
-        result = _try_parse(extracted_repair)
-        if result is not None:
-            print("[INFO] Stage 3 (repair call + extraction) succeeded.")
-            return result
-
     raise ArticleGenerationError(
-        "Gemini no pudo producir JSON válido tras tres intentos.\n"
-        f"Primeros 400 caracteres de la respuesta original:\n{raw_text[:400]!r}\n"
-        f"Primeros 400 caracteres de la respuesta de reparación:\n{repaired_text[:400]!r}"
+        "Gemini no pudo producir JSON válido tras dos intentos de extracción.\n"
+        f"Respuesta original (primeros 500 chars):\n{raw_text[:500]!r}\n"
+        f"Respuesta de reparación (primeros 500 chars):\n{repaired_text[:500]!r}"
     )
 
 
