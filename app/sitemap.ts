@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
-import { getAllArticles, getAllProjects } from '@/lib/content'
+import { getAllArticles } from '@/lib/content'
+import { getAllProjects } from '@/lib/projects'
 
 const BASE_URL = 'https://sc-analytics.io'
 
@@ -22,7 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const projectRoutes: MetadataRoute.Sitemap = getAllProjects().map((p) => ({
     url: `${BASE_URL}/projects/${p.slug}`,
-    lastModified: new Date(p.date),
+    lastModified: new Date(),
     changeFrequency: 'monthly',
     priority: 0.7,
   }))

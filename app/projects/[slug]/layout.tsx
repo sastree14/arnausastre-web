@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { getCaseStudyBySlug } from '@/lib/case-studies'
+import { getProjectBySlug } from '@/lib/projects'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -7,11 +7,11 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const cs = getCaseStudyBySlug(slug)
-  if (!cs) return { title: 'Projects' }
+  const project = getProjectBySlug(slug)
+  if (!project) return { title: 'Projects' }
   return {
-    title: cs.titleEn,
-    description: cs.excerptEn,
+    title: project.headline,
+    description: project.description,
   }
 }
 

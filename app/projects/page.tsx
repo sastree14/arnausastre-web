@@ -1,7 +1,8 @@
+import Image from 'next/image'
 import Link from 'next/link'
-import { getAllProjects } from '@/lib/content'
+import { getAllProjects } from '@/lib/projects'
 
-export default async function ProjectsPage() {
+export default function ProjectsPage() {
   const projects = getAllProjects()
 
   return (
@@ -18,71 +19,98 @@ export default async function ProjectsPage() {
             Real engagements.<br />
             <span className="italic text-slate-500">Real problems. Real results.</span>
           </h1>
-          <p className="mt-8 max-w-3xl text-lg leading-8 text-slate-600">
-            A selection of analytical projects across different industries — showing how rigorous methodology translates into measurable business improvement. Published with client permission.
+          <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-600">
+            A selection of analytical projects across different industries. Client names and internal details are anonymised. Metrics reflect real system performance.
           </p>
         </div>
       </section>
 
-      {/* Projects list */}
-      <section className="border-y border-slate-200 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          {projects.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-28 text-center">
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-slate-200 bg-slate-50">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <rect x="2" y="3" width="20" height="14" rx="2" stroke="#94a3b8" strokeWidth="1.5"/>
-                  <path d="M8 21h8M12 17v4" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round"/>
-                </svg>
-              </div>
-              <p className="text-sm font-semibold text-slate-600">Projects coming soon.</p>
-              <p className="mt-2 max-w-sm text-xs leading-6 text-slate-400">
-                We only publish case studies with explicit client permission.
-                Real engagements will be shared here as they become available.
-              </p>
+      {/* Projects grid */}
+      <section className="mx-auto max-w-7xl px-6 py-20">
+        {projects.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-28 text-center">
+            <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-slate-200 bg-white">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="2" y="3" width="20" height="14" rx="2" stroke="#94a3b8" strokeWidth="1.5"/>
+                <path d="M8 21h8M12 17v4" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+            </div>
+            <p className="text-sm font-semibold text-slate-600">Projects coming soon.</p>
+            <p className="mt-2 max-w-sm text-xs leading-6 text-slate-400">
+              We only publish projects with explicit client permission.
+            </p>
+            <Link
+              href="/contact"
+              className="mt-8 inline-block rounded-md bg-slate-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-slate-700"
+            >
+              Get in touch
+            </Link>
+          </div>
+        ) : (
+          <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+            {projects.map((project) => (
               <Link
-                href="/contact"
-                className="mt-8 inline-block rounded-md bg-slate-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-slate-700"
+                key={project.slug}
+                href={`/projects/${project.slug}`}
+                className="group flex flex-col rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm card-lift"
               >
-                Get in touch
-              </Link>
-            </div>
-          ) : (
-            <div className="space-y-8">
-              {projects.map((project) => (
-                <Link
-                  key={project.slug}
-                  href={`/projects/${project.slug}`}
-                  className="group block rounded-2xl border border-slate-200 bg-slate-50 overflow-hidden card-lift"
-                >
-                  <div className="p-8">
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      <span className="rounded-md bg-slate-900 px-3 py-1 text-xs font-medium text-white">
-                        {project.industry}
+                {/* Image area — dark background handles transparent images */}
+                <div className="relative h-52 bg-slate-900 flex items-center justify-center overflow-hidden">
+                  <Image
+                    src={project.imagePath}
+                    alt={project.headline}
+                    width={800}
+                    height={500}
+                    className="w-full h-full object-contain p-6"
+                  />
+                </div>
+
+                {/* Content */}
+                <div className="flex flex-col flex-1 p-7">
+                  {/* Chips */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className="rounded-md bg-slate-900 px-2.5 py-1 text-[10px] font-medium text-white">
+                      {project.industry}
+                    </span>
+                    {project.capability.split(',').slice(0, 2).map((cap) => (
+                      <span
+                        key={cap}
+                        className="rounded-md bg-indigo-50 border border-indigo-100 px-2.5 py-1 text-[10px] font-medium text-indigo-700"
+                      >
+                        {cap.trim()}
                       </span>
-                      <span className="rounded-md bg-slate-100 border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600">
-                        {project.type}
-                      </span>
+                    ))}
+                  </div>
+
+                  {/* Headline */}
+                  <h2
+                    className="text-xl leading-snug text-slate-900 group-hover:text-indigo-700 transition"
+                    style={{ fontFamily: 'var(--font-playfair)' }}
+                  >
+                    {project.headline}
+                  </h2>
+
+                  {/* Description */}
+                  <p className="mt-3 text-sm leading-7 text-slate-600 line-clamp-3 flex-1">
+                    {project.description}
+                  </p>
+
+                  {/* Metrics */}
+                  {project.metrics.length > 0 && (
+                    <div className="mt-5 grid grid-cols-2 gap-2 border-t border-slate-100 pt-5">
+                      {project.metrics.slice(0, 4).map((m) => (
+                        <div key={m.label} className="rounded-lg bg-slate-50 border border-slate-100 px-3 py-2.5">
+                          <p className="text-[10px] text-slate-400 leading-tight">{m.label}</p>
+                          <p className="mt-0.5 text-sm font-semibold text-slate-900">{m.value}</p>
+                        </div>
+                      ))}
                     </div>
-                    <h2
-                      className="text-2xl text-slate-900 group-hover:text-indigo-700 transition"
-                      style={{ fontFamily: 'var(--font-playfair)' }}
-                    >
-                      {project.titleEn}
-                    </h2>
-                    <p className="mt-4 text-sm leading-7 text-slate-600 max-w-3xl">{project.excerptEn}</p>
-                  </div>
-                  <div className="border-t border-slate-200 px-8 py-4 flex items-center gap-2 text-sm font-medium text-indigo-600 bg-white group-hover:bg-indigo-50 transition">
-                    View project
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                      <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </section>
     </main>
   )

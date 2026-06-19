@@ -1,131 +1,162 @@
-'use client'
-
+import Image from 'next/image'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
-import { useLanguage } from '@/components/LanguageProvider'
-import { translations } from '@/lib/translations'
-import { getCaseStudyBySlug } from '@/lib/case-studies'
+import { notFound } from 'next/navigation'
+import { getAllProjects, getProjectBySlug } from '@/lib/projects'
 
-function renderText(text: string) {
-  const paragraphs = text.split('\n\n')
-  return paragraphs.map((para, i) => {
-    if (para.startsWith('- ') || para.includes('\n- ')) {
-      const items = para.split('\n').filter((l) => l.startsWith('- '))
-      return (
-        <ul key={i} className="mb-5 space-y-2 pl-4">
-          {items.map((item, j) => (
-            <li key={j} className="flex items-start gap-2.5 text-slate-700 leading-7">
-              <span className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-indigo-500" />
-              {item.slice(2)}
-            </li>
-          ))}
-        </ul>
-      )
-    }
-    return <p key={i} className="mb-5 leading-8 text-slate-700">{para}</p>
-  })
+type Props = {
+  params: Promise<{ slug: string }>
 }
 
-export default function ProjectPage() {
-  const { slug } = useParams<{ slug: string }>()
-  const { lang } = useLanguage()
-  const tc = translations[lang].common
-  const cs = getCaseStudyBySlug(slug)
+export async function generateStaticParams() {
+  return getAllProjects().map((p) => ({ slug: p.slug }))
+}
 
-  if (!cs) {
-    return (
-      <main className="mx-auto max-w-4xl px-6 py-24">
-        <p className="text-slate-600">Project not found.</p>
-        <Link href="/projects" className="mt-4 block text-sm text-indigo-600 hover:underline">{tc.backToCaseStudies}</Link>
-      </main>
-    )
-  }
+function renderBody(text: string) {
+  return text.split('\n\n').map((para, i) => (
+    <p key={i} className="mb-5 leading-8 text-slate-700">
+      {para.trim()}
+    </p>
+  ))
+}
 
-  const title = lang === 'en' ? cs.titleEn : cs.titleEs
-  const industry = lang === 'en' ? cs.industry : cs.industryEs
-  const problem = lang === 'en' ? cs.problemEn : cs.problemEs
-  const approach = lang === 'en' ? cs.approachEn : cs.approachEs
-  const solution = lang === 'en' ? cs.solutionEn : cs.solutionEs
-  const tags = lang === 'en' ? cs.tagsEn : cs.tagsEs
-  const t = translations[lang].caseStudies
+export default async function ProjectPage({ params }: Props) {
+  const { slug } = await params
+  const project = getProjectBySlug(slug)
+  if (!project) notFound()
 
   return (
     <main className="bg-slate-50 text-slate-900 page-enter">
-      <div className="mx-auto max-w-4xl px-6 py-20">
-        <Link
-          href="/projects"
-          className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 transition mb-10"
-        >
-          {tc.backToCaseStudies}
-        </Link>
 
-        <div className="flex flex-wrap items-center gap-3 mb-6">
-          <span className="rounded-md bg-slate-900 px-3 py-1.5 text-xs font-medium text-white">{industry}</span>
-          <span className="rounded-md bg-slate-100 border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600">{cs.company}</span>
-          {tags.map((tag) => (
-            <span key={tag} className="rounded-md bg-indigo-50 border border-indigo-100 px-2.5 py-1 text-xs font-medium text-indigo-700">{tag}</span>
-          ))}
-        </div>
+      {/* Hero */}
+      <section className="bg-white border-b border-slate-200">
+        <div className="mx-auto max-w-7xl px-6 py-20">
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 transition mb-10"
+          >
+            ← Back to Projects
+          </Link>
 
-        <h1
-          className="text-4xl leading-tight md:text-5xl text-slate-900"
-          style={{ fontFamily: 'var(--font-playfair)' }}
-        >
-          {title}
-        </h1>
+          <div className="grid items-center gap-16 lg:grid-cols-2">
 
-        {/* Results */}
-        <div className="mt-10 rounded-2xl border border-slate-200 bg-white p-8">
-          <p className="text-xs uppercase tracking-[0.16em] text-indigo-600 font-medium mb-6">{t.results}</p>
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
-            {cs.results.map((r) => (
-              <div key={r.metric} className="rounded-xl border border-slate-100 bg-slate-50 p-5">
-                <p className="text-xs text-slate-400 mb-1">{lang === 'en' ? r.metric : r.metricEs}</p>
-                <p className="text-sm font-semibold text-slate-900">{r.value}</p>
+            {/* Left — metadata */}
+            <div>
+              <div className="flex flex-wrap gap-2 mb-6">
+                <span className="rounded-md bg-slate-900 px-3 py-1.5 text-xs font-medium text-white">
+                  {project.industry}
+                </span>
+                {project.capability.split(',').map((cap) => (
+                  <span
+                    key={cap}
+                    className="rounded-md bg-indigo-50 border border-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700"
+                  >
+                    {cap.trim()}
+                  </span>
+                ))}
+                <span className="rounded-md bg-slate-100 border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600">
+                  {project.challenge}
+                </span>
               </div>
-            ))}
+
+              <h1
+                className="text-4xl leading-tight md:text-5xl text-slate-900"
+                style={{ fontFamily: 'var(--font-playfair)' }}
+              >
+                {project.headline}
+              </h1>
+
+              <p className="mt-6 text-base leading-8 text-slate-600 max-w-xl">
+                {project.description}
+              </p>
+            </div>
+
+            {/* Right — image */}
+            <div className="rounded-2xl bg-slate-900 overflow-hidden flex items-center justify-center p-8 min-h-[280px]">
+              <Image
+                src={project.imagePath}
+                alt={project.headline}
+                width={800}
+                height={500}
+                className="w-full h-auto object-contain"
+                priority
+              />
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* Problem */}
-        <div className="mt-10">
-          <h2 className="text-2xl text-slate-900 mb-6" style={{ fontFamily: 'var(--font-playfair)' }}>
-            {t.problem}
+      {/* Metrics */}
+      {project.metrics.length > 0 && (
+        <section className="border-b border-slate-200 bg-white">
+          <div className="mx-auto max-w-7xl px-6 py-12">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
+              {project.metrics.map((m) => (
+                <div
+                  key={m.label}
+                  className="rounded-xl border border-slate-200 bg-slate-50 px-5 py-4"
+                >
+                  <p className="text-xs text-slate-400 leading-tight">{m.label}</p>
+                  <p className="mt-1 text-xl font-semibold text-slate-900">{m.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Sections */}
+      {project.sections.length > 0 && (
+        <section className="mx-auto max-w-4xl px-6 py-20 space-y-14">
+          {project.sections.map((section) => (
+            <div key={section.title}>
+              <h2
+                className="text-2xl text-slate-900 mb-6"
+                style={{ fontFamily: 'var(--font-playfair)' }}
+              >
+                {section.title}
+              </h2>
+              <div className="rounded-2xl border border-slate-200 bg-white p-8">
+                {renderBody(section.body)}
+              </div>
+            </div>
+          ))}
+        </section>
+      )}
+
+      {/* Confidentiality note */}
+      {project.confidentiality && (
+        <section className="mx-auto max-w-4xl px-6 pb-12">
+          <div className="rounded-xl border border-slate-200 bg-white px-6 py-4 flex items-start gap-3">
+            <svg className="mt-0.5 flex-shrink-0 text-slate-400" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5"/>
+              <path d="M12 8v4M12 16h.01" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+            <p className="text-xs leading-6 text-slate-500">{project.confidentiality}</p>
+          </div>
+        </section>
+      )}
+
+      {/* CTA */}
+      <section className="border-t border-slate-200 bg-white">
+        <div className="mx-auto max-w-4xl px-6 py-16 text-center">
+          <h2
+            className="text-3xl text-slate-900"
+            style={{ fontFamily: 'var(--font-playfair)' }}
+          >
+            Working on a similar problem?
           </h2>
-          <div className="rounded-2xl border border-slate-200 bg-white p-8">
-            {renderText(problem)}
-          </div>
-        </div>
-
-        {/* Approach */}
-        <div className="mt-10">
-          <h2 className="text-2xl text-slate-900 mb-6" style={{ fontFamily: 'var(--font-playfair)' }}>
-            {lang === 'en' ? 'Approach' : 'Enfoque'}
-          </h2>
-          <div className="rounded-2xl border border-slate-200 bg-white p-8">
-            {renderText(approach)}
-          </div>
-        </div>
-
-        {/* Solution */}
-        <div className="mt-10">
-          <h2 className="text-2xl text-slate-900 mb-6" style={{ fontFamily: 'var(--font-playfair)' }}>
-            {lang === 'en' ? 'Solution & Delivery' : 'Solución y entrega'}
-          </h2>
-          <div className="rounded-2xl border border-slate-200 bg-white p-8">
-            {renderText(solution)}
-          </div>
-        </div>
-
-        <div className="mt-12 border-t border-slate-200 pt-10">
+          <p className="mt-4 text-slate-600 max-w-xl mx-auto">
+            We analyse the situation before proposing anything. The first conversation has no commitment.
+          </p>
           <Link
             href="/contact"
-            className="inline-block rounded-md bg-slate-900 px-7 py-3.5 text-sm font-medium text-white transition hover:bg-slate-700"
+            className="mt-8 inline-block rounded-md bg-slate-900 px-8 py-3.5 text-sm font-medium text-white transition hover:bg-slate-700"
           >
-            {tc.contactUs}
+            Get in touch
           </Link>
         </div>
-      </div>
+      </section>
+
     </main>
   )
 }
