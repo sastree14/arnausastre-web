@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { getArticleBySlug } from '@/lib/articles'
+import { getArticleBySlug } from '@/lib/content'
 
 type Props = {
   params: Promise<{ slug: string }>

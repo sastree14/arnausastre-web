@@ -2,19 +2,18 @@
 
 Run from the repo root as: python scripts/content_engine/run_pipeline.py
 
-Order of operations (mirrors the workflow spec):
+Order of operations:
   1. Read Topics Bank.
   2. Read Content Pipeline, compute pending topics.
   3. Pick one pending topic at random (seed logged).
   4. Research it via Brave Search.
   5. Draft the bilingual article via Gemini.
   6. Generate its deterministic SVG header image.
-  7. Insert the article into lib/articles.ts (+ patch the article page layout once).
-  8. Append a row to Content Pipeline.
-  9. Write a JSON hand-off file for the GitHub Actions workflow (PR title/body, etc).
+  7. Write the article as an MDX file to content/articles/{slug}.mdx.
+  8. Append a row to Content Pipeline sheet.
+  9. Write a JSON hand-off file for the GitHub Actions workflow.
 
-Any failure stops the script immediately with a human-readable message — no
-partial article is ever left half-inserted.
+Any failure stops the script immediately — no partial article is ever left half-written.
 """
 
 from __future__ import annotations
@@ -29,13 +28,12 @@ import pick_topic
 import sheets_client
 import write_article
 from generate_header_svg import write_header_svg
-from insert_article import ensure_header_image_render, insert_article_into_file
+from insert_article import InsertArticleError, write_article_mdx
 from web_research import WebResearchError, get_brave_api_key, research_topic
 from write_article import ArticleGenerationError
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-LIB_ARTICLES_PATH = REPO_ROOT / "lib" / "articles.ts"
-PAGE_TSX_PATH = REPO_ROOT / "app" / "knowledge" / "[slug]" / "page.tsx"
+ARTICLES_MDX_DIR = REPO_ROOT / "content" / "articles"
 PUBLIC_DIR = REPO_ROOT / "public"
 OUTPUT_JSON_PATH = REPO_ROOT / "scripts" / "content_engine" / ".pipeline_output.json"
 
@@ -81,26 +79,32 @@ def next_pipeline_id(content_pipeline_rows: list[dict]) -> int:
     return max_id + 1
 
 
-def build_pipeline_row(article: dict, topic: pick_topic.PendingTopic, sources: list[str], next_id: int) -> list[str]:
+def build_pipeline_row(
+    article: dict,
+    topic: pick_topic.PendingTopic,
+    sources: list[str],
+    next_id: int,
+) -> list[str]:
+    mdx_filename = f"{article['slug']}.mdx"
     row_by_header = {
         "ID": str(next_id),
-        "Status": "Generated",
+        "Status": "Draft",
         "Content Type": "Article",
         "Title": article["titleEn"],
         "Slug": article["slug"],
         "Industry": topic.industry,
         "Theme": topic.theme,
-        "Audience": "Business decision-makers",
+        "Audience": article.get("audience", "CEO"),
         "Objective": "",
         "Angle": article["angle"],
         "Sources Needed": ", ".join(sources),
         "Language": "EN/ES",
         "Priority": "",
         "Draft Doc URL": "",
-        "MDX File Name": "",
+        "MDX File Name": mdx_filename,
         "LinkedIn Version": "",
         "Publication Date": "",
-        "GitHub Status": "Generated — PR pending",
+        "GitHub Status": "Draft — pending review on editorial branch",
         "Notes": "",
     }
     return [row_by_header[header] for header in CONTENT_PIPELINE_HEADERS]
@@ -117,8 +121,12 @@ def main() -> None:
         return
 
     try:
-        topics_bank_rows = sheets_client.read_tab_as_dicts(service, sheet_id, TOPICS_BANK_TAB, TOPICS_BANK_HEADERS)
-        content_pipeline_rows = sheets_client.read_tab_as_dicts(service, sheet_id, CONTENT_PIPELINE_TAB, CONTENT_PIPELINE_HEADERS)
+        topics_bank_rows = sheets_client.read_tab_as_dicts(
+            service, sheet_id, TOPICS_BANK_TAB, TOPICS_BANK_HEADERS
+        )
+        content_pipeline_rows = sheets_client.read_tab_as_dicts(
+            service, sheet_id, CONTENT_PIPELINE_TAB, CONTENT_PIPELINE_HEADERS
+        )
         industry_rows = sheets_client.read_tab_as_dicts(service, sheet_id, INDUSTRIES_TAB)
     except sheets_client.SheetsConfigError as exc:
         fail(str(exc))
@@ -151,7 +159,9 @@ def main() -> None:
         print(f"  - {result.title} — {result.url}")
 
     try:
-        article = write_article.generate_article(topic, industry_context, research_results, LIB_ARTICLES_PATH)
+        article = write_article.generate_article(
+            topic, industry_context, research_results, ARTICLES_MDX_DIR
+        )
     except ArticleGenerationError as exc:
         fail(str(exc))
         return
@@ -161,10 +171,15 @@ def main() -> None:
     image_path = f"/knowledge/{article['slug']}.svg"
     try:
         write_header_svg(article["slug"], PUBLIC_DIR)
-        insert_article_into_file(LIB_ARTICLES_PATH, article, image_path)
-        ensure_header_image_render(PAGE_TSX_PATH)
-    except Exception as exc:  # noqa: BLE001 - surface any insertion failure with full context
-        fail(f"Fallo al insertar el artículo en el código: {exc}")
+    except Exception as exc:
+        fail(f"Fallo al generar la imagen SVG: {exc}")
+        return
+
+    try:
+        mdx_path = write_article_mdx(REPO_ROOT, article, image_path)
+        print(f"[INFO] Artículo escrito en: {mdx_path.relative_to(REPO_ROOT)}")
+    except InsertArticleError as exc:
+        fail(str(exc))
         return
 
     next_id = next_pipeline_id(content_pipeline_rows)
@@ -187,16 +202,21 @@ def main() -> None:
         "excerpt_es": article["excerptEs"],
         "angle": article["angle"],
         "industry": topic.industry,
+        "challenge": article.get("challenge", ""),
+        "audience": article.get("audience", ""),
         "theme": topic.theme,
         "sources": sources,
         "pipeline_row_number": row_number,
         "pipeline_id": next_id,
         "topic_seed": seed,
     }
-    OUTPUT_JSON_PATH.write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
+    OUTPUT_JSON_PATH.write_text(
+        json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
 
     print("\n=== RESUMEN ===")
     print(f"Tema: {topic.theme} | Industria: {topic.industry}")
+    print(f"Reto: {article.get('challenge')} | Audiencia: {article.get('audience')}")
     print(f"Ángulo: {article['angle']}")
     print(f"Título: {article['titleEn']} / {article['titleEs']}")
     print("Investigación:")
