@@ -6,6 +6,11 @@ Editorial rules, taxonomy and article structure are read from:
   content/editorial/taxonomy.md
 
 Modify those files to change the editorial line — no code changes required.
+
+JSON robustness strategy (three attempts before aborting):
+  1. Direct parse after stripping code fences and leading/trailing whitespace.
+  2. Regex extraction of the outermost {...} block (handles text before/after JSON).
+  3. A second Gemini call whose only task is to return the JSON and nothing else.
 """
 
 from __future__ import annotations
@@ -25,6 +30,7 @@ GEMINI_ENDPOINT = (
     f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
 )
 MAX_OUTPUT_TOKENS = 8000
+MAX_REPAIR_TOKENS = 9000
 REQUEST_TIMEOUT_SECONDS = 180
 
 EDITORIAL_DIR_RELATIVE = "content/editorial"
@@ -44,7 +50,6 @@ class ArticleGenerationError(Exception):
 # ── Editorial document loading ────────────────────────────────────────────────
 
 def load_editorial_docs(editorial_dir: Path) -> dict[str, str]:
-    """Read all three editorial documents. Fails early with a clear message if any is missing."""
     docs = {}
     for name in ("editorial_voice", "article_structure", "taxonomy"):
         path = editorial_dir / f"{name}.md"
@@ -62,11 +67,6 @@ def load_editorial_docs(editorial_dir: Path) -> dict[str, str]:
 
 
 def parse_taxonomy(taxonomy_text: str) -> dict[str, list[str]]:
-    """Extract category lists from taxonomy.md.
-
-    Reads every ## section header and collects the '- item' lines beneath it.
-    Adding a new value to taxonomy.md is all that is needed to extend the system.
-    """
     taxonomy: dict[str, list[str]] = {}
     current_section: str | None = None
     for line in taxonomy_text.splitlines():
@@ -92,7 +92,6 @@ def get_gemini_api_key() -> str:
 
 
 def load_style_reference(content_articles_dir: Path, max_chars: int = 6000) -> str:
-    """Return a published article as style/length calibration, or a fallback note."""
     if content_articles_dir.exists():
         mdx_files = sorted(
             content_articles_dir.glob("*.mdx"),
@@ -134,7 +133,6 @@ def build_prompt(
             f"- {k}: {v}" for k, v in industry_context.items() if v
         )
 
-    # Build taxonomy constraint strings from the parsed taxonomy
     def opts(key: str) -> str:
         values = taxonomy.get(key, [])
         return ", ".join(f'"{v}"' for v in values)
@@ -142,7 +140,7 @@ def build_prompt(
     return f"""You are the editorial writer for SC-Analytics, a data and analytics consultancy.
 Write ONE new bilingual article (English and Spanish) for the SC-Analytics knowledge library.
 
-Read the following editorial documents carefully. They are not suggestions — they are requirements.
+The following editorial documents contain your requirements. Read them carefully.
 
 ===== EDITORIAL VOICE =====
 {editorial_docs['editorial_voice']}
@@ -153,7 +151,7 @@ Read the following editorial documents carefully. They are not suggestions — t
 ===== ASSIGNED TOPIC =====
 - Theme: {topic.theme}
 - Industry: {topic.industry}
-- Suggested title (adapt freely — apply the title patterns above): {topic.possible_title}
+- Suggested title (adapt freely): {topic.possible_title}
 - Decision Problem: {topic.decision_problem}
 - Business Value: {topic.business_value}
 - Analytical Background: {topic.analytical_background}
@@ -169,48 +167,197 @@ Use as factual context. Do not quote sources verbatim. Ground specific claims in
 ===== STYLE AND LENGTH CALIBRATION =====
 {style_reference}
 
-===== MANDATORY CHECKLIST — verify before writing the final JSON =====
+===== INTERNAL QUALITY VERIFICATION (do not output this — verify silently before writing) =====
 
-Before producing the output, confirm the article satisfies ALL of the following.
-If any item is not satisfied, rewrite the relevant section.
+Before writing the JSON, confirm internally that the article satisfies ALL of the following.
+Do NOT output this checklist or any verification text. This is a silent internal check only.
 
-[ ] The title makes a specific, non-obvious claim — not a topic description
-[ ] The excerpt states the article's central argument, not what the article is about
-[ ] The opening section makes a substantive point immediately — does not restate the title
-[ ] The body contains at least one concrete business scenario with: company type + realistic size/context + specific situation + what was at stake or what happened
-[ ] The body contains at least one genuine trade-off: doing X produces Y, and Y creates a specific operational or organisational problem
-[ ] The body contains at least one operational implication: what this means for a specific person (CFO, operations manager, planning team) in a specific situation
-[ ] The body contains at least one recommendation specific enough that someone could act on it and verify whether it worked
-[ ] The closing ends with a specific insight or diagnostic — not a summary or a platitude
-[ ] None of these phrases appear anywhere in the article:
-    "In today's fast-paced", "companies increasingly recognise", "it is important to note",
-    "what actually works is", "the key is to", "ultimately, the goal is",
-    "consistently outperform", "the question is whether your organisation is prepared",
-    "investing in X is valuable but", "with the right approach"
-[ ] No section merely states that something is difficult or important without explaining specifically how or why
+- Title makes a specific, non-obvious claim — not a topic description
+- Excerpt states the central argument, not what the article is about
+- Opening section makes a substantive point immediately — does not restate the title
+- Body contains at least one concrete business scenario: company type + size/context + specific situation + consequence chain (event → operational → economic → organizational)
+- Body contains at least one genuine trade-off including costs, risks, and limitations of the proposed solution — not just the status quo
+- Body contains at least one operational implication for a specific role in a specific situation
+- Body contains at least one defensible claim someone could reasonably disagree with
+- Closing ends with a specific diagnostic or insight — not a summary
+- The following phrases do not appear anywhere: "In today's fast-paced", "companies increasingly recognise", "it is important to note", "what actually works is", "the key is to", "ultimately, the goal is", "with the right approach", "the question is whether your organisation is prepared"
+- No meta-labels announce structural elements ("A concrete scenario:", "Recommendation:", "Trade-off:")
+- Organizational causality is explained for any problem described as persistent
 
-===== OUTPUT INSTRUCTIONS =====
-Respond ONLY with a valid JSON object. No text before or after. No markdown code block.
+===== OUTPUT =====
+
+Return ONLY a single valid JSON object. Nothing before it. Nothing after it.
+No markdown. No code fence. No commentary. No checklist output.
+Your response must start with {{ and end with }}.
 
 Required keys:
 
-  slug          kebab-case, English, unique, derived from titleEn
-  titleEn       string — follow the title patterns in article_structure.md
-  titleEs       string — faithful Spanish translation
-  date          string, YYYY-MM-DD, a recent plausible date
-  readingTime   integer, minutes, consistent with actual bodyEn length
-  tagsEn        array of exactly 3 strings in English
-  tagsEs        array of exactly 3 strings in Spanish (translations of tagsEn)
-  excerptEn     string, 1-2 sentences — follow the excerpt rules above
-  excerptEs     string, faithful Spanish translation of excerptEn
-  bodyEn        string — multiple paragraphs, **bold** subtitles, follows structure above
-  bodyEs        string — faithful and natural Spanish translation of bodyEn, same format
-  angle         string, 1 sentence: the specific argumentative angle chosen for this article
-  challenge     string — MUST be exactly one of: {opts('Challenge')}
-  audience      string — MUST be exactly one of: {opts('Audience')}
-  level         string — MUST be exactly one of: {opts('Level')}
+  slug         kebab-case English string derived from titleEn
+  titleEn      string
+  titleEs      string — faithful Spanish translation
+  date         string YYYY-MM-DD, recent plausible date
+  readingTime  integer, minutes, consistent with actual bodyEn length
+  tagsEn       array of exactly 3 strings in English
+  tagsEs       array of exactly 3 strings in Spanish
+  excerptEn    string, 1-2 sentences
+  excerptEs    string — faithful Spanish translation
+  bodyEn       string — paragraphs with **bold** subtitles, no meta-labels
+  bodyEs       string — faithful natural Spanish translation, same format
+  angle        string, 1 sentence: the specific argumentative angle chosen
+  challenge    string — MUST be exactly one of: {opts('Challenge')}
+  audience     string — MUST be exactly one of: {opts('Audience')}
+  level        string — MUST be exactly one of: {opts('Level')}
 
-Do not use backticks (`) or the sequence ${{ inside any string value."""
+Do not use backticks or the sequence ${{ inside any string value."""
+
+
+# ── JSON extraction (three-stage robustness layer) ────────────────────────────
+
+def _strip_code_fences(text: str) -> str:
+    """Remove markdown code fences if present."""
+    s = text.strip()
+    if s.startswith("```"):
+        s = re.sub(r"^```[a-zA-Z]*\s*\n?", "", s)
+        s = re.sub(r"\n?```\s*$", "", s)
+    return s.strip()
+
+
+def _extract_json_object(text: str) -> str | None:
+    """Find and return the first complete {...} JSON object in text.
+
+    Uses a character-level brace counter so it correctly handles:
+    - text or commentary before or after the JSON
+    - nested objects
+    - strings containing brace characters
+    - escaped characters inside strings
+    """
+    start = text.find("{")
+    if start == -1:
+        return None
+
+    depth = 0
+    in_string = False
+    escape_next = False
+
+    for i, ch in enumerate(text[start:], start):
+        if escape_next:
+            escape_next = False
+            continue
+        if ch == "\\" and in_string:
+            escape_next = True
+            continue
+        if ch == '"':
+            in_string = not in_string
+            continue
+        if in_string:
+            continue
+        if ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                return text[start : i + 1]
+
+    return None
+
+
+def _try_parse(text: str) -> dict | None:
+    """Attempt json.loads; return None on failure."""
+    try:
+        return json.loads(text)
+    except (json.JSONDecodeError, ValueError):
+        return None
+
+
+def _repair_call(raw_text: str, api_key: str) -> str:
+    """Ask Gemini to extract and return only the JSON from a malformed response."""
+    repair_prompt = (
+        "The following text contains a JSON object but may have extra content "
+        "before or after it, or minor formatting issues.\n\n"
+        "Extract the JSON object and return it exactly as-is, with no changes to values.\n"
+        "Return ONLY the raw JSON. No markdown. No explanation. No code fence.\n"
+        "Your response must start with { and end with }.\n\n"
+        "Text to repair:\n"
+        + raw_text[:12000]
+    )
+    try:
+        response = requests.post(
+            GEMINI_ENDPOINT,
+            headers={
+                "x-goog-api-key": api_key,
+                "content-type": "application/json",
+            },
+            json={
+                "contents": [{"parts": [{"text": repair_prompt}]}],
+                "generationConfig": {
+                    "maxOutputTokens": MAX_REPAIR_TOKENS,
+                    "responseMimeType": "application/json",
+                },
+            },
+            timeout=REQUEST_TIMEOUT_SECONDS,
+        )
+    except requests.RequestException as exc:
+        raise ArticleGenerationError(f"La llamada de reparación a Gemini falló. Detalle: {exc}") from exc
+
+    if response.status_code != 200:
+        raise ArticleGenerationError(
+            f"La llamada de reparación devolvió HTTP {response.status_code}."
+        )
+
+    payload = response.json()
+    candidates = payload.get("candidates", [])
+    if not candidates:
+        raise ArticleGenerationError("La llamada de reparación no devolvió candidates.")
+
+    parts = candidates[0].get("content", {}).get("parts", [])
+    return "\n".join(part.get("text", "") for part in parts if "text" in part)
+
+
+def extract_json_with_fallbacks(raw_text: str, api_key: str) -> dict:
+    """Three-stage extraction chain. Aborts with a clear error if all stages fail.
+
+    Stage 1: strip code fences + direct json.loads
+    Stage 2: extract outermost {...} block + json.loads
+    Stage 3: second Gemini call (repair) + stages 1 and 2 again
+    """
+    # Stage 1
+    cleaned = _strip_code_fences(raw_text)
+    result = _try_parse(cleaned)
+    if result is not None:
+        return result
+
+    print("[WARN] Stage 1 (direct parse) failed. Trying brace extraction...")
+
+    # Stage 2
+    extracted = _extract_json_object(cleaned) or _extract_json_object(raw_text)
+    if extracted:
+        result = _try_parse(extracted)
+        if result is not None:
+            print("[INFO] Stage 2 (brace extraction) succeeded.")
+            return result
+
+    print("[WARN] Stage 2 (brace extraction) failed. Attempting repair call to Gemini...")
+
+    # Stage 3
+    repaired_text = _repair_call(raw_text, api_key)
+    cleaned_repair = _strip_code_fences(repaired_text)
+    result = _try_parse(cleaned_repair)
+    if result is not None:
+        print("[INFO] Stage 3 (repair call) succeeded.")
+        return result
+
+    extracted_repair = _extract_json_object(cleaned_repair) or _extract_json_object(repaired_text)
+    if extracted_repair:
+        result = _try_parse(extracted_repair)
+        if result is not None:
+            print("[INFO] Stage 3 (repair call + extraction) succeeded.")
+            return result
+
+    raise ArticleGenerationError(
+        "Gemini no pudo producir JSON válido tras tres intentos.\n"
+        f"Primeros 400 caracteres de la respuesta original:\n{raw_text[:400]!r}\n"
+        f"Primeros 400 caracteres de la respuesta de reparación:\n{repaired_text[:400]!r}"
+    )
 
 
 # ── Gemini call ───────────────────────────────────────────────────────────────
@@ -265,26 +412,10 @@ def call_gemini(prompt: str, api_key: str) -> str:
     return "\n".join(text_blocks)
 
 
-# ── Response parsing and validation ──────────────────────────────────────────
+# ── Validation ────────────────────────────────────────────────────────────────
 
-def _strip_code_fences(text: str) -> str:
-    stripped = text.strip()
-    if stripped.startswith("```"):
-        stripped = re.sub(r"^```[a-zA-Z]*\n", "", stripped)
-        stripped = re.sub(r"\n```$", "", stripped)
-    return stripped.strip()
-
-
-def parse_article_json(raw_text: str, taxonomy: dict[str, list[str]]) -> dict:
-    cleaned = _strip_code_fences(raw_text)
-    try:
-        data = json.loads(cleaned)
-    except json.JSONDecodeError as exc:
-        raise ArticleGenerationError(
-            "Gemini no devolvió un JSON válido para el artículo. "
-            f"Primeros 300 caracteres de la respuesta: {cleaned[:300]!r}"
-        ) from exc
-
+def validate_article(data: dict, taxonomy: dict[str, list[str]]) -> dict:
+    """Validate required fields and taxonomy values. Returns the validated dict."""
     missing = [f for f in BASE_REQUIRED_FIELDS if f not in data or data[f] in (None, "")]
     if missing:
         raise ArticleGenerationError(
@@ -294,7 +425,6 @@ def parse_article_json(raw_text: str, taxonomy: dict[str, list[str]]) -> dict:
     if not isinstance(data["tagsEn"], list) or not isinstance(data["tagsEs"], list):
         raise ArticleGenerationError("tagsEn/tagsEs deben ser arrays de strings.")
 
-    # Validate taxonomy fields against content/editorial/taxonomy.md
     for field, section in (("challenge", "Challenge"), ("audience", "Audience"), ("level", "Level")):
         valid = taxonomy.get(section, [])
         if valid and data.get(field) not in valid:
@@ -318,26 +448,15 @@ def generate_article(
     content_articles_dir: Path,
     editorial_dir: Path,
 ) -> dict:
-    """Generate a bilingual article using Gemini, guided by the editorial documents.
-
-    Args:
-        topic: The topic selected from the Topics Bank.
-        industry_context: Optional row from the Industries sheet.
-        research: Web research results from Brave Search.
-        content_articles_dir: Path to content/articles/ (used for style calibration).
-        editorial_dir: Path to content/editorial/ (contains the .md editorial docs).
-
-    Returns:
-        A dict with all article fields, ready to be written as an MDX file.
-    """
+    """Generate a bilingual article using Gemini, guided by the editorial documents."""
     api_key = get_gemini_api_key()
     editorial_docs = load_editorial_docs(editorial_dir)
     taxonomy = parse_taxonomy(editorial_docs["taxonomy"])
     style_reference = load_style_reference(content_articles_dir)
     prompt = build_prompt(topic, industry_context, research, style_reference, editorial_docs, taxonomy)
     raw_response = call_gemini(prompt, api_key)
-    article = parse_article_json(raw_response, taxonomy)
-    # Inject topic-level fields that the article inherits directly
+    data = extract_json_with_fallbacks(raw_response, api_key)
+    article = validate_article(data, taxonomy)
     article["industry"] = topic.industry
     article["theme"] = topic.theme
     return article
