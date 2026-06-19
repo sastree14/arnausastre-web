@@ -1,105 +1,117 @@
-Quiero que estas observaciones no se apliquen únicamente a este artículo.
+Quiero crear un sistema manual y estructurado para Projects.
 
-Quiero convertirlas en reglas permanentes del sistema editorial.
-
-Analiza tu evaluación y actualiza:
-
-* content/editorial/editorial_voice.md
-* content/editorial/article_structure.md
+No quiero automatización con Gemini para Projects.
 
 Objetivo:
+Yo subiré manualmente una carpeta por proyecto con:
 
-Que los próximos artículos nazcan ya con estas mejoras incorporadas.
+* un archivo project.txt
+* una imagen sin fondo, normalmente cover.png o cover.svg
 
-Cambios a introducir:
+La web debe leer esos archivos y construir automáticamente:
 
-1. Prohibir meta-etiquetas explícitas
+1. La página /projects con tarjetas de proyectos.
+2. Cada página individual /projects/{slug}.
 
-No quiero estructuras como:
+Estructura deseada:
 
-* A concrete scenario
-* A genuine trade-off
-* Operational implication
-* Recommendation
+content/projects/
+ecommerce-forecasting-inventory/
+project.txt
 
-La estructura debe existir pero ser invisible para el lector.
+public/projects/
+ecommerce-forecasting-inventory/
+cover.png
 
-2. Añadir causalidad organizativa
+Formato de project.txt:
 
-Cuando se describa un problema empresarial, no basta con explicar que existe.
+Headline:
+Forecasting and Inventory Optimization System
 
-El artículo debe explicar por qué persiste:
+Industry:
+E-commerce
 
-* incentivos
-* KPIs
-* presupuestos
-* estructuras organizativas
-* ownership
+Capability:
+Forecasting, Simulation, Inventory Optimization
 
-Quiero que los artículos expliquen los mecanismos que generan el problema.
+Challenge:
+Demand Planning
 
-3. Completar las cadenas de consecuencias
+Description:
+Short public description of the project.
 
-Cuando aparezca un escenario concreto, no quiero que se detenga en la anécdota.
+Metrics:
 
-Debe desarrollarse:
+* WAPE: 0.31
+* Horizons: 30, 91, 182 days
+* ASINs: 2,100+
+* Simulations: 250 scenarios
 
-evento → consecuencia operativa → consecuencia económica → consecuencia organizativa
+Image:
+cover.png
 
-4. Trade-offs de la solución obligatorios
+Status:
+Published
 
-No quiero artículos que simplemente recomienden una solución.
+Sections:
+Context:
+...
 
-Toda solución propuesta debe incluir:
+Problem:
+...
 
-* coste
-* complejidad
-* tiempo de implantación
-* riesgos
-* limitaciones
+Approach:
+...
 
-Si una solución no tiene inconvenientes, el artículo está incompleto.
+System Developed:
+...
 
-5. Sustituir lenguaje genérico de transformación digital
+Results:
+...
 
-Evitar patrones tipo:
+Confidentiality:
+Client name, internal data and operational details anonymized.
 
-* data lakes
-* digital transformation
-* centralized data
-* modern enterprises
+Requirements:
 
-salvo que sean imprescindibles.
+* Create a parser that reads every content/projects/{slug}/project.txt.
+* Extract Headline, Industry, Capability, Challenge, Description, Metrics, Image, Status and Sections.
+* Only show projects with Status: Published.
+* The image path should resolve automatically to /projects/{slug}/{image}.
+* Images may have transparent background, so display them inside a sober SC-Analytics card/background.
+* Do not modify the images themselves.
+* The design must be classic, sober, professional, blue/white, consistent with SC-Analytics.
+* /projects should show square or rectangular cards with:
 
-Quiero observaciones específicas del dominio.
+  * image
+  * headline
+  * industry
+  * capability
+  * short description
+  * 3 to 5 metric boxes
+* On click, open /projects/{slug}.
+* The project detail page should show:
 
-6. Introducir experiencia práctica
+  * Hero with headline and image
+  * Industry / Capability / Challenge
+  * Description
+  * Metric boxes
+  * Sections from project.txt
+  * Confidentiality note
+  * CTA to Contact
 
-Los artículos deben contener observaciones que parezcan surgir de proyectos reales.
+Important:
 
-Ejemplos:
+* Projects are curated manually.
+* No Gemini.
+* No Google Sheet dependency.
+* No automatic generation.
+* No private code, datasets, client names or sensitive information should be exposed.
+* The system should be scalable to 20–30 projects, but optimized for quality over quantity.
 
-* errores frecuentes
-* resistencias organizativas
-* problemas de adopción
-* decisiones que suelen tomarse mal
+Before implementing:
 
-No quiero únicamente explicación técnica.
-
-7. Introducir afirmaciones defendibles
-
-Cada artículo debería contener al menos una afirmación que pueda discutirse.
-
-Ejemplo:
-
-"Many companies automate the wrong thing first."
-
-o
-
-"Most forecasting failures are not forecasting problems."
-
-No busco polémica artificial.
-
-Busco punto de vista.
-
-Después de actualizar las reglas editoriales, explica exactamente qué cambios se han realizado y cómo afectarán a los futuros artículos.
+1. Explain what files you will modify.
+2. Explain the final folder structure.
+3. Then implement.
+4. Run npm run build.
