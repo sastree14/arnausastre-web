@@ -34,6 +34,7 @@ from write_article import ArticleGenerationError
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 ARTICLES_MDX_DIR = REPO_ROOT / "content" / "articles"
+EDITORIAL_DIR = REPO_ROOT / "content" / "editorial"
 PUBLIC_DIR = REPO_ROOT / "public"
 OUTPUT_JSON_PATH = REPO_ROOT / "scripts" / "content_engine" / ".pipeline_output.json"
 
@@ -160,7 +161,7 @@ def main() -> None:
 
     try:
         article = write_article.generate_article(
-            topic, industry_context, research_results, ARTICLES_MDX_DIR
+            topic, industry_context, research_results, ARTICLES_MDX_DIR, EDITORIAL_DIR
         )
     except ArticleGenerationError as exc:
         fail(str(exc))
