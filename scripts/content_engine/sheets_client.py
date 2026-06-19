@@ -148,3 +148,92 @@ def update_cell(service, sheet_id: str, tab_name: str, row_number_1indexed: int,
         ).execute()
     except HttpError as exc:
         raise SheetsConfigError(f"No se pudo actualizar la celda {cell_range}. Detalle: {exc}") from exc
+
+
+def get_tab_headers(service, sheet_id: str, tab_name: str) -> list[str]:
+    """Returns the header row of a tab as a list of strings."""
+    try:
+        result = (
+            service.spreadsheets()
+            .values()
+            .get(spreadsheetId=sheet_id, range=f"{tab_name}!1:1")
+            .execute()
+        )
+    except HttpError as exc:
+        raise SheetsConfigError(
+            f"No se pudo leer el encabezado de la pestaña '{tab_name}'. Detalle: {exc}"
+        ) from exc
+    rows = result.get("values", [])
+    return rows[0] if rows else []
+
+
+def append_row_by_headers(service, sheet_id: str, tab_name: str, row_data: dict[str, str]) -> int:
+    """Appends a row using column names as keys.
+
+    Reads the sheet's actual header row to determine column positions, then builds
+    the row list in the correct order. Columns in row_data that don't exist in the
+    sheet are silently skipped with a warning. Columns in the sheet that are not
+    in row_data are left empty.
+
+    Returns the 1-indexed row number of the appended row.
+    """
+    headers = get_tab_headers(service, sheet_id, tab_name)
+    if not headers:
+        raise SheetsConfigError(
+            f"La pestaña '{tab_name}' no tiene fila de encabezado — no se puede añadir la fila."
+        )
+
+    row: list[str] = [""] * len(headers)
+    for key, value in row_data.items():
+        if key in headers:
+            row[headers.index(key)] = str(value)
+        else:
+            print(f"[WARN] Columna '{key}' no encontrada en '{tab_name}' — se omite.")
+
+    try:
+        result = (
+            service.spreadsheets()
+            .values()
+            .append(
+                spreadsheetId=sheet_id,
+                range=tab_name,
+                valueInputOption="USER_ENTERED",
+                insertDataOption="INSERT_ROWS",
+                body={"values": [row]},
+            )
+            .execute()
+        )
+    except HttpError as exc:
+        raise SheetsConfigError(
+            f"No se pudo escribir la nueva fila en la pestaña '{tab_name}'. Detalle: {exc}"
+        ) from exc
+
+    updated_range = result.get("updates", {}).get("updatedRange", "")
+    match = re.search(r"![A-Z]+(\d+):", updated_range)
+    if not match:
+        raise SheetsConfigError(
+            f"La fila se escribió en '{tab_name}' pero no se pudo determinar su número de fila "
+            f"a partir de '{updated_range}'."
+        )
+    return int(match.group(1))
+
+
+def update_cells_by_header(
+    service,
+    sheet_id: str,
+    tab_name: str,
+    row_number_1indexed: int,
+    updates: dict[str, str],
+) -> None:
+    """Updates specific cells in a row, looking up column positions by header name.
+
+    Columns in `updates` that don't exist in the sheet are skipped with a warning.
+    This means adding new columns to the sheet never breaks the pipeline.
+    """
+    headers = get_tab_headers(service, sheet_id, tab_name)
+    for header_name, value in updates.items():
+        if header_name not in headers:
+            print(f"[WARN] Columna '{header_name}' no encontrada en '{tab_name}' — se omite.")
+            continue
+        col_index = headers.index(header_name)
+        update_cell(service, sheet_id, tab_name, row_number_1indexed, col_index, value)

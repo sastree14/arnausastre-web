@@ -7,10 +7,10 @@ Order of operations:
   2. Read Content Pipeline, compute pending topics.
   3. Pick one pending topic at random (seed logged).
   4. Research it via Brave Search.
-  5. Draft the bilingual article via Gemini.
+  5. Draft the bilingual article via Gemini (guided by content/editorial/ docs).
   6. Generate its deterministic SVG header image.
   7. Write the article as an MDX file to content/articles/{slug}.mdx.
-  8. Append a row to Content Pipeline sheet.
+  8. Append a row to Content Pipeline (writes by column name, sheet-order-agnostic).
   9. Write a JSON hand-off file for the GitHub Actions workflow.
 
 Any failure stops the script immediately — no partial article is ever left half-written.
@@ -46,12 +46,6 @@ TOPICS_BANK_HEADERS = [
     "Theme", "Possible Title", "Industry", "Decision Problem", "Business Value",
     "Analytical Background", "CEO Relevance", "Difficulty", "Notes",
 ]
-CONTENT_PIPELINE_HEADERS = [
-    "ID", "Status", "Content Type", "Title", "Slug", "Industry", "Theme", "Audience",
-    "Objective", "Angle", "Sources Needed", "Language", "Priority", "Draft Doc URL",
-    "MDX File Name", "LinkedIn Version", "Publication Date", "GitHub Status", "Notes",
-]
-GITHUB_STATUS_COLUMN_INDEX = CONTENT_PIPELINE_HEADERS.index("GitHub Status")
 
 
 def fail(message: str) -> None:
@@ -80,14 +74,20 @@ def next_pipeline_id(content_pipeline_rows: list[dict]) -> int:
     return max_id + 1
 
 
-def build_pipeline_row(
+def build_pipeline_row_dict(
     article: dict,
     topic: pick_topic.PendingTopic,
     sources: list[str],
     next_id: int,
-) -> list[str]:
-    mdx_filename = f"{article['slug']}.mdx"
-    row_by_header = {
+) -> dict[str, str]:
+    """Returns a dict keyed by column name.
+
+    append_row_by_headers() maps these to the sheet's actual column positions,
+    so the order here doesn't matter and extra columns in the sheet are handled
+    gracefully. Add new fields here and they will be written automatically if
+    the corresponding column exists in the sheet.
+    """
+    return {
         "ID": str(next_id),
         "Status": "Draft",
         "Content Type": "Article",
@@ -95,20 +95,19 @@ def build_pipeline_row(
         "Slug": article["slug"],
         "Industry": topic.industry,
         "Theme": topic.theme,
+        "Challenge": article.get("challenge", ""),
         "Audience": article.get("audience", "CEO"),
-        "Objective": "",
+        "Level": article.get("level", "Strategic"),
         "Angle": article["angle"],
         "Sources Needed": ", ".join(sources),
         "Language": "EN/ES",
-        "Priority": "",
-        "Draft Doc URL": "",
-        "MDX File Name": mdx_filename,
-        "LinkedIn Version": "",
+        "MDX File Name": f"{article['slug']}.mdx",
+        "Branch": "editorial",
+        "Published": "No",
         "Publication Date": "",
         "GitHub Status": "Draft — pending review on editorial branch",
         "Notes": "",
     }
-    return [row_by_header[header] for header in CONTENT_PIPELINE_HEADERS]
 
 
 def main() -> None:
@@ -125,8 +124,10 @@ def main() -> None:
         topics_bank_rows = sheets_client.read_tab_as_dicts(
             service, sheet_id, TOPICS_BANK_TAB, TOPICS_BANK_HEADERS
         )
+        # No strict header validation for Content Pipeline — the sheet may have
+        # columns this code doesn't know about, and that's fine.
         content_pipeline_rows = sheets_client.read_tab_as_dicts(
-            service, sheet_id, CONTENT_PIPELINE_TAB, CONTENT_PIPELINE_HEADERS
+            service, sheet_id, CONTENT_PIPELINE_TAB, expected_headers=None
         )
         industry_rows = sheets_client.read_tab_as_dicts(service, sheet_id, INDUSTRIES_TAB)
     except sheets_client.SheetsConfigError as exc:
@@ -185,10 +186,12 @@ def main() -> None:
 
     next_id = next_pipeline_id(content_pipeline_rows)
     sources = [r.url for r in research_results]
-    row_values = build_pipeline_row(article, topic, sources, next_id)
+    row_dict = build_pipeline_row_dict(article, topic, sources, next_id)
 
     try:
-        row_number = sheets_client.append_row(service, sheet_id, CONTENT_PIPELINE_TAB, row_values)
+        row_number = sheets_client.append_row_by_headers(
+            service, sheet_id, CONTENT_PIPELINE_TAB, row_dict
+        )
     except sheets_client.SheetsConfigError as exc:
         fail(str(exc))
         return
@@ -219,8 +222,9 @@ def main() -> None:
     print(f"Tema: {topic.theme} | Industria: {topic.industry}")
     print(f"Reto: {article.get('challenge')} | Audiencia: {article.get('audience')}")
     print(f"Ángulo: {article['angle']}")
-    print(f"Título: {article['titleEn']} / {article['titleEs']}")
-    print("Investigación:")
+    print(f"Título EN: {article['titleEn']}")
+    print(f"Título ES: {article['titleEs']}")
+    print("Fuentes:")
     for result in research_results:
         print(f"  - {result.title} ({result.url})")
     print("================\n")

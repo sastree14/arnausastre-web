@@ -93,21 +93,26 @@ jobs:
           # Create PR if one doesn't exist yet; otherwise just push was enough
           existing_pr=$(gh pr list --head editorial --base main --json number --jq '.[0].number' 2>/dev/null || echo "")
           if [ -z "$existing_pr" ]; then
-            pr_url=$(gh pr create --title "$title" --body-file pr_body.md --base main --head editorial)
-            pr_number=$(echo "$pr_url" | grep -oE '[0-9]+$')
+            pr_full_url=$(gh pr create --title "$title" --body-file pr_body.md --base main --head editorial)
+            pr_number=$(echo "$pr_full_url" | grep -oE '[0-9]+$')
           else
             pr_number="$existing_pr"
+            pr_full_url="https://github.com/${{ github.repository }}/pull/${pr_number}"
             echo "PR #${pr_number} already exists — article added to editorial branch."
           fi
 
           echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
+          echo "pr_url=$pr_full_url" >> "$GITHUB_OUTPUT"
           rm -f pr_body.md pr_title.txt
 
-      - name: Record PR number back into Content Pipeline sheet
+      - name: Update Content Pipeline sheet with PR details
         if: steps.check_output.outputs.has_article == 'true'
         run: |
           row_number=$(python -c "import json;print(json.load(open('scripts/content_engine/.pipeline_output.json'))['pipeline_row_number'])")
-          python scripts/content_engine/update_pipeline_status.py "$row_number" "${{ steps.pr.outputs.pr_number }}"
+          python scripts/content_engine/update_pipeline_status.py \
+            "$row_number" \
+            "${{ steps.pr.outputs.pr_number }}" \
+            "${{ steps.pr.outputs.pr_url }}"
         env:
           GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
           EDITORIAL_SHEET_ID: ${{ secrets.EDITORIAL_SHEET_ID }}
