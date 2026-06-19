@@ -23,7 +23,7 @@ Metrics:
 * Execution: Fully automated with risk control layer
 
 Image:
-cover.svg
+Trading image.png
 
 Status:
 Published

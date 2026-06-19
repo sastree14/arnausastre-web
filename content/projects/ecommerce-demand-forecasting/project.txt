@@ -23,7 +23,7 @@ Metrics:
 * Purchasing decision support: Extended from weekly to quarterly planning cycles
 
 Image:
-cover.svg
+Demand Image.png
 
 Status:
 Published

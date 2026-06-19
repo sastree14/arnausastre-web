@@ -23,7 +23,7 @@ Metrics:
 * Decision traceability: Full audit trail across all performance metrics
 
 Image:
-cover.svg
+Notion Image.png
 
 Status:
 Published

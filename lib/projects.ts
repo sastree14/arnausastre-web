@@ -111,7 +111,7 @@ function parseProjectTxt(content: string, slug: string): Project {
     description: get('Description'),
     metrics: parseMetrics(get('Metrics')),
     image,
-    imagePath: `/projects/${slug}/${image}`,
+    imagePath: `/projects/${slug}/${encodeURIComponent(image)}`,
     status: get('Status'),
     sections: parseSections(get('Sections')),
     confidentiality: get('Confidentiality'),

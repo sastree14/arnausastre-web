@@ -23,7 +23,7 @@ Metrics:
 * Early warning coverage: Extended across the full active portfolio
 
 Image:
-cover.svg
+Fraud Detection Image.png
 
 Status:
 Published
