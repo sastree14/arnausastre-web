@@ -87,18 +87,16 @@ export default function ArticleContent({ article }: { article: Article }) {
             </div>
           </div>
 
-          {article.image && (
-            <div className="hidden lg:block overflow-hidden rounded-2xl">
-              <Image
-                src={article.image}
-                alt={title}
-                width={1200}
-                height={800}
-                className="w-full h-auto"
-                priority
-              />
-            </div>
-          )}
+          <div className="hidden lg:flex overflow-hidden rounded-2xl bg-slate-900 items-center justify-center px-12 py-14">
+            <Image
+              src="/brand/logo-horizontal-transparent.png"
+              alt="SC-Analytics"
+              width={400}
+              height={130}
+              className="w-full h-auto opacity-80"
+              priority
+            />
+          </div>
         </div>
       </div>
 
