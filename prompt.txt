@@ -1,281 +1,309 @@
-Quiero hacer una revisión importante de la sección Knowledge para alinearla con la identidad de SC-Analytics.
+Quiero poblar completamente la sección Projects de SC-Analytics.
 
-Objetivo general:
+Objetivo:
 
-La sección Knowledge debe parecer la biblioteca de conocimiento de una consultora especializada en sistemas de decisión empresariales.
+Crear los proyectos iniciales de la web utilizando la arquitectura ya implementada basada en:
 
-No debe parecer un blog genérico ni una web de marketing.
+content/projects/{slug}/project.txt
 
-Debe transmitir:
+public/projects/{slug}/
 
-* rigor
-* experiencia práctica
-* claridad
+No quiero modificar la arquitectura.
+
+Quiero generar todos los project.txt necesarios para los proyectos iniciales.
+
+---
+
+## ESTILO OBLIGATORIO
+
+La redacción debe seguir la identidad de SC-Analytics.
+
+No quiero:
+
+* marketing
+* buzzwords
+* lenguaje startup
+* frases vacías
+* "AI-powered"
+* "cutting edge"
+* "revolutionary"
+* "transformative"
+
+Sí quiero:
+
+* tono calmado
+* tono analítico
+* lenguaje ejecutivo
 * orientación a negocio
-* profesionalidad
-* estilo clásico SC-Analytics
+* explicabilidad
+* claridad
+* impacto empresarial
 
-Mantener:
+Los proyectos deben parecer escritos por alguien que entiende operaciones, planificación, forecasting, optimización y sistemas de decisión.
 
-* fondo blanco
-* estética azul/blanco
-* diseño limpio
-* navegación simple
+No deben parecer escritos por una agencia de marketing.
 
----
-
-1. TAXONOMÍA DE INDUSTRIAS
+No deben parecer artículos generados por IA.
 
 ---
 
-Actualmente hay muy pocas industrias.
+## REGLAS DE MÉTRICAS
 
-Quiero ampliar significativamente el catálogo.
+No utilizar:
 
-Industries:
+* ROC AUC
+* PR AUC
+* F1
+* Accuracy
+* RMSE
+* MAE
+* WAPE
 
-* Retail
-* E-commerce
-* Manufacturing
-* Logistics
-* Financial Services
-* Banking
-* Insurance
-* Real Estate
-* Healthcare
-* Pharmaceutical
-* Energy
-* Utilities
-* Telecommunications
-* Professional Services
-* SaaS
-* Technology
-* Hospitality
-* Food & Beverage
-* Distribution
-* Transportation
-* Public Sector
+Las métricas deben expresarse en términos empresariales.
 
-El sistema debe escalar fácilmente para añadir nuevas industrias.
+Ejemplos:
+
+* Reduction in inventory costs
+* Improved planning visibility
+* Faster decision cycles
+* Increased operational consistency
+* Reduction in manual workload
+* Enhanced forecasting capability
+* Improved resource allocation
+* Real-time monitoring
 
 ---
 
-2. RETOS MÁS GENERALES
+## PROYECTO 1
 
----
+Slug:
 
-Los retos actuales son demasiado específicos.
+banking-risk-decision-system
 
-Quiero categorías más estratégicas y reutilizables.
+Headline:
 
-Challenges:
+Banking Risk Decision System
 
-* Forecasting
-* Planning
-* Optimization
-* Resource Allocation
-* Pricing
-* Risk Management
-* Customer Analytics
-* Operations
-* Automation
-* Decision Systems
-* Inventory Management
-* Supply Chain
-* Fraud Detection
-* Performance Management
-* Business Intelligence
-* Data Quality
-* Compliance
-* Growth Strategy
+Industry:
 
-El objetivo es que cualquier artículo encaje fácilmente.
+Financial Services
 
----
+Capability:
 
-3. AUDIENCIAS MÁS EXPLÍCITAS
+Machine Learning
+Risk Analytics
+Decision Systems
 
----
+Challenge:
 
-No quiero categorías genéricas.
-
-Quiero cargos reales.
+Fraud Detection
 
 Audience:
 
-* CEO
-* COO
-* CFO
-* CTO
-* CIO
-* CDO
-* Operations Director
-* Supply Chain Director
-* Finance Director
-* Commercial Director
-* Analytics Manager
-* Data Scientist
-* Data Analyst
-* Planning Manager
-* Risk Manager
+Risk Managers
+Finance Directors
+Operations
+
+Contexto:
+
+Sistema de evaluación de riesgo para crédito al consumo.
+
+Objetivo:
+
+Mejorar la consistencia de las decisiones de riesgo, reducir revisiones manuales y reforzar la capacidad de detección de fraude mediante modelos analíticos y sistemas de decisión automatizados.
+
+Generar:
+
+* Description
+* Context
+* Problem
+* Approach
+* System Developed
+* Results
+* Metrics
+
+Mantener confidencialidad.
+
+No mencionar clientes.
 
 ---
 
-4. GOOGLE SHEETS
+## PROYECTO 2
+
+Slug:
+
+ecommerce-demand-forecasting
+
+Headline:
+
+Demand Forecasting & Inventory Planning System
+
+Industry:
+
+E-commerce
+
+Capability:
+
+Forecasting
+Optimization
+Decision Systems
+
+Challenge:
+
+Forecasting
+
+Audience:
+
+CEO
+Operations
+Supply Chain Director
+
+Contexto:
+
+Sistema multi-horizonte de previsión de demanda e inventario para comercio electrónico.
+
+Horizontes:
+
+30
+90
+180
+270 días
+
+Objetivo:
+
+Mejorar planificación de inventario, reducir stock-outs y apoyar decisiones de compras y capital.
+
+Generar todas las secciones.
+
+No utilizar métricas técnicas.
 
 ---
 
-Quiero revisar todo el pipeline editorial.
+## PROYECTO 3
 
-Verificar:
+Slug:
 
-* que el Google Sheet correcto se utiliza
-* que EDITORIAL_SHEET_ID es el correcto
-* que los artículos se escriben correctamente
-* que los estados se actualizan
-* que los metadatos aparecen completos
+investment-analytics-platform
 
-Si existe cualquier error silencioso, corregirlo.
+Headline:
 
-Añadir logs claros.
+Investment Analytics & Performance Management Platform
 
----
+Industry:
 
-5. FILTROS
+Financial Services
 
----
+Capability:
 
-No quiero chips horizontales.
+Business Intelligence
+Automation
+Analytics
 
-Quiero filtros desplegables.
+Challenge:
 
-Formato:
+Performance Management
 
-Industry ▼
+Audience:
 
-Challenge ▼
+CEO
+Finance Director
 
-Audience ▼
+Contexto:
 
-Cada selector debe ser elegante y profesional.
+Sistema centralizado de métricas para seguimiento de clientes, inversiones, proveedores y rentabilidad.
 
-Mantener posibilidad de selección rápida.
+Objetivo:
 
----
+Facilitar seguimiento de rendimiento y reporting ejecutivo.
 
-6. ESTILO VISUAL DE FILTROS
-
----
-
-Los filtros actuales parecen demasiado ligeros.
-
-Quiero:
-
-* cajas rectangulares
-* bordes definidos
-* estética ejecutiva
-* coherente con SC-Analytics
-
-Nada parecido a una app startup.
+Generar todas las secciones.
 
 ---
 
-7. REDISEÑO DE TARJETAS DE ARTÍCULOS
+## PROYECTO 4
+
+Slug:
+
+quantitative-trading-framework
+
+Headline:
+
+Quantitative Multi-Strategy Trading Framework
+
+Industry:
+
+Financial Services
+
+Capability:
+
+Machine Learning
+Deep Learning
+Reinforcement Learning
+
+Challenge:
+
+Decision Systems
+
+Audience:
+
+Investment Managers
+Portfolio Managers
+
+Contexto:
+
+Framework cuantitativo para mercados financieros.
+
+Características:
+
+* estrategias clásicas
+* machine learning
+* deep learning
+* reinforcement learning
+* ensemble learning
+* optimización de cartera
+* señales en tiempo real
+* ejecución automatizada
+
+Resultado:
+
+aproximadamente 35% de rentabilidad anualizada durante las pruebas realizadas.
+
+Objetivo:
+
+Construir un sistema de decisión robusto capaz de combinar múltiples enfoques de inversión bajo una arquitectura unificada.
+
+Generar todas las secciones.
+
+No entrar en detalles excesivamente técnicos.
+
+No parecer un paper académico.
 
 ---
 
-No me gusta la presentación actual.
+## FORMATO
 
-Quiero un diseño más clásico.
+Crear automáticamente:
 
-Cada artículo debe mostrar:
+content/projects/banking-risk-decision-system/project.txt
 
-* Industry
-* Challenge
-* Audience
-* Título
-* Extracto
-* Fecha
-* Tiempo de lectura
-* CTA
+content/projects/ecommerce-demand-forecasting/project.txt
 
-Diseño:
+content/projects/investment-analytics-platform/project.txt
 
-* tarjetas horizontales
-* más espacio para lectura
-* mejor jerarquía tipográfica
-* menos aspecto de blog genérico
+content/projects/quantitative-trading-framework/project.txt
 
-Inspiración:
+Completar todos los campos que requiere la arquitectura actual.
 
-consultoría, research, executive insights.
-
-No estilo Medium.
-
-No estilo startup.
+Mantener Status: Published.
 
 ---
 
-8. IMAGEN DE LOS ARTÍCULOS
+## IMPLEMENTACIÓN
 
----
-
-No quiero seguir utilizando la imagen SVG abstracta generada automáticamente.
-
-Quiero utilizar el branding de SC-Analytics.
-
-Usar:
-
-public/brand/logo-horizontal.png
-
-o preferiblemente:
-
-public/brand/logo-horizontal-transparent.png
-
-si existe transparencia.
-
-Cada tarjeta de artículo debe utilizar este branding como visual principal.
-
-Crear una composición elegante utilizando el logo.
-
-No generar imágenes abstractas nuevas.
-
-No generar ilustraciones automáticas.
-
-Mantener consistencia visual.
-
----
-
-9. ESCALABILIDAD
-
----
-
-Diseñar pensando en:
-
-* 200+ artículos
-* múltiples industrias
-* múltiples audiencias
-* múltiples retos
-
-La experiencia debe seguir siendo clara incluso con cientos de artículos.
-
-Priorizar:
-
-* filtrado
-* búsqueda
-* ordenación futura
-
----
-
-10. IMPLEMENTACIÓN
-
----
-
-Antes de modificar código:
-
-1. Explica qué archivos vas a tocar.
-2. Explica cómo quedará la arquitectura final.
-3. Explica cómo escalará a cientos de artículos.
-4. Después implementa.
-5. Ejecuta npm run build.
-6. Corrige cualquier error hasta que compile correctamente.
+1. Revisar la arquitectura actual de Projects.
+2. Crear los cuatro project.txt.
+3. Verificar que aparecen correctamente en la web.
+4. Verificar que los filtros funcionan.
+5. Ejecutar npm run build.
+6. Corregir cualquier error hasta obtener compilación limpia.
+7. Explicar qué carpetas se han creado y qué imágenes faltará añadir manualmente.
