@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#0f172a"/>
+  <rect x="0" y="490" width="800" height="10" fill="#6366f1" opacity="0.3"/>
+  <!-- Forecast chart -->
+  <line x1="80" y1="400" x2="720" y2="400" stroke="#1e293b" stroke-width="1"/>
+  <line x1="80" y1="320" x2="720" y2="320" stroke="#1e293b" stroke-width="0.5" opacity="0.5"/>
+  <line x1="80" y1="240" x2="720" y2="240" stroke="#1e293b" stroke-width="0.5" opacity="0.5"/>
+  <line x1="80" y1="160" x2="720" y2="160" stroke="#1e293b" stroke-width="0.5" opacity="0.5"/>
+  <!-- Confidence band -->
+  <path d="M400,280 C460,265 520,248 580,238 C640,228 680,222 720,218 L720,268 C680,272 640,280 580,292 C520,304 460,318 400,330 Z" fill="#6366f1" opacity="0.15"/>
+  <!-- Actual line -->
+  <path d="M80,340 C140,325 200,308 260,295 C320,282 360,272 400,280" fill="none" stroke="#f1f5f9" stroke-width="2" stroke-linecap="round"/>
+  <!-- Forecast line -->
+  <path d="M400,280 C460,265 520,248 580,238 C640,228 680,222 720,218" fill="none" stroke="#6366f1" stroke-width="2" stroke-dasharray="5,3"/>
+  <!-- Vertical separator -->
+  <line x1="400" y1="150" x2="400" y2="400" stroke="#334155" stroke-width="1" stroke-dasharray="3,3"/>
+  <!-- Data points -->
+  <circle cx="80" cy="340" r="3" fill="#f1f5f9"/>
+  <circle cx="160" cy="325" r="3" fill="#f1f5f9"/>
+  <circle cx="240" cy="308" r="3" fill="#f1f5f9"/>
+  <circle cx="320" cy="295" r="3" fill="#f1f5f9"/>
+  <circle cx="400" cy="280" r="4" fill="#6366f1"/>
+</svg>

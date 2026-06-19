@@ -1,0 +1,67 @@
+Headline:
+Quantitative Multi-Strategy Trading Framework
+
+Industry:
+Financial Services
+
+Capability:
+Machine Learning, Deep Learning, Reinforcement Learning
+
+Challenge:
+Decision Systems
+
+Audience:
+Investment Manager, Portfolio Manager
+
+Description:
+A unified quantitative framework combining classical strategy design, machine learning, deep learning and reinforcement learning under a single architecture — with integrated portfolio optimisation, real-time signal processing and automated execution logic.
+
+Metrics:
+* Annualised return (testing period): ~35%
+* Strategy types integrated: 4 (classical, ML, deep learning, reinforcement learning)
+* Portfolio optimisation: Integrated across all strategy types
+* Execution: Fully automated with risk control layer
+
+Image:
+cover.svg
+
+Status:
+Published
+
+Sections:
+
+Context:
+Quantitative trading research tends to produce strategies in isolation — a classical momentum approach developed independently from a machine learning signal, a deep learning model evaluated separately from a rule-based system. Each strategy is backtested and assessed on its own merits. The result is typically a collection of individual approaches that may each show promise but are never genuinely combined into a unified system capable of allocating across them dynamically based on market conditions.
+
+The objective of this project was to build a framework capable of housing multiple strategy types under a single architecture — not as a collection of separate models running in parallel, but as an integrated system where capital allocation, risk management and execution are handled consistently across all approaches.
+
+Problem:
+The fundamental challenge in multi-strategy quantitative trading is not developing individual signals — it is combining them in a way that is robust across different market regimes, manages correlated risk exposures and does not overfit to any particular historical period.
+
+Classical strategies tend to be interpretable but rigid. Machine learning approaches can capture non-linear relationships but are prone to overfitting and regime change. Deep learning models offer flexibility but require large data volumes and careful validation. Reinforcement learning is theoretically well-suited to sequential decision problems but difficult to train reliably in financial contexts.
+
+Building a system that draws on all four without being dominated by the weaknesses of any one was the core design challenge.
+
+Approach:
+The framework was developed in layers. The signal generation layer houses each strategy type independently — classical rule-based strategies, gradient boosting models trained on structured financial features, sequence models for pattern recognition in price and volume data, and a reinforcement learning component trained on simulated market environments.
+
+The portfolio optimisation layer sits above the signal layer and allocates capital across strategies based on expected return, estimated covariance and risk constraints. This layer treats each strategy as a distinct source of return with its own risk profile rather than combining signals directly.
+
+The execution layer handles order management, position tracking and risk limit enforcement. It operates independently of the strategy layer, which means changes to strategy logic do not require changes to execution infrastructure.
+
+Ensemble logic determines how the outputs of different strategy types are weighted across market conditions — giving more weight to approaches that have shown recent reliability and reducing exposure to approaches that have underperformed relative to expectations.
+
+System Developed:
+The framework processes real-time market data, generates signals across all strategy types, runs portfolio optimisation on a defined cycle and produces execution instructions that are passed to the order management system.
+
+A monitoring layer tracks strategy performance, signal quality and portfolio risk metrics in real time. When any metric moves outside defined thresholds — position concentration, drawdown limits, signal correlation spikes — the system adjusts allocation or suspends execution pending review.
+
+The architecture is modular: individual strategy components can be added, replaced or recalibrated without affecting the rest of the system.
+
+Results:
+During the testing period, the framework produced approximately 35% annualised return across a diversified set of market conditions. This figure reflects real system performance in a controlled testing environment and should not be interpreted as a projection of future results — financial markets are non-stationary and past performance does not imply future performance.
+
+The combination of strategy types proved more resilient across different market regimes than any single approach tested in isolation. Classical strategies performed better in trending conditions; machine learning approaches added value in transition periods; the reinforcement learning component showed particular strength in volatile, non-directional environments.
+
+Confidentiality:
+This framework was developed as a proprietary research project. No external client data is involved. Specific strategy parameters, signal definitions and implementation details remain confidential.

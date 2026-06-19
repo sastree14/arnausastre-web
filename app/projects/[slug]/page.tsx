@@ -56,6 +56,11 @@ export default async function ProjectPage({ params }: Props) {
                 <span className="rounded-md bg-slate-100 border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600">
                   {project.challenge}
                 </span>
+                {project.audience && project.audience.split(',').slice(0, 2).map((a) => (
+                  <span key={a} className="rounded-md bg-slate-50 border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-500">
+                    {a.trim()}
+                  </span>
+                ))}
               </div>
 
               <h1

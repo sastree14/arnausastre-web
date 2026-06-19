@@ -1,0 +1,65 @@
+Headline:
+Investment Analytics & Performance Management Platform
+
+Industry:
+Financial Services
+
+Capability:
+Business Intelligence, Automation, Analytics
+
+Challenge:
+Performance Management
+
+Audience:
+CEO, Finance Director
+
+Description:
+A centralised analytics platform for tracking client relationships, investment performance, provider activity and portfolio profitability — designed to give leadership a consistent, real-time view of business performance across all dimensions.
+
+Metrics:
+* Reporting cycle time: Reduced from multi-day manual assembly to real-time
+* Data sources unified: Multiple systems consolidated into a single view
+* Manual reporting workload: Substantially eliminated
+* Decision traceability: Full audit trail across all performance metrics
+
+Image:
+cover.svg
+
+Status:
+Published
+
+Sections:
+
+Context:
+An investment management firm was tracking performance across client portfolios, provider relationships and operational metrics using a combination of spreadsheets, periodic reports and system exports. Each reporting cycle required significant manual effort to consolidate data from multiple sources, reconcile discrepancies and produce the summaries that leadership used to make decisions.
+
+The firm had grown through the accumulation of clients and providers over time. Each addition had been managed with the tools available at that moment — which meant performance data existed across multiple systems, in different formats, with different update frequencies. Producing a coherent view of the business at any given moment required analyst time that the team was spending on data assembly rather than analysis.
+
+Problem:
+The problem was not the absence of data but the absence of a unified operational view. Performance information existed across client management systems, portfolio data providers, custodian reports and internal spreadsheets — but it was never in one place at the same time.
+
+Leadership decisions were being made on the basis of reports that were days or weeks old by the time they were produced. Discrepancies between systems were discovered during reporting cycles rather than in real time. The time required to produce a monthly performance pack left little capacity for the kind of ongoing analysis that the business actually needed.
+
+Approach:
+The project began by mapping all data sources — client records, portfolio valuations, provider data feeds, transaction histories — and identifying the relationships between them. This mapping revealed several inconsistencies in how the same entities were represented across systems, which needed to be resolved before any consolidation could be reliable.
+
+The architecture was built around a central data layer that pulls from all relevant sources on defined schedules, applies reconciliation logic and maintains a consistent, timestamped record of all performance metrics. The layer was designed to be maintainable by the internal team without requiring ongoing external technical support.
+
+The analytics platform was built on top of this data layer, with dashboards structured around the specific decisions that leadership needed to make: client profitability, portfolio performance attribution, provider cost analysis and operational metrics.
+
+System Developed:
+The platform provides real-time visibility across client relationships, investment performance, provider activity and business profitability. Dashboards are role-structured — what the CEO sees, what the investment team sees and what finance sees are different views of the same underlying data.
+
+Automated alerts surface anomalies — unexpected changes in portfolio values, provider data feed failures, client activity outside normal patterns — without requiring anyone to check for them manually.
+
+Monthly performance packs are generated automatically from the same data layer, eliminating the manual assembly process and ensuring that the numbers in the report match the numbers in the real-time view.
+
+Results:
+The manual reporting workload that had previously consumed significant analyst capacity was substantially eliminated. The team redirected that time toward analysis and client work.
+
+Leadership gained a consistent, real-time view of business performance. Decisions that had previously been made on the basis of data that was days old could now be made with current information.
+
+Data discrepancies that had previously been discovered during reporting cycles were surfaced by automated reconciliation checks before they affected any report or decision.
+
+Confidentiality:
+Client names, portfolio details, provider relationships and performance data have been anonymised. The platform structure reflects a real implementation on anonymised data.

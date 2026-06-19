@@ -23,7 +23,7 @@ Image:
 cover.png
 
 Status:
-Published
+Draft
 
 Sections:
 

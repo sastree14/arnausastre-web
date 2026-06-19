@@ -1,0 +1,67 @@
+Headline:
+Banking Risk Decision System
+
+Industry:
+Financial Services
+
+Capability:
+Machine Learning, Risk Analytics, Decision Systems
+
+Challenge:
+Fraud Detection
+
+Audience:
+Risk Manager, Finance Director, Operations Director
+
+Description:
+An analytical decision system for consumer credit risk evaluation, designed to improve decision consistency, reduce manual review workload and strengthen fraud detection through structured scoring models and automated decision logic.
+
+Metrics:
+* Decision consistency: Materially improved across all credit portfolios
+* Manual review workload: Substantially reduced through automated scoring
+* Credit decision cycle time: Reduced from days to hours for standard cases
+* Early warning coverage: Extended across the full active portfolio
+
+Image:
+cover.svg
+
+Status:
+Published
+
+Sections:
+
+Context:
+A financial institution operating in consumer credit had a risk evaluation process that depended heavily on individual analyst judgement. Credit decisions for similar applications were producing inconsistent outcomes depending on the analyst handling the case — a problem that became visible only in retrospect, when portfolio performance data showed unexplained variance across product lines and origination periods.
+
+The institution had accumulated years of application and performance data. That data was available but not being used systematically to inform decisions. Analysts worked with internal scorecards that had not been recalibrated in several years and were not capturing shifts in borrower behaviour that had emerged in recent market conditions.
+
+Problem:
+The core problem was not a lack of data or analytical capability. It was that the risk decision process had no systematic mechanism for learning from its own outcomes.
+
+Scorecards were static. Analyst overrides were undocumented. Portfolio performance feedback was reviewed quarterly at best, and the insights rarely translated into changes to how decisions were being made. The result was a decision process that was slow to adapt, inconsistent across the organisation and unable to surface early signals of portfolio deterioration until losses had already accumulated.
+
+A secondary problem was fraud exposure. The existing process had no structured fraud detection layer — cases were flagged based on analyst suspicion rather than systematic pattern recognition, which meant detection rates depended on individual experience rather than analytical consistency.
+
+Approach:
+The project began with a structured audit of historical application and performance data, covering several years of origination across multiple product lines. This audit identified the data fields with genuine predictive value, the population segments where the existing scorecard was systematically underperforming, and the behavioural patterns most associated with early default and fraud.
+
+The modelling work focused on building a layered decision system rather than a single model. The first layer handled application scoring — assigning a structured risk rating based on applicant characteristics and behavioural data. The second layer addressed fraud detection, using pattern recognition across application attributes to flag cases requiring additional verification before a decision was made.
+
+A key design requirement was explainability. Every decision produced by the system needed to be traceable to specific factors, both for regulatory compliance and for analyst trust. The system was built to surface the primary reasons behind each rating, making it usable by credit teams without requiring technical knowledge of the underlying models.
+
+System Developed:
+The delivered system produces real-time risk scores and fraud flags for every incoming application. Analysts receive a structured decision recommendation alongside the key factors driving the assessment — positive and negative — which they can review and, where appropriate, override with documented reasoning.
+
+The system includes a monitoring module that tracks decision outcomes over time, flagging performance drift before it affects portfolio quality. Recalibration protocols were designed to allow the models to be updated periodically without disruption to operations.
+
+Integration was delivered via an API layer connecting to the institution's existing origination platform, with no requirement to replace core infrastructure.
+
+Results:
+The consistency of credit decisions improved materially across portfolios. Cases that previously produced different outcomes depending on the analyst were handled within a structured framework that reduced unexplained variance.
+
+Manual review workload decreased as the automated scoring layer handled a significant proportion of standard cases. Analyst time was redirected toward cases where the model indicated genuine ambiguity or elevated risk — where experienced judgement adds the most value.
+
+Fraud detection coverage extended across the full application flow rather than depending on analyst suspicion. Early warning signals for portfolio deterioration became visible weeks earlier than under the previous process.
+
+Confidentiality:
+Client name, portfolio details, specific product lines and performance data have been anonymised. Results reflect real system outcomes on anonymised data.

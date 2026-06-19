@@ -18,6 +18,7 @@ export interface Project {
   industry: string
   capability: string
   challenge: string
+  audience: string
   description: string
   metrics: ProjectMetric[]
   image: string       // filename as written in project.txt, e.g. "cover.png"
@@ -106,6 +107,7 @@ function parseProjectTxt(content: string, slug: string): Project {
     industry: get('Industry'),
     capability: get('Capability'),
     challenge: get('Challenge'),
+    audience: get('Audience'),
     description: get('Description'),
     metrics: parseMetrics(get('Metrics')),
     image,

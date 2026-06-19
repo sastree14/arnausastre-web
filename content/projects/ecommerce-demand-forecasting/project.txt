@@ -1,0 +1,65 @@
+Headline:
+Demand Forecasting & Inventory Planning System
+
+Industry:
+E-commerce
+
+Capability:
+Forecasting, Optimization, Decision Systems
+
+Challenge:
+Forecasting
+
+Audience:
+CEO, Operations Director, Supply Chain Director
+
+Description:
+A multi-horizon demand forecasting system covering 30, 90, 180 and 270-day planning windows, built to improve inventory decisions, reduce stock-outs and support purchasing and working capital planning at scale.
+
+Metrics:
+* Planning horizons available: 30, 90, 180 and 270 days
+* Stock-out frequency: Substantially reduced across high-velocity SKUs
+* Inventory carrying costs: Reduced through improved reorder timing
+* Purchasing decision support: Extended from weekly to quarterly planning cycles
+
+Image:
+cover.svg
+
+Status:
+Published
+
+Sections:
+
+Context:
+A high-growth e-commerce operation was managing inventory decisions across thousands of SKUs with a combination of manual rules, fixed reorder points and planner judgement. The business had expanded faster than its planning infrastructure — what had worked at smaller scale was producing chronic stock-outs on high-demand products while simultaneously generating excess inventory on slower-moving lines.
+
+The planning team was spending most of its time on exception handling rather than forward planning. The longest reliable planning horizon available was 30 days, which was insufficient for products with longer supplier lead times or significant seasonal patterns. Purchasing decisions beyond that window were being made on intuition rather than structured analysis.
+
+Problem:
+The planning problem had two distinct dimensions. The first was accuracy at short horizons — reducing the errors that drove stock-outs and excess inventory in the near term. The second was extending the planning horizon to allow purchasing and capital allocation decisions to be made with analytical support rather than guesswork.
+
+Most forecasting approaches in e-commerce focus on the first dimension. The second is harder: extending a forecast to 180 or 270 days requires a different modelling strategy, different data inputs and a different relationship with uncertainty. A 270-day forecast is not a more extrapolated version of a 30-day forecast — it is a different type of analytical output serving a different type of decision.
+
+Approach:
+The forecasting system was built as a multi-horizon architecture rather than a single model extended across time. Each planning horizon has its own modelling approach, reflecting the different data signals and uncertainty profiles relevant at that range.
+
+Short-horizon forecasts focus on recent demand patterns, promotional activity and inventory dynamics. Medium-horizon forecasts incorporate seasonal structure, category trends and upcoming promotional calendars. Long-horizon forecasts work at a more aggregate level, combining market signals, historical seasonal patterns and scenario assumptions to produce range estimates rather than point forecasts — which is the appropriate output for decisions made at that time horizon.
+
+The system was calibrated not for statistical accuracy in isolation but for the cost profile of the business: the penalty for a stock-out on a high-margin product is not symmetric with the penalty for excess inventory on a low-margin one. The forecasting logic reflects this asymmetry.
+
+System Developed:
+The system generates forecasts across all four horizons for the full active SKU catalogue, updated on a daily cycle. Outputs include central estimates and uncertainty ranges at each horizon, structured to support specific decision types: daily replenishment at 30 days, buying cycle planning at 90 days, and purchasing and capital allocation decisions at 180 and 270 days.
+
+A planning interface surfaces the forecasts with exception highlighting — SKUs where the forecast has changed materially, where inventory is projected to breach a threshold, or where uncertainty is elevated. The team reviews exceptions rather than reviewing every SKU individually.
+
+The system connects to the existing ERP and order management infrastructure via API, with no replacement of core operational systems.
+
+Results:
+Stock-out frequency decreased substantially across high-velocity SKUs, particularly during promotional periods where demand spikes had previously been systematically underestimated.
+
+Inventory carrying costs fell as reorder timing improved and buffer stock levels were calibrated analytically rather than by rule of thumb. The planning team shifted from reactive exception handling to proactive inventory management.
+
+The longer planning horizons enabled purchasing decisions to be made with structured analytical support for the first time, reducing reliance on buyer intuition for commitments made months in advance.
+
+Confidentiality:
+Client name, specific product categories, supplier relationships and performance data have been anonymised. Results reflect real system outcomes on anonymised data.
