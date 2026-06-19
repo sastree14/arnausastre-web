@@ -120,16 +120,25 @@ def main() -> None:
         fail(str(exc))
         return
 
+    masked_id = f"...{sheet_id[-6:]}" if len(sheet_id) > 6 else sheet_id
+    print(f"[INFO] Google Sheet ID: {masked_id}")
+    print(f"[INFO] Reading tabs: '{TOPICS_BANK_TAB}', '{CONTENT_PIPELINE_TAB}', '{INDUSTRIES_TAB}'")
+
     try:
         topics_bank_rows = sheets_client.read_tab_as_dicts(
             service, sheet_id, TOPICS_BANK_TAB, TOPICS_BANK_HEADERS
         )
+        print(f"[INFO] '{TOPICS_BANK_TAB}': {len(topics_bank_rows)} rows read")
+
         # No strict header validation for Content Pipeline — the sheet may have
         # columns this code doesn't know about, and that's fine.
         content_pipeline_rows = sheets_client.read_tab_as_dicts(
             service, sheet_id, CONTENT_PIPELINE_TAB, expected_headers=None
         )
+        print(f"[INFO] '{CONTENT_PIPELINE_TAB}': {len(content_pipeline_rows)} rows read")
+
         industry_rows = sheets_client.read_tab_as_dicts(service, sheet_id, INDUSTRIES_TAB)
+        print(f"[INFO] '{INDUSTRIES_TAB}': {len(industry_rows)} rows read")
     except sheets_client.SheetsConfigError as exc:
         fail(str(exc))
         return
@@ -197,6 +206,7 @@ def main() -> None:
         return
 
     print(f"[INFO] Fila añadida a '{CONTENT_PIPELINE_TAB}' (fila {row_number}, ID {next_id})")
+    print(f"[INFO] Campos escritos: {list(row_dict.keys())}")
 
     summary = {
         "title_en": article["titleEn"],

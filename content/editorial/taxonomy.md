@@ -8,28 +8,64 @@ Add new values here to extend the system — no code changes required.
 
 - Retail
 - E-commerce
-- Logistics
 - Manufacturing
-- Finance
+- Logistics
+- Financial Services
+- Banking
+- Insurance
 - Real Estate
+- Healthcare
+- Pharmaceutical
+- Energy
+- Utilities
+- Telecommunications
+- Professional Services
+- SaaS
+- Technology
+- Hospitality
+- Food & Beverage
+- Distribution
+- Transportation
+- Public Sector
 
 ## Challenge
 
 - Forecasting
-- Inventory Management
+- Planning
+- Optimization
 - Resource Allocation
 - Pricing
-- Route Planning
+- Risk Management
+- Customer Analytics
+- Operations
 - Automation
+- Decision Systems
+- Inventory Management
+- Supply Chain
 - Fraud Detection
-- Decision Making
+- Performance Management
+- Business Intelligence
+- Data Quality
+- Compliance
+- Growth Strategy
 
 ## Audience
 
 - CEO
-- Operations
-- Finance
-- Analytics
+- COO
+- CFO
+- CTO
+- CIO
+- CDO
+- Operations Director
+- Supply Chain Director
+- Finance Director
+- Commercial Director
+- Analytics Manager
+- Data Scientist
+- Data Analyst
+- Planning Manager
+- Risk Manager
 
 ## Level
 

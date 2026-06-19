@@ -461,23 +461,37 @@ def call_gemini(prompt: str, api_key: str) -> str:
 # ── Validation & defaults ─────────────────────────────────────────────────────
 
 def _best_challenge_match(text: str, challenges: list[str]) -> str:
-    """Keyword-match topic text against challenge categories; fall back to last item."""
+    """Keyword-match topic text against challenge categories; fall back to last item.
+
+    Keywords are checked in order — place more specific matches first.
+    Taxonomy values come from content/editorial/taxonomy.md.
+    """
     lower = text.lower()
     keywords: dict[str, list[str]] = {
-        "Forecasting": ["forecast", "predict", "demand", "planning"],
-        "Inventory Management": ["inventory", "stock", "sku", "replenish"],
-        "Resource Allocation": ["resource", "allocat", "budget", "capacity"],
-        "Pricing": ["pric", "margin", "revenue"],
-        "Route Planning": ["route", "fleet", "logistics", "delivery"],
-        "Automation": ["automat", "workflow", "manual process"],
-        "Fraud Detection": ["fraud", "risk", "anomal", "detect"],
-        "Decision Making": ["decision", "report", "insight", "analytic", "executive"],
+        "Forecasting": ["forecast", "predict", "demand forecast", "demand plan"],
+        "Planning": ["planning", "s&op", "roadmap", "schedule"],
+        "Optimization": ["optimiz", "optimis", "solver", "linear program"],
+        "Resource Allocation": ["resource", "allocat", "capacity", "headcount"],
+        "Pricing": ["pric", "margin", "revenue management", "tariff"],
+        "Risk Management": ["risk", "exposure", "mitigation", "credit risk", "market risk"],
+        "Customer Analytics": ["customer", "churn", "retention", "segmentation", "clv"],
+        "Operations": ["operat", "process", "workflow", "efficiency"],
+        "Automation": ["automat", "rpa", "manual process", "pipeline"],
+        "Decision Systems": ["decision system", "decision support", "analytic", "executive", "reporting"],
+        "Inventory Management": ["inventory", "stock", "sku", "replenish", "safety stock"],
+        "Supply Chain": ["supply chain", "procurement", "supplier", "logistics"],
+        "Fraud Detection": ["fraud", "anomal", "detect", "outlier"],
+        "Performance Management": ["kpi", "performance", "dashboard", "scorecard"],
+        "Business Intelligence": ["bi ", "business intelligence", "insight", "report"],
+        "Data Quality": ["data quality", "data clean", "missing data", "validation"],
+        "Compliance": ["compliance", "regulatory", "audit", "gdpr", "sox"],
+        "Growth Strategy": ["growth", "expansion", "market entry", "revenue growth"],
     }
     for challenge in challenges:
         for kw in keywords.get(challenge, []):
             if kw in lower:
                 return challenge
-    return challenges[-1] if challenges else "Decision Making"
+    return "Decision Systems" if "Decision Systems" in challenges else (challenges[-1] if challenges else "Decision Systems")
 
 
 def _apply_soft_defaults(data: dict, taxonomy: dict[str, list[str]], topic: "PendingTopic") -> dict:
