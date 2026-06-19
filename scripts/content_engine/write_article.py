@@ -29,8 +29,8 @@ GEMINI_MODEL = "gemini-2.5-flash"
 GEMINI_ENDPOINT = (
     f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
 )
-MAX_OUTPUT_TOKENS = 8000
-MAX_REPAIR_TOKENS = 9000
+MAX_OUTPUT_TOKENS = 32768
+MAX_REPAIR_TOKENS = 32768
 REQUEST_TIMEOUT_SECONDS = 180
 
 EDITORIAL_DIR_RELATIVE = "content/editorial"
