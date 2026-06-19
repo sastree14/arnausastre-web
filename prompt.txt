@@ -1,47 +1,261 @@
-Necesito aplicar una reestructuración de contenido en la web.
+You are responsible for designing and implementing the complete editorial system for SC-Analytics.
 
-Cambios principales:
+Context
 
-1. Cambiar la navegación:
-- "Case Studies" debe pasar a llamarse "Projects"
-- "Insights" debe pasar a llamarse "Knowledge"
+SC-Analytics is not a content marketing company.
 
-2. Eliminar el contenido placeholder actual de Case Studies y Insights.
-Concretamente, eliminar o dejar de mostrar casos/artículos ficticios como:
-- NordMart
-- Translink Mediterranean
-- el artículo de AVMs inmobiliarios
-- cualquier métrica inventada o demasiado específica que no esté basada en proyectos reales aprobados
+SC-Analytics helps organizations make better business decisions through forecasting, optimization, automation, analytics and decision systems.
 
-3. Crear una nueva página "Knowledge" pensada para escalar a muchos artículos.
-Debe incluir:
-- título claro
-- subtítulo orientado a CEOs y equipos directivos
-- sistema de filtros o categorías visuales
-- grid de artículos
-- cada artículo debe mostrar título, excerpt, categoría, industria, fecha y tiempo de lectura
+The objective of the editorial system is not to generate SEO content at scale.
 
-4. Preparar la estructura de datos para que sea escalable.
-Cada artículo debería poder tener:
-- slug
-- titleEn / titleEs
-- excerptEn / excerptEs
-- bodyEn / bodyEs
-- date
-- readingTime
-- topics
-- industries
-- audience
-- type
-- image opcional
+The objective is to build a high-quality business knowledge library that reinforces expertise, credibility and trust.
 
-5. No quiero que se rompa el diseño actual.
-Mantener estética sobria, clásica, azul/blanco, minimalista y profesional.
+Every design decision must prioritize long-term maintainability, editorial quality and business relevance.
 
-6. Antes de modificar, dime qué archivos vas a tocar.
-Después aplica los cambios mínimos necesarios.
+---
 
-7. Finalmente ejecuta:
-npm run build
+EDITORIAL DATABASE
 
-Y corrige cualquier error hasta que el build pase.
+The file:
+
+SC_Analytics_Editorial_System_Final.xlsx
+
+is the editorial source of truth.
+
+The workbook contains:
+
+* Content Pipeline
+* Topics Bank
+* Industries
+* Prompts
+* Published Content
+* Content Strategy
+* Projects
+
+All editorial workflows must read and update this workbook.
+
+When an article is generated, metadata must be updated inside the workbook.
+
+When an article is published, the workbook must be updated.
+
+The workbook is the operational control layer.
+
+---
+
+CONTENT STORAGE
+
+Do not store articles inside large TypeScript arrays.
+
+Create a scalable architecture.
+
+Use:
+
+content/articles/
+
+Each article must be stored as an individual MDX file.
+
+Each article must contain metadata including:
+
+* title
+* slug
+* industry
+* challenge
+* audience
+* level
+* theme
+* date
+* readingTime
+* published
+* language
+
+The website must automatically discover articles from this folder.
+
+The architecture must support hundreds of articles.
+
+---
+
+BRANCH STRATEGY
+
+Do not create one branch per article.
+
+Use a single branch:
+
+editorial
+
+Workflow:
+
+Excel
+→ Article generation
+→ Commit to editorial
+→ Vercel preview
+→ Manual review
+→ Manual merge to main
+→ Production
+
+Publication must always require manual approval.
+
+Never publish directly to production.
+
+---
+
+KNOWLEDGE PAGE
+
+The Knowledge section is not a traditional blog.
+
+It is a business knowledge library.
+
+Top section:
+
+Knowledge
+
+Practical insights on decision systems that create measurable business impact.
+
+Primary navigation:
+
+1. Industry
+2. Business Challenge
+3. Audience
+
+Examples:
+
+Industry:
+
+* Retail
+* E-commerce
+* Logistics
+* Manufacturing
+* Finance
+* Real Estate
+
+Business Challenge:
+
+* Forecasting
+* Inventory Management
+* Resource Allocation
+* Pricing
+* Route Planning
+* Automation
+* Fraud Detection
+* Decision Making
+
+Audience:
+
+* CEO
+* Operations
+* Finance
+* Analytics
+
+Articles must be filtered dynamically.
+
+---
+
+EMPTY STATES
+
+If a filter combination contains no articles:
+
+show a professional empty state.
+
+Example:
+
+No articles available yet.
+
+We are currently expanding our knowledge base in this area.
+New content will be published soon.
+
+Never show blank sections.
+
+---
+
+PROJECTS
+
+Projects must follow the same architectural principles.
+
+Use:
+
+content/projects/
+
+Projects are not blog posts.
+
+Projects are practical examples of implemented systems.
+
+Initially support:
+
+* Forecasting & Inventory Optimization
+* Banking Risk Analytics
+* Investment Analytics Platform
+* Quantitative Trading Framework
+* Business Intelligence & Decision Systems
+
+The architecture must support future growth.
+
+---
+
+EDITORIAL STYLE
+
+This is the most important requirement.
+
+Articles must not sound AI-generated.
+
+Avoid:
+
+* generic AI wording
+* startup buzzwords
+* exaggerated claims
+* sensationalism
+* unnecessary hype
+
+Writing style should be:
+
+* calm
+* analytical
+* precise
+* practical
+* business-oriented
+* honest
+* explanatory
+
+The goal is to help readers understand a problem and possible approaches.
+
+Not to impress them with technology.
+
+Technology should appear only when it contributes to business outcomes.
+
+The writing must reflect the philosophy:
+
+Better decisions.
+Better business outcomes.
+
+---
+
+STYLE LEARNING
+
+Create a system capable of learning writing style from examples.
+
+If writing samples from Arnau Sastre are available:
+
+* analyze tone
+* analyze vocabulary
+* analyze sentence structure
+* analyze explanation patterns
+* create an Editorial Voice Profile
+
+Future articles should follow this profile.
+
+The objective is not to imitate perfectly.
+
+The objective is to preserve consistency and authenticity.
+
+---
+
+IMPLEMENTATION
+
+Before making changes:
+
+1. Analyze current architecture.
+2. Explain proposed modifications.
+3. List files that will be changed.
+4. Implement incrementally.
+5. Run build validation.
+6. Ensure scalability.
+7. Ensure maintainability.
+8. Preserve existing design quality.
