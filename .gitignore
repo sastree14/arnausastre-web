@@ -44,3 +44,8 @@ next-env.d.ts
 scripts/content_engine/.pipeline_output.json
 scripts/content_engine/__pycache__/
 scripts/content_engine/venv/
+
+# linkedin pack — transient hand-off file between pipeline steps, never committed
+scripts/linkedin_pack/.linkedin_pack_output.json
+scripts/linkedin_pack/__pycache__/
+scripts/linkedin_pack/venv/

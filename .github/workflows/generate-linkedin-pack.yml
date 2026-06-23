@@ -1,0 +1,120 @@
+name: Generate LinkedIn pack from article
+
+on:
+  workflow_dispatch:
+    inputs:
+      article_slug:
+        description: "Slug of the source article (content/articles/<slug>.mdx)"
+        required: true
+        type: string
+      article_path:
+        description: "Optional explicit path to the article MDX file (overrides the article_slug lookup)"
+        required: false
+        type: string
+        default: ""
+      publish_week_start:
+        description: "Monday of the target publishing week, YYYY-MM-DD"
+        required: true
+        type: string
+      language:
+        description: "Language for the generated posts"
+        required: false
+        type: string
+        default: "en"
+      dry_run:
+        description: "Reserved for the future LinkedIn API publish step — this workflow only generates content and never publishes"
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate-linkedin-pack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r scripts/linkedin_pack/requirements.txt
+
+      - name: Check required secrets are present
+        run: |
+          missing=()
+          [ -z "${GEMINI_API_KEY}" ] && missing+=("GEMINI_API_KEY")
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::Faltan secrets en este repo: ${missing[*]}. Ve a Settings > Secrets and variables > Actions y créalos antes de volver a ejecutar este workflow."
+            exit 1
+          fi
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: Generate LinkedIn pack
+        id: generate
+        run: python scripts/linkedin_pack/generate_pack.py
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ARTICLE_SLUG: ${{ inputs.article_slug }}
+          ARTICLE_PATH: ${{ inputs.article_path }}
+          PUBLISH_WEEK_START: ${{ inputs.publish_week_start }}
+          LANGUAGE: ${{ inputs.language }}
+          LINKEDIN_MODE: ${{ vars.LINKEDIN_MODE }}
+
+      - name: Commit LinkedIn pack to linkedin branch
+        id: commit
+        run: |
+          campaign_id=$(python -c "import json;print(json.load(open('scripts/linkedin_pack/.linkedin_pack_output.json'))['campaign_id'])")
+
+          git config user.name "sc-analytics-content-bot"
+          git config user.email "content-bot@users.noreply.github.com"
+
+          # Switch to (or create) the linkedin branch
+          if git ls-remote --exit-code origin linkedin > /dev/null 2>&1; then
+            git checkout -b linkedin origin/linkedin
+          else
+            git checkout -b linkedin
+          fi
+
+          json_path=$(python -c "import json;print(json.load(open('scripts/linkedin_pack/.linkedin_pack_output.json'))['json_path'])")
+          git add "$json_path"
+          git commit -m "linkedin: weekly pack — ${campaign_id}"
+          git push origin linkedin
+
+          echo "campaign_id=$campaign_id" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update Pull Request (linkedin → main)
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/linkedin_pack/build_pr_text.py
+          title=$(cat pr_title.txt)
+
+          # Create PR if one doesn't exist yet; otherwise just push was enough
+          existing_pr=$(gh pr list --head linkedin --base main --json number --jq '.[0].number' 2>/dev/null || echo "")
+          if [ -z "$existing_pr" ]; then
+            pr_full_url=$(gh pr create --title "$title" --body-file pr_body.md --base main --head linkedin)
+            pr_number=$(echo "$pr_full_url" | grep -oE '[0-9]+$')
+          else
+            pr_number="$existing_pr"
+            pr_full_url="https://github.com/${{ github.repository }}/pull/${pr_number}"
+            echo "PR #${pr_number} already exists — pack added to linkedin branch."
+          fi
+
+          echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
+          echo "pr_url=$pr_full_url" >> "$GITHUB_OUTPUT"
+          rm -f pr_body.md pr_title.txt
+
+      - name: Summary
+        if: always()
+        run: python scripts/linkedin_pack/print_summary.py
