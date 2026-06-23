@@ -1,309 +1,153 @@
-Quiero poblar completamente la sección Projects de SC-Analytics.
-
-Objetivo:
-
-Crear los proyectos iniciales de la web utilizando la arquitectura ya implementada basada en:
-
-content/projects/{slug}/project.txt
-
-public/projects/{slug}/
-
-No quiero modificar la arquitectura.
-
-Quiero generar todos los project.txt necesarios para los proyectos iniciales.
-
----
-
-## ESTILO OBLIGATORIO
-
-La redacción debe seguir la identidad de SC-Analytics.
-
-No quiero:
-
-* marketing
-* buzzwords
-* lenguaje startup
-* frases vacías
-* "AI-powered"
-* "cutting edge"
-* "revolutionary"
-* "transformative"
-
-Sí quiero:
-
-* tono calmado
-* tono analítico
-* lenguaje ejecutivo
-* orientación a negocio
-* explicabilidad
-* claridad
-* impacto empresarial
-
-Los proyectos deben parecer escritos por alguien que entiende operaciones, planificación, forecasting, optimización y sistemas de decisión.
-
-No deben parecer escritos por una agencia de marketing.
-
-No deben parecer artículos generados por IA.
-
----
-
-## REGLAS DE MÉTRICAS
-
-No utilizar:
-
-* ROC AUC
-* PR AUC
-* F1
-* Accuracy
-* RMSE
-* MAE
-* WAPE
-
-Las métricas deben expresarse en términos empresariales.
-
-Ejemplos:
-
-* Reduction in inventory costs
-* Improved planning visibility
-* Faster decision cycles
-* Increased operational consistency
-* Reduction in manual workload
-* Enhanced forecasting capability
-* Improved resource allocation
-* Real-time monitoring
-
----
-
-## PROYECTO 1
-
-Slug:
-
-banking-risk-decision-system
-
-Headline:
-
-Banking Risk Decision System
-
-Industry:
-
-Financial Services
-
-Capability:
-
-Machine Learning
-Risk Analytics
-Decision Systems
-
-Challenge:
-
-Fraud Detection
-
-Audience:
-
-Risk Managers
-Finance Directors
-Operations
+Necesito que implementes una nueva capa de workflow para LinkedIn en este repositorio, conectada al sistema editorial existente.
 
 Contexto:
-
-Sistema de evaluación de riesgo para crédito al consumo.
-
-Objetivo:
-
-Mejorar la consistencia de las decisiones de riesgo, reducir revisiones manuales y reforzar la capacidad de detección de fraude mediante modelos analíticos y sistemas de decisión automatizados.
-
-Generar:
-
-* Description
-* Context
-* Problem
-* Approach
-* System Developed
-* Results
-* Metrics
-
-Mantener confidencialidad.
-
-No mencionar clientes.
-
----
-
-## PROYECTO 2
-
-Slug:
-
-ecommerce-demand-forecasting
-
-Headline:
-
-Demand Forecasting & Inventory Planning System
-
-Industry:
-
-E-commerce
-
-Capability:
-
-Forecasting
-Optimization
-Decision Systems
-
-Challenge:
-
-Forecasting
-
-Audience:
-
-CEO
-Operations
-Supply Chain Director
-
-Contexto:
-
-Sistema multi-horizonte de previsión de demanda e inventario para comercio electrónico.
-
-Horizontes:
-
-30
-90
-180
-270 días
+Actualmente el sistema genera artículos para la web de SC-Analytics desde Google Sheets / Gemini / GitHub Actions. Los artículos se guardan en el repositorio y se revisan mediante una rama editorial antes de hacer merge.
 
 Objetivo:
+Crear un sistema paralelo para generar un “LinkedIn Pack” semanal a partir de cada artículo generado. No debe publicar todavía en LinkedIn por API, pero debe dejar toda la estructura preparada para que en el futuro solo haya que añadir secrets y activar el modo API.
 
-Mejorar planificación de inventario, reducir stock-outs y apoyar decisiones de compras y capital.
+Nueva rama:
+Crear o usar una rama única llamada:
 
-Generar todas las secciones.
+linkedin
 
-No utilizar métricas técnicas.
+No usar mayúsculas.
 
----
+Flujo deseado:
 
-## PROYECTO 3
+1. El artículo se genera normalmente.
+2. A partir del artículo final, se llama a Gemini con un prompt específico para generar 5 publicaciones de LinkedIn.
+3. Las publicaciones deben corresponder a:
 
-Slug:
+   * Lunes: contexto de la industria y presentación de la semana.
+   * Martes: problema principal relacionado con procesos, datos o decisiones.
+   * Miércoles: caso práctico simplificado con números.
+   * Jueves: hipótesis y razonamiento tipo consultor senior para abordar el problema.
+   * Viernes: resumen semanal, aprendizajes principales y enlace al artículo completo.
+4. El output debe guardarse en un archivo JSON estructurado dentro de:
 
-investment-analytics-platform
+content/linkedin/
 
-Headline:
+Ejemplo de nombre:
 
-Investment Analytics & Performance Management Platform
+content/linkedin/2026-06-23-retail-forecasting.json
 
-Industry:
+Estructura esperada del JSON:
 
-Financial Services
+{
+"campaign_id": "2026-06-23-retail-forecasting",
+"source_article_slug": "...",
+"source_article_url": "...",
+"industry": "...",
+"theme": "...",
+"language": "en",
+"status": "ready_for_review",
+"approved": false,
+"publish_mode": "manual",
+"created_at": "...",
+"posts": [
+{
+"day": "monday",
+"publish_date": "2026-06-23",
+"post_type": "industry_context",
+"title": "...",
+"text": "...",
+"image_required": false,
+"image_prompt": "",
+"image_path": "",
+"hashtags": ["#DecisionAnalytics", "#Forecasting"],
+"published": false,
+"published_at": null,
+"linkedin_post_url": null
+}
+]
+}
 
-Capability:
+Reglas importantes:
 
-Business Intelligence
-Automation
-Analytics
+* El sistema debe generar contenido listo para copiar y pegar en LinkedIn.
+* No publicar automáticamente todavía.
+* Preparar el código para que en el futuro exista un modo API.
+* El campo publish_mode debe aceptar al menos:
 
-Challenge:
+  * manual
+  * api
+* Si publish_mode = manual, solo se genera el JSON.
+* Si publish_mode = api, en el futuro se deberá publicar usando LinkedIn API.
+* No hardcodear tokens ni credenciales.
+* Preparar variables de entorno futuras:
 
-Performance Management
+  * LINKEDIN_MODE
+  * LINKEDIN_ACCESS_TOKEN
+  * LINKEDIN_ORGANIZATION_ID
+  * LINKEDIN_AUTHOR_URN
+  * LINKEDIN_API_VERSION
+* Añadir validación para que nunca se publique nada si approved no es true.
+* Añadir validación para que nunca se publique dos veces si published ya es true.
+* Dejar preparado un script futuro tipo:
 
-Audience:
+scripts/publish_linkedin.py
 
-CEO
-Finance Director
+aunque inicialmente puede quedar en modo dry-run/manual.
 
-Contexto:
+Prompt de Gemini:
+Crear un prompt específico para transformar el artículo en 5 publicaciones de LinkedIn siguiendo el posicionamiento de SC-Analytics:
 
-Sistema centralizado de métricas para seguimiento de clientes, inversiones, proveedores y rentabilidad.
+SC-Analytics es una consultora de decision analytics especializada en forecasting, optimización, machine learning, modelización matemática, automatización y sistemas de apoyo a la decisión.
 
-Objetivo:
+Tono:
 
-Facilitar seguimiento de rendimiento y reporting ejecutivo.
+* Profesional
+* Claro
+* Técnico pero entendible
+* Sobrio
+* Orientado a negocio
+* Sin humo de IA
+* Sin exageraciones
+* Con foco en decisiones, trade-offs, restricciones, métricas e impacto real
 
-Generar todas las secciones.
+Cada post debe tener:
 
----
+* Hook inicial
+* Desarrollo
+* Insight operativo
+* Cierre suave
+* Hashtags limitados a 3-5
+* No usar emojis salvo que esté explícitamente configurado
+* No hacer promesas exageradas
+* No inventar datos externos no presentes en el artículo; si usa números para el caso práctico, deben ser simplificados y claramente ilustrativos.
 
-## PROYECTO 4
+Crear también una plantilla de prompt editable, idealmente en:
 
-Slug:
+prompts/linkedin_pack_prompt.md
 
-quantitative-trading-framework
+Workflow de GitHub Actions:
+Crear un nuevo workflow llamado algo como:
 
-Headline:
+.github/workflows/generate-linkedin-pack.yml
 
-Quantitative Multi-Strategy Trading Framework
+Debe poder ejecutarse manualmente con workflow_dispatch.
 
-Industry:
+Inputs deseados:
 
-Financial Services
+* article_slug
+* article_path
+* publish_week_start
+* language
+* dry_run
 
-Capability:
+El workflow debe:
 
-Machine Learning
-Deep Learning
-Reinforcement Learning
+1. Leer el artículo existente.
+2. Generar el LinkedIn Pack con Gemini.
+3. Validar el JSON.
+4. Guardarlo en content/linkedin/.
+5. Crear commit en la rama linkedin.
+6. Abrir PR desde linkedin hacia main o dejar preparado el cambio para revisión.
 
-Challenge:
+No romper el workflow editorial existente.
+No modificar la publicación web actual salvo que sea estrictamente necesario.
+Mantener el sistema desacoplado: generación de contenido por un lado, publicación por otro.
 
-Decision Systems
-
-Audience:
-
-Investment Managers
-Portfolio Managers
-
-Contexto:
-
-Framework cuantitativo para mercados financieros.
-
-Características:
-
-* estrategias clásicas
-* machine learning
-* deep learning
-* reinforcement learning
-* ensemble learning
-* optimización de cartera
-* señales en tiempo real
-* ejecución automatizada
-
-Resultado:
-
-aproximadamente 35% de rentabilidad anualizada durante las pruebas realizadas.
-
-Objetivo:
-
-Construir un sistema de decisión robusto capaz de combinar múltiples enfoques de inversión bajo una arquitectura unificada.
-
-Generar todas las secciones.
-
-No entrar en detalles excesivamente técnicos.
-
-No parecer un paper académico.
-
----
-
-## FORMATO
-
-Crear automáticamente:
-
-content/projects/banking-risk-decision-system/project.txt
-
-content/projects/ecommerce-demand-forecasting/project.txt
-
-content/projects/investment-analytics-platform/project.txt
-
-content/projects/quantitative-trading-framework/project.txt
-
-Completar todos los campos que requiere la arquitectura actual.
-
-Mantener Status: Published.
-
----
-
-## IMPLEMENTACIÓN
-
-1. Revisar la arquitectura actual de Projects.
-2. Crear los cuatro project.txt.
-3. Verificar que aparecen correctamente en la web.
-4. Verificar que los filtros funcionan.
-5. Ejecutar npm run build.
-6. Corregir cualquier error hasta obtener compilación limpia.
-7. Explicar qué carpetas se han creado y qué imágenes faltará añadir manualmente.
+Resultado final esperado:
+Un sistema donde yo pueda ejecutar un workflow, revisar el JSON generado, hacer merge y tener las publicaciones de LinkedIn listas para publicar manualmente. En el futuro, cuando LinkedIn apruebe el acceso de empresa, solo tendremos que activar el modo API y añadir los secrets correspondientes.
