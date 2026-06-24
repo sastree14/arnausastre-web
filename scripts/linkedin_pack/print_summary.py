@@ -14,8 +14,9 @@ def main() -> None:
 
     if not OUTPUT_JSON_PATH.exists():
         text = (
-            "No se generó ningún LinkedIn Pack. Revisa los logs del paso "
-            "'Generate LinkedIn pack'.\n"
+            "No se generó ningún LinkedIn Pack en esta ejecución — o no había artículos "
+            "publicados pendientes sin pack (mode=auto), o el paso de generación falló. "
+            "Revisa los logs del paso 'Generate LinkedIn pack'.\n"
         )
     else:
         data = json.loads(OUTPUT_JSON_PATH.read_text(encoding="utf-8"))

@@ -3,19 +3,29 @@ name: Generate LinkedIn pack from article
 on:
   workflow_dispatch:
     inputs:
-      article_slug:
-        description: "Slug of the source article (content/articles/<slug>.mdx)"
+      mode:
+        description: "Generation mode"
         required: true
+        default: "auto"
+        type: choice
+        options:
+          - auto
+          - manual
+      article_slug:
+        description: "Slug of the source article (required when mode=manual; ignored when mode=auto)"
+        required: false
         type: string
+        default: ""
       article_path:
         description: "Optional explicit path to the article MDX file (overrides the article_slug lookup)"
         required: false
         type: string
         default: ""
       publish_week_start:
-        description: "Monday of the target publishing week, YYYY-MM-DD"
-        required: true
+        description: "Monday of the target publishing week, YYYY-MM-DD. Required when mode=manual; if left empty when mode=auto, the next Monday is used"
+        required: false
         type: string
+        default: ""
       language:
         description: "Language for the generated posts"
         required: false
@@ -52,25 +62,45 @@ jobs:
         run: |
           missing=()
           [ -z "${GEMINI_API_KEY}" ] && missing+=("GEMINI_API_KEY")
+          if [ "$MODE" = "auto" ]; then
+            [ -z "${GOOGLE_SHEETS_CREDENTIALS}" ] && missing+=("GOOGLE_SHEETS_CREDENTIALS")
+            [ -z "${EDITORIAL_SHEET_ID}" ] && missing+=("EDITORIAL_SHEET_ID")
+          fi
           if [ ${#missing[@]} -gt 0 ]; then
             echo "::error::Faltan secrets en este repo: ${missing[*]}. Ve a Settings > Secrets and variables > Actions y créalos antes de volver a ejecutar este workflow."
             exit 1
           fi
         env:
+          MODE: ${{ inputs.mode }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
+          EDITORIAL_SHEET_ID: ${{ secrets.EDITORIAL_SHEET_ID }}
 
       - name: Generate LinkedIn pack
         id: generate
         run: python scripts/linkedin_pack/generate_pack.py
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
+          EDITORIAL_SHEET_ID: ${{ secrets.EDITORIAL_SHEET_ID }}
+          GENERATION_MODE: ${{ inputs.mode }}
           ARTICLE_SLUG: ${{ inputs.article_slug }}
           ARTICLE_PATH: ${{ inputs.article_path }}
           PUBLISH_WEEK_START: ${{ inputs.publish_week_start }}
           LANGUAGE: ${{ inputs.language }}
           LINKEDIN_MODE: ${{ vars.LINKEDIN_MODE }}
 
+      - name: Check whether there was anything to do
+        id: check_output
+        run: |
+          if [ -f scripts/linkedin_pack/.linkedin_pack_output.json ]; then
+            echo "has_pack=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_pack=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Commit LinkedIn pack to linkedin branch
+        if: steps.check_output.outputs.has_pack == 'true'
         id: commit
         run: |
           campaign_id=$(python -c "import json;print(json.load(open('scripts/linkedin_pack/.linkedin_pack_output.json'))['campaign_id'])")
@@ -93,6 +123,7 @@ jobs:
           echo "campaign_id=$campaign_id" >> "$GITHUB_OUTPUT"
 
       - name: Open or update Pull Request (linkedin → main)
+        if: steps.check_output.outputs.has_pack == 'true'
         id: pr
         env:
           GH_TOKEN: ${{ github.token }}

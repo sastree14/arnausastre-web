@@ -13,14 +13,24 @@ Order of operations:
 This script never publishes anything. It only ever produces a JSON file with
 status "ready_for_review" and approved: false, for a human to review.
 
+Two generation modes (GENERATION_MODE env var, default "auto"):
+  manual — uses ARTICLE_SLUG / ARTICLE_PATH / PUBLISH_WEEK_START as given.
+  auto   — queries the 'Articles Index' tab of the Editorial Google Sheet,
+           picks the oldest published article without a LinkedIn Pack yet,
+           and uses the next Monday as PUBLISH_WEEK_START if none is given.
+           If nothing is pending, exits 0 without writing any output file —
+           the workflow treats that as "nothing to do", not a failure.
+
 Reads its inputs from environment variables (set by the GitHub Actions
 workflow from workflow_dispatch inputs):
-  ARTICLE_SLUG          required
+  GENERATION_MODE       optional — "auto" (default) or "manual"
+  ARTICLE_SLUG          required in mode=manual; ignored in mode=auto
   ARTICLE_PATH          optional — overrides the default content/articles/{slug}.mdx lookup
-  PUBLISH_WEEK_START    required — YYYY-MM-DD, ideally a Monday
+  PUBLISH_WEEK_START    required in mode=manual; optional in mode=auto (defaults to next Monday)
   LANGUAGE              optional — defaults to "en"
   GEMINI_API_KEY        required
   LINKEDIN_MODE         optional — default publish_mode for the generated pack ("manual" or "api")
+  GOOGLE_SHEETS_CREDENTIALS, EDITORIAL_SHEET_ID — required only in mode=auto
 """
 
 from __future__ import annotations
@@ -34,14 +44,21 @@ from pathlib import Path
 
 import requests
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+CONTENT_ENGINE_DIR = REPO_ROOT / "scripts" / "content_engine"
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(CONTENT_ENGINE_DIR))
 
 from article_reader import ArticleReadError, read_article, resolve_article_path
+import articles_index
+import sheets_client
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
 PROMPT_TEMPLATE_PATH = REPO_ROOT / "prompts" / "linkedin_pack_prompt.md"
 LINKEDIN_CONTENT_DIR = REPO_ROOT / "content" / "linkedin"
 OUTPUT_JSON_PATH = Path(__file__).resolve().parent / ".linkedin_pack_output.json"
+
+VALID_GENERATION_MODES = ("auto", "manual")
 
 GEMINI_MODEL = "gemini-2.5-flash"
 GEMINI_ENDPOINT = (
@@ -74,32 +91,74 @@ def fail(message: str) -> None:
 # ── Inputs ─────────────────────────────────────────────────────────────────────
 
 def read_inputs() -> dict:
-    article_slug = os.environ.get("ARTICLE_SLUG", "").strip()
-    if not article_slug:
-        raise PackGenerationError("Falta la variable de entorno ARTICLE_SLUG.")
-
-    publish_week_start_raw = os.environ.get("PUBLISH_WEEK_START", "").strip()
-    if not publish_week_start_raw:
-        raise PackGenerationError("Falta la variable de entorno PUBLISH_WEEK_START (formato YYYY-MM-DD).")
-    try:
-        publish_week_start = date.fromisoformat(publish_week_start_raw)
-    except ValueError as exc:
+    generation_mode = os.environ.get("GENERATION_MODE", "auto").strip().lower() or "auto"
+    if generation_mode not in VALID_GENERATION_MODES:
         raise PackGenerationError(
-            f"PUBLISH_WEEK_START='{publish_week_start_raw}' no es una fecha YYYY-MM-DD válida."
-        ) from exc
-    if publish_week_start.weekday() != 0:
-        print(
-            f"[WARN] PUBLISH_WEEK_START ({publish_week_start.isoformat()}) no es un lunes. "
-            "Se usará igualmente como día 0 de la semana (lunes=día 0 .. viernes=día 4)."
+            f"GENERATION_MODE '{generation_mode}' no es válido. Debe ser uno de: {VALID_GENERATION_MODES}."
         )
 
+    article_slug = os.environ.get("ARTICLE_SLUG", "").strip()
+    if generation_mode == "manual" and not article_slug:
+        raise PackGenerationError("Falta ARTICLE_SLUG (obligatorio en mode=manual).")
+
+    publish_week_start_raw = os.environ.get("PUBLISH_WEEK_START", "").strip()
+    publish_week_start = None
+    if publish_week_start_raw:
+        try:
+            publish_week_start = date.fromisoformat(publish_week_start_raw)
+        except ValueError as exc:
+            raise PackGenerationError(
+                f"PUBLISH_WEEK_START='{publish_week_start_raw}' no es una fecha YYYY-MM-DD válida."
+            ) from exc
+        if publish_week_start.weekday() != 0:
+            print(
+                f"[WARN] PUBLISH_WEEK_START ({publish_week_start.isoformat()}) no es un lunes. "
+                "Se usará igualmente como día 0 de la semana (lunes=día 0 .. viernes=día 4)."
+            )
+    elif generation_mode == "manual":
+        raise PackGenerationError("Falta PUBLISH_WEEK_START (obligatorio en mode=manual, formato YYYY-MM-DD).")
+
     return {
+        "generation_mode": generation_mode,
         "article_slug": article_slug,
         "article_path": os.environ.get("ARTICLE_PATH", "").strip(),
         "publish_week_start": publish_week_start,
         "language": os.environ.get("LANGUAGE", "en").strip() or "en",
         "publish_mode": os.environ.get("LINKEDIN_MODE", "manual").strip() or "manual",
     }
+
+
+def next_monday(from_date: date) -> date:
+    """The current week's Monday if from_date already is one, otherwise the upcoming Monday."""
+    offset = (7 - from_date.weekday()) % 7
+    return from_date + timedelta(days=offset)
+
+
+def resolve_pending_article_slug() -> str:
+    """Queries 'Articles Index' and returns the slug of the oldest published article
+    without a LinkedIn Pack yet. Exits 0 (not an error) if there is none pending.
+    """
+    try:
+        service = sheets_client.get_sheets_service()
+        sheet_id = sheets_client.get_sheet_id()
+    except sheets_client.SheetsConfigError as exc:
+        raise PackGenerationError(str(exc)) from exc
+
+    try:
+        rows = articles_index.read_articles_index(service, sheet_id, sheets_client)
+    except (sheets_client.SheetsConfigError, articles_index.ArticlesIndexError) as exc:
+        raise PackGenerationError(str(exc)) from exc
+
+    print(f"[INFO] '{articles_index.ARTICLES_INDEX_TAB}': {len(rows)} fila(s) leídas.")
+
+    pending = articles_index.find_pending_article(rows, LINKEDIN_CONTENT_DIR)
+    if pending is None:
+        print("No pending published articles without LinkedIn Pack.")
+        sys.exit(0)
+
+    slug = (pending.get("Slug") or "").strip()
+    print(f"[INFO] Artículo seleccionado automáticamente: slug='{slug}' (Date={pending.get('Date', '')!r})")
+    return slug
 
 
 def get_gemini_api_key() -> str:
@@ -371,6 +430,14 @@ def main() -> None:
     try:
         inputs = read_inputs()
         api_key = get_gemini_api_key()
+
+        if inputs["generation_mode"] == "auto":
+            inputs["article_slug"] = resolve_pending_article_slug()
+
+        if inputs["publish_week_start"] is None:
+            inputs["publish_week_start"] = next_monday(date.today())
+            print(f"[INFO] PUBLISH_WEEK_START no especificado — usando {inputs['publish_week_start'].isoformat()}.")
+
         article_path = resolve_article_path(REPO_ROOT, inputs["article_slug"], inputs["article_path"])
         article = read_article(article_path)
         print(f"[INFO] Artículo fuente: '{article['title']}' ({article_path.relative_to(REPO_ROOT)})")
