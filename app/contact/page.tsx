@@ -201,22 +201,6 @@ export default function ContactPage() {
         </div>
       </Section>
 
-      {/* ── BOTTOM PRINCIPLE ─────────────────────────────────────── */}
-      <section className="bg-slate-900 text-white">
-        <div className="mx-auto max-w-7xl px-6 py-24">
-          <div className="max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.2em] text-indigo-400 font-medium">{t.principleLabel}</p>
-            <h2
-              className="mt-5 text-4xl md:text-5xl leading-tight"
-              style={{ fontFamily: 'var(--font-playfair)' }}
-            >
-              {t.principleTitle}
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-slate-400">{t.principleSub}</p>
-          </div>
-        </div>
-      </section>
-
     </main>
   )
 }

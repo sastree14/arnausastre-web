@@ -481,49 +481,7 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ── 5. PHILOSOPHY ────────────────────────────────────────────── */}
-      <Section className="bg-slate-900 text-white border-b border-slate-800">
-        <div className="mx-auto max-w-7xl px-6 py-24">
-
-          {/* Centered header */}
-          <div className="reveal text-center max-w-3xl mx-auto mb-12">
-            <h2
-              className="text-4xl md:text-5xl leading-tight text-white"
-              style={{ fontFamily: 'var(--font-playfair)' }}
-            >
-              {t.philTitle}
-            </h2>
-          </div>
-
-          {/* Four cards */}
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {([
-              { num: '01', title: t.phil1Title, desc: t.phil1Desc },
-              { num: '02', title: t.phil2Title, desc: t.phil2Desc },
-              { num: '03', title: t.phil3Title, desc: t.phil3Desc },
-              { num: '04', title: t.phil4Title, desc: t.phil4Desc },
-            ] as { num: string; title: string; desc: string }[]).map((card, i) => (
-              <div
-                key={card.num}
-                className={`reveal reveal-delay-${Math.min(i + 1, 4)} rounded-2xl border border-slate-700 bg-slate-800 p-8 card-lift flex flex-col`}
-              >
-                <span
-                  className="text-3xl font-light text-slate-600 mb-4"
-                  style={{ fontFamily: 'var(--font-playfair)' }}
-                >
-                  {card.num}
-                </span>
-                <div className="mb-4 h-px w-8 bg-indigo-400" />
-                <h3 className="text-base font-semibold text-white leading-snug">{card.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-400">{card.desc}</p>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </Section>
-
-      {/* ── 6. USE CASES ─────────────────────────────────────────────── */}
+      {/* ── 5. USE CASES ─────────────────────────────────────────────── */}
       <Section className="bg-white border-b border-slate-200">
         <div className="mx-auto max-w-7xl px-6 py-24">
 
@@ -626,7 +584,7 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ── 7. WHAT YOUR DATA ALREADY KNOWS ──────────────────────────── */}
+      {/* ── 6. WHAT YOUR DATA ALREADY KNOWS ──────────────────────────── */}
       <Section className="bg-slate-900 text-white border-b border-slate-800">
         <div className="mx-auto max-w-7xl px-6 py-24">
 
@@ -724,7 +682,7 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ── 8. FINAL CTA ────────────────────────────────────────────────── */}
+      {/* ── 7. FINAL CTA ────────────────────────────────────────────────── */}
       <section className="bg-white border-t border-slate-200">
         <div className="mx-auto max-w-7xl px-6 py-32">
           <div className="max-w-3xl">
