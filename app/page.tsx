@@ -742,13 +742,27 @@ export default function Home() {
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-500">
               {t.ctaSub2}
             </p>
-            <div className="mt-10 flex flex-wrap items-center gap-6">
+            <div className="mt-10 flex flex-wrap items-center gap-4">
               <Link
                 href="/contact"
                 className="inline-block rounded-md bg-slate-900 px-7 py-3.5 text-sm font-medium text-white transition hover:bg-slate-800"
               >
                 {t.ctaBtn}
               </Link>
+              <a
+                href="https://calendly.com/arnausastre"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-md border border-indigo-300 bg-indigo-50 px-7 py-3.5 text-sm font-medium text-indigo-700 transition hover:bg-indigo-100"
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <rect x="1" y="2" width="12" height="11" rx="1.5" stroke="currentColor" strokeWidth="1.4"/>
+                  <line x1="1" y1="5.5" x2="13" y2="5.5" stroke="currentColor" strokeWidth="1.4"/>
+                  <line x1="4.5" y1="1" x2="4.5" y2="3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+                  <line x1="9.5" y1="1" x2="9.5" y2="3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+                </svg>
+                {t.ctaCalendlyBtn}
+              </a>
               <Link
                 href="/about"
                 className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition"

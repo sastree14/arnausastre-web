@@ -1,9 +1,18 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Sobre nosotros',
+  title: 'About Us',
   description:
-    'SC-Analytics existe para ayudar a las organizaciones a tomar mejores decisiones — combinando comprensión, análisis riguroso y sistemas que funcionan en la práctica.',
+    'SC Analytics helps CEOs, CFOs and senior executives make better, data-driven decisions through rigorous analytical systems — built for real operational environments, not just presentations.',
+  keywords: [
+    'analytics consulting firm',
+    'data analytics consultants',
+    'analytics for executives',
+    'business analytics team',
+    'about SC Analytics',
+    'Arnau Sastre analytics',
+    'analytics consulting background',
+  ],
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {

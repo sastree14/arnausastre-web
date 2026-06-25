@@ -136,6 +136,27 @@ export default function ContactPage() {
                   >
                     {t.formSubmit}
                   </button>
+
+                  <div className="relative flex items-center">
+                    <div className="flex-grow border-t border-slate-200" />
+                    <span className="mx-3 flex-shrink text-xs text-slate-400">or</span>
+                    <div className="flex-grow border-t border-slate-200" />
+                  </div>
+
+                  <a
+                    href="https://calendly.com/arnausastre"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex w-full items-center justify-center gap-2 rounded-md border border-indigo-200 bg-indigo-50 px-6 py-3.5 text-sm font-medium text-indigo-700 transition hover:bg-indigo-100"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <rect x="1" y="2" width="12" height="11" rx="1.5" stroke="currentColor" strokeWidth="1.4"/>
+                      <line x1="1" y1="5.5" x2="13" y2="5.5" stroke="currentColor" strokeWidth="1.4"/>
+                      <line x1="4.5" y1="1" x2="4.5" y2="3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+                      <line x1="9.5" y1="1" x2="9.5" y2="3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+                    </svg>
+                    {t.calendlyBtn}
+                  </a>
                 </form>
               )}
             </div>
