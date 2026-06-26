@@ -54,14 +54,14 @@ export default function ProjectsPage() {
                 href={`/projects/${project.slug}`}
                 className="group flex flex-col rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm card-lift"
               >
-                {/* Image area — dark background handles transparent images */}
-                <div className="relative h-52 bg-slate-900 flex items-center justify-center overflow-hidden">
+                {/* Image area */}
+                <div className="relative h-52 bg-slate-100 overflow-hidden">
                   <Image
                     src={project.imagePath}
                     alt={project.headline}
-                    width={800}
-                    height={500}
-                    className="w-full h-full object-contain p-6"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                   />
                 </div>
 

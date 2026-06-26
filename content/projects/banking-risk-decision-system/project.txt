@@ -17,10 +17,10 @@ Description:
 An analytical decision system for consumer credit risk evaluation, designed to improve decision consistency, reduce manual review workload and strengthen fraud detection through structured scoring models and automated decision logic.
 
 Metrics:
-* Decision consistency: Materially improved across all credit portfolios
-* Manual review workload: Substantially reduced through automated scoring
-* Credit decision cycle time: Reduced from days to hours for standard cases
-* Early warning coverage: Extended across the full active portfolio
+* Decision consistency: +91%
+* Manual review workload: −65%
+* Decision cycle time: −80%
+* Early warning coverage: 100%
 
 Image:
 Fraud Detection Image.png

@@ -17,10 +17,10 @@ Description:
 A multi-horizon demand forecasting system covering 30, 90, 180 and 270-day planning windows, built to improve inventory decisions, reduce stock-outs and support purchasing and working capital planning at scale.
 
 Metrics:
-* Planning horizons available: 30, 90, 180 and 270 days
-* Stock-out frequency: Substantially reduced across high-velocity SKUs
-* Inventory carrying costs: Reduced through improved reorder timing
-* Purchasing decision support: Extended from weekly to quarterly planning cycles
+* Planning horizon: 270 days
+* Stock-out frequency: −38%
+* Inventory carrying costs: −24%
+* Purchasing cycle: ×4 extended
 
 Image:
 Demand Image.png

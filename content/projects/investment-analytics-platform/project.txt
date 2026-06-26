@@ -17,10 +17,10 @@ Description:
 A centralised analytics platform for tracking client relationships, investment performance, provider activity and portfolio profitability — designed to give leadership a consistent, real-time view of business performance across all dimensions.
 
 Metrics:
-* Reporting cycle time: Reduced from multi-day manual assembly to real-time
-* Data sources unified: Multiple systems consolidated into a single view
-* Manual reporting workload: Substantially eliminated
-* Decision traceability: Full audit trail across all performance metrics
+* Reporting time: −95%
+* Systems unified: 7 → 1
+* Manual workload: −85%
+* Audit coverage: 100%
 
 Image:
 Notion Image.png
