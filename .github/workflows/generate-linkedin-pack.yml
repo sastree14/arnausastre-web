@@ -62,13 +62,14 @@ jobs:
         run: |
           missing=()
           [ -z "${GEMINI_API_KEY}" ] && missing+=("GEMINI_API_KEY")
-          if [ "$MODE" = "auto" ]; then
-            [ -z "${GOOGLE_SHEETS_CREDENTIALS}" ] && missing+=("GOOGLE_SHEETS_CREDENTIALS")
-            [ -z "${EDITORIAL_SHEET_ID}" ] && missing+=("EDITORIAL_SHEET_ID")
-          fi
           if [ ${#missing[@]} -gt 0 ]; then
-            echo "::error::Faltan secrets en este repo: ${missing[*]}. Ve a Settings > Secrets and variables > Actions y créalos antes de volver a ejecutar este workflow."
+            echo "::error::Faltan secrets obligatorios: ${missing[*]}. Ve a Settings > Secrets and variables > Actions y créalos antes de volver a ejecutar este workflow."
             exit 1
+          fi
+          if [ "$MODE" = "auto" ]; then
+            if [ -z "${GOOGLE_SHEETS_CREDENTIALS}" ] || [ -z "${EDITORIAL_SHEET_ID}" ]; then
+              echo "::warning::GOOGLE_SHEETS_CREDENTIALS o EDITORIAL_SHEET_ID no configurados — el modo auto continuará sin enriquecimiento de metadata desde Google Sheets. La detección de artículos pendientes se basará exclusivamente en content/articles/*.mdx."
+            fi
           fi
         env:
           MODE: ${{ inputs.mode }}

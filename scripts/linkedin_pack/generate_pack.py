@@ -15,9 +15,13 @@ status "ready_for_review" and approved: false, for a human to review.
 
 Two generation modes (GENERATION_MODE env var, default "auto"):
   manual — uses ARTICLE_SLUG / ARTICLE_PATH / PUBLISH_WEEK_START as given.
-  auto   — queries the 'Articles Index' tab of the Editorial Google Sheet,
-           picks the oldest published article without a LinkedIn Pack yet,
-           and uses the next Monday as PUBLISH_WEEK_START if none is given.
+  auto   — reads content/articles/*.mdx directly (source of truth),
+           compares slugs against content/linkedin/*.json (already covered),
+           picks the oldest pending article, and uses the next Monday as
+           PUBLISH_WEEK_START if none is given.
+           Google Sheets (Content Pipeline) is used optionally to enrich
+           metadata for sorting — if Sheets is unavailable, the workflow
+           continues with MDX frontmatter dates and slug ordering.
            If nothing is pending, exits 0 without writing any output file —
            the workflow treats that as "nothing to do", not a failure.
 
@@ -30,7 +34,7 @@ workflow from workflow_dispatch inputs):
   LANGUAGE              optional — defaults to "en"
   GEMINI_API_KEY        required
   LINKEDIN_MODE         optional — default publish_mode for the generated pack ("manual" or "api")
-  GOOGLE_SHEETS_CREDENTIALS, EDITORIAL_SHEET_ID — required only in mode=auto
+  GOOGLE_SHEETS_CREDENTIALS, EDITORIAL_SHEET_ID — optional; used only for metadata enrichment in mode=auto
 """
 
 from __future__ import annotations
@@ -134,30 +138,69 @@ def next_monday(from_date: date) -> date:
     return from_date + timedelta(days=offset)
 
 
-def resolve_pending_article_slug() -> str:
-    """Queries 'Articles Index' and returns the slug of the oldest published article
-    without a LinkedIn Pack yet. Exits 0 (not an error) if there is none pending.
+def _try_load_sheets_dates() -> "dict[str, object]":
+    """Tries to read publication dates from Google Sheets Content Pipeline.
+
+    Returns a slug → date dict if successful. Returns {} and emits a warning
+    on any failure — callers must treat this as optional enrichment only.
     """
     try:
         service = sheets_client.get_sheets_service()
         sheet_id = sheets_client.get_sheet_id()
     except sheets_client.SheetsConfigError as exc:
-        raise PackGenerationError(str(exc)) from exc
+        print(f"[WARN] Google Sheets no disponible (credenciales/ID faltantes): {exc}")
+        return {}
+
+    sheets_dates: dict = {}
+    for tab in ("Content Pipeline", articles_index.ARTICLES_INDEX_TAB):
+        try:
+            rows = sheets_client.read_tab_as_dicts(service, sheet_id, tab, expected_headers=None)
+            for row in rows:
+                slug = (row.get("Slug") or "").strip()
+                raw_date = (
+                    row.get("Publication Date")
+                    or row.get("Date")
+                    or ""
+                )
+                parsed = articles_index._parse_date(raw_date)
+                if slug and parsed and slug not in sheets_dates:
+                    sheets_dates[slug] = parsed
+            print(f"[INFO] Google Sheets '{tab}': {len(rows)} fila(s) leídas para enriquecimiento.")
+            break
+        except Exception as exc:
+            print(f"[WARN] No se pudo leer la pestaña '{tab}' de Google Sheets: {exc}")
+
+    return sheets_dates
+
+
+def resolve_pending_article_slug() -> str:
+    """Returns the slug of the oldest article in the repository without a LinkedIn Pack.
+
+    Primary source: content/articles/*.mdx (repository is the source of truth).
+    Optional enrichment: Google Sheets Content Pipeline, for publication dates used
+    in sorting. If Sheets is unavailable, falls back to MDX frontmatter dates and slug.
+    Exits 0 (not an error) if there is nothing pending.
+    """
+    articles_dir = REPO_ROOT / "content" / "articles"
+
+    sheets_dates = _try_load_sheets_dates()
+    if sheets_dates:
+        print(f"[INFO] {len(sheets_dates)} fecha(s) cargadas desde Google Sheets para ordenar.")
+    else:
+        print("[INFO] Continuando sin fechas de Google Sheets — se usarán fechas del frontmatter MDX.")
 
     try:
-        rows = articles_index.read_articles_index(service, sheet_id, sheets_client)
-    except (sheets_client.SheetsConfigError, articles_index.ArticlesIndexError) as exc:
+        pending = articles_index.find_pending_from_repo(articles_dir, LINKEDIN_CONTENT_DIR, sheets_dates or None)
+    except articles_index.ArticlesIndexError as exc:
         raise PackGenerationError(str(exc)) from exc
 
-    print(f"[INFO] '{articles_index.ARTICLES_INDEX_TAB}': {len(rows)} fila(s) leídas.")
-
-    pending = articles_index.find_pending_article(rows, LINKEDIN_CONTENT_DIR)
     if pending is None:
-        print("No pending published articles without LinkedIn Pack.")
+        print("No pending articles without LinkedIn Pack.")
         sys.exit(0)
 
-    slug = (pending.get("Slug") or "").strip()
-    print(f"[INFO] Artículo seleccionado automáticamente: slug='{slug}' (Date={pending.get('Date', '')!r})")
+    slug = pending["slug"]
+    date_info = sheets_dates.get(slug) or pending.get("date") or "unknown"
+    print(f"[INFO] Artículo seleccionado automáticamente: slug='{slug}' (date={date_info!r})")
     return slug
 
 
