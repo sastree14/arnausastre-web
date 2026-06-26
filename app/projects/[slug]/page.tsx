@@ -75,14 +75,14 @@ export default async function ProjectPage({ params }: Props) {
               </p>
             </div>
 
-            {/* Right — image */}
-            <div className="rounded-2xl bg-slate-900 overflow-hidden flex items-center justify-center p-8 min-h-[280px]">
+            {/* Right — image (source images are 1536×1024 = 3:2) */}
+            <div className="relative aspect-[3/2] w-full rounded-2xl overflow-hidden">
               <Image
                 src={project.imagePath}
                 alt={project.headline}
-                width={800}
-                height={500}
-                className="w-full h-auto object-contain"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 priority
               />
             </div>

@@ -54,8 +54,8 @@ export default function ProjectsPage() {
                 href={`/projects/${project.slug}`}
                 className="group flex flex-col rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm card-lift"
               >
-                {/* Image area */}
-                <div className="relative h-52 bg-slate-100 overflow-hidden">
+                {/* Image area — aspect ratio matches source images (1536×1024 = 3:2) */}
+                <div className="relative aspect-[3/2] w-full overflow-hidden">
                   <Image
                     src={project.imagePath}
                     alt={project.headline}
