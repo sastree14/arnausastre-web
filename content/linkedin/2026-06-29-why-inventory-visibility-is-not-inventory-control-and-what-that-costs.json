@@ -1,0 +1,109 @@
+{
+  "campaign_id": "2026-06-29-why-inventory-visibility-is-not-inventory-control-and-what-that-costs",
+  "source_article_slug": "why-inventory-visibility-is-not-inventory-control-and-what-that-costs",
+  "source_article_url": "https://sc-analytics.io/knowledge/why-inventory-visibility-is-not-inventory-control-and-what-that-costs",
+  "industry": "Logistics",
+  "theme": "Inventory Optimization",
+  "language": "en",
+  "status": "ready_for_review",
+  "approved": false,
+  "publish_mode": "manual",
+  "created_at": "2026-06-26T10:56:12Z",
+  "posts": [
+    {
+      "day": "monday",
+      "publish_date": "2026-06-29",
+      "post_type": "industry_context",
+      "title": "Visibility vs. Control in Logistics Inventory",
+      "text": "Logistics firms navigate a constant balancing act: maintaining sufficient inventory to meet client demands while preventing capital from stagnating in warehouses. Decision-makers in this industry regularly face the trade-off between ensuring high service levels and managing working capital efficiently.\n\nOperational excellence in logistics hinges not just on knowing where every SKU is, but on making strategic decisions about how much to hold, where to position it, and when to replenish. Without analytical rigor guiding these choices, even the clearest real-time dashboards can mask underlying inefficiencies.\n\nRecognizing the difference between simply seeing your inventory and truly controlling it is fundamental. This distinction often translates directly into higher carrying costs or missed service level agreements.\n\nThis week, we'll explore why inventory visibility, by itself, often institutionalizes suboptimal policies and what true control demands.",
+      "image_required": false,
+      "image_prompt": "",
+      "image_path": "",
+      "hashtags": [
+        "#Logistics",
+        "#InventoryManagement",
+        "#WorkingCapital",
+        "#SupplyChain"
+      ],
+      "published": false,
+      "published_at": null,
+      "linkedin_post_url": null
+    },
+    {
+      "day": "tuesday",
+      "publish_date": "2026-06-30",
+      "post_type": "core_problem",
+      "title": "The Illusion of Inventory Visibility",
+      "text": "Many logistics firms invest millions in systems providing real-time views of inventory across their networks, expecting these tools to solve their stock-related challenges. However, working capital often remains tied up, and service levels stay inconsistent, despite this enhanced visibility.\n\nThe core problem isn't a lack of data, but a misdiagnosis: confusing visibility with control. Dashboards show *what* inventory you have and *where* it is, but not *how much* you should hold, *when* to reorder, or *where* to position it across a dynamic network. This leads to reactive decisions, such as manual overrides based on 'gut feel' or fixed rules.\n\nThis gap means significant economic consequences: persistent obsolescence costs, sluggish inventory turns, and expensive emergency transfers. Without a strategic shift from reporting to dynamic optimization, companies often just institutionalize suboptimal inventory policies.\n\nOver time, this results in inflated safety stock across the board, tying up capital that could otherwise be deployed.",
+      "image_required": false,
+      "image_prompt": "",
+      "image_path": "",
+      "hashtags": [
+        "#InventoryControl",
+        "#SupplyChainEfficiency",
+        "#OperationalChallenges",
+        "#WorkingCapital"
+      ],
+      "published": false,
+      "published_at": null,
+      "linkedin_post_url": null
+    },
+    {
+      "day": "wednesday",
+      "publish_date": "2026-07-01",
+      "post_type": "practical_case",
+      "title": "Cost of Reactivity: A Logistics Scenario",
+      "text": "Consider a large 3PL managing inventory for manufacturing clients. A client faces an unexpected demand spike for 500 units of a critical component. The 3PL's real-time system shows Depot A has 200 units and Depot B has 150. Neither has enough.\n\nTo cover the shortfall of 150 units, the 3PL initiates an emergency inter-depot transfer, incurring a premium freight cost of, say, $500 per 50 units. Additionally, the delay leads to a contractual penalty of $200 per unit for 150 units. The direct economic consequence is an unplanned freight cost of $1,500 and penalties totalling $30,000, not accounting for client trust erosion.\n\nThis illustrative scenario highlights how even with perfect visibility, a reactive inventory strategy leads to significant, unbudgeted costs and eroded margins. The system showed the problem, but did not prevent it.\n\nThese are direct costs that hit the P&L, demonstrating that the absence of proactive control is a quantifiable business expense.",
+      "image_required": false,
+      "image_prompt": "",
+      "image_path": "",
+      "hashtags": [
+        "#LogisticsCosts",
+        "#SupplyChainFinance",
+        "#IllustrativeCase",
+        "#OperationalImpact"
+      ],
+      "published": false,
+      "published_at": null,
+      "linkedin_post_url": null
+    },
+    {
+      "day": "thursday",
+      "publish_date": "2026-07-02",
+      "post_type": "consultant_hypothesis",
+      "title": "Diagnosing Inventory Strategy: A Boardroom View",
+      "text": "When persistent inventory issues plague a business, a senior operations executive asks critical diagnostic questions. It's not just about dashboards, but about decision logic.\n\nFirst: Are our inventory KPIs aligned across departments? Is the warehouse manager incentivized for local fill rates, while procurement focuses on volume discounts, without considering the system-wide working capital impact? Second: What drives our reorder points and safety stock levels? Are they fixed averages, or dynamic policies adjusted for real-time demand and supply fluctuations?\n\nThird: How do we balance service levels with carrying costs? True optimization involves explicit trade-offs. The goal is to move from optimizing individual transactions to optimizing the entire enterprise balance sheet. Fourth: Is there a 'just-in-case' mentality driving inflated safety stock, or a 'just-in-time and right-place' strategy?\n\nThis rigorous inquiry into decision architecture is key to understanding the root cause of inventory inefficiency.",
+      "image_required": false,
+      "image_prompt": "",
+      "image_path": "",
+      "hashtags": [
+        "#DecisionMaking",
+        "#SupplyChainStrategy",
+        "#OperationalLeadership",
+        "#BusinessAcumen"
+      ],
+      "published": false,
+      "published_at": null,
+      "linkedin_post_url": null
+    },
+    {
+      "day": "friday",
+      "publish_date": "2026-07-03",
+      "post_type": "weekly_summary",
+      "title": "Inventory Control: Three Key Takeaways",
+      "text": "This week, we've explored the critical distinction between inventory visibility and inventory control, and its economic implications for logistics and asset-intensive businesses.\n\nHere are three key takeaways for your next operational review:\n1.  **Visibility ≠ Control:** Real-time dashboards tell you *what* and *where* your inventory is, but true control means determining *how much* to hold, *when* to reorder, and *where* to position it strategically.\n2.  **Costs of Reactivity:** Misaligned departmental KPIs, 'gut-feel' decisions, and fixed reorder points lead to significant working capital tied up, increased obsolescence, and expensive emergency interventions.\n3.  **Optimization Requires Investment & Alignment:** Achieving true inventory control means deploying predictive analytics and mathematical programming, aligning incentives across functions, and shifting from reactive firefighting to proactive, model-driven policies.\n\nMoving from reporting to dynamic optimization is a strategic journey that delivers tangible reductions in working capital and improvements in service levels.\n\nFor the full reasoning chain and a deeper dive into inventory optimization, read the complete article.",
+      "image_required": false,
+      "image_prompt": "",
+      "image_path": "",
+      "hashtags": [
+        "#InventoryOptimization",
+        "#WorkingCapitalManagement",
+        "#SupplyChainManagement",
+        "#LogisticsAnalytics"
+      ],
+      "published": false,
+      "published_at": null,
+      "linkedin_post_url": null
+    }
+  ]
+}
