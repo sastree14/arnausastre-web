@@ -144,7 +144,7 @@ export default function ContactPage() {
                   </div>
 
                   <a
-                    href="https://calendly.com/arnausastre"
+                    href="https://calendly.com/arnau-sastre-sc-analytics"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex w-full items-center justify-center gap-2 rounded-md border border-indigo-200 bg-indigo-50 px-6 py-3.5 text-sm font-medium text-indigo-700 transition hover:bg-indigo-100"
