@@ -27,20 +27,13 @@ const ArrowIcon = () => (
   </svg>
 )
 
-function DisciplineCard({ icon, name, desc, tags }: { icon: React.ReactNode; name: string; desc: string; tags: string }) {
+function DisciplineCard({ icon, name }: { icon: React.ReactNode; name: string }) {
   return (
     <div className="w-full rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
       <div className="h-0.5 bg-indigo-500" />
-      <div className="p-5 flex flex-col gap-3.5">
-        {/* Icon + name on same line */}
-        <div className="flex items-center gap-2.5">
-          <span className="text-indigo-500 flex-shrink-0">{icon}</span>
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-900 leading-tight">{name}</p>
-        </div>
-        {/* Description — larger and clearer */}
-        <p className="text-sm leading-6 text-slate-700" style={{ fontFamily: 'var(--font-playfair)' }}>{desc}</p>
-        {/* Tags */}
-        <p className="text-xs leading-5 text-slate-400 border-t border-slate-100 pt-3">{tags}</p>
+      <div className="p-5 flex items-center gap-2.5">
+        <span className="text-indigo-500 flex-shrink-0">{icon}</span>
+        <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-900 leading-tight">{name}</p>
       </div>
     </div>
   )
@@ -264,110 +257,6 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ── 3. NO EMPEZAMOS POR LA TECNOLOGÍA ──────────────────────────── */}
-      <Section className="bg-slate-900 text-white border-b border-slate-800">
-        <div className="mx-auto max-w-7xl px-6 py-24">
-
-          {/* Title + intro */}
-          <div className="grid gap-16 lg:grid-cols-2 lg:items-start mb-20">
-            <div>
-              <h2
-                className="text-4xl md:text-5xl leading-tight text-white"
-                style={{ fontFamily: 'var(--font-playfair)' }}
-              >
-                {t.noTechTitle1}<br />
-                <span className="italic text-slate-300">{t.noTechTitle2}</span>
-              </h2>
-            </div>
-            <div className="space-y-10">
-              {([
-                { label: t.noTechL1, body: t.noTechP1, delay: '' },
-                { label: t.noTechL2, body: t.noTechP2, delay: 'reveal-delay-1' },
-                { label: t.noTechL3, body: t.noTechP3, delay: 'reveal-delay-2' },
-              ] as { label: string; body: string; delay: string }[]).map((item) => (
-                <div key={item.label} className="flex gap-5">
-                  <div className="mt-1 flex-shrink-0">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <polyline points="4,12 9,17 20,6" stroke="#f1f5f9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-lg font-bold text-white leading-snug">{item.label}</p>
-                    <p className="mt-2 text-sm leading-7 text-slate-400">{item.body}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Four blocks */}
-          <div className="grid gap-px bg-slate-700 border border-slate-700 rounded-2xl overflow-hidden md:grid-cols-2 xl:grid-cols-4">
-            {[
-              {
-                num: '01', title: t.noTechB1Title, desc: t.noTechB1Desc,
-                icon: (
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-                    <circle cx="10" cy="10" r="6" stroke="#818cf8" strokeWidth="1.5"/>
-                    <line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#818cf8" strokeWidth="1.5" strokeLinecap="round"/>
-                  </svg>
-                )
-              },
-              {
-                num: '02', title: t.noTechB2Title, desc: t.noTechB2Desc,
-                icon: (
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-                    <rect x="3" y="3" width="16" height="12" rx="2" stroke="#818cf8" strokeWidth="1.5"/>
-                    <line x1="7" y1="19" x2="15" y2="19" stroke="#818cf8" strokeWidth="1.5" strokeLinecap="round"/>
-                    <line x1="11" y1="15" x2="11" y2="19" stroke="#818cf8" strokeWidth="1.5" strokeLinecap="round"/>
-                    <line x1="7" y1="8" x2="15" y2="8" stroke="#818cf8" strokeWidth="1.2" strokeLinecap="round"/>
-                    <line x1="7" y1="11" x2="12" y2="11" stroke="#818cf8" strokeWidth="1.2" strokeLinecap="round"/>
-                  </svg>
-                )
-              },
-              {
-                num: '03', title: t.noTechB3Title, desc: t.noTechB3Desc,
-                icon: (
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-                    <path d="M4 17L8 13L11 16L15 9L18 12" stroke="#818cf8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <rect x="3" y="3" width="16" height="16" rx="2" stroke="#818cf8" strokeWidth="1.5"/>
-                  </svg>
-                )
-              },
-              {
-                num: '04', title: t.noTechB4Title, desc: t.noTechB4Desc,
-                icon: (
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-                    <path d="M11 4v3M11 15v3M4 11H7M15 11h3" stroke="#818cf8" strokeWidth="1.5" strokeLinecap="round"/>
-                    <circle cx="11" cy="11" r="4" stroke="#818cf8" strokeWidth="1.5"/>
-                    <circle cx="11" cy="11" r="1.5" fill="#818cf8"/>
-                  </svg>
-                )
-              },
-            ].map((block, i) => (
-              <div
-                key={block.num}
-                className={`reveal reveal-delay-${Math.min(i + 1, 4)} bg-slate-800 p-8 flex flex-col gap-5`}
-              >
-                <div className="flex items-center justify-between">
-                  <span
-                    className="text-4xl font-light text-slate-700"
-                    style={{ fontFamily: 'var(--font-playfair)' }}
-                  >
-                    {block.num}
-                  </span>
-                  {block.icon}
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">{block.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-400">{block.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </Section>
-
       {/* ── 4. DIFFERENT APPROACHES — hub and spoke ─────────────────── */}
       <Section className="bg-white border-b border-slate-200">
         <div className="mx-auto max-w-7xl px-6 py-24">
@@ -417,13 +306,13 @@ export default function Home() {
                 {/* Row 1: empty · MODELIZACIÓN · empty */}
                 <div />
                 <div className="flex items-center justify-center p-4">
-                  <DisciplineCard icon={<Network size={20} />} name={t.appr2Name} desc={t.appr2Desc} tags={t.appr2Tags} />
+                  <DisciplineCard icon={<Network size={20} />} name={t.appr2Name} />
                 </div>
                 <div />
 
                 {/* Row 2: VISUALIZACIÓN · HUB · FORECASTING */}
                 <div className="flex items-center justify-center p-4">
-                  <DisciplineCard icon={<BarChart3 size={20} />} name={t.appr1Name} desc={t.appr1Desc} tags={t.appr1Tags} />
+                  <DisciplineCard icon={<BarChart3 size={20} />} name={t.appr1Name} />
                 </div>
                 <div className="flex items-center justify-center">
                   <div className="flex flex-col items-center justify-center text-center rounded-full border-2 border-indigo-300 bg-slate-900 shadow-lg" style={{ width: '148px', height: '148px' }}>
@@ -433,7 +322,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="flex items-center justify-center p-4">
-                  <DisciplineCard icon={<TrendingUp size={20} />} name={t.appr3Name} desc={t.appr3Desc} tags={t.appr3Tags} />
+                  <DisciplineCard icon={<TrendingUp size={20} />} name={t.appr3Name} />
                 </div>
 
                 {/* Row 3: empty spacer — gives diagonals room to clear row 2 cards */}
@@ -441,11 +330,11 @@ export default function Home() {
 
                 {/* Row 4: OPTIMIZACIÓN · empty · AUTOMATIZACIÓN */}
                 <div className="flex items-center justify-center p-4">
-                  <DisciplineCard icon={<Target size={20} />} name={t.appr4Name} desc={t.appr4Desc} tags={t.appr4Tags} />
+                  <DisciplineCard icon={<Target size={20} />} name={t.appr4Name} />
                 </div>
                 <div />
                 <div className="flex items-center justify-center p-4">
-                  <DisciplineCard icon={<Workflow size={20} />} name={t.appr5Name} desc={t.appr5Desc} tags={t.appr5Tags} />
+                  <DisciplineCard icon={<Workflow size={20} />} name={t.appr5Name} />
                 </div>
               </div>
             </div>
@@ -461,13 +350,13 @@ export default function Home() {
               </div>
             </div>
             {([
-              { icon: <BarChart3 size={18} />, name: t.appr1Name, desc: t.appr1Desc, tags: t.appr1Tags },
-              { icon: <Network size={18} />, name: t.appr2Name, desc: t.appr2Desc, tags: t.appr2Tags },
-              { icon: <TrendingUp size={18} />, name: t.appr3Name, desc: t.appr3Desc, tags: t.appr3Tags },
-              { icon: <Target size={18} />, name: t.appr4Name, desc: t.appr4Desc, tags: t.appr4Tags },
-              { icon: <Workflow size={18} />, name: t.appr5Name, desc: t.appr5Desc, tags: t.appr5Tags },
-            ] as { icon: React.ReactNode; name: string; desc: string; tags: string }[]).map((card) => (
-              <DisciplineCard key={card.name} icon={card.icon} name={card.name} desc={card.desc} tags={card.tags} />
+              { icon: <BarChart3 size={18} />, name: t.appr1Name },
+              { icon: <Network size={18} />, name: t.appr2Name },
+              { icon: <TrendingUp size={18} />, name: t.appr3Name },
+              { icon: <Target size={18} />, name: t.appr4Name },
+              { icon: <Workflow size={18} />, name: t.appr5Name },
+            ] as { icon: React.ReactNode; name: string }[]).map((card) => (
+              <DisciplineCard key={card.name} icon={card.icon} name={card.name} />
             ))}
           </div>
 
@@ -476,109 +365,6 @@ export default function Home() {
             <p className="mx-auto max-w-2xl text-lg leading-9 text-slate-700 italic" style={{ fontFamily: 'var(--font-playfair)' }}>
               &ldquo;{t.approachNote}&rdquo;
             </p>
-          </div>
-
-        </div>
-      </Section>
-
-      {/* ── 5. USE CASES ─────────────────────────────────────────────── */}
-      <Section className="bg-white border-b border-slate-200">
-        <div className="mx-auto max-w-7xl px-6 py-24">
-
-          {/* Centered header */}
-          <div className="reveal text-center max-w-3xl mx-auto mb-16">
-            <h2
-              className="text-4xl md:text-5xl leading-tight text-slate-900"
-              style={{ fontFamily: 'var(--font-playfair)' }}
-            >
-              {t.useCasesTitle}
-            </h2>
-            <div className="mt-6">
-              <p className="text-base font-medium text-slate-700">{t.useCasesSub1}</p>
-              <p className="mt-2 text-sm text-slate-500">{t.useCasesSub2}</p>
-            </div>
-          </div>
-
-          {/* Desktop: 2×3 horizontal flow with arrows */}
-          <div className="reveal hidden lg:block space-y-10">
-            {/* Row 1: 01 → 02 → 03 */}
-            <div className="flex items-start">
-              {([
-                { num: '01', title: t.useCase1Title, desc: t.useCase1Desc },
-                { num: '02', title: t.useCase2Title, desc: t.useCase2Desc },
-                { num: '03', title: t.useCase3Title, desc: t.useCase3Desc },
-              ] as { num: string; title: string; desc: string }[]).map((item, i) => (
-                <div key={item.num} className="flex flex-1 items-start min-w-0">
-                  <div className="flex-1 text-center px-6 min-w-0">
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-indigo-600 mb-3">{item.num}</p>
-                    <div className="mb-3 h-px w-8 bg-indigo-300 mx-auto" />
-                    <p className="text-base font-semibold text-slate-900 leading-snug">{item.title}</p>
-                    <p className="mt-2 text-sm leading-6 text-slate-500">{item.desc}</p>
-                  </div>
-                  {i < 2 && (
-                    <div className="flex-shrink-0 flex items-start pt-7 text-slate-300">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                        <path d="M1 8h12M9 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-            {/* Row 2: 04 → 05 → 06 */}
-            <div className="flex items-start pt-6 border-t border-slate-100">
-              {([
-                { num: '04', title: t.useCase4Title, desc: t.useCase4Desc },
-                { num: '05', title: t.useCase5Title, desc: t.useCase5Desc },
-                { num: '06', title: t.useCase6Title, desc: t.useCase6Desc },
-              ] as { num: string; title: string; desc: string }[]).map((item, i) => (
-                <div key={item.num} className="flex flex-1 items-start min-w-0">
-                  <div className="flex-1 text-center px-6 min-w-0">
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-indigo-600 mb-3">{item.num}</p>
-                    <div className="mb-3 h-px w-8 bg-indigo-300 mx-auto" />
-                    <p className="text-base font-semibold text-slate-900 leading-snug">{item.title}</p>
-                    <p className="mt-2 text-sm leading-6 text-slate-500">{item.desc}</p>
-                  </div>
-                  {i < 2 && (
-                    <div className="flex-shrink-0 flex items-start pt-7 text-slate-300">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                        <path d="M1 8h12M9 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Mobile: vertical list */}
-          <div className="lg:hidden divide-y divide-slate-200">
-            {([
-              { num: '01', title: t.useCase1Title, desc: t.useCase1Desc },
-              { num: '02', title: t.useCase2Title, desc: t.useCase2Desc },
-              { num: '03', title: t.useCase3Title, desc: t.useCase3Desc },
-              { num: '04', title: t.useCase4Title, desc: t.useCase4Desc },
-              { num: '05', title: t.useCase5Title, desc: t.useCase5Desc },
-              { num: '06', title: t.useCase6Title, desc: t.useCase6Desc },
-            ] as { num: string; title: string; desc: string }[]).map((item) => (
-              <div key={item.num} className="flex gap-5 items-start py-5">
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-600 mt-0.5 flex-shrink-0 w-6">{item.num}</p>
-                <div>
-                  <p className="text-sm font-semibold text-slate-900 leading-snug">{item.title}</p>
-                  <p className="mt-1.5 text-xs leading-5 text-slate-500">{item.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Centered CTA */}
-          <div className="mt-14 flex justify-center reveal">
-            <Link
-              href="/projects"
-              className="inline-flex items-center gap-2 rounded-md border border-slate-300 px-7 py-3.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:border-slate-400"
-            >
-              {t.useCasesCta}
-            </Link>
           </div>
 
         </div>
@@ -626,8 +412,7 @@ export default function Home() {
               <div className="p-3 flex flex-col">
                 <div className="flex-1 rounded-2xl border border-slate-600 bg-slate-800 px-4 flex flex-col items-center justify-center text-center">
                   <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">02</p>
-                  <p className="text-sm font-semibold text-white leading-snug">{t.data2Title}</p>
-                  <p className="mt-2 text-xs leading-5 text-slate-400">{t.data2Desc}</p>
+                  <p className="text-base font-semibold text-white leading-snug">{t.data2Title}</p>
                 </div>
               </div>
               <div />
@@ -636,16 +421,14 @@ export default function Home() {
               <div className="p-3 flex flex-col">
                 <div className="flex-1 rounded-2xl border border-slate-600 bg-slate-800 px-4 flex flex-col items-center justify-center text-center">
                   <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">01</p>
-                  <p className="text-sm font-semibold text-white leading-snug">{t.data1Title}</p>
-                  <p className="mt-2 text-xs leading-5 text-slate-400">{t.data1Desc}</p>
+                  <p className="text-base font-semibold text-white leading-snug">{t.data1Title}</p>
                 </div>
               </div>
               <div />
               <div className="p-3 flex flex-col">
                 <div className="flex-1 rounded-2xl border border-slate-600 bg-slate-800 px-4 flex flex-col items-center justify-center text-center">
                   <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">04</p>
-                  <p className="text-sm font-semibold text-white leading-snug">{t.data4Title}</p>
-                  <p className="mt-2 text-xs leading-5 text-slate-400">{t.data4Desc}</p>
+                  <p className="text-base font-semibold text-white leading-snug">{t.data4Title}</p>
                 </div>
               </div>
 
@@ -654,8 +437,7 @@ export default function Home() {
               <div className="p-3 flex flex-col">
                 <div className="flex-1 rounded-2xl border border-slate-600 bg-slate-800 px-4 flex flex-col items-center justify-center text-center">
                   <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-2">03</p>
-                  <p className="text-sm font-semibold text-white leading-snug">{t.data3Title}</p>
-                  <p className="mt-2 text-xs leading-5 text-slate-400">{t.data3Desc}</p>
+                  <p className="text-base font-semibold text-white leading-snug">{t.data3Title}</p>
                 </div>
               </div>
               <div />
@@ -665,16 +447,15 @@ export default function Home() {
           {/* Mobile: 2×2 grid */}
           <div className="reveal lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-5">
             {([
-              { num: '01', title: t.data1Title, desc: t.data1Desc },
-              { num: '02', title: t.data2Title, desc: t.data2Desc },
-              { num: '03', title: t.data3Title, desc: t.data3Desc },
-              { num: '04', title: t.data4Title, desc: t.data4Desc },
-            ] as { num: string; title: string; desc: string }[]).map((card) => (
+              { num: '01', title: t.data1Title },
+              { num: '02', title: t.data2Title },
+              { num: '03', title: t.data3Title },
+              { num: '04', title: t.data4Title },
+            ] as { num: string; title: string }[]).map((card) => (
               <div key={card.num} className="rounded-2xl border border-slate-700 bg-slate-800 p-7 flex flex-col">
                 <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-400 mb-3">{card.num}</p>
                 <div className="mb-3 h-px w-6 bg-indigo-500" />
-                <p className="text-sm font-semibold text-white leading-snug">{card.title}</p>
-                <p className="mt-2 text-xs leading-5 text-slate-400">{card.desc}</p>
+                <p className="text-base font-semibold text-white leading-snug">{card.title}</p>
               </div>
             ))}
           </div>
@@ -708,7 +489,7 @@ export default function Home() {
                 {t.ctaBtn}
               </Link>
               <a
-                href="https://calendly.com/arnausastre"
+                href="https://calendly.com/arnau-sastre-sc-analytics"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-md border border-indigo-300 bg-indigo-50 px-7 py-3.5 text-sm font-medium text-indigo-700 transition hover:bg-indigo-100"
