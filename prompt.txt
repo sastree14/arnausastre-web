@@ -1,137 +1,156 @@
-Necesito mejorar el workflow de LinkedIn Pack para que pueda funcionar en modo automático consultando Google Sheets, además del modo manual actual.
+Necesito dejar cerrado el sistema automático del LinkedIn Pack.
 
-Contexto actual:
-Ya existe un workflow llamado:
-
-.github/workflows/generate-linkedin-pack.yml
-
-Actualmente se ejecuta con workflow_dispatch y exige introducir manualmente:
-
-* article_slug
-* article_path
-* publish_week_start
-* language
-* dry_run
-
-También existe el sistema:
-
-* scripts/linkedin_pack/generate_pack.py
-* prompts/linkedin_pack_prompt.md
-* content/linkedin/
+Problema actual:
+El workflow intenta detectar artículos publicados usando la pestaña Articles Index o el campo Published, pero esto puede fallar porque después de hacer merge/publicar un artículo puede que Google Sheets no actualice correctamente Published = TRUE.
 
 Objetivo:
-Añadir un modo automático que consulte el Google Sheet editorial, detecte qué artículos ya publicados no tienen LinkedIn Pack generado todavía, seleccione el artículo pendiente más antiguo y genere el pack para ese artículo.
+El sistema debe detectar automáticamente qué artículos reales publicados en el repositorio todavía no tienen LinkedIn Pack, sin depender exclusivamente de Published en Google Sheets.
 
-No eliminar el modo manual actual. Mantener ambos modos.
+Arquitectura deseada:
+1. La fuente principal para detectar artículos publicados debe ser el repositorio:
+   - content/articles/*.mdx
+   - Si el archivo existe en main, se considera candidato publicado.
+2. Google Sheets Content Pipeline debe usarse solo como metadata complementaria:
+   - Title
+   - Industry
+   - Theme
+   - Role/Audience
+   - Publication Date
+   - Preview URL
+   - Summary
+   - Key metrics
+3. El sistema debe comparar los slugs de content/articles/*.mdx contra los JSON ya existentes en:
+   - content/linkedin/*.json
+4. Si un artículo existe en content/articles/ y no aparece como source_article_slug en ningún JSON de content/linkedin/, entonces está pendiente de LinkedIn Pack.
+5. Si hay varios pendientes:
+   - Usar Publication Date de Content Pipeline si existe.
+   - Si no existe, usar la fecha del frontmatter del MDX si existe.
+   - Si no existe, ordenar por fecha de modificación/commit si es fácil.
+   - Si nada funciona, ordenar por slug.
+   - Elegir siempre el más antiguo.
 
-Funcionamiento deseado:
+Cambios concretos:
+1. Modificar scripts/linkedin_pack/generate_pack.py y/o el módulo automático correspondiente para que mode=auto no dependa de Articles Index.
+2. Leer directamente content/articles/*.mdx.
+3. Extraer slug desde el nombre del archivo.
+4. Extraer frontmatter del MDX si existe:
+   - title
+   - date
+   - industry
+   - role
+   - theme
+   - summary
+   - key_metrics
+5. Leer Content Pipeline en Google Sheets solo para enriquecer metadata, no como filtro principal.
+6. Si Google Sheets falla, el workflow NO debe fallar si puede continuar leyendo content/articles/*.mdx. Debe emitir warning y continuar.
+7. El workflow solo debe fallar si:
+   - No existe content/articles/
+   - No hay ningún artículo MDX válido
+   - Gemini falla
+   - El JSON generado no valida
 
-1. El workflow debe aceptar un input nuevo:
+Reglas de detección:
+- Published en Google Sheets ya no debe ser obligatorio.
+- Si Published existe y está en No/FALSE, no debe excluir automáticamente el artículo si el MDX ya existe en main.
+- Si hay una columna Status/GitHub Status y dice Draft, puede usarse como warning, pero no como bloqueo si el archivo MDX existe.
+- Articles Index debe quedar como fallback opcional, no como dependencia obligatoria.
 
-mode
+Formato del LinkedIn Pack:
+Mantener JSON estructurado en content/linkedin/.
+Cada JSON debe incluir:
+- campaign_id
+- source_article_slug
+- source_article_url
+- title
+- industry
+- theme
+- target_audience
+- language
+- status
+- approved
+- publish_mode
+- created_at
+- posts[]
 
-con valores:
+Cada post debe incluir:
+- day
+- publish_date
+- post_type
+- title
+- text
+- image_required
+- image_prompt
+- image_path
+- hashtags
+- published
+- published_at
+- linkedin_post_url
 
-* manual
-* auto
+Estilo de las publicaciones:
+Quiero que el contenido sea útil para perfiles de dirección, CEOs, founders, operations managers y decision-makers.
 
-Valor por defecto:
-auto
+No quiero posts técnicos para data scientists. Quiero posts que expliquen problemas de negocio con rigor, pero de forma fácil de interpretar.
 
-2. Si mode = manual:
-   Mantener el comportamiento actual. Usar article_slug / article_path.
+Cada publicación debe:
+- Tener un hook claro.
+- Explicar el problema en lenguaje empresarial.
+- Incluir KPIs o números aproximados cuando tenga sentido.
+- Usar ejemplos simplificados pero creíbles.
+- Hablar de impacto: coste, margen, capacidad, inventario, tiempo, riesgo, eficiencia o ingresos.
+- Explicar la decisión que hay detrás del problema.
+- Evitar humo de IA.
+- Evitar promesas exageradas.
+- No sonar como marketing vacío.
+- No usar emojis.
+- Usar 3-5 hashtags máximo.
 
-3. Si mode = auto:
-   El script debe consultar Google Sheets, leer la pestaña Articles Index y detectar artículos publicados que todavía no tengan LinkedIn Pack.
+Estructura semanal:
+Lunes:
+Contexto de la industria. Explicar qué tipo de empresas operan en esa industria, qué decisiones toman y por qué los datos importan.
 
-Criterios:
+Martes:
+Problema principal. Explicar el fallo típico de gestión, proceso, datos o decisión.
 
-* Considerar solo artículos con Published = TRUE, true, yes, sí o equivalente.
-* Leer al menos estas columnas si existen:
+Miércoles:
+Caso práctico numérico. Crear un ejemplo simplificado con números aproximados y KPIs claros. Debe entenderlo un CEO sin background técnico.
 
-  * Title
-  * Slug
-  * Published
-  * Date
-  * Industry
-  * Role
-  * Theme
-  * Summary
-  * Key metrics
+Jueves:
+Razonamiento consultor senior. Explicar hipótesis, diagnóstico y pasos generales para abordar el problema.
 
-4. Para saber si un artículo ya tiene LinkedIn Pack:
+Viernes:
+Resumen semanal + enlace al artículo completo. Extraer 3 aprendizajes principales y cerrar con una invitación suave a leer el artículo.
 
-* Revisar los JSON existentes en content/linkedin/
-* Leer el campo source_article_slug de cada JSON
-* También aceptar fallback por nombre de archivo si hiciera falta
-* Si el slug del artículo ya aparece en algún JSON, considerarlo ya cubierto
+Prompt:
+Actualizar prompts/linkedin_pack_prompt.md para reflejar este enfoque más ejecutivo:
+- CEO-friendly
+- KPI-driven
+- decision-oriented
+- operationally grounded
+- technically rigorous but simple to understand
 
-5. Si hay varios artículos publicados sin LinkedIn Pack:
+Workflow:
+Actualizar .github/workflows/generate-linkedin-pack.yml para que mode=auto funcione sin inputs obligatorios.
+Inputs:
+- mode: auto/manual
+- article_slug: opcional
+- article_path: opcional
+- publish_week_start: opcional
+- language: default en
+- dry_run: true/false
 
-* Ordenarlos por Date ascendente
-* Elegir el más antiguo
-* Si Date está vacío o no parsea, ponerlo al final
-* Si hay empate, ordenar por Slug
+Si mode=auto:
+- No pedir article_slug.
+- Detectar automáticamente el próximo artículo pendiente.
+- Calcular publish_week_start como el próximo lunes si está vacío.
+- Si no hay pendientes, terminar correctamente sin crear commit ni PR.
 
-6. Si no hay ningún artículo pendiente:
+Si mode=manual:
+- Mantener funcionamiento actual.
 
-* El workflow debe terminar correctamente, sin fallar
-* Imprimir un mensaje claro:
-  “No pending published articles without LinkedIn Pack.”
-* No crear commit
-* No abrir PR
-
-7. Si encuentra un artículo pendiente:
-
-* Usar su Slug como article_slug
-* Usar publish_week_start:
-
-  * si el usuario lo pasa manualmente, usar ese valor
-  * si está vacío, calcular el próximo lunes desde la fecha actual del workflow
-* Generar el LinkedIn Pack igual que ahora
-* Guardarlo en content/linkedin/
-* Crear commit en branch linkedin
-* Abrir PR como ahora
-
-Google Sheets:
-Reutilizar la misma lógica, dependencias, credenciales y variables de entorno que ya usa el content pipeline actual para leer Google Sheets. No duplicar innecesariamente código si ya existe una utilidad reutilizable.
-Si no existe una utilidad clara, crear una función pequeña y aislada dentro de scripts/linkedin_pack/ para leer Articles Index.
-
-Variables/secrets:
-No hardcodear nada.
-Usar los mismos secrets existentes que usa el pipeline editorial para acceder a Google Sheets.
-Usar GEMINI_API_KEY igual que ahora.
-
-Validaciones:
-
-* Si mode = auto y no se puede leer Google Sheets, fallar con error claro.
-* Si falta la columna Slug en Articles Index, fallar con error claro.
-* Si falta Published, fallar con error claro.
-* Si falta Date, no fallar; solo ordenar esos artículos al final.
-* Si el artículo seleccionado no existe en content/articles/{slug}.mdx, fallar con error claro indicando el slug.
-
-Cambios en GitHub Actions:
-Actualizar .github/workflows/generate-linkedin-pack.yml para incluir:
-
-mode:
-description: "Generation mode"
-required: true
-default: "auto"
-type: choice
-options:
-- auto
-- manual
-
-article_slug debe dejar de ser obligatorio si mode = auto.
-article_path también debe ser opcional.
-publish_week_start debe poder quedar vacío en auto para que el sistema calcule el próximo lunes.
-language puede mantener default "en".
-dry_run se mantiene.
-
-Resultado esperado:
-Poder ejecutar el workflow sin introducir article_slug.
-El workflow mira Articles Index, encuentra el artículo publicado más antiguo sin LinkedIn Pack y genera automáticamente el JSON.
-
+Importante:
 No publicar en LinkedIn todavía.
-No tocar publish_linkedin.py salvo que sea necesario para compatibilidad.
-No romper el modo manual.
+No tocar publish_linkedin.py salvo para mantener compatibilidad.
+No romper el workflow editorial existente.
+No depender de Articles Index.
+No depender de Published = TRUE en Google Sheets.
+El sistema debe estar preparado para que en el futuro, cuando tengamos API de empresa, solo activemos LINKEDIN_MODE=api y los secrets correspondientes.
