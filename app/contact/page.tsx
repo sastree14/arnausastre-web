@@ -16,15 +16,26 @@ export default function ContactPage() {
 
   const [form, setForm] = useState({ name: '', company: '', email: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const subject = encodeURIComponent(`[SC-Analytics] ${form.name}${form.company ? ` — ${form.company}` : ''}`)
-    const body = encodeURIComponent(
-      `Name: ${form.name}\n${form.company ? `Company: ${form.company}\n` : ''}Email: ${form.email}\n\n${form.message}`
-    )
-    window.location.href = `mailto:contact@arnausastre.com?subject=${subject}&body=${body}`
-    setSubmitted(true)
+    setSending(true)
+    setError(false)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      if (!res.ok) throw new Error('Request failed')
+      setSubmitted(true)
+    } catch {
+      setError(true)
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -130,11 +141,16 @@ export default function ContactPage() {
                     />
                   </div>
 
+                  {error && (
+                    <p className="text-sm text-red-600">{t.formError}</p>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full rounded-md bg-slate-900 px-6 py-3.5 text-sm font-medium text-white transition hover:bg-slate-700"
+                    disabled={sending}
+                    className="w-full rounded-md bg-slate-900 px-6 py-3.5 text-sm font-medium text-white transition hover:bg-slate-700 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    {t.formSubmit}
+                    {sending ? t.formSubmitting : t.formSubmit}
                   </button>
 
                   <div className="relative flex items-center">
