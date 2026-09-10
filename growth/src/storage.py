@@ -17,6 +17,10 @@ class StateStoreError(RuntimeError):
     pass
 
 
+def _key_parts(key: str) -> list[str]:
+    return [part.strip() for part in key.split(",") if part.strip()]
+
+
 class LocalJsonStore:
     def __init__(self, base_dir: Path | None = None):
         self.base_dir = base_dir or DATA_DIR
@@ -44,10 +48,10 @@ class LocalJsonStore:
 
     def upsert(self, table: str, row: dict[str, Any], key: str) -> dict[str, Any]:
         rows = self.list(table)
-        value = row.get(key)
+        keys = _key_parts(key)
         replaced = False
         for i, current in enumerate(rows):
-            if current.get(key) == value:
+            if all(current.get(k) == row.get(k) for k in keys):
                 rows[i] = row
                 replaced = True
                 break
@@ -136,7 +140,10 @@ class SupabaseRestStore:
 
 
 def get_store():
-    provider = load_config()["providers"]["state"]["provider"]
+    configured = load_config()["providers"]["state"]["provider"]
+    provider = os.environ.get("STATE_PROVIDER", configured).strip().lower()
     if provider == "supabase":
         return SupabaseRestStore()
-    return LocalJsonStore()
+    if provider == "local":
+        return LocalJsonStore()
+    raise StateStoreError(f"Unsupported state provider: {provider}")
