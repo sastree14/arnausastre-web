@@ -129,8 +129,12 @@ REAL CASE ({case_slug}):
         payload={
             "channel": channel,
             "content_id": content_id,
+            "title": item.title,
+            "body": item.body,
+            "visual_type": visual_type,
             "visual_path": visual_ref,
             "evidence_ids": evidence_ids,
+            "source_case": case_slug,
             "execution_mode": "official_api_when_configured",
         },
     )
