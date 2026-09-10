@@ -11,6 +11,7 @@ from .content import create_content_from_case
 from .models import to_dict
 from .orchestrator import run_day
 from .prospecting import research_companies
+from .publishing import publish_all_approved, publish_content
 from .storage import get_store
 from .strategy import build_weekly_plan
 
@@ -23,8 +24,9 @@ def main() -> None:
     sub.add_parser("brief")
     sub.add_parser("run-day")
     sub.add_parser("approvals")
+    sub.add_parser("publish-approved")
 
-    p_plan = sub.add_parser("plan-week")
+    sub.add_parser("plan-week")
     p_content = sub.add_parser("content")
     p_content.add_argument("--case", required=True)
     p_content.add_argument("--channel", default="arnau_linkedin")
@@ -36,6 +38,9 @@ def main() -> None:
     p_approve = sub.add_parser("decide")
     p_approve.add_argument("approval_id")
     p_approve.add_argument("decision", choices=["approved", "rejected"])
+
+    p_publish = sub.add_parser("publish")
+    p_publish.add_argument("content_id")
 
     args = parser.parse_args()
 
@@ -53,8 +58,9 @@ def main() -> None:
         plan = build_weekly_plan()
         store = get_store()
         payload = to_dict(plan)
-        store.upsert("weekly_plans", payload, key="week_start")
+        store.upsert("weekly_plans", payload, key="tenant_id,week_start")
         for task in plan.tasks:
+            task["tenant_id"] = plan.tenant_id
             store.upsert("tasks", task, key="task_id")
         print(json.dumps(payload, indent=2, ensure_ascii=False))
     elif args.command == "content":
@@ -63,6 +69,10 @@ def main() -> None:
         print(json.dumps(research_companies(args.mode, args.limit), indent=2, ensure_ascii=False))
     elif args.command == "decide":
         print(json.dumps(decide(args.approval_id, args.decision), indent=2, ensure_ascii=False))
+    elif args.command == "publish":
+        print(json.dumps(publish_content(args.content_id), indent=2, ensure_ascii=False))
+    elif args.command == "publish-approved":
+        print(json.dumps(publish_all_approved(), indent=2, ensure_ascii=False))
 
 
 if __name__ == "__main__":
