@@ -61,7 +61,7 @@ function MetricCase({ spec, logoDataUri }) {
       return h('g', { key: `${m.label}-${i}` },
         h('rect', { x: 80, y: y - 70, width: 1040, height: 132, rx: 24, fill: i === 0 ? BRAND.panelAlt : BRAND.panel, stroke: BRAND.line, strokeWidth: 1.5 }),
         h('text', { x: 120, y: y + 8, fill: BRAND.text, fontFamily: BRAND.font, fontSize: 58, fontWeight: 700 }, String(m.value || '')),
-        h(TextBlock, { text: m.label, x: 430, y: y - 5, fontSize: 28, maxChars: 39, maxLines: 2, fill: BRAND.muted, weight: 450 })))
+        h(TextBlock, { text: m.label, x: 430, y: y - 5, fontSize: 28, maxChars: 39, maxLines: 2, fill: BRAND.muted, weight: 450 }))
     }),
     h('text', { x: 80, y: 990, fill: BRAND.muted, fontFamily: BRAND.font, fontSize: 20 }, spec.note || 'Resultados anonimizados de un caso publicado.'))
 }
@@ -77,7 +77,7 @@ function ProcessFlow({ spec, logoDataUri }) {
         h('circle', { cx: 180, cy: y - 4, r: 19, fill: i === steps.length - 1 ? BRAND.accent : BRAND.soft }),
         h('text', { x: 180, y: y + 4, fill: i === steps.length - 1 ? BRAND.background : BRAND.muted, textAnchor: 'middle', fontFamily: BRAND.font, fontSize: 18, fontWeight: 700 }, String(i + 1)),
         h('text', { x: 225, y: y + 6, fill: BRAND.text, fontFamily: BRAND.font, fontSize: 30, fontWeight: i === steps.length - 1 ? 650 : 500 }, String(step).slice(0, 62)),
-        i < steps.length - 1 && h('path', { d: `M600 ${y + 40} V${y + 72}`, stroke: BRAND.line, strokeWidth: 3 })))
+        i < steps.length - 1 && h('path', { d: `M600 ${y + 40} V${y + 72}`, stroke: BRAND.line, strokeWidth: 3 }))
     }))
 }
 
