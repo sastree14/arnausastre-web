@@ -9,7 +9,7 @@ from .config import load_config
 from .llm import get_llm
 from .models import ApprovalItem, ContentItem, Evidence, new_id, to_dict
 from .storage import get_store
-from .visuals import choose_visual_type, render_branded_card, render_business_diagram
+from .visuals import choose_visual_type, render_branded_card, render_business_diagram, render_metric_visual
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 PROJECTS_DIR = REPO_ROOT / "content" / "projects"
@@ -25,6 +25,22 @@ def load_real_case(slug: str) -> str:
     return text
 
 
+def extract_case_metrics(case_text: str) -> list[dict[str, str]]:
+    """Extract metric label/value pairs verbatim from the published project file."""
+    match = re.search(r"(?ms)^Metrics:\s*\n(?P<body>.*?)(?:\n\s*\n[A-Za-z][A-Za-z &]+:\s*\n)", case_text)
+    if not match:
+        return []
+    metrics: list[dict[str, str]] = []
+    for line in match.group("body").splitlines():
+        line = line.strip()
+        if not line.startswith("*") or ":" not in line:
+            continue
+        label, value = line[1:].split(":", 1)
+        if label.strip() and value.strip():
+            metrics.append({"label": label.strip(), "value": value.strip()})
+    return metrics
+
+
 def _safe_slug(text: str) -> str:
     slug = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
     return slug[:80] or new_id("content")
@@ -34,6 +50,7 @@ def create_content_from_case(case_slug: str, channel: str = "arnau_linkedin") ->
     cfg = load_config()
     tenant_id = cfg["company"]["tenant_id"]
     case_text = load_real_case(case_slug)
+    available_metrics = extract_case_metrics(case_text)
     brain = load_brain([
         "company/identity.md",
         "company/positioning.md",
@@ -58,9 +75,13 @@ Return JSON with exactly these useful fields:
 - evidence_claims: array of strings copied or conservatively paraphrased from the case
 - visual_concept: short string
 - visual_steps: array of 2-5 short labels when a process/decision diagram is useful, otherwise []
-- has_real_metrics: boolean
+- metric_labels: array containing 0-3 labels selected EXACTLY from AVAILABLE_METRICS when those metrics materially strengthen this post
+- has_real_metrics: boolean; true only when metric_labels is non-empty
 Do not include hashtags inside body. Avoid a hard sales CTA.
 If you use a case metric, preserve its meaning exactly and never imply causation beyond the case text.
+
+AVAILABLE_METRICS (verbatim from published case):
+{available_metrics}
 
 BRAIN:
 {brain}
@@ -72,10 +93,15 @@ REAL CASE ({case_slug}):
     content_id = new_id("content")
     slug = _safe_slug(str(raw.get("title", content_id)))
     concept = str(raw.get("visual_concept", ""))
-    visual_type = choose_visual_type("linkedin_post", bool(raw.get("has_real_metrics")), concept)
+    selected_labels = {str(x) for x in (raw.get("metric_labels") or [])}
+    selected_metrics = [m for m in available_metrics if m["label"] in selected_labels][:3]
+    has_metrics = bool(selected_metrics)
+    visual_type = choose_visual_type("linkedin_post", has_metrics, concept)
     steps = [str(s) for s in (raw.get("visual_steps") or []) if str(s).strip()]
 
-    if visual_type == "business_diagram" and steps:
+    if visual_type == "real_metric_visual":
+        visual = render_metric_visual(str(raw.get("title", "SC-Analytics insight"))[:70], selected_metrics, slug=slug)
+    elif visual_type == "business_diagram" and steps:
         visual = render_business_diagram(str(raw.get("title", "SC-Analytics insight"))[:60], steps, slug=slug)
     else:
         visual = render_branded_card(
@@ -133,6 +159,7 @@ REAL CASE ({case_slug}):
             "body": item.body,
             "visual_type": visual_type,
             "visual_path": visual_ref,
+            "visual_metrics": selected_metrics,
             "evidence_ids": evidence_ids,
             "source_case": case_slug,
             "execution_mode": "official_api_when_configured",
