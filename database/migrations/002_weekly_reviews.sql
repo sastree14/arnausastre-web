@@ -7,3 +7,7 @@ create table if not exists weekly_reviews (
   created_at timestamptz not null default now(),
   unique (tenant_id, week_start)
 );
+
+alter table weekly_reviews enable row level security;
+revoke all on table weekly_reviews from anon, authenticated;
+grant select, insert, update, delete on table weekly_reviews to service_role;
