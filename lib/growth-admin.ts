@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { cookies } from 'next/headers'
+import { insertGrowthRow, queryGrowthTable, updateGrowthRow } from '@/lib/supabase-growth'
 
 const COOKIE_NAME = 'sc_growth_admin'
 
@@ -80,56 +81,7 @@ export function growthAdminCookieName(): string {
   return COOKIE_NAME
 }
 
-function supabaseHeaders(): Record<string, string> {
-  const key = env('SUPABASE_SERVICE_ROLE_KEY')
-  if (!key) throw new Error('SUPABASE_SERVICE_ROLE_KEY is not configured')
-  return {
-    apikey: key,
-    Authorization: `Bearer ${key}`,
-    'Content-Type': 'application/json',
-  }
-}
-
-function supabaseUrl(): string {
-  const url = env('SUPABASE_URL').replace(/\/$/, '')
-  if (!url) throw new Error('SUPABASE_URL is not configured')
-  return url
-}
-
-export async function queryGrowthTable<T>(table: string, params: Record<string, string> = {}): Promise<T[]> {
-  const url = new URL(`${supabaseUrl()}/rest/v1/${table}`)
-  url.searchParams.set('select', '*')
-  Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value))
-  const response = await fetch(url, { headers: supabaseHeaders(), cache: 'no-store' })
-  if (!response.ok) throw new Error(`Supabase ${table} query failed: ${response.status}`)
-  return response.json() as Promise<T[]>
-}
-
-export async function updateGrowthRow<T>(table: string, key: string, value: string, changes: Record<string, unknown>): Promise<T | null> {
-  const url = new URL(`${supabaseUrl()}/rest/v1/${table}`)
-  url.searchParams.set(key, `eq.${value}`)
-  const response = await fetch(url, {
-    method: 'PATCH',
-    headers: { ...supabaseHeaders(), Prefer: 'return=representation' },
-    body: JSON.stringify(changes),
-    cache: 'no-store',
-  })
-  if (!response.ok) throw new Error(`Supabase ${table} update failed: ${response.status}`)
-  const rows = await response.json() as T[]
-  return rows[0] || null
-}
-
-export async function insertGrowthRow<T>(table: string, row: Record<string, unknown>): Promise<T | null> {
-  const response = await fetch(`${supabaseUrl()}/rest/v1/${table}`, {
-    method: 'POST',
-    headers: { ...supabaseHeaders(), Prefer: 'return=representation' },
-    body: JSON.stringify(row),
-    cache: 'no-store',
-  })
-  if (!response.ok) throw new Error(`Supabase ${table} insert failed: ${response.status}`)
-  const rows = await response.json() as T[]
-  return rows[0] || null
-}
+export { queryGrowthTable, updateGrowthRow, insertGrowthRow }
 
 export function getPendingApprovals() {
   return queryGrowthTable<GrowthApproval>('approvals', { status: 'eq.pending', order: 'created_at.desc' })
