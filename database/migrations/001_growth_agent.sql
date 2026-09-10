@@ -144,3 +144,26 @@ on conflict (tenant_id) do nothing;
 insert into storage.buckets (id, name, public)
 values ('growth-assets', 'growth-assets', false)
 on conflict (id) do nothing;
+
+-- Growth data is intentionally server-only. Enable RLS explicitly even though
+-- the backend secret key maps to service_role and bypasses RLS.
+alter table growth_tenants enable row level security;
+alter table weekly_plans enable row level security;
+alter table tasks enable row level security;
+alter table companies enable row level security;
+alter table people enable row level security;
+alter table content_items enable row level security;
+alter table evidence enable row level security;
+alter table approvals enable row level security;
+alter table interactions enable row level security;
+alter table metrics enable row level security;
+
+-- Do not expose Growth Agent tables to browser roles. The application accesses
+-- them only from trusted server-side code using an sb_secret_* key.
+revoke all on table growth_tenants, weekly_plans, tasks, companies, people,
+  content_items, evidence, approvals, interactions, metrics
+from anon, authenticated;
+
+grant select, insert, update, delete on table growth_tenants, weekly_plans, tasks,
+  companies, people, content_items, evidence, approvals, interactions, metrics
+to service_role;
