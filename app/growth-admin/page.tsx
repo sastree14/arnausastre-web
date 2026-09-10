@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import {
+  GrowthApprovalPayload,
   getPendingApprovals,
   getReadyManualActions,
   getRecentContent,
@@ -12,31 +13,37 @@ function Badge({ children }: { children: React.ReactNode }) {
   return <span className="rounded-full border border-slate-700 px-2 py-1 text-xs text-slate-300">{children}</span>
 }
 
-function ActionLinks({ payload }: { payload: any }) {
+function ActionLinks({ payload }: { payload: GrowthApprovalPayload }) {
   return (
     <div className="mt-4 flex flex-wrap gap-3 text-sm">
       {payload.person?.linkedin_url && <a className="underline text-slate-300" href={payload.person.linkedin_url} target="_blank" rel="noreferrer">Open LinkedIn profile</a>}
-      {!payload.person?.linkedin_url && payload.linkedin_search_url && <a className="underline text-slate-300" href={payload.linkedin_search_url} target="_blank" rel="noreferrer">Search person on LinkedIn</a>}
-      {payload.website && <a className="underline text-slate-300" href={payload.website} target="_blank" rel="noreferrer">Company website</a>}
+      {!payload.person?.linkedin_url && typeof payload.linkedin_search_url === 'string' && payload.linkedin_search_url && <a className="underline text-slate-300" href={payload.linkedin_search_url} target="_blank" rel="noreferrer">Search person on LinkedIn</a>}
+      {typeof payload.website === 'string' && payload.website && <a className="underline text-slate-300" href={payload.website} target="_blank" rel="noreferrer">Company website</a>}
     </div>
   )
 }
 
-function PublishPreview({ payload }: { payload: any }) {
-  if (!payload?.body) return null
-  const visualUrl = payload.visual_path?.startsWith('supabase://')
-    ? `/api/growth-admin/asset?ref=${encodeURIComponent(payload.visual_path)}`
+function PublishPreview({ payload }: { payload: GrowthApprovalPayload }) {
+  const body = typeof payload.body === 'string' ? payload.body : ''
+  if (!body) return null
+  const visualPath = typeof payload.visual_path === 'string' ? payload.visual_path : ''
+  const visualUrl = visualPath.startsWith('supabase://')
+    ? `/api/growth-admin/asset?ref=${encodeURIComponent(visualPath)}`
     : null
+  const title = typeof payload.title === 'string' ? payload.title : 'Generated post visual'
+  const visualType = typeof payload.visual_type === 'string' ? payload.visual_type : 'visual'
+  const sourceCase = typeof payload.source_case === 'string' ? payload.source_case : 'n/a'
   return (
     <div className="mt-5 grid gap-5 md:grid-cols-[1fr_280px]">
-      <div className="whitespace-pre-wrap rounded-lg border border-slate-800 bg-slate-950 p-5 text-sm leading-6 text-slate-300">{payload.body}</div>
+      <div className="whitespace-pre-wrap rounded-lg border border-slate-800 bg-slate-950 p-5 text-sm leading-6 text-slate-300">{body}</div>
       <div>
         {visualUrl ? (
-          <img src={visualUrl} alt={payload.title || 'Generated post visual'} className="aspect-square w-full rounded-lg border border-slate-800 object-cover" />
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={visualUrl} alt={title} className="aspect-square w-full rounded-lg border border-slate-800 object-cover" />
         ) : (
           <div className="aspect-square rounded-lg border border-dashed border-slate-700 flex items-center justify-center p-5 text-center text-xs text-slate-500">Visual preview is available after Supabase asset storage is configured.</div>
         )}
-        <p className="mt-2 text-xs text-slate-500">{payload.visual_type || 'visual'} · source: {payload.source_case || 'n/a'}</p>
+        <p className="mt-2 text-xs text-slate-500">{visualType} · source: {sourceCase}</p>
       </div>
     </div>
   )
@@ -90,7 +97,7 @@ export default async function GrowthAdminPage() {
               <Badge>{readyActions.length} ready</Badge>
             </div>
             <div className="space-y-4">
-              {readyActions.map((approval: any) => {
+              {readyActions.map((approval) => {
                 const payload = approval.payload || {}
                 return (
                   <article key={approval.approval_id} className="rounded-xl border border-emerald-900/60 bg-slate-900 p-6">
@@ -99,7 +106,7 @@ export default async function GrowthAdminPage() {
                         <div className="flex flex-wrap gap-2 mb-3"><Badge>{approval.action_type}</Badge><Badge>approved</Badge></div>
                         <h3 className="text-lg font-medium">{approval.summary}</h3>
                         {payload.person?.name && <p className="mt-2 text-sm text-slate-400">{payload.person.name} · {payload.person.role}</p>}
-                        {payload.message && <div className="mt-4 whitespace-pre-wrap rounded-lg border border-slate-800 bg-slate-950 p-4 text-sm leading-6 text-slate-300">{payload.message}</div>}
+                        {typeof payload.message === 'string' && payload.message && <div className="mt-4 whitespace-pre-wrap rounded-lg border border-slate-800 bg-slate-950 p-4 text-sm leading-6 text-slate-300">{payload.message}</div>}
                         <ActionLinks payload={payload} />
                       </div>
                       <form action="/api/growth-admin/mark-executed" method="post" className="self-start">
@@ -124,7 +131,7 @@ export default async function GrowthAdminPage() {
           </div>
           <div className="space-y-4">
             {approvals.length === 0 && <div className="rounded-xl border border-slate-800 p-6 text-slate-400">Nothing requires your approval.</div>}
-            {approvals.map((approval: any) => {
+            {approvals.map((approval) => {
               const payload = approval.payload || {}
               return (
                 <article key={approval.approval_id} className="rounded-xl border border-slate-800 bg-slate-900 p-6">
@@ -134,7 +141,7 @@ export default async function GrowthAdminPage() {
                         <div className="flex flex-wrap gap-2 mb-3"><Badge>{approval.action_type}</Badge><Badge>{approval.approval_id}</Badge></div>
                         <h3 className="text-lg font-medium">{approval.summary}</h3>
                         {payload.person?.name && <p className="mt-2 text-sm text-slate-400">{payload.person.name} · {payload.person.role}</p>}
-                        {payload.message && <div className="mt-4 whitespace-pre-wrap rounded-lg border border-slate-800 bg-slate-950 p-4 text-sm leading-6 text-slate-300">{payload.message}</div>}
+                        {typeof payload.message === 'string' && payload.message && <div className="mt-4 whitespace-pre-wrap rounded-lg border border-slate-800 bg-slate-950 p-4 text-sm leading-6 text-slate-300">{payload.message}</div>}
                         {payload.execution_mode === 'manual_linkedin_action' && <p className="mt-3 text-xs text-amber-300/80">The agent prepares and ranks this action; LinkedIn connection/follow/message execution stays manual.</p>}
                         {approval.action_type === 'publish_post' && <p className="mt-3 text-xs text-sky-300/80">After approval, the scheduled publisher can send this exact post through the official LinkedIn API when configured.</p>}
                         <ActionLinks payload={payload} />
@@ -164,7 +171,7 @@ export default async function GrowthAdminPage() {
           <div>
             <h2 className="mb-4 text-xl font-semibold">Recent content</h2>
             <div className="space-y-3">
-              {content.slice(0, 8).map((item: any) => (
+              {content.slice(0, 8).map((item) => (
                 <div key={item.content_id} className="rounded-lg border border-slate-800 p-4">
                   <div className="flex items-center justify-between gap-3"><p className="font-medium">{item.title}</p><Badge>{item.status}</Badge></div>
                   <p className="mt-2 text-xs text-slate-500">{item.channel} · {item.visual_type}</p>
@@ -176,7 +183,7 @@ export default async function GrowthAdminPage() {
           <div>
             <h2 className="mb-4 text-xl font-semibold">Top company candidates</h2>
             <div className="space-y-3">
-              {companies.slice(0, 10).map((company: any) => (
+              {companies.slice(0, 10).map((company) => (
                 <div key={company.company_id} className="rounded-lg border border-slate-800 p-4">
                   <div className="flex items-center justify-between gap-3"><a className="font-medium hover:underline" href={company.website} target="_blank" rel="noreferrer">{company.name}</a><Badge>{Number(company.score).toFixed(1)}/10</Badge></div>
                   <p className="mt-2 text-sm text-slate-400">{company.score_reason}</p>
