@@ -11,6 +11,17 @@ class AssetStoreError(RuntimeError):
     pass
 
 
+def _supabase_key() -> str:
+    return (os.environ.get("SUPABASE_SECRET_KEY", "") or os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")).strip()
+
+
+def _headers(key: str) -> dict[str, str]:
+    headers = {"apikey": key}
+    if key.startswith("eyJ"):
+        headers["Authorization"] = f"Bearer {key}"
+    return headers
+
+
 class LocalAssetStore:
     def put(self, path: Path, key: str) -> str:
         return str(path)
@@ -27,14 +38,11 @@ class LocalAssetStore:
 class SupabaseAssetStore:
     def __init__(self):
         self.url = os.environ.get("SUPABASE_URL", "").rstrip("/")
-        self.key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
+        self.key = _supabase_key()
         self.bucket = os.environ.get("SUPABASE_ASSET_BUCKET", "growth-assets")
         if not self.url or not self.key:
-            raise AssetStoreError("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required")
-        self.headers = {
-            "apikey": self.key,
-            "Authorization": f"Bearer {self.key}",
-        }
+            raise AssetStoreError("SUPABASE_URL and SUPABASE_SECRET_KEY are required")
+        self.headers = _headers(self.key)
 
     def put(self, path: Path, key: str) -> str:
         if not path.exists():
