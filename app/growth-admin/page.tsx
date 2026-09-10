@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import {
   getPendingApprovals,
+  getReadyManualActions,
   getRecentContent,
   getRecentPlans,
   getTopCompanies,
@@ -11,11 +12,22 @@ function Badge({ children }: { children: React.ReactNode }) {
   return <span className="rounded-full border border-slate-700 px-2 py-1 text-xs text-slate-300">{children}</span>
 }
 
+function ActionLinks({ payload }: { payload: any }) {
+  return (
+    <div className="mt-4 flex flex-wrap gap-3 text-sm">
+      {payload.person?.linkedin_url && <a className="underline text-slate-300" href={payload.person.linkedin_url} target="_blank" rel="noreferrer">Open LinkedIn profile</a>}
+      {!payload.person?.linkedin_url && payload.linkedin_search_url && <a className="underline text-slate-300" href={payload.linkedin_search_url} target="_blank" rel="noreferrer">Search person on LinkedIn</a>}
+      {payload.website && <a className="underline text-slate-300" href={payload.website} target="_blank" rel="noreferrer">Company website</a>}
+    </div>
+  )
+}
+
 export default async function GrowthAdminPage() {
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
 
-  const [approvals, content, companies, plans] = await Promise.all([
+  const [approvals, readyActions, content, companies, plans] = await Promise.all([
     getPendingApprovals(),
+    getReadyManualActions(),
     getRecentContent(),
     getTopCompanies(),
     getRecentPlans(),
@@ -29,7 +41,7 @@ export default async function GrowthAdminPage() {
           <div>
             <p className="text-xs tracking-[0.25em] text-slate-500">SC-ANALYTICS</p>
             <h1 className="mt-2 text-3xl font-semibold">Growth Agent Console</h1>
-            <p className="mt-2 text-sm text-slate-400">Review external actions before anything is published or contacted.</p>
+            <p className="mt-2 text-sm text-slate-400">Approve public actions, then execute only the LinkedIn actions that require you.</p>
           </div>
           <form action="/api/growth-admin/logout" method="post">
             <button className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-300 hover:border-slate-500">Log out</button>
@@ -44,6 +56,40 @@ export default async function GrowthAdminPage() {
               <Badge>{currentPlan.week_start}</Badge>
               {currentPlan.commercial_focus?.channel && <Badge>{currentPlan.commercial_focus.channel}</Badge>}
               {currentPlan.content_focus?.objective && <Badge>{currentPlan.content_focus.objective}</Badge>}
+            </div>
+          </section>
+        )}
+
+        {readyActions.length > 0 && (
+          <section>
+            <div className="mb-4 flex items-end justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-wider text-emerald-400/70">Approved by you</p>
+                <h2 className="mt-1 text-2xl font-semibold">Ready for manual LinkedIn action</h2>
+              </div>
+              <Badge>{readyActions.length} ready</Badge>
+            </div>
+            <div className="space-y-4">
+              {readyActions.map((approval: any) => {
+                const payload = approval.payload || {}
+                return (
+                  <article key={approval.approval_id} className="rounded-xl border border-emerald-900/60 bg-slate-900 p-6">
+                    <div className="flex flex-col gap-5 sm:flex-row sm:justify-between">
+                      <div className="max-w-3xl">
+                        <div className="flex flex-wrap gap-2 mb-3"><Badge>{approval.action_type}</Badge><Badge>approved</Badge></div>
+                        <h3 className="text-lg font-medium">{approval.summary}</h3>
+                        {payload.person?.name && <p className="mt-2 text-sm text-slate-400">{payload.person.name} · {payload.person.role}</p>}
+                        {payload.message && <div className="mt-4 whitespace-pre-wrap rounded-lg border border-slate-800 bg-slate-950 p-4 text-sm leading-6 text-slate-300">{payload.message}</div>}
+                        <ActionLinks payload={payload} />
+                      </div>
+                      <form action="/api/growth-admin/mark-executed" method="post" className="self-start">
+                        <input type="hidden" name="approval_id" value={approval.approval_id} />
+                        <button className="rounded-lg border border-emerald-700 px-5 py-2.5 text-sm text-emerald-200 hover:border-emerald-500">Mark done</button>
+                      </form>
+                    </div>
+                  </article>
+                )
+              })}
             </div>
           </section>
         )}
@@ -64,25 +110,13 @@ export default async function GrowthAdminPage() {
                 <article key={approval.approval_id} className="rounded-xl border border-slate-800 bg-slate-900 p-6">
                   <div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
                     <div className="max-w-3xl">
-                      <div className="flex flex-wrap gap-2 mb-3">
-                        <Badge>{approval.action_type}</Badge>
-                        <Badge>{approval.approval_id}</Badge>
-                      </div>
+                      <div className="flex flex-wrap gap-2 mb-3"><Badge>{approval.action_type}</Badge><Badge>{approval.approval_id}</Badge></div>
                       <h3 className="text-lg font-medium">{approval.summary}</h3>
                       {payload.person?.name && <p className="mt-2 text-sm text-slate-400">{payload.person.name} · {payload.person.role}</p>}
-                      {payload.message && (
-                        <div className="mt-4 whitespace-pre-wrap rounded-lg border border-slate-800 bg-slate-950 p-4 text-sm leading-6 text-slate-300">
-                          {payload.message}
-                        </div>
-                      )}
-                      {payload.execution_mode === 'manual_linkedin_action' && (
-                        <p className="mt-3 text-xs text-amber-300/80">LinkedIn connection/follow/message execution remains manual. Approval records the decision and preserves the prepared action.</p>
-                      )}
-                      <div className="mt-4 flex flex-wrap gap-3 text-sm">
-                        {payload.person?.linkedin_url && <a className="underline text-slate-300" href={payload.person.linkedin_url} target="_blank" rel="noreferrer">Open LinkedIn profile</a>}
-                        {!payload.person?.linkedin_url && payload.linkedin_search_url && <a className="underline text-slate-300" href={payload.linkedin_search_url} target="_blank" rel="noreferrer">Search person on LinkedIn</a>}
-                        {payload.website && <a className="underline text-slate-300" href={payload.website} target="_blank" rel="noreferrer">Company website</a>}
-                      </div>
+                      {payload.message && <div className="mt-4 whitespace-pre-wrap rounded-lg border border-slate-800 bg-slate-950 p-4 text-sm leading-6 text-slate-300">{payload.message}</div>}
+                      {payload.execution_mode === 'manual_linkedin_action' && <p className="mt-3 text-xs text-amber-300/80">The agent prepares and ranks this action; LinkedIn connection/follow/message execution stays manual.</p>}
+                      {approval.action_type === 'publish_post' && <p className="mt-3 text-xs text-sky-300/80">After approval, the publishing workflow can post it through the official LinkedIn API when configured.</p>}
+                      <ActionLinks payload={payload} />
                     </div>
                     <div className="flex gap-2 sm:flex-col">
                       <form action="/api/growth-admin/decide" method="post">
@@ -109,10 +143,7 @@ export default async function GrowthAdminPage() {
             <div className="space-y-3">
               {content.slice(0, 8).map((item: any) => (
                 <div key={item.content_id} className="rounded-lg border border-slate-800 p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="font-medium">{item.title}</p>
-                    <Badge>{item.status}</Badge>
-                  </div>
+                  <div className="flex items-center justify-between gap-3"><p className="font-medium">{item.title}</p><Badge>{item.status}</Badge></div>
                   <p className="mt-2 text-xs text-slate-500">{item.channel} · {item.visual_type}</p>
                 </div>
               ))}
@@ -124,10 +155,7 @@ export default async function GrowthAdminPage() {
             <div className="space-y-3">
               {companies.slice(0, 10).map((company: any) => (
                 <div key={company.company_id} className="rounded-lg border border-slate-800 p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <a className="font-medium hover:underline" href={company.website} target="_blank" rel="noreferrer">{company.name}</a>
-                    <Badge>{Number(company.score).toFixed(1)}/10</Badge>
-                  </div>
+                  <div className="flex items-center justify-between gap-3"><a className="font-medium hover:underline" href={company.website} target="_blank" rel="noreferrer">{company.name}</a><Badge>{Number(company.score).toFixed(1)}/10</Badge></div>
                   <p className="mt-2 text-sm text-slate-400">{company.score_reason}</p>
                   <p className="mt-2 text-xs text-slate-500">{company.fit_type} · {company.country || 'country unknown'} · {company.industry || 'industry unknown'}</p>
                 </div>
