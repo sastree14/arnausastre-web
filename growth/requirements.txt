@@ -3,3 +3,5 @@ requests==2.32.3
 jsonschema==4.23.0
 pytest==8.3.5
 Pillow==11.1.0
+cryptography==44.0.2
+CairoSVG==2.7.1
