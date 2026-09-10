@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import date, timedelta
 from pathlib import Path
 
+from .analytics import review_week
 from .brief import build_brief
 from .content import create_content_from_case
 from .llm import get_llm
@@ -75,7 +76,9 @@ def run_day(today: date | None = None) -> dict:
                 channel = str(inputs.get("channel", "arnau_linkedin"))
                 case_slug = _select_case(plan, channel)
                 result = create_content_from_case(case_slug, channel=channel)
-            elif task_type in {"WEEKLY_STRATEGY", "WEEKLY_REVIEW"}:
+            elif task_type == "WEEKLY_REVIEW":
+                result = review_week(today)
+            elif task_type == "WEEKLY_STRATEGY":
                 result = {"brief": build_brief(today)}
             else:
                 result = {"skipped": f"No executor for {task_type}"}
