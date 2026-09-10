@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CompanyCandidate",
+  "type": "object",
+  "required": ["company_id", "tenant_id", "name", "website", "fit_type", "score", "status"],
+  "properties": {
+    "company_id": {"type": "string"},
+    "tenant_id": {"type": "string"},
+    "name": {"type": "string", "minLength": 1},
+    "website": {"type": "string", "minLength": 1},
+    "country": {"type": "string"},
+    "industry": {"type": "string"},
+    "employee_range": {"type": "string"},
+    "linkedin_url": {"type": "string"},
+    "source_url": {"type": "string"},
+    "fit_type": {"type": "string", "enum": ["partner", "lead"]},
+    "score": {"type": "number", "minimum": 0, "maximum": 10},
+    "score_reason": {"type": "string"},
+    "capabilities": {"type": "array", "items": {"type": "string"}},
+    "capability_gaps": {"type": "array", "items": {"type": "string"}},
+    "status": {"type": "string"}
+  },
+  "additionalProperties": true
+}
