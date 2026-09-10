@@ -21,6 +21,23 @@ def _key_parts(key: str) -> list[str]:
     return [part.strip() for part in key.split(",") if part.strip()]
 
 
+def _supabase_server_key() -> str:
+    return (os.environ.get("SUPABASE_SECRET_KEY", "") or os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")).strip()
+
+
+def _supabase_headers(key: str) -> dict[str, str]:
+    headers = {
+        "apikey": key,
+        "Content-Type": "application/json",
+        "Prefer": "return=representation",
+    }
+    # Legacy service_role keys are JWTs. Modern sb_secret_* keys are API keys,
+    # not bearer JWTs.
+    if key.startswith("eyJ"):
+        headers["Authorization"] = f"Bearer {key}"
+    return headers
+
+
 class LocalJsonStore:
     def __init__(self, base_dir: Path | None = None):
         self.base_dir = base_dir or DATA_DIR
@@ -36,9 +53,7 @@ class LocalJsonStore:
         return json.loads(path.read_text(encoding="utf-8"))
 
     def replace_all(self, table: str, rows: list[dict[str, Any]]) -> None:
-        self._path(table).write_text(
-            json.dumps(rows, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-        )
+        self._path(table).write_text(json.dumps(rows, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
     def insert(self, table: str, row: dict[str, Any]) -> dict[str, Any]:
         rows = self.list(table)
@@ -72,26 +87,18 @@ class LocalJsonStore:
         return result
 
     def filter(self, table: str, **filters: Any) -> list[dict[str, Any]]:
-        return [
-            row for row in self.list(table)
-            if all(row.get(key) == value for key, value in filters.items())
-        ]
+        return [row for row in self.list(table) if all(row.get(key) == value for key, value in filters.items())]
 
 
 class SupabaseRestStore:
-    """Minimal PostgREST adapter. Uses service-role credentials only in trusted runtimes."""
+    """Minimal PostgREST adapter. Uses server-only credentials in trusted runtimes."""
 
     def __init__(self):
         self.url = os.environ.get("SUPABASE_URL", "").rstrip("/")
-        self.key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
+        self.key = _supabase_server_key()
         if not self.url or not self.key:
-            raise StateStoreError("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required")
-        self.headers = {
-            "apikey": self.key,
-            "Authorization": f"Bearer {self.key}",
-            "Content-Type": "application/json",
-            "Prefer": "return=representation",
-        }
+            raise StateStoreError("SUPABASE_URL and SUPABASE_SECRET_KEY are required")
+        self.headers = _supabase_headers(self.key)
 
     def _endpoint(self, table: str) -> str:
         return f"{self.url}/rest/v1/{table}"
@@ -110,17 +117,13 @@ class SupabaseRestStore:
     def upsert(self, table: str, row: dict[str, Any], key: str) -> dict[str, Any]:
         headers = dict(self.headers)
         headers["Prefer"] = "resolution=merge-duplicates,return=representation"
-        response = requests.post(
-            self._endpoint(table), headers=headers, params={"on_conflict": key}, json=row, timeout=30
-        )
+        response = requests.post(self._endpoint(table), headers=headers, params={"on_conflict": key}, json=row, timeout=30)
         self._check(response)
         payload = response.json()
         return payload[0] if isinstance(payload, list) and payload else row
 
     def update(self, table: str, key: str, value: Any, changes: dict[str, Any]) -> dict[str, Any] | None:
-        response = requests.patch(
-            self._endpoint(table), headers=self.headers, params={key: f"eq.{value}"}, json=changes, timeout=30
-        )
+        response = requests.patch(self._endpoint(table), headers=self.headers, params={key: f"eq.{value}"}, json=changes, timeout=30)
         self._check(response)
         payload = response.json()
         return payload[0] if isinstance(payload, list) and payload else None
