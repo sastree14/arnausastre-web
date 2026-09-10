@@ -1,0 +1,32 @@
+name: SC-Analytics Growth Agent — Publish Approved
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '15 * * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  publish-approved:
+    if: github.event_name == 'workflow_dispatch' || vars.GROWTH_PUBLISHING_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r growth/requirements.txt
+      - name: Publish already-approved content only
+        run: python -m growth.src.cli publish-approved
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          STATE_PROVIDER: supabase
+          ASSET_PROVIDER: supabase
+          SUPABASE_ASSET_BUCKET: growth-assets
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_API_VERSION: ${{ vars.LINKEDIN_API_VERSION }}
+          LINKEDIN_ORGANIZATION_ID: ${{ secrets.LINKEDIN_ORGANIZATION_ID }}
+          LINKEDIN_PERSON_URN: ${{ secrets.LINKEDIN_PERSON_URN }}
