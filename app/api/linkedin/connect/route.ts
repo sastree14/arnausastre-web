@@ -1,5 +1,5 @@
 import { randomBytes } from 'node:crypto'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 
 const STATE_COOKIE = 'sc_linkedin_oauth_state'
@@ -10,9 +10,9 @@ function requiredEnv(name: string): string {
   return value
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   if (!(await isGrowthAdminAuthenticated())) {
-    return NextResponse.redirect(new URL('/growth-admin/login', requiredEnv('NEXT_PUBLIC_SITE_URL') || 'https://sc-analytics.io'))
+    return NextResponse.redirect(new URL('/growth-admin/login', request.url))
   }
 
   const clientId = requiredEnv('LINKEDIN_CLIENT_ID')
