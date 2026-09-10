@@ -35,17 +35,20 @@ def ensure_weekly_plan(today: date | None = None) -> dict:
     return plan_dict
 
 
-def _select_case(plan: dict) -> str:
+def _select_case(plan: dict, channel: str) -> str:
     slugs = [p.name for p in PROJECTS_DIR.iterdir() if p.is_dir() and (p / "project.txt").exists()]
     if not slugs:
         raise RuntimeError("No published case source directories are available")
     llm = get_llm()
+    recent_content = get_store().list("content_items")[-20:]
     choice = llm.json(
         "Choose the most commercially aligned real case for this week's content. Return JSON only.",
         f"""Available case slugs: {slugs}
 Weekly content focus: {plan.get('content_focus', {})}
 Weekly commercial focus: {plan.get('commercial_focus', {})}
-Return an object with key `case_slug` using exactly one available slug. Prefer alignment with the audience and commercial focus; do not choose randomly.""",
+Target channel: {channel}
+Recently generated source cases: {[c.get('source_case') for c in recent_content]}
+Return an object with key `case_slug` using exactly one available slug. Prefer alignment with the audience and commercial focus; avoid unnecessary repetition; do not choose randomly.""",
     )
     slug = str(choice.get("case_slug", ""))
     return slug if slug in slugs else slugs[0]
@@ -62,14 +65,16 @@ def run_day(today: date | None = None) -> dict:
     results = []
     for task in due:
         task_type = task.get("type")
+        inputs = task.get("inputs") or {}
         try:
             if task_type == "PROSPECT_RESEARCH":
-                result = research_companies("lead", limit=10)
+                result = research_companies(str(inputs.get("mode", "lead")), limit=10)
             elif task_type == "PARTNER_RESEARCH":
-                result = research_companies("partner", limit=10)
+                result = research_companies(str(inputs.get("mode", "partner")), limit=10)
             elif task_type == "CONTENT_CREATE":
-                case_slug = _select_case(plan)
-                result = create_content_from_case(case_slug)
+                channel = str(inputs.get("channel", "arnau_linkedin"))
+                case_slug = _select_case(plan, channel)
+                result = create_content_from_case(case_slug, channel=channel)
             elif task_type in {"WEEKLY_STRATEGY", "WEEKLY_REVIEW"}:
                 result = {"brief": build_brief(today)}
             else:
