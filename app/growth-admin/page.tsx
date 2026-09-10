@@ -22,6 +22,26 @@ function ActionLinks({ payload }: { payload: any }) {
   )
 }
 
+function PublishPreview({ payload }: { payload: any }) {
+  if (!payload?.body) return null
+  const visualUrl = payload.visual_path?.startsWith('supabase://')
+    ? `/api/growth-admin/asset?ref=${encodeURIComponent(payload.visual_path)}`
+    : null
+  return (
+    <div className="mt-5 grid gap-5 md:grid-cols-[1fr_280px]">
+      <div className="whitespace-pre-wrap rounded-lg border border-slate-800 bg-slate-950 p-5 text-sm leading-6 text-slate-300">{payload.body}</div>
+      <div>
+        {visualUrl ? (
+          <img src={visualUrl} alt={payload.title || 'Generated post visual'} className="aspect-square w-full rounded-lg border border-slate-800 object-cover" />
+        ) : (
+          <div className="aspect-square rounded-lg border border-dashed border-slate-700 flex items-center justify-center p-5 text-center text-xs text-slate-500">Visual preview is available after Supabase asset storage is configured.</div>
+        )}
+        <p className="mt-2 text-xs text-slate-500">{payload.visual_type || 'visual'} · source: {payload.source_case || 'n/a'}</p>
+      </div>
+    </div>
+  )
+}
+
 export default async function GrowthAdminPage() {
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
 
@@ -108,28 +128,31 @@ export default async function GrowthAdminPage() {
               const payload = approval.payload || {}
               return (
                 <article key={approval.approval_id} className="rounded-xl border border-slate-800 bg-slate-900 p-6">
-                  <div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
-                    <div className="max-w-3xl">
-                      <div className="flex flex-wrap gap-2 mb-3"><Badge>{approval.action_type}</Badge><Badge>{approval.approval_id}</Badge></div>
-                      <h3 className="text-lg font-medium">{approval.summary}</h3>
-                      {payload.person?.name && <p className="mt-2 text-sm text-slate-400">{payload.person.name} · {payload.person.role}</p>}
-                      {payload.message && <div className="mt-4 whitespace-pre-wrap rounded-lg border border-slate-800 bg-slate-950 p-4 text-sm leading-6 text-slate-300">{payload.message}</div>}
-                      {payload.execution_mode === 'manual_linkedin_action' && <p className="mt-3 text-xs text-amber-300/80">The agent prepares and ranks this action; LinkedIn connection/follow/message execution stays manual.</p>}
-                      {approval.action_type === 'publish_post' && <p className="mt-3 text-xs text-sky-300/80">After approval, the publishing workflow can post it through the official LinkedIn API when configured.</p>}
-                      <ActionLinks payload={payload} />
+                  <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
+                      <div className="max-w-3xl">
+                        <div className="flex flex-wrap gap-2 mb-3"><Badge>{approval.action_type}</Badge><Badge>{approval.approval_id}</Badge></div>
+                        <h3 className="text-lg font-medium">{approval.summary}</h3>
+                        {payload.person?.name && <p className="mt-2 text-sm text-slate-400">{payload.person.name} · {payload.person.role}</p>}
+                        {payload.message && <div className="mt-4 whitespace-pre-wrap rounded-lg border border-slate-800 bg-slate-950 p-4 text-sm leading-6 text-slate-300">{payload.message}</div>}
+                        {payload.execution_mode === 'manual_linkedin_action' && <p className="mt-3 text-xs text-amber-300/80">The agent prepares and ranks this action; LinkedIn connection/follow/message execution stays manual.</p>}
+                        {approval.action_type === 'publish_post' && <p className="mt-3 text-xs text-sky-300/80">After approval, the scheduled publisher can send this exact post through the official LinkedIn API when configured.</p>}
+                        <ActionLinks payload={payload} />
+                      </div>
+                      <div className="flex gap-2 sm:flex-col">
+                        <form action="/api/growth-admin/decide" method="post">
+                          <input type="hidden" name="approval_id" value={approval.approval_id} />
+                          <input type="hidden" name="decision" value="approved" />
+                          <button className="w-full rounded-lg bg-slate-100 px-5 py-2.5 text-sm font-medium text-slate-950 hover:bg-white">Approve</button>
+                        </form>
+                        <form action="/api/growth-admin/decide" method="post">
+                          <input type="hidden" name="approval_id" value={approval.approval_id} />
+                          <input type="hidden" name="decision" value="rejected" />
+                          <button className="w-full rounded-lg border border-slate-700 px-5 py-2.5 text-sm text-slate-300 hover:border-slate-500">Reject</button>
+                        </form>
+                      </div>
                     </div>
-                    <div className="flex gap-2 sm:flex-col">
-                      <form action="/api/growth-admin/decide" method="post">
-                        <input type="hidden" name="approval_id" value={approval.approval_id} />
-                        <input type="hidden" name="decision" value="approved" />
-                        <button className="w-full rounded-lg bg-slate-100 px-5 py-2.5 text-sm font-medium text-slate-950 hover:bg-white">Approve</button>
-                      </form>
-                      <form action="/api/growth-admin/decide" method="post">
-                        <input type="hidden" name="approval_id" value={approval.approval_id} />
-                        <input type="hidden" name="decision" value="rejected" />
-                        <button className="w-full rounded-lg border border-slate-700 px-5 py-2.5 text-sm text-slate-300 hover:border-slate-500">Reject</button>
-                      </form>
-                    </div>
+                    {approval.action_type === 'publish_post' && <PublishPreview payload={payload} />}
                   </div>
                 </article>
               )
