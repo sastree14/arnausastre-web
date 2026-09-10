@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Task",
+  "type": "object",
+  "required": ["task_id", "type", "scheduled_for", "status", "requires_approval", "inputs", "outputs"],
+  "properties": {
+    "task_id": {"type": "string"},
+    "tenant_id": {"type": ["string", "null"]},
+    "type": {"type": "string"},
+    "scheduled_for": {"type": "string", "format": "date"},
+    "status": {"type": "string", "enum": ["pending", "completed", "failed", "cancelled"]},
+    "requires_approval": {"type": "boolean"},
+    "inputs": {"type": "object"},
+    "outputs": {"type": "object"}
+  },
+  "additionalProperties": true
+}
