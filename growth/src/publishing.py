@@ -7,6 +7,7 @@ from pathlib import Path
 import requests
 
 from .assets import get_asset_store
+from .integrations import get_linkedin_access
 from .models import utc_now
 from .storage import get_store
 
@@ -15,35 +16,42 @@ class PublishingError(RuntimeError):
     pass
 
 
-def _headers() -> dict[str, str]:
-    token = os.environ.get("LINKEDIN_ACCESS_TOKEN", "")
-    version = os.environ.get("LINKEDIN_API_VERSION", "")
-    if not token or not version:
-        raise PublishingError("LINKEDIN_ACCESS_TOKEN and LINKEDIN_API_VERSION are required")
+def _linkedin_access() -> tuple[str, str]:
+    """Use OAuth connection from Supabase; retain static env vars only as a legacy fallback."""
+    static_token = os.environ.get("LINKEDIN_ACCESS_TOKEN", "").strip()
+    static_person = os.environ.get("LINKEDIN_PERSON_URN", "").strip()
+    if static_token and static_person:
+        return static_token, static_person
+    try:
+        return get_linkedin_access()
+    except Exception as exc:
+        raise PublishingError(str(exc)) from exc
+
+
+def _headers(token: str | None = None) -> dict[str, str]:
+    access_token = token or _linkedin_access()[0]
+    version = os.environ.get("LINKEDIN_API_VERSION", "202608").strip()
     return {
-        "Authorization": f"Bearer {token}",
+        "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json",
         "Linkedin-Version": version,
         "X-Restli-Protocol-Version": "2.0.0",
     }
 
 
-def _author_for_channel(channel: str) -> str:
+def _author_for_channel(channel: str, person_urn: str) -> str:
     if channel == "sc_analytics_linkedin":
-        organization_id = os.environ.get("LINKEDIN_ORGANIZATION_ID", "")
+        organization_id = os.environ.get("LINKEDIN_ORGANIZATION_ID", "").strip()
         if not organization_id:
-            raise PublishingError("LINKEDIN_ORGANIZATION_ID is required")
+            raise PublishingError("Company-page publishing is not configured; repost from the personal post manually")
         return f"urn:li:organization:{organization_id}"
-    person_urn = os.environ.get("LINKEDIN_PERSON_URN", "")
-    if not person_urn:
-        raise PublishingError("LINKEDIN_PERSON_URN is required for personal publishing")
     return person_urn
 
 
-def upload_image(image_path: Path, owner_urn: str) -> str:
+def upload_image(image_path: Path, owner_urn: str, token: str) -> str:
     if image_path.suffix.lower() not in {".png", ".jpg", ".jpeg"}:
         raise PublishingError("LinkedIn image upload requires PNG or JPEG")
-    headers = _headers()
+    headers = _headers(token)
     init = requests.post(
         "https://api.linkedin.com/rest/images?action=initializeUpload",
         headers=headers,
@@ -57,8 +65,7 @@ def upload_image(image_path: Path, owner_urn: str) -> str:
     image_urn = value.get("image")
     if not upload_url or not image_urn:
         raise PublishingError("LinkedIn initializeUpload returned incomplete payload")
-    upload_headers = {"Authorization": headers["Authorization"]}
-    uploaded = requests.put(upload_url, headers=upload_headers, data=image_path.read_bytes(), timeout=120)
+    uploaded = requests.put(upload_url, headers={"Authorization": f"Bearer {token}"}, data=image_path.read_bytes(), timeout=120)
     if uploaded.status_code >= 400:
         raise PublishingError(f"LinkedIn image upload failed {uploaded.status_code}: {uploaded.text[:500]}")
     return image_urn
@@ -75,7 +82,7 @@ def _materialize_visual(ref: str) -> Path | None:
 
 
 def publish_content(content_id: str) -> dict:
-    """Publish one already-approved content item. Approval itself never performs the external action."""
+    """Publish one already-approved content item through LinkedIn's official API."""
     store = get_store()
     items = store.filter("content_items", content_id=content_id)
     if not items:
@@ -86,23 +93,17 @@ def publish_content(content_id: str) -> dict:
     if item.get("external_post_id"):
         return {"content_id": content_id, "post_id": item["external_post_id"], "status": "already_published"}
 
-    approvals = [
-        a for a in store.filter("approvals", target_id=content_id)
-        if a.get("action_type") == "publish_post" and a.get("status") == "approved"
-    ]
+    approvals = [a for a in store.filter("approvals", target_id=content_id) if a.get("action_type") == "publish_post" and a.get("status") == "approved"]
     if not approvals:
         raise PublishingError("No approved publish action exists for this content item")
 
-    author = _author_for_channel(item.get("channel", ""))
+    token, person_urn = _linkedin_access()
+    author = _author_for_channel(item.get("channel", ""), person_urn)
     payload = {
         "author": author,
         "commentary": item.get("body", ""),
         "visibility": "PUBLIC",
-        "distribution": {
-            "feedDistribution": "MAIN_FEED",
-            "targetEntities": [],
-            "thirdPartyDistributionChannels": [],
-        },
+        "distribution": {"feedDistribution": "MAIN_FEED", "targetEntities": [], "thirdPartyDistributionChannels": []},
         "lifecycleState": "PUBLISHED",
         "isReshareDisabledByAuthor": False,
     }
@@ -110,40 +111,22 @@ def publish_content(content_id: str) -> dict:
     visual_ref = item.get("visual_path") or ""
     visual = _materialize_visual(visual_ref) if visual_ref else None
     if visual:
-        image_urn = upload_image(visual, author)
-        payload["content"] = {
-            "media": {
-                "id": image_urn,
-                "altText": item.get("title", "SC-Analytics visual")[:200],
-            }
-        }
+        image_urn = upload_image(visual, author, token)
+        payload["content"] = {"media": {"id": image_urn, "altText": item.get("title", "SC-Analytics visual")[:200]}}
 
-    response = requests.post("https://api.linkedin.com/rest/posts", headers=_headers(), json=payload, timeout=60)
+    response = requests.post("https://api.linkedin.com/rest/posts", headers=_headers(token), json=payload, timeout=60)
     if response.status_code not in {200, 201}:
         raise PublishingError(f"LinkedIn post failed {response.status_code}: {response.text[:500]}")
     post_id = response.headers.get("x-restli-id", "")
-    store.update(
-        "content_items",
-        "content_id",
-        content_id,
-        {"status": "published", "external_post_id": post_id, "published_at": utc_now()},
-    )
+    store.update("content_items", "content_id", content_id, {"status": "published", "external_post_id": post_id, "published_at": utc_now()})
     for approval in approvals:
-        store.update(
-            "approvals",
-            "approval_id",
-            approval["approval_id"],
-            {"status": "executed", "executed_at": utc_now()},
-        )
+        store.update("approvals", "approval_id", approval["approval_id"], {"status": "executed", "executed_at": utc_now()})
     return {"content_id": content_id, "post_id": post_id, "status": "published"}
 
 
 def publish_all_approved(limit: int = 5) -> list[dict]:
     store = get_store()
-    candidates = [
-        row for row in store.list("content_items")
-        if row.get("status") == "approved" and not row.get("external_post_id")
-    ][:limit]
+    candidates = [row for row in store.list("content_items") if row.get("status") == "approved" and not row.get("external_post_id")][:limit]
     results = []
     for item in candidates:
         try:
