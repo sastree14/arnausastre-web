@@ -1,5 +1,10 @@
 import { NextResponse } from 'next/server'
-import { insertGrowthRow, isGrowthAdminAuthenticated, updateGrowthRow } from '@/lib/growth-admin'
+import {
+  GrowthApproval,
+  insertGrowthRow,
+  isGrowthAdminAuthenticated,
+  updateGrowthRow,
+} from '@/lib/growth-admin'
 
 export async function POST(request: Request) {
   if (!(await isGrowthAdminAuthenticated())) return new NextResponse('Unauthorized', { status: 401 })
@@ -9,7 +14,7 @@ export async function POST(request: Request) {
   if (!approvalId) return new NextResponse('Missing approval_id', { status: 400 })
 
   const executedAt = new Date().toISOString()
-  const approval: any = await updateGrowthRow('approvals', 'approval_id', approvalId, {
+  const approval = await updateGrowthRow<GrowthApproval>('approvals', 'approval_id', approvalId, {
     status: 'executed',
     executed_at: executedAt,
   })
@@ -19,12 +24,12 @@ export async function POST(request: Request) {
   await insertGrowthRow('interactions', {
     interaction_id: `interaction_${crypto.randomUUID().replaceAll('-', '').slice(0, 12)}`,
     tenant_id: approval.tenant_id,
-    company_id: payload.company_id || null,
+    company_id: typeof payload.company_id === 'string' ? payload.company_id : null,
     person_id: payload.person?.person_id || null,
     channel: 'linkedin',
     direction: 'outbound',
     kind: approval.action_type,
-    content: payload.message || '',
+    content: typeof payload.message === 'string' ? payload.message : '',
     occurred_at: executedAt,
   })
 
