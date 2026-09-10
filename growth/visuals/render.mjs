@@ -1,6 +1,5 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import React from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { renderVisual } from './templates.mjs'
 
@@ -19,7 +18,7 @@ if (fs.existsSync(logoPath)) {
   logoDataUri = `data:image/png;base64,${encoded}`
 }
 
-const markup = renderToStaticMarkup(React.createElement(renderVisual, spec, logoDataUri))
+const markup = renderToStaticMarkup(renderVisual(spec, logoDataUri))
 fs.mkdirSync(path.dirname(outputPath), { recursive: true })
 fs.writeFileSync(outputPath, `<?xml version="1.0" encoding="UTF-8"?>\n${markup}\n`, 'utf8')
 console.log(outputPath)
