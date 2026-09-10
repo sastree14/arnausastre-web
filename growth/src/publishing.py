@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import os
+import tempfile
 from pathlib import Path
 
 import requests
 
-from .storage import get_store
+from .assets import get_asset_store
 from .models import utc_now
+from .storage import get_store
 
 
 class PublishingError(RuntimeError):
@@ -62,8 +64,18 @@ def upload_image(image_path: Path, owner_urn: str) -> str:
     return image_urn
 
 
+def _materialize_visual(ref: str) -> Path | None:
+    if not ref:
+        return None
+    suffix = Path(ref).suffix.lower()
+    if suffix not in {".png", ".jpg", ".jpeg"}:
+        suffix = ".png"
+    destination = Path(tempfile.gettempdir()) / f"sc-growth-visual{suffix}"
+    return get_asset_store().get(ref, destination)
+
+
 def publish_content(content_id: str) -> dict:
-    """Publish one already-approved content item. Never called by the approval action itself."""
+    """Publish one already-approved content item. Approval itself never performs the external action."""
     store = get_store()
     items = store.filter("content_items", content_id=content_id)
     if not items:
@@ -71,6 +83,8 @@ def publish_content(content_id: str) -> dict:
     item = items[0]
     if item.get("status") != "approved":
         raise PublishingError("Content item is not approved")
+    if item.get("external_post_id"):
+        return {"content_id": content_id, "post_id": item["external_post_id"], "status": "already_published"}
 
     approvals = [
         a for a in store.filter("approvals", target_id=content_id)
@@ -93,12 +107,16 @@ def publish_content(content_id: str) -> dict:
         "isReshareDisabledByAuthor": False,
     }
 
-    visual_path = item.get("visual_path") or ""
-    if visual_path:
-        path = Path(visual_path)
-        if path.exists() and path.suffix.lower() in {".png", ".jpg", ".jpeg"}:
-            image_urn = upload_image(path, author)
-            payload["content"] = {"media": {"id": image_urn, "altText": item.get("title", "SC-Analytics visual")}}
+    visual_ref = item.get("visual_path") or ""
+    visual = _materialize_visual(visual_ref) if visual_ref else None
+    if visual:
+        image_urn = upload_image(visual, author)
+        payload["content"] = {
+            "media": {
+                "id": image_urn,
+                "altText": item.get("title", "SC-Analytics visual")[:200],
+            }
+        }
 
     response = requests.post("https://api.linkedin.com/rest/posts", headers=_headers(), json=payload, timeout=60)
     if response.status_code not in {200, 201}:
@@ -111,5 +129,25 @@ def publish_content(content_id: str) -> dict:
         {"status": "published", "external_post_id": post_id, "published_at": utc_now()},
     )
     for approval in approvals:
-        store.update("approvals", "approval_id", approval["approval_id"], {"status": "executed", "executed_at": utc_now()})
+        store.update(
+            "approvals",
+            "approval_id",
+            approval["approval_id"],
+            {"status": "executed", "executed_at": utc_now()},
+        )
     return {"content_id": content_id, "post_id": post_id, "status": "published"}
+
+
+def publish_all_approved(limit: int = 5) -> list[dict]:
+    store = get_store()
+    candidates = [
+        row for row in store.list("content_items")
+        if row.get("status") == "approved" and not row.get("external_post_id")
+    ][:limit]
+    results = []
+    for item in candidates:
+        try:
+            results.append(publish_content(item["content_id"]))
+        except Exception as exc:
+            results.append({"content_id": item.get("content_id"), "status": "failed", "error": str(exc)})
+    return results
