@@ -1,0 +1,36 @@
+name: SC-Analytics Growth Agent — Approval
+
+on:
+  workflow_dispatch:
+    inputs:
+      approval_id:
+        description: 'Approval ID from the Growth Brief / dashboard'
+        required: true
+        type: string
+      decision:
+        description: 'Decision'
+        required: true
+        default: approved
+        type: choice
+        options:
+          - approved
+          - rejected
+
+permissions:
+  contents: read
+
+jobs:
+  decide:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r growth/requirements.txt
+      - name: Record decision
+        run: python -m growth.src.cli decide "${{ inputs.approval_id }}" "${{ inputs.decision }}"
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          STATE_PROVIDER: supabase
