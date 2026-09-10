@@ -1,0 +1,55 @@
+name: SC-Analytics Growth Agent — Daily
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '30 8 * * 1-5'
+      timezone: 'Europe/Madrid'
+
+permissions:
+  contents: read
+
+jobs:
+  run-growth-agent:
+    if: github.event_name == 'workflow_dispatch' || vars.GROWTH_AUTOMATION_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r growth/requirements.txt
+      - name: Validate required configuration
+        run: |
+          missing=()
+          [ -z "$OPENAI_API_KEY" ] && missing+=("OPENAI_API_KEY")
+          [ -z "$BRAVE_API_KEY" ] && missing+=("BRAVE_API_KEY")
+          [ -z "$SUPABASE_URL" ] && missing+=("SUPABASE_URL")
+          [ -z "$SUPABASE_SERVICE_ROLE_KEY" ] && missing+=("SUPABASE_SERVICE_ROLE_KEY")
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::Missing Growth Agent secrets: ${missing[*]}"
+            exit 1
+          fi
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      - name: Execute daily plan
+        run: python -m growth.src.cli run-day
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          STATE_PROVIDER: supabase
+          ASSET_PROVIDER: supabase
+          SUPABASE_ASSET_BUCKET: growth-assets
+      - name: Print current brief
+        if: always()
+        run: python -m growth.src.cli brief || true
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          STATE_PROVIDER: supabase
