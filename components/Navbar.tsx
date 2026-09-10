@@ -21,10 +21,6 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
-    setMenuOpen(false)
-  }, [pathname])
-
-  useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = 'hidden'
     } else {
@@ -56,8 +52,7 @@ export default function Navbar() {
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          {/* Logo */}
-          <Link href="/" className="transition hover:opacity-75">
+          <Link href="/" className="transition hover:opacity-75" onClick={() => setMenuOpen(false)}>
             <Image
               src="/brand/logo-horizontal.png"
               alt="Arnau Sastre Analytics"
@@ -68,7 +63,6 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Desktop nav */}
           <nav className="hidden items-center gap-1 lg:flex">
             {navLinks.map(({ href, label }) => (
               <Link
@@ -85,9 +79,7 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Right side: language + contact */}
           <div className="hidden items-center gap-3 lg:flex">
-            {/* Language switcher */}
             <div className="flex items-center gap-1 rounded-md border border-slate-200 bg-slate-50 p-1 text-xs font-medium">
               <button
                 onClick={() => setLang('en')}
@@ -123,7 +115,6 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile: language + burger */}
           <div className="flex items-center gap-3 lg:hidden">
             <div className="flex items-center gap-1 rounded-md border border-slate-200 bg-slate-50 p-1 text-xs font-medium">
               <button
@@ -168,7 +159,6 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile menu */}
       <div
         className={`fixed inset-0 top-[57px] z-40 bg-white transition-all duration-300 lg:hidden ${
           menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
@@ -179,6 +169,7 @@ export default function Navbar() {
             <Link
               key={href}
               href={href}
+              onClick={() => setMenuOpen(false)}
               className={`rounded-lg px-4 py-3 text-base transition-colors ${
                 isActive(href)
                   ? 'bg-slate-100 text-slate-900 font-medium'
@@ -190,6 +181,7 @@ export default function Navbar() {
           ))}
           <Link
             href="/contact"
+            onClick={() => setMenuOpen(false)}
             className="mt-4 rounded-lg bg-slate-900 px-4 py-3 text-center text-base font-medium text-white"
           >
             {t.contact}
