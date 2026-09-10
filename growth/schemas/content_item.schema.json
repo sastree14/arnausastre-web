@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ContentItem",
+  "type": "object",
+  "required": ["content_id", "tenant_id", "channel", "content_type", "title", "body", "status", "visual_type", "evidence_ids"],
+  "properties": {
+    "content_id": {"type": "string"},
+    "tenant_id": {"type": "string"},
+    "channel": {"type": "string"},
+    "content_type": {"type": "string"},
+    "title": {"type": "string"},
+    "body": {"type": "string"},
+    "objective": {"type": "string"},
+    "target_audience": {"type": "array", "items": {"type": "string"}},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}},
+    "status": {"type": "string", "enum": ["draft", "approved", "rejected", "published", "failed"]},
+    "visual_type": {"type": "string"},
+    "visual_path": {"type": "string"},
+    "source_case": {"type": "string"},
+    "scheduled_at": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}
