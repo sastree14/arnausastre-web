@@ -33,4 +33,4 @@ jobs:
           python-version: '3.12'
       - run: pip install -r growth/requirements.txt
       - run: python -m growth.src.cli validate
-      - run: pytest -q growth/tests
+      - run: python -m pytest -q growth/tests
