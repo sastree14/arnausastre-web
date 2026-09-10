@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evidence",
+  "type": "object",
+  "required": ["evidence_id", "type", "claim", "source", "approved_for_public_use", "confidential", "anonymized"],
+  "properties": {
+    "evidence_id": {"type": "string"},
+    "tenant_id": {"type": "string"},
+    "type": {"type": "string", "enum": ["REAL_CASE", "INTERNAL_EXPERIENCE", "PUBLIC_SOURCE", "ILLUSTRATIVE_EXAMPLE", "OPINION"]},
+    "claim": {"type": "string", "minLength": 1},
+    "source": {"type": "string", "minLength": 1},
+    "approved_for_public_use": {"type": "boolean"},
+    "confidential": {"type": "boolean"},
+    "anonymized": {"type": "boolean"},
+    "url": {"type": ["string", "null"]},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true
+}
