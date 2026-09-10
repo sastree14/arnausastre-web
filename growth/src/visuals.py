@@ -18,7 +18,7 @@ SUBTEXT = "#C7D3DF"
 
 def choose_visual_type(content_type: str, has_real_metrics: bool, concept: str) -> str:
     if has_real_metrics:
-        return "real_data_chart"
+        return "real_metric_visual"
     if any(word in concept.lower() for word in ("process", "flow", "decision", "trade-off", "framework", "horizon")):
         return "business_diagram"
     return "branded_card"
@@ -100,5 +100,40 @@ def render_business_diagram(title: str, steps: list[str], *, slug: str) -> Path:
             draw.polygon([(x - 8, y + gap - 10), (x + 8, y + gap - 10), (x, y + gap)], fill=MUTED)
 
     draw.text((100, 1050), "Comprender antes de construir.  ·  sc-analytics.io", fill=MUTED, font=_font(24))
+    image.save(path, format="PNG", optimize=True)
+    return path
+
+
+def render_metric_visual(title: str, metrics: list[dict[str, str]], *, slug: str) -> Path:
+    """Render approved case metrics without inventing chart geometry or baselines."""
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    digest = hashlib.sha256((slug + "metrics").encode("utf-8")).hexdigest()[:8]
+    path = OUTPUT_DIR / f"{slug}-{digest}.png"
+    image = Image.new("RGB", (1200, 1200), BACKGROUND)
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((80, 80, 1120, 1120), outline=BORDER, width=2)
+    draw.text((100, 145), "SC-ANALYTICS", fill=MUTED, font=_font(34))
+
+    y = 255
+    for line in _wrap(title, 34)[:2]:
+        draw.text((100, y), line, fill=TEXT, font=_font(48, bold=True))
+        y += 62
+
+    clean = [m for m in metrics if m.get("label") and m.get("value")][:3]
+    if not clean:
+        return render_branded_card(title, "Evidence from an anonymized project case", slug=slug)
+
+    y = 450
+    for metric in clean:
+        draw.rounded_rectangle((100, y, 1100, y + 155), radius=22, outline=BORDER, width=2)
+        draw.text((135, y + 26), metric["value"][:22], fill=TEXT, font=_font(56, bold=True))
+        label_lines = _wrap(metric["label"], 42)[:2]
+        ly = y + 95
+        for line in label_lines:
+            draw.text((420, ly - 32), line, fill=SUBTEXT, font=_font(28))
+            ly += 34
+        y += 190
+
+    draw.text((100, 1040), "Resultados anonimizados del caso publicado  ·  sc-analytics.io", fill=MUTED, font=_font(23))
     image.save(path, format="PNG", optimize=True)
     return path
