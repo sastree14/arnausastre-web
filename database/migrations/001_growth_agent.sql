@@ -81,6 +81,7 @@ create table if not exists content_items (
   scheduled_at timestamptz,
   external_post_id text,
   external_post_url text,
+  published_at timestamptz,
   created_at timestamptz not null default now()
 );
 
@@ -138,3 +139,8 @@ create table if not exists metrics (
 insert into growth_tenants (tenant_id, name)
 values ('sc-analytics', 'SC-Analytics')
 on conflict (tenant_id) do nothing;
+
+-- Private object storage for generated content visuals.
+insert into storage.buckets (id, name, public)
+values ('growth-assets', 'growth-assets', false)
+on conflict (id) do nothing;
