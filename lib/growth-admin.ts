@@ -58,8 +58,25 @@ export async function updateGrowthRow<T>(table: string, key: string, value: stri
   return rows[0] || null
 }
 
+export async function insertGrowthRow<T>(table: string, row: Record<string, unknown>): Promise<T | null> {
+  const response = await fetch(`${supabaseUrl()}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: { ...supabaseHeaders(), Prefer: 'return=representation' },
+    body: JSON.stringify(row),
+    cache: 'no-store',
+  })
+  if (!response.ok) throw new Error(`Supabase ${table} insert failed: ${response.status}`)
+  const rows = await response.json()
+  return rows[0] || null
+}
+
 export async function getPendingApprovals() {
   return queryGrowthTable<any>('approvals', { status: 'eq.pending', order: 'created_at.desc' })
+}
+
+export async function getReadyManualActions() {
+  const rows = await queryGrowthTable<any>('approvals', { status: 'eq.approved', order: 'decided_at.desc' })
+  return rows.filter((row: any) => row.payload?.execution_mode === 'manual_linkedin_action')
 }
 
 export async function getRecentContent() {
