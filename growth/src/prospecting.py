@@ -64,6 +64,28 @@ SC-ANALYTICS BRAIN:
     ).get("message", "")).strip()
 
 
+def _linkedin_search_url(company: CompanyCandidate, roles: list[str]) -> str:
+    return "https://www.linkedin.com/search/results/people/?keywords=" + quote_plus(
+        f"{company.name} {' OR '.join(roles)}"
+    )
+
+
+def _queue_manual_action(store, *, tenant_id: str, action_type: str, target_id: str, summary: str, payload: dict) -> None:
+    payload = dict(payload)
+    payload["execution_mode"] = "manual_linkedin_action"
+    store.insert(
+        "approvals",
+        to_dict(ApprovalItem(
+            approval_id=new_id("approval"),
+            tenant_id=tenant_id,
+            action_type=action_type,  # type: ignore[arg-type]
+            target_id=target_id,
+            summary=summary,
+            payload=payload,
+        )),
+    )
+
+
 def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
     cfg = load_config()
     tenant_id = cfg["company"]["tenant_id"]
@@ -161,27 +183,40 @@ SEARCH RESULTS:
         threshold = cfg["growth"]["minimum_partner_score" if mode == "partner" else "minimum_lead_score"]
         if candidate.score >= float(threshold):
             primary_person = people[0] if people else None
+            target_id = (primary_person or {}).get("person_id", candidate.company_id)
+            search_url = _linkedin_search_url(candidate, roles)
+            common_payload = {
+                "company_id": candidate.company_id,
+                "company": candidate.name,
+                "website": candidate.website,
+                "source_url": candidate.source_url,
+                "person": primary_person,
+                "recommended_roles": roles,
+                "linkedin_search_url": search_url,
+            }
+
+            if primary_person:
+                _queue_manual_action(
+                    store,
+                    tenant_id=tenant_id,
+                    action_type="connect_person",
+                    target_id=target_id,
+                    summary=f"Connect/follow: {primary_person.get('name')} at {candidate.name}",
+                    payload=common_payload,
+                )
+
             message = _draft_outreach(mode, candidate, primary_person, brain, llm)
-            action_type = "contact_partner" if mode == "partner" else "send_message"
-            approval = ApprovalItem(
-                approval_id=new_id("approval"),
+            outreach_payload = dict(common_payload)
+            outreach_payload["message"] = message
+            _queue_manual_action(
+                store,
                 tenant_id=tenant_id,
-                action_type=action_type,
-                target_id=(primary_person or {}).get("person_id", candidate.company_id),
-                summary=f"Review {mode} candidate: {candidate.name} ({candidate.score:.1f}/10)",
-                payload={
-                    "company_id": candidate.company_id,
-                    "company": candidate.name,
-                    "website": candidate.website,
-                    "source_url": candidate.source_url,
-                    "person": primary_person,
-                    "message": message,
-                    "recommended_roles": roles,
-                    "linkedin_search_url": "https://www.linkedin.com/search/results/people/?keywords=" + quote_plus(f"{candidate.name} {' OR '.join(roles)}"),
-                    "execution_mode": "manual_linkedin_action",
-                },
+                action_type="contact_partner" if mode == "partner" else "send_message",
+                target_id=target_id,
+                summary=f"Message {mode} candidate: {candidate.name} ({candidate.score:.1f}/10)",
+                payload=outreach_payload,
             )
-            store.insert("approvals", to_dict(approval))
+
         enriched = to_dict(candidate)
         enriched["people"] = people
         output.append(enriched)
