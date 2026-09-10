@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server'
-import { isGrowthAdminAuthenticated, updateGrowthRow } from '@/lib/growth-admin'
+import {
+  GrowthApproval,
+  isGrowthAdminAuthenticated,
+  updateGrowthRow,
+} from '@/lib/growth-admin'
 
 export async function POST(request: Request) {
   if (!(await isGrowthAdminAuthenticated())) {
@@ -14,7 +18,7 @@ export async function POST(request: Request) {
   }
 
   const decidedAt = new Date().toISOString()
-  const approval: any = await updateGrowthRow('approvals', 'approval_id', approvalId, {
+  const approval = await updateGrowthRow<GrowthApproval>('approvals', 'approval_id', approvalId, {
     status: decision,
     decided_at: decidedAt,
   })
