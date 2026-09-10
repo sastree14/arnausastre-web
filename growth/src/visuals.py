@@ -1,19 +1,22 @@
 from __future__ import annotations
 
 import hashlib
-import textwrap
+import json
+import subprocess
 from pathlib import Path
 
+import cairosvg
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = ROOT.parent
 OUTPUT_DIR = ROOT / "generated" / "visuals"
+REACT_RENDERER = ROOT / "visuals" / "render.mjs"
 
-BACKGROUND = "#0D1B2A"
-BORDER = "#496C8A"
-MUTED = "#A9BCD0"
-TEXT = "#F5F7FA"
-SUBTEXT = "#C7D3DF"
+BACKGROUND = "#071522"
+BORDER = "#28465E"
+MUTED = "#9FB0BE"
+TEXT = "#F4F6F8"
 
 
 def choose_visual_type(content_type: str, has_real_metrics: bool, concept: str) -> str:
@@ -35,105 +38,99 @@ def _font(size: int, bold: bool = False):
     return ImageFont.load_default()
 
 
-def _wrap(text: str, width: int) -> list[str]:
-    return textwrap.wrap(text.strip(), width=width, break_long_words=False, break_on_hyphens=False) or [""]
+def _react_render(spec: dict, slug: str, suffix: str) -> Path:
+    """Render deterministic React SVG, then rasterize to a LinkedIn-ready PNG."""
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    digest = hashlib.sha256((slug + suffix).encode("utf-8")).hexdigest()[:8]
+    spec_path = OUTPUT_DIR / f"{slug}-{digest}.json"
+    svg_path = OUTPUT_DIR / f"{slug}-{digest}.svg"
+    png_path = OUTPUT_DIR / f"{slug}-{digest}.png"
+    spec_path.write_text(json.dumps(spec, ensure_ascii=False, indent=2), encoding="utf-8")
+    try:
+        subprocess.run(
+            ["node", str(REACT_RENDERER), str(spec_path), str(svg_path)],
+            cwd=REPO_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        cairosvg.svg2png(url=str(svg_path), write_to=str(png_path), output_width=1200, output_height=1200)
+        return png_path
+    finally:
+        spec_path.unlink(missing_ok=True)
+        svg_path.unlink(missing_ok=True)
+
+
+def _fallback_card(title: str, subtitle: str, slug: str) -> Path:
+    """Emergency renderer only; production visuals are React-first."""
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    digest = hashlib.sha256((slug + "fallback").encode("utf-8")).hexdigest()[:8]
+    path = OUTPUT_DIR / f"{slug}-{digest}.png"
+    image = Image.new("RGB", (1200, 1200), BACKGROUND)
+    draw = ImageDraw.Draw(image)
+    draw.rounded_rectangle((72, 72, 1128, 1128), radius=28, outline=BORDER, width=2)
+    draw.text((100, 120), "SC-ANALYTICS", fill=MUTED, font=_font(30))
+    draw.text((100, 380), title[:52], fill=TEXT, font=_font(52, True))
+    draw.text((100, 520), subtitle[:90], fill=MUTED, font=_font(30))
+    draw.text((100, 1040), "Comprender antes de construir.  ·  sc-analytics.io", fill=MUTED, font=_font(22))
+    image.save(path, format="PNG", optimize=True)
+    return path
 
 
 def render_branded_card(title: str, subtitle: str, *, slug: str) -> Path:
-    """Render a 1200x1200 PNG suitable for direct LinkedIn upload."""
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    digest = hashlib.sha256(slug.encode("utf-8")).hexdigest()[:8]
-    path = OUTPUT_DIR / f"{slug}-{digest}.png"
-
-    image = Image.new("RGB", (1200, 1200), BACKGROUND)
-    draw = ImageDraw.Draw(image)
-    draw.rectangle((80, 80, 1120, 1120), outline=BORDER, width=2)
-
-    brand_font = _font(34)
-    title_font = _font(68, bold=True)
-    subtitle_font = _font(34)
-    footer_font = _font(27)
-
-    draw.text((100, 145), "SC-ANALYTICS", fill=MUTED, font=brand_font)
-
-    y = 390
-    for line in _wrap(title, 26)[:4]:
-        draw.text((100, y), line, fill=TEXT, font=title_font)
-        y += 82
-
-    y += 25
-    for line in _wrap(subtitle, 52)[:4]:
-        draw.text((100, y), line, fill=SUBTEXT, font=subtitle_font)
-        y += 48
-
-    draw.line((100, 900, 1100, 900), fill=BORDER, width=2)
-    draw.text((100, 970), "Comprender antes de construir.", fill=TEXT, font=footer_font)
-    draw.text((100, 1020), "sc-analytics.io", fill=MUTED, font=footer_font)
-
-    image.save(path, format="PNG", optimize=True)
-    return path
+    spec = {
+        "template": "insight",
+        "eyebrow": "SC-ANALYTICS",
+        "headline": title,
+        "subheadline": subtitle,
+    }
+    try:
+        return _react_render(spec, slug, "insight")
+    except Exception:
+        return _fallback_card(title, subtitle, slug)
 
 
 def render_business_diagram(title: str, steps: list[str], *, slug: str) -> Path:
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    digest = hashlib.sha256((slug + "diagram").encode("utf-8")).hexdigest()[:8]
-    path = OUTPUT_DIR / f"{slug}-{digest}.png"
-    image = Image.new("RGB", (1200, 1200), BACKGROUND)
-    draw = ImageDraw.Draw(image)
-    draw.rectangle((80, 80, 1120, 1120), outline=BORDER, width=2)
-    draw.text((100, 145), "SC-ANALYTICS", fill=MUTED, font=_font(34))
-    draw.text((100, 250), title[:60], fill=TEXT, font=_font(52, bold=True))
-
-    clean_steps = [s.strip() for s in steps if s and s.strip()][:5]
-    if not clean_steps:
-        clean_steps = ["Understand", "Model", "Decide"]
-    start_y = 420
-    gap = 125
-    box_h = 82
-    for i, step in enumerate(clean_steps):
-        y = start_y + i * gap
-        draw.rounded_rectangle((125, y, 1075, y + box_h), radius=18, outline=BORDER, width=2)
-        draw.text((165, y + 20), step[:75], fill=TEXT, font=_font(30, bold=i == len(clean_steps) - 1))
-        if i < len(clean_steps) - 1:
-            x = 600
-            draw.line((x, y + box_h, x, y + gap), fill=MUTED, width=3)
-            draw.polygon([(x - 8, y + gap - 10), (x + 8, y + gap - 10), (x, y + gap)], fill=MUTED)
-
-    draw.text((100, 1050), "Comprender antes de construir.  ·  sc-analytics.io", fill=MUTED, font=_font(24))
-    image.save(path, format="PNG", optimize=True)
-    return path
+    clean_steps = [s.strip() for s in steps if s and s.strip()][:5] or ["Understand", "Model", "Decide"]
+    spec = {
+        "template": "process_flow",
+        "eyebrow": "DECISION SYSTEM",
+        "headline": title,
+        "steps": clean_steps,
+    }
+    try:
+        return _react_render(spec, slug, "process")
+    except Exception:
+        return _fallback_card(title, " → ".join(clean_steps), slug)
 
 
 def render_metric_visual(title: str, metrics: list[dict[str, str]], *, slug: str) -> Path:
-    """Render approved case metrics without inventing chart geometry or baselines."""
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    digest = hashlib.sha256((slug + "metrics").encode("utf-8")).hexdigest()[:8]
-    path = OUTPUT_DIR / f"{slug}-{digest}.png"
-    image = Image.new("RGB", (1200, 1200), BACKGROUND)
-    draw = ImageDraw.Draw(image)
-    draw.rectangle((80, 80, 1120, 1120), outline=BORDER, width=2)
-    draw.text((100, 145), "SC-ANALYTICS", fill=MUTED, font=_font(34))
-
-    y = 255
-    for line in _wrap(title, 34)[:2]:
-        draw.text((100, y), line, fill=TEXT, font=_font(48, bold=True))
-        y += 62
-
     clean = [m for m in metrics if m.get("label") and m.get("value")][:3]
     if not clean:
         return render_branded_card(title, "Evidence from an anonymized project case", slug=slug)
+    spec = {
+        "template": "metric_case",
+        "eyebrow": "REAL PROJECT EVIDENCE",
+        "headline": title,
+        "metrics": clean,
+        "note": "Resultados anonimizados del caso publicado.",
+    }
+    try:
+        return _react_render(spec, slug, "metrics")
+    except Exception:
+        return _fallback_card(title, " · ".join(f"{m['value']} {m['label']}" for m in clean), slug)
 
-    y = 450
-    for metric in clean:
-        draw.rounded_rectangle((100, y, 1100, y + 155), radius=22, outline=BORDER, width=2)
-        draw.text((135, y + 26), metric["value"][:22], fill=TEXT, font=_font(56, bold=True))
-        label_lines = _wrap(metric["label"], 42)[:2]
-        ly = y + 95
-        for line in label_lines:
-            draw.text((420, ly - 32), line, fill=SUBTEXT, font=_font(28))
-            ly += 34
-        y += 190
 
-    draw.text((100, 1040), "Resultados anonimizados del caso publicado  ·  sc-analytics.io", fill=MUTED, font=_font(23))
-    image.save(path, format="PNG", optimize=True)
-    return path
+def render_comparison_visual(title: str, left: str, right: str, *, slug: str) -> Path:
+    spec = {
+        "template": "comparison",
+        "eyebrow": "SC-ANALYTICS",
+        "title": title,
+        "left": {"label": "COMMON QUESTION", "text": left},
+        "right": {"label": "BETTER QUESTION", "text": right},
+    }
+    try:
+        return _react_render(spec, slug, "comparison")
+    except Exception:
+        return _fallback_card(title, f"{left}  →  {right}", slug)
