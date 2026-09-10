@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { growthSupabaseHeaders, growthSupabaseUrl } from '@/lib/supabase-growth'
 
 export async function GET(request: Request) {
   if (!(await isGrowthAdminAuthenticated())) return new NextResponse('Unauthorized', { status: 401 })
@@ -17,22 +18,23 @@ export async function GET(request: Request) {
     return new NextResponse('Asset bucket not allowed', { status: 403 })
   }
 
-  const supabaseUrl = (process.env.SUPABASE_URL || '').replace(/\/$/, '')
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-  if (!supabaseUrl || !serviceKey) return new NextResponse('Asset store not configured', { status: 500 })
+  try {
+    const upstream = await fetch(`${growthSupabaseUrl()}/storage/v1/object/${bucket}/${key}`, {
+      headers: growthSupabaseHeaders(),
+      cache: 'no-store',
+    })
+    if (!upstream.ok) return new NextResponse('Asset not found', { status: upstream.status })
 
-  const upstream = await fetch(`${supabaseUrl}/storage/v1/object/${bucket}/${key}`, {
-    headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}` },
-    cache: 'no-store',
-  })
-  if (!upstream.ok) return new NextResponse('Asset not found', { status: upstream.status })
-
-  const body = await upstream.arrayBuffer()
-  return new NextResponse(body, {
-    status: 200,
-    headers: {
-      'Content-Type': upstream.headers.get('content-type') || 'application/octet-stream',
-      'Cache-Control': 'private, no-store',
-    },
-  })
+    const body = await upstream.arrayBuffer()
+    return new NextResponse(body, {
+      status: 200,
+      headers: {
+        'Content-Type': upstream.headers.get('content-type') || 'application/octet-stream',
+        'Cache-Control': 'private, no-store',
+      },
+    })
+  } catch (error) {
+    console.error('Growth asset proxy failed', error)
+    return new NextResponse('Asset store not configured', { status: 500 })
+  }
 }
