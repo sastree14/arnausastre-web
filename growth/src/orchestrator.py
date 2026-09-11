@@ -6,6 +6,7 @@ from pathlib import Path
 from .analytics import review_week
 from .brief import build_brief
 from .content import create_content_from_case
+from .editorial import run_editorial_cycle
 from .llm import get_llm
 from .models import to_dict
 from .prospecting import research_companies
@@ -72,6 +73,12 @@ def run_day(today: date | None = None) -> dict:
                 result = research_companies(str(inputs.get("mode", "lead")), limit=10)
             elif task_type == "PARTNER_RESEARCH":
                 result = research_companies(str(inputs.get("mode", "partner")), limit=10)
+            elif task_type == "EDITORIAL_RUN":
+                result = run_editorial_cycle(
+                    max_signals=int(inputs.get("max_signals", 50) or 50),
+                    max_briefs=int(inputs.get("max_briefs", 2) or 2),
+                    theme_hint=str(inputs.get("theme_hint", "")),
+                )
             elif task_type == "CONTENT_CREATE":
                 channel = str(inputs.get("channel", "arnau_linkedin"))
                 case_slug = _select_case(plan, channel)
