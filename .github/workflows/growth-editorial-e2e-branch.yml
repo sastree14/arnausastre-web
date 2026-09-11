@@ -21,10 +21,16 @@ jobs:
           node-version: '20'
           cache: npm
       - run: npm ci
+      - name: Audit production npm dependencies
+        run: npm audit --omit=dev --audit-level=critical
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - run: pip install -r growth/requirements.txt
+      - name: Validate Growth Agent configuration
+        run: python -m growth.src.cli validate
+      - name: Run Growth Agent tests
+        run: python -m pytest -q growth/tests
       - name: Validate production integration secrets
         run: |
           missing=()
@@ -42,8 +48,6 @@ jobs:
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
-      - name: Validate Growth Agent configuration
-        run: python -m growth.src.cli validate
       - name: Run controlled real editorial cycle
         run: python -m growth.src.cli editorial-run --signals 12 --briefs 1 --theme ""
         env:
