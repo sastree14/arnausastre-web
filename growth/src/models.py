@@ -117,6 +117,12 @@ class ContentItem:
     visual_path: str = ""
     source_case: str = ""
     scheduled_at: str | None = None
+    brief_id: str = ""
+    language: str = "es"
+    content_family: str = ""
+    quality_score: float = 0.0
+    critique: dict[str, Any] = field(default_factory=dict)
+    source_url: str = ""
     created_at: str = field(default_factory=utc_now)
 
 
