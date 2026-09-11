@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import os
-from typing import Any
+from typing import Any, Literal
 
 import requests
 
@@ -63,10 +63,16 @@ class OpenAIResponsesClient:
             raise LLMError(f"Model returned invalid JSON: {raw[:500]}") from exc
 
 
-def get_llm(*, high_reasoning: bool = False):
+def get_llm(*, high_reasoning: bool = False, profile: Literal["fast", "balanced", "high"] | None = None):
     config = load_config()["providers"]["llm"]
     provider = config["provider"]
     if provider != "openai":
         raise LLMError(f"Unsupported v2 LLM provider: {provider}")
-    model = config["high_reasoning_model"] if high_reasoning else config["model"]
+    selected = profile or ("high" if high_reasoning else "fast")
+    if selected == "high":
+        model = config["high_reasoning_model"]
+    elif selected == "balanced":
+        model = config.get("balanced_model", config["model"])
+    else:
+        model = config["model"]
     return OpenAIResponsesClient(model)
