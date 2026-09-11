@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WeeklyPlan",
+  "type": "object",
+  "required": ["plan_id", "tenant_id", "week_start", "primary_goal", "commercial_focus", "content_focus", "targets", "tasks"],
+  "properties": {
+    "plan_id": {"type": "string"},
+    "tenant_id": {"type": "string"},
+    "week_start": {"type": "string", "format": "date"},
+    "primary_goal": {"type": "string", "minLength": 1},
+    "commercial_focus": {"type": "object"},
+    "content_focus": {"type": "object"},
+    "targets": {"type": "object"},
+    "tasks": {"type": "array", "items": {"$ref": "task.schema.json"}},
+    "created_at": {"type": "string"}
+  },
+  "additionalProperties": true
+}

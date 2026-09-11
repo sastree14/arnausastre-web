@@ -50,3 +50,9 @@ scripts/content_engine/venv/
 scripts/linkedin_pack/.linkedin_pack_output.json
 scripts/linkedin_pack/__pycache__/
 scripts/linkedin_pack/venv/
+
+# growth agent — mutable local state and generated previews are never committed
+growth/data/
+growth/generated/
+growth/**/__pycache__/
+growth/.pytest_cache/

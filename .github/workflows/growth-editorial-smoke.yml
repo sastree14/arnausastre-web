@@ -1,0 +1,68 @@
+name: SC-Analytics Growth Agent — Editorial Smoke Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_signals:
+        description: 'Maximum fresh signals to inspect'
+        required: false
+        default: '12'
+        type: string
+      max_briefs:
+        description: 'Maximum content briefs to generate'
+        required: false
+        default: '1'
+        type: string
+      theme:
+        description: 'Optional editorial theme hint'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  editorial-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r growth/requirements.txt
+      - name: Validate configuration
+        run: |
+          missing=()
+          [ -z "$OPENAI_API_KEY" ] && missing+=("OPENAI_API_KEY")
+          [ -z "$BRAVE_API_KEY" ] && missing+=("BRAVE_API_KEY")
+          [ -z "$SUPABASE_URL" ] && missing+=("SUPABASE_URL")
+          [ -z "$SUPABASE_SECRET_KEY" ] && missing+=("SUPABASE_SECRET_KEY")
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::Missing Editorial Engine secrets: ${missing[*]}"
+            exit 1
+          fi
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+      - name: Run one controlled editorial cycle
+        run: >-
+          python -m growth.src.cli editorial-run
+          --signals "${{ inputs.max_signals }}"
+          --briefs "${{ inputs.max_briefs }}"
+          --theme "${{ inputs.theme }}"
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          STATE_PROVIDER: supabase
+          ASSET_PROVIDER: supabase
+          SUPABASE_ASSET_BUCKET: growth-assets

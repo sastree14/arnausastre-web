@@ -1,0 +1,63 @@
+company:
+  tenant_id: sc-analytics
+  name: SC-Analytics
+  website: https://sc-analytics.io
+  timezone: Europe/Madrid
+  default_language: es
+  supported_languages:
+    - es
+    - en
+    - ca
+
+growth:
+  approval_required: true
+  max_posts_per_week: 3
+  max_partner_outreach_per_week: 5
+  max_direct_outreach_per_week: 5
+  default_weekly_company_research: 30
+  default_weekly_people_research: 30
+  minimum_partner_score: 7.5
+  minimum_lead_score: 7.5
+
+content:
+  channels:
+    - arnau_linkedin
+    - sc_analytics_linkedin
+    - website
+  editorial:
+    discovery_signals_per_cycle: 50
+    max_briefs_per_cycle: 3
+    strong_topic_score: 8.0
+    research_more_score: 6.5
+    minimum_publish_quality: 7.5
+    generate_language_variants:
+      - es
+      - en
+      - ca
+  visual_priority:
+    - real_data_chart
+    - business_diagram
+    - screenshot
+    - branded_card
+    - generative_editorial
+    - none
+  require_evidence_for_factual_claims: true
+  allow_generated_experience_claims: false
+
+providers:
+  llm:
+    provider: openai
+    model: gpt-5.6-luna
+    balanced_model: gpt-5.6-terra
+    high_reasoning_model: gpt-5.6-sol
+  research:
+    provider: brave
+  state:
+    provider: local
+  publishing:
+    provider: manual
+
+scheduling:
+  daily_hour_local: 8
+  daily_minute_local: 30
+  weekly_strategy_weekday: monday
