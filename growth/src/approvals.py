@@ -27,7 +27,7 @@ def decide(approval_id: str, decision: str) -> dict:
         raise KeyError(f"Approval not found: {approval_id}")
 
     # Approval changes permission state only. External execution is always a separate step.
-    if updated.get("action_type") == "publish_post":
+    if updated.get("action_type") in {"publish_post", "publish_article"}:
         content_id = updated.get("target_id")
         store.update(
             "content_items",
