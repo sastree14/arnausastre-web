@@ -7,6 +7,8 @@ on:
     paths:
       - '.github/workflows/growth-editorial-e2e-branch.yml'
       - 'growth/brain/**'
+      - 'package.json'
+      - 'package-lock.json'
 
 permissions:
   contents: read
