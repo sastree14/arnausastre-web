@@ -1,0 +1,51 @@
+name: Temporary Growth Agent Integration Healthcheck
+
+on:
+  push:
+    branches:
+      - growth-agent-integration-healthcheck
+    paths:
+      - '.github/workflows/integration-healthcheck-branch.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  healthcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r growth/requirements.txt
+      - name: Check Supabase state connection
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          STATE_PROVIDER: supabase
+        run: |
+          python - <<'PY'
+          from growth.src.storage import get_store
+          rows = get_store().list('growth_tenants')
+          assert any(r.get('tenant_id') == 'sc-analytics' for r in rows), rows
+          print('SUPABASE_OK')
+          PY
+      - name: Check Brave Search API
+        env:
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+        run: |
+          python - <<'PY'
+          from growth.src.research import BraveResearchClient
+          hits = BraveResearchClient().search('SC-Analytics data AI consultancy', count=1)
+          print(f'BRAVE_OK hits={len(hits)}')
+          PY
+      - name: Report OpenAI secret availability
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "OPENAI_MISSING"
+          else
+            echo "OPENAI_PRESENT"
+          fi
