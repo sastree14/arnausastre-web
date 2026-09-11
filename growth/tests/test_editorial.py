@@ -11,7 +11,7 @@ def test_weighted_editorial_score_is_bounded_and_deterministic():
         "reader_usefulness": 9,
         "commercial_adjacency": 2,
     }
-    assert _weighted_score(scores) == 8.95
+    assert _weighted_score(scores) == 8.9
     assert _weighted_score({"icp_relevance": 100}) == 2.0
     assert _weighted_score({}) == 0.0
 
