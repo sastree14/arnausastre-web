@@ -7,15 +7,22 @@ BRAIN_DIR = ROOT / "brain"
 
 REQUIRED_BRAIN_FILES = [
     "company/identity.md",
+    "company/mission_vision_values.md",
+    "company/culture.md",
+    "company/organization.md",
     "company/positioning.md",
     "company/services.md",
     "company/principles.md",
     "commercial/icp.md",
     "commercial/channels.md",
     "voice/arnau_voice.md",
+    "voice/arnau_voice_calibration.md",
     "voice/company_voice.md",
     "voice/forbidden_language.md",
     "evidence/evidence_policy.md",
+    "content/content_strategy.md",
+    "content/editorial_playbook.md",
+    "content/language_strategy.md",
 ]
 
 
