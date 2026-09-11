@@ -13,11 +13,17 @@
     "objective": {"type": "string"},
     "target_audience": {"type": "array", "items": {"type": "string"}},
     "evidence_ids": {"type": "array", "items": {"type": "string"}},
-    "status": {"type": "string", "enum": ["draft", "approved", "rejected", "published", "failed"]},
+    "status": {"type": "string", "enum": ["draft", "alternate", "approved", "rejected", "published", "failed"]},
     "visual_type": {"type": "string"},
     "visual_path": {"type": "string"},
     "source_case": {"type": "string"},
-    "scheduled_at": {"type": ["string", "null"]}
+    "scheduled_at": {"type": ["string", "null"]},
+    "brief_id": {"type": "string"},
+    "language": {"type": "string", "enum": ["es", "en", "ca"]},
+    "content_family": {"type": "string"},
+    "quality_score": {"type": "number"},
+    "critique": {"type": "object"},
+    "source_url": {"type": "string"}
   },
   "additionalProperties": true
 }
