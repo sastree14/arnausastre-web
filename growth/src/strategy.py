@@ -19,16 +19,28 @@ def _recent_state() -> dict:
     companies = sorted(store.list("companies"), key=lambda r: float(r.get("score", 0) or 0), reverse=True)[:20]
     metrics = sorted(store.list("metrics"), key=lambda r: r.get("metric_date", ""), reverse=True)[:50]
     approvals = [a for a in store.list("approvals") if a.get("status") == "pending"][:20]
+    briefs = sorted(store.list("editorial_briefs"), key=lambda r: r.get("created_at", ""), reverse=True)[:10]
     return {
         "recent_content": [
             {
                 "title": c.get("title"),
                 "channel": c.get("channel"),
+                "language": c.get("language"),
+                "family": c.get("content_family"),
                 "objective": c.get("objective"),
                 "source_case": c.get("source_case"),
                 "status": c.get("status"),
             }
             for c in content
+        ],
+        "recent_editorial_briefs": [
+            {
+                "title": b.get("canonical_title"),
+                "family": b.get("family"),
+                "decision": b.get("output_decision"),
+                "score": b.get("weighted_score"),
+            }
+            for b in briefs
         ],
         "top_company_candidates": [
             {
@@ -51,12 +63,16 @@ def build_weekly_plan(today: date | None = None) -> WeeklyPlan:
     cfg = load_config()
     brain = load_brain([
         "company/identity.md",
+        "company/mission_vision_values.md",
+        "company/culture.md",
         "company/positioning.md",
         "company/services.md",
         "company/principles.md",
         "commercial/icp.md",
         "commercial/channels.md",
         "content/content_strategy.md",
+        "content/editorial_playbook.md",
+        "content/language_strategy.md",
     ])
     state = _recent_state()
     llm = get_llm(high_reasoning=True)
@@ -75,6 +91,7 @@ Rules:
 - If there are many pending approvals, reduce new output and prioritize review/follow-through.
 - Prefer partnerships when no stronger signal exists, but adapt to live evidence.
 - Keep content_items between 1 and {cfg['growth']['max_posts_per_week']}.
+- Content themes guide discovery; they are not instructions to force a post. The editorial gate may return zero publishable pieces.
 
 CONFIG DEFAULTS:
 {cfg['growth']}
@@ -87,23 +104,20 @@ BRAIN:
 """
     plan_data = llm.json("You are the senior growth strategist for SC-Analytics.", prompt)
 
-    tasks: list[dict] = []
-    schedule = [
-        (0, "WEEKLY_STRATEGY", False, {}),
-        (1, "PROSPECT_RESEARCH", False, {"mode": "lead"}),
-        (2, "CONTENT_CREATE", True, {"channel": "arnau_linkedin"}),
-        (3, "PARTNER_RESEARCH", False, {"mode": "partner"}),
-        (4, "CONTENT_CREATE", True, {"channel": "sc_analytics_linkedin"}),
-        (4, "WEEKLY_REVIEW", False, {}),
-    ]
     requested_content = int(plan_data.get("targets", {}).get("content_items", 2) or 2)
     requested_content = max(1, min(requested_content, int(cfg["growth"]["max_posts_per_week"])))
-    content_seen = 0
+    themes = plan_data.get("content_focus", {}).get("themes", [])
+    theme_hint = ", ".join(str(x) for x in themes[:4]) if isinstance(themes, list) else str(themes or "")
+
+    schedule = [
+        (0, "WEEKLY_STRATEGY", False, {}),
+        (1, "EDITORIAL_RUN", False, {"max_briefs": requested_content, "theme_hint": theme_hint}),
+        (2, "PROSPECT_RESEARCH", False, {"mode": "lead"}),
+        (3, "PARTNER_RESEARCH", False, {"mode": "partner"}),
+        (4, "WEEKLY_REVIEW", False, {}),
+    ]
+    tasks: list[dict] = []
     for offset, task_type, approval, inputs in schedule:
-        if task_type == "CONTENT_CREATE":
-            content_seen += 1
-            if content_seen > requested_content:
-                continue
         task = Task(
             task_id=new_id("task"),
             type=task_type,
