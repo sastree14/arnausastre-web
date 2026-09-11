@@ -4,6 +4,10 @@ company:
   website: https://sc-analytics.io
   timezone: Europe/Madrid
   default_language: es
+  supported_languages:
+    - es
+    - en
+    - ca
 
 growth:
   approval_required: true
@@ -20,6 +24,16 @@ content:
     - arnau_linkedin
     - sc_analytics_linkedin
     - website
+  editorial:
+    discovery_signals_per_cycle: 50
+    max_briefs_per_cycle: 3
+    strong_topic_score: 8.0
+    research_more_score: 6.5
+    minimum_publish_quality: 7.5
+    generate_language_variants:
+      - es
+      - en
+      - ca
   visual_priority:
     - real_data_chart
     - business_diagram
@@ -34,6 +48,7 @@ providers:
   llm:
     provider: openai
     model: gpt-5.6-luna
+    balanced_model: gpt-5.6-terra
     high_reasoning_model: gpt-5.6-sol
   research:
     provider: brave
