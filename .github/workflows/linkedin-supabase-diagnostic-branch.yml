@@ -1,0 +1,73 @@
+name: Temporary Supabase and LinkedIn Diagnostic
+
+on:
+  push:
+    branches:
+      - growth-agent-integration-healthcheck
+    paths:
+      - '.github/workflows/linkedin-supabase-diagnostic-branch.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r growth/requirements.txt
+      - name: Identify Supabase target and validate LinkedIn token live
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          GROWTH_ENCRYPTION_KEY: ${{ secrets.GROWTH_ENCRYPTION_KEY }}
+          STATE_PROVIDER: supabase
+        run: |
+          python - <<'PY'
+          import base64, os
+          from datetime import datetime, timezone
+          from urllib.parse import urlparse
+          import requests
+          from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+          from growth.src.storage import get_store
+
+          host = urlparse(os.environ['SUPABASE_URL']).hostname or ''
+          ref = host.split('.')[0] if host else ''
+          print(f'SUPABASE_PROJECT_REF={ref}')
+          print(f'EXPECTED_PROJECT_REF=iviggrsbwrgrtqvbqepq')
+          if ref != 'iviggrsbwrgrtqvbqepq':
+              print('SUPABASE_TARGET_MISMATCH')
+          else:
+              print('SUPABASE_TARGET_MATCH')
+
+          rows = [r for r in get_store().list('integration_connections') if r.get('provider') == 'linkedin']
+          print(f'LINKEDIN_CONNECTION_ROWS={len(rows)}')
+          assert rows, 'No LinkedIn connection row in the GitHub-configured Supabase project'
+          row = sorted(rows, key=lambda r: str(r.get('updated_at') or ''), reverse=True)[0]
+          value = str(row.get('access_token_ciphertext') or '')
+          parts = value.split('.')
+          assert len(parts) == 4 and parts[0] == 'v1', 'Unexpected encrypted token format'
+
+          def b64url(s: str) -> bytes:
+              return base64.urlsafe_b64decode(s + '=' * (-len(s) % 4))
+
+          key = base64.b64decode(os.environ['GROWTH_ENCRYPTION_KEY'])
+          assert len(key) == 32
+          iv, tag, ciphertext = b64url(parts[1]), b64url(parts[2]), b64url(parts[3])
+          token = AESGCM(key).decrypt(iv, ciphertext + tag, None).decode('utf-8')
+          assert token
+          expiry = row.get('token_expires_at')
+          if expiry:
+              exp = datetime.fromisoformat(str(expiry).replace('Z', '+00:00'))
+              assert exp > datetime.now(timezone.utc), f'LinkedIn token expired at {expiry}'
+
+          response = requests.get('https://api.linkedin.com/v2/userinfo', headers={'Authorization': f'Bearer {token}'}, timeout=30)
+          print(f'LINKEDIN_USERINFO_STATUS={response.status_code}')
+          assert response.status_code == 200, response.text[:300]
+          data = response.json()
+          print(f'LINKEDIN_LIVE_OK sub_present={bool(data.get("sub"))} name_present={bool(data.get("name"))}')
+          PY
