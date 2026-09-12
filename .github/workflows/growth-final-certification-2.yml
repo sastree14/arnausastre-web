@@ -1,0 +1,258 @@
+name: Temporary Growth Agent Final Certification 2
+
+on:
+  push:
+    branches:
+      - growth-agent-final-certification-2
+    paths:
+      - '.github/workflows/growth-final-certification-2.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  certify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+      GROWTH_ENCRYPTION_KEY: ${{ secrets.GROWTH_ENCRYPTION_KEY }}
+      GROWTH_ADMIN_TOKEN: ${{ secrets.GROWTH_ADMIN_TOKEN }}
+      LINKEDIN_CLIENT_ID: ${{ secrets.LINKEDIN_CLIENT_ID }}
+      LINKEDIN_CLIENT_SECRET: ${{ secrets.LINKEDIN_CLIENT_SECRET }}
+      LINKEDIN_REDIRECT_URI: ${{ secrets.LINKEDIN_REDIRECT_URI }}
+      STATE_PROVIDER: supabase
+      ASSET_PROVIDER: supabase
+      SUPABASE_ASSET_BUCKET: growth-assets
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - name: Web install audit lint build
+        run: |
+          npm ci
+          npm audit --omit=dev --audit-level=high
+          npm run lint
+          npm run build
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install and test Growth Agent
+        run: |
+          pip install -r growth/requirements.txt
+          python -m growth.src.cli validate
+          python -m pytest -q growth/tests
+      - name: Verify all required GitHub secrets exist
+        run: |
+          missing=()
+          for name in OPENAI_API_KEY BRAVE_API_KEY SUPABASE_URL SUPABASE_SECRET_KEY GROWTH_ENCRYPTION_KEY GROWTH_ADMIN_TOKEN LINKEDIN_CLIENT_ID LINKEDIN_CLIENT_SECRET LINKEDIN_REDIRECT_URI; do
+            [ -z "${!name}" ] && missing+=("$name")
+          done
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::Missing GitHub secrets: ${missing[*]}"
+            exit 1
+          fi
+          echo "CORE_AND_LINKEDIN_GITHUB_SECRETS_OK"
+      - name: Supabase state health and duplicate baseline
+        run: |
+          python - <<'PY'
+          from collections import Counter
+          from growth.src.storage import get_store
+          store = get_store()
+          tenants = store.list('growth_tenants')
+          assert any(r.get('tenant_id') == 'sc-analytics' for r in tenants)
+          for table in ('editorial_signals','editorial_briefs','content_items','approvals','evidence','integration_connections'):
+              rows = store.list(table)
+              print(f'SUPABASE_OK {table} rows={len(rows)}')
+          logical = [(r.get('brief_id'),r.get('language'),r.get('channel'),r.get('content_type')) for r in store.list('content_items') if r.get('brief_id')]
+          assert not [k for k,c in Counter(logical).items() if c > 1]
+          active = [(r.get('target_id'),r.get('action_type')) for r in store.list('approvals') if r.get('status') in ('pending','approved','executed')]
+          assert not [k for k,c in Counter(active).items() if c > 1]
+          print('SUPABASE_DUPLICATE_BASELINE_OK')
+          PY
+      - name: Brave and OpenAI integration stress
+        run: |
+          python - <<'PY'
+          from growth.src.research import BraveResearchClient
+          from growth.src.llm import get_llm
+          queries = [
+              'AI finance operations business impact',
+              'demand forecasting inventory planning',
+              'operations optimization scheduling business',
+          ]
+          total = 0
+          client = BraveResearchClient()
+          for q in queries:
+              hits = client.search(q, count=3)
+              assert hits, q
+              total += len(hits)
+          assert total >= 6
+          print(f'BRAVE_STRESS_OK hits={total}')
+          for profile in ('fast','balanced','high'):
+              answer = get_llm(profile=profile).text('Production health check.', 'Reply with a short confirmation.')
+              assert answer.strip()
+              print(f'OPENAI_OK profile={profile} chars={len(answer)}')
+          PY
+      - name: React visual and private Storage roundtrip
+        run: |
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          from PIL import Image
+          from growth.src.assets import get_asset_store
+          from growth.src.visuals import render_branded_card, render_business_diagram, render_comparison_visual, render_metric_visual
+          paths = [
+              render_branded_card('Understand before building','Value before technology.',slug='cert2-insight'),
+              render_business_diagram('From problem to decision',['Understand','Measure','Model','Decide'],slug='cert2-process'),
+              render_comparison_visual('Better automation questions','Can AI do this?','Should this be automated this way?',slug='cert2-comparison'),
+              render_metric_visual('Real evidence matters',[{'value':'-38%','label':'Stock-outs'},{'value':'-24%','label':'Inventory carrying cost'}],slug='cert2-metric'),
+          ]
+          store = get_asset_store()
+          for i,p in enumerate(paths):
+              with Image.open(p) as img:
+                  assert img.size == (1200,1200)
+                  assert img.format == 'PNG'
+              before = hashlib.sha256(Path(p).read_bytes()).hexdigest()
+              ref = store.put(p, f'sc-analytics/certification-2/render-{i}.png')
+              out = Path('/tmp') / f'cert2-{i}.png'
+              store.get(ref,out)
+              assert hashlib.sha256(out.read_bytes()).hexdigest() == before
+          print('VISUAL_AND_STORAGE_OK renders=4')
+          PY
+      - name: Verify production Growth Admin and LinkedIn connect route
+        run: |
+          admin_status=$(curl -L -sS -o /tmp/admin.html -w '%{http_code}' --max-time 30 https://sc-analytics.io/growth-admin)
+          test "$admin_status" = "200"
+          test -s /tmp/admin.html
+
+          login_status=$(curl -sS -o /tmp/login.body -D /tmp/login.headers -c /tmp/cookies.txt -w '%{http_code}' --max-time 30 -X POST --data-urlencode "token=$GROWTH_ADMIN_TOKEN" https://sc-analytics.io/api/growth-admin/login)
+          test "$login_status" = "303"
+
+          connect_status=$(curl -sS -o /tmp/connect.body -D /tmp/connect.headers -b /tmp/cookies.txt -w '%{http_code}' --max-time 30 https://sc-analytics.io/api/linkedin/connect)
+          test "$connect_status" = "307" -o "$connect_status" = "302" -o "$connect_status" = "303"
+
+          python - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlparse, parse_qs
+          headers = Path('/tmp/connect.headers').read_text(errors='replace').splitlines()
+          locations = [line.split(':',1)[1].strip() for line in headers if line.lower().startswith('location:')]
+          assert locations, headers
+          u = urlparse(locations[-1])
+          q = parse_qs(u.query)
+          assert u.scheme == 'https' and u.netloc == 'www.linkedin.com'
+          assert u.path == '/oauth/v2/authorization'
+          assert q.get('response_type') == ['code']
+          assert q.get('client_id') and q['client_id'][0]
+          assert q.get('state') and q['state'][0]
+          assert q.get('redirect_uri') == ['https://sc-analytics.io/api/linkedin/callback']
+          scopes = set(q.get('scope',[''])[0].split())
+          assert {'openid','profile','email','w_member_social'} <= scopes, scopes
+          print('VERCEL_LINKEDIN_CONNECT_CONFIG_OK')
+          PY
+      - name: Migrate and revalidate every existing editorial variant
+        run: |
+          python - <<'PY'
+          from collections import Counter
+          from growth.src.editorial_runtime import generate_variants, content_contract_issues
+          from growth.src.storage import get_store
+
+          store = get_store()
+          briefs = store.list('editorial_briefs')
+          assert briefs, 'No editorial briefs available for certification'
+          before_ids = {r['content_id'] for r in store.list('content_items')}
+          for brief in briefs:
+              variants = generate_variants(brief)
+              assert variants, brief.get('brief_id')
+              print(f"BRIEF_REVALIDATED {brief.get('brief_id')} variants={len(variants)}")
+
+          items = store.list('content_items')
+          assert {r['content_id'] for r in items} == before_ids, 'Legacy migration should preserve content IDs'
+          for item in items:
+              issues = content_contract_issues({'title':item.get('title',''),'body':item.get('body','')}, item.get('content_type',''))
+              assert not issues, (item.get('content_id'), issues)
+              critique = item.get('critique') or {}
+              assert critique.get('contract_valid') is True, (item.get('content_id'), critique)
+              if item.get('content_type') == 'linkedin_post':
+                  assert 450 <= len(item.get('body','')) <= 2200
+              elif item.get('content_type') == 'article':
+                  words = len(item.get('body','').split())
+                  assert 650 <= words <= 1700, (item.get('content_id'),words)
+
+          logical = [(r.get('brief_id'),r.get('language'),r.get('channel'),r.get('content_type')) for r in items if r.get('brief_id')]
+          assert not [k for k,c in Counter(logical).items() if c > 1]
+          active_rows = [r for r in store.list('approvals') if r.get('status') in ('pending','approved','executed')]
+          active_keys = [(r.get('target_id'),r.get('action_type')) for r in active_rows]
+          assert not [k for k,c in Counter(active_keys).items() if c > 1]
+          by_id = {r['content_id']:r for r in items}
+          for approval in active_rows:
+              target = by_id.get(approval.get('target_id'))
+              if not target:
+                  continue
+              payload = approval.get('payload') or {}
+              assert payload.get('title') == target.get('title'), approval.get('approval_id')
+              assert payload.get('body') == target.get('body'), approval.get('approval_id')
+          print(f'LEGACY_MIGRATION_CONTRACTS_OK content={len(items)} active_approvals={len(active_rows)}')
+          PY
+      - name: Certify idempotency on known briefs
+        run: |
+          python - <<'PY'
+          from collections import Counter
+          from growth.src.editorial_runtime import generate_variants
+          from growth.src.storage import get_store
+          store = get_store()
+          briefs = store.list('editorial_briefs')
+          assert briefs
+          for brief in briefs:
+              content_before = len(store.list('content_items'))
+              active_before = len([r for r in store.list('approvals') if r.get('status') in ('pending','approved','executed')])
+              first = generate_variants(brief)
+              second = generate_variants(brief)
+              assert all(r.get('resumed') for r in first + second)
+              assert len(store.list('content_items')) == content_before
+              active_after = len([r for r in store.list('approvals') if r.get('status') in ('pending','approved','executed')])
+              assert active_after == active_before
+          logical = [(r.get('brief_id'),r.get('language'),r.get('channel'),r.get('content_type')) for r in store.list('content_items') if r.get('brief_id')]
+          assert not [k for k,c in Counter(logical).items() if c > 1]
+          print('IDEMPOTENCY_OK')
+          PY
+      - name: Conservative real discovery cycle smoke test
+        run: |
+          python - <<'PY'
+          from growth.src.editorial_runtime import run_editorial_cycle
+          result = run_editorial_cycle(max_signals=8,max_briefs=1,theme_hint='forecasting optimization AI operations business decisions')
+          assert result.get('discovered',0) > 0 or result.get('resumed_briefs',0) > 0
+          assert result.get('evaluated',0) > 0 or result.get('resumed_briefs',0) > 0
+          # A healthy conservative run is allowed to create zero briefs when research
+          # does not justify publication. That is a feature, not a certification failure.
+          print('DISCOVERY_CYCLE_OK', result)
+          PY
+      - name: Inspect LinkedIn OAuth connection without publishing
+        run: |
+          python - <<'PY'
+          from growth.src.storage import get_store
+          rows = [r for r in get_store().list('integration_connections') if r.get('provider') == 'linkedin']
+          if not rows:
+              print('LINKEDIN_OAUTH_PENDING_INTERACTIVE_CONSENT')
+          else:
+              row = rows[0]
+              ciphertext = str(row.get('access_token_ciphertext') or '')
+              assert ciphertext.startswith('v1.') and ciphertext != 'disconnected'
+              assert (row.get('metadata') or {}).get('person_urn')
+              scopes = set(row.get('scopes') or [])
+              assert 'w_member_social' in scopes
+              print(f"LINKEDIN_OAUTH_CONNECTION_OK display_name={row.get('display_name','')} expires_at={row.get('expires_at','')}")
+          print('NO_LINKEDIN_PUBLISH_ATTEMPTED')
+          PY
+      - name: Final certification gate
+        run: |
+          echo 'CORE_CERTIFIED=true'
+          echo 'GITHUB_LINKEDIN_SECRETS_CERTIFIED=true'
+          echo 'VERCEL_LINKEDIN_CONNECT_ROUTE_CERTIFIED=true'
+          echo 'UNATTENDED_AUTOMATION_NOT_ENABLED=true'
+          echo 'NO_LINKEDIN_POST_PUBLISHED=true'
