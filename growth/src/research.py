@@ -3,6 +3,7 @@ from __future__ import annotations
 import html
 import os
 import re
+import time
 from dataclasses import dataclass
 from urllib.parse import urlparse
 
@@ -13,12 +14,42 @@ class ResearchError(RuntimeError):
     pass
 
 
+_TRANSIENT_HTTP = {408, 425, 429, 500, 502, 503, 504}
+
+
 @dataclass
 class SearchHit:
     title: str
     url: str
     snippet: str
     query: str
+
+
+def _request_with_retries(method: str, url: str, *, timeout: int | tuple[int, int], **kwargs) -> requests.Response:
+    last_error: Exception | None = None
+    for attempt in range(3):
+        try:
+            response = requests.request(method, url, timeout=timeout, **kwargs)
+        except requests.RequestException as exc:
+            last_error = exc
+            if attempt == 2:
+                raise ResearchError(f"Research request failed after retries: {exc}") from exc
+            time.sleep(2 ** attempt)
+            continue
+
+        if response.status_code < 400:
+            return response
+        if response.status_code not in _TRANSIENT_HTTP or attempt == 2:
+            return response
+
+        retry_after = response.headers.get("Retry-After", "")
+        try:
+            wait = min(10.0, max(1.0, float(retry_after))) if retry_after else float(2 ** attempt)
+        except ValueError:
+            wait = float(2 ** attempt)
+        time.sleep(wait)
+
+    raise ResearchError(f"Research request failed: {last_error}")
 
 
 class BraveResearchClient:
@@ -30,11 +61,12 @@ class BraveResearchClient:
             raise ResearchError("BRAVE_API_KEY is required")
 
     def search(self, query: str, count: int = 10) -> list[SearchHit]:
-        response = requests.get(
+        response = _request_with_retries(
+            "GET",
             self.endpoint,
             headers={"Accept": "application/json", "X-Subscription-Token": self.api_key},
             params={"q": query, "count": count},
-            timeout=30,
+            timeout=(10, 30),
         )
         if response.status_code >= 400:
             raise ResearchError(f"Brave Search error {response.status_code}: {response.text[:400]}")
@@ -71,10 +103,11 @@ def fetch_public_page_text(url: str, max_chars: int = 12000) -> str:
     """Fetch a normal public webpage. Never use this against LinkedIn pages."""
     if "linkedin.com" in domain(url):
         raise ResearchError("Direct LinkedIn fetching/scraping is intentionally disabled")
-    response = requests.get(
+    response = _request_with_retries(
+        "GET",
         url,
         headers={"User-Agent": "SC-Analytics-Growth-Agent/2.0 (+https://sc-analytics.io)"},
-        timeout=20,
+        timeout=(10, 20),
         allow_redirects=True,
     )
     if response.status_code >= 400:
