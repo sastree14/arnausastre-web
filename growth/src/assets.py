@@ -6,6 +6,8 @@ from pathlib import Path
 
 import requests
 
+from .http_retry import request_with_retry
+
 
 class AssetStoreError(RuntimeError):
     pass
@@ -51,12 +53,18 @@ class SupabaseAssetStore:
         headers = dict(self.headers)
         headers["Content-Type"] = mime
         headers["x-upsert"] = "true"
-        response = requests.post(
-            f"{self.url}/storage/v1/object/{self.bucket}/{key}",
-            headers=headers,
-            data=path.read_bytes(),
-            timeout=120,
-        )
+        try:
+            # x-upsert + deterministic object key makes retries idempotent.
+            response = request_with_retry(
+                "POST",
+                f"{self.url}/storage/v1/object/{self.bucket}/{key}",
+                attempts=4,
+                headers=headers,
+                data=path.read_bytes(),
+                timeout=120,
+            )
+        except requests.RequestException as exc:
+            raise AssetStoreError(f"Supabase asset upload failed: {exc}") from exc
         if response.status_code >= 400:
             raise AssetStoreError(f"Supabase asset upload failed {response.status_code}: {response.text[:500]}")
         return f"supabase://{self.bucket}/{key}"
@@ -69,11 +77,16 @@ class SupabaseAssetStore:
         bucket, _, key = rest.partition("/")
         if not bucket or not key:
             raise AssetStoreError(f"Malformed asset ref: {ref}")
-        response = requests.get(
-            f"{self.url}/storage/v1/object/{bucket}/{key}",
-            headers=self.headers,
-            timeout=120,
-        )
+        try:
+            response = request_with_retry(
+                "GET",
+                f"{self.url}/storage/v1/object/{bucket}/{key}",
+                attempts=4,
+                headers=self.headers,
+                timeout=120,
+            )
+        except requests.RequestException as exc:
+            raise AssetStoreError(f"Supabase asset download failed: {exc}") from exc
         if response.status_code >= 400:
             raise AssetStoreError(f"Supabase asset download failed {response.status_code}: {response.text[:500]}")
         destination.parent.mkdir(parents=True, exist_ok=True)
