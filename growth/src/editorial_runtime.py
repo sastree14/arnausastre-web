@@ -211,12 +211,115 @@ def _ensure_approval(item: dict[str, Any], brief: dict[str, Any], *, primary: bo
     return approval.approval_id
 
 
+def _invalidate_active_approvals(target_id: str, reason: str) -> None:
+    store = get_store()
+    for approval in store.filter("approvals", target_id=target_id):
+        if approval.get("status") not in {"pending", "approved"}:
+            continue
+        payload = dict(approval.get("payload") or {})
+        payload["invalidated_reason"] = reason
+        store.update(
+            "approvals",
+            "approval_id",
+            approval["approval_id"],
+            {
+                "status": "rejected",
+                "payload": payload,
+                "decided_at": base._utc_now(),
+            },
+        )
+
+
 def _persist_variant(brief: dict[str, Any], *, language: str, channel: str, content_type: str, primary: bool) -> dict[str, Any]:
+    store = get_store()
     existing = _existing_variant(brief["brief_id"], language, channel, content_type)
     if existing:
-        critique = existing.get("critique") or {}
-        approval_id = _ensure_approval(existing, brief, primary=primary, contract_valid=bool(critique.get("contract_valid", True)))
         result = dict(existing)
+        critique = dict(result.get("critique") or {})
+        legacy_issues = content_contract_issues(result, content_type)
+        contract_valid = not legacy_issues
+
+        if legacy_issues:
+            # Records created before deterministic publishing contracts existed
+            # must not be grandfathered into approval. Rewrite them in place so
+            # idempotency is preserved and stale approval payloads cannot publish.
+            critique["contract_valid"] = False
+            critique["contract_issues"] = legacy_issues
+            critique["rewrite_required"] = True
+            instructions = list(critique.get("rewrite_instructions") or [])
+            instructions.extend(legacy_issues)
+            critique["rewrite_instructions"] = instructions
+
+            draft = _rewrite_variant(
+                brief,
+                {"title": result.get("title", ""), "body": result.get("body", "")},
+                critique,
+                language=language,
+                channel=channel,
+                content_type=content_type,
+            )
+            critique = _critic(
+                brief,
+                draft,
+                language=language,
+                channel=channel,
+                content_type=content_type,
+            )
+            quality = float(critique.get("quality_score", result.get("quality_score", 0)) or 0)
+            issues = content_contract_issues(draft, content_type)
+            contract_valid = not issues
+            critique = dict(critique or {})
+            critique["contract_valid"] = contract_valid
+            critique["contract_issues"] = issues
+            if not contract_valid:
+                quality = min(quality, 7.4)
+
+            visual_type = result.get("visual_type", "none")
+            visual_path = result.get("visual_path", "")
+            if content_type == "linkedin_post":
+                visual_type, visual_path = base._render_visual(
+                    brief,
+                    draft,
+                    f"{brief['brief_id']}-{language}-{channel}",
+                )
+
+            status = "draft" if primary or content_type == "article" else "alternate"
+            if not contract_valid:
+                status = "needs_review"
+
+            updates = {
+                "title": draft["title"],
+                "body": draft["body"],
+                "quality_score": quality,
+                "critique": critique,
+                "status": status,
+                "visual_type": visual_type,
+                "visual_path": visual_path,
+            }
+            updated = store.update("content_items", "content_id", result["content_id"], updates)
+            result = dict(updated or {**result, **updates})
+            _invalidate_active_approvals(result["content_id"], "content_rewritten_for_contract")
+            result["contract_migrated"] = True
+        else:
+            # Backfill deterministic contract metadata on valid legacy rows
+            # without paying for another LLM critique or changing their prose.
+            critique["contract_valid"] = True
+            critique["contract_issues"] = []
+            if result.get("critique") != critique:
+                updated = store.update(
+                    "content_items",
+                    "content_id",
+                    result["content_id"],
+                    {"critique": critique},
+                )
+                result = dict(updated or {**result, "critique": critique})
+
+        approval_id = _ensure_approval(
+            result,
+            brief,
+            primary=primary,
+            contract_valid=contract_valid,
+        )
         if approval_id:
             result["approval_id"] = approval_id
         result["resumed"] = True
@@ -270,7 +373,7 @@ def _persist_variant(brief: dict[str, Any], *, language: str, channel: str, cont
         source_url=(brief.get("research") or {}).get("source_urls", [""])[0] if (brief.get("research") or {}).get("source_urls") else "",
     )
     payload = to_dict(item)
-    get_store().insert("content_items", payload)
+    store.insert("content_items", payload)
     approval_id = _ensure_approval(payload, brief, primary=primary, contract_valid=contract_valid)
     if approval_id:
         payload["approval_id"] = approval_id
