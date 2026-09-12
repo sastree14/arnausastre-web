@@ -1,0 +1,227 @@
+name: Temporary Growth Agent Final Certification
+
+on:
+  push:
+    branches:
+      - growth-agent-final-certification
+    paths:
+      - '.github/workflows/growth-final-certification-branch.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  certify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+      GROWTH_ENCRYPTION_KEY: ${{ secrets.GROWTH_ENCRYPTION_KEY }}
+      STATE_PROVIDER: supabase
+      ASSET_PROVIDER: supabase
+      SUPABASE_ASSET_BUCKET: growth-assets
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - name: Install and audit web dependencies
+        run: |
+          npm ci
+          npm audit --omit=dev --audit-level=high
+      - name: Lint and build production web app
+        run: |
+          npm run lint
+          npm run build
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Growth Agent dependencies
+        run: pip install -r growth/requirements.txt
+      - name: Validate configuration and tests
+        run: |
+          python -m growth.src.cli validate
+          python -m pytest -q growth/tests
+      - name: Validate required integration secrets
+        run: |
+          missing=()
+          for name in OPENAI_API_KEY BRAVE_API_KEY SUPABASE_URL SUPABASE_SECRET_KEY GROWTH_ENCRYPTION_KEY; do
+            [ -z "${!name}" ] && missing+=("$name")
+          done
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::Missing secrets: ${missing[*]}"
+            exit 1
+          fi
+          echo "CORE_SECRETS_OK"
+      - name: Stress Supabase state connection
+        run: |
+          python - <<'PY'
+          from growth.src.storage import get_store
+          store = get_store()
+          tenants = store.list('growth_tenants')
+          assert any(row.get('tenant_id') == 'sc-analytics' for row in tenants), tenants
+          for table in ('editorial_signals','editorial_briefs','content_items','approvals','evidence'):
+              rows = store.list(table)
+              print(f'SUPABASE_TABLE_OK {table} rows={len(rows)}')
+          PY
+      - name: Stress Brave Search
+        run: |
+          python - <<'PY'
+          from growth.src.research import BraveResearchClient
+          client = BraveResearchClient()
+          queries = [
+              'AI finance operations business impact',
+              'demand forecasting inventory planning companies',
+              'operations optimization scheduling business 2026',
+              'data analytics decision systems business',
+              'AI automation workflow governance finance',
+          ]
+          total = 0
+          for query in queries:
+              hits = client.search(query, count=3)
+              assert hits, query
+              total += len(hits)
+              print(f'BRAVE_OK query={query!r} hits={len(hits)}')
+          assert total >= 10, total
+          print(f'BRAVE_STRESS_OK total_hits={total}')
+          PY
+      - name: Check all OpenAI model profiles
+        run: |
+          python - <<'PY'
+          from growth.src.llm import get_llm
+          for profile in ('fast','balanced','high'):
+              answer = get_llm(profile=profile).text(
+                  'You are performing a production health check. Answer concisely.',
+                  'Return a short confirmation that the model endpoint is reachable.'
+              )
+              assert answer.strip(), profile
+              print(f'OPENAI_OK profile={profile} chars={len(answer)}')
+          PY
+      - name: Stress React renderer and private Supabase Storage roundtrip
+        run: |
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          from PIL import Image
+          from growth.src.assets import get_asset_store
+          from growth.src.visuals import (
+              render_branded_card,
+              render_business_diagram,
+              render_comparison_visual,
+              render_metric_visual,
+          )
+
+          renders = [
+              render_branded_card('Understand before building', 'Value before technology.', slug='final-insight'),
+              render_business_diagram('From problem to decision', ['Understand','Measure','Model','Decide'], slug='final-process'),
+              render_comparison_visual('Better automation questions', 'Can AI do this?', 'Should this be automated this way?', slug='final-comparison'),
+              render_metric_visual('Real evidence matters', [
+                  {'value':'-38%','label':'Stock-outs'},
+                  {'value':'-24%','label':'Inventory carrying cost'},
+              ], slug='final-metric'),
+          ]
+          store = get_asset_store()
+          for idx, path in enumerate(renders):
+              with Image.open(path) as image:
+                  assert image.size == (1200, 1200), image.size
+                  assert image.format == 'PNG', image.format
+              original_hash = hashlib.sha256(Path(path).read_bytes()).hexdigest()
+              ref = store.put(path, f'sc-analytics/certification/final-{idx}.png')
+              destination = Path('/tmp') / f'final-{idx}.png'
+              store.get(ref, destination)
+              roundtrip_hash = hashlib.sha256(destination.read_bytes()).hexdigest()
+              assert original_hash == roundtrip_hash
+              print(f'VISUAL_STORAGE_OK idx={idx} ref={ref}')
+          print('VISUAL_STRESS_OK renders=4')
+          PY
+      - name: Check production Growth Admin endpoint
+        run: |
+          status=$(curl -L -sS -o /tmp/growth-admin.html -w '%{http_code}' --max-time 30 https://sc-analytics.io/growth-admin)
+          test "$status" = "200"
+          test -s /tmp/growth-admin.html
+          echo "GROWTH_ADMIN_OK status=$status bytes=$(wc -c </tmp/growth-admin.html)"
+      - name: Run real hardened editorial cycle and certify contracts
+        run: |
+          python - <<'PY'
+          from collections import Counter
+          from growth.src.editorial_runtime import run_editorial_cycle, generate_variants, content_contract_issues
+          from growth.src.storage import get_store
+
+          store = get_store()
+          before_content_ids = {row['content_id'] for row in store.list('content_items')}
+          before_brief_ids = {row['brief_id'] for row in store.list('editorial_briefs')}
+          before_approval_ids = {row['approval_id'] for row in store.list('approvals')}
+
+          result = run_editorial_cycle(
+              max_signals=12,
+              max_briefs=1,
+              theme_hint='forecasting inventory optimization AI operations finance business decisions',
+          )
+          print('EDITORIAL_RESULT', result)
+
+          after_items = store.list('content_items')
+          after_briefs = store.list('editorial_briefs')
+          new_items = [row for row in after_items if row['content_id'] not in before_content_ids]
+          new_briefs = [row for row in after_briefs if row['brief_id'] not in before_brief_ids]
+          assert result.get('briefs_processed', 0) >= 1, result
+          assert new_items, 'Editorial cycle produced no new content variants'
+
+          for item in new_items:
+              issues = content_contract_issues({'title': item.get('title',''), 'body': item.get('body','')}, item.get('content_type',''))
+              assert not issues, (item.get('content_id'), issues)
+              critique = item.get('critique') or {}
+              assert critique.get('contract_valid') is True, (item.get('content_id'), critique)
+              if item.get('content_type') == 'linkedin_post':
+                  assert len(item.get('body','')) <= 2200
+              if item.get('content_type') == 'article':
+                  words = len(item.get('body','').split())
+                  assert 650 <= words <= 1700, (item.get('content_id'), words)
+              print('CONTENT_CONTRACT_OK', item.get('content_id'), item.get('content_type'), item.get('language'), item.get('quality_score'))
+
+          # Real idempotency check: rerunning variant generation for the same brief
+          # must reuse persisted content and approvals rather than duplicate them.
+          target_brief = new_briefs[0] if new_briefs else next(row for row in after_briefs if row['brief_id'] in result.get('brief_ids', []))
+          content_count = len(store.list('content_items'))
+          approval_count = len(store.list('approvals'))
+          first = generate_variants(target_brief)
+          second = generate_variants(target_brief)
+          assert len(store.list('content_items')) == content_count
+          assert len(store.list('approvals')) == approval_count
+          assert all(row.get('resumed') for row in first + second), (first, second)
+
+          logical = [(r.get('brief_id'), r.get('language'), r.get('channel'), r.get('content_type')) for r in store.list('content_items') if r.get('brief_id')]
+          duplicates = [key for key, count in Counter(logical).items() if count > 1]
+          assert not duplicates, duplicates
+
+          approval_keys = [(r.get('target_id'), r.get('action_type')) for r in store.list('approvals') if r.get('status') in ('pending','approved','executed')]
+          duplicate_approvals = [key for key, count in Counter(approval_keys).items() if count > 1]
+          assert not duplicate_approvals, duplicate_approvals
+
+          new_approvals = [row for row in store.list('approvals') if row['approval_id'] not in before_approval_ids]
+          print(f'EDITORIAL_E2E_OK new_briefs={len(new_briefs)} new_variants={len(new_items)} new_approvals={len(new_approvals)}')
+          print('IDEMPOTENCY_OK')
+          PY
+      - name: Inspect LinkedIn OAuth state without publishing
+        run: |
+          python - <<'PY'
+          from growth.src.storage import get_store
+          rows = [r for r in get_store().list('integration_connections') if r.get('provider') == 'linkedin']
+          if not rows:
+              print('LINKEDIN_OAUTH_PENDING - interactive Arnau consent still required; core certification continues')
+          else:
+              row = rows[0]
+              assert row.get('access_token_ciphertext') and row.get('access_token_ciphertext') != 'disconnected'
+              assert (row.get('metadata') or {}).get('person_urn')
+              print(f"LINKEDIN_OAUTH_OK account={row.get('display_name','')} scopes={row.get('scopes',[])}")
+          print('NO_EXTERNAL_PUBLISH_ATTEMPTED')
+          PY
+      - name: Final core certification gate
+        run: |
+          echo 'CORE_CERTIFIED=true'
+          echo 'UNATTENDED_AUTOMATION_NOT_ENABLED=true'
+          echo 'NO_LINKEDIN_POST_PUBLISHED=true'
