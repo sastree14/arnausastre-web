@@ -1,7 +1,7 @@
 import 'server-only'
 import fs from 'fs'
 import path from 'path'
-import matter from 'gray-matter'
+import { parse as parseYaml } from 'yaml'
 
 export interface Article {
   slug: string
@@ -43,6 +43,16 @@ export interface Project {
 const ARTICLES_DIR = path.join(process.cwd(), 'content', 'articles')
 const PROJECTS_DIR = path.join(process.cwd(), 'content', 'projects')
 
+function parseFrontmatter(raw: string): { data: Record<string, unknown>; content: string } {
+  const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/)
+  if (!match) return { data: {}, content: raw }
+  const parsed = parseYaml(match[1])
+  const data = parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+    ? parsed as Record<string, unknown>
+    : {}
+  return { data, content: raw.slice(match[0].length) }
+}
+
 function splitBody(content: string): [string, string] {
   const [bodyEn, bodyEs = ''] = content.split(/\n?<!--\s*ES\s*-->\n?/)
   return [bodyEn.trim(), bodyEs.trim()]
@@ -56,10 +66,10 @@ export function getAllArticles(): Article[] {
     .filter((f) => f.endsWith('.mdx') || f.endsWith('.md'))
     .map((filename) => {
       const raw = fs.readFileSync(path.join(ARTICLES_DIR, filename), 'utf-8')
-      const { data, content } = matter(raw)
+      const { data, content } = parseFrontmatter(raw)
       if (!data.published) return null
       const [bodyEn, bodyEs] = splitBody(content)
-      return { ...data, bodyEn, bodyEs } as Article
+      return { ...data, bodyEn, bodyEs } as unknown as Article
     })
     .filter((a): a is Article => a !== null)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -77,10 +87,10 @@ export function getAllProjects(): Project[] {
     .filter((f) => f.endsWith('.mdx') || f.endsWith('.md'))
     .map((filename) => {
       const raw = fs.readFileSync(path.join(PROJECTS_DIR, filename), 'utf-8')
-      const { data, content } = matter(raw)
+      const { data, content } = parseFrontmatter(raw)
       if (!data.published) return null
       const [bodyEn, bodyEs] = splitBody(content)
-      return { ...data, bodyEn, bodyEs } as Project
+      return { ...data, bodyEn, bodyEs } as unknown as Project
     })
     .filter((p): p is Project => p !== null)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
