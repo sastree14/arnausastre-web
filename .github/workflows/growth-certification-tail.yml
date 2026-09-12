@@ -1,0 +1,134 @@
+name: Temporary Growth Agent Certification Tail
+
+on:
+  push:
+    branches:
+      - growth-agent-final-certification-2
+    paths:
+      - '.github/workflows/growth-certification-tail.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  certify-tail:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+      GROWTH_ENCRYPTION_KEY: ${{ secrets.GROWTH_ENCRYPTION_KEY }}
+      STATE_PROVIDER: supabase
+      ASSET_PROVIDER: supabase
+      SUPABASE_ASSET_BUCKET: growth-assets
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r growth/requirements.txt
+      - name: Retry legacy contract migration and certify fail-safe publishing invariants
+        run: |
+          python - <<'PY'
+          from collections import Counter
+          from growth.src.editorial_runtime import generate_variants, content_contract_issues
+          from growth.src.storage import get_store
+
+          store = get_store()
+          briefs = store.list('editorial_briefs')
+          assert briefs
+
+          # Give previously blocked legacy drafts one additional bounded repair pass.
+          for brief in briefs:
+              generate_variants(brief)
+
+          items = store.list('content_items')
+          active = [r for r in store.list('approvals') if r.get('status') in ('pending','approved','executed')]
+          active_by_target = {r.get('target_id'): r for r in active}
+          invalid = []
+          for item in items:
+              issues = content_contract_issues({'title':item.get('title',''),'body':item.get('body','')}, item.get('content_type',''))
+              critique = item.get('critique') or {}
+              if issues:
+                  invalid.append((item.get('content_id'), issues))
+                  assert item.get('status') == 'needs_review', (item.get('content_id'), item.get('status'))
+                  assert float(item.get('quality_score',0) or 0) <= 7.4
+                  assert item.get('content_id') not in active_by_target
+                  assert critique.get('contract_valid') is False
+              else:
+                  assert critique.get('contract_valid') is True, item.get('content_id')
+
+          logical = [(r.get('brief_id'),r.get('language'),r.get('channel'),r.get('content_type')) for r in items if r.get('brief_id')]
+          assert not [k for k,c in Counter(logical).items() if c > 1]
+          keys = [(r.get('target_id'),r.get('action_type')) for r in active]
+          assert not [k for k,c in Counter(keys).items() if c > 1]
+          by_id = {r['content_id']:r for r in items}
+          for approval in active:
+              target = by_id.get(approval.get('target_id'))
+              if not target:
+                  continue
+              assert not content_contract_issues({'title':target.get('title',''),'body':target.get('body','')}, target.get('content_type',''))
+              assert (target.get('critique') or {}).get('contract_valid') is True
+              payload = approval.get('payload') or {}
+              assert payload.get('title') == target.get('title')
+              assert payload.get('body') == target.get('body')
+          print(f'PUBLISHING_FAIL_SAFE_OK content={len(items)} active_approvals={len(active)} invalid_blocked={len(invalid)}')
+          if invalid:
+              print('BLOCKED_DRAFTS', [x[0] for x in invalid])
+          PY
+      - name: Certify idempotency on a stable brief
+        run: |
+          python - <<'PY'
+          from growth.src.editorial_runtime import generate_variants, content_contract_issues
+          from growth.src.storage import get_store
+          store = get_store()
+          items = store.list('content_items')
+          chosen = None
+          for brief in store.list('editorial_briefs'):
+              related = [r for r in items if r.get('brief_id') == brief.get('brief_id')]
+              if related and all(not content_contract_issues({'title':r.get('title',''),'body':r.get('body','')},r.get('content_type','')) for r in related):
+                  chosen = brief
+                  break
+          assert chosen, 'No stable brief available for idempotency check'
+          content_before = len(store.list('content_items'))
+          active_before = len([r for r in store.list('approvals') if r.get('status') in ('pending','approved','executed')])
+          first = generate_variants(chosen)
+          second = generate_variants(chosen)
+          assert all(r.get('resumed') for r in first + second)
+          assert len(store.list('content_items')) == content_before
+          active_after = len([r for r in store.list('approvals') if r.get('status') in ('pending','approved','executed')])
+          assert active_after == active_before
+          print(f"IDEMPOTENCY_OK brief={chosen.get('brief_id')}")
+          PY
+      - name: Conservative discovery cycle smoke test
+        run: |
+          python - <<'PY'
+          from growth.src.editorial_runtime import run_editorial_cycle
+          result = run_editorial_cycle(max_signals=6,max_briefs=1,theme_hint='forecasting optimization AI operations business decisions')
+          assert result.get('discovered',0) > 0 or result.get('resumed_briefs',0) > 0
+          assert result.get('evaluated',0) > 0 or result.get('resumed_briefs',0) > 0
+          print('DISCOVERY_CYCLE_OK', result)
+          PY
+      - name: Inspect LinkedIn OAuth state without publishing
+        run: |
+          python - <<'PY'
+          from growth.src.storage import get_store
+          rows = [r for r in get_store().list('integration_connections') if r.get('provider') == 'linkedin']
+          if not rows:
+              print('LINKEDIN_OAUTH_PENDING_INTERACTIVE_CONSENT')
+          else:
+              row = rows[0]
+              ciphertext = str(row.get('access_token_ciphertext') or '')
+              assert ciphertext.startswith('v1.') and ciphertext != 'disconnected'
+              assert (row.get('metadata') or {}).get('person_urn')
+              assert 'w_member_social' in set(row.get('scopes') or [])
+              print(f"LINKEDIN_OAUTH_CONNECTION_OK display_name={row.get('display_name','')} expires_at={row.get('expires_at','')}")
+          print('NO_EXTERNAL_PUBLISH_ATTEMPTED')
+          PY
+      - name: Final tail gate
+        run: |
+          echo 'EDITORIAL_RUNTIME_CERTIFIED=true'
+          echo 'PUBLISHING_FAIL_SAFE_CERTIFIED=true'
+          echo 'NO_LINKEDIN_POST_PUBLISHED=true'
