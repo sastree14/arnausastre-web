@@ -24,6 +24,8 @@ jobs:
           cache: npm
       - name: Refresh and audit-fix lockfile
         run: |
+          # Temporary branch-only job: regenerate the lockfile after dependency changes,
+          # verify production dependencies, then compile the real application.
           npm install --package-lock-only
           npm audit fix --package-lock-only || true
           npm ci
