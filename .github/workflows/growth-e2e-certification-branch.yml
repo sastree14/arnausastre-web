@@ -1,0 +1,237 @@
+name: Temporary Growth Agent E2E Certification
+
+on:
+  push:
+    branches:
+      - growth-agent-integration-healthcheck
+    paths:
+      - '.github/workflows/growth-e2e-certification-branch.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  certify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install web dependencies
+        run: npm ci
+
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=critical
+
+      - name: Lint web app
+        run: npm run lint
+
+      - name: Build production web app
+        run: npm run build
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Growth Agent dependencies
+        run: pip install -r growth/requirements.txt
+
+      - name: Validate Growth Agent configuration
+        run: python -m growth.src.cli validate
+
+      - name: Run Growth Agent test suite
+        run: python -m pytest -q growth/tests
+
+      - name: Check required secrets are present
+        id: secrets
+        continue-on-error: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          GROWTH_ENCRYPTION_KEY: ${{ secrets.GROWTH_ENCRYPTION_KEY }}
+        run: |
+          missing=()
+          [ -z "$OPENAI_API_KEY" ] && missing+=("OPENAI_API_KEY")
+          [ -z "$BRAVE_API_KEY" ] && missing+=("BRAVE_API_KEY")
+          [ -z "$SUPABASE_URL" ] && missing+=("SUPABASE_URL")
+          [ -z "$SUPABASE_SECRET_KEY" ] && missing+=("SUPABASE_SECRET_KEY")
+          [ -z "$GROWTH_ENCRYPTION_KEY" ] && missing+=("GROWTH_ENCRYPTION_KEY")
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "Missing: ${missing[*]}"
+            exit 1
+          fi
+          echo "All required Growth Agent runtime secrets are present."
+
+      - name: Check Supabase read integration
+        id: supabase
+        continue-on-error: true
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          STATE_PROVIDER: supabase
+        run: |
+          python - <<'PY'
+          from growth.src.storage import get_store
+          rows = get_store().list('growth_tenants')
+          assert any(r.get('tenant_id') == 'sc-analytics' for r in rows), rows
+          print('SUPABASE_READ_OK')
+          PY
+
+      - name: Stress Brave Search integration
+        id: brave
+        continue-on-error: true
+        env:
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+        run: |
+          python - <<'PY'
+          from growth.src.research import BraveResearchClient
+          client = BraveResearchClient()
+          queries = [
+              'AI automation business operations implementation',
+              'forecasting inventory optimization business case',
+              'pricing optimization retail analytics',
+              'operations research logistics scheduling business',
+              'machine learning risk analytics implementation',
+          ]
+          total = 0
+          for q in queries:
+              hits = client.search(q, count=3)
+              assert isinstance(hits, list)
+              total += len(hits)
+              print(f'BRAVE_OK query={q!r} hits={len(hits)}')
+          assert total > 0
+          print(f'BRAVE_STRESS_OK total_hits={total}')
+          PY
+
+      - name: Check all configured OpenAI model profiles
+        id: openai
+        continue-on-error: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python - <<'PY'
+          from growth.src.llm import get_llm
+          for profile in ('fast', 'balanced', 'high'):
+              client = get_llm(profile=profile)
+              result = client.json(
+                  'You are an API health check. Return JSON only.',
+                  f'Return exactly {{"ok": true, "profile": "{profile}"}}.'
+              )
+              assert result.get('ok') is True, result
+              print(f'OPENAI_OK profile={profile} model={client.model}')
+          PY
+
+      - name: Stress React visual renderer and Supabase Storage roundtrip
+        id: visuals
+        continue-on-error: true
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          SUPABASE_ASSET_BUCKET: growth-assets
+          ASSET_PROVIDER: supabase
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import hashlib, time
+          from growth.src.visuals import render_branded_card, render_business_diagram, render_comparison_visual, render_metric_visual
+          from growth.src.assets import get_asset_store
+
+          paths = []
+          for i in range(3):
+              paths.append(render_branded_card(f'Business-first insight {i+1}', 'Technology follows the decision, not the other way around.', slug=f'health-insight-{i}'))
+              paths.append(render_business_diagram(f'Decision flow {i+1}', ['Understand', 'Measure', 'Decide', 'Implement'], slug=f'health-process-{i}'))
+              paths.append(render_comparison_visual(f'Better question {i+1}', 'Can we use AI?', 'Does AI improve the business outcome enough to justify it?', slug=f'health-comparison-{i}'))
+              paths.append(render_metric_visual(f'Evidence layout {i+1}', [{'value':'-38%','label':'stock-outs'}, {'value':'-24%','label':'inventory cost'}], slug=f'health-metric-{i}'))
+
+          for path in paths:
+              assert path.exists() and path.stat().st_size > 5000, path
+              with Image.open(path) as im:
+                  assert im.size == (1200, 1200), (path, im.size)
+          print(f'REACT_RENDER_STRESS_OK renders={len(paths)}')
+
+          sample = paths[0]
+          store = get_asset_store()
+          stamp = int(time.time())
+          ref = store.put(sample, f'sc-analytics/healthcheck/{stamp}-{sample.name}')
+          downloaded = Path('/tmp/healthcheck-download.png')
+          store.get(ref, downloaded)
+          assert hashlib.sha256(sample.read_bytes()).digest() == hashlib.sha256(downloaded.read_bytes()).digest()
+          print(f'SUPABASE_STORAGE_ROUNDTRIP_OK ref={ref}')
+          PY
+
+      - name: Check LinkedIn OAuth state in Supabase
+        id: linkedin
+        continue-on-error: true
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          STATE_PROVIDER: supabase
+        run: |
+          python - <<'PY'
+          from datetime import datetime, timezone
+          from growth.src.storage import get_store
+          rows = [r for r in get_store().list('integration_connections') if r.get('provider') == 'linkedin']
+          assert rows, 'No LinkedIn OAuth connection exists in integration_connections'
+          row = sorted(rows, key=lambda r: str(r.get('updated_at') or ''), reverse=True)[0]
+          ciphertext = str(row.get('access_token_ciphertext') or '')
+          assert ciphertext.startswith('v1.'), 'LinkedIn token is missing or not stored as v1 encrypted ciphertext'
+          expiry = row.get('token_expires_at')
+          assert expiry, 'LinkedIn token expiry missing'
+          exp = datetime.fromisoformat(str(expiry).replace('Z', '+00:00'))
+          assert exp > datetime.now(timezone.utc), f'LinkedIn token expired at {expiry}'
+          scopes = set(row.get('scopes') or [])
+          assert 'w_member_social' in scopes, f'Missing w_member_social scope: {scopes}'
+          print(f'LINKEDIN_OAUTH_METADATA_OK display_name={row.get("display_name")} scopes={sorted(scopes)} expiry={expiry}')
+          PY
+
+      - name: Run real editorial smoke cycle
+        id: editorial
+        continue-on-error: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          STATE_PROVIDER: supabase
+          ASSET_PROVIDER: supabase
+          SUPABASE_ASSET_BUCKET: growth-assets
+        run: python -m growth.src.cli editorial-run --signals 18 --briefs 2 --theme "business-first AI automation, forecasting, optimization and operational decisions"
+
+      - name: Re-run editorial cycle to test duplicate/idempotent behaviour
+        id: idempotency
+        continue-on-error: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          STATE_PROVIDER: supabase
+          ASSET_PROVIDER: supabase
+          SUPABASE_ASSET_BUCKET: growth-assets
+        run: python -m growth.src.cli editorial-run --signals 12 --briefs 1 --theme "business-first AI automation, forecasting, optimization and operational decisions"
+
+      - name: Final certification gate
+        env:
+          SECRETS_OUTCOME: ${{ steps.secrets.outcome }}
+          SUPABASE_OUTCOME: ${{ steps.supabase.outcome }}
+          BRAVE_OUTCOME: ${{ steps.brave.outcome }}
+          OPENAI_OUTCOME: ${{ steps.openai.outcome }}
+          VISUALS_OUTCOME: ${{ steps.visuals.outcome }}
+          LINKEDIN_OUTCOME: ${{ steps.linkedin.outcome }}
+          EDITORIAL_OUTCOME: ${{ steps.editorial.outcome }}
+          IDEMPOTENCY_OUTCOME: ${{ steps.idempotency.outcome }}
+        run: |
+          printf '%-14s %s\n' secrets "$SECRETS_OUTCOME" supabase "$SUPABASE_OUTCOME" brave "$BRAVE_OUTCOME" openai "$OPENAI_OUTCOME" visuals "$VISUALS_OUTCOME" linkedin "$LINKEDIN_OUTCOME" editorial "$EDITORIAL_OUTCOME" idempotency "$IDEMPOTENCY_OUTCOME"
+          failed=0
+          for value in "$SECRETS_OUTCOME" "$SUPABASE_OUTCOME" "$BRAVE_OUTCOME" "$OPENAI_OUTCOME" "$VISUALS_OUTCOME" "$LINKEDIN_OUTCOME" "$EDITORIAL_OUTCOME" "$IDEMPOTENCY_OUTCOME"; do
+            [ "$value" = "success" ] || failed=1
+          done
+          exit $failed
