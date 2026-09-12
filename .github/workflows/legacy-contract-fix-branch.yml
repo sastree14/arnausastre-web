@@ -1,0 +1,333 @@
+name: Temporary legacy editorial contract fix
+
+on:
+  push:
+    branches:
+      - growth-agent-v2-legacy-contract-fix
+    paths:
+      - '.github/workflows/legacy-contract-fix-branch.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: growth-agent-v2-legacy-contract-fix
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Patch legacy contract migration behavior
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('growth/src/editorial_runtime.py')
+          text = path.read_text()
+          start = text.index('def _persist_variant(')
+          end = text.index('\n\ndef generate_variants(', start)
+          replacement = '''def _invalidate_active_approvals(target_id: str, reason: str) -> None:
+              store = get_store()
+              for approval in store.filter("approvals", target_id=target_id):
+                  if approval.get("status") not in {"pending", "approved"}:
+                      continue
+                  payload = dict(approval.get("payload") or {})
+                  payload["invalidated_reason"] = reason
+                  store.update(
+                      "approvals",
+                      "approval_id",
+                      approval["approval_id"],
+                      {
+                          "status": "rejected",
+                          "payload": payload,
+                          "decided_at": base._utc_now(),
+                      },
+                  )
+
+
+          def _persist_variant(brief: dict[str, Any], *, language: str, channel: str, content_type: str, primary: bool) -> dict[str, Any]:
+              store = get_store()
+              existing = _existing_variant(brief["brief_id"], language, channel, content_type)
+              if existing:
+                  result = dict(existing)
+                  critique = dict(result.get("critique") or {})
+                  legacy_issues = content_contract_issues(result, content_type)
+                  contract_valid = not legacy_issues
+
+                  if legacy_issues:
+                      # Records created before deterministic publishing contracts existed
+                      # must not be grandfathered into approval. Rewrite them in place so
+                      # idempotency is preserved and stale approval payloads cannot publish.
+                      critique["contract_valid"] = False
+                      critique["contract_issues"] = legacy_issues
+                      critique["rewrite_required"] = True
+                      instructions = list(critique.get("rewrite_instructions") or [])
+                      instructions.extend(legacy_issues)
+                      critique["rewrite_instructions"] = instructions
+
+                      draft = _rewrite_variant(
+                          brief,
+                          {"title": result.get("title", ""), "body": result.get("body", "")},
+                          critique,
+                          language=language,
+                          channel=channel,
+                          content_type=content_type,
+                      )
+                      critique = _critic(
+                          brief,
+                          draft,
+                          language=language,
+                          channel=channel,
+                          content_type=content_type,
+                      )
+                      quality = float(critique.get("quality_score", result.get("quality_score", 0)) or 0)
+                      issues = content_contract_issues(draft, content_type)
+                      contract_valid = not issues
+                      critique = dict(critique or {})
+                      critique["contract_valid"] = contract_valid
+                      critique["contract_issues"] = issues
+                      if not contract_valid:
+                          quality = min(quality, 7.4)
+
+                      visual_type = result.get("visual_type", "none")
+                      visual_path = result.get("visual_path", "")
+                      if content_type == "linkedin_post":
+                          visual_type, visual_path = base._render_visual(
+                              brief,
+                              draft,
+                              f"{brief['brief_id']}-{language}-{channel}",
+                          )
+
+                      status = "draft" if primary or content_type == "article" else "alternate"
+                      if not contract_valid:
+                          status = "needs_review"
+
+                      updates = {
+                          "title": draft["title"],
+                          "body": draft["body"],
+                          "quality_score": quality,
+                          "critique": critique,
+                          "status": status,
+                          "visual_type": visual_type,
+                          "visual_path": visual_path,
+                      }
+                      updated = store.update("content_items", "content_id", result["content_id"], updates)
+                      result = dict(updated or {**result, **updates})
+                      _invalidate_active_approvals(result["content_id"], "content_rewritten_for_contract")
+                      result["contract_migrated"] = True
+                  else:
+                      # Backfill deterministic contract metadata on valid legacy rows
+                      # without paying for another LLM critique or changing their prose.
+                      critique["contract_valid"] = True
+                      critique["contract_issues"] = []
+                      if result.get("critique") != critique:
+                          updated = store.update(
+                              "content_items",
+                              "content_id",
+                              result["content_id"],
+                              {"critique": critique},
+                          )
+                          result = dict(updated or {**result, "critique": critique})
+
+                  approval_id = _ensure_approval(
+                      result,
+                      brief,
+                      primary=primary,
+                      contract_valid=contract_valid,
+                  )
+                  if approval_id:
+                      result["approval_id"] = approval_id
+                  result["resumed"] = True
+                  return result
+
+              draft = _write_variant(brief, language=language, channel=channel, content_type=content_type)
+              critique = _critic(brief, draft, language=language, channel=channel, content_type=content_type)
+              quality = float(critique.get("quality_score", 0) or 0)
+              if critique.get("rewrite_required") or quality < 8.0:
+                  draft = _rewrite_variant(brief, draft, critique, language=language, channel=channel, content_type=content_type)
+                  critique = _critic(brief, draft, language=language, channel=channel, content_type=content_type)
+                  quality = float(critique.get("quality_score", 0) or 0)
+
+              contract_issues = content_contract_issues(draft, content_type)
+              contract_valid = not contract_issues
+              critique = dict(critique or {})
+              critique["contract_valid"] = contract_valid
+              critique["contract_issues"] = contract_issues
+              if not contract_valid:
+                  # An LLM score can never override a deterministic publishing contract.
+                  quality = min(quality, 7.4)
+
+              cfg = load_config()
+              visual_type, visual_path = ("none", "")
+              if content_type == "linkedin_post":
+                  visual_type, visual_path = base._render_visual(brief, draft, f"{brief['brief_id']}-{language}-{channel}")
+
+              status = "draft" if primary or content_type == "article" else "alternate"
+              if primary and not contract_valid:
+                  status = "needs_review"
+
+              item = ContentItem(
+                  content_id=new_id("content"),
+                  tenant_id=cfg["company"]["tenant_id"],
+                  channel=_variant_channel(content_type, channel),
+                  content_type=content_type,
+                  title=draft["title"],
+                  body=draft["body"],
+                  objective="authority",
+                  target_audience=list(brief.get("target_audience") or []),
+                  evidence_ids=list(brief.get("evidence_ids") or []),
+                  status=status,
+                  visual_type=visual_type,
+                  visual_path=visual_path,
+                  source_case="",
+                  brief_id=brief["brief_id"],
+                  language=language,
+                  content_family=brief.get("family", "insight"),
+                  quality_score=quality,
+                  critique=critique,
+                  source_url=(brief.get("research") or {}).get("source_urls", [""])[0] if (brief.get("research") or {}).get("source_urls") else "",
+              )
+              payload = to_dict(item)
+              store.insert("content_items", payload)
+              approval_id = _ensure_approval(payload, brief, primary=primary, contract_valid=contract_valid)
+              if approval_id:
+                  payload["approval_id"] = approval_id
+              return payload
+          '''
+          # Dedent the replacement because it is embedded inside this workflow script.
+          import textwrap
+          text = text[:start] + textwrap.dedent(replacement) + text[end:]
+          path.write_text(text)
+
+          tests = Path('growth/tests/test_editorial_runtime.py')
+          test_text = tests.read_text()
+          marker = 'def test_legacy_invalid_variant_is_rewritten_in_place'
+          if marker not in test_text:
+              test_text += textwrap.dedent('''
+
+
+              def test_legacy_invalid_variant_is_rewritten_in_place(monkeypatch, tmp_path):
+                  store = LocalJsonStore(tmp_path)
+                  monkeypatch.setattr(runtime, "get_store", lambda: store)
+                  monkeypatch.setattr(runtime, "_rewrite_variant", lambda *args, **kwargs: {
+                      "title": "Migrated post",
+                      "body": "x" * 1000,
+                  })
+                  monkeypatch.setattr(runtime, "_critic", lambda *args, **kwargs: {
+                      "quality_score": 8.8,
+                      "generic_ai_risk": 1,
+                      "rewrite_required": False,
+                      "contract_valid": True,
+                      "contract_issues": [],
+                  })
+                  monkeypatch.setattr(runtime.base, "_render_visual", lambda *args, **kwargs: ("none", ""))
+
+                  store.insert("content_items", {
+                      "content_id": "content_legacy",
+                      "tenant_id": "sc-analytics",
+                      "brief_id": "brief_legacy",
+                      "language": "es",
+                      "channel": "arnau_linkedin",
+                      "content_type": "linkedin_post",
+                      "title": "Legacy post",
+                      "body": "x" * 4000,
+                      "status": "draft",
+                      "quality_score": 9.1,
+                      "critique": {"quality_score": 9.1},
+                      "visual_type": "none",
+                      "visual_path": "",
+                  })
+                  store.insert("approvals", {
+                      "approval_id": "approval_legacy",
+                      "tenant_id": "sc-analytics",
+                      "action_type": "publish_post",
+                      "target_id": "content_legacy",
+                      "summary": "stale",
+                      "payload": {"body": "x" * 4000},
+                      "status": "pending",
+                  })
+                  brief = {
+                      "brief_id": "brief_legacy",
+                      "tenant_id": "sc-analytics",
+                      "family": "opinion",
+                      "target_audience": ["Founder"],
+                      "evidence_ids": [],
+                      "research": {"source_urls": []},
+                  }
+
+                  result = runtime._persist_variant(
+                      brief,
+                      language="es",
+                      channel="arnau_linkedin",
+                      content_type="linkedin_post",
+                      primary=True,
+                  )
+
+                  assert result["content_id"] == "content_legacy"
+                  assert result["resumed"] is True
+                  assert result["contract_migrated"] is True
+                  assert result["critique"]["contract_valid"] is True
+                  assert len(result["body"]) == 1000
+                  assert len(store.list("content_items")) == 1
+                  approvals = store.list("approvals")
+                  assert sum(1 for row in approvals if row.get("status") == "pending") == 1
+                  assert sum(1 for row in approvals if row.get("status") == "rejected") == 1
+                  assert next(row for row in approvals if row["approval_id"] == "approval_legacy")["payload"]["invalidated_reason"] == "content_rewritten_for_contract"
+
+
+              def test_valid_legacy_variant_backfills_contract_without_rewrite(monkeypatch, tmp_path):
+                  store = LocalJsonStore(tmp_path)
+                  monkeypatch.setattr(runtime, "get_store", lambda: store)
+                  monkeypatch.setattr(runtime, "_rewrite_variant", lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("rewrite not expected")))
+                  store.insert("content_items", {
+                      "content_id": "content_valid_legacy",
+                      "tenant_id": "sc-analytics",
+                      "brief_id": "brief_valid_legacy",
+                      "language": "es",
+                      "channel": "website",
+                      "content_type": "article",
+                      "title": "Valid legacy article",
+                      "body": "word " * 900,
+                      "status": "draft",
+                      "quality_score": 8.4,
+                      "critique": {"quality_score": 8.4},
+                      "visual_type": "none",
+                      "visual_path": "",
+                  })
+                  brief = {
+                      "brief_id": "brief_valid_legacy",
+                      "tenant_id": "sc-analytics",
+                      "family": "educational",
+                      "target_audience": ["COO"],
+                      "evidence_ids": [],
+                      "research": {"source_urls": []},
+                  }
+                  result = runtime._persist_variant(
+                      brief,
+                      language="es",
+                      channel="website",
+                      content_type="article",
+                      primary=True,
+                  )
+                  assert result["resumed"] is True
+                  assert result["critique"]["contract_valid"] is True
+                  assert len(store.list("content_items")) == 1
+                  assert len(store.list("approvals")) == 1
+              ''')
+              tests.write_text(test_text)
+          PY
+      - name: Run Growth Agent tests
+        run: |
+          pip install -r growth/requirements.txt
+          python -m pytest -q growth/tests
+      - name: Commit patch and remove temporary workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/legacy-contract-fix-branch.yml
+          git add growth/src/editorial_runtime.py growth/tests/test_editorial_runtime.py
+          git commit -m "Migrate legacy editorial content through deterministic contracts"
+          git push origin HEAD:growth-agent-v2-legacy-contract-fix
