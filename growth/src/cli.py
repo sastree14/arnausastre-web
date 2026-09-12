@@ -8,7 +8,7 @@ from .brain import validate_brain
 from .brief import build_brief
 from .config import load_config
 from .content import create_content_from_case
-from .editorial import editorial_from_url, run_editorial_cycle
+from .editorial_runtime import editorial_from_url, run_editorial_cycle
 from .models import to_dict
 from .orchestrator import run_day
 from .prospecting import research_companies

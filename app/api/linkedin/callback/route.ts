@@ -19,7 +19,6 @@ export async function GET(request: NextRequest) {
   const returnedState = request.nextUrl.searchParams.get('state') || ''
   const expectedState = request.cookies.get(STATE_COOKIE)?.value || ''
   const oauthError = request.nextUrl.searchParams.get('error')
-  const errorDescription = request.nextUrl.searchParams.get('error_description') || ''
 
   if (!expectedState || !returnedState || expectedState !== returnedState) {
     return NextResponse.redirect(adminUrl(request, { linkedin: 'error', reason: 'invalid_state' }))

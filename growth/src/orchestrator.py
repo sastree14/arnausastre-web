@@ -6,7 +6,7 @@ from pathlib import Path
 from .analytics import review_week
 from .brief import build_brief
 from .content import create_content_from_case
-from .editorial import run_editorial_cycle
+from .editorial_runtime import run_editorial_cycle
 from .llm import get_llm
 from .models import to_dict
 from .prospecting import research_companies

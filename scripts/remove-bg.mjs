@@ -1,5 +1,4 @@
 import sharp from 'sharp'
-import { readFileSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -28,7 +27,6 @@ async function removeBg(inputFile, outputFile, tolerance = 35) {
       (r - bgR) ** 2 + (g - bgG) ** 2 + (b - bgB) ** 2
     )
     if (dist <= tolerance) {
-      // Smooth edge: fade alpha based on distance
       pixels[i + 3] = Math.round(Math.min(255, (dist / tolerance) ** 1.5 * 255))
       changed++
     }

@@ -7,6 +7,7 @@ from typing import Any, Literal
 import requests
 
 from .config import load_config
+from .http_retry import request_with_retry
 
 
 class LLMError(RuntimeError):
@@ -27,12 +28,20 @@ class OpenAIResponsesClient:
             "instructions": instructions,
             "input": input_text,
         }
-        response = requests.post(
-            self.endpoint,
-            headers={"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"},
-            json=payload,
-            timeout=180,
-        )
+        try:
+            response = request_with_retry(
+                "POST",
+                self.endpoint,
+                attempts=3,
+                # Do not automatically repeat ambiguous network failures: a model
+                # response may already have been generated and billed upstream.
+                retry_exceptions=False,
+                headers={"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"},
+                json=payload,
+                timeout=180,
+            )
+        except requests.RequestException as exc:
+            raise LLMError(f"OpenAI request failed: {exc}") from exc
         if response.status_code >= 400:
             raise LLMError(f"OpenAI error {response.status_code}: {response.text[:500]}")
         data = response.json()

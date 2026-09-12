@@ -40,7 +40,6 @@ export default function CaseStudiesPage() {
               const title = lang === 'en' ? cs.titleEn : cs.titleEs
               const excerpt = lang === 'en' ? cs.excerptEn : cs.excerptEs
               const industry = lang === 'en' ? cs.industry : cs.industryEs
-              const problem = lang === 'en' ? cs.problemEn : cs.problemEs
               const tags = lang === 'en' ? cs.tagsEn : cs.tagsEs
 
               return (
