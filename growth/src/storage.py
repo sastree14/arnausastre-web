@@ -8,6 +8,7 @@ from typing import Any
 import requests
 
 from .config import load_config
+from .http_retry import request_with_retry
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
@@ -31,8 +32,6 @@ def _supabase_headers(key: str) -> dict[str, str]:
         "Content-Type": "application/json",
         "Prefer": "return=representation",
     }
-    # Legacy service_role keys are JWTs. Modern sb_secret_* keys are API keys,
-    # not bearer JWTs.
     if key.startswith("eyJ"):
         headers["Authorization"] = f"Bearer {key}"
     return headers
@@ -104,12 +103,17 @@ class SupabaseRestStore:
         return f"{self.url}/rest/v1/{table}"
 
     def list(self, table: str) -> list[dict[str, Any]]:
-        response = requests.get(self._endpoint(table), headers=self.headers, params={"select": "*"}, timeout=30)
+        response = request_with_retry("GET", self._endpoint(table), attempts=4, headers=self.headers, params={"select": "*"}, timeout=30)
         self._check(response)
         return response.json()
 
     def insert(self, table: str, row: dict[str, Any]) -> dict[str, Any]:
-        response = requests.post(self._endpoint(table), headers=self.headers, json=row, timeout=30)
+        # Plain inserts are intentionally not retried: a lost response after a
+        # committed write could otherwise duplicate a logical operation.
+        try:
+            response = requests.post(self._endpoint(table), headers=self.headers, json=row, timeout=30)
+        except requests.RequestException as exc:
+            raise StateStoreError(f"Supabase insert request failed: {exc}") from exc
         self._check(response)
         payload = response.json()
         return payload[0] if isinstance(payload, list) and payload else row
@@ -117,13 +121,29 @@ class SupabaseRestStore:
     def upsert(self, table: str, row: dict[str, Any], key: str) -> dict[str, Any]:
         headers = dict(self.headers)
         headers["Prefer"] = "resolution=merge-duplicates,return=representation"
-        response = requests.post(self._endpoint(table), headers=headers, params={"on_conflict": key}, json=row, timeout=30)
+        response = request_with_retry(
+            "POST",
+            self._endpoint(table),
+            attempts=4,
+            headers=headers,
+            params={"on_conflict": key},
+            json=row,
+            timeout=30,
+        )
         self._check(response)
         payload = response.json()
         return payload[0] if isinstance(payload, list) and payload else row
 
     def update(self, table: str, key: str, value: Any, changes: dict[str, Any]) -> dict[str, Any] | None:
-        response = requests.patch(self._endpoint(table), headers=self.headers, params={key: f"eq.{value}"}, json=changes, timeout=30)
+        response = request_with_retry(
+            "PATCH",
+            self._endpoint(table),
+            attempts=4,
+            headers=self.headers,
+            params={key: f"eq.{value}"},
+            json=changes,
+            timeout=30,
+        )
         self._check(response)
         payload = response.json()
         return payload[0] if isinstance(payload, list) and payload else None
@@ -132,7 +152,7 @@ class SupabaseRestStore:
         params = {"select": "*"}
         for key, value in filters.items():
             params[key] = f"eq.{value}"
-        response = requests.get(self._endpoint(table), headers=self.headers, params=params, timeout=30)
+        response = request_with_retry("GET", self._endpoint(table), attempts=4, headers=self.headers, params=params, timeout=30)
         self._check(response)
         return response.json()
 
