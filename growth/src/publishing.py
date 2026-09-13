@@ -17,6 +17,9 @@ class PublishingError(RuntimeError):
     pass
 
 
+PUBLICATION_MODES = {"text_only", "text_with_visual", "visual_first", "image_only"}
+
+
 def _linkedin_access() -> tuple[str, str]:
     """Use OAuth connection from Supabase; retain static env vars only as a legacy fallback."""
     static_token = os.environ.get("LINKEDIN_ACCESS_TOKEN", "").strip()
@@ -95,6 +98,39 @@ def _scheduled_is_due(item: dict) -> bool:
         return False
 
 
+def _publication_mode(item: dict) -> str:
+    mode = str(item.get("publication_mode") or "text_with_visual").strip()
+    return mode if mode in PUBLICATION_MODES else "text_with_visual"
+
+
+def _short_commentary(body: str, max_chars: int = 320) -> str:
+    clean_parts = [part.strip() for part in body.split("\n\n") if part.strip()]
+    clean = clean_parts[0] if clean_parts else body.strip()
+    clean = " ".join(clean.split())
+    if len(clean) <= max_chars:
+        return clean
+    shortened = clean[: max_chars - 1].rsplit(" ", 1)[0].strip()
+    return f"{shortened}…" if shortened else clean[: max_chars - 1] + "…"
+
+
+def _commentary_for_mode(item: dict) -> str:
+    mode = _publication_mode(item)
+    body = str(item.get("body") or "").strip()
+    if mode == "visual_first":
+        return _short_commentary(body)
+    if mode == "image_only":
+        # LinkedIn's Posts API currently requires the commentary field even for image posts.
+        # Keep it deliberately minimal so the attached visual carries the actual message.
+        return os.environ.get("LINKEDIN_IMAGE_ONLY_COMMENTARY", "SC-Analytics").strip() or "SC-Analytics"
+    return body
+
+
+def _visual_ref_for_mode(item: dict) -> str:
+    if _publication_mode(item) == "text_only":
+        return ""
+    return str(item.get("visual_path") or "").strip()
+
+
 def publish_content(content_id: str) -> dict:
     """Publish one already-approved content item through LinkedIn's official API."""
     store = get_store()
@@ -113,18 +149,22 @@ def publish_content(content_id: str) -> dict:
     if not approvals:
         raise PublishingError("No approved publish action exists for this content item")
 
+    mode = _publication_mode(item)
+    visual_ref = _visual_ref_for_mode(item)
+    if mode == "image_only" and not visual_ref:
+        raise PublishingError("Image-only publishing requires an attached visual")
+
     token, person_urn = _linkedin_access()
     author = _author_for_channel(item.get("channel", ""), person_urn)
     payload = {
         "author": author,
-        "commentary": item.get("body", ""),
+        "commentary": _commentary_for_mode(item),
         "visibility": "PUBLIC",
         "distribution": {"feedDistribution": "MAIN_FEED", "targetEntities": [], "thirdPartyDistributionChannels": []},
         "lifecycleState": "PUBLISHED",
         "isReshareDisabledByAuthor": False,
     }
 
-    visual_ref = item.get("visual_path") or ""
     visual = _materialize_visual(visual_ref) if visual_ref else None
     if visual:
         image_urn = upload_image(visual, author, token)
@@ -137,7 +177,7 @@ def publish_content(content_id: str) -> dict:
     store.update("content_items", "content_id", content_id, {"status": "published", "external_post_id": post_id, "published_at": utc_now()})
     for approval in approvals:
         store.update("approvals", "approval_id", approval["approval_id"], {"status": "executed", "executed_at": utc_now()})
-    return {"content_id": content_id, "post_id": post_id, "status": "published"}
+    return {"content_id": content_id, "post_id": post_id, "status": "published", "publication_mode": mode}
 
 
 def publish_all_approved(limit: int = 5) -> list[dict]:
