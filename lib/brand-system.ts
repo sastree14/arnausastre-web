@@ -120,8 +120,8 @@ export const PUBLICATION_MODES = {
     description: 'The visual carries most of the message; LinkedIn commentary is shortened.',
   },
   image_only: {
-    label: 'Image only',
-    description: 'The publication is carried by the image. LinkedIn commentary is omitted.',
+    label: 'Image-led',
+    description: 'The image carries the message. LinkedIn requires commentary in its Posts API, so the publisher sends only a minimal SC-Analytics caption.',
   },
 } as const
 
