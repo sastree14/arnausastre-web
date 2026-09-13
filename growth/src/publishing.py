@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
@@ -81,6 +82,19 @@ def _materialize_visual(ref: str) -> Path | None:
     return get_asset_store().get(ref, destination)
 
 
+def _scheduled_is_due(item: dict) -> bool:
+    scheduled = str(item.get("scheduled_at") or "").strip()
+    if not scheduled:
+        return True
+    try:
+        value = datetime.fromisoformat(scheduled.replace("Z", "+00:00"))
+        if value.tzinfo is None:
+            value = value.replace(tzinfo=timezone.utc)
+        return value <= datetime.now(timezone.utc)
+    except ValueError:
+        return False
+
+
 def publish_content(content_id: str) -> dict:
     """Publish one already-approved content item through LinkedIn's official API."""
     store = get_store()
@@ -90,6 +104,8 @@ def publish_content(content_id: str) -> dict:
     item = items[0]
     if item.get("status") != "approved":
         raise PublishingError("Content item is not approved")
+    if not _scheduled_is_due(item):
+        return {"content_id": content_id, "status": "scheduled", "scheduled_at": item.get("scheduled_at")}
     if item.get("external_post_id"):
         return {"content_id": content_id, "post_id": item["external_post_id"], "status": "already_published"}
 
@@ -126,7 +142,12 @@ def publish_content(content_id: str) -> dict:
 
 def publish_all_approved(limit: int = 5) -> list[dict]:
     store = get_store()
-    candidates = [row for row in store.list("content_items") if row.get("status") == "approved" and not row.get("external_post_id")][:limit]
+    candidates = [
+        row for row in store.list("content_items")
+        if row.get("status") == "approved"
+        and not row.get("external_post_id")
+        and _scheduled_is_due(row)
+    ][:limit]
     results = []
     for item in candidates:
         try:

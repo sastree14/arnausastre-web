@@ -2,161 +2,58 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useLanguage } from './LanguageProvider'
-import { translations } from '@/lib/translations'
+import { useSiteLanguage } from '@/components/SiteLanguageProvider'
+import { projectUi, publicProject } from '@/lib/project-public-copy'
 import type { Project } from '@/lib/projects'
 
-function renderBody(text: string) {
-  return text.split('\n\n').map((para, i) => (
-    <p key={i} className="mb-5 leading-8 text-slate-700">
-      {para.trim()}
-    </p>
-  ))
+const sectionLabels: Record<string, Record<'es'|'ca', string>> = {
+  Context: { es: 'Contexto', ca: 'Context' },
+  Problem: { es: 'Problema', ca: 'Problema' },
+  Approach: { es: 'Enfoque', ca: 'Enfocament' },
+  'System Developed': { es: 'Sistema desarrollado', ca: 'Sistema desenvolupat' },
+  Results: { es: 'Resultados', ca: 'Resultats' },
 }
 
-export default function ProjectDetailClient({ project }: { project: Project }) {
-  const { lang } = useLanguage()
-  const tc = translations[lang].common
-  const t = translations[lang].caseStudies
+function renderBody(text: string) {
+  return text.split('\n\n').map((paragraph, index) => <p key={index} className="mb-5 leading-8 text-slate-700">{paragraph.trim()}</p>)
+}
+
+export default function ProjectDetailClient({ project: raw }: { project: Project }) {
+  const { lang } = useSiteLanguage()
+  const project = publicProject(raw, lang)
+  const t = projectUi[lang]
 
   return (
-    <main className="bg-slate-50 text-slate-900 page-enter">
-
-      {/* Hero */}
-      <section className="bg-white border-b border-slate-200">
+    <main className="bg-slate-50 text-slate-900">
+      <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-20">
-          <Link
-            href="/projects"
-            className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 transition mb-10"
-          >
-            {t.backLabel}
-          </Link>
-
-          <div className="grid items-center gap-16 lg:grid-cols-2">
-
-            {/* Left — metadata */}
+          <Link href="/projects" className="mb-10 inline-flex text-sm text-slate-500 transition hover:text-slate-900">{t.back}</Link>
+          <div className="grid items-center gap-14 lg:grid-cols-2">
             <div>
-              <div className="flex flex-wrap gap-2 mb-6">
-                <span className="rounded-md bg-slate-900 px-3 py-1.5 text-xs font-medium text-white">
-                  {project.industry}
-                </span>
-                {project.capability.split(',').map((cap) => (
-                  <span
-                    key={cap}
-                    className="rounded-md bg-indigo-50 border border-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700"
-                  >
-                    {cap.trim()}
-                  </span>
-                ))}
-                <span className="rounded-md bg-slate-100 border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600">
-                  {project.challenge}
-                </span>
-                {project.audience && project.audience.split(',').slice(0, 2).map((a) => (
-                  <span key={a} className="rounded-md bg-slate-50 border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-500">
-                    {a.trim()}
-                  </span>
-                ))}
+              <div className="mb-6 flex flex-wrap gap-2">
+                <span className="rounded-md bg-slate-950 px-3 py-1.5 text-xs font-medium text-white">{project.industry}</span>
+                {project.capability.split(',').map((capability)=><span key={capability} className="rounded-md border border-indigo-100 bg-indigo-50 px-2.5 py-1.5 text-xs font-medium text-indigo-700">{capability.trim()}</span>)}
+                <span className="rounded-md border border-slate-200 bg-slate-100 px-2.5 py-1.5 text-xs font-medium text-slate-600">{project.challenge}</span>
               </div>
-
-              <h1
-                className="text-4xl leading-tight md:text-5xl text-slate-900"
-                style={{ fontFamily: 'var(--font-playfair)' }}
-              >
-                {project.headline}
-              </h1>
-
-              <p className="mt-6 text-base leading-8 text-slate-600 max-w-xl">
-                {project.description}
-              </p>
+              <h1 className="text-4xl leading-tight text-slate-950 md:text-5xl" style={{fontFamily:'var(--font-playfair)'}}>{project.headline}</h1>
+              <p className="mt-6 max-w-xl text-base leading-8 text-slate-600">{project.description}</p>
+              {lang !== 'en' && <p className="mt-5 text-xs leading-5 text-slate-400">{t.sourceNote}</p>}
             </div>
-
-            {/* Right — image (source images are 1536×1024 = 3:2) */}
-            <div className="relative aspect-[3/2] w-full rounded-2xl overflow-hidden">
-              <Image
-                src={project.imagePath}
-                alt={project.headline}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
-              />
-            </div>
+            <div className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl"><Image src={project.imagePath} alt={project.headline} fill className="object-cover" sizes="(max-width:1024px) 100vw,50vw" priority /></div>
           </div>
         </div>
       </section>
 
-      {/* Metrics */}
-      {project.metrics.length > 0 && (
-        <section className="border-b border-slate-200 bg-white">
-          <div className="mx-auto max-w-7xl px-6 py-12">
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
-              {project.metrics.map((m) => (
-                <div
-                  key={m.label}
-                  className="rounded-xl border border-slate-200 bg-slate-50 px-5 py-4"
-                >
-                  <p className="text-xs text-slate-400 leading-tight">{m.label}</p>
-                  <p className="mt-1 text-xl font-semibold text-slate-900">{m.value}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {project.metrics.length > 0 && <section className="border-b border-slate-200 bg-white"><div className="mx-auto max-w-7xl px-6 py-12"><div className="grid grid-cols-2 gap-4 md:grid-cols-4">{project.metrics.slice(0,4).map((metric)=><div key={metric.label} className="rounded-xl border border-slate-200 bg-slate-50 px-5 py-4"><p className="text-xs leading-tight text-slate-400">{metric.label}</p><p className="mt-1 text-xl font-semibold text-slate-950">{metric.value}</p></div>)}</div></div></section>}
 
-      {/* Sections */}
-      {project.sections.length > 0 && (
-        <section className="mx-auto max-w-4xl px-6 py-20 space-y-14">
-          {project.sections.map((section) => (
-            <div key={section.title}>
-              <h2
-                className="text-2xl text-slate-900 mb-6"
-                style={{ fontFamily: 'var(--font-playfair)' }}
-              >
-                {section.title}
-              </h2>
-              <div className="rounded-2xl border border-slate-200 bg-white p-8">
-                {renderBody(section.body)}
-              </div>
-            </div>
-          ))}
-        </section>
-      )}
+      {project.sections.length > 0 && <section className="mx-auto max-w-4xl space-y-12 px-6 py-20">{project.sections.map((section)=>{
+        const translatedTitle = lang === 'en' ? section.title : sectionLabels[section.title]?.[lang] || section.title
+        return <div key={section.title}><h2 className="mb-5 text-2xl text-slate-950" style={{fontFamily:'var(--font-playfair)'}}>{translatedTitle}</h2><div className="rounded-2xl border border-slate-200 bg-white p-8">{renderBody(section.body)}</div></div>
+      })}</section>}
 
-      {/* Confidentiality note */}
-      {project.confidentiality && (
-        <section className="mx-auto max-w-4xl px-6 pb-12">
-          <div className="rounded-xl border border-slate-200 bg-white px-6 py-4 flex items-start gap-3">
-            <svg className="mt-0.5 flex-shrink-0 text-slate-400" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5"/>
-              <path d="M12 8v4M12 16h.01" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-            <p className="text-xs leading-6 text-slate-500">{project.confidentiality}</p>
-          </div>
-        </section>
-      )}
+      {project.confidentiality && <section className="mx-auto max-w-4xl px-6 pb-12"><div className="rounded-xl border border-slate-200 bg-white px-6 py-4"><p className="text-xs leading-6 text-slate-500">{project.confidentiality}</p></div></section>}
 
-      {/* CTA */}
-      <section className="border-t border-slate-200 bg-white">
-        <div className="mx-auto max-w-4xl px-6 py-16 text-center">
-          <h2
-            className="text-3xl text-slate-900"
-            style={{ fontFamily: 'var(--font-playfair)' }}
-          >
-            {t.detailCta}
-          </h2>
-          <p className="mt-4 text-slate-600 max-w-xl mx-auto">
-            {t.detailCtaSub}
-          </p>
-          <Link
-            href="/contact"
-            className="mt-8 inline-block rounded-md bg-slate-900 px-8 py-3.5 text-sm font-medium text-white transition hover:bg-slate-700"
-          >
-            {tc.contactUs}
-          </Link>
-        </div>
-      </section>
-
+      <section className="border-t border-slate-200 bg-white"><div className="mx-auto max-w-4xl px-6 py-16 text-center"><h2 className="text-3xl text-slate-950" style={{fontFamily:'var(--font-playfair)'}}>{t.detailCta}</h2><p className="mx-auto mt-4 max-w-xl text-slate-600">{t.detailCtaSub}</p><Link href="/contact" className="mt-8 inline-block rounded-lg bg-slate-950 px-8 py-3.5 text-sm font-semibold text-white hover:bg-slate-800">{t.contact}</Link></div></section>
     </main>
   )
 }
