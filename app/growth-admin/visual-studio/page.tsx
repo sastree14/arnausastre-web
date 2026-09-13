@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import VisualStudioClient from '@/components/visual-studio/VisualStudioClient'
+import VisualStudioClientV2 from '@/components/visual-studio/VisualStudioClientV2'
 import { getRecentContent, isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
 import type { PublicationMode, VisualFormatKey } from '@/lib/brand-system'
 import type { VisualDesign, VisualStudioContentSeed, VisualTemplateKey } from '@/lib/visual-studio'
@@ -20,9 +20,10 @@ type VisualDesignRow = {
 
 export const dynamic = 'force-dynamic'
 
-export default async function VisualStudioPage() {
+export default async function VisualStudioPage({ searchParams }: { searchParams?: Promise<{ content?: string }> }) {
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
 
+  const params = searchParams ? await searchParams : undefined
   const [contentRows, savedDesigns] = await Promise.all([
     getRecentContent(),
     queryGrowthTable<VisualDesignRow>('visual_designs', { order: 'updated_at.desc', limit: '100' }),
@@ -44,5 +45,5 @@ export default async function VisualStudioPage() {
       publication_mode: item.publication_mode,
     }))
 
-  return <VisualStudioClient content={content} savedDesigns={savedDesigns} />
+  return <VisualStudioClientV2 content={content} savedDesigns={savedDesigns} initialContentId={params?.content} />
 }
