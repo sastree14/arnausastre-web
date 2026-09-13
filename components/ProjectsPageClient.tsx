@@ -2,118 +2,48 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useLanguage } from './LanguageProvider'
-import { translations } from '@/lib/translations'
+import { useSiteLanguage } from '@/components/SiteLanguageProvider'
+import { projectUi, publicProject } from '@/lib/project-public-copy'
 import type { Project } from '@/lib/projects'
 
 export default function ProjectsPageClient({ projects }: { projects: Project[] }) {
-  const { lang } = useLanguage()
-  const tc = translations[lang].common
-  const t = translations[lang].caseStudies
+  const { lang } = useSiteLanguage()
+  const t = projectUi[lang]
 
   return (
-    <main className="bg-slate-50 text-slate-900 page-enter">
-
-      {/* Hero */}
-      <section className="bg-white border-b border-slate-200">
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          <p className="text-xs uppercase tracking-[0.2em] text-indigo-600 font-medium">{t.heroLabel}</p>
-          <h1
-            className="mt-4 text-5xl leading-tight md:text-6xl text-slate-900"
-            style={{ fontFamily: 'var(--font-playfair)' }}
-          >
-            {t.heroTitle}
-          </h1>
-          <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-600">
-            {t.heroSub}
-          </p>
+    <main className="bg-white text-slate-950">
+      <section className="border-b border-slate-200 bg-slate-950 text-white">
+        <div className="mx-auto max-w-7xl px-6 py-24 md:py-28">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-300">{t.label}</p>
+          <h1 className="mt-5 max-w-4xl text-5xl leading-[1.08] md:text-6xl" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
+          <p className="mt-7 max-w-3xl text-lg leading-8 text-slate-300">{t.sub}</p>
         </div>
       </section>
 
-      {/* Projects grid */}
       <section className="mx-auto max-w-7xl px-6 py-20">
         {projects.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-28 text-center">
-            <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-slate-200 bg-white">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <rect x="2" y="3" width="20" height="14" rx="2" stroke="#94a3b8" strokeWidth="1.5"/>
-                <path d="M8 21h8M12 17v4" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
-            </div>
-            <p className="text-sm font-semibold text-slate-600">{t.noProjects}</p>
-            <p className="mt-2 max-w-sm text-xs leading-6 text-slate-400">{t.noProjectsSub}</p>
-            <Link
-              href="/contact"
-              className="mt-8 inline-block rounded-md bg-slate-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-slate-700"
-            >
-              {tc.contactUs}
-            </Link>
-          </div>
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-12 text-center text-sm text-slate-500">No published projects yet.</div>
         ) : (
-          <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-            {projects.map((project) => (
-              <Link
-                key={project.slug}
-                href={`/projects/${project.slug}`}
-                className="group flex flex-col rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm card-lift"
-              >
-                {/* Image area — aspect ratio matches source images (1536×1024 = 3:2) */}
-                <div className="relative aspect-[3/2] w-full overflow-hidden">
-                  <Image
-                    src={project.imagePath}
-                    alt={project.headline}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                  />
-                </div>
-
-                {/* Content */}
-                <div className="flex flex-col flex-1 p-7">
-                  {/* Chips */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="rounded-md bg-slate-900 px-2.5 py-1 text-[10px] font-medium text-white">
-                      {project.industry}
-                    </span>
-                    {project.capability.split(',').slice(0, 2).map((cap) => (
-                      <span
-                        key={cap}
-                        className="rounded-md bg-indigo-50 border border-indigo-100 px-2.5 py-1 text-[10px] font-medium text-indigo-700"
-                      >
-                        {cap.trim()}
-                      </span>
-                    ))}
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {projects.map((raw) => {
+              const project = publicProject(raw, lang)
+              return (
+                <Link key={project.slug} href={`/projects/${project.slug}`} className="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-200/50">
+                  <div className="relative aspect-[3/2] w-full overflow-hidden bg-slate-100">
+                    <Image src={project.imagePath} alt={project.headline} fill className="object-cover transition duration-300 group-hover:scale-[1.02]" sizes="(max-width:768px) 100vw,(max-width:1280px) 50vw,33vw" />
                   </div>
-
-                  {/* Headline */}
-                  <h2
-                    className="text-xl leading-snug text-slate-900 group-hover:text-indigo-700 transition"
-                    style={{ fontFamily: 'var(--font-playfair)' }}
-                  >
-                    {project.headline}
-                  </h2>
-
-                  {/* Description */}
-                  <p className="mt-3 text-sm leading-7 text-slate-600 line-clamp-3 flex-1">
-                    {project.description}
-                  </p>
-
-                  {/* Metrics */}
-                  {project.metrics.length > 0 && (
-                    <div className="mt-5 grid grid-cols-2 gap-2 border-t border-slate-100 pt-5">
-                      {project.metrics.slice(0, 4).map((m) => (
-                        <div key={m.label} className="rounded-lg bg-slate-50 border border-slate-100 px-3 py-2.5">
-                          <p className="text-[10px] text-slate-400 leading-tight">{m.label}</p>
-                          <p className="mt-0.5 text-sm font-semibold text-slate-900">{m.value}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </Link>
-            ))}
+                  <div className="p-6">
+                    <div className="flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-[0.12em]"><span className="text-indigo-600">{project.industry}</span><span className="text-slate-300">·</span><span className="text-slate-500">{project.challenge}</span></div>
+                    <h2 className="mt-4 text-xl leading-snug text-slate-950 transition group-hover:text-indigo-700" style={{ fontFamily: 'var(--font-playfair)' }}>{project.headline}</h2>
+                    <p className="mt-3 line-clamp-3 text-sm leading-7 text-slate-600">{project.description}</p>
+                    {project.metrics.length > 0 && <div className="mt-5 grid grid-cols-2 gap-2 border-t border-slate-100 pt-5">{project.metrics.slice(0,4).map((metric)=><div key={metric.label} className="rounded-lg bg-slate-50 px-3 py-2.5"><p className="text-[10px] leading-tight text-slate-400">{metric.label}</p><p className="mt-1 text-sm font-semibold text-slate-900">{metric.value}</p></div>)}</div>}
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         )}
+        {lang !== 'en' && projects.length > 0 && <p className="mt-8 text-xs leading-5 text-slate-400">{t.sourceNote}</p>}
       </section>
     </main>
   )
