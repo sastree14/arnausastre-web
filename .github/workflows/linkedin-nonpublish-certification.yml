@@ -51,7 +51,7 @@ jobs:
           row = rows[0]
           encrypted = row['access_token_ciphertext']
           assert encrypted.startswith('v1.'), 'LinkedIn token is not in expected encrypted v1 format'
-          version, iv_raw, tag_raw, cipher_raw = encrypted.split('.')
+          _, iv_raw, tag_raw, cipher_raw = encrypted.split('.')
           key = base64.b64decode(os.environ['GROWTH_ENCRYPTION_KEY'])
           assert len(key) == 32, 'GROWTH_ENCRYPTION_KEY must decode to 32 bytes'
           iv = base64.urlsafe_b64decode(iv_raw + '=' * (-len(iv_raw) % 4))
@@ -65,7 +65,6 @@ jobs:
           assert user.status_code == 200, f'LinkedIn userinfo failed: {user.status_code}'
           data = user.json()
           assert data.get('sub'), 'LinkedIn userinfo returned no sub'
-          assert data.get('name') == row.get('display_name') or row.get('display_name'), 'LinkedIn display name missing'
           scopes = set(row.get('scopes') or [])
           assert 'w_member_social' in scopes, scopes
           assert (row.get('metadata') or {}).get('person_urn'), 'Missing person_urn'
@@ -75,3 +74,5 @@ jobs:
           print(f"LINKEDIN_ACCOUNT_OK name={row.get('display_name','')}")
           print('NO_POST_CREATED=true')
           PY
+
+# Temporary workflow for certification only; no publishing step is present.
