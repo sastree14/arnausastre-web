@@ -46,18 +46,29 @@ export default function GeneratedArticleContent({ variants }: Props) {
   const article = selectVariant(variants, lang)
   if (!article) return null
 
+  const hasVisual = Boolean(article.visual_path?.startsWith('supabase://'))
+
   return (
     <main className="bg-white text-slate-950">
-      <article className="mx-auto max-w-3xl px-6 py-20 md:py-24">
+      <article className="mx-auto max-w-4xl px-6 py-20 md:py-24">
         <Link href="/knowledge" className="text-sm font-medium text-indigo-600 hover:text-indigo-800">← Knowledge</Link>
         <div className="mt-8 flex flex-wrap gap-2 text-xs text-slate-500">
           {article.content_family && <span className="rounded-full border border-slate-200 px-3 py-1">{article.content_family}</span>}
           {article.language && <span className="rounded-full border border-slate-200 px-3 py-1 uppercase">{article.language}</span>}
           <span className="rounded-full border border-slate-200 px-3 py-1">SC-Analytics</span>
         </div>
-        <h1 className="mt-6 text-4xl leading-tight md:text-5xl" style={{ fontFamily: 'var(--font-playfair)' }}>{article.title}</h1>
-        <div className="mt-10 border-t border-slate-200 pt-8">{renderBody(article.body)}</div>
-        <div className="mt-12 border-t border-slate-200 pt-6 text-sm text-slate-500">Published by SC-Analytics · understand before building.</div>
+        <h1 className="mt-6 max-w-3xl text-4xl leading-tight md:text-5xl" style={{ fontFamily: 'var(--font-playfair)' }}>{article.title}</h1>
+        {hasVisual && (
+          <figure className="mt-10 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
+            <img
+              src={`/api/knowledge/visual?content_id=${encodeURIComponent(article.content_id)}`}
+              alt={article.title}
+              className="h-auto w-full object-cover"
+            />
+          </figure>
+        )}
+        <div className="mx-auto mt-10 max-w-3xl border-t border-slate-200 pt-8">{renderBody(article.body)}</div>
+        <div className="mx-auto mt-12 max-w-3xl border-t border-slate-200 pt-6 text-sm text-slate-500">Published by SC-Analytics · understand before building.</div>
       </article>
     </main>
   )
