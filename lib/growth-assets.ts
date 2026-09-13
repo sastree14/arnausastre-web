@@ -19,7 +19,7 @@ export async function uploadGrowthAsset(key: string, data: Uint8Array, contentTy
       'x-upsert': 'true',
       'Cache-Control': '3600',
     }),
-    body: data,
+    body: Buffer.from(data),
     cache: 'no-store',
   })
   if (!response.ok) throw new Error(`Supabase asset upload failed: ${response.status} ${await response.text()}`)
