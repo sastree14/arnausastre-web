@@ -16,6 +16,13 @@ import {
   isGrowthAdminAuthenticated,
 } from '@/lib/growth-admin'
 import { getLinkedInConnection, linkedInConnectionStatus } from '@/lib/growth-integrations'
+import {
+  addDaysToDateKey,
+  controlCenterDateKey,
+  formatCalendarDateKey,
+  formatControlCenterDate,
+  toControlCenterDateTimeLocal,
+} from '@/lib/control-center-time'
 
 function Badge({ children, tone = 'slate' }: { children: React.ReactNode; tone?: 'slate' | 'green' | 'amber' | 'blue' | 'violet' }) {
   const tones = {
@@ -41,18 +48,11 @@ function assetUrl(item: GrowthContentItem) {
 }
 
 function formatDate(value?: string | null, withTime = false) {
-  if (!value) return '—'
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return value
-  return date.toLocaleString('es-ES', withTime ? { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' } : { day: '2-digit', month: 'short', year: 'numeric' })
+  return formatControlCenterDate(value, withTime)
 }
 
 function scheduleInputValue(value?: string | null) {
-  if (!value) return ''
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return ''
-  const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
-  return local.toISOString().slice(0, 16)
+  return toControlCenterDateTimeLocal(value)
 }
 
 function ActionLinks({ payload }: { payload: GrowthApprovalPayload }) {
@@ -78,14 +78,16 @@ function ContentPreview({ item }: { item?: GrowthContentItem }) {
 }
 
 function buildCalendarDays(content: GrowthContentItem[], days = 14) {
-  const start = new Date()
-  start.setHours(0, 0, 0, 0)
+  const startKey = controlCenterDateKey(new Date())
   return Array.from({ length: days }, (_, index) => {
-    const day = new Date(start)
-    day.setDate(start.getDate() + index)
-    const key = day.toISOString().slice(0, 10)
-    const items = content.filter((item) => item.scheduled_at?.slice(0, 10) === key || item.published_at?.slice(0, 10) === key)
-    return { day, key, items }
+    const key = addDaysToDateKey(startKey, index)
+    const items = content.filter((item) => controlCenterDateKey(item.scheduled_at || '') === key || controlCenterDateKey(item.published_at || '') === key)
+    return {
+      key,
+      items,
+      weekday: formatCalendarDateKey(key, 'weekday'),
+      dateLabel: formatCalendarDateKey(key, 'date'),
+    }
   })
 }
 
@@ -149,9 +151,9 @@ export default async function GrowthAdminPage() {
           <section id="calendar" className="mt-12 scroll-mt-6">
             <SectionHeading eyebrow="Publishing" title="14-day content calendar" count={scheduled.length} />
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-7">
-              {calendar.map(({ day, key, items }) => <div key={key} className="min-h-40 rounded-2xl border border-slate-800 bg-slate-900/50 p-4"><p className="text-xs uppercase tracking-wide text-slate-500">{day.toLocaleDateString('es-ES',{weekday:'short'})}</p><p className="mt-1 text-lg font-semibold text-white">{day.toLocaleDateString('es-ES',{day:'2-digit',month:'short'})}</p><div className="mt-4 space-y-2">{items.length === 0 && <p className="text-xs text-slate-700">No slot</p>}{items.map((item) => <div key={item.content_id} className="rounded-lg border border-slate-800 bg-slate-950 p-2.5"><p className="line-clamp-2 text-xs font-medium text-slate-200">{item.title}</p><div className="mt-2 flex flex-wrap gap-1"><Badge tone={item.channel.includes('linkedin') ? 'blue' : 'violet'}>{item.channel.includes('linkedin') ? 'LinkedIn' : 'Web'}</Badge><Badge>{item.language || '—'}</Badge></div></div>)}</div></div>)}
+              {calendar.map(({ key, items, weekday, dateLabel }) => <div key={key} className="min-h-40 rounded-2xl border border-slate-800 bg-slate-900/50 p-4"><p className="text-xs uppercase tracking-wide text-slate-500">{weekday}</p><p className="mt-1 text-lg font-semibold text-white">{dateLabel}</p><div className="mt-4 space-y-2">{items.length === 0 && <p className="text-xs text-slate-700">No slot</p>}{items.map((item) => <div key={item.content_id} className="rounded-lg border border-slate-800 bg-slate-950 p-2.5"><p className="line-clamp-2 text-xs font-medium text-slate-200">{item.title}</p><div className="mt-2 flex flex-wrap gap-1"><Badge tone={item.channel.includes('linkedin') ? 'blue' : 'violet'}>{item.channel.includes('linkedin') ? 'LinkedIn' : 'Web'}</Badge><Badge>{item.language || '—'}</Badge></div></div>)}</div></div>)}
             </div>
-            <div className="mt-4 rounded-xl border border-slate-800 bg-slate-900/50 p-4 text-xs leading-5 text-slate-500">Scheduling is stored in Supabase. LinkedIn publication waits until the scheduled time; approved website articles can also be held until their scheduled time.</div>
+            <div className="mt-4 rounded-xl border border-slate-800 bg-slate-900/50 p-4 text-xs leading-5 text-slate-500">All Control Center scheduling is interpreted and displayed in Europe/Madrid. Supabase stores the UTC instant; LinkedIn publication waits until that instant, and approved website articles can also be held until their scheduled time.</div>
           </section>
 
           <section id="approvals" className="mt-12 scroll-mt-6">
@@ -167,7 +169,7 @@ export default async function GrowthAdminPage() {
                     <div className="min-w-0 flex-1"><div className="flex flex-wrap gap-2"><Badge tone={approval.action_type === 'publish_article' ? 'violet' : approval.action_type === 'publish_post' ? 'blue' : 'slate'}>{approval.action_type}</Badge>{payload.family && <Badge>{payload.family}</Badge>}{payload.language && <Badge>{payload.language}</Badge>}{typeof payload.quality_score === 'number' && <Badge tone="green">quality {payload.quality_score.toFixed(1)}</Badge>}</div><h3 className="mt-4 text-lg font-semibold text-white">{approval.summary}</h3>{typeof payload.message === 'string' && payload.message && <div className="mt-4 whitespace-pre-wrap rounded-xl border border-slate-800 bg-slate-950 p-4 text-sm leading-6 text-slate-300">{payload.message}</div>}<ActionLinks payload={payload} /></div>
                     <div className="flex shrink-0 gap-2 xl:flex-col"><form action="/api/growth-admin/decide" method="post"><input type="hidden" name="approval_id" value={approval.approval_id}/><input type="hidden" name="decision" value="approved"/><button className="w-full rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-slate-100">Approve</button></form><form action="/api/growth-admin/decide" method="post"><input type="hidden" name="approval_id" value={approval.approval_id}/><input type="hidden" name="decision" value="rejected"/><button className="w-full rounded-lg border border-slate-700 px-5 py-2.5 text-sm text-slate-300 hover:border-slate-500">Reject</button></form></div>
                   </div>
-                  {isPublish && item && <><div className="mt-5 flex flex-col gap-3 rounded-xl border border-slate-800 bg-slate-950/70 p-4 sm:flex-row sm:items-end"><form action="/api/growth-admin/schedule" method="post" className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-end"><input type="hidden" name="content_id" value={item.content_id}/><label className="flex-1 text-xs text-slate-500">Schedule (optional)<input name="scheduled_at" type="datetime-local" defaultValue={scheduleInputValue(item.scheduled_at)} className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-200"/></label><button className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-300 hover:border-slate-500">Save schedule</button></form><div className="text-xs text-slate-600">Current: {item.scheduled_at ? formatDate(item.scheduled_at,true) : 'publish after approval'}</div></div><ContentPreview item={item}/></>}
+                  {isPublish && item && <><div className="mt-5 flex flex-col gap-3 rounded-xl border border-slate-800 bg-slate-950/70 p-4 sm:flex-row sm:items-end"><form action="/api/growth-admin/schedule" method="post" className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-end"><input type="hidden" name="content_id" value={item.content_id}/><label className="flex-1 text-xs text-slate-500">Schedule — Europe/Madrid (optional)<input name="scheduled_at" type="datetime-local" defaultValue={scheduleInputValue(item.scheduled_at)} className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-200"/></label><button className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-300 hover:border-slate-500">Save schedule</button></form><div className="text-xs text-slate-600">Current: {item.scheduled_at ? formatDate(item.scheduled_at,true) : 'publish after approval'}</div></div><ContentPreview item={item}/></>}
                 </article>
               })}
             </div>
