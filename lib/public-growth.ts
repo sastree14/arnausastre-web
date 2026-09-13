@@ -25,13 +25,25 @@ function isPublicNow(article: PublicGeneratedArticle) {
   return new Date(article.scheduled_at).getTime() <= Date.now()
 }
 
+function growthBackendConfigured() {
+  return Boolean((process.env.SUPABASE_URL || '').trim() && ((process.env.SUPABASE_SECRET_KEY || '').trim() || (process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim()))
+}
+
 export async function getPublicGeneratedArticles(): Promise<PublicGeneratedArticle[]> {
-  const rows = await queryGrowthTable<PublicGeneratedArticle>('content_items', {
-    content_type: 'eq.article',
-    order: 'created_at.desc',
-    limit: '200',
-  })
-  return rows.filter(isPublicNow)
+  // Vercel preview environments may intentionally omit production Growth Agent secrets.
+  // The public site must still build; generated content simply stays unavailable there.
+  if (!growthBackendConfigured()) return []
+  try {
+    const rows = await queryGrowthTable<PublicGeneratedArticle>('content_items', {
+      content_type: 'eq.article',
+      order: 'created_at.desc',
+      limit: '200',
+    })
+    return rows.filter(isPublicNow)
+  } catch (error) {
+    console.error('Public Growth content unavailable', error)
+    return []
+  }
 }
 
 export async function getPublicGeneratedArticleVariants(slug: string): Promise<PublicGeneratedArticle[]> {
