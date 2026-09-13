@@ -1,193 +1,86 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useLanguage } from './LanguageProvider'
-import { translations } from '@/lib/translations'
+import { useState } from 'react'
+import { useLanguage } from '@/components/LanguageProvider'
+import { useSiteLanguage } from '@/components/SiteLanguageProvider'
+import { publicCopy, type SiteLanguage } from '@/lib/public-copy'
+
+const links = [
+  ['/', 'home'],
+  ['/services', 'services'],
+  ['/projects', 'projects'],
+  ['/knowledge', 'knowledge'],
+  ['/about', 'about'],
+] as const
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
-  const { lang, setLang } = useLanguage()
   const pathname = usePathname()
-  const t = translations[lang].nav
+  const [open, setOpen] = useState(false)
+  const { lang, setLang } = useSiteLanguage()
+  const { setLang: setLegacyLang } = useLanguage()
+  const t = publicCopy[lang].nav
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => { document.body.style.overflow = '' }
-  }, [menuOpen])
-
-  const navLinks = [
-    { href: '/', label: t.home },
-    { href: '/services', label: t.services },
-    { href: '/projects', label: t.caseStudies },
-    { href: '/knowledge', label: t.insights },
-    { href: '/about', label: t.about },
-  ]
-
-  const isActive = (href: string) => {
-    if (href === '/') return pathname === '/'
-    return pathname.startsWith(href)
+  const chooseLanguage = (next: SiteLanguage) => {
+    setLang(next)
+    setLegacyLang(next === 'ca' ? 'es' : next)
   }
 
   return (
-    <>
-      <header
-        className={`sticky top-0 z-50 transition-all duration-300 ${
-          scrolled || menuOpen
-            ? 'navbar-solid'
-            : 'border-b border-transparent bg-white/80 backdrop-blur-sm'
-        }`}
-      >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Link href="/" className="transition hover:opacity-75" onClick={() => setMenuOpen(false)}>
-            <Image
-              src="/brand/logo-horizontal.png"
-              alt="Arnau Sastre Analytics"
-              width={344}
-              height={224}
-              className="h-9 w-auto"
-              priority
-            />
-          </Link>
+    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5 md:px-6">
+        <Link href="/" className="flex items-center" aria-label="SC-Analytics home">
+          <Image src="/brand/logo-horizontal.png" alt="SC-Analytics" width={344} height={224} className="h-9 w-auto" priority />
+        </Link>
 
-          <nav className="hidden items-center gap-1 lg:flex">
-            {navLinks.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
-                  isActive(href)
-                    ? 'bg-slate-100 text-slate-900 font-medium'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                }`}
-              >
-                {label}
+        <nav className="hidden items-center gap-1 lg:flex">
+          {links.map(([href, key]) => {
+            const active = href === '/' ? pathname === '/' : pathname.startsWith(href)
+            return (
+              <Link key={href} href={href} className={`rounded-md px-3 py-2 text-sm transition ${active ? 'bg-slate-100 text-slate-950' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'}`}>
+                {t[key]}
               </Link>
+            )
+          })}
+        </nav>
+
+        <div className="hidden items-center gap-3 lg:flex">
+          <div className="flex rounded-lg border border-slate-200 bg-slate-50 p-1 text-xs font-medium">
+            {(['en', 'es', 'ca'] as SiteLanguage[]).map((code) => (
+              <button key={code} type="button" onClick={() => chooseLanguage(code)} className={`rounded-md px-2.5 py-1.5 uppercase transition ${lang === code ? 'bg-white text-slate-950 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+                {code}
+              </button>
             ))}
-          </nav>
-
-          <div className="hidden items-center gap-3 lg:flex">
-            <div className="flex items-center gap-1 rounded-md border border-slate-200 bg-slate-50 p-1 text-xs font-medium">
-              <button
-                onClick={() => setLang('en')}
-                className={`rounded px-2 py-1 transition ${
-                  lang === 'en'
-                    ? 'bg-white text-slate-900 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-700'
-                }`}
-              >
-                EN
-              </button>
-              <button
-                onClick={() => setLang('es')}
-                className={`rounded px-2 py-1 transition ${
-                  lang === 'es'
-                    ? 'bg-white text-slate-900 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-700'
-                }`}
-              >
-                ES
-              </button>
-            </div>
-
-            <Link
-              href="/contact"
-              className={`rounded-md px-4 py-2 text-sm font-medium transition ${
-                isActive('/contact')
-                  ? 'bg-slate-900 text-white'
-                  : 'bg-slate-900 text-white hover:bg-slate-700'
-              }`}
-            >
-              {t.contact}
-            </Link>
           </div>
-
-          <div className="flex items-center gap-3 lg:hidden">
-            <div className="flex items-center gap-1 rounded-md border border-slate-200 bg-slate-50 p-1 text-xs font-medium">
-              <button
-                onClick={() => setLang('en')}
-                className={`rounded px-2 py-1 transition ${
-                  lang === 'en' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'
-                }`}
-              >
-                EN
-              </button>
-              <button
-                onClick={() => setLang('es')}
-                className={`rounded px-2 py-1 transition ${
-                  lang === 'es' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'
-                }`}
-              >
-                ES
-              </button>
-            </div>
-
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="flex h-8 w-8 items-center justify-center rounded-md text-slate-700 hover:bg-slate-100"
-              aria-label="Toggle menu"
-            >
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                {menuOpen ? (
-                  <>
-                    <line x1="2" y1="2" x2="16" y2="16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                    <line x1="16" y1="2" x2="2" y2="16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                  </>
-                ) : (
-                  <>
-                    <line x1="2" y1="4" x2="16" y2="4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                    <line x1="2" y1="9" x2="16" y2="9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                    <line x1="2" y1="14" x2="16" y2="14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                  </>
-                )}
-              </svg>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div
-        className={`fixed inset-0 top-[57px] z-40 bg-white transition-all duration-300 lg:hidden ${
-          menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-      >
-        <nav className="flex flex-col gap-1 px-6 pt-6">
-          {navLinks.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={() => setMenuOpen(false)}
-              className={`rounded-lg px-4 py-3 text-base transition-colors ${
-                isActive(href)
-                  ? 'bg-slate-100 text-slate-900 font-medium'
-                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-              }`}
-            >
-              {label}
-            </Link>
-          ))}
-          <Link
-            href="/contact"
-            onClick={() => setMenuOpen(false)}
-            className="mt-4 rounded-lg bg-slate-900 px-4 py-3 text-center text-base font-medium text-white"
-          >
+          <Link href="/contact" className="rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800">
             {t.contact}
           </Link>
-        </nav>
+        </div>
+
+        <button type="button" onClick={() => setOpen((value) => !value)} className="rounded-lg border border-slate-200 p-2 text-slate-700 lg:hidden" aria-label="Toggle navigation">
+          <span className="block h-0.5 w-5 bg-current" />
+          <span className="mt-1.5 block h-0.5 w-5 bg-current" />
+          <span className="mt-1.5 block h-0.5 w-5 bg-current" />
+        </button>
       </div>
-    </>
+
+      {open && (
+        <div className="border-t border-slate-200 bg-white px-5 py-5 lg:hidden">
+          <nav className="flex flex-col gap-1">
+            {links.map(([href, key]) => (
+              <Link key={href} href={href} onClick={() => setOpen(false)} className="rounded-lg px-3 py-3 text-sm text-slate-700 hover:bg-slate-50">{t[key]}</Link>
+            ))}
+            <Link href="/contact" onClick={() => setOpen(false)} className="mt-2 rounded-lg bg-slate-950 px-3 py-3 text-center text-sm font-medium text-white">{t.contact}</Link>
+          </nav>
+          <div className="mt-5 flex gap-2 border-t border-slate-100 pt-4">
+            {(['en', 'es', 'ca'] as SiteLanguage[]).map((code) => (
+              <button key={code} type="button" onClick={() => chooseLanguage(code)} className={`rounded-md px-3 py-2 text-xs font-medium uppercase ${lang === code ? 'bg-slate-950 text-white' : 'bg-slate-100 text-slate-600'}`}>{code}</button>
+            ))}
+          </div>
+        </div>
+      )}
+    </header>
   )
 }
