@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import ControlCenterQuickNav from '@/components/control-center/ControlCenterQuickNav'
 
 export const metadata: Metadata = {
   title: 'SC-Analytics Control Center',
@@ -6,5 +7,5 @@ export const metadata: Metadata = {
 }
 
 export default function GrowthAdminLayout({ children }: { children: React.ReactNode }) {
-  return children
+  return <>{children}<ControlCenterQuickNav /></>
 }
