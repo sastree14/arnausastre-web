@@ -43,8 +43,6 @@ export default async function VisualStudioPage({ searchParams }: { searchParams?
       visual_type: item.visual_type,
       visual_path: item.visual_path,
       publication_mode: item.publication_mode,
-      status: item.status,
-      scheduled_at: item.scheduled_at,
     }))
 
   return <VisualStudioClientV2 content={content} savedDesigns={savedDesigns} initialContentId={params?.content} />
