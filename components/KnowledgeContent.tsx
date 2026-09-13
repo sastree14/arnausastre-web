@@ -1,336 +1,75 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
-import { useLanguage } from './LanguageProvider'
-import { translations } from '@/lib/translations'
+import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import type { Article } from '@/lib/content'
 
-// ── Taxonomy (mirrors content/editorial/taxonomy.md) ─────────────────────────
+const INDUSTRIES = ['Retail','E-commerce','Manufacturing','Logistics','Financial Services','Banking','Insurance','Real Estate','Healthcare','Pharmaceutical','Energy','Utilities','Telecommunications','Professional Services','SaaS','Technology','Hospitality','Food & Beverage','Distribution','Transportation','Public Sector']
+const CHALLENGES = ['Forecasting','Planning','Optimization','Resource Allocation','Pricing','Risk Management','Customer Analytics','Operations','Automation','Decision Systems','Inventory Management','Supply Chain','Fraud Detection','Performance Management','Business Intelligence','Data Quality','Compliance','Growth Strategy']
+const AUDIENCES = ['CEO','COO','CFO','CTO','CIO','CDO','Operations Director','Supply Chain Director','Finance Director','Commercial Director','Analytics Manager','Data Scientist','Data Analyst','Planning Manager','Risk Manager']
 
-const INDUSTRIES = [
-  'Retail', 'E-commerce', 'Manufacturing', 'Logistics', 'Financial Services',
-  'Banking', 'Insurance', 'Real Estate', 'Healthcare', 'Pharmaceutical',
-  'Energy', 'Utilities', 'Telecommunications', 'Professional Services', 'SaaS',
-  'Technology', 'Hospitality', 'Food & Beverage', 'Distribution',
-  'Transportation', 'Public Sector',
-]
+const ui = {
+  en: { industry:'Industry', challenge:'Challenge', audience:'Audience', clear:'Clear', article:'article', articles:'articles', filtered:'filtered from', read:'Read', min:'min read', empty:'No analysis available for this selection.', emptyBody:'The editorial system is selective. New material appears when there is something useful to add.', more:'Load more' },
+  es: { industry:'Industria', challenge:'Reto', audience:'Audiencia', clear:'Limpiar', article:'artículo', articles:'artículos', filtered:'filtrado de', read:'Leer', min:'min de lectura', empty:'No hay análisis disponibles para esta selección.', emptyBody:'El sistema editorial es selectivo. Publicamos nuevo material cuando existe algo útil que aportar.', more:'Cargar más' },
+  ca: { industry:'Indústria', challenge:'Repte', audience:'Audiència', clear:'Netejar', article:'article', articles:'articles', filtered:'filtrat de', read:'Llegir', min:'min de lectura', empty:'No hi ha anàlisis disponibles per a aquesta selecció.', emptyBody:'El sistema editorial és selectiu. Publiquem material nou quan hi ha alguna cosa útil a aportar.', more:'Carregar més' },
+} as const
 
-const CHALLENGES = [
-  'Forecasting', 'Planning', 'Optimization', 'Resource Allocation', 'Pricing',
-  'Risk Management', 'Customer Analytics', 'Operations', 'Automation',
-  'Decision Systems', 'Inventory Management', 'Supply Chain', 'Fraud Detection',
-  'Performance Management', 'Business Intelligence', 'Data Quality',
-  'Compliance', 'Growth Strategy',
-]
-
-const AUDIENCES = [
-  'CEO', 'COO', 'CFO', 'CTO', 'CIO', 'CDO',
-  'Operations Director', 'Supply Chain Director', 'Finance Director',
-  'Commercial Director', 'Analytics Manager', 'Data Scientist',
-  'Data Analyst', 'Planning Manager', 'Risk Manager',
-]
-
-// Spanish translations (values identical or similar in both languages are omitted)
-const INDUSTRY_ES: Record<string, string> = {
-  'Manufacturing': 'Manufactura',
-  'Logistics': 'Logística',
-  'Financial Services': 'Servicios Financieros',
-  'Banking': 'Banca',
-  'Insurance': 'Seguros',
-  'Real Estate': 'Inmobiliario',
-  'Healthcare': 'Sanidad',
-  'Pharmaceutical': 'Farmacéutica',
-  'Energy': 'Energía',
-  'Telecommunications': 'Telecomunicaciones',
-  'Professional Services': 'Servicios Profesionales',
-  'Technology': 'Tecnología',
-  'Hospitality': 'Hostelería',
-  'Food & Beverage': 'Alimentación y Bebidas',
-  'Distribution': 'Distribución',
-  'Transportation': 'Transporte',
-  'Public Sector': 'Sector Público',
+const ES: Record<string,string> = {
+  'Manufacturing':'Manufactura','Logistics':'Logística','Financial Services':'Servicios financieros','Banking':'Banca','Insurance':'Seguros','Real Estate':'Inmobiliario','Healthcare':'Sanidad','Pharmaceutical':'Farmacéutica','Energy':'Energía','Telecommunications':'Telecomunicaciones','Professional Services':'Servicios profesionales','Technology':'Tecnología','Hospitality':'Hostelería','Food & Beverage':'Alimentación y bebidas','Distribution':'Distribución','Transportation':'Transporte','Public Sector':'Sector público',
+  'Planning':'Planificación','Optimization':'Optimización','Resource Allocation':'Asignación de recursos','Pricing':'Precios','Risk Management':'Gestión del riesgo','Customer Analytics':'Analítica de clientes','Operations':'Operaciones','Automation':'Automatización','Decision Systems':'Sistemas de decisión','Inventory Management':'Gestión de inventario','Supply Chain':'Cadena de suministro','Fraud Detection':'Detección de fraude','Performance Management':'Gestión del rendimiento','Data Quality':'Calidad de datos','Compliance':'Cumplimiento','Growth Strategy':'Estrategia de crecimiento',
+  'Operations Director':'Director de Operaciones','Supply Chain Director':'Director de Supply Chain','Finance Director':'Director Financiero','Commercial Director':'Director Comercial','Analytics Manager':'Responsable de Analítica','Data Analyst':'Analista de Datos','Planning Manager':'Responsable de Planificación','Risk Manager':'Responsable de Riesgos',
+}
+const CA: Record<string,string> = {
+  'Manufacturing':'Manufactura','Logistics':'Logística','Financial Services':'Serveis financers','Banking':'Banca','Insurance':'Assegurances','Real Estate':'Immobiliari','Healthcare':'Salut','Pharmaceutical':'Farmacèutica','Energy':'Energia','Telecommunications':'Telecomunicacions','Professional Services':'Serveis professionals','Technology':'Tecnologia','Hospitality':'Hostaleria','Food & Beverage':'Alimentació i begudes','Distribution':'Distribució','Transportation':'Transport','Public Sector':'Sector públic',
+  'Planning':'Planificació','Optimization':'Optimització','Resource Allocation':'Assignació de recursos','Pricing':'Preus','Risk Management':'Gestió del risc','Customer Analytics':'Analítica de clients','Operations':'Operacions','Automation':'Automatització','Decision Systems':'Sistemes de decisió','Inventory Management':'Gestió d’inventari','Supply Chain':'Cadena de subministrament','Fraud Detection':'Detecció de frau','Performance Management':'Gestió del rendiment','Data Quality':'Qualitat de dades','Compliance':'Compliment','Growth Strategy':'Estratègia de creixement',
+  'Operations Director':'Director d’Operacions','Supply Chain Director':'Director de Supply Chain','Finance Director':'Director Financer','Commercial Director':'Director Comercial','Analytics Manager':'Responsable d’Analítica','Data Analyst':'Analista de Dades','Planning Manager':'Responsable de Planificació','Risk Manager':'Responsable de Riscos',
 }
 
-const CHALLENGE_ES: Record<string, string> = {
-  'Planning': 'Planificación',
-  'Optimization': 'Optimización',
-  'Resource Allocation': 'Asignación de Recursos',
-  'Pricing': 'Precios',
-  'Risk Management': 'Gestión del Riesgo',
-  'Customer Analytics': 'Analítica de Clientes',
-  'Operations': 'Operaciones',
-  'Automation': 'Automatización',
-  'Decision Systems': 'Sistemas de Decisión',
-  'Inventory Management': 'Gestión de Inventario',
-  'Supply Chain': 'Cadena de Suministro',
-  'Fraud Detection': 'Detección de Fraude',
-  'Performance Management': 'Gestión del Rendimiento',
-  'Data Quality': 'Calidad de Datos',
-  'Compliance': 'Cumplimiento Normativo',
-  'Growth Strategy': 'Estrategia de Crecimiento',
+function label(value:string, lang:'en'|'es'|'ca') { return lang === 'en' ? value : (lang === 'ca' ? CA[value] : ES[value]) || value }
+
+function Filter({ title, options, value, onChange, lang }:{ title:string; options:string[]; value:string|null; onChange:(value:string|null)=>void; lang:'en'|'es'|'ca' }) {
+  return <select value={value || ''} onChange={(event)=>onChange(event.target.value || null)} className="min-w-[170px] flex-1 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 outline-none focus:border-slate-400"><option value="">{title}</option>{options.map((option)=><option key={option} value={option}>{label(option,lang)}</option>)}</select>
 }
 
-const AUDIENCE_ES: Record<string, string> = {
-  'Operations Director': 'Director de Operaciones',
-  'Supply Chain Director': 'Director de Supply Chain',
-  'Finance Director': 'Director Financiero',
-  'Commercial Director': 'Director Comercial',
-  'Analytics Manager': 'Director de Analítica',
-  'Data Analyst': 'Analista de Datos',
-  'Planning Manager': 'Director de Planificación',
-  'Risk Manager': 'Director de Riesgos',
-}
+const PAGE_SIZE = 6
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+export default function KnowledgeContent({ articles }:{ articles:Article[] }) {
+  const { lang } = useSiteLanguage()
+  const t = ui[lang]
+  const [industry,setIndustry] = useState<string|null>(null)
+  const [challenge,setChallenge] = useState<string|null>(null)
+  const [audience,setAudience] = useState<string|null>(null)
+  const [visibleCount,setVisibleCount] = useState(PAGE_SIZE)
+  const hasFilters = Boolean(industry || challenge || audience)
+  const reset = () => setVisibleCount(PAGE_SIZE)
+  const filtered = articles.filter((article)=>(!industry || article.industry===industry)&&(!challenge || article.challenge===challenge)&&(!audience || article.audience===audience))
+  const visible = filtered.slice(0,visibleCount)
+  const contentLanguage = lang === 'en' ? 'en' : 'es'
 
-function tr(en: string, map: Record<string, string>, lang: string): string {
-  return lang === 'en' ? en : (map[en] ?? en)
-}
-
-// ── Dropdown filter ───────────────────────────────────────────────────────────
-
-function FilterSelect({
-  label, options, value, onChange, lang, map,
-}: {
-  label: string
-  options: string[]
-  value: string | null
-  onChange: (v: string | null) => void
-  lang: string
-  map: Record<string, string>
-}) {
-  return (
-    <div className="relative flex-1 min-w-[180px]">
-      <select
-        value={value ?? ''}
-        onChange={(e) => onChange(e.target.value || null)}
-        className={`w-full appearance-none border px-4 py-2.5 pr-9 text-sm font-medium transition focus:outline-none focus:border-slate-900 cursor-pointer bg-white ${
-          value
-            ? 'border-slate-900 text-slate-900'
-            : 'border-slate-300 text-slate-500'
-        }`}
-      >
-        <option value="">{label}</option>
-        {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {tr(opt, map, lang)}
-          </option>
-        ))}
-      </select>
-      <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
-        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
-          <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </div>
+  return <section className="mx-auto max-w-5xl px-6 py-16">
+    <div className="flex flex-wrap gap-3 rounded-2xl border border-slate-200 bg-white p-4">
+      <Filter title={t.industry} options={INDUSTRIES} value={industry} onChange={(value)=>{setIndustry(value);reset()}} lang={lang}/>
+      <Filter title={t.challenge} options={CHALLENGES} value={challenge} onChange={(value)=>{setChallenge(value);reset()}} lang={lang}/>
+      <Filter title={t.audience} options={AUDIENCES} value={audience} onChange={(value)=>{setAudience(value);reset()}} lang={lang}/>
+      {hasFilters && <button onClick={()=>{setIndustry(null);setChallenge(null);setAudience(null);reset()}} className="rounded-lg border border-slate-200 px-4 py-3 text-xs font-medium text-slate-500 hover:text-slate-900">{t.clear}</button>}
     </div>
-  )
-}
+    <p className="mt-3 text-xs text-slate-400">{filtered.length} {filtered.length===1?t.article:t.articles}{hasFilters?` · ${t.filtered} ${articles.length}`:''}</p>
 
-// ── Article card (horizontal) ─────────────────────────────────────────────────
+    {filtered.length===0 ? <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-12 text-center"><p className="font-semibold text-slate-700">{t.empty}</p><p className="mx-auto mt-3 max-w-lg text-sm leading-7 text-slate-500">{t.emptyBody}</p></div> : <div className="mt-6 divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white px-6 md:px-8">
+      {visible.map((article)=>{
+        const title = contentLanguage==='en'?article.titleEn:article.titleEs
+        const excerpt = contentLanguage==='en'?article.excerptEn:article.excerptEs
+        return <Link key={article.slug} href={`/knowledge/${article.slug}`} className="group block py-7">
+          <div className="flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400"><span className="text-indigo-600">{label(article.industry,lang)}</span><span>·</span><span>{label(article.challenge,lang)}</span><span>·</span><span>{label(article.audience,lang)}</span></div>
+          <h2 className="mt-3 text-xl leading-snug text-slate-950 transition group-hover:text-indigo-700" style={{fontFamily:'var(--font-playfair)'}}>{title}</h2>
+          <p className="mt-2 line-clamp-2 text-sm leading-7 text-slate-600">{excerpt}</p>
+          <div className="mt-4 flex items-center justify-between text-xs"><span className="text-slate-400">{article.date} · {article.readingTime} {t.min}</span><span className="font-medium text-indigo-600">{t.read} →</span></div>
+        </Link>
+      })}
+    </div>}
 
-function ArticleCard({ article, lang, tc }: {
-  article: Article
-  lang: string
-  tc: { readMore: string; minRead: string; [key: string]: string }
-}) {
-  const title = lang === 'en' ? article.titleEn : article.titleEs
-  const excerpt = lang === 'en' ? article.excerptEn : article.excerptEs
-
-  return (
-    <Link
-      href={`/knowledge/${article.slug}`}
-      className="group flex gap-6 border-b border-slate-200 py-8 last:border-0 hover:bg-slate-50/50 transition-colors px-1 -mx-1"
-    >
-      {/* Brand visual — hidden on mobile */}
-      <div className="hidden md:flex w-28 flex-shrink-0 items-center justify-center rounded bg-slate-900 px-4 py-5 self-start mt-1">
-        <Image
-          src="/brand/logo-horizontal-transparent.png"
-          alt="SC-Analytics"
-          width={120}
-          height={40}
-          className="w-full h-auto opacity-70"
-        />
-      </div>
-
-      {/* Content */}
-      <div className="flex-1 min-w-0">
-        {/* Meta row */}
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-3">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-indigo-600">
-            {tr(article.industry, INDUSTRY_ES, lang)}
-          </span>
-          <span className="text-slate-300 text-xs" aria-hidden="true">·</span>
-          <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-slate-500">
-            {tr(article.challenge, CHALLENGE_ES, lang)}
-          </span>
-          <span className="text-slate-300 text-xs" aria-hidden="true">·</span>
-          <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-slate-400">
-            {tr(article.audience, AUDIENCE_ES, lang)}
-          </span>
-        </div>
-
-        {/* Title */}
-        <h2
-          className="text-xl leading-snug text-slate-900 group-hover:text-indigo-700 transition"
-          style={{ fontFamily: 'var(--font-playfair)' }}
-        >
-          {title}
-        </h2>
-
-        {/* Excerpt */}
-        <p className="mt-2 text-sm leading-7 text-slate-600 line-clamp-2">{excerpt}</p>
-
-        {/* Footer */}
-        <div className="mt-4 flex items-center justify-between">
-          <div className="flex items-center gap-3 text-xs text-slate-400">
-            <span>{article.date}</span>
-            <span aria-hidden="true">·</span>
-            <span>{article.readingTime} {tc.minRead}</span>
-          </div>
-          <span className="flex items-center gap-1.5 text-xs font-medium text-indigo-600 group-hover:gap-2.5 transition-all">
-            {tc.readMore}
-            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </span>
-        </div>
-      </div>
-    </Link>
-  )
-}
-
-// ── Main component ────────────────────────────────────────────────────────────
-
-const PAGE_SIZE = 4
-
-export default function KnowledgeContent({ articles }: { articles: Article[] }) {
-  const { lang } = useLanguage()
-  const tc = translations[lang].common
-  const [industry, setIndustry] = useState<string | null>(null)
-  const [challenge, setChallenge] = useState<string | null>(null)
-  const [audience, setAudience] = useState<string | null>(null)
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
-
-  const hasFilters = industry !== null || challenge !== null || audience !== null
-
-  // Reset pagination whenever a filter changes
-  const setIndustryAndReset = (v: string | null) => { setIndustry(v); setVisibleCount(PAGE_SIZE) }
-  const setChallengeAndReset = (v: string | null) => { setChallenge(v); setVisibleCount(PAGE_SIZE) }
-  const setAudienceAndReset = (v: string | null) => { setAudience(v); setVisibleCount(PAGE_SIZE) }
-  const clearAll = () => { setIndustry(null); setChallenge(null); setAudience(null); setVisibleCount(PAGE_SIZE) }
-
-  const filtered = articles.filter((a) => {
-    if (industry && a.industry !== industry) return false
-    if (challenge && a.challenge !== challenge) return false
-    if (audience && a.audience !== audience) return false
-    return true
-  })
-
-  const visible = filtered.slice(0, visibleCount)
-  const hasMore = visibleCount < filtered.length
-
-  const emptyTitle = lang === 'en'
-    ? 'No articles available for this selection.'
-    : 'No hay artículos disponibles para esta selección.'
-  const emptyBody = lang === 'en'
-    ? 'We are expanding our knowledge base in this area. New content will be published soon.'
-    : 'Estamos ampliando nuestra base de conocimiento en esta área. Nuevo contenido se publicará próximamente.'
-
-  return (
-    <div className="mx-auto max-w-5xl px-6 py-16">
-
-      {/* Filter bar */}
-      <div className="mb-10 border border-slate-200 bg-white">
-        <div className="flex flex-wrap items-stretch gap-px bg-slate-200">
-          <FilterSelect
-            label={lang === 'en' ? 'Industry' : 'Industria'}
-            options={INDUSTRIES}
-            value={industry}
-            onChange={setIndustryAndReset}
-            lang={lang}
-            map={INDUSTRY_ES}
-          />
-          <FilterSelect
-            label={lang === 'en' ? 'Challenge' : 'Reto'}
-            options={CHALLENGES}
-            value={challenge}
-            onChange={setChallengeAndReset}
-            lang={lang}
-            map={CHALLENGE_ES}
-          />
-          <FilterSelect
-            label={lang === 'en' ? 'Audience' : 'Audiencia'}
-            options={AUDIENCES}
-            value={audience}
-            onChange={setAudienceAndReset}
-            lang={lang}
-            map={AUDIENCE_ES}
-          />
-          {hasFilters && (
-            <button
-              onClick={clearAll}
-              className="px-5 py-2.5 text-xs font-medium text-slate-500 bg-white hover:bg-slate-50 hover:text-slate-900 transition whitespace-nowrap border-l border-slate-200"
-            >
-              {lang === 'en' ? 'Clear' : 'Limpiar'}
-            </button>
-          )}
-        </div>
-
-        {/* Results count */}
-        <div className="px-4 py-2 border-t border-slate-100 bg-slate-50">
-          <p className="text-[11px] text-slate-400">
-            {lang === 'en'
-              ? `${filtered.length} ${filtered.length === 1 ? 'article' : 'articles'}${hasFilters ? ` — filtered from ${articles.length}` : ''}`
-              : `${filtered.length} ${filtered.length === 1 ? 'artículo' : 'artículos'}${hasFilters ? ` — filtrado de ${articles.length}` : ''}`
-            }
-          </p>
-        </div>
-      </div>
-
-      {/* Article list */}
-      {filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center border border-slate-200 bg-white">
-          <div className="mb-5 flex h-12 w-12 items-center justify-center border border-slate-200 bg-slate-50">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="11" cy="11" r="7" stroke="#94a3b8" strokeWidth="1.5"/>
-              <path d="M16.5 16.5L21 21" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-          </div>
-          <p className="text-sm font-semibold text-slate-700">{emptyTitle}</p>
-          <p className="mt-2 max-w-sm text-xs leading-6 text-slate-400">{emptyBody}</p>
-          {hasFilters && (
-            <button
-              onClick={clearAll}
-              className="mt-5 text-xs font-medium text-indigo-600 hover:underline"
-            >
-              {lang === 'en' ? 'Clear filters' : 'Limpiar filtros'}
-            </button>
-          )}
-        </div>
-      ) : (
-        <>
-          <div className="border border-slate-200 bg-white px-8">
-            {visible.map((article) => (
-              <ArticleCard key={article.slug} article={article} lang={lang} tc={tc} />
-            ))}
-          </div>
-
-          {hasMore && (
-            <div className="mt-6 flex justify-center">
-              <button
-                onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-                className="border border-slate-300 bg-white px-8 py-3 text-sm font-medium text-slate-700 hover:border-slate-900 hover:text-slate-900 transition"
-              >
-                {lang === 'en'
-                  ? `Load more — ${filtered.length - visibleCount} remaining`
-                  : `Cargar más — ${filtered.length - visibleCount} restantes`}
-              </button>
-            </div>
-          )}
-        </>
-      )}
-    </div>
-  )
+    {visibleCount<filtered.length && <div className="mt-6 text-center"><button onClick={()=>setVisibleCount((value)=>value+PAGE_SIZE)} className="rounded-lg border border-slate-300 bg-white px-6 py-3 text-sm font-medium text-slate-700 hover:border-slate-500">{t.more} · {filtered.length-visibleCount}</button></div>}
+    {lang==='ca' && articles.length>0 && <p className="mt-6 text-xs leading-5 text-slate-400">Els articles històrics anteriors a la versió trilingüe es mostren en castellà. Les noves publicacions editorials poden tenir versió nativa en català.</p>}
+  </section>
 }
