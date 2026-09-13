@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { isGrowthAdminAuthenticated, updateGrowthRow } from '@/lib/growth-admin'
+import { parseControlCenterDateTime } from '@/lib/control-center-time'
 
 export async function POST(request: Request) {
   if (!(await isGrowthAdminAuthenticated())) return new NextResponse('Unauthorized', { status: 401 })
@@ -11,9 +12,12 @@ export async function POST(request: Request) {
 
   let scheduledAt: string | null = null
   if (scheduledRaw) {
-    const parsed = new Date(scheduledRaw)
-    if (Number.isNaN(parsed.getTime())) return new NextResponse('Invalid date', { status: 400 })
-    scheduledAt = parsed.toISOString()
+    try {
+      scheduledAt = parseControlCenterDateTime(scheduledRaw).toISOString()
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Invalid date'
+      return new NextResponse(message, { status: 400 })
+    }
   }
 
   const updated = await updateGrowthRow('content_items', 'content_id', contentId, { scheduled_at: scheduledAt })
