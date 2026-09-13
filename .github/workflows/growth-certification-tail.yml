@@ -39,11 +39,8 @@ jobs:
           store = get_store()
           briefs = store.list('editorial_briefs')
           assert briefs
-
-          # Give previously blocked legacy drafts one additional bounded repair pass.
           for brief in briefs:
               generate_variants(brief)
-
           items = store.list('content_items')
           active = [r for r in store.list('approvals') if r.get('status') in ('pending','approved','executed')]
           active_by_target = {r.get('target_id'): r for r in active}
@@ -53,13 +50,12 @@ jobs:
               critique = item.get('critique') or {}
               if issues:
                   invalid.append((item.get('content_id'), issues))
-                  assert item.get('status') == 'needs_review', (item.get('content_id'), item.get('status'))
+                  assert item.get('status') == 'needs_review'
                   assert float(item.get('quality_score',0) or 0) <= 7.4
                   assert item.get('content_id') not in active_by_target
                   assert critique.get('contract_valid') is False
               else:
                   assert critique.get('contract_valid') is True, item.get('content_id')
-
           logical = [(r.get('brief_id'),r.get('language'),r.get('channel'),r.get('content_type')) for r in items if r.get('brief_id')]
           assert not [k for k,c in Counter(logical).items() if c > 1]
           keys = [(r.get('target_id'),r.get('action_type')) for r in active]
@@ -75,8 +71,6 @@ jobs:
               assert payload.get('title') == target.get('title')
               assert payload.get('body') == target.get('body')
           print(f'PUBLISHING_FAIL_SAFE_OK content={len(items)} active_approvals={len(active)} invalid_blocked={len(invalid)}')
-          if invalid:
-              print('BLOCKED_DRAFTS', [x[0] for x in invalid])
           PY
       - name: Certify idempotency on a stable brief
         run: |
@@ -91,7 +85,7 @@ jobs:
               if related and all(not content_contract_issues({'title':r.get('title',''),'body':r.get('body','')},r.get('content_type','')) for r in related):
                   chosen = brief
                   break
-          assert chosen, 'No stable brief available for idempotency check'
+          assert chosen
           content_before = len(store.list('content_items'))
           active_before = len([r for r in store.list('approvals') if r.get('status') in ('pending','approved','executed')])
           first = generate_variants(chosen)
@@ -111,24 +105,42 @@ jobs:
           assert result.get('evaluated',0) > 0 or result.get('resumed_briefs',0) > 0
           print('DISCOVERY_CYCLE_OK', result)
           PY
-      - name: Inspect LinkedIn OAuth state without publishing
+      - name: Certify LinkedIn OAuth token decryption and userinfo without publishing
         run: |
           python - <<'PY'
+          import base64, os, requests
+          from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
           from growth.src.storage import get_store
+
           rows = [r for r in get_store().list('integration_connections') if r.get('provider') == 'linkedin']
-          if not rows:
-              print('LINKEDIN_OAUTH_PENDING_INTERACTIVE_CONSENT')
-          else:
-              row = rows[0]
-              ciphertext = str(row.get('access_token_ciphertext') or '')
-              assert ciphertext.startswith('v1.') and ciphertext != 'disconnected'
-              assert (row.get('metadata') or {}).get('person_urn')
-              assert 'w_member_social' in set(row.get('scopes') or [])
-              print(f"LINKEDIN_OAUTH_CONNECTION_OK display_name={row.get('display_name','')} expires_at={row.get('expires_at','')}")
+          assert rows, 'No LinkedIn integration connection found'
+          row = rows[0]
+          ciphertext = str(row.get('access_token_ciphertext') or '')
+          assert ciphertext.startswith('v1.') and ciphertext != 'disconnected'
+          _, iv_raw, tag_raw, cipher_raw = ciphertext.split('.')
+          key = base64.b64decode(os.environ['GROWTH_ENCRYPTION_KEY'])
+          assert len(key) == 32
+          pad = lambda s: s + '=' * (-len(s) % 4)
+          iv = base64.urlsafe_b64decode(pad(iv_raw))
+          tag = base64.urlsafe_b64decode(pad(tag_raw))
+          cipherbytes = base64.urlsafe_b64decode(pad(cipher_raw))
+          decryptor = Cipher(algorithms.AES(key), modes.GCM(iv, tag)).decryptor()
+          token = (decryptor.update(cipherbytes) + decryptor.finalize()).decode('utf-8')
+          assert token and len(token) > 20
+          response = requests.get('https://api.linkedin.com/v2/userinfo', headers={'Authorization': 'Bearer ' + token}, timeout=20)
+          assert response.status_code == 200, f'LinkedIn userinfo failed: {response.status_code}'
+          data = response.json()
+          assert data.get('sub')
+          assert (row.get('metadata') or {}).get('person_urn')
+          assert 'w_member_social' in set(row.get('scopes') or [])
+          print(f"LINKEDIN_DECRYPTION_OK name={row.get('display_name','')}")
+          print('LINKEDIN_USERINFO_OK')
+          print('LINKEDIN_SCOPE_OK w_member_social')
           print('NO_EXTERNAL_PUBLISH_ATTEMPTED')
           PY
       - name: Final tail gate
         run: |
           echo 'EDITORIAL_RUNTIME_CERTIFIED=true'
           echo 'PUBLISHING_FAIL_SAFE_CERTIFIED=true'
+          echo 'LINKEDIN_NONPUBLISH_CERTIFIED=true'
           echo 'NO_LINKEDIN_POST_PUBLISHED=true'
