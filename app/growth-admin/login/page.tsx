@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function GrowthAdminLoginPage() {
   return (
@@ -26,7 +27,7 @@ export default function GrowthAdminLoginPage() {
           <button className="w-full rounded-lg bg-white py-3 font-semibold text-slate-950 transition hover:bg-slate-100" type="submit">Open Control Center</button>
         </form>
 
-        <a href="/" className="mt-6 block text-center text-xs text-slate-600 transition hover:text-slate-400">← Return to public website</a>
+        <Link href="/" className="mt-6 block text-center text-xs text-slate-600 transition hover:text-slate-400">← Return to public website</Link>
       </div>
     </main>
   )
