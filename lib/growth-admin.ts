@@ -3,6 +3,7 @@ import 'server-only'
 import { createHmac, timingSafeEqual } from 'node:crypto'
 import { cookies } from 'next/headers'
 import { insertGrowthRow, queryGrowthTable, updateGrowthRow } from '@/lib/supabase-growth'
+import type { PublicationMode } from '@/lib/brand-system'
 
 const COOKIE_NAME = 'sc_growth_admin'
 const SESSION_SECONDS = 60 * 60 * 24 * 14
@@ -61,6 +62,8 @@ export interface GrowthContentItem {
   visual_type: string
   body?: string
   visual_path?: string
+  visual_design_id?: string | null
+  publication_mode?: PublicationMode
   source_case?: string
   brief_id?: string
   language?: string

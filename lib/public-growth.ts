@@ -15,10 +15,12 @@ export interface PublicGeneratedArticle {
   published_at?: string | null
   external_post_url?: string | null
   source_url?: string | null
+  visual_path?: string | null
+  visual_type?: string | null
   created_at?: string
 }
 
-function isPublicNow(article: PublicGeneratedArticle) {
+export function isPublicGeneratedArticleNow(article: PublicGeneratedArticle) {
   if (article.status === 'published') return true
   if (article.status !== 'scheduled') return false
   if (!article.scheduled_at) return false
@@ -39,7 +41,7 @@ export async function getPublicGeneratedArticles(): Promise<PublicGeneratedArtic
       order: 'created_at.desc',
       limit: '200',
     })
-    return rows.filter(isPublicNow)
+    return rows.filter(isPublicGeneratedArticleNow)
   } catch (error) {
     console.error('Public Growth content unavailable', error)
     return []
