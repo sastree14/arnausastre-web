@@ -1,0 +1,77 @@
+name: Temporary LinkedIn Non-Publish Certification
+
+on:
+  push:
+    branches:
+      - linkedin-nonpublish-certification
+    paths:
+      - '.github/workflows/linkedin-nonpublish-certification.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  certify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+      GROWTH_ENCRYPTION_KEY: ${{ secrets.GROWTH_ENCRYPTION_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install cryptography and requests
+        run: pip install cryptography requests
+      - name: Validate encrypted LinkedIn token and call userinfo
+        run: |
+          python - <<'PY'
+          import base64, os, requests
+          from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+
+          url = os.environ['SUPABASE_URL'].rstrip('/') + '/rest/v1/integration_connections'
+          headers = {
+              'apikey': os.environ['SUPABASE_SECRET_KEY'],
+              'Authorization': 'Bearer ' + os.environ['SUPABASE_SECRET_KEY'],
+              'Accept': 'application/json',
+          }
+          params = {
+              'provider': 'eq.linkedin',
+              'account_type': 'eq.member',
+              'order': 'updated_at.desc',
+              'limit': '1',
+              'select': 'display_name,access_token_ciphertext,token_expires_at,scopes,metadata'
+          }
+          response = requests.get(url, headers=headers, params=params, timeout=20)
+          response.raise_for_status()
+          rows = response.json()
+          assert rows, 'No LinkedIn integration connection found'
+          row = rows[0]
+          encrypted = row['access_token_ciphertext']
+          assert encrypted.startswith('v1.'), 'LinkedIn token is not in expected encrypted v1 format'
+          version, iv_raw, tag_raw, cipher_raw = encrypted.split('.')
+          key = base64.b64decode(os.environ['GROWTH_ENCRYPTION_KEY'])
+          assert len(key) == 32, 'GROWTH_ENCRYPTION_KEY must decode to 32 bytes'
+          iv = base64.urlsafe_b64decode(iv_raw + '=' * (-len(iv_raw) % 4))
+          tag = base64.urlsafe_b64decode(tag_raw + '=' * (-len(tag_raw) % 4))
+          ciphertext = base64.urlsafe_b64decode(cipher_raw + '=' * (-len(cipher_raw) % 4))
+          decryptor = Cipher(algorithms.AES(key), modes.GCM(iv, tag)).decryptor()
+          token = (decryptor.update(ciphertext) + decryptor.finalize()).decode('utf-8')
+          assert token and len(token) > 20, 'Decrypted LinkedIn token looks invalid'
+
+          user = requests.get('https://api.linkedin.com/v2/userinfo', headers={'Authorization': 'Bearer ' + token}, timeout=20)
+          assert user.status_code == 200, f'LinkedIn userinfo failed: {user.status_code}'
+          data = user.json()
+          assert data.get('sub'), 'LinkedIn userinfo returned no sub'
+          assert data.get('name') == row.get('display_name') or row.get('display_name'), 'LinkedIn display name missing'
+          scopes = set(row.get('scopes') or [])
+          assert 'w_member_social' in scopes, scopes
+          assert (row.get('metadata') or {}).get('person_urn'), 'Missing person_urn'
+          print('LINKEDIN_DECRYPTION_OK')
+          print('LINKEDIN_USERINFO_OK')
+          print('LINKEDIN_SCOPE_OK w_member_social')
+          print(f"LINKEDIN_ACCOUNT_OK name={row.get('display_name','')}")
+          print('NO_POST_CREATED=true')
+          PY
