@@ -7,9 +7,11 @@ from growth.src.publishing import (
 )
 
 
-def test_publication_mode_defaults_to_text_with_visual():
-    assert _publication_mode({}) == "text_with_visual"
-    assert _publication_mode({"publication_mode": "unknown"}) == "text_with_visual"
+def test_publication_mode_defaults_to_text_only():
+    # Safe default: missing/unknown publication metadata must never imply that a
+    # visual exists. Visual-required modes are explicit and validated strictly.
+    assert _publication_mode({}) == "text_only"
+    assert _publication_mode({"publication_mode": "unknown"}) == "text_only"
 
 
 def test_text_only_keeps_body_and_ignores_visual():
