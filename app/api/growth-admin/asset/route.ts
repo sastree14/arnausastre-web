@@ -21,20 +21,27 @@ export async function GET(request: Request) {
   try {
     const upstream = await fetch(`${growthSupabaseUrl()}/storage/v1/object/${bucket}/${key}`, {
       headers: growthSupabaseHeaders(),
-      cache: 'no-store',
+      cache: 'force-cache',
+      next: { revalidate: 60 },
     })
     if (!upstream.ok) return new NextResponse('Asset not found', { status: upstream.status })
 
     const body = await upstream.arrayBuffer()
-    return new NextResponse(body, {
-      status: 200,
-      headers: {
-        'Content-Type': upstream.headers.get('content-type') || 'application/octet-stream',
-        'Cache-Control': 'private, no-store',
-      },
-    })
+    const headers: Record<string, string> = {
+      'Content-Type': upstream.headers.get('content-type') || 'application/octet-stream',
+      // Private keeps protected assets out of shared/CDN caches, while the browser
+      // can reuse thumbnails during normal CRM navigation instead of downloading
+      // the same object dozens of times.
+      'Cache-Control': 'private, max-age=60, stale-while-revalidate=300',
+    }
+    const etag = upstream.headers.get('etag')
+    const lastModified = upstream.headers.get('last-modified')
+    if (etag) headers.ETag = etag
+    if (lastModified) headers['Last-Modified'] = lastModified
+
+    return new NextResponse(body, { status: 200, headers })
   } catch (error) {
     console.error('Growth asset proxy failed', error)
-    return new NextResponse('Asset store not configured', { status: 500 })
+    return new NextResponse('Asset store temporarily unavailable', { status: 503 })
   }
 }
