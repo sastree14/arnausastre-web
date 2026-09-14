@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
 import { Badge, SectionHeading, adminPanel } from '@/components/growth-admin/AdminUi'
-import { getLinkedInPostMetrics, getWebAnalyticsDaily, isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { getMetricsSummary } from '@/lib/growth-admin-performance'
 
 function MetricModule({ href, title, description, status, tone = 'amber' }: { href?: string; title: string; description: string; status: string; tone?: 'amber' | 'blue' | 'green' | 'violet' | 'slate' }) {
   const body = <div className={`${adminPanel} h-full p-5 transition ${href ? 'hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md' : ''}`}>
@@ -14,12 +15,7 @@ function MetricModule({ href, title, description, status, tone = 'amber' }: { hr
 
 export default async function MetricsPage() {
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
-  const [linkedin, web] = await Promise.all([getLinkedInPostMetrics(), getWebAnalyticsDaily()])
-  const sessions = web.reduce((total, row) => total + Number(row.sessions || 0), 0)
-  const keyEvents = web.reduce((total, row) => total + Number(row.key_events || 0), 0)
-  const latest = new Map<string, (typeof linkedin)[number]>()
-  linkedin.forEach((row) => { const key = row.content_id || row.external_post_id || row.external_post_url || row.metric_id; if (!latest.has(key)) latest.set(key, row) })
-  const impressions = [...latest.values()].reduce((total, row) => total + Number(row.impressions || 0), 0)
+  const summary = await getMetricsSummary()
 
   return <AdminShell active="metrics">
     <header className="overflow-hidden rounded-[2rem] border border-amber-950 bg-[#3a2a05] text-white shadow-sm">
@@ -29,9 +25,11 @@ export default async function MetricsPage() {
           <h1 className="mt-4 text-4xl md:text-6xl" style={{ fontFamily: 'var(--font-playfair)' }}>Métricas</h1>
           <p className="mt-5 max-w-3xl text-sm leading-7 text-amber-100/80 md:text-base">Medición transversal de adquisición, contenido, web, SEO y conversión. El objetivo es conectar actividad con leads, oportunidades e ingresos.</p>
         </div>
-        <div className="grid grid-cols-3 gap-2 text-xs"><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-amber-100/60">Sesiones</p><p className="mt-1 text-2xl font-semibold">{sessions.toLocaleString('es-ES')}</p></div><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-amber-100/60">Imp. LinkedIn</p><p className="mt-1 text-2xl font-semibold">{impressions.toLocaleString('es-ES')}</p></div><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-amber-100/60">Key events</p><p className="mt-1 text-2xl font-semibold">{keyEvents}</p></div></div>
+        <div className="grid grid-cols-3 gap-2 text-xs"><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-amber-100/60">Sesiones</p><p className="mt-1 text-2xl font-semibold">{Number(summary.sessions).toLocaleString('es-ES')}</p></div><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-amber-100/60">Imp. LinkedIn</p><p className="mt-1 text-2xl font-semibold">{Number(summary.linkedin_impressions).toLocaleString('es-ES')}</p></div><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-amber-100/60">Key events</p><p className="mt-1 text-2xl font-semibold">{summary.key_events}</p></div></div>
       </div>
     </header>
+
+    {summary.degraded && <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">Resumen cargado en modo ligero. La navegación sigue disponible aunque una fuente de métricas esté lenta.</div>}
 
     <section className="mt-8">
       <SectionHeading eyebrow="Módulos" title="Inteligencia de negocio" description="La pantalla Analytics existente concentra la medición detallada. Esta portada define la arquitectura completa y deja visibles las capas que todavía están pendientes." />

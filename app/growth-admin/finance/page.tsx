@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
 import { Badge, EmptyState, PageHeader, SectionHeading, StatCard, adminButtonPrimary, adminInput, adminPanel, statusTone } from '@/components/growth-admin/AdminUi'
-import { getTopCompanies, isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
+import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { getFinanceBundle } from '@/lib/growth-admin-performance'
 
-export const dynamic='force-dynamic'
-export const revalidate=0
+export const dynamic = 'force-dynamic'
 
 type Project={project_id:string;name:string;status:string}
 type Invoice={invoice_id:string;company_id?:string|null;project_id?:string|null;invoice_number?:string;issue_date?:string;due_date?:string;currency:string;subtotal:number|string;tax:number|string;total:number|string;status:string;external_file_url?:string;created_at?:string}
@@ -14,21 +14,21 @@ const n=(v:number|string|undefined)=>Number(v||0)
 
 export default async function FinancePage(){
   if(!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
-  const [companies,projects,invoices,expenses,payments]=await Promise.all([
-    getTopCompanies(),
-    queryGrowthTable<Project>('operations_projects',{order:'created_at.desc',limit:'200'}),
-    queryGrowthTable<Invoice>('finance_invoices',{order:'created_at.desc',limit:'300'}),
-    queryGrowthTable<Expense>('finance_expenses',{order:'created_at.desc',limit:'300'}),
-    queryGrowthTable<Payment>('finance_payments',{order:'created_at.desc',limit:'300'}),
-  ])
+  const bundle = await getFinanceBundle()
+  const companies = bundle.companies
+  const projects = bundle.projects as Project[]
+  const invoices = bundle.invoices as unknown as Invoice[]
+  const expenses = bundle.expenses as unknown as Expense[]
+  const payments = bundle.payments as unknown as Payment[]
   const companyById=new Map(companies.map((c)=>[c.company_id,c]))
-  const invoiced=invoices.reduce((s,r)=>s+n(r.total),0)
-  const received=payments.reduce((s,r)=>s+n(r.amount),0)
-  const spent=expenses.reduce((s,r)=>s+n(r.total),0)
+  const invoiced=n(bundle.invoiced)
+  const received=n(bundle.received)
+  const spent=n(bundle.spent)
   const outstanding=Math.max(0,invoiced-received)
 
   return <AdminShell active="finance">
     <PageHeader eyebrow="CRM · Finance" title="Finanzas" description="La capa financiera pertenece al mismo CRM: cliente → oportunidad → proyecto → factura → cobro, y proyecto → gasto. Esto evita una contabilidad operativa aislada del contexto comercial."/>
+    {bundle.degraded && <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">Supabase tardó demasiado y Finanzas ha cargado en modo seguro en lugar de bloquear la página. Refresca para recuperar el detalle cuando el backend responda.</div>}
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><StatCard label="Facturado" value={`${invoiced.toLocaleString('es-ES')} €`} tone="blue"/><StatCard label="Cobrado" value={`${received.toLocaleString('es-ES')} €`} tone="green"/><StatCard label="Pendiente cobro" value={`${outstanding.toLocaleString('es-ES')} €`} tone="amber"/><StatCard label="Gastos" value={`${spent.toLocaleString('es-ES')} €`} tone="violet"/></div>
 
     <section className="mt-12 rounded-3xl border border-indigo-100 bg-indigo-50/60 p-5 md:p-7"><SectionHeading eyebrow="CRM · Registro financiero" title="Añadir movimiento" description="Primera capa operativa. Después añadiremos documentos, OCR, conciliación, impuestos e integraciones, conservando siempre relación con cliente y proyecto."/><div className="grid gap-5 xl:grid-cols-3">
