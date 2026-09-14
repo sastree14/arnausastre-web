@@ -1,29 +1,10 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
 import { Badge, SectionHeading, adminPanel } from '@/components/growth-admin/AdminUi'
-import {
-  getLinkedInPostMetrics,
-  getMeetings,
-  getOpportunities,
-  getPendingApprovals,
-  getReadyManualActions,
-  getRecentContent,
-  getTasks,
-  getTopCompanies,
-  getWebAnalyticsDaily,
-  isGrowthAdminAuthenticated,
-  queryGrowthTable,
-} from '@/lib/growth-admin'
-import { getLinkedInConnection, linkedInConnectionStatus } from '@/lib/growth-integrations'
-
-type Invoice = { invoice_id: string; total: number | string; status: string; due_date?: string | null }
-type Payment = { payment_id: string; amount: number | string; status: string }
-type Expense = { expense_id: string; total: number | string; status: string }
-type Project = { project_id: string; status: string }
+import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { getDashboardSummary } from '@/lib/growth-admin-performance'
 
 const money = (value: number) => new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 }).format(value)
-const sum = <T,>(rows: T[], pick: (row: T) => number) => rows.reduce((total, row) => total + pick(row), 0)
-const dashboardReferenceTime = Date.now()
 
 function SectorCard({ href, name, eyebrow, description, color, soft, border, metrics, modules }: {
   href: string
@@ -56,43 +37,8 @@ function SectorCard({ href, name, eyebrow, description, color, soft, border, met
 
 export default async function GrowthAdminPage() {
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
-
-  const [approvals, readyActions, content, companies, tasks, opportunities, meetings, webAnalytics, linkedinMetrics, invoices, payments, expenses, projects, linkedinConnection] = await Promise.all([
-    getPendingApprovals(),
-    getReadyManualActions(),
-    getRecentContent(),
-    getTopCompanies(),
-    getTasks(),
-    getOpportunities(),
-    getMeetings(),
-    getWebAnalyticsDaily(),
-    getLinkedInPostMetrics(),
-    queryGrowthTable<Invoice>('finance_invoices', { order: 'created_at.desc', limit: '500' }),
-    queryGrowthTable<Payment>('finance_payments', { order: 'created_at.desc', limit: '500' }),
-    queryGrowthTable<Expense>('finance_expenses', { order: 'created_at.desc', limit: '500' }),
-    queryGrowthTable<Project>('operations_projects', { order: 'created_at.desc', limit: '300' }),
-    getLinkedInConnection(),
-  ])
-
-  const published = content.filter((item) => item.status === 'published')
-  const openTasks = tasks.filter((task) => !['completed', 'done', 'executed'].includes(task.status))
-  const failedTasks = tasks.filter((task) => task.status === 'failed')
-  const activeProjects = projects.filter((project) => ['active', 'planned'].includes(project.status))
-  const linkedin = linkedInConnectionStatus(linkedinConnection)
-
-  const invoiced = sum(invoices, (row) => Number(row.total || 0))
-  const collected = sum(payments, (row) => Number(row.amount || 0))
-  const spent = sum(expenses, (row) => Number(row.total || 0))
-  const outstanding = Math.max(0, invoiced - collected)
-  const overdue = invoices.filter((row) => row.due_date && new Date(row.due_date).getTime() < dashboardReferenceTime && !['paid', 'cancelled', 'void'].includes(row.status)).length
-
-  const webSessions = sum(webAnalytics, (row) => Number(row.sessions || 0))
-  const latestLi = new Map<string, (typeof linkedinMetrics)[number]>()
-  linkedinMetrics.forEach((row) => {
-    const key = row.content_id || row.external_post_id || row.external_post_url || row.metric_id
-    if (!latestLi.has(key)) latestLi.set(key, row)
-  })
-  const linkedInImpressions = sum([...latestLi.values()], (row) => Number(row.impressions || 0))
+  const summary = await getDashboardSummary()
+  const outstanding = Math.max(0, Number(summary.invoiced) - Number(summary.collected))
 
   return <AdminShell active="home">
     <header className="overflow-hidden rounded-[2rem] border border-slate-900 bg-slate-950 text-white shadow-sm">
@@ -103,69 +49,31 @@ export default async function GrowthAdminPage() {
           <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-300 md:text-base">Entrada única a la empresa. Comercial, Finanzas, Métricas y Operaciones concentran la gestión; las tareas manuales siguen siendo manuales hasta que tenga sentido automatizarlas.</p>
         </div>
         <div className="grid grid-cols-2 gap-2 text-xs">
-          <div className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3"><p className="text-slate-400">Clientes / accounts</p><p className="mt-1 text-xl font-semibold text-white">{companies.length}</p></div>
-          <div className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3"><p className="text-slate-400">Proyectos activos</p><p className="mt-1 text-xl font-semibold text-white">{activeProjects.length}</p></div>
+          <div className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3"><p className="text-slate-400">Clientes / accounts</p><p className="mt-1 text-xl font-semibold text-white">{summary.companies}</p></div>
+          <div className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3"><p className="text-slate-400">Proyectos activos</p><p className="mt-1 text-xl font-semibold text-white">{summary.active_projects}</p></div>
         </div>
       </div>
     </header>
 
+    {summary.degraded && <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">El cuadro se ha cargado en modo ligero porque una lectura de datos tardó demasiado. Puedes seguir navegando; los módulos detallados reintentan sus datos al abrirse.</div>}
+
     <section className="mt-8">
       <SectionHeading eyebrow="Áreas de gestión" title="La empresa en cuatro bloques" description="Cada bloque actúa como una puerta de entrada a sus módulos. Lo que todavía no está integrado aparece como proceso manual o módulo preparado, no como falsa automatización." />
       <div className="grid gap-5 xl:grid-cols-2">
-        <SectorCard
-          href="/growth-admin/commercial"
-          name="Comercial"
-          eyebrow="Revenue & Growth"
-          description="Captación, cuentas, contactos, pipeline, discovery, propuestas, competencia y todo el ciclo editorial que alimenta el funnel."
-          color="bg-indigo-600"
-          soft="text-indigo-600"
-          border="border-indigo-100 hover:border-indigo-300"
-          metrics={[{ label: 'Oportunidades', value: opportunities.length }, { label: 'Reuniones', value: meetings.length }, { label: 'Acciones', value: readyActions.length }, { label: 'Publicados', value: published.length }]}
-          modules={['Pipeline', 'Prospecting', 'Editorial', 'Competencia', 'Proposals', 'Discovery']}
-        />
-        <SectorCard
-          href="/growth-admin/finance"
-          name="Finanzas"
-          eyebrow="Cash & Control"
-          description="Facturación, cobros, gastos, tesorería, rentabilidad y control económico. La contabilidad fiscal completa se añadirá cuando corresponda."
-          color="bg-emerald-600"
-          soft="text-emerald-700"
-          border="border-emerald-100 hover:border-emerald-300"
-          metrics={[{ label: 'Facturado', value: `${money(invoiced)} €` }, { label: 'Cobrado', value: `${money(collected)} €` }, { label: 'Pendiente', value: `${money(outstanding)} €` }, { label: 'Gastos', value: `${money(spent)} €` }]}
-          modules={['Facturas', 'Cobros', 'Gastos', 'Tesorería', 'Rentabilidad', 'Forecast']}
-        />
-        <SectorCard
-          href="/growth-admin/metrics"
-          name="Métricas"
-          eyebrow="Performance & Intelligence"
-          description="LinkedIn, web, SEO, atribución, funnel y rendimiento editorial/comercial para decidir con datos y no por intuición."
-          color="bg-amber-500"
-          soft="text-amber-700"
-          border="border-amber-100 hover:border-amber-300"
-          metrics={[{ label: 'Sesiones web', value: webSessions.toLocaleString('es-ES') }, { label: 'Imp. LinkedIn', value: linkedInImpressions.toLocaleString('es-ES') }, { label: 'Posts medidos', value: latestLi.size }, { label: 'GA4', value: 'Activo' }]}
-          modules={['LinkedIn', 'GA4', 'SEO', 'Attribution', 'Editorial', 'Dashboards']}
-        />
-        <SectorCard
-          href="/growth-admin/operations"
-          name="Operaciones"
-          eyebrow="Delivery & Infrastructure"
-          description="Proyectos, tareas, automatizaciones, knowledge, Google Drive, documentación, plantillas, SOPs, integraciones y salud del sistema."
-          color="bg-violet-600"
-          soft="text-violet-700"
-          border="border-violet-100 hover:border-violet-300"
-          metrics={[{ label: 'Proyectos', value: activeProjects.length }, { label: 'Tareas abiertas', value: openTasks.length }, { label: 'Fallos', value: failedTasks.length }, { label: 'LinkedIn', value: linkedin.connected ? 'OK' : 'Revisar' }]}
-          modules={['Delivery', 'Workflows', 'Knowledge', 'Google Drive', 'SOPs', 'Integraciones']}
-        />
+        <SectorCard href="/growth-admin/commercial" name="Comercial" eyebrow="Revenue & Growth" description="Captación, cuentas, contactos, pipeline, discovery, propuestas, competencia y todo el ciclo editorial que alimenta el funnel." color="bg-indigo-600" soft="text-indigo-600" border="border-indigo-100 hover:border-indigo-300" metrics={[{ label: 'Oportunidades', value: summary.opportunities }, { label: 'Reuniones', value: summary.meetings }, { label: 'Acciones', value: summary.manual_actions }, { label: 'Publicados', value: summary.published_content }]} modules={['Pipeline', 'Prospecting', 'Editorial', 'Competencia', 'Proposals', 'Discovery']} />
+        <SectorCard href="/growth-admin/finance" name="Finanzas" eyebrow="Cash & Control" description="Facturación, cobros, gastos, tesorería, rentabilidad y control económico. La contabilidad fiscal completa se añadirá cuando corresponda." color="bg-emerald-600" soft="text-emerald-700" border="border-emerald-100 hover:border-emerald-300" metrics={[{ label: 'Facturado', value: `${money(Number(summary.invoiced))} €` }, { label: 'Cobrado', value: `${money(Number(summary.collected))} €` }, { label: 'Pendiente', value: `${money(outstanding)} €` }, { label: 'Gastos', value: `${money(Number(summary.spent))} €` }]} modules={['Facturas', 'Cobros', 'Gastos', 'Tesorería', 'Rentabilidad', 'Forecast']} />
+        <SectorCard href="/growth-admin/metrics" name="Métricas" eyebrow="Performance & Intelligence" description="LinkedIn, web, SEO, atribución, funnel y rendimiento editorial/comercial para decidir con datos y no por intuición." color="bg-amber-500" soft="text-amber-700" border="border-amber-100 hover:border-amber-300" metrics={[{ label: 'Sesiones web', value: Number(summary.web_sessions).toLocaleString('es-ES') }, { label: 'Imp. LinkedIn', value: Number(summary.linkedin_impressions).toLocaleString('es-ES') }, { label: 'Posts medidos', value: summary.linkedin_posts_measured }, { label: 'GA4', value: 'Activo' }]} modules={['LinkedIn', 'GA4', 'SEO', 'Attribution', 'Editorial', 'Dashboards']} />
+        <SectorCard href="/growth-admin/operations" name="Operaciones" eyebrow="Delivery & Infrastructure" description="Proyectos, tareas, automatizaciones, knowledge, Google Drive, documentación, plantillas, SOPs, integraciones y salud del sistema." color="bg-violet-600" soft="text-violet-700" border="border-violet-100 hover:border-violet-300" metrics={[{ label: 'Proyectos', value: summary.active_projects }, { label: 'Tareas abiertas', value: summary.open_tasks }, { label: 'Fallos', value: summary.failed_tasks }, { label: 'LinkedIn', value: summary.linkedin_connected ? 'OK' : 'Revisar' }]} modules={['Delivery', 'Workflows', 'Knowledge', 'Google Drive', 'SOPs', 'Integraciones']} />
       </div>
     </section>
 
     <section className="mt-12">
-      <SectionHeading eyebrow="Atención ejecutiva" title="Qué requiere revisión" description="No todo debe automatizarse. Esta bandeja simplemente concentra los puntos que conviene mirar antes de seguir trabajando." />
+      <SectionHeading eyebrow="Atención ejecutiva" title="Qué requiere revisión" description="No todo debe automatizarse. Esta bandeja concentra los puntos que conviene mirar antes de seguir trabajando." />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <a href="/growth-admin/approvals" className={`${adminPanel} p-5 transition hover:border-amber-300`}><Badge tone="amber">Editorial</Badge><p className="mt-4 text-3xl font-semibold text-slate-950">{approvals.length}</p><p className="mt-1 text-sm text-slate-500">aprobaciones pendientes</p></a>
-        <a href="/growth-admin/crm" className={`${adminPanel} p-5 transition hover:border-indigo-300`}><Badge tone="violet">Comercial</Badge><p className="mt-4 text-3xl font-semibold text-slate-950">{readyActions.length}</p><p className="mt-1 text-sm text-slate-500">acciones comerciales preparadas</p></a>
-        <a href="/growth-admin/finance" className={`${adminPanel} p-5 transition hover:border-rose-300`}><Badge tone={overdue > 0 ? 'rose' : 'green'}>Finanzas</Badge><p className="mt-4 text-3xl font-semibold text-slate-950">{overdue}</p><p className="mt-1 text-sm text-slate-500">facturas vencidas sin cerrar</p></a>
-        <a href="/growth-admin/operations" className={`${adminPanel} p-5 transition hover:border-violet-300`}><Badge tone={failedTasks.length > 0 ? 'rose' : 'green'}>Operaciones</Badge><p className="mt-4 text-3xl font-semibold text-slate-950">{failedTasks.length}</p><p className="mt-1 text-sm text-slate-500">tareas con error</p></a>
+        <a href="/growth-admin/approvals" className={`${adminPanel} p-5 transition hover:border-amber-300`}><Badge tone="amber">Editorial</Badge><p className="mt-4 text-3xl font-semibold text-slate-950">{summary.pending_approvals}</p><p className="mt-1 text-sm text-slate-500">aprobaciones pendientes</p></a>
+        <a href="/growth-admin/crm" className={`${adminPanel} p-5 transition hover:border-indigo-300`}><Badge tone="violet">Comercial</Badge><p className="mt-4 text-3xl font-semibold text-slate-950">{summary.manual_actions}</p><p className="mt-1 text-sm text-slate-500">acciones comerciales preparadas</p></a>
+        <a href="/growth-admin/finance" className={`${adminPanel} p-5 transition hover:border-rose-300`}><Badge tone={summary.overdue_invoices > 0 ? 'rose' : 'green'}>Finanzas</Badge><p className="mt-4 text-3xl font-semibold text-slate-950">{summary.overdue_invoices}</p><p className="mt-1 text-sm text-slate-500">facturas vencidas sin cerrar</p></a>
+        <a href="/growth-admin/operations" className={`${adminPanel} p-5 transition hover:border-violet-300`}><Badge tone={summary.failed_tasks > 0 ? 'rose' : 'green'}>Operaciones</Badge><p className="mt-4 text-3xl font-semibold text-slate-950">{summary.failed_tasks}</p><p className="mt-1 text-sm text-slate-500">tareas con error</p></a>
       </div>
     </section>
 
