@@ -3,39 +3,64 @@ import { formatControlCenterDate, toControlCenterDateTimeLocal } from '@/lib/con
 
 export function Badge({ children, tone = 'slate' }: { children: React.ReactNode; tone?: 'slate' | 'green' | 'amber' | 'blue' | 'violet' | 'rose' }) {
   const tones = {
-    slate: 'border-slate-700 bg-slate-900 text-slate-300',
-    green: 'border-emerald-800 bg-emerald-950/60 text-emerald-300',
-    amber: 'border-amber-800 bg-amber-950/50 text-amber-300',
-    blue: 'border-sky-800 bg-sky-950/50 text-sky-300',
-    violet: 'border-violet-800 bg-violet-950/50 text-violet-300',
-    rose: 'border-rose-900 bg-rose-950/40 text-rose-300',
+    slate: 'border-slate-200 bg-slate-50 text-slate-600',
+    green: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+    amber: 'border-amber-200 bg-amber-50 text-amber-700',
+    blue: 'border-sky-200 bg-sky-50 text-sky-700',
+    violet: 'border-indigo-200 bg-indigo-50 text-indigo-700',
+    rose: 'border-rose-200 bg-rose-50 text-rose-700',
   }
-  return <span className={`rounded-full border px-2.5 py-1 text-[10px] font-medium ${tones[tone]}`}>{children}</span>
+  return <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] font-semibold ${tones[tone]}`}>{children}</span>
 }
 
 export function PageHeader({ eyebrow, title, description, actions }: { eyebrow: string; title: string; description?: string; actions?: React.ReactNode }) {
-  return <header className="mb-8 rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900/90 via-slate-900/60 to-sky-950/20 p-6 md:p-8"><div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between"><div><p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-sky-300">{eyebrow}</p><h1 className="mt-2 text-3xl font-semibold text-white md:text-5xl">{title}</h1>{description && <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-400">{description}</p>}</div>{actions && <div className="flex flex-wrap gap-2">{actions}</div>}</div></header>
+  return (
+    <header className="mb-8 overflow-hidden rounded-[2rem] border border-slate-900 bg-slate-950 text-white shadow-sm">
+      <div className="flex flex-col gap-7 px-6 py-8 md:px-8 md:py-10 xl:flex-row xl:items-end xl:justify-between">
+        <div className="max-w-4xl">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-indigo-300">{eyebrow}</p>
+          <h1 className="mt-4 text-4xl font-medium leading-tight md:text-6xl" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h1>
+          {description && <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-300 md:text-base">{description}</p>}
+        </div>
+        {actions && <div className="flex shrink-0 flex-wrap gap-2">{actions}</div>}
+      </div>
+    </header>
+  )
 }
 
 export function SectionHeading({ eyebrow, title, description, count }: { eyebrow: string; title: string; description?: string; count?: number | string }) {
-  return <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">{eyebrow}</p><h2 className="mt-1 text-2xl font-semibold text-white">{title}</h2>{description && <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-500">{description}</p>}</div>{count !== undefined && <Badge>{count}</Badge>}</div>
+  return (
+    <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-indigo-600">{eyebrow}</p>
+        <h2 className="mt-2 text-3xl text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h2>
+        {description && <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">{description}</p>}
+      </div>
+      {count !== undefined && <Badge>{count}</Badge>}
+    </div>
+  )
 }
 
 export function StatCard({ label, value, note, tone = 'slate', href }: { label: string; value: number | string; note?: string; tone?: 'slate' | 'blue' | 'amber' | 'green' | 'violet'; href?: string }) {
-  const tones = {
-    slate: 'border-slate-800 bg-slate-900/60',
-    blue: 'border-sky-900/60 bg-sky-950/20',
-    amber: 'border-amber-900/60 bg-amber-950/15',
-    green: 'border-emerald-900/60 bg-emerald-950/15',
-    violet: 'border-violet-900/60 bg-violet-950/20',
+  const accents = {
+    slate: 'bg-slate-950',
+    blue: 'bg-sky-500',
+    amber: 'bg-amber-500',
+    green: 'bg-emerald-500',
+    violet: 'bg-indigo-600',
   }
-  const body = <div className={`h-full rounded-2xl border p-5 transition ${tones[tone]} ${href ? 'hover:-translate-y-0.5 hover:border-slate-600' : ''}`}><p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">{label}</p><p className="mt-3 text-3xl font-semibold text-white">{value}</p>{note && <p className="mt-2 text-xs leading-5 text-slate-500">{note}</p>}</div>
+  const body = <div className={`relative h-full overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition ${href ? 'hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md' : ''}`}><span className={`absolute inset-y-0 left-0 w-1 ${accents[tone]}`} /><p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">{label}</p><p className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">{value}</p>{note && <p className="mt-2 text-xs leading-5 text-slate-500">{note}</p>}</div>
   return href ? <a href={href}>{body}</a> : body
 }
 
 export function EmptyState({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-950/30 p-7 text-center text-sm leading-6 text-slate-600">{children}</div>
+  return <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-7 text-center text-sm leading-6 text-slate-500">{children}</div>
 }
+
+export const adminPanel = 'rounded-2xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]'
+export const adminInput = 'rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100'
+export const adminButtonPrimary = 'rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800'
+export const adminButtonSecondary = 'rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50'
 
 export function assetUrl(item: GrowthContentItem) {
   return item.visual_path?.startsWith('supabase://') ? `/api/growth-admin/asset?ref=${encodeURIComponent(item.visual_path)}` : null

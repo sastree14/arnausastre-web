@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import AdminShell from '@/components/growth-admin/AdminShell'
 import VisualStudioClientV2 from '@/components/visual-studio/VisualStudioClientV2'
 import { getRecentContent, isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
 import type { PublicationMode, VisualFormatKey } from '@/lib/brand-system'
@@ -45,5 +46,5 @@ export default async function VisualStudioPage({ searchParams }: { searchParams?
       publication_mode: item.publication_mode,
     }))
 
-  return <VisualStudioClientV2 content={content} savedDesigns={savedDesigns} initialContentId={params?.content} />
+  return <AdminShell active="visual"><div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.05)]"><VisualStudioClientV2 content={content} savedDesigns={savedDesigns} initialContentId={params?.content} /></div></AdminShell>
 }
