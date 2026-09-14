@@ -68,10 +68,12 @@ export async function POST(request: Request) {
 
   const workbook = new ExcelJS.Workbook()
   try {
-    // ExcelJS' Buffer type currently conflicts with the generic Buffer type exposed by
-    // recent @types/node versions. The runtime value is still the expected Node Buffer.
+    // ExcelJS currently exposes a Buffer type that differs slightly from recent
+    // @types/node generics. Cast through the function's declared input type so
+    // runtime bytes stay unchanged without weakening lint/type safety with `any`.
     const workbookBytes = Buffer.from(await file.arrayBuffer())
-    await workbook.xlsx.load(workbookBytes as any)
+    const excelInput = workbookBytes as unknown as Parameters<typeof workbook.xlsx.load>[0]
+    await workbook.xlsx.load(excelInput)
   } catch {
     return new NextResponse('Could not read workbook. Export as XLSX from LinkedIn and retry.', { status: 400 })
   }
