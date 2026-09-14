@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 declare global {
   interface Window {
@@ -15,7 +15,6 @@ function track(name: string, params: Record<string, unknown> = {}) {
 
 export default function WebAnalytics() {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
   const sentDepth = useRef(new Set<number>())
 
   useEffect(() => {
@@ -41,7 +40,7 @@ export default function WebAnalytics() {
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [pathname, searchParams])
+  }, [pathname])
 
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
