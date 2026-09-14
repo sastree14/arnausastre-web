@@ -24,11 +24,12 @@ function shouldShowGroup(index: number) {
   return true
 }
 
-export default function AdminShell({ active, children }: { active: OperatingModule; children: React.ReactNode }) {
+export default function AdminShell({ active, children, surface = 'dark' }: { active: OperatingModule; children: React.ReactNode; surface?: 'dark' | 'light' }) {
+  const light = surface === 'light'
   return (
-    <main className="min-h-screen bg-[#050816] text-slate-100">
+    <main className={`min-h-screen ${light ? 'bg-slate-50 text-slate-950' : 'bg-[#050816] text-slate-100'}`}>
       <div className="mx-auto grid max-w-[1880px] lg:grid-cols-[280px_1fr]">
-        <aside className="hidden min-h-screen border-r border-slate-800/80 bg-slate-950/90 p-6 lg:block">
+        <aside className="hidden min-h-screen border-r border-slate-800/80 bg-slate-950/95 p-6 lg:block">
           <div className="sticky top-6">
             <a href="/growth-admin" className="block rounded-2xl border border-slate-800 bg-slate-900/40 p-4">
               <Image src="/brand/logo-white.png" alt="SC-Analytics" width={210} height={70} className="h-14 w-48 object-contain object-left" priority />
@@ -47,7 +48,7 @@ export default function AdminShell({ active, children }: { active: OperatingModu
             <div className="mt-7 rounded-xl border border-violet-900/50 bg-violet-950/20 p-4"><p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-violet-300">Regla del sistema</p><p className="mt-2 text-xs leading-5 text-slate-500">Investigar y preparar puede automatizarse. Publicar, contactar, cobrar o ejecutar una acción externa mantiene trazabilidad y control humano.</p></div>
           </div>
         </aside>
-        <div className="min-w-0 px-5 py-6 md:px-8 lg:px-10 lg:py-8">{children}</div>
+        <div className={`min-w-0 px-5 py-6 md:px-8 lg:px-10 lg:py-8 ${light ? 'bg-[#f8fafc]' : ''}`}>{children}</div>
       </div>
     </main>
   )
