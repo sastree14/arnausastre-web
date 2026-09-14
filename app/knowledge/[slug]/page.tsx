@@ -1,14 +1,13 @@
 import { notFound } from 'next/navigation'
-import { getArticleBySlug, getAllArticles } from '@/lib/content'
+import { getArticleBySlug } from '@/lib/content'
 import { getPublicGeneratedArticleVariants } from '@/lib/public-growth'
 import ArticleContent from '@/components/ArticleContent'
 import GeneratedArticleContent from '@/components/GeneratedArticleContent'
 
 type Props = { params: Promise<{ slug: string }> }
 
-export async function generateStaticParams() {
-  return getAllArticles().map((article) => ({ slug: article.slug }))
-}
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params
