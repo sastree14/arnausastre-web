@@ -1,15 +1,14 @@
 import type { Metadata } from 'next'
-import Script from 'next/script'
 import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import { LanguageProvider } from '@/components/LanguageProvider'
 import { SiteLanguageProvider } from '@/components/SiteLanguageProvider'
 import SiteChrome from '@/components/SiteChrome'
 import WebAnalytics from '@/components/WebAnalytics'
+import GoogleAnalytics from '@/components/GoogleAnalytics'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' })
-const GA_MEASUREMENT_ID = 'G-3E1DK7935G'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://sc-analytics.io'),
@@ -72,15 +71,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
-        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}', { send_page_view: true });
-          `}
-        </Script>
+        <GoogleAnalytics />
         <WebAnalytics />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <LanguageProvider>
