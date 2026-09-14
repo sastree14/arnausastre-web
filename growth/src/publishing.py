@@ -18,6 +18,7 @@ class PublishingError(RuntimeError):
 
 
 PUBLICATION_MODES = {"text_only", "text_with_visual", "visual_first", "image_only"}
+VISUAL_REQUIRED_MODES = {"text_with_visual", "visual_first", "image_only"}
 
 
 def _linkedin_access() -> tuple[str, str]:
@@ -99,8 +100,8 @@ def _scheduled_is_due(item: dict) -> bool:
 
 
 def _publication_mode(item: dict) -> str:
-    mode = str(item.get("publication_mode") or "text_with_visual").strip()
-    return mode if mode in PUBLICATION_MODES else "text_with_visual"
+    mode = str(item.get("publication_mode") or "text_only").strip()
+    return mode if mode in PUBLICATION_MODES else "text_only"
 
 
 def _short_commentary(body: str, max_chars: int = 320) -> str:
@@ -119,8 +120,7 @@ def _commentary_for_mode(item: dict) -> str:
     if mode == "visual_first":
         return _short_commentary(body)
     if mode == "image_only":
-        # LinkedIn's Posts API currently requires the commentary field even for image posts.
-        # Keep it deliberately minimal so the attached visual carries the actual message.
+        # LinkedIn Posts API still requires commentary for image-led posts.
         return os.environ.get("LINKEDIN_IMAGE_ONLY_COMMENTARY", "SC-Analytics").strip() or "SC-Analytics"
     return body
 
@@ -129,6 +129,18 @@ def _visual_ref_for_mode(item: dict) -> str:
     if _publication_mode(item) == "text_only":
         return ""
     return str(item.get("visual_path") or "").strip()
+
+
+def _validate_publication_contract(item: dict) -> tuple[str, str]:
+    if item.get("content_type") != "linkedin_post" or "linkedin" not in str(item.get("channel") or ""):
+        raise PublishingError("LinkedIn publisher only accepts LinkedIn content items")
+    mode = _publication_mode(item)
+    visual_ref = _visual_ref_for_mode(item)
+    if mode in VISUAL_REQUIRED_MODES and not visual_ref:
+        raise PublishingError(f"Publication mode '{mode}' requires an attached visual")
+    if mode == "text_only" and visual_ref:
+        visual_ref = ""
+    return mode, visual_ref
 
 
 def _linkedin_post_url(post_id: str) -> str:
@@ -140,7 +152,7 @@ def _linkedin_post_url(post_id: str) -> str:
 
 
 def publish_content(content_id: str) -> dict:
-    """Publish one already-approved content item through LinkedIn's official API."""
+    """Publish one already-approved LinkedIn content item through LinkedIn's official API."""
     store = get_store()
     items = store.filter("content_items", content_id=content_id)
     if not items:
@@ -157,11 +169,7 @@ def publish_content(content_id: str) -> dict:
     if not approvals:
         raise PublishingError("No approved publish action exists for this content item")
 
-    mode = _publication_mode(item)
-    visual_ref = _visual_ref_for_mode(item)
-    if mode == "image_only" and not visual_ref:
-        raise PublishingError("Image-only publishing requires an attached visual")
-
+    mode, visual_ref = _validate_publication_contract(item)
     token, person_urn = _linkedin_access()
     author = _author_for_channel(item.get("channel", ""), person_urn)
     payload = {
@@ -183,6 +191,7 @@ def publish_content(content_id: str) -> dict:
         raise PublishingError(f"LinkedIn post failed {response.status_code}: {response.text[:500]}")
     post_id = response.headers.get("x-restli-id", "")
     post_url = _linkedin_post_url(post_id)
+    published_at = utc_now()
     store.update(
         "content_items",
         "content_id",
@@ -191,11 +200,11 @@ def publish_content(content_id: str) -> dict:
             "status": "published",
             "external_post_id": post_id,
             "external_post_url": post_url,
-            "published_at": utc_now(),
+            "published_at": published_at,
         },
     )
     for approval in approvals:
-        store.update("approvals", "approval_id", approval["approval_id"], {"status": "executed", "executed_at": utc_now()})
+        store.update("approvals", "approval_id", approval["approval_id"], {"status": "executed", "executed_at": published_at})
     return {
         "content_id": content_id,
         "post_id": post_id,
@@ -209,7 +218,9 @@ def publish_all_approved(limit: int = 5) -> list[dict]:
     store = get_store()
     candidates = [
         row for row in store.list("content_items")
-        if row.get("status") == "approved"
+        if row.get("content_type") == "linkedin_post"
+        and "linkedin" in str(row.get("channel") or "")
+        and row.get("status") == "approved"
         and not row.get("external_post_id")
         and _scheduled_is_due(row)
     ][:limit]
