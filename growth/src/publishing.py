@@ -131,6 +131,14 @@ def _visual_ref_for_mode(item: dict) -> str:
     return str(item.get("visual_path") or "").strip()
 
 
+def _linkedin_post_url(post_id: str) -> str:
+    """Build LinkedIn's feed identity URL from the post URN returned in x-restli-id."""
+    post_id = str(post_id or "").strip()
+    if not post_id:
+        return ""
+    return f"https://www.linkedin.com/feed/update/{post_id}/"
+
+
 def publish_content(content_id: str) -> dict:
     """Publish one already-approved content item through LinkedIn's official API."""
     store = get_store()
@@ -174,10 +182,27 @@ def publish_content(content_id: str) -> dict:
     if response.status_code not in {200, 201}:
         raise PublishingError(f"LinkedIn post failed {response.status_code}: {response.text[:500]}")
     post_id = response.headers.get("x-restli-id", "")
-    store.update("content_items", "content_id", content_id, {"status": "published", "external_post_id": post_id, "published_at": utc_now()})
+    post_url = _linkedin_post_url(post_id)
+    store.update(
+        "content_items",
+        "content_id",
+        content_id,
+        {
+            "status": "published",
+            "external_post_id": post_id,
+            "external_post_url": post_url,
+            "published_at": utc_now(),
+        },
+    )
     for approval in approvals:
         store.update("approvals", "approval_id", approval["approval_id"], {"status": "executed", "executed_at": utc_now()})
-    return {"content_id": content_id, "post_id": post_id, "status": "published", "publication_mode": mode}
+    return {
+        "content_id": content_id,
+        "post_id": post_id,
+        "post_url": post_url,
+        "status": "published",
+        "publication_mode": mode,
+    }
 
 
 def publish_all_approved(limit: int = 5) -> list[dict]:
