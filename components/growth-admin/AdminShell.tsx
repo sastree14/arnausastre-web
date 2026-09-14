@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 export type OperatingModule = 'home' | 'commercial' | 'content' | 'calendar' | 'approvals' | 'crm' | 'research' | 'visual' | 'metrics' | 'analytics' | 'finance' | 'operations' | 'system'
 
@@ -26,7 +27,7 @@ export default function AdminShell({ active, children }: { active: OperatingModu
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 shadow-[0_1px_2px_rgba(15,23,42,0.04)] backdrop-blur">
         <div className="mx-auto flex max-w-[1780px] flex-col gap-3 px-5 py-3 md:px-8 xl:flex-row xl:items-center xl:justify-between">
           <div className="flex items-center justify-between gap-4">
-            <a href="/growth-admin" className="flex items-center gap-3">
+            <Link href="/growth-admin" prefetch={false} className="flex items-center gap-3">
               <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-950">
                 <Image src="/brand/logo-white.png" alt="SC-Analytics" width={96} height={40} className="h-8 w-9 object-contain" priority />
               </span>
@@ -34,23 +35,23 @@ export default function AdminShell({ active, children }: { active: OperatingModu
                 <span className="block text-sm font-semibold text-slate-950">SC-Analytics</span>
                 <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">Cuadro de Mando Integral</span>
               </span>
-            </a>
-            <a href="/growth-admin" className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-600 xl:hidden">Inicio</a>
+            </Link>
+            <Link href="/growth-admin" prefetch={false} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-600 xl:hidden">Inicio</Link>
           </div>
 
           <nav className="grid flex-1 grid-cols-2 gap-2 xl:mx-8 xl:max-w-4xl xl:grid-cols-4">
             {SECTORS.map((item) => {
               const selected = sector === item.key
-              return <a key={item.key} href={item.href} className={`rounded-xl border px-3 py-2.5 transition hover:-translate-y-0.5 hover:shadow-sm ${selected ? item.active : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'}`}>
+              return <Link key={item.key} href={item.href} prefetch={false} className={`rounded-xl border px-3 py-2.5 transition hover:-translate-y-0.5 hover:shadow-sm ${selected ? item.active : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'}`}>
                 <span className="flex items-center gap-2 text-xs font-semibold"><span className={`h-2.5 w-2.5 rounded-sm ${item.dot}`} />{item.label}</span>
                 <span className={`mt-1 hidden text-[9px] leading-4 md:block ${selected ? 'text-current opacity-70' : 'text-slate-400'}`}>{item.description}</span>
-              </a>
+              </Link>
             })}
           </nav>
 
           <div className="hidden items-center gap-2 xl:flex">
-            <a href="/growth-admin" className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">Cuadro integral</a>
-            <a href="/growth-admin/system" className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">Sistema</a>
+            <Link href="/growth-admin" prefetch={false} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">Cuadro integral</Link>
+            <Link href="/growth-admin/system" prefetch={false} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">Sistema</Link>
             <form action="/api/growth-admin/logout" method="post"><button className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-50">Salir</button></form>
           </div>
         </div>
