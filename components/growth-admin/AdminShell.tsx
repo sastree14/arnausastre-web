@@ -1,10 +1,9 @@
 import Image from 'next/image'
 
-export type OperatingModule = 'home' | 'content' | 'calendar' | 'approvals' | 'crm' | 'research' | 'analytics' | 'finance' | 'operations' | 'system'
-type NavigationKey = OperatingModule | 'visual'
+export type OperatingModule = 'home' | 'content' | 'calendar' | 'approvals' | 'crm' | 'research' | 'visual' | 'analytics' | 'finance' | 'operations' | 'system'
 
 type NavigationItem = {
-  key: NavigationKey
+  key: OperatingModule
   href: string
   label: string
   group?: string
