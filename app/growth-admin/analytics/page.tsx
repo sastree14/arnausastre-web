@@ -1,0 +1,56 @@
+import { redirect } from 'next/navigation'
+import AdminShell from '@/components/growth-admin/AdminShell'
+import { Badge, EmptyState, PageHeader, SectionHeading, StatCard } from '@/components/growth-admin/AdminUi'
+import { getLinkedInAnalyticsImports, getLinkedInPostMetrics, getRecentContent, getWebAnalyticsDaily, isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
+function sum(rows: Array<Record<string,unknown>>, key: string) {
+  return rows.reduce((total,row)=>total+Number(row[key]||0),0)
+}
+
+function pct(n:number,d:number) { return d>0?`${((n/d)*100).toFixed(2)}%`:'—' }
+
+export default async function AnalyticsPage({ searchParams }: { searchParams: Promise<Record<string,string|string[]|undefined>> }) {
+  if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
+  const params=await searchParams
+  const [linkedin,imports,web,content]=await Promise.all([getLinkedInPostMetrics(),getLinkedInAnalyticsImports(),getWebAnalyticsDaily(),getRecentContent()])
+  const contentById=new Map(content.map((item)=>[item.content_id,item]))
+  const account=typeof params.account==='string'&&params.account==='sc_analytics'?'sc_analytics':'arnau'
+  const liRows=linkedin.filter((row)=>row.account_type===account)
+  const latestByContent=new Map<string,(typeof liRows)[number]>()
+  liRows.forEach((row)=>{const key=row.content_id||row.external_post_id||row.external_post_url||row.metric_id;if(!latestByContent.has(key))latestByContent.set(key,row)})
+  const latest=[...latestByContent.values()]
+  const impressions=sum(latest as unknown as Array<Record<string,unknown>>,'impressions')
+  const reach=sum(latest as unknown as Array<Record<string,unknown>>,'reach')
+  const reactions=sum(latest as unknown as Array<Record<string,unknown>>,'reactions')
+  const comments=sum(latest as unknown as Array<Record<string,unknown>>,'comments')
+  const saves=sum(latest as unknown as Array<Record<string,unknown>>,'saves')
+  const clicks=sum(latest as unknown as Array<Record<string,unknown>>,'clicks')
+  const followers=sum(latest as unknown as Array<Record<string,unknown>>,'followers_gained')
+  const profileViews=sum(latest as unknown as Array<Record<string,unknown>>,'profile_views')
+  const engagements=reactions+comments+sum(latest as unknown as Array<Record<string,unknown>>,'reposts')+saves+clicks
+  const webTotals={sessions:sum(web as unknown as Array<Record<string,unknown>>,'sessions'),engaged:sum(web as unknown as Array<Record<string,unknown>>,'engaged_sessions'),views:sum(web as unknown as Array<Record<string,unknown>>,'page_views'),events:sum(web as unknown as Array<Record<string,unknown>>,'key_events'),discovery:sum(web as unknown as Array<Record<string,unknown>>,'discovery_clicks'),bookings:sum(web as unknown as Array<Record<string,unknown>>,'bookings')}
+  const imported=typeof params.imported==='string'?params.imported:''
+
+  return <AdminShell active="analytics">
+    <PageHeader eyebrow="Measurement & Attribution" title="Analytics" description="LinkedIn, web y conversión en un mismo modelo. El objetivo no es acumular likes: es saber qué contenido produce atención cualificada, conversaciones y negocio." actions={<a href="https://analytics.google.com" target="_blank" className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm text-slate-300">Abrir GA4 ↗</a>}/>
+    {imported&&<div className="mb-6 rounded-xl border border-emerald-900 bg-emerald-950/20 p-4 text-sm text-emerald-200">Importación LinkedIn completada: {imported} filas de métricas normalizadas.</div>}
+
+    <div className="mb-7 flex flex-wrap gap-2"><a href="/growth-admin/analytics?account=arnau" className={`rounded-full border px-4 py-2 text-xs ${account==='arnau'?'border-sky-700 bg-sky-950/40 text-sky-200':'border-slate-800 text-slate-500'}`}>LinkedIn · Arnau</a><a href="/growth-admin/analytics?account=sc_analytics" className={`rounded-full border px-4 py-2 text-xs ${account==='sc_analytics'?'border-sky-700 bg-sky-950/40 text-sky-200':'border-slate-800 text-slate-500'}`}>LinkedIn · SC-Analytics</a><a href="#website" className="rounded-full border border-slate-800 px-4 py-2 text-xs text-slate-500">Website · GA4</a><a href="#seo" className="rounded-full border border-slate-800 px-4 py-2 text-xs text-slate-500">SEO · Search Console</a></div>
+
+    <SectionHeading eyebrow="LinkedIn" title={account==='arnau'?'Arnau Sastre':'SC-Analytics'} description="Community Management API no es una dependencia viable en esta app. Esta capa se alimenta con exports oficiales XLS/XLSX de LinkedIn."/>
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6"><StatCard label="Impressions" value={impressions.toLocaleString('es-ES')}/><StatCard label="Reach" value={reach.toLocaleString('es-ES')}/><StatCard label="Engagement" value={pct(engagements,reach||impressions)} tone="blue"/><StatCard label="Saves" value={saves.toLocaleString('es-ES')} tone="violet"/><StatCard label="Clicks" value={clicks.toLocaleString('es-ES')} tone="green"/><StatCard label="Followers" value={followers.toLocaleString('es-ES')} tone="green"/></div>
+    <div className="mt-5 grid gap-5 xl:grid-cols-[0.8fr_1.2fr]">
+      <form action="/api/growth-admin/linkedin-analytics-import" method="post" encType="multipart/form-data" className="rounded-2xl border border-slate-800 bg-slate-900/55 p-5"><input type="hidden" name="account_type" value={account}/><p className="text-sm font-semibold text-white">Importar export oficial de LinkedIn</p><p className="mt-2 text-xs leading-5 text-slate-500">Sube XLS/XLSX de Creator Analytics o Page Analytics. Guardamos el import y normalizamos las métricas reconocidas; si LinkedIn cambia columnas, el import conserva la estructura detectada para adaptar el parser.</p><select name="report_type" className="mt-4 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm"><option value="content">Content / post performance</option><option value="audience">Audience</option><option value="followers">Followers</option><option value="visitors">Visitors</option></select><input type="file" name="file" accept=".xlsx,.xls" required className="mt-3 block w-full rounded-lg border border-slate-700 bg-slate-950 p-2 text-xs text-slate-400"/><button className="mt-3 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-950">Importar</button><p className="mt-4 text-[11px] leading-5 text-slate-600">Último import: {imports.find((row)=>row.account_type===account)?.imported_at||'ninguno'} · {imports.find((row)=>row.account_type===account)?.rows_imported||0} filas</p></form>
+      <div className="rounded-2xl border border-slate-800 bg-slate-900/55 p-5"><p className="text-sm font-semibold text-white">Señales de negocio</p><div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4"><div className="rounded-xl border border-slate-800 p-3"><p className="text-2xl font-semibold">{profileViews}</p><p className="text-xs text-slate-600">profile views</p></div><div className="rounded-xl border border-slate-800 p-3"><p className="text-2xl font-semibold">{pct(clicks,reach||impressions)}</p><p className="text-xs text-slate-600">click rate</p></div><div className="rounded-xl border border-slate-800 p-3"><p className="text-2xl font-semibold">{pct(saves,reach||impressions)}</p><p className="text-xs text-slate-600">save rate</p></div><div className="rounded-xl border border-slate-800 p-3"><p className="text-2xl font-semibold">{pct(followers,reach||impressions)}</p><p className="text-xs text-slate-600">follower conv.</p></div></div><p className="mt-5 text-xs leading-5 text-slate-500">Cuando tengamos histórico suficiente, Editorial Intelligence comparará familia, tema, industria, CTA y visual para evitar monotonía y priorizar lo que realmente funciona.</p></div>
+    </div>
+
+    <section className="mt-10"><SectionHeading eyebrow="Content performance" title="Posts vinculados" count={latest.length}/>{latest.length===0?<EmptyState>No hay métricas importadas todavía. El primer post publicado ya tiene external_post_id y podrá hacer matching cuando subas el export.</EmptyState>:<div className="overflow-x-auto rounded-xl border border-slate-800"><table className="min-w-full text-left text-xs"><thead className="bg-slate-950 text-slate-600"><tr><th className="px-4 py-3">Post</th><th className="px-4 py-3">Imp.</th><th className="px-4 py-3">Reach</th><th className="px-4 py-3">React.</th><th className="px-4 py-3">Comments</th><th className="px-4 py-3">Saves</th><th className="px-4 py-3">Clicks</th><th className="px-4 py-3">Followers</th></tr></thead><tbody>{latest.sort((a,b)=>Number(b.impressions)-Number(a.impressions)).map((row)=>{const item=row.content_id?contentById.get(row.content_id):undefined;return <tr key={row.metric_id} className="border-t border-slate-800 bg-slate-900/40"><td className="max-w-sm px-4 py-3"><p className="line-clamp-2 text-slate-200">{item?.title||row.external_post_id||'Post no vinculado'}</p>{row.external_post_url&&<a href={row.external_post_url} target="_blank" className="text-sky-400">LinkedIn ↗</a>}</td><td className="px-4 py-3">{Number(row.impressions).toLocaleString('es-ES')}</td><td className="px-4 py-3">{Number(row.reach).toLocaleString('es-ES')}</td><td className="px-4 py-3">{row.reactions}</td><td className="px-4 py-3">{row.comments}</td><td className="px-4 py-3">{row.saves}</td><td className="px-4 py-3">{row.clicks}</td><td className="px-4 py-3">{row.followers_gained}</td></tr>})}</tbody></table></div>}</section>
+
+    <section id="website" className="mt-12"><SectionHeading eyebrow="GA4 · G-3E1DK7935G" title="Website funnel" description="La etiqueta y los eventos de funnel ya están instrumentados. La importación automática de reporting necesita la credencial de Google Analytics Data API y el Property ID numérico."/><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6"><StatCard label="Sessions" value={webTotals.sessions}/><StatCard label="Engaged" value={webTotals.engaged}/><StatCard label="Page views" value={webTotals.views}/><StatCard label="Key events" value={webTotals.events} tone="blue"/><StatCard label="Discovery" value={webTotals.discovery} tone="violet"/><StatCard label="Bookings" value={webTotals.bookings} tone="green"/></div><div className="mt-5 rounded-2xl border border-slate-800 bg-slate-900/45 p-5"><p className="text-sm font-semibold text-white">Eventos ya enviados a GA4</p><div className="mt-3 flex flex-wrap gap-2">{['article_view','article_50_percent','article_90_percent','contact_click','discovery_call_click','calendly_open','linkedin_outbound'].map((name)=><Badge key={name} tone="blue">{name}</Badge>)}</div><p className="mt-4 text-xs leading-5 text-slate-500"><code>calendly_booked</code> se activará cuando conectemos webhook/API de Calendly; no se infiere de un click. La tabla <code>web_analytics_daily</code> ya está preparada para recibir la Data API.</p></div></section>
+
+    <section id="seo" className="mt-12 pb-12"><SectionHeading eyebrow="SEO" title="Google Search Console"/><div className="rounded-2xl border border-dashed border-slate-800 bg-slate-950/30 p-6 text-sm leading-6 text-slate-500">Siguiente conector de analítica: queries, impresiones orgánicas, CTR, posición, landing pages y conversiones. Se cruzará con Knowledge y GA4 dentro de esta misma pestaña.</div></section>
+  </AdminShell>
+}
