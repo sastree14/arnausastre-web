@@ -8,13 +8,16 @@ from .brain import validate_brain
 from .brief import build_brief
 from .config import load_config
 from .content import create_content_from_case
+from .editorial_ops import rewrite_content
 from .editorial_runtime import editorial_from_url, run_editorial_cycle
 from .models import to_dict
+from .operator_queue import run_operator_queue
 from .orchestrator import run_day
 from .prospecting import research_companies
 from .publishing import publish_all_approved, publish_content
 from .storage import get_store
 from .strategy import build_weekly_plan
+from .website_publishing import publish_article, publish_due_articles
 
 
 def main() -> None:
@@ -26,6 +29,8 @@ def main() -> None:
     sub.add_parser("run-day")
     sub.add_parser("approvals")
     sub.add_parser("publish-approved")
+    sub.add_parser("publish-due-articles")
+    sub.add_parser("run-operator-queue")
 
     sub.add_parser("plan-week")
     p_content = sub.add_parser("content")
@@ -53,6 +58,13 @@ def main() -> None:
 
     p_publish = sub.add_parser("publish")
     p_publish.add_argument("content_id")
+
+    p_publish_article = sub.add_parser("publish-article")
+    p_publish_article.add_argument("content_id")
+    p_publish_article.add_argument("--force", action="store_true")
+
+    p_rewrite = sub.add_parser("rewrite-content")
+    p_rewrite.add_argument("content_id")
 
     args = parser.parse_args()
 
@@ -89,6 +101,14 @@ def main() -> None:
         print(json.dumps(publish_content(args.content_id), indent=2, ensure_ascii=False))
     elif args.command == "publish-approved":
         print(json.dumps(publish_all_approved(), indent=2, ensure_ascii=False))
+    elif args.command == "publish-article":
+        print(json.dumps(publish_article(args.content_id, force=args.force), indent=2, ensure_ascii=False))
+    elif args.command == "publish-due-articles":
+        print(json.dumps(publish_due_articles(), indent=2, ensure_ascii=False))
+    elif args.command == "rewrite-content":
+        print(json.dumps(rewrite_content(args.content_id), indent=2, ensure_ascii=False))
+    elif args.command == "run-operator-queue":
+        print(json.dumps(run_operator_queue(), indent=2, ensure_ascii=False))
 
 
 if __name__ == "__main__":
