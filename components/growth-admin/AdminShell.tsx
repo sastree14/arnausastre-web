@@ -15,8 +15,16 @@ const NAV: Array<{ key: OperatingModule; href: string; label: string; group?: st
   { key: 'system', href: '/growth-admin/system', label: 'Integraciones', group: 'System' },
 ]
 
+function shouldShowGroup(index: number) {
+  const group = NAV[index]?.group
+  if (!group) return false
+  for (let previous = index - 1; previous >= 0; previous -= 1) {
+    if (NAV[previous].group) return NAV[previous].group !== group
+  }
+  return true
+}
+
 export default function AdminShell({ active, children }: { active: OperatingModule; children: React.ReactNode }) {
-  let lastGroup = ''
   return (
     <main className="min-h-screen bg-[#050816] text-slate-100">
       <div className="mx-auto grid max-w-[1880px] lg:grid-cols-[280px_1fr]">
@@ -30,9 +38,8 @@ export default function AdminShell({ active, children }: { active: OperatingModu
             <a href="/growth-admin/visual-studio" className="mt-4 flex items-center justify-between rounded-xl border border-sky-900/60 bg-sky-950/30 px-4 py-3 text-sm font-semibold text-sky-200 transition hover:border-sky-700"><span>Visual Studio</span><span>→</span></a>
 
             <nav className="mt-7 space-y-1 text-sm">
-              {NAV.map((item) => {
-                const showGroup = item.group && item.group !== lastGroup
-                if (item.group) lastGroup = item.group
+              {NAV.map((item, index) => {
+                const showGroup = shouldShowGroup(index)
                 return <div key={item.key}>{showGroup && <p className="mb-2 mt-5 px-3 text-[9px] font-semibold uppercase tracking-[0.18em] text-slate-700">{item.group}</p>}<a href={item.href} className={`block rounded-lg px-3 py-2.5 transition ${active === item.key ? 'bg-slate-800 text-white' : 'text-slate-400 hover:bg-slate-900 hover:text-white'}`}>{item.label}</a></div>
               })}
             </nav>
