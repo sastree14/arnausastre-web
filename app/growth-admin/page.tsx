@@ -23,6 +23,7 @@ type Project = { project_id: string; status: string }
 
 const money = (value: number) => new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 }).format(value)
 const sum = <T,>(rows: T[], pick: (row: T) => number) => rows.reduce((total, row) => total + pick(row), 0)
+const dashboardReferenceTime = Date.now()
 
 function SectorCard({ href, name, eyebrow, description, color, soft, border, metrics, modules }: {
   href: string
@@ -83,7 +84,7 @@ export default async function GrowthAdminPage() {
   const collected = sum(payments, (row) => Number(row.amount || 0))
   const spent = sum(expenses, (row) => Number(row.total || 0))
   const outstanding = Math.max(0, invoiced - collected)
-  const overdue = invoices.filter((row) => row.due_date && new Date(row.due_date).getTime() < Date.now() && !['paid', 'cancelled', 'void'].includes(row.status)).length
+  const overdue = invoices.filter((row) => row.due_date && new Date(row.due_date).getTime() < dashboardReferenceTime && !['paid', 'cancelled', 'void'].includes(row.status)).length
 
   const webSessions = sum(webAnalytics, (row) => Number(row.sessions || 0))
   const latestLi = new Map<string, (typeof linkedinMetrics)[number]>()
