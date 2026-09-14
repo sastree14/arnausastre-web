@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
 import CopyButton from '@/components/growth-admin/CopyButton'
+import PersonQuickActions from '@/components/growth-admin/PersonQuickActions'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { getCrmBundle } from '@/lib/growth-admin-performance'
 
@@ -74,6 +75,7 @@ export default async function CrmPage({ searchParams }: { searchParams: Promise<
   const prospectTasks = bundle.prospect_tasks
   const companyById = new Map(companies.map((row)=>[row.company_id,row]))
   const queued = typeof params.queued==='string'?params.queued:''
+  const interactionSaved = typeof params.interaction_saved==='string'?params.interaction_saved:''
 
   return <AdminShell active="crm" surface="light">
     <div className="pb-10">
@@ -98,7 +100,15 @@ export default async function CrmPage({ searchParams }: { searchParams: Promise<
       </header>
 
       {bundle.degraded&&<div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800 shadow-sm">CRM cargado en modo seguro porque el backend tardó demasiado. La interfaz sigue disponible; refresca para recuperar el detalle cuando Supabase responda.</div>}
-      {queued&&<div className="mt-5 rounded-2xl border border-sky-200 bg-sky-50 px-5 py-4 text-sm text-sky-800 shadow-sm">Prospecting encolado ({queued}). El resultado aparecerá aquí cuando termine el worker.</div>}
+      {queued&&<div className="mt-5 rounded-2xl border border-sky-200 bg-sky-50 px-5 py-4 text-sm text-sky-800 shadow-sm">Prospecting encolado ({queued}). La tarea queda persistida en Supabase. El worker horario actúa como red de seguridad; mañana conectaremos el disparo inmediato para que “ahora” sea realmente inmediato.</div>}
+      {interactionSaved&&<div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800 shadow-sm">Acción comercial guardada en Supabase: <strong>{interactionSaved}</strong>. El historial de la persona y las interacciones recientes ya quedan trazados.</div>}
+
+      {prospectTasks.length>0&&<section className="mt-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div><p className="text-xs font-semibold text-slate-900">Estado del prospecting</p><p className="mt-1 text-xs text-slate-500">Las tareas no desaparecen: puedes comprobar si están en cola, ejecutándose, completadas o fallidas.</p></div>
+          <div className="flex flex-wrap gap-2">{prospectTasks.slice(0,4).map((task)=><Pill key={task.task_id} tone={statusTone(task.status)}>{task.status} · {task.task_id}</Pill>)}</div>
+        </div>
+      </section>}
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         <MetricCard label="Empresas" value={companies.length} note="Accounts detectadas"/>
@@ -119,17 +129,17 @@ export default async function CrmPage({ searchParams }: { searchParams: Promise<
       <section className="mt-14">
         <div className="grid gap-8 xl:grid-cols-[1.25fr_.75fr]">
           <div>
-            <SectionTitle eyebrow="Arnau Sastre" title="Personas objetivo" description="Candidatos para seguir, conectar o contactar desde el perfil personal." count={people.length}/>
+            <SectionTitle eyebrow="Arnau Sastre" title="Personas objetivo" description="Candidatos para seguir, conectar o contactar desde el perfil personal. Cada acción que marques aquí se guarda directamente en Supabase y alimenta el historial comercial." count={people.length}/>
             <div className="grid gap-3 md:grid-cols-2">
               {people.length===0&&<div className="md:col-span-2"><EmptyPanel>Aún no hay personas. El prospecting público actual puede empezar a llenar esta cola; Apollo la enriquecerá después.</EmptyPanel></div>}
-              {people.slice(0,30).map((person)=>{const company=person.company_id?companyById.get(person.company_id):undefined;return <article key={person.person_id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.035)] transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"><div className="flex items-start justify-between gap-4"><div className="min-w-0"><p className="font-semibold text-slate-950">{person.name||'Persona por identificar'}</p><p className="mt-1 text-sm leading-5 text-slate-500">{person.role||'Rol desconocido'}{company?` · ${company.name}`:''}</p><div className="mt-3 flex flex-wrap gap-2"><Pill>{person.status||'candidate'}</Pill>{person.relevance_score&&<Pill tone="indigo">fit {Number(person.relevance_score).toFixed(1)}</Pill>}</div></div>{person.linkedin_url?<a href={person.linkedin_url} target="_blank" rel="noreferrer" className="shrink-0 text-xs font-semibold text-indigo-600 hover:text-indigo-800">LinkedIn ↗</a>:person.public_source_url?<a href={person.public_source_url} target="_blank" rel="noreferrer" className="shrink-0 text-xs font-semibold text-slate-500 hover:text-slate-800">Fuente ↗</a>:null}</div></article>})}
+              {people.slice(0,30).map((person)=>{const company=person.company_id?companyById.get(person.company_id):undefined;return <article key={person.person_id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.035)] transition hover:border-slate-300 hover:shadow-md"><div className="flex items-start justify-between gap-4"><div className="min-w-0"><p className="font-semibold text-slate-950">{person.name||'Persona por identificar'}</p><p className="mt-1 text-sm leading-5 text-slate-500">{person.role||'Rol desconocido'}{company?` · ${company.name}`:''}</p><div className="mt-3 flex flex-wrap gap-2"><Pill tone={statusTone(person.status)}>{person.status||'candidate'}</Pill>{person.relevance_score&&<Pill tone="indigo">fit {Number(person.relevance_score).toFixed(1)}</Pill>}</div></div>{person.linkedin_url?<a href={person.linkedin_url} target="_blank" rel="noreferrer" className="shrink-0 text-xs font-semibold text-indigo-600 hover:text-indigo-800">LinkedIn ↗</a>:person.public_source_url?<a href={person.public_source_url} target="_blank" rel="noreferrer" className="shrink-0 text-xs font-semibold text-slate-500 hover:text-slate-800">Fuente ↗</a>:null}</div><PersonQuickActions personId={person.person_id} companyId={person.company_id} currentStatus={person.status}/></article>})}
             </div>
           </div>
           <div>
             <SectionTitle eyebrow="SC-Analytics" title="Invitaciones a seguir" description="Una cola separada para no mezclar relaciones personales con crecimiento de página."/>
             <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
-              <div className="border-b border-slate-200 bg-slate-50 px-5 py-4"><p className="text-sm font-semibold text-slate-900">Cola preparada conceptualmente</p></div>
-              <div className="p-5 text-sm leading-7 text-slate-600"><p>Cuando Apollo esté conectado clasificaremos cada persona por ICP y acción recomendada: seguir o conectar desde Arnau, o invitar a seguir SC-Analytics.</p><p className="mt-4 font-medium text-slate-800">La ejecución seguirá siendo manual mientras LinkedIn no ofrezca una vía oficial adecuada.</p></div>
+              <div className="border-b border-slate-200 bg-slate-50 px-5 py-4"><p className="text-sm font-semibold text-slate-900">Preparado para activarse con Apollo</p></div>
+              <div className="p-5 text-sm leading-7 text-slate-600"><p>Mañana Apollo añadirá el enrichment y la clasificación por ICP para decidir quién tiene sentido seguir/conectar desde Arnau y quién conviene invitar a seguir SC-Analytics.</p><p className="mt-4">Mientras tanto, en cada tarjeta de persona ya puedes registrar manualmente <strong>“Invitado a seguir SC-Analytics”</strong>; quedará guardado como interacción sin alterar el estado personal.</p><p className="mt-4 font-medium text-slate-800">La ejecución seguirá siendo manual mientras LinkedIn no ofrezca una vía oficial adecuada.</p></div>
             </div>
           </div>
         </div>
@@ -156,7 +166,7 @@ export default async function CrmPage({ searchParams }: { searchParams: Promise<
       </section>
 
       <section className="mt-14 pb-4">
-        <SectionTitle eyebrow="Activity" title="Interacciones recientes" description="Historial operativo de contacto y actividad comercial." count={interactions.length}/>
+        <SectionTitle eyebrow="Activity" title="Interacciones recientes" description="Historial operativo de contacto y actividad comercial. Aquí aparecerán tanto las acciones manuales que marques en esta pantalla como las integraciones futuras que sean comercialmente relevantes." count={interactions.length}/>
         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
           <div className="overflow-x-auto">
             <table className="min-w-full text-left text-xs">
@@ -165,7 +175,6 @@ export default async function CrmPage({ searchParams }: { searchParams: Promise<
             </table>
           </div>
         </div>
-        {prospectTasks.length>0&&<div className="mt-4 flex flex-wrap gap-2">{prospectTasks.map((task)=><Pill key={task.task_id} tone={statusTone(task.status)}>{task.status}: prospecting</Pill>)}</div>}
       </section>
     </div>
   </AdminShell>
