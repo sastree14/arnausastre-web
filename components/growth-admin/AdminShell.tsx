@@ -1,75 +1,62 @@
 import Image from 'next/image'
 
-export type OperatingModule = 'home' | 'content' | 'calendar' | 'approvals' | 'crm' | 'research' | 'visual' | 'analytics' | 'finance' | 'operations' | 'system'
+export type OperatingModule = 'home' | 'commercial' | 'content' | 'calendar' | 'approvals' | 'crm' | 'research' | 'visual' | 'metrics' | 'analytics' | 'finance' | 'operations' | 'system'
 
-type NavigationItem = {
-  key: OperatingModule
-  href: string
-  label: string
-  group?: string
-  description?: string
-}
+type Sector = 'commercial' | 'finance' | 'metrics' | 'operations'
 
-const NAV: NavigationItem[] = [
-  { key: 'home', href: '/growth-admin', label: 'Overview', group: 'CRM', description: 'Centro de mando' },
-  { key: 'crm', href: '/growth-admin/crm', label: 'Comercial y prospecting', description: 'Accounts, personas y pipeline' },
-  { key: 'content', href: '/growth-admin/content', label: 'Contenido', group: 'CRM · Editorial', description: 'Posts y artículos' },
-  { key: 'calendar', href: '/growth-admin/calendar', label: 'Calendario', description: 'Planificación editorial' },
-  { key: 'approvals', href: '/growth-admin/approvals', label: 'Aprobaciones', description: 'Human-in-the-loop' },
-  { key: 'research', href: '/growth-admin/research', label: 'Research y briefs', description: 'Editorial intelligence' },
-  { key: 'visual', href: '/growth-admin/visual-studio', label: 'Visual Studio', description: 'Diseño de assets' },
-  { key: 'analytics', href: '/growth-admin/analytics', label: 'Analytics', group: 'CRM · Intelligence', description: 'LinkedIn, web y atribución' },
-  { key: 'finance', href: '/growth-admin/finance', label: 'Finanzas', group: 'CRM · Finance', description: 'Facturas, cobros y gastos' },
-  { key: 'operations', href: '/growth-admin/operations', label: 'Operaciones', group: 'CRM · Operations', description: 'Proyectos y automatizaciones' },
-  { key: 'system', href: '/growth-admin/system', label: 'Integraciones', group: 'System', description: 'Conectores y salud' },
+const SECTORS: Array<{ key: Sector; href: string; label: string; description: string; dot: string; active: string }> = [
+  { key: 'commercial', href: '/growth-admin/commercial', label: 'Comercial', description: 'Pipeline, mercado y editorial', dot: 'bg-indigo-500', active: 'border-indigo-300 bg-indigo-50 text-indigo-800' },
+  { key: 'finance', href: '/growth-admin/finance', label: 'Finanzas', description: 'Caja, facturación y rentabilidad', dot: 'bg-emerald-500', active: 'border-emerald-300 bg-emerald-50 text-emerald-800' },
+  { key: 'metrics', href: '/growth-admin/metrics', label: 'Métricas', description: 'LinkedIn, web, SEO y atribución', dot: 'bg-amber-500', active: 'border-amber-300 bg-amber-50 text-amber-900' },
+  { key: 'operations', href: '/growth-admin/operations', label: 'Operaciones', description: 'Delivery, knowledge y sistema', dot: 'bg-violet-500', active: 'border-violet-300 bg-violet-50 text-violet-800' },
 ]
 
-function shouldShowGroup(index: number) {
-  const group = NAV[index]?.group
-  if (!group) return false
-  for (let previous = index - 1; previous >= 0; previous -= 1) {
-    if (NAV[previous].group) return NAV[previous].group !== group
-  }
-  return true
+function activeSector(active: OperatingModule): Sector | null {
+  if (['commercial', 'crm', 'content', 'calendar', 'approvals', 'research', 'visual'].includes(active)) return 'commercial'
+  if (['metrics', 'analytics'].includes(active)) return 'metrics'
+  if (active === 'finance') return 'finance'
+  if (['operations', 'system'].includes(active)) return 'operations'
+  return null
 }
 
-export default function AdminShell({ active, children, surface = 'light' }: { active: OperatingModule; children: React.ReactNode; surface?: 'dark' | 'light' }) {
-  const light = surface === 'light'
+export default function AdminShell({ active, children }: { active: OperatingModule; children: React.ReactNode; surface?: 'dark' | 'light' }) {
+  const sector = activeSector(active)
   return (
-    <main className={`min-h-screen ${light ? 'bg-slate-50 text-slate-950' : 'bg-[#050816] text-slate-100'}`}>
-      <div className="mx-auto grid max-w-[1880px] lg:grid-cols-[292px_1fr]">
-        <aside className="hidden min-h-screen border-r border-slate-800/80 bg-slate-950 p-6 lg:block">
-          <div className="sticky top-6">
-            <a href="/growth-admin" className="block rounded-2xl border border-slate-800 bg-slate-900/50 p-4 transition hover:border-slate-700">
-              <Image src="/brand/logo-white.png" alt="SC-Analytics" width={210} height={70} className="h-14 w-48 object-contain object-left" priority />
-              <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-indigo-300">CRM · Business Operating System</p>
-              <p className="mt-2 text-xs leading-5 text-slate-500">Una única fuente de verdad para crecimiento, editorial, analytics, finanzas y operaciones.</p>
+    <main className="min-h-screen bg-[#f5f6fa] text-slate-950">
+      <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 shadow-[0_1px_2px_rgba(15,23,42,0.04)] backdrop-blur">
+        <div className="mx-auto flex max-w-[1780px] flex-col gap-3 px-5 py-3 md:px-8 xl:flex-row xl:items-center xl:justify-between">
+          <div className="flex items-center justify-between gap-4">
+            <a href="/growth-admin" className="flex items-center gap-3">
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-950">
+                <Image src="/brand/logo-white.png" alt="SC-Analytics" width={96} height={40} className="h-8 w-9 object-contain" priority />
+              </span>
+              <span>
+                <span className="block text-sm font-semibold text-slate-950">SC-Analytics</span>
+                <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">Cuadro de Mando Integral</span>
+              </span>
             </a>
-
-            <nav className="mt-7 space-y-1 text-sm">
-              {NAV.map((item, index) => {
-                const showGroup = shouldShowGroup(index)
-                const selected = active === item.key
-                return (
-                  <div key={item.key}>
-                    {showGroup && <p className="mb-2 mt-6 px-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-slate-600">{item.group}</p>}
-                    <a href={item.href} className={`block rounded-xl px-3 py-2.5 transition ${selected ? 'bg-white text-slate-950 shadow-sm' : 'text-slate-400 hover:bg-slate-900 hover:text-white'}`}>
-                      <span className="block font-medium">{item.label}</span>
-                      {item.description && <span className={`mt-0.5 block text-[10px] leading-4 ${selected ? 'text-slate-500' : 'text-slate-600'}`}>{item.description}</span>}
-                    </a>
-                  </div>
-                )
-              })}
-            </nav>
-
-            <div className="mt-7 rounded-xl border border-indigo-900/50 bg-indigo-950/25 p-4">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-indigo-300">Arquitectura CRM</p>
-              <p className="mt-2 text-xs leading-5 text-slate-500">Editorial, medición, finanzas y operaciones son ramas del mismo CRM. Empresa, persona, contenido, oportunidad, proyecto e ingreso deben conservar relación y trazabilidad.</p>
-            </div>
+            <a href="/growth-admin" className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-600 xl:hidden">Inicio</a>
           </div>
-        </aside>
-        <div className={`min-w-0 px-5 py-6 md:px-8 lg:px-10 lg:py-8 ${light ? 'bg-[#f8fafc]' : ''}`}>{children}</div>
-      </div>
+
+          <nav className="grid flex-1 grid-cols-2 gap-2 xl:mx-8 xl:max-w-4xl xl:grid-cols-4">
+            {SECTORS.map((item) => {
+              const selected = sector === item.key
+              return <a key={item.key} href={item.href} className={`rounded-xl border px-3 py-2.5 transition hover:-translate-y-0.5 hover:shadow-sm ${selected ? item.active : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'}`}>
+                <span className="flex items-center gap-2 text-xs font-semibold"><span className={`h-2.5 w-2.5 rounded-sm ${item.dot}`} />{item.label}</span>
+                <span className={`mt-1 hidden text-[9px] leading-4 md:block ${selected ? 'text-current opacity-70' : 'text-slate-400'}`}>{item.description}</span>
+              </a>
+            })}
+          </nav>
+
+          <div className="hidden items-center gap-2 xl:flex">
+            <a href="/growth-admin" className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">Cuadro integral</a>
+            <a href="/growth-admin/system" className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">Sistema</a>
+            <form action="/api/growth-admin/logout" method="post"><button className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-50">Salir</button></form>
+          </div>
+        </div>
+      </header>
+
+      <div className="mx-auto max-w-[1780px] px-5 py-6 md:px-8 lg:py-8">{children}</div>
     </main>
   )
 }
