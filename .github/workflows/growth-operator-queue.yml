@@ -3,7 +3,8 @@ name: SC-Analytics Operating System — Operator Queue
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * *'
+    # Safety-net worker only. User-triggered work should be dispatched on demand.
+    - cron: '17 * * * *'
 
 concurrency:
   group: sc-analytics-operator-queue
