@@ -37,6 +37,7 @@ export interface GrowthApprovalPayload {
   body?: string
   visual_path?: string
   visual_type?: string
+  critique?: Record<string, unknown>
   [key: string]: unknown
 }
 
@@ -55,10 +56,14 @@ export interface GrowthApproval {
 
 export interface GrowthContentItem {
   content_id: string
+  tenant_id?: string
   title: string
   status: string
   channel: string
   content_type: string
+  objective?: string
+  target_audience?: string[]
+  evidence_ids?: string[]
   visual_type: string
   body?: string
   visual_path?: string
@@ -76,6 +81,17 @@ export interface GrowthContentItem {
   external_post_url?: string | null
   critique?: Record<string, unknown> | null
   created_at?: string
+  topic?: string | null
+  industry?: string | null
+  challenge?: string | null
+  audience?: string | null
+  funnel_stage?: string | null
+  hook_type?: string | null
+  cta_type?: string | null
+  cta_url?: string | null
+  hashtags?: string[] | null
+  visual_strategy?: Record<string, unknown> | null
+  last_rewritten_at?: string | null
 }
 
 export interface GrowthEditorialBrief {
@@ -84,10 +100,11 @@ export interface GrowthEditorialBrief {
   family: string
   thesis?: string
   business_problem?: string
+  target_audience?: string[]
   output_decision: string
   primary_linkedin_language?: string
   weighted_score?: number | string
-  visual?: { type?: string; needed?: boolean; [key: string]: unknown }
+  visual?: { type?: string; needed?: boolean; concept?: string; [key: string]: unknown }
   research?: { source_urls?: string[]; [key: string]: unknown }
   status: string
   created_at?: string
@@ -137,6 +154,75 @@ export interface GrowthMetric {
   metric_value: number | string
   metric_date: string
   metadata?: Record<string, unknown> | null
+}
+
+export interface LinkedInPostMetric {
+  metric_id: string
+  account_type: 'arnau' | 'sc_analytics'
+  content_id?: string | null
+  external_post_id?: string
+  external_post_url?: string
+  snapshot_date: string
+  impressions: number | string
+  reach: number | string
+  reactions: number | string
+  comments: number | string
+  reposts: number | string
+  saves: number | string
+  sends: number | string
+  clicks: number | string
+  profile_views: number | string
+  followers_gained: number | string
+  metadata?: Record<string, unknown> | null
+}
+
+export interface WebAnalyticsDaily {
+  metric_id: string
+  metric_date: string
+  source: string
+  medium: string
+  campaign: string
+  content_id?: string | null
+  page_path: string
+  users: number | string
+  sessions: number | string
+  engaged_sessions: number | string
+  page_views: number | string
+  key_events: number | string
+  discovery_clicks: number | string
+  bookings: number | string
+  metadata?: Record<string, unknown> | null
+}
+
+export interface GrowthOpportunity {
+  opportunity_id: string
+  company_id?: string | null
+  primary_person_id?: string | null
+  source_content_id?: string | null
+  name: string
+  stage: string
+  value: number | string
+  currency: string
+  probability: number | string
+  source?: string
+  next_action_at?: string | null
+  metadata?: Record<string, unknown> | null
+  created_at?: string
+  updated_at?: string
+}
+
+export interface GrowthMeeting {
+  meeting_id: string
+  company_id?: string | null
+  person_id?: string | null
+  opportunity_id?: string | null
+  provider: string
+  external_id?: string
+  starts_at?: string | null
+  status: string
+  booking_url?: string
+  metadata?: Record<string, unknown> | null
+  created_at?: string
 }
 
 export interface GrowthWeeklyPlan {
@@ -192,44 +278,64 @@ export function growthAdminCookieName(): string {
 export { queryGrowthTable, updateGrowthRow, insertGrowthRow }
 
 export function getPendingApprovals() {
-  return queryGrowthTable<GrowthApproval>('approvals', { status: 'eq.pending', order: 'created_at.desc', limit: '100' })
+  return queryGrowthTable<GrowthApproval>('approvals', { status: 'eq.pending', order: 'created_at.desc', limit: '150' })
+}
+
+export function getApprovalHistory() {
+  return queryGrowthTable<GrowthApproval>('approvals', { order: 'created_at.desc', limit: '250' })
 }
 
 export async function getReadyManualActions() {
-  const rows = await queryGrowthTable<GrowthApproval>('approvals', { status: 'eq.approved', order: 'decided_at.desc', limit: '100' })
+  const rows = await queryGrowthTable<GrowthApproval>('approvals', { status: 'eq.approved', order: 'decided_at.desc', limit: '150' })
   return rows.filter((row) => row.payload?.execution_mode === 'manual_linkedin_action')
 }
 
 export function getRecentContent() {
-  return queryGrowthTable<GrowthContentItem>('content_items', { order: 'created_at.desc', limit: '150' })
+  return queryGrowthTable<GrowthContentItem>('content_items', { order: 'created_at.desc', limit: '250' })
 }
 
 export function getRecentEditorialBriefs() {
-  return queryGrowthTable<GrowthEditorialBrief>('editorial_briefs', { order: 'created_at.desc', limit: '40' })
+  return queryGrowthTable<GrowthEditorialBrief>('editorial_briefs', { order: 'created_at.desc', limit: '100' })
 }
 
 export function getTopCompanies() {
-  return queryGrowthTable<GrowthCompany>('companies', { order: 'score.desc', limit: '100' })
+  return queryGrowthTable<GrowthCompany>('companies', { order: 'score.desc', limit: '200' })
 }
 
 export function getPeople() {
-  return queryGrowthTable<GrowthPerson>('people', { order: 'relevance_score.desc', limit: '150' })
+  return queryGrowthTable<GrowthPerson>('people', { order: 'relevance_score.desc', limit: '250' })
 }
 
 export function getTasks() {
-  return queryGrowthTable<GrowthTask>('tasks', { order: 'scheduled_for.asc', limit: '150' })
+  return queryGrowthTable<GrowthTask>('tasks', { order: 'created_at.desc', limit: '250' })
 }
 
 export function getInteractions() {
-  return queryGrowthTable<GrowthInteraction>('interactions', { order: 'occurred_at.desc', limit: '150' })
+  return queryGrowthTable<GrowthInteraction>('interactions', { order: 'occurred_at.desc', limit: '250' })
 }
 
 export function getMetrics() {
-  return queryGrowthTable<GrowthMetric>('metrics', { order: 'metric_date.desc', limit: '150' })
+  return queryGrowthTable<GrowthMetric>('metrics', { order: 'metric_date.desc', limit: '500' })
+}
+
+export function getLinkedInPostMetrics() {
+  return queryGrowthTable<LinkedInPostMetric>('linkedin_post_metrics', { order: 'snapshot_date.desc', limit: '1000' })
+}
+
+export function getWebAnalyticsDaily() {
+  return queryGrowthTable<WebAnalyticsDaily>('web_analytics_daily', { order: 'metric_date.desc', limit: '1000' })
+}
+
+export function getOpportunities() {
+  return queryGrowthTable<GrowthOpportunity>('crm_opportunities', { order: 'updated_at.desc', limit: '250' })
+}
+
+export function getMeetings() {
+  return queryGrowthTable<GrowthMeeting>('crm_meetings', { order: 'starts_at.desc', limit: '250' })
 }
 
 export function getRecentPlans() {
-  return queryGrowthTable<GrowthWeeklyPlan>('weekly_plans', { order: 'week_start.desc', limit: '8' })
+  return queryGrowthTable<GrowthWeeklyPlan>('weekly_plans', { order: 'week_start.desc', limit: '12' })
 }
 
 export async function getContentItem(contentId: string) {
