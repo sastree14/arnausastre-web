@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
 import CopyButton from '@/components/growth-admin/CopyButton'
-import { getInteractions, getMeetings, getOpportunities, getPeople, getReadyManualActions, getTasks, getTopCompanies, isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { getCrmBundle } from '@/lib/growth-admin-performance'
 
 export const dynamic = 'force-dynamic'
-export const revalidate = 0
 
 type Tone = 'slate' | 'indigo' | 'sky' | 'green' | 'amber' | 'rose'
 
@@ -69,10 +69,11 @@ const secondaryLink = 'inline-flex items-center rounded-lg border border-slate-2
 export default async function CrmPage({ searchParams }: { searchParams: Promise<Record<string,string|string[]|undefined>> }) {
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
   const params = await searchParams
-  const [companies,people,actions,interactions,opportunities,meetings,tasks] = await Promise.all([getTopCompanies(),getPeople(),getReadyManualActions(),getInteractions(),getOpportunities(),getMeetings(),getTasks()])
+  const bundle = await getCrmBundle()
+  const { companies, people, actions, interactions, opportunities, meetings } = bundle
+  const prospectTasks = bundle.prospect_tasks
   const companyById = new Map(companies.map((row)=>[row.company_id,row]))
   const queued = typeof params.queued==='string'?params.queued:''
-  const prospectTasks = tasks.filter((task)=>task.type==='OPERATOR_PROSPECT').slice(0,6)
 
   return <AdminShell active="crm" surface="light">
     <div className="pb-10">
@@ -96,6 +97,7 @@ export default async function CrmPage({ searchParams }: { searchParams: Promise<
         </div>
       </header>
 
+      {bundle.degraded&&<div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800 shadow-sm">CRM cargado en modo seguro porque el backend tardó demasiado. La interfaz sigue disponible; refresca para recuperar el detalle cuando Supabase responda.</div>}
       {queued&&<div className="mt-5 rounded-2xl border border-sky-200 bg-sky-50 px-5 py-4 text-sm text-sky-800 shadow-sm">Prospecting encolado ({queued}). El resultado aparecerá aquí cuando termine el worker.</div>}
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
