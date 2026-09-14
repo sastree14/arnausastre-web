@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { NextResponse } from 'next/server'
 import { getContentItem, isGrowthAdminAuthenticated, updateGrowthRow } from '@/lib/growth-admin'
+import { ensurePendingPublicationApproval } from '@/lib/growth-approval'
 import { uploadGrowthAsset } from '@/lib/growth-assets'
 import { upsertGrowthRow } from '@/lib/supabase-growth'
 import type { PublicationMode, VisualFormatKey } from '@/lib/brand-system'
@@ -64,5 +65,6 @@ export async function POST(request: Request) {
     visual_design_id: designId,
   })
 
-  return NextResponse.json({ designId, assetPath, contentId: payload.contentId, publicationMode: payload.publicationMode })
+  const approval = await ensurePendingPublicationApproval(payload.contentId)
+  return NextResponse.json({ designId, assetPath, contentId: payload.contentId, publicationMode: payload.publicationMode, approval })
 }

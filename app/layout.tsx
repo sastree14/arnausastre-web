@@ -5,6 +5,7 @@ import './globals.css'
 import { LanguageProvider } from '@/components/LanguageProvider'
 import { SiteLanguageProvider } from '@/components/SiteLanguageProvider'
 import SiteChrome from '@/components/SiteChrome'
+import WebAnalytics from '@/components/WebAnalytics'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' })
@@ -71,10 +72,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-          strategy="afterInteractive"
-        />
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
@@ -83,6 +81,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             gtag('config', '${GA_MEASUREMENT_ID}', { send_page_view: true });
           `}
         </Script>
+        <WebAnalytics />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <LanguageProvider>
           <SiteLanguageProvider>

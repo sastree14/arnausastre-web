@@ -18,13 +18,19 @@ export interface PublicGeneratedArticle {
   visual_path?: string | null
   visual_type?: string | null
   created_at?: string
+  objective?: string
+  topic?: string | null
+  industry?: string | null
+  challenge?: string | null
+  audience?: string | null
+  funnel_stage?: string | null
+  cta_type?: string | null
+  cta_url?: string | null
+  hashtags?: string[] | null
 }
 
 export function isPublicGeneratedArticleNow(article: PublicGeneratedArticle) {
-  if (article.status === 'published') return true
-  if (article.status !== 'scheduled') return false
-  if (!article.scheduled_at) return false
-  return new Date(article.scheduled_at).getTime() <= Date.now()
+  return article.status === 'published' && Boolean(article.published_at)
 }
 
 function growthBackendConfigured() {
@@ -38,7 +44,7 @@ export async function getPublicGeneratedArticles(): Promise<PublicGeneratedArtic
   try {
     const rows = await queryGrowthTable<PublicGeneratedArticle>('content_items', {
       content_type: 'eq.article',
-      order: 'created_at.desc',
+      order: 'published_at.desc.nullslast,created_at.desc',
       limit: '200',
     })
     return rows.filter(isPublicGeneratedArticleNow)
