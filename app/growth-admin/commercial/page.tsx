@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
 import { Badge, SectionHeading, adminPanel } from '@/components/growth-admin/AdminUi'
-import { getMeetings, getOpportunities, getPeople, getReadyManualActions, getRecentContent, getTopCompanies, isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { getCommercialSummary } from '@/lib/growth-admin-performance'
 
 function ModuleCard({ href, title, description, status = 'Disponible', tone = 'violet' }: { href?: string; title: string; description: string; status?: string; tone?: 'violet' | 'blue' | 'green' | 'amber' | 'slate' }) {
   const body = <div className={`${adminPanel} h-full p-5 transition ${href ? 'hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md' : ''}`}>
@@ -14,10 +15,7 @@ function ModuleCard({ href, title, description, status = 'Disponible', tone = 'v
 
 export default async function CommercialPage() {
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
-  const [companies, people, opportunities, meetings, actions, content] = await Promise.all([
-    getTopCompanies(), getPeople(), getOpportunities(), getMeetings(), getReadyManualActions(), getRecentContent(),
-  ])
-  const activeContent = content.filter((item) => !['published', 'rejected', 'failed', 'superseded_test'].includes(item.status))
+  const summary = await getCommercialSummary()
 
   return <AdminShell active="commercial">
     <header className="overflow-hidden rounded-[2rem] border border-indigo-950 bg-indigo-950 text-white shadow-sm">
@@ -27,16 +25,18 @@ export default async function CommercialPage() {
           <h1 className="mt-4 text-4xl md:text-6xl" style={{ fontFamily: 'var(--font-playfair)' }}>Comercial</h1>
           <p className="mt-5 max-w-3xl text-sm leading-7 text-indigo-100/80 md:text-base">Todo lo que genera y desarrolla negocio: cuentas, personas, oportunidades, discovery, propuestas, mercado, competencia y contenido que alimenta el funnel.</p>
         </div>
-        <div className="grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-indigo-200/70">Oportunidades</p><p className="mt-1 text-2xl font-semibold">{opportunities.length}</p></div><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-indigo-200/70">Reuniones</p><p className="mt-1 text-2xl font-semibold">{meetings.length}</p></div></div>
+        <div className="grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-indigo-200/70">Oportunidades</p><p className="mt-1 text-2xl font-semibold">{summary.opportunities}</p></div><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-indigo-200/70">Reuniones</p><p className="mt-1 text-2xl font-semibold">{summary.meetings}</p></div></div>
       </div>
     </header>
+
+    {summary.degraded && <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">Resumen cargado en modo ligero. Los módulos siguen disponibles aunque Supabase haya tardado en una lectura.</div>}
 
     <section className="mt-8">
       <SectionHeading eyebrow="Módulos" title="Ciclo comercial completo" description="La automatización no es un requisito. Los procesos que hoy haces manualmente quedan ubicados y visibles para que el sistema escale sin inventar integraciones." />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        <ModuleCard href="/growth-admin/crm" title="Pipeline, empresas y personas" description={`${companies.length} empresas, ${people.length} personas y ${actions.length} acciones preparadas. Accounts, contactos, reuniones y oportunidades en una sola vista.`} />
+        <ModuleCard href="/growth-admin/crm" title="Pipeline, empresas y personas" description={`${summary.companies} empresas, ${summary.people} personas y ${summary.manual_actions} acciones preparadas. Accounts, contactos, reuniones y oportunidades en una sola vista.`} />
         <ModuleCard href="/growth-admin/crm" title="Prospecting & follow-up" description="Búsqueda, priorización y seguimiento de leads. El contacto por email, LinkedIn, portales, partners o referencias puede seguir siendo manual." tone="blue" />
-        <ModuleCard href="/growth-admin/content" title="Editorial & contenido" description={`${activeContent.length} piezas activas. Research, artículos, LinkedIn, CTA, visuals y aprendizaje comercial forman parte del área Comercial.`} tone="green" />
+        <ModuleCard href="/growth-admin/content" title="Editorial & contenido" description={`${summary.active_content} piezas activas. Research, artículos, LinkedIn, CTA, visuals y aprendizaje comercial forman parte del área Comercial.`} tone="green" />
         <ModuleCard href="/growth-admin/calendar" title="Calendario y distribución" description="Planificación de publicaciones, reprogramación, publicación inmediata e histórico de contenido." tone="blue" />
         <ModuleCard href="/growth-admin/approvals" title="Aprobaciones" description="Human-in-the-loop para contenido y acciones externas. Autorizar no equivale a ejecutar." tone="amber" />
         <ModuleCard href="/growth-admin/research" title="Research editorial" description="Señales, evidencia, briefs e ideas que alimentan publicaciones y artículos con criterio de negocio." />
