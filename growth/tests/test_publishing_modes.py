@@ -1,4 +1,10 @@
-from growth.src.publishing import _commentary_for_mode, _publication_mode, _short_commentary, _visual_ref_for_mode
+from growth.src.publishing import (
+    _commentary_for_mode,
+    _linkedin_post_url,
+    _publication_mode,
+    _short_commentary,
+    _visual_ref_for_mode,
+)
 
 
 def test_publication_mode_defaults_to_text_with_visual():
@@ -40,3 +46,12 @@ def test_short_commentary_truncates_on_word_boundary():
     result = _short_commentary(body, max_chars=80)
     assert len(result) <= 80
     assert result.endswith("…")
+
+
+def test_linkedin_post_url_uses_returned_post_urn():
+    post_id = "urn:li:share:123456789"
+    assert _linkedin_post_url(post_id) == "https://www.linkedin.com/feed/update/urn:li:share:123456789/"
+
+
+def test_linkedin_post_url_is_empty_without_post_id():
+    assert _linkedin_post_url("") == ""
