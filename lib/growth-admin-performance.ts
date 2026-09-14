@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { queryGrowthRpc } from '@/lib/supabase-growth'
+import type { GrowthApproval, GrowthCompany, GrowthInteraction, GrowthMeeting, GrowthOpportunity, GrowthPerson, GrowthTask } from '@/lib/growth-admin'
 
 export type DashboardSummary = {
   companies: number
@@ -58,6 +59,17 @@ export type OperationsBundle = {
   projects: Array<Record<string, unknown>>
   companies: Array<{ company_id: string; name: string }>
   opportunities: Array<{ opportunity_id: string; name: string }>
+  degraded?: boolean
+}
+
+export type CrmBundle = {
+  companies: GrowthCompany[]
+  people: GrowthPerson[]
+  actions: GrowthApproval[]
+  interactions: GrowthInteraction[]
+  opportunities: GrowthOpportunity[]
+  meetings: GrowthMeeting[]
+  prospect_tasks: GrowthTask[]
   degraded?: boolean
 }
 
@@ -133,5 +145,17 @@ export function getOperationsBundle() {
     projects: [],
     companies: [],
     opportunities: [],
+  })
+}
+
+export function getCrmBundle() {
+  return safeRpc<CrmBundle>('growth_crm_bundle', {
+    companies: [],
+    people: [],
+    actions: [],
+    interactions: [],
+    opportunities: [],
+    meetings: [],
+    prospect_tasks: [],
   })
 }
