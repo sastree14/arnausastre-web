@@ -156,6 +156,18 @@ export interface GrowthMetric {
   metadata?: Record<string, unknown> | null
 }
 
+export interface LinkedInAnalyticsImport {
+  import_id: string
+  account_type: 'arnau' | 'sc_analytics'
+  report_type: string
+  period_start?: string | null
+  period_end?: string | null
+  source_filename?: string
+  rows_imported: number
+  metadata?: Record<string, unknown> | null
+  imported_at: string
+}
+
 export interface LinkedInPostMetric {
   metric_id: string
   account_type: 'arnau' | 'sc_analytics'
@@ -316,6 +328,10 @@ export function getInteractions() {
 
 export function getMetrics() {
   return queryGrowthTable<GrowthMetric>('metrics', { order: 'metric_date.desc', limit: '500' })
+}
+
+export function getLinkedInAnalyticsImports() {
+  return queryGrowthTable<LinkedInAnalyticsImport>('linkedin_analytics_imports', { order: 'imported_at.desc', limit: '100' })
 }
 
 export function getLinkedInPostMetrics() {
