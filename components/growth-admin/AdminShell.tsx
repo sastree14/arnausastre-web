@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-export type OperatingModule = 'home' | 'commercial' | 'content' | 'calendar' | 'approvals' | 'crm' | 'partners' | 'research' | 'visual' | 'metrics' | 'analytics' | 'finance' | 'operations' | 'system'
+export type OperatingModule = 'home' | 'commercial' | 'content' | 'calendar' | 'approvals' | 'crm' | 'partners' | 'intelligence' | 'research' | 'visual' | 'metrics' | 'analytics' | 'finance' | 'operations' | 'system'
 
 type Sector = 'commercial' | 'finance' | 'metrics' | 'operations'
 
@@ -13,7 +13,7 @@ const SECTORS: Array<{ key: Sector; href: string; label: string; description: st
 ]
 
 function activeSector(active: OperatingModule): Sector | null {
-  if (['commercial', 'crm', 'partners', 'content', 'calendar', 'approvals', 'research', 'visual'].includes(active)) return 'commercial'
+  if (['commercial', 'crm', 'partners', 'intelligence', 'content', 'calendar', 'approvals', 'research', 'visual'].includes(active)) return 'commercial'
   if (['metrics', 'analytics'].includes(active)) return 'metrics'
   if (active === 'finance') return 'finance'
   if (['operations', 'system'].includes(active)) return 'operations'

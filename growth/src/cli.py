@@ -6,6 +6,7 @@ import json
 from .approvals import decide, list_pending
 from .brain import validate_brain
 from .brief import build_brief
+from .commercial_intelligence import run_commercial_signal_scan
 from .config import load_config
 from .content import create_content_from_case
 from .editorial_ops import rewrite_content
@@ -52,6 +53,9 @@ def main() -> None:
     p_prospect.add_argument("--mode", choices=["partner", "lead"], default="partner")
     p_prospect.add_argument("--limit", type=int, default=10)
 
+    p_signals = sub.add_parser("commercial-signals")
+    p_signals.add_argument("--limit", type=int, default=12)
+
     p_approve = sub.add_parser("decide")
     p_approve.add_argument("approval_id")
     p_approve.add_argument("decision", choices=["approved", "rejected"])
@@ -95,6 +99,8 @@ def main() -> None:
         print(json.dumps(editorial_from_url(args.url, title=args.title, snippet=args.snippet, generate=not args.no_generate), indent=2, ensure_ascii=False))
     elif args.command == "prospect":
         print(json.dumps(research_companies(args.mode, args.limit), indent=2, ensure_ascii=False))
+    elif args.command == "commercial-signals":
+        print(json.dumps(run_commercial_signal_scan(args.limit), indent=2, ensure_ascii=False))
     elif args.command == "decide":
         print(json.dumps(decide(args.approval_id, args.decision), indent=2, ensure_ascii=False))
     elif args.command == "publish":

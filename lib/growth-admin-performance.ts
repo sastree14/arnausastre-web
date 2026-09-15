@@ -38,6 +38,67 @@ export type CommercialSummary = {
   degraded?: boolean
 }
 
+export type CommercialSignal = {
+  signal_id: string
+  company_id?: string | null
+  company_name: string
+  website?: string
+  signal_type: string
+  title: string
+  summary?: string
+  source_url: string
+  source_domain?: string
+  observed_at?: string | null
+  strength: number | string
+  evidence?: string
+  recommended_service?: string
+  recommended_offer?: string
+  suggested_roles?: string[]
+  phone?: string
+  phone_source_url?: string
+  status?: string
+  metadata?: Record<string, unknown> | null
+  created_at?: string
+}
+
+export type CommercialOffer = {
+  offer_key: string
+  name: string
+  promise?: string
+  ideal_for?: string
+  capabilities?: string[]
+  trigger_types?: string[]
+  duration?: string
+  entry_scope?: string
+  price_min?: number | string | null
+  price_max?: number | string | null
+  currency?: string
+  cta?: string
+  active?: boolean
+  updated_at?: string
+}
+
+export type CommercialChannel = {
+  channel_key: string
+  label: string
+  category?: string
+  priority: number | string
+  objective?: string
+  motion?: string
+  cadence?: string
+  status?: string
+  notes?: string
+  updated_at?: string
+}
+
+export type CommercialIntelligenceBundle = {
+  signals: CommercialSignal[]
+  offers: CommercialOffer[]
+  channels: CommercialChannel[]
+  tasks: GrowthTask[]
+  degraded?: boolean
+}
+
 export type MetricsSummary = {
   sessions: number
   key_events: number
@@ -123,6 +184,15 @@ export function getCommercialSummary() {
     meetings: 0,
     manual_actions: 0,
     active_content: 0,
+  })
+}
+
+export function getCommercialIntelligenceBundle() {
+  return safeRpc<CommercialIntelligenceBundle>('growth_commercial_intelligence_bundle', {
+    signals: [],
+    offers: [],
+    channels: [],
+    tasks: [],
   })
 }
 
