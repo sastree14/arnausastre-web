@@ -3,7 +3,7 @@ import AdminShell from '@/components/growth-admin/AdminShell'
 import VisualStudioClientV2 from '@/components/visual-studio/VisualStudioClientV2'
 import { getRecentContent, isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
 import type { PublicationMode, VisualFormatKey } from '@/lib/brand-system'
-import type { VisualDesign, VisualStudioContentSeed, VisualTemplateKey } from '@/lib/visual-studio'
+import { createDesignFromTemplate, type VisualDesign, type VisualStudioContentSeed, type VisualTemplateKey } from '@/lib/visual-studio'
 
 type VisualDesignRow = {
   design_id: string
@@ -21,11 +21,38 @@ type VisualDesignRow = {
 
 export const dynamic = 'force-dynamic'
 
-export default async function VisualStudioPage({ searchParams }: { searchParams?: Promise<{ content?: string }> }) {
+function adaptSavedDesignToContent(row: VisualDesignRow, seed?: VisualStudioContentSeed): VisualDesignRow {
+  if (!seed || !row.design_json?.elements?.length) return { ...row, content_id: null }
+  const generated = createDesignFromTemplate(row.template_key, row.format_key, { ...seed, publication_mode: row.publication_mode })
+  const generatedByRole = new Map(generated.elements.filter((item) => item.role).map((item) => [item.role, item]))
+  const generatedById = new Map(generated.elements.map((item) => [item.id, item]))
+
+  const elements = row.design_json.elements.map((element) => {
+    const source = (element.role ? generatedByRole.get(element.role) : undefined) || generatedById.get(element.id)
+    if (!source) return element
+    if (element.kind === 'text' || element.kind === 'tag') return { ...element, text: source.text || '' }
+    if (element.kind === 'metric') return { ...element, value: source.value || '', label: source.label || '' }
+    return element
+  })
+
+  return {
+    ...row,
+    content_id: null,
+    design_json: {
+      ...row.design_json,
+      designId: undefined,
+      name: `${row.name} · plantilla`,
+      publicationMode: row.publication_mode,
+      elements,
+    },
+  }
+}
+
+export default async function VisualStudioPage({ searchParams }: { searchParams?: Promise<{ content?: string; deleted?: string }> }) {
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
 
   const params = searchParams ? await searchParams : undefined
-  const [contentRows, savedDesigns] = await Promise.all([
+  const [contentRows, savedDesignRows] = await Promise.all([
     getRecentContent(),
     queryGrowthTable<VisualDesignRow>('visual_designs', { order: 'updated_at.desc', limit: '100' }),
   ])
@@ -46,5 +73,21 @@ export default async function VisualStudioPage({ searchParams }: { searchParams?
       publication_mode: item.publication_mode,
     }))
 
-  return <AdminShell active="visual"><div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.05)]"><VisualStudioClientV2 content={content} savedDesigns={savedDesigns} initialContentId={params?.content} /></div></AdminShell>
+  const activeSeed = content.find((item) => item.content_id === params?.content) || content[0]
+  const savedDesigns = savedDesignRows.map((row) => adaptSavedDesignToContent(row, activeSeed))
+
+  return <AdminShell active="visual">
+    <div className="mb-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Biblioteca visual</p>
+          <p className="mt-1 text-sm text-slate-600">Los diseños guardados se reutilizan como <strong>plantillas</strong>: conservan composición y estilo, pero reciben el texto de la publicación seleccionada. Ya no arrastran el copy antiguo.</p>
+          {params?.deleted && <p className="mt-2 text-xs font-semibold text-emerald-700">Diseño eliminado correctamente.</p>}
+        </div>
+        <a href="/growth-admin/content" className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700">← Volver a Editorial</a>
+      </div>
+      {savedDesignRows.length > 0 && <details className="mt-4"><summary className="cursor-pointer text-xs font-semibold text-slate-700">Gestionar diseños guardados ({savedDesignRows.length})</summary><div className="mt-3 grid gap-2 md:grid-cols-2 xl:grid-cols-3">{savedDesignRows.slice(0, 30).map((item) => <div key={item.design_id} className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3"><div className="min-w-0"><p className="truncate text-xs font-semibold text-slate-800">{item.name}</p><p className="mt-1 text-[10px] text-slate-400">{item.template_key} · {item.format_key} · {item.status || 'draft'}</p></div><form action="/api/growth-admin/visual-studio/delete" method="post"><input type="hidden" name="design_id" value={item.design_id}/><input type="hidden" name="return_to" value={params?.content ? `/growth-admin/visual-studio?content=${encodeURIComponent(params.content)}` : '/growth-admin/visual-studio'}/><button className="rounded-lg border border-rose-200 bg-white px-2.5 py-1.5 text-[10px] font-semibold text-rose-700">Eliminar</button></form></div>)}</div></details>}
+    </div>
+    <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.05)]"><VisualStudioClientV2 content={content} savedDesigns={savedDesigns} initialContentId={params?.content} /></div>
+  </AdminShell>
 }
