@@ -3,8 +3,8 @@ name: SC-Analytics Operating System — Operator Queue
 on:
   workflow_dispatch:
   schedule:
-    # Safety-net worker only. User-triggered work should be dispatched on demand.
-    - cron: '17 * * * *'
+    # Responsive worker for Control Center actions; GitHub cron has no sub-5-minute cadence.
+    - cron: '*/5 * * * *'
 
 concurrency:
   group: sc-analytics-operator-queue

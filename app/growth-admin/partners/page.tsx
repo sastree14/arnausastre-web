@@ -4,7 +4,7 @@ import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 
 export const dynamic = 'force-dynamic'
 
-export default async function CrmPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+export default async function PartnersPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
-  return <CommercialProspectingWorkspace mode="lead" searchParams={searchParams}/>
+  return <CommercialProspectingWorkspace mode="partner" searchParams={searchParams}/>
 }

@@ -23,7 +23,7 @@ export default async function CommercialPage() {
         <div className="max-w-4xl">
           <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-indigo-300">Cuadro de Mando Integral · Comercial</p>
           <h1 className="mt-4 text-4xl md:text-6xl" style={{ fontFamily: 'var(--font-playfair)' }}>Comercial</h1>
-          <p className="mt-5 max-w-3xl text-sm leading-7 text-indigo-100/80 md:text-base">Todo lo que genera y desarrolla negocio: cuentas, personas, oportunidades, discovery, propuestas, mercado, competencia y contenido que alimenta el funnel.</p>
+          <p className="mt-5 max-w-3xl text-sm leading-7 text-indigo-100/80 md:text-base">Adquisición directa de clientes, partners/canales, oportunidades, discovery, propuestas y contenido que alimenta el funnel. Cada motor tiene ahora su propio objetivo y su propia cola.</p>
         </div>
         <div className="grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-indigo-200/70">Oportunidades</p><p className="mt-1 text-2xl font-semibold">{summary.opportunities}</p></div><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-indigo-200/70">Reuniones</p><p className="mt-1 text-2xl font-semibold">{summary.meetings}</p></div></div>
       </div>
@@ -32,10 +32,10 @@ export default async function CommercialPage() {
     {summary.degraded && <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">Resumen cargado en modo ligero. Los módulos siguen disponibles aunque Supabase haya tardado en una lectura.</div>}
 
     <section className="mt-8">
-      <SectionHeading eyebrow="Módulos" title="Ciclo comercial completo" description="La automatización no es un requisito. Los procesos que hoy haces manualmente quedan ubicados y visibles para que el sistema escale sin inventar integraciones." />
+      <SectionHeading eyebrow="Módulos" title="Ciclo comercial completo" description="Dos motores distintos: uno busca empresas finales a las que vender directamente; el otro busca partners que amplían distribución, capacidad y profundidad técnica." />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        <ModuleCard href="/growth-admin/crm" title="Pipeline, empresas y personas" description={`${summary.companies} empresas, ${summary.people} personas y ${summary.manual_actions} acciones preparadas. Accounts, contactos, reuniones y oportunidades en una sola vista.`} />
-        <ModuleCard href="/growth-admin/crm" title="Prospecting & follow-up" description="Búsqueda, priorización y seguimiento de leads. El contacto por email, LinkedIn, portales, partners o referencias puede seguir siendo manual." tone="blue" />
+        <ModuleCard href="/growth-admin/crm" title="Clientes potenciales" description={`${summary.lead_companies} empresas objetivo · ${summary.lead_people} decisores. Prospecting directo, LinkedIn, mensajes personalizados, reuniones y oportunidades.`} />
+        <ModuleCard href="/growth-admin/partners" title="Partners & canales" description={`${summary.partner_companies} partners · ${summary.partner_people} contactos. Consultoras, boutiques de datos, recruitment/staffing y proveedores complementarios que pueden derivar o ampliar proyectos con SC-Analytics.`} tone="blue" />
         <ModuleCard href="/growth-admin/content" title="Editorial & contenido" description={`${summary.active_content} piezas activas. Research, artículos, LinkedIn, CTA, visuals y aprendizaje comercial forman parte del área Comercial.`} tone="green" />
         <ModuleCard href="/growth-admin/calendar" title="Calendario y distribución" description="Planificación de publicaciones, reprogramación, publicación inmediata e histórico de contenido." tone="blue" />
         <ModuleCard href="/growth-admin/approvals" title="Aprobaciones" description="Human-in-the-loop para contenido y acciones externas. Autorizar no equivale a ejecutar." tone="amber" />
@@ -44,27 +44,27 @@ export default async function CommercialPage() {
     </section>
 
     <section className="mt-12" id="competition">
-      <SectionHeading eyebrow="Mercado" title="Competencia y oportunidades" description="Este bloque existe desde ya aunque la investigación siga siendo manual. La prioridad es tener un lugar estable donde revisar y documentar el mercado." />
+      <SectionHeading eyebrow="Mercado" title="Competencia y oportunidades" description="Un único bloque de contexto de mercado; la acción diaria vive en Clientes potenciales o Partners & canales." />
       <div className="grid gap-5 xl:grid-cols-2">
-        <div className={`${adminPanel} p-6`}><div className="flex items-center justify-between"><h3 className="text-xl font-semibold text-slate-950">Competencia</h3><Badge>Manual</Badge></div><ul className="mt-4 space-y-2 text-sm leading-6 text-slate-600"><li>- Competidores directos e indirectos.</li><li>- Servicios, pricing, posicionamiento y casos.</li><li>- Contenido, campañas y cambios relevantes.</li><li>- Fortalezas, debilidades y huecos de mercado.</li><li>- Revisión breve semanal y revisión profunda mensual.</li></ul></div>
-        <div className={`${adminPanel} p-6`}><div className="flex items-center justify-between"><h3 className="text-xl font-semibold text-slate-950">Fuentes de oportunidades</h3><Badge>Manual</Badge></div><ul className="mt-4 space-y-2 text-sm leading-6 text-slate-600"><li>- Upwork y plataformas especializadas.</li><li>- Outreach directo a empresas objetivo.</li><li>- Partners, recruitment/staffing y canales B2B.</li><li>- LinkedIn personal y página de SC-Analytics.</li><li>- Referencias, networking y oportunidades inbound.</li></ul></div>
+        <div className={`${adminPanel} p-6`}><div className="flex items-center justify-between"><h3 className="text-xl font-semibold text-slate-950">Competencia</h3><Badge>Manual</Badge></div><ul className="mt-4 space-y-2 text-sm leading-6 text-slate-600"><li>- Competidores directos e indirectos.</li><li>- Servicios, pricing, posicionamiento y casos.</li><li>- Contenido, campañas y cambios relevantes.</li><li>- Fortalezas, debilidades y huecos de mercado.</li></ul></div>
+        <div className={`${adminPanel} p-6`}><div className="flex items-center justify-between"><h3 className="text-xl font-semibold text-slate-950">Canales de crecimiento</h3><Badge>Operativo</Badge></div><ul className="mt-4 space-y-2 text-sm leading-6 text-slate-600"><li>- Clientes finales: outreach directo, LinkedIn, plataformas y referencias.</li><li>- Partners: consultoras, boutiques, recruitment/staffing y proveedores complementarios.</li><li>- Inbound: contenido, web, networking y recomendaciones.</li><li>- Cada canal alimenta el mismo pipeline de reuniones y oportunidades.</li></ul></div>
       </div>
     </section>
 
     <section className="mt-12" id="proposals">
-      <SectionHeading eyebrow="Conversión" title="Discovery, proposals y presupuesto" description="De momento la generación de documentos puede seguir en Google Drive/Docs/Slides. El CRM solo fija la estructura y el punto del proceso donde deben existir." />
+      <SectionHeading eyebrow="Conversión" title="Discovery, proposals y presupuesto" description="La documentación puede seguir viviendo en Drive/Docs/Slides; el CRM fija cuándo existe cada fase y conserva la trazabilidad." />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <ModuleCard title="Discovery call" description="Identificar oportunidades, cuellos de botella, déficits, riesgos, escalabilidad y mejoras antes de proponer una solución." status="Proceso" tone="green" />
         <ModuleCard title="Qualification" description="Problema, impacto, urgencia, presupuesto, decisor, datos/sistemas y siguiente paso comercial." status="Proceso" tone="blue" />
-        <ModuleCard title="Proposal builder" description="Estructura futura para alcance, entregables, fases, timings, supuestos, riesgos y condiciones." status="Manual" tone="amber" />
-        <ModuleCard title="Budget helper" description="Estimación de horas, perfiles, margen, costes, contingencia y precio final. Se automatizará solo cuando aporte valor." status="Manual" tone="amber" />
+        <ModuleCard title="Proposal builder" description="Alcance, entregables, fases, timings, supuestos, riesgos y condiciones." status="Manual" tone="amber" />
+        <ModuleCard title="Budget helper" description="Horas, perfiles, margen, costes, contingencia y precio final." status="Manual" tone="amber" />
       </div>
     </section>
 
     <section className="mt-12 pb-12">
       <SectionHeading eyebrow="Rutina comercial" title="Checklist semanal" />
       <div className={`${adminPanel} grid gap-3 p-6 md:grid-cols-2 xl:grid-cols-4`}>
-        {['Revisar pipeline y siguientes acciones', 'Buscar nuevas oportunidades y cuentas', 'Revisar propuestas y follow-ups', 'Comprobar discovery calls próximas', 'Mirar competencia y mercado', 'Revisar rendimiento de contenido', 'Actualizar contactos/reuniones relevantes', 'Elegir prioridades comerciales de la semana'].map((item) => <div key={item} className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-600"><span className="mr-2 text-indigo-600">□</span>{item}</div>)}
+        {['Revisar clientes y siguientes acciones', 'Buscar nuevas empresas objetivo', 'Buscar partners y canales complementarios', 'Revisar propuestas y follow-ups', 'Comprobar discovery calls próximas', 'Mirar competencia y mercado', 'Revisar rendimiento de contenido', 'Elegir prioridades comerciales de la semana'].map((item) => <div key={item} className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-600"><span className="mr-2 text-indigo-600">□</span>{item}</div>)}
       </div>
     </section>
   </AdminShell>

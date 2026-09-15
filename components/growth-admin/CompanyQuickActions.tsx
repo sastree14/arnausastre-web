@@ -1,14 +1,15 @@
 type Props = {
   companyId: string
   currentStatus?: string | null
+  returnTo?: string
 }
 
-export default function CompanyQuickActions({ companyId, currentStatus }: Props) {
+export default function CompanyQuickActions({ companyId, currentStatus, returnTo = '/growth-admin/crm' }: Props) {
   return <div className="mt-4 space-y-3 border-t border-slate-100 pt-4">
     <form action="/api/growth-admin/crm-interaction" method="post" className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
       <input type="hidden" name="company_id" value={companyId}/>
       <input type="hidden" name="channel" value="crm"/>
-      <input type="hidden" name="return_to" value="/growth-admin/crm"/>
+      <input type="hidden" name="return_to" value={returnTo}/>
       <select name="kind" defaultValue="company_researching" className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700">
         <option value="company_researching">Investigar empresa</option>
         <option value="company_followed">Empresa seguida</option>
@@ -26,7 +27,7 @@ export default function CompanyQuickActions({ companyId, currentStatus }: Props)
       <summary className="cursor-pointer select-none px-3 py-2 text-[11px] font-semibold text-indigo-700">Añadir CEO / decisor / contacto</summary>
       <form action="/api/growth-admin/crm-person" method="post" className="grid gap-2 border-t border-indigo-100 p-3 sm:grid-cols-2">
         <input type="hidden" name="company_id" value={companyId}/>
-        <input type="hidden" name="return_to" value="/growth-admin/crm"/>
+        <input type="hidden" name="return_to" value={returnTo}/>
         <input name="name" required placeholder="Nombre y apellidos" className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700"/>
         <input name="role" defaultValue="CEO / Founder" placeholder="Cargo" className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700"/>
         <input name="linkedin_url" placeholder="URL de LinkedIn (opcional)" className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 sm:col-span-2"/>

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus, urlparse
 
 from .brain import load_brain
 from .config import load_config
@@ -10,82 +10,299 @@ from .research import BraveResearchClient, dedupe_hits
 from .storage import get_store
 
 
-def _discover_people(company: CompanyCandidate, roles: list[str], search: BraveResearchClient, llm) -> list[dict]:
-    """Discover public decision-maker references without scraping LinkedIn."""
-    queries = []
-    for role in roles[:4]:
-        queries.append(f'"{company.name}" "{role}"')
-        queries.append(f'"{company.name}" {role} LinkedIn')
-    hits = []
-    for query in queries[:8]:
-        hits.extend(search.search(query, count=6))
-    hits = dedupe_hits(hits)[:28]
-    if not hits:
-        return []
-    return llm.json(
-        "You identify B2B decision makers strictly from supplied public search snippets. Do not invent names or roles.",
-        f"""Identify at most 4 people who plausibly work at {company.name} in one of these roles: {roles}.
-Return JSON array with: name, role, linkedin_url, public_source_url, relevance_score (0-10), evidence.
-Only return a person when the supplied result explicitly supports their name and company/role association.
-A LinkedIn URL may be copied from the search result URL, but do not claim information that would require scraping it.
-Prioritize people who can sponsor or materially influence a Data/AI/analytics/operations project.
+SERVICES = [
+    "Demand forecasting & planning",
+    "Optimization & operations research",
+    "Machine learning / AI systems",
+    "AI automation & agents",
+    "Financial / risk analytics",
+    "Decision dashboards & management analytics",
+    "Data engineering & analytical foundations",
+]
 
-RESULTS:
-{[{'title': h.title, 'url': h.url, 'snippet': h.snippet} for h in hits]}
-""",
-    )
+PARTNER_MODELS = [
+    "consulting-extension",
+    "specialist-overflow",
+    "white-label-delivery",
+    "referral-channel",
+    "recruitment-channel",
+    "technology-implementation-partner",
+]
 
 
-def _role_angle(role: str, industry: str) -> str:
-    normalized = role.lower()
-    if any(token in normalized for token in ["ceo", "founder", "owner", "managing", "director general"]):
-        return "Decision quality, growth and scalability"
-    if any(token in normalized for token in ["operations", "supply", "logistic", "planning", "inventory", "procurement"]):
-        return "Operational efficiency, forecasting and optimization"
-    if any(token in normalized for token in ["cfo", "finance", "financial", "controller", "risk"]):
-        return "Financial visibility, risk and decision quality"
-    if any(token in normalized for token in ["data", "analytics", "ai", "technology", "cto", "cio", " it"]):
-        return "Data/AI capability, automation and integration"
-    if any(token in normalized for token in ["sales", "marketing", "growth", "commercial"]):
-        return "Commercial forecasting, segmentation and automation"
-    return f"Decision improvement in {industry}" if industry else "Decision improvement with Data/AI"
+def _website_key(value: str) -> str:
+    raw = str(value or "").strip()
+    if not raw:
+        return ""
+    try:
+        host = urlparse(raw if "://" in raw else f"https://{raw}").netloc.lower().removeprefix("www.")
+        return host.rstrip("/")
+    except ValueError:
+        return raw.rstrip("/").lower()
 
 
-def _draft_outreach(mode: str, company: CompanyCandidate, person: dict | None, brain: str, llm) -> dict[str, str]:
-    person_context = person or {}
-    response = llm.json(
-        "You write concise founder-led B2B outreach for Arnau Sastre, Founder of SC-Analytics. No hype, pressure or invented familiarity.",
-        f"""Prepare one personalized first-contact message for this candidate.
-Return JSON object with keys `message` and `angle` only.
-Mode: {mode}
-Company: {company.name}
-Website: {company.website}
-Industry: {company.industry}
-Observed capabilities: {company.capabilities}
-Observed gaps/opportunity: {company.capability_gaps}
-Qualification reason: {company.score_reason}
-Person: {person_context}
+def _linkedin_company_search_url(company_name: str) -> str:
+    return "https://www.linkedin.com/search/results/companies/?keywords=" + quote_plus(company_name)
 
-Use ethical persuasion only: specificity, relevance to the person's role, a credible business observation, a low-friction next step and clear autonomy. Do not infer personal vulnerabilities or sensitive traits. Do not manufacture urgency, social proof, familiarity or private knowledge.
-For partnership mode, lead with complementarity and a credible reason to collaborate, not a client pitch.
-For lead mode, lead with the observable business context/problem. Position a free discovery call as a way to identify opportunities, bottlenecks, deficits, scalability constraints or process improvements; make it explicit that there is no obligation and that SC-Analytics will say so if there is no clear value.
-Maximum ~110 words.
 
-SC-ANALYTICS BRAIN:
-{brain}
-""",
-    )
-    message = str(response.get("message", "")).strip()
-    angle = str(response.get("angle", "")).strip()
-    if not angle and person_context:
-        angle = _role_angle(str(person_context.get("role", "")), company.industry)
-    return {"message": message, "angle": angle}
+def _linkedin_people_search_url(name: str, company_name: str) -> str:
+    return "https://www.linkedin.com/search/results/people/?keywords=" + quote_plus(f"{name} {company_name}")
 
 
 def _linkedin_search_url(company: CompanyCandidate, roles: list[str]) -> str:
     return "https://www.linkedin.com/search/results/people/?keywords=" + quote_plus(
         f"{company.name} {' OR '.join(roles)}"
     )
+
+
+def _linkedin_company_url(company_name: str, search: BraveResearchClient, llm) -> str:
+    hits = dedupe_hits(search.search(f'site:linkedin.com/company "{company_name}"', count=10))[:10]
+    linkedin_hits = [h for h in hits if "linkedin.com/company/" in h.url]
+    if linkedin_hits:
+        response = llm.json(
+            "Select the official company LinkedIn page strictly from the supplied public search results. Never invent URLs.",
+            f"""Company: {company_name}
+Return JSON with linkedin_url only. Return an empty string if the match is not sufficiently supported.
+RESULTS:
+{[{'title': h.title, 'url': h.url, 'snippet': h.snippet} for h in linkedin_hits]}
+""",
+        )
+        if isinstance(response, dict):
+            url = str(response.get("linkedin_url", "")).strip()
+            if "linkedin.com/company/" in url:
+                return url
+    return _linkedin_company_search_url(company_name)
+
+
+def _discover_primary_person(company: CompanyCandidate, roles: list[str], search: BraveResearchClient, llm, mode: str) -> dict | None:
+    if mode == "partner":
+        roles = roles or ["Founder", "CEO", "Managing Partner", "Partner", "Head of Consulting", "Business Development", "Head of Recruitment"]
+    else:
+        roles = roles or ["CEO", "Founder", "COO", "Head of Operations", "CFO", "CTO"]
+    role_query = " OR ".join(f'"{role}"' for role in roles[:7])
+    domain = _website_key(company.website)
+    queries = [
+        f'site:linkedin.com/in "{company.name}" ({role_query})',
+        f'"{company.name}" ({role_query})',
+        f'"{company.name}" founder OR CEO OR partner OR director LinkedIn',
+    ]
+    if domain:
+        queries.append(f'site:{domain} founder OR CEO OR partner OR management OR team OR director')
+
+    hits = []
+    for query in queries:
+        hits.extend(search.search(query, count=10))
+    hits = dedupe_hits(hits)[:40]
+    if not hits:
+        return None
+
+    response = llm.json(
+        "Identify one real B2B decision maker strictly from supplied public search snippets. Never invent a person, role or company association.",
+        f"""Find the SINGLE best person at {company.name} for this commercial mode: {mode}.
+Preferred roles: {roles}.
+Return JSON with: name, role, linkedin_url, public_source_url, relevance_score (0-10), evidence.
+Requirements:
+- name plus company/role association must be supported by supplied results;
+- prefer a direct linkedin.com/in profile when supplied;
+- linkedin_url may be empty if no direct profile is supported; the system will build a LinkedIn people-search link;
+- public_source_url must be the strongest supplied supporting result;
+- return {{}} if no real named decision maker is supported.
+Do not infer facts from inside LinkedIn beyond supplied public search titles/snippets.
+
+RESULTS:
+{[{'title': h.title, 'url': h.url, 'snippet': h.snippet} for h in hits]}
+""",
+    )
+    if not isinstance(response, dict):
+        return None
+    name = str(response.get("name", "")).strip()
+    role = str(response.get("role", "")).strip()
+    if not name or not role:
+        return None
+    linkedin_url = str(response.get("linkedin_url", "")).strip()
+    if "linkedin.com/in/" not in linkedin_url:
+        linkedin_url = _linkedin_people_search_url(name, company.name)
+    response["linkedin_url"] = linkedin_url
+    return response
+
+
+def _public_company_context(company: CompanyCandidate, search: BraveResearchClient, mode: str) -> list[dict]:
+    domain = _website_key(company.website)
+    if mode == "partner":
+        queries = [
+            f'"{company.name}" consulting services clients digital transformation analytics',
+            f'"{company.name}" partnership clients consulting recruitment data',
+        ]
+        if domain:
+            queries.append(f'site:{domain} services OR consulting OR analytics OR Power BI OR data OR recruitment OR partners')
+    else:
+        queries = [
+            f'"{company.name}" {company.industry} operations growth expansion',
+            f'"{company.name}" supply chain planning pricing capacity automation',
+        ]
+        if domain:
+            queries.append(f'site:{domain} forecasting OR optimization OR automation OR analytics OR planning OR expansion')
+    hits = []
+    for query in queries:
+        hits.extend(search.search(query, count=7))
+    return [
+        {"title": h.title, "url": h.url, "snippet": h.snippet}
+        for h in dedupe_hits(hits)[:16]
+        if "linkedin.com" not in h.url
+    ]
+
+
+def _public_person_context(person: dict, company: CompanyCandidate, search: BraveResearchClient) -> list[dict]:
+    name = str(person.get("name", "")).strip()
+    role = str(person.get("role", "")).strip()
+    if not name:
+        return []
+    domain = _website_key(company.website)
+    queries = [
+        f'"{name}" "{company.name}" {role} interview project appointment',
+        f'"{name}" "{company.name}" conference article podcast project',
+    ]
+    if domain:
+        queries.append(f'site:{domain} "{name}"')
+    hits = []
+    for query in queries:
+        hits.extend(search.search(query, count=6))
+    return [
+        {"title": h.title, "url": h.url, "snippet": h.snippet}
+        for h in dedupe_hits(hits)[:12]
+    ]
+
+
+def _role_angle(role: str, industry: str) -> str:
+    normalized = role.lower()
+    if any(token in normalized for token in ["ceo", "founder", "owner", "managing", "director general", "gerente general"]):
+        return "Decisión, crecimiento y escalabilidad"
+    if any(token in normalized for token in ["operations", "supply", "logistic", "planning", "inventory", "procurement"]):
+        return "Forecasting, planificación y eficiencia operativa"
+    if any(token in normalized for token in ["cfo", "finance", "financial", "controller", "risk"]):
+        return "Forecasting financiero, riesgo y control"
+    if any(token in normalized for token in ["data", "analytics", "ai", "technology", "cto", "cio", " it"]):
+        return "Data/AI, automatización e integración"
+    if any(token in normalized for token in ["sales", "marketing", "growth", "commercial"]):
+        return "Forecasting comercial, segmentación y automatización"
+    return f"Mejora de decisiones en {industry}" if industry else "Mejora de decisiones con Data/AI"
+
+
+def _draft_outreach(mode: str, company: CompanyCandidate, person: dict, company_extra: dict, brain: str, search: BraveResearchClient, llm) -> dict[str, str | dict]:
+    company_context = _public_company_context(company, search, mode)
+    person_context = _public_person_context(person, company, search)
+    partner_block = ""
+    if mode == "partner":
+        partner_block = f"""
+This is a PARTNER conversation, not an end-client sales pitch.
+Potential partnership model: {company_extra.get('partnership_model', '')}
+Potential partnership value: {company_extra.get('partnership_value', '')}
+The objective is to explore whether SC-Analytics can extend their delivery capability, absorb specialist/overflow projects, work white-label, receive referrals, or support recruitment/channel demand when the evidence supports it.
+"""
+
+    response = llm.json(
+        "You are a senior B2B relationship strategist writing as Arnau Sastre. Arnau is a Mathematician and Statistician and Founder of SC-Analytics. Write specific, evidence-led, human outreach. Never manipulate, pressure or invent familiarity.",
+        f"""Build a LinkedIn contact plan for this exact person and company.
+Return one JSON object with:
+- contact_reason: one sentence explaining why this exact person is worth contacting now
+- business_signal: one concrete public company observation grounded ONLY in supplied evidence
+- personal_hook: one SPECIFIC public professional detail about this person that can be mentioned naturally (a project, appointment, interview, responsibility, article, event, public professional milestone). If not supported, return an empty string. Never use private life, family, health, politics, religion or any sensitive/personal trait.
+- recommended_service: choose EXACTLY ONE from {SERVICES}, selecting the service most likely to matter given role + sector + evidence
+- service_hypothesis: one plausible problem/use-case hypothesis, explicitly framed as a hypothesis rather than a fact
+- angle: short commercial/relationship angle
+- open_question: one genuinely open question that is easy for the person to answer and reveals useful commercial context; it must NOT be a yes/no question
+- recommended_action: one of follow, connect, connect_then_message, message
+- sc_analytics_action: one of invite_to_follow_after_connection, invite_to_follow, none
+- connection_note: personalized invitation, max 250 characters; no generic pitch
+- message: first message after connection, 80-145 words
+- follow_up: one follow-up, 45-85 words, adding value instead of guilt or pressure
+- language: es or en
+
+Mode: {mode}
+Company: {company.name}
+Website: {company.website}
+Company LinkedIn/action URL: {company.linkedin_url}
+Country: {company.country}
+Industry: {company.industry}
+Observed capabilities: {company.capabilities}
+Observed gaps/opportunity: {company.capability_gaps}
+Qualification reason: {company.score_reason}
+Candidate recommended service: {company_extra.get('recommended_service', '')}
+Person: {person}
+Public company context: {company_context}
+Public person context: {person_context}
+{partner_block}
+
+NON-NEGOTIABLE RULES:
+1. The first message must naturally introduce Arnau as a mathematician and statistician and founder of SC-Analytics (or the natural equivalent in English).
+2. Use personal_hook in the message when it is supported. It must sound like Arnau actually looked at the person's public professional work, not like mail-merge personalization.
+3. Tailor the commercial proposition to ONE primary SC-Analytics service, not a list of everything we do.
+4. The message MUST end with the open_question exactly or with a natural equivalent that remains open-ended.
+5. The call-to-action may propose a short exploratory/informational call, with no cost and no commitment, framed as a way to see whether there is real mutual value. Do not say 'nothing to lose' literally.
+6. Do not claim to know internal systems, pain, budget, priorities or private information.
+7. Use ethical persuasion only: specificity, credible relevance, useful hypothesis, low friction and autonomy. No artificial scarcity, fear, guilt, fake social proof or sensitive traits.
+8. For Spain, default to natural Spanish unless evidence strongly supports English; otherwise use English.
+9. No empty flattery such as 'I came across your profile' or 'your impressive background'.
+10. Connection note, first message and follow-up must not be generic variants of the same sentence.
+
+SC-ANALYTICS BRAIN:
+{brain}
+""",
+    )
+    if not isinstance(response, dict):
+        response = {}
+    angle = str(response.get("angle", "")).strip() or _role_angle(str(person.get("role", "")), company.industry)
+    recommended_service = str(response.get("recommended_service", "")).strip() or str(company_extra.get("recommended_service", "")).strip()
+    return {
+        "contact_reason": str(response.get("contact_reason", "")).strip(),
+        "business_signal": str(response.get("business_signal", "")).strip(),
+        "personal_hook": str(response.get("personal_hook", "")).strip(),
+        "recommended_service": recommended_service,
+        "service_hypothesis": str(response.get("service_hypothesis", "")).strip(),
+        "angle": angle,
+        "open_question": str(response.get("open_question", "")).strip(),
+        "recommended_action": str(response.get("recommended_action", "connect_then_message")).strip() or "connect_then_message",
+        "sc_analytics_action": str(response.get("sc_analytics_action", "invite_to_follow_after_connection")).strip() or "invite_to_follow_after_connection",
+        "connection_note": str(response.get("connection_note", "")).strip()[:250],
+        "message": str(response.get("message", "")).strip(),
+        "follow_up": str(response.get("follow_up", "")).strip(),
+        "language": str(response.get("language", "es")).strip() or "es",
+        "research_context": {
+            "public_company_context": company_context,
+            "public_person_context": person_context,
+            "business_signal": str(response.get("business_signal", "")).strip(),
+            "personal_hook": str(response.get("personal_hook", "")).strip(),
+            "service_hypothesis": str(response.get("service_hypothesis", "")).strip(),
+            "recommended_service": recommended_service,
+            "open_question": str(response.get("open_question", "")).strip(),
+            "partnership_model": company_extra.get("partnership_model", ""),
+            "partnership_value": company_extra.get("partnership_value", ""),
+        },
+    }
+
+
+def _display_plan(outreach: dict[str, str | dict], mode: str, company_extra: dict) -> str:
+    arnau_action = str(outreach.get("recommended_action", "connect_then_message")).replace("_", " ")
+    sc_action = str(outreach.get("sc_analytics_action", "invite_to_follow_after_connection")).replace("_", " ")
+    parts = [
+        f"Arnau · acción recomendada: {arnau_action}",
+        f"SC-Analytics · acción recomendada: {sc_action}",
+    ]
+    if mode == "partner" and company_extra.get("partnership_model"):
+        parts.append(f"Modelo de partnership: {company_extra.get('partnership_model')}")
+    for label, key in [
+        ("Por qué contactar", "contact_reason"),
+        ("Detalle profesional personal", "personal_hook"),
+        ("Servicio a priorizar", "recommended_service"),
+        ("Pregunta abierta", "open_question"),
+        ("Nota de conexión", "connection_note"),
+        ("Primer mensaje", "message"),
+        ("Follow-up", "follow_up"),
+    ]:
+        value = str(outreach.get(key, "")).strip()
+        if value:
+            parts.append(f"{label}:\n{value}")
+    return "\n\n".join(parts)
 
 
 def _queue_manual_action(store, *, tenant_id: str, action_type: str, target_id: str, summary: str, payload: dict) -> None:
@@ -104,7 +321,74 @@ def _queue_manual_action(store, *, tenant_id: str, action_type: str, target_id: 
     )
 
 
+def _as_list(value) -> list:
+    if isinstance(value, list):
+        return value
+    if isinstance(value, dict):
+        for key in ("candidates", "companies", "results", "queries"):
+            nested = value.get(key)
+            if isinstance(nested, list):
+                return nested
+    return []
+
+
+def _query_prompt(mode: str, existing_websites: set[str], brain: str) -> str:
+    if mode == "partner":
+        target = """Find complementary PARTNER/CHANNEL companies, not ordinary end clients. Prioritize Spain/EU:
+- strategy, operations or management consultancies whose technical delivery often stops at BI/Power BI/reporting;
+- boutique statistics/R/BI/data firms that may receive projects beyond their capacity or capability;
+- digital transformation, ERP/CRM, software or automation consultancies that lack deep Data Science, forecasting, optimization or ML delivery;
+- recruitment/staffing/talent firms that receive Data/AI project or contractor demand and could route work to SC-Analytics;
+- agencies/advisories with strong client access but incomplete technical depth.
+A good partner should gain something concrete: sell larger/deeper projects, avoid saying no to specialist work, add white-label technical delivery, handle overflow, or create a referral/subcontracting channel.
+Avoid full-stack Data Science/AI consultancies whose offer substantially duplicates SC-Analytics unless the evidence shows a clear complementary niche."""
+    else:
+        target = """Find END-CLIENT/OPERATING companies, not consultancies/agencies/data vendors. Diversify across ecommerce/retail, manufacturing, wholesale/distribution, logistics operators, food, healthcare networks, hospitality/travel, financial services and growing B2B companies. Look for observable operational complexity: expansion, inventory, demand, capacity, pricing, planning, finance/risk, resource allocation, reporting or repetitive workflows where one SC-Analytics capability could improve an actual decision."""
+    return f"""Generate 12 distinct public-web search queries to find NEW {mode} candidates for SC-Analytics.
+Return JSON array of strings only.
+{target}
+Avoid these already stored domains: {sorted(existing_websites)[:150]}.
+Use normal public web search syntax, never LinkedIn scraping instructions.
+
+BRAIN:
+{brain}
+"""
+
+
+def _qualification_prompt(mode: str, pool_target: int, existing_websites: set[str], brain: str, hits: list) -> str:
+    if mode == "partner":
+        rules = f"""For PARTNER mode, each candidate must be a plausible complementary channel. Return additional keys:
+- partnership_model: choose one from {PARTNER_MODELS}
+- partnership_value: one concise sentence explaining what they gain commercially/operationally from working with SC-Analytics
+- recommended_service: choose the ONE SC-Analytics capability that best fills their likely gap from {SERVICES}
+- recommended_roles: prioritize Founder/CEO/Managing Partner/Partner/Head of Consulting/Delivery/Business Development/Recruitment.
+Do not choose a partner merely because it is another consultancy; explain the actual complementary gap or channel logic."""
+    else:
+        rules = f"""For DIRECT CLIENT mode:
+- choose operating/end-client companies with a plausible business decision/process SC-Analytics could improve;
+- exclude consultancies, marketing agencies, ERP vendors, data/AI service firms and recruitment companies;
+- diversify industries;
+- recommended_service: choose the ONE SC-Analytics capability most relevant from {SERVICES};
+- partnership_model and partnership_value must be empty strings."""
+    return f"""From the public search results below, select up to {pool_target} credible NEW company candidates so a downstream process can build one company + one decision-maker pair per requested lead.
+Return a JSON array. Each item must contain:
+name, website, country, industry, employee_range, source_url, capabilities (array), capability_gaps (array), score (0-10), score_reason, recommended_roles (array), recommended_service, partnership_model, partnership_value.
+
+Mode: {mode}
+{rules}
+Explain the observable public signal behind the score. Never invent unsupported facts. Use empty strings when unknown.
+Exclude stored domains: {sorted(existing_websites)[:150]}.
+
+SC-ANALYTICS BRAIN:
+{brain}
+
+SEARCH RESULTS:
+{[{'title': h.title, 'url': h.url, 'snippet': h.snippet} for h in hits]}
+"""
+
+
 def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
+    mode = "partner" if mode == "partner" else "lead"
     cfg = load_config()
     tenant_id = cfg["company"]["tenant_id"]
     brain = load_brain([
@@ -117,46 +401,71 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
     ])
     search = BraveResearchClient()
     llm = get_llm()
+    store = get_store()
+
+    existing_companies = store.filter("companies", tenant_id=tenant_id)
+    existing_websites = {_website_key(str(row.get("website", ""))) for row in existing_companies if row.get("website")}
+    requested = max(1, min(int(limit), 50))
+    pool_target = max(requested * 5, 50)
 
     query_plan = llm.json(
         "You are a B2B research planner. Never instruct scraping LinkedIn.",
-        f"""Generate 6 distinct public-web search queries to find {mode} candidates for SC-Analytics.
-Return JSON array of strings only. Cover different ICP slices instead of repeating the same query: Spain/EU SMEs and mid-market firms where forecasting, optimization, Data Science or AI automation can improve a real business decision or process. Prefer companies showing operational complexity, growth, multi-location operations, inventory/supply chain, finance/risk, pricing, reporting or workflow automation needs.
-Use normal public web search syntax, not LinkedIn scraping instructions.
-
-BRAIN:
-{brain}
-""",
+        _query_prompt(mode, existing_websites, brain),
     )
+    queries = [str(q) for q in _as_list(query_plan)[:12]]
+    if mode == "lead":
+        queries.extend([
+            'Spain ecommerce retailer inventory logistics expansion company',
+            'Spain manufacturer production planning capacity growth company',
+            'Spain wholesale distributor inventory warehouses company',
+            'Spain logistics operator fleet capacity expansion company',
+            'Spain healthcare clinics group expansion operations company',
+            'Spain hospitality hotel group expansion revenue operations company',
+        ])
+    else:
+        queries.extend([
+            'Spain operations consulting Power BI digital transformation consultancy partner',
+            'Spain management consultancy Power BI analytics consulting SME',
+            'Spain boutique statistics R consulting data analytics company',
+            'Spain ERP CRM consultancy analytics Power BI partner',
+            'Spain recruitment staffing data science AI projects consultancy',
+            'Spain technology consultancy business intelligence without data science',
+            'Barcelona management operations consultancy digital transformation Power BI',
+            'Spain freelance recruitment data analytics contractors staffing',
+        ])
+
     hits = []
-    for query in query_plan[:6]:
-        hits.extend(search.search(str(query), count=10))
-    hits = dedupe_hits(hits)[: max(limit * 6, 60)]
+    for query in queries[:22]:
+        hits.extend(search.search(query, count=12))
+    hits = dedupe_hits(hits)[: max(pool_target * 5, 280)]
 
     raw_candidates = llm.json(
         "You are a strict B2B qualification analyst. Score conservatively and never invent missing facts.",
-        f"""From the public search results below, select at most {limit} credible company candidates.
-Return a JSON array. Each item: name, website, country, industry, employee_range, source_url,
-capabilities (array), capability_gaps (array), score (0-10), score_reason, recommended_roles (array).
-A partnership candidate should have client overlap and complementary gaps. A direct lead should have
-an identifiable business problem or complexity that SC-Analytics can plausibly address. Explain the business signal behind the score. Do not infer unsupported facts; use empty strings when unknown. Do not use LinkedIn as evidence beyond supplied search-result snippets.
-
-SC-ANALYTICS BRAIN:
-{brain}
-
-SEARCH RESULTS:
-{[{'title': h.title, 'url': h.url, 'snippet': h.snippet} for h in hits]}
-""",
+        _qualification_prompt(mode, pool_target, existing_websites, brain, hits),
     )
 
-    store = get_store()
     output: list[dict] = []
-    for raw in raw_candidates[:limit]:
+    seen_websites = set(existing_websites)
+    for raw in _as_list(raw_candidates):
+        if len(output) >= requested:
+            break
+        if not isinstance(raw, dict):
+            continue
+        website = str(raw.get("website", "")).strip()
+        normalized_website = _website_key(website)
+        if not raw.get("name") or not website or not normalized_website or normalized_website in seen_websites:
+            continue
+
+        company_extra = {
+            "recommended_service": str(raw.get("recommended_service", "")).strip(),
+            "partnership_model": str(raw.get("partnership_model", "")).strip() if mode == "partner" else "",
+            "partnership_value": str(raw.get("partnership_value", "")).strip() if mode == "partner" else "",
+        }
         candidate = CompanyCandidate(
             company_id=new_id("company"),
             tenant_id=tenant_id,
             name=str(raw.get("name", "")).strip(),
-            website=str(raw.get("website", "")).strip(),
+            website=website,
             country=str(raw.get("country", "")).strip(),
             industry=str(raw.get("industry", "")).strip(),
             employee_range=str(raw.get("employee_range", "")).strip(),
@@ -167,100 +476,103 @@ SEARCH RESULTS:
             capabilities=list(raw.get("capabilities") or []),
             capability_gaps=list(raw.get("capability_gaps") or []),
         )
-        if not candidate.name or not candidate.website:
+        roles = [str(r) for r in (raw.get("recommended_roles") or [])][:7]
+        candidate.linkedin_url = _linkedin_company_url(candidate.name, search, llm)
+        primary_raw = _discover_primary_person(candidate, roles, search, llm, mode)
+        if not primary_raw:
             continue
 
-        existing_company = store.filter("companies", tenant_id=tenant_id, website=candidate.website)
-        if existing_company:
-            current = existing_company[0]
-            candidate.company_id = current.get("company_id", candidate.company_id)
-            candidate.status = current.get("status", candidate.status)
-            candidate.created_at = current.get("created_at", candidate.created_at)
-        stored_candidate = store.upsert("companies", to_dict(candidate), key="tenant_id,website")
+        company_row = to_dict(candidate)
+        company_row.update(company_extra)
+        stored_candidate = store.upsert("companies", company_row, key="tenant_id,website")
         candidate.company_id = stored_candidate.get("company_id", candidate.company_id)
+        seen_websites.add(normalized_website)
 
-        roles = [str(r) for r in (raw.get("recommended_roles") or [])][:4]
-        people_raw = _discover_people(candidate, roles, search, llm)
-        people: list[dict] = []
-        for raw_person in people_raw:
-            name = str(raw_person.get("name", "")).strip()
-            role = str(raw_person.get("role", "")).strip()
-            if not name or not role:
-                continue
-            person = PersonCandidate(
-                person_id=new_id("person"),
-                tenant_id=tenant_id,
-                company_id=candidate.company_id,
-                name=name,
-                role=role,
-                linkedin_url=str(raw_person.get("linkedin_url", "")).strip(),
-                public_source_url=str(raw_person.get("public_source_url", "")).strip(),
-                relevance_score=float(raw_person.get("relevance_score", candidate.score) or candidate.score),
-            )
-            existing_person = store.filter("people", tenant_id=tenant_id, company_id=candidate.company_id, name=name)
-            if existing_person:
-                current = existing_person[0]
-                person.person_id = current.get("person_id", person.person_id)
-                person.status = current.get("status", person.status)
-                person.created_at = current.get("created_at", person.created_at)
-            person_dict = to_dict(person)
-            person_dict["evidence"] = str(raw_person.get("evidence", "")).strip()
-            person_dict["notes"] = (existing_person[0].get("notes", "") if existing_person else "")
-            person_dict["recommended_message"] = (existing_person[0].get("recommended_message", "") if existing_person else "")
-            person_dict["outreach_angle"] = (existing_person[0].get("outreach_angle", "") if existing_person else "")
-            person_dict["completed_at"] = (existing_person[0].get("completed_at") if existing_person else None)
-            stored_person = store.upsert("people", person_dict, key="tenant_id,company_id,name")
-            people.append(stored_person)
+        person = PersonCandidate(
+            person_id=new_id("person"),
+            tenant_id=tenant_id,
+            company_id=candidate.company_id,
+            name=str(primary_raw.get("name", "")).strip(),
+            role=str(primary_raw.get("role", "")).strip(),
+            linkedin_url=str(primary_raw.get("linkedin_url", "")).strip(),
+            public_source_url=str(primary_raw.get("public_source_url", "")).strip(),
+            relevance_score=float(primary_raw.get("relevance_score", candidate.score) or candidate.score),
+        )
+        person_dict = to_dict(person)
+        person_dict.update({
+            "email": "",
+            "source": "partner_prospecting" if mode == "partner" else "prospecting",
+            "evidence": str(primary_raw.get("evidence", "")).strip(),
+            "notes": "",
+            "completed_at": None,
+        })
+        stored_person = store.upsert("people", person_dict, key="tenant_id,company_id,name")
+        target_id = stored_person.get("person_id", person.person_id)
 
-        threshold = cfg["growth"]["minimum_partner_score" if mode == "partner" else "minimum_lead_score"]
-        if candidate.score >= float(threshold):
-            primary_person = people[0] if people else None
-            target_id = (primary_person or {}).get("person_id", candidate.company_id)
-            search_url = _linkedin_search_url(candidate, roles)
-            common_payload = {
-                "company_id": candidate.company_id,
-                "company": candidate.name,
-                "website": candidate.website,
-                "source_url": candidate.source_url,
-                "person": primary_person,
-                "recommended_roles": roles,
-                "linkedin_search_url": search_url,
-            }
+        outreach = _draft_outreach(mode, candidate, stored_person, company_extra, brain, search, llm)
+        display_plan = _display_plan(outreach, mode, company_extra)
+        person_updates = {
+            "recommended_message": display_plan,
+            "outreach_angle": outreach.get("angle", ""),
+            "connection_note": outreach.get("connection_note", ""),
+            "follow_up_message": outreach.get("follow_up", ""),
+            "recommended_action": outreach.get("recommended_action", "connect_then_message"),
+            "sc_analytics_action": outreach.get("sc_analytics_action", "invite_to_follow_after_connection"),
+            "contact_reason": outreach.get("contact_reason", ""),
+            "research_context": outreach.get("research_context", {}),
+            "personal_hook": outreach.get("personal_hook", ""),
+            "open_question": outreach.get("open_question", ""),
+            "recommended_service": outreach.get("recommended_service", company_extra.get("recommended_service", "")),
+        }
+        store.update("people", "person_id", target_id, person_updates)
+        stored_person.update(person_updates)
 
-            if primary_person:
-                _queue_manual_action(
-                    store,
-                    tenant_id=tenant_id,
-                    action_type="connect_person",
-                    target_id=target_id,
-                    summary=f"Connect/follow: {primary_person.get('name')} at {candidate.name}",
-                    payload=common_payload,
-                )
+        search_url = _linkedin_search_url(candidate, roles)
+        common_payload = {
+            "mode": mode,
+            "company_id": candidate.company_id,
+            "company": candidate.name,
+            "company_linkedin_url": candidate.linkedin_url,
+            "website": candidate.website,
+            "source_url": candidate.source_url,
+            "person": stored_person,
+            "recommended_roles": roles,
+            "linkedin_search_url": search_url,
+            "connection_note": outreach.get("connection_note", ""),
+            "follow_up_message": outreach.get("follow_up", ""),
+            "contact_reason": outreach.get("contact_reason", ""),
+            "personal_hook": outreach.get("personal_hook", ""),
+            "open_question": outreach.get("open_question", ""),
+            "recommended_service": outreach.get("recommended_service", ""),
+            "outreach_angle": outreach.get("angle", ""),
+            "recommended_action": outreach.get("recommended_action", "connect_then_message"),
+            "sc_analytics_action": outreach.get("sc_analytics_action", "invite_to_follow_after_connection"),
+            "partnership_model": company_extra.get("partnership_model", ""),
+            "partnership_value": company_extra.get("partnership_value", ""),
+        }
 
-            outreach = _draft_outreach(mode, candidate, primary_person, brain, llm)
-            message = outreach.get("message", "")
-            angle = outreach.get("angle", "")
-            if primary_person:
-                store.update("people", "person_id", target_id, {
-                    "recommended_message": message,
-                    "outreach_angle": angle,
-                })
-                primary_person["recommended_message"] = message
-                primary_person["outreach_angle"] = angle
+        _queue_manual_action(
+            store,
+            tenant_id=tenant_id,
+            action_type="connect_person",
+            target_id=target_id,
+            summary=f"LinkedIn: {stored_person.get('name')} at {candidate.name}",
+            payload=common_payload,
+        )
+        outreach_payload = dict(common_payload)
+        outreach_payload["message"] = str(outreach.get("message", ""))
+        _queue_manual_action(
+            store,
+            tenant_id=tenant_id,
+            action_type="contact_partner" if mode == "partner" else "send_message",
+            target_id=target_id,
+            summary=f"{'Partner' if mode == 'partner' else 'Lead'} outreach: {candidate.name} ({candidate.score:.1f}/10)",
+            payload=outreach_payload,
+        )
 
-            outreach_payload = dict(common_payload)
-            outreach_payload["message"] = message
-            outreach_payload["outreach_angle"] = angle
-            _queue_manual_action(
-                store,
-                tenant_id=tenant_id,
-                action_type="contact_partner" if mode == "partner" else "send_message",
-                target_id=target_id,
-                summary=f"Message {mode} candidate: {candidate.name} ({candidate.score:.1f}/10)",
-                payload=outreach_payload,
-            )
-
-        enriched = to_dict(candidate)
-        enriched["people"] = people
+        enriched = company_row
+        enriched["people"] = [stored_person]
+        enriched["requested_batch_size"] = requested
         output.append(enriched)
+
     return output

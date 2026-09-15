@@ -27,6 +27,10 @@ export type DashboardSummary = {
 export type CommercialSummary = {
   companies: number
   people: number
+  lead_companies: number
+  partner_companies: number
+  lead_people: number
+  partner_people: number
   opportunities: number
   meetings: number
   manual_actions: number
@@ -70,6 +74,7 @@ export type CrmBundle = {
   opportunities: GrowthOpportunity[]
   meetings: GrowthMeeting[]
   prospect_tasks: GrowthTask[]
+  calendly_connection?: Record<string, unknown>
   degraded?: boolean
 }
 
@@ -110,6 +115,10 @@ export function getCommercialSummary() {
   return safeRpc<CommercialSummary>('growth_commercial_summary', {
     companies: 0,
     people: 0,
+    lead_companies: 0,
+    partner_companies: 0,
+    lead_people: 0,
+    partner_people: 0,
     opportunities: 0,
     meetings: 0,
     manual_actions: 0,
@@ -157,5 +166,6 @@ export function getCrmBundle() {
     opportunities: [],
     meetings: [],
     prospect_tasks: [],
+    calendly_connection: {},
   })
 }
