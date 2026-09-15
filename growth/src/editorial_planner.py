@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from collections import Counter
 from datetime import datetime, timedelta, timezone
+import re
 from typing import Any
 
+from . import editorial as base
 from .brain import load_brain
 from .llm import get_llm
 from .storage import get_store
@@ -31,6 +33,12 @@ SERVICE_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("Pricing & Revenue", ("pricing", "price optimization", "revenue management", "margin", "promotion")),
     ("Finance Analytics / FP&A", ("fp&a", "cash flow", "p&l", "finance analytics", "financial model", "budget", "treasury")),
 )
+
+_STOPWORDS = {
+    "selected", "editorial", "proposal", "industry", "service", "title", "direction", "business", "problem", "thesis",
+    "required", "focus", "avoid", "this", "that", "with", "from", "into", "para", "como", "esta", "este", "sobre",
+    "problema", "tesis", "servicio", "industria", "contenido", "exactly", "use", "none", "additional", "exclusions",
+}
 
 
 def _parse_date(value: Any) -> datetime | None:
@@ -103,6 +111,35 @@ def _score(value: Any, fallback: float = 5.0) -> float:
         return round(max(0.0, min(10.0, float(value))), 1)
     except (TypeError, ValueError):
         return fallback
+
+
+def _tokens(value: str) -> set[str]:
+    return {
+        token for token in re.findall(r"[a-z0-9áéíóúüñ&+-]{4,}", _normalise(value))
+        if token not in _STOPWORDS
+    }
+
+
+def _guided_signals(signals: list[dict[str, Any]], theme_hint: str, avoid: str, limit: int) -> list[dict[str, Any]]:
+    wanted = _tokens(theme_hint)
+    forbidden = _tokens(avoid)
+    scored: list[tuple[int, dict[str, Any]]] = []
+    for signal in signals:
+        text = _normalise(" ".join([
+            str(signal.get("title") or ""),
+            str(signal.get("snippet") or ""),
+            str(signal.get("query") or ""),
+        ]))
+        if forbidden and any(token in text for token in forbidden):
+            continue
+        overlap = sum(1 for token in wanted if token in text)
+        query_bonus = 2 if wanted and any(token in _normalise(signal.get("query")) for token in wanted) else 0
+        scored.append((overlap + query_bonus, signal))
+    scored.sort(key=lambda row: row[0], reverse=True)
+    positive = [signal for score, signal in scored if score > 0]
+    if positive:
+        return positive[:limit]
+    return [signal for _, signal in scored[:limit]]
 
 
 def build_content_proposals(*, focus: str = "", avoid: str = "", count: int = 3, history_days: int = 60) -> dict[str, Any]:
@@ -240,4 +277,77 @@ Return {{"proposals": [...]}} only.
         "portfolio_30d": portfolio_30,
         "portfolio_60d": portfolio_60,
         "proposals": proposals[:target_count],
+    }
+
+
+def run_guided_editorial_cycle(
+    *,
+    max_signals: int = 30,
+    max_briefs: int = 1,
+    theme_hint: str = "",
+    avoid: str = "",
+    strict_theme: bool = False,
+    force_new: bool = False,
+) -> dict[str, Any]:
+    # Import here so the planner remains a thin orchestration layer and avoids
+    # coupling the core editorial runtime back to proposal planning.
+    from .editorial_runtime import _get_or_create_brief, _resume_draft_briefs, generate_variants
+
+    resumed_briefs: list[dict[str, Any]] = []
+    variants: list[dict[str, Any]] = []
+    if not force_new:
+        resumed_briefs, variants = _resume_draft_briefs(max_briefs)
+    remaining = max(0, max_briefs - len(resumed_briefs))
+
+    discovered: list[dict[str, Any]] = []
+    evaluated: list[dict[str, Any]] = []
+    strong: list[dict[str, Any]] = []
+    created_briefs: list[dict[str, Any]] = []
+    if remaining > 0:
+        discovered = base.discover_signals(max_signals=max_signals, theme_hint=theme_hint)
+        if strict_theme and theme_hint:
+            discovered = _guided_signals(discovered, theme_hint, avoid, max(12, remaining * 12))
+        evaluated = base.evaluate_signals(discovered)
+        strong = [row for row in evaluated if float(row.get("score", 0) or 0) >= 8.0 and row.get("status") == "evaluated"]
+        if len(strong) < remaining:
+            strong.extend([
+                row for row in evaluated
+                if 6.5 <= float(row.get("score", 0) or 0) < 8.0 and row.get("status") == "evaluated"
+                and row not in strong
+            ])
+        strong = strong[:remaining]
+
+        for signal in strong:
+            brief = _get_or_create_brief(signal)
+            if not brief:
+                continue
+            # Preserve the selected proposal direction inside an existing JSON
+            # column so future rewrites can understand why this topic was chosen.
+            research = dict(brief.get("research") or {})
+            research["editorial_direction"] = {
+                "theme_hint": theme_hint,
+                "avoid": avoid,
+                "strict": strict_theme,
+            }
+            get_store().update("editorial_briefs", "brief_id", brief["brief_id"], {"research": research})
+            brief = {**brief, "research": research}
+            created_briefs.append(brief)
+            variants.extend(generate_variants(brief))
+
+    all_briefs = resumed_briefs + created_briefs
+    return {
+        "guided": bool(theme_hint),
+        "theme_hint": theme_hint,
+        "avoid": avoid,
+        "strict_theme": strict_theme,
+        "force_new": force_new,
+        "resumed_briefs": len(resumed_briefs),
+        "discovered": len(discovered),
+        "evaluated": len(evaluated),
+        "selected_for_research": len(strong),
+        "briefs_created": len(created_briefs),
+        "briefs_processed": len(all_briefs),
+        "variants_processed": len(variants),
+        "variants_resumed": sum(1 for row in variants if row.get("resumed")),
+        "brief_ids": [row["brief_id"] for row in all_briefs],
     }
