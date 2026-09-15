@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import 'server-only'
 
-import { createHash, randomUUID } from 'node:crypto'
+import { createHash } from 'node:crypto'
 import { getGmailAccessToken, getGmailConnections } from '@/lib/google-oauth-finance'
-import { upsertGrowthRow } from '@/lib/supabase-growth'
+import { queryGrowthTable, upsertGrowthRow } from '@/lib/supabase-growth'
 import { ensureFinancePath, financeGoogleReadiness, uploadBinaryFile } from '@/lib/google-drive-finance'
 
 type Json = Record<string, any>
@@ -12,6 +13,7 @@ function decodeB64Url(value: string) { return Buffer.from(value, 'base64url') }
 function header(headers: Json[], name: string) { return String(headers.find((h) => String(h.name).toLowerCase() === name.toLowerCase())?.value || '') }
 function parseDate(value: string) { const d = new Date(value); return Number.isNaN(d.getTime()) ? new Date().toISOString().slice(0,10) : d.toISOString().slice(0,10) }
 function quarter(dateValue: string) { const month = Number(dateValue.slice(5,7)) || 1; return `Q${Math.min(4, Math.max(1, Math.ceil(month/3)))}` }
+function candidateId(account: string, messageId: string) { return `candidate_${createHash('sha256').update(`${account}|${messageId}`).digest('hex').slice(0,16)}` }
 
 async function gmailFetch(accessToken: string, path: string) {
   const response = await fetch(`https://gmail.googleapis.com/gmail/v1/users/me${path}`, { headers: { Authorization: `Bearer ${accessToken}` }, cache: 'no-store' })
@@ -90,16 +92,22 @@ async function attachmentBytes(accessToken: string, messageId: string, attachmen
 export async function scanFinanceGmail(days = 8) {
   const connections = await getGmailConnections()
   const driveReady = financeGoogleReadiness().configured
-  const summary = { accounts: connections.length, messages: 0, candidates: 0, attachmentsUploaded: 0, errors: [] as string[] }
+  const summary = { accounts: connections.length, messages: 0, candidates: 0, skippedExisting: 0, attachmentsUploaded: 0, errors: [] as string[] }
 
   for (const connection of connections) {
     try {
       const accessToken = await getGmailAccessToken(connection)
+      const account = String(connection.provider_subject || connection.display_name || '')
       const q = encodeURIComponent(`newer_than:${Math.max(1,days)}d (factura OR invoice OR receipt OR recibo OR has:attachment)`)
       const list = await gmailFetch(accessToken, `/messages?q=${q}&maxResults=100`)
       for (const item of list.messages || []) {
         summary.messages += 1
         try {
+          const existing = await queryGrowthTable<Json>('finance_import_candidates', {
+            tenant_id: 'eq.sc-analytics', source_provider: 'eq.gmail', source_account: `eq.${account}`, source_message_id: `eq.${String(item.id)}`, limit: '1',
+          }, { cacheSeconds: 0 })
+          if (existing[0] && ['accepted','discarded'].includes(String(existing[0].status || ''))) { summary.skippedExisting += 1; continue }
+
           const message = await gmailFetch(accessToken, `/messages/${encodeURIComponent(item.id)}?format=full`)
           const headers = message.payload?.headers || []
           const subject = header(headers, 'Subject')
@@ -114,10 +122,10 @@ export async function scanFinanceGmail(days = 8) {
           const vendor = vendorFromFrom(from)
           const number = invoiceNumber(subject, plainText)
           const subtotal = amount.amount && vat.amount ? Math.max(0, Math.round((amount.amount - vat.amount) * 100) / 100) : amount.amount
-          const duplicateKey = createHash('sha256').update([connection.provider_subject || connection.display_name || '',vendor,number,date,amount.amount,amount.currency].join('|').toLowerCase()).digest('hex')
-          const driveFiles: Array<{ id: string; name: string; url?: string }> = []
+          const duplicateKey = createHash('sha256').update([account,vendor,number,date,amount.amount,amount.currency].join('|').toLowerCase()).digest('hex')
+          let driveFiles: Array<{ id: string; name: string; url?: string }> = Array.isArray(existing[0]?.extracted_data?.attachment_files) ? existing[0].extracted_data.attachment_files : []
 
-          if (driveReady && attachments.length) {
+          if (!driveFiles.length && driveReady && attachments.length) {
             const folder = await ensureFinancePath(['02 Facturas recibidas y gastos', date.slice(0,4), quarter(date)])
             for (const attachment of attachments.slice(0,5)) {
               if (!/pdf|image|spreadsheet|excel|octet-stream/i.test(attachment.mimeType) && !/\.pdf$|\.png$|\.jpe?g$|\.xlsx?$/i.test(attachment.filename)) continue
@@ -131,25 +139,13 @@ export async function scanFinanceGmail(days = 8) {
 
           const confidence = Math.min(0.99, 0.45 + (amount.amount > 0 ? 0.2 : 0) + (number ? 0.12 : 0) + (attachments.length ? 0.12 : 0) + (vat.amount > 0 ? 0.06 : 0))
           await upsertGrowthRow('finance_import_candidates', {
-            candidate_id: `candidate_${randomUUID().replaceAll('-', '').slice(0,16)}`,
+            candidate_id: existing[0]?.candidate_id || candidateId(account,String(item.id)),
             tenant_id: 'sc-analytics',
-            source_provider: 'gmail',
-            source_account: String(connection.provider_subject || connection.display_name || ''),
-            source_message_id: String(item.id),
-            source_thread_id: String(message.threadId || ''),
+            source_provider: 'gmail', source_account: account, source_message_id: String(item.id), source_thread_id: String(message.threadId || ''),
             source_url: `https://mail.google.com/mail/u/0/#search/rfc822msgid:${encodeURIComponent(header(headers,'Message-ID'))}`,
             candidate_type: 'expense',
-            extracted_data: {
-              vendor, invoice_number: number, expense_date: date, currency: amount.currency,
-              subtotal, tax: vat.amount, vat_rate: vat.rate, total: amount.amount,
-              category: categoryFor(vendor,subject), subject, from,
-              attachment_files: driveFiles,
-              snippet: String(message.snippet || '').slice(0,1000),
-            },
-            confidence,
-            duplicate_key: duplicateKey,
-            status: 'pending_review',
-            updated_at: new Date().toISOString(),
+            extracted_data: { vendor, invoice_number: number, expense_date: date, currency: amount.currency, subtotal, tax: vat.amount, vat_rate: vat.rate, total: amount.amount, category: categoryFor(vendor,subject), subject, from, attachment_files: driveFiles, snippet: String(message.snippet || '').slice(0,1000) },
+            confidence, duplicate_key: duplicateKey, status: existing[0]?.status || 'pending_review', updated_at: new Date().toISOString(), created_at: existing[0]?.created_at || new Date().toISOString(),
           }, 'tenant_id,source_provider,source_account,source_message_id')
           summary.candidates += 1
         } catch (error) {
