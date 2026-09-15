@@ -13,10 +13,30 @@ export interface GrowthPerson {
   company_id?: string
   name: string
   role?: string
+  email?: string
+  phone?: string
+  phone_source_url?: string
+  phone_kind?: string
   linkedin_url?: string
   public_source_url?: string
   relevance_score?: number | string
   status?: string
+  evidence?: string
+  notes?: string
+  recommended_message?: string
+  outreach_angle?: string
+  connection_note?: string
+  follow_up_message?: string
+  recommended_action?: string
+  sc_analytics_action?: string
+  contact_reason?: string
+  personal_hook?: string
+  open_question?: string
+  recommended_service?: string
+  recommended_offer?: string
+  research_context?: Record<string, unknown> | null
+  source?: string
+  completed_at?: string | null
   created_at?: string
 }
 
@@ -114,13 +134,25 @@ export interface GrowthCompany {
   company_id: string
   name: string
   website: string
+  phone?: string
+  phone_source_url?: string
   linkedin_url?: string
+  source_url?: string
   score: number | string
   score_reason?: string
   fit_type?: string
   country?: string
   industry?: string
+  employee_range?: string
+  capabilities?: string[]
+  capability_gaps?: string[]
   status?: string
+  notes?: string
+  recommended_service?: string
+  recommended_offer?: string
+  partnership_model?: string
+  partnership_value?: string
+  completed_at?: string | null
   created_at?: string
 }
 
@@ -142,6 +174,7 @@ export interface GrowthInteraction {
   channel?: string
   direction?: string
   kind?: string
+  actor?: string
   content?: string
   occurred_at?: string
   next_action_at?: string | null
@@ -211,6 +244,7 @@ export interface GrowthOpportunity {
   company_id?: string | null
   primary_person_id?: string | null
   source_content_id?: string | null
+  source_signal_id?: string | null
   name: string
   stage: string
   value: number | string
@@ -229,132 +263,48 @@ export interface GrowthMeeting {
   person_id?: string | null
   opportunity_id?: string | null
   provider: string
-  external_id?: string
+  external_id?: string | null
   starts_at?: string | null
   status: string
-  booking_url?: string
+  booking_url?: string | null
   metadata?: Record<string, unknown> | null
   created_at?: string
 }
 
-export interface GrowthWeeklyPlan {
-  plan_id: string
-  week_start: string
-  primary_goal: string
-  commercial_focus?: { channel?: string; [key: string]: unknown }
-  content_focus?: { objective?: string; [key: string]: unknown }
-  targets?: Record<string, unknown>
-  tasks?: unknown[]
+export interface GrowthVisualDesign {
+  design_id: string
+  content_id?: string | null
+  name: string
+  template_key: string
+  format_key: string
+  publication_mode: PublicationMode
+  design_json?: Record<string, unknown> | null
+  asset_path?: string | null
+  status: string
+  is_template?: boolean
+  created_at?: string
+  updated_at?: string
 }
 
-function env(name: string): string {
-  return (process.env[name] || '').trim()
-}
+function hex(value: Buffer) { return value.toString('hex') }
+function sign(value: string) { return createHmac('sha256', process.env.GROWTH_ADMIN_PASSWORD || '').update(value).digest() }
 
-function sessionSecret(): string {
-  const token = env('GROWTH_ADMIN_TOKEN')
-  if (!token) throw new Error('GROWTH_ADMIN_TOKEN is not configured')
-  return token
-}
-
-function sessionSignature(expires: string): string {
-  return createHmac('sha256', sessionSecret()).update(`growth-admin:${expires}`).digest('base64url')
-}
-
-export function createGrowthAdminSession(): { value: string; maxAge: number } {
-  const expires = String(Math.floor(Date.now() / 1000) + SESSION_SECONDS)
-  return { value: `v1.${expires}.${sessionSignature(expires)}`, maxAge: SESSION_SECONDS }
-}
-
-function validSession(value: string): boolean {
-  const [version, expires, signature] = value.split('.')
-  if (version !== 'v1' || !expires || !signature) return false
-  const expiresNumber = Number(expires)
-  if (!Number.isFinite(expiresNumber) || expiresNumber <= Math.floor(Date.now() / 1000)) return false
-  const expected = Buffer.from(sessionSignature(expires))
-  const actual = Buffer.from(signature)
+export async function isGrowthAdminAuthenticated() {
+  const password = process.env.GROWTH_ADMIN_PASSWORD || ''
+  if (!password) return false
+  const value = (await cookies()).get(COOKIE_NAME)?.value || ''
+  const [timestamp, signature] = value.split('.')
+  if (!timestamp || !signature) return false
+  const age = Math.floor(Date.now() / 1000) - Number(timestamp)
+  if (!Number.isFinite(age) || age < 0 || age > SESSION_SECONDS) return false
+  const expected = sign(timestamp)
+  const actual = Buffer.from(signature, 'hex')
   return actual.length === expected.length && timingSafeEqual(actual, expected)
 }
 
-export async function isGrowthAdminAuthenticated(): Promise<boolean> {
-  if (!env('GROWTH_ADMIN_TOKEN')) return false
-  const store = await cookies()
-  const value = store.get(COOKIE_NAME)?.value || ''
-  return validSession(value)
+export function growthAdminCookieValue() {
+  const timestamp = String(Math.floor(Date.now() / 1000))
+  return `${timestamp}.${hex(sign(timestamp))}`
 }
 
-export function growthAdminCookieName(): string {
-  return COOKIE_NAME
-}
-
-export { queryGrowthTable, updateGrowthRow, insertGrowthRow }
-
-export function getPendingApprovals() {
-  return queryGrowthTable<GrowthApproval>('approvals', { status: 'eq.pending', order: 'created_at.desc', limit: '150' })
-}
-
-export function getApprovalHistory() {
-  return queryGrowthTable<GrowthApproval>('approvals', { order: 'created_at.desc', limit: '250' })
-}
-
-export async function getReadyManualActions() {
-  const rows = await queryGrowthTable<GrowthApproval>('approvals', { status: 'eq.approved', order: 'decided_at.desc', limit: '150' })
-  return rows.filter((row) => row.payload?.execution_mode === 'manual_linkedin_action')
-}
-
-export function getRecentContent() {
-  return queryGrowthTable<GrowthContentItem>('content_items', { order: 'created_at.desc', limit: '250' })
-}
-
-export function getRecentEditorialBriefs() {
-  return queryGrowthTable<GrowthEditorialBrief>('editorial_briefs', { order: 'created_at.desc', limit: '100' })
-}
-
-export function getTopCompanies() {
-  return queryGrowthTable<GrowthCompany>('companies', { order: 'score.desc', limit: '200' })
-}
-
-export function getPeople() {
-  return queryGrowthTable<GrowthPerson>('people', { order: 'relevance_score.desc', limit: '250' })
-}
-
-export function getTasks() {
-  return queryGrowthTable<GrowthTask>('tasks', { order: 'created_at.desc', limit: '250' })
-}
-
-export function getInteractions() {
-  return queryGrowthTable<GrowthInteraction>('interactions', { order: 'occurred_at.desc', limit: '250' })
-}
-
-export function getMetrics() {
-  return queryGrowthTable<GrowthMetric>('metrics', { order: 'metric_date.desc', limit: '500' })
-}
-
-export function getLinkedInAnalyticsImports() {
-  return queryGrowthTable<LinkedInAnalyticsImport>('linkedin_analytics_imports', { order: 'imported_at.desc', limit: '100' })
-}
-
-export function getLinkedInPostMetrics() {
-  return queryGrowthTable<LinkedInPostMetric>('linkedin_post_metrics', { order: 'snapshot_date.desc', limit: '1000' })
-}
-
-export function getWebAnalyticsDaily() {
-  return queryGrowthTable<WebAnalyticsDaily>('web_analytics_daily', { order: 'metric_date.desc', limit: '1000' })
-}
-
-export function getOpportunities() {
-  return queryGrowthTable<GrowthOpportunity>('crm_opportunities', { order: 'updated_at.desc', limit: '250' })
-}
-
-export function getMeetings() {
-  return queryGrowthTable<GrowthMeeting>('crm_meetings', { order: 'starts_at.desc', limit: '250' })
-}
-
-export function getRecentPlans() {
-  return queryGrowthTable<GrowthWeeklyPlan>('weekly_plans', { order: 'week_start.desc', limit: '12' })
-}
-
-export async function getContentItem(contentId: string) {
-  const rows = await queryGrowthTable<GrowthContentItem>('content_items', { content_id: `eq.${contentId}`, limit: '1' })
-  return rows[0] || null
-}
+export { insertGrowthRow, queryGrowthTable, updateGrowthRow }
