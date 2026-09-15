@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { insertGrowthRow, isGrowthAdminAuthenticated, queryGrowthTable, updateGrowthRow } from '@/lib/growth-admin'
 
 type PersonRow = { person_id: string; company_id?: string | null; name?: string }
-type CompanyRow = { company_id: string; name?: string }
+type CompanyRow = { company_id: string; name?: string; fit_type?: string | null }
 type OpportunityRow = {
   opportunity_id: string
   source?: string
@@ -67,6 +67,7 @@ async function syncOpportunity(personId: string, companyId: string, kind: string
   const resolvedCompanyId = companyId || person.company_id || ''
   const companies = resolvedCompanyId ? await queryGrowthTable<CompanyRow>('companies', { company_id: `eq.${resolvedCompanyId}`, limit: '1' }) : []
   const company = companies[0]
+  const relationshipType = company?.fit_type === 'partner' ? 'partner' : 'lead'
   const existing = await queryGrowthTable<OpportunityRow>('crm_opportunities', {
     primary_person_id: `eq.${personId}`,
     order: 'updated_at.desc',
@@ -79,10 +80,11 @@ async function syncOpportunity(personId: string, companyId: string, kind: string
     name: `${company?.name || person.name || 'Lead'} · ${person.name || 'Opportunity'}`,
     stage: milestone.stage,
     probability: milestone.probability,
-    source: existing[0]?.source || 'linkedin',
+    source: existing[0]?.source || (relationshipType === 'partner' ? 'partner_linkedin' : 'linkedin'),
     next_action_at: nextActionAt,
     metadata: {
       ...(existing[0]?.metadata || {}),
+      relationship_type: relationshipType,
       last_milestone: kind,
       last_milestone_at: occurredAt,
     },
