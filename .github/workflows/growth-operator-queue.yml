@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
   schedule:
     # Safety sweep only. UI actions should dispatch this workflow immediately.
-    # 00:00 UTC daily; the exact Europe/Madrid clock hour varies with DST.
-    - cron: '0 0 * * *'
+    # 22:00 UTC is midnight in Madrid during CEST and 23:00 during CET.
+    - cron: '0 22 * * *'
 
 concurrency:
   group: sc-analytics-operator-queue
