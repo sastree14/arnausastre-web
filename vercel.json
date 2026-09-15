@@ -3,6 +3,10 @@
   "regions": ["dub1"],
   "crons": [
     {
+      "path": "/api/cron/finance-bank-daily",
+      "schedule": "30 5 * * *"
+    },
+    {
       "path": "/api/cron/finance-weekly",
       "schedule": "0 6 * * 1"
     }
