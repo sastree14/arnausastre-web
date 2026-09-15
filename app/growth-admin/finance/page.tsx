@@ -1,44 +1,62 @@
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
-import { Badge, EmptyState, PageHeader, SectionHeading, StatCard, adminButtonPrimary, adminInput, adminPanel, statusTone } from '@/components/growth-admin/AdminUi'
+import FinanceNav from '@/components/growth-admin/FinanceNav'
+import { Badge, PageHeader, SectionHeading, StatCard, adminPanel } from '@/components/growth-admin/AdminUi'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { getFinanceBundle } from '@/lib/growth-admin-performance'
+import { financeGoogleReadiness } from '@/lib/google-drive-finance'
+import { gmailOAuthReadiness } from '@/lib/google-oauth-finance'
+import { revolutReadiness } from '@/lib/revolut-finance'
 
-export const dynamic = 'force-dynamic'
+export const dynamic='force-dynamic'
+const n=(value:unknown)=>Number(value||0)
+const euro=(value:unknown)=>`${n(value).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})} €`
 
-type Project={project_id:string;name:string;status:string}
-type Invoice={invoice_id:string;company_id?:string|null;project_id?:string|null;invoice_number?:string;issue_date?:string;due_date?:string;currency:string;subtotal:number|string;tax:number|string;total:number|string;status:string;external_file_url?:string;created_at?:string}
-type Expense={expense_id:string;project_id?:string|null;vendor?:string;category?:string;expense_date?:string;currency:string;total:number|string;status:string}
-type Payment={payment_id:string;invoice_id?:string|null;company_id?:string|null;payment_date?:string;currency:string;amount:number|string;method?:string;reference?:string;status:string}
-const n=(v:number|string|undefined)=>Number(v||0)
-
-export default async function FinancePage(){
+export default async function FinanceOverview(){
   if(!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
-  const bundle = await getFinanceBundle()
-  const companies = bundle.companies
-  const projects = bundle.projects as Project[]
-  const invoices = bundle.invoices as unknown as Invoice[]
-  const expenses = bundle.expenses as unknown as Expense[]
-  const payments = bundle.payments as unknown as Payment[]
-  const companyById=new Map(companies.map((c)=>[c.company_id,c]))
-  const invoiced=n(bundle.invoiced)
-  const received=n(bundle.received)
-  const spent=n(bundle.spent)
-  const outstanding=Math.max(0,invoiced-received)
+  const bundle=await getFinanceBundle()
+  const invoiced=n(bundle.invoiced),received=n(bundle.received),spent=n(bundle.spent)
+  const outstanding=Math.max(0,invoiced-received),result=invoiced-spent,vatPosition=n(bundle.vat_output)-n(bundle.vat_input)
+  const pendingReview=[...bundle.invoices,...bundle.expenses,...bundle.payments].filter((row)=>String(row.review_status||'')==='pending_review').length + bundle.import_candidates.length
+  const settings=bundle.settings as Record<string,unknown>
+  const issuerReady=Boolean(settings.legal_name&&settings.tax_id&&settings.billing_address)
+  const google=financeGoogleReadiness(),gmail=gmailOAuthReadiness(),revolut=revolutReadiness()
 
   return <AdminShell active="finance">
-    <PageHeader eyebrow="CRM · Finance" title="Finanzas" description="La capa financiera pertenece al mismo CRM: cliente → oportunidad → proyecto → factura → cobro, y proyecto → gasto. Esto evita una contabilidad operativa aislada del contexto comercial."/>
-    {bundle.degraded && <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">Supabase tardó demasiado y Finanzas ha cargado en modo seguro en lugar de bloquear la página. Refresca para recuperar el detalle cuando el backend responda.</div>}
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><StatCard label="Facturado" value={`${invoiced.toLocaleString('es-ES')} €`} tone="blue"/><StatCard label="Cobrado" value={`${received.toLocaleString('es-ES')} €`} tone="green"/><StatCard label="Pendiente cobro" value={`${outstanding.toLocaleString('es-ES')} €`} tone="amber"/><StatCard label="Gastos" value={`${spent.toLocaleString('es-ES')} €`} tone="violet"/></div>
+    <PageHeader eyebrow="Cuadro de Mando Integral · Finanzas" title="Finance OS" description="Fuente de verdad financiera de SC-Analytics: facturación, gastos, caja, conciliación, fiscalidad, contabilidad, documentación y reporting conectados al mismo CRM." actions={<a href="https://drive.google.com/drive/folders/1la-zseMKNF1Byk1ErH2yAvYuZeqlnl5B" target="_blank" rel="noreferrer" className="rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/15">Abrir Drive financiero ↗</a>}/>
+    <FinanceNav active="/growth-admin/finance"/>
+    {bundle.degraded&&<div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">Finanzas ha cargado en modo seguro porque Supabase tardó demasiado. Refresca antes de tomar decisiones.</div>}
 
-    <section className="mt-12 rounded-3xl border border-indigo-100 bg-indigo-50/60 p-5 md:p-7"><SectionHeading eyebrow="CRM · Registro financiero" title="Añadir movimiento" description="Primera capa operativa. Después añadiremos documentos, OCR, conciliación, impuestos e integraciones, conservando siempre relación con cliente y proyecto."/><div className="grid gap-5 xl:grid-cols-3">
-      <form action="/api/growth-admin/finance" method="post" className={`${adminPanel} p-5`}><input type="hidden" name="type" value="invoice"/><p className="font-semibold text-slate-950">Nueva factura</p><select name="company_id" className={`mt-4 w-full ${adminInput}`}><option value="">Cliente</option>{companies.map(c=><option key={c.company_id} value={c.company_id}>{c.name}</option>)}</select><select name="project_id" className={`mt-2 w-full ${adminInput}`}><option value="">Proyecto opcional</option>{projects.map(p=><option key={p.project_id} value={p.project_id}>{p.name}</option>)}</select><input name="invoice_number" placeholder="Nº factura" className={`mt-2 w-full ${adminInput}`}/><div className="mt-2 grid grid-cols-2 gap-2"><input type="date" name="issue_date" className={adminInput}/><input type="date" name="due_date" className={adminInput}/></div><div className="mt-2 grid grid-cols-3 gap-2"><input name="subtotal" placeholder="Base" className={adminInput}/><input name="tax" placeholder="IVA" className={adminInput}/><input name="total" placeholder="Total" className={adminInput}/></div><button className={`mt-3 ${adminButtonPrimary}`}>Registrar factura</button></form>
-      <form action="/api/growth-admin/finance" method="post" className={`${adminPanel} p-5`}><input type="hidden" name="type" value="expense"/><p className="font-semibold text-slate-950">Nuevo gasto</p><select name="project_id" className={`mt-4 w-full ${adminInput}`}><option value="">Proyecto opcional</option>{projects.map(p=><option key={p.project_id} value={p.project_id}>{p.name}</option>)}</select><input name="vendor" placeholder="Proveedor" className={`mt-2 w-full ${adminInput}`}/><input name="category" placeholder="Categoría" className={`mt-2 w-full ${adminInput}`}/><input type="date" name="expense_date" className={`mt-2 w-full ${adminInput}`}/><div className="mt-2 grid grid-cols-3 gap-2"><input name="subtotal" placeholder="Base" className={adminInput}/><input name="tax" placeholder="IVA" className={adminInput}/><input name="total" placeholder="Total" className={adminInput}/></div><button className={`mt-3 ${adminButtonPrimary}`}>Registrar gasto</button></form>
-      <form action="/api/growth-admin/finance" method="post" className={`${adminPanel} p-5`}><input type="hidden" name="type" value="payment"/><p className="font-semibold text-slate-950">Registrar cobro</p><select name="invoice_id" className={`mt-4 w-full ${adminInput}`}><option value="">Factura</option>{invoices.map(i=><option key={i.invoice_id} value={i.invoice_id}>{i.invoice_number||i.invoice_id} · {n(i.total)} {i.currency}</option>)}</select><select name="company_id" className={`mt-2 w-full ${adminInput}`}><option value="">Cliente</option>{companies.map(c=><option key={c.company_id} value={c.company_id}>{c.name}</option>)}</select><input type="date" name="payment_date" className={`mt-2 w-full ${adminInput}`}/><input name="amount" placeholder="Importe" className={`mt-2 w-full ${adminInput}`}/><input name="method" placeholder="Método / banco" className={`mt-2 w-full ${adminInput}`}/><input name="reference" placeholder="Referencia" className={`mt-2 w-full ${adminInput}`}/><button className={`mt-3 ${adminButtonPrimary}`}>Registrar cobro</button></form>
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <StatCard label="Facturado" value={euro(invoiced)} tone="blue" note="Devengo registrado"/>
+      <StatCard label="Cobrado" value={euro(received)} tone="green" note={`${euro(outstanding)} pendiente`}/>
+      <StatCard label="Gastos" value={euro(spent)} tone="violet" note="Gasto registrado"/>
+      <StatCard label="Resultado operativo" value={euro(result)} tone={result>=0?'green':'amber'} note="Antes de impuestos y ajustes de cierre"/>
+      <StatCard label="IVA estimado" value={euro(vatPosition)} tone="amber" note={`${euro(bundle.vat_output)} repercutido · ${euro(bundle.vat_input)} soportado`}/>
+      <StatCard label="IRPF retenido" value={euro(bundle.withholding_total)} tone="slate" note="Estimación desde facturas registradas"/>
+      <StatCard label="Pendiente doble check" value={pendingReview} tone={pendingReview?'amber':'green'} note="Movimientos + candidatos Gmail"/>
+      <StatCard label="Banco sin conciliar" value={bundle.bank_transactions.filter((row)=>row.reconciliation_status==='unmatched').length} tone="blue" note="Transacciones pendientes de asociación"/>
+    </div>
+
+    <section className="mt-12"><SectionHeading eyebrow="Finance OS · Estado" title="Preparación del sistema" description="Lo estructural ya está construido. Las credenciales activan las automatizaciones sin cambiar el modelo financiero."/><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      {[
+        {label:'Datos fiscales SC-Analytics',ok:issuerReady,note:issuerReady?'Listos para emitir':'Completa razón social, NIF y dirección en Integraciones'},
+        {label:'Drive + Sheets',ok:google.configured,note:google.configured?'Generación PDF/XLSX/Sheets disponible':`Pendiente: ${google.missing.join(', ')}`},
+        {label:'Gmail financiero',ok:gmail.configured&&bundle.gmail_connections.length>0,note:bundle.gmail_connections.length?`${bundle.gmail_connections.length} cuenta(s) conectada(s)`:gmail.configured?'Credenciales listas; falta autorizar cuentas':`Pendiente: ${gmail.missing.join(', ')}`},
+        {label:'Revolut Business',ok:revolut.configured&&bundle.revolut_connections.length>0,note:bundle.revolut_connections.length?'Conectado para lectura y conciliación':revolut.configured?'Credenciales listas; falta consentimiento':`Pendiente: ${revolut.missing.join(', ')}`},
+      ].map((item)=><div key={item.label} className={`${adminPanel} p-5`}><div className="flex items-start justify-between gap-3"><p className="text-sm font-semibold text-slate-950">{item.label}</p><Badge tone={item.ok?'green':'amber'}>{item.ok?'Listo':'Pendiente'}</Badge></div><p className="mt-3 text-xs leading-5 text-slate-500">{item.note}</p></div>)}
     </div></section>
 
-    <section className="mt-14"><SectionHeading eyebrow="CRM · Accounts receivable" title="Facturas" description="Las facturas mantienen vínculo con cliente y proyecto para que el CRM pueda calcular pipeline, revenue y cobro real." count={invoices.length}/>{invoices.length===0?<EmptyState>No hay facturas registradas todavía.</EmptyState>:<div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]"><table className="min-w-full text-left text-xs"><thead className="bg-slate-50 text-slate-500"><tr><th className="px-4 py-3">Factura</th><th className="px-4 py-3">Cliente</th><th className="px-4 py-3">Emisión</th><th className="px-4 py-3">Vence</th><th className="px-4 py-3">Total</th><th className="px-4 py-3">Estado</th></tr></thead><tbody>{invoices.map(i=><tr key={i.invoice_id} className="border-t border-slate-200"><td className="px-4 py-3 font-medium text-slate-800">{i.invoice_number||i.invoice_id}</td><td className="px-4 py-3 text-slate-600">{i.company_id?companyById.get(i.company_id)?.name||'—':'—'}</td><td className="px-4 py-3 text-slate-600">{i.issue_date||'—'}</td><td className="px-4 py-3 text-slate-600">{i.due_date||'—'}</td><td className="px-4 py-3 font-semibold text-slate-900">{n(i.total).toLocaleString('es-ES')} {i.currency}</td><td className="px-4 py-3"><Badge tone={statusTone(i.status)}>{i.status}</Badge></td></tr>)}</tbody></table></div>}</section>
-
-    <section className="mt-14 pb-12"><div className="grid gap-8 xl:grid-cols-2"><div><SectionHeading eyebrow="CRM · Costs" title="Gastos" count={expenses.length}/>{expenses.length===0?<EmptyState>Sin gastos registrados.</EmptyState>:<div className="space-y-3">{expenses.slice(0,30).map(e=><div key={e.expense_id} className={`${adminPanel} flex items-center justify-between p-4`}><div><p className="text-sm font-semibold text-slate-950">{e.vendor||e.category||'Gasto'}</p><p className="text-xs text-slate-500">{e.expense_date||'—'} · {e.category||'Sin categoría'}</p></div><p className="font-semibold text-slate-950">{n(e.total).toLocaleString('es-ES')} {e.currency}</p></div>)}</div>}</div><div><SectionHeading eyebrow="CRM · Cash" title="Cobros" count={payments.length}/>{payments.length===0?<EmptyState>Sin cobros registrados.</EmptyState>:<div className="space-y-3">{payments.slice(0,30).map(p=><div key={p.payment_id} className={`${adminPanel} flex items-center justify-between p-4`}><div><p className="text-sm font-semibold text-slate-950">{p.reference||p.method||'Cobro'}</p><p className="text-xs text-slate-500">{p.payment_date||'—'}</p></div><p className="font-semibold text-emerald-700">{n(p.amount).toLocaleString('es-ES')} {p.currency}</p></div>)}</div>}</div></div></section>
+    <section className="mt-12 pb-12"><SectionHeading eyebrow="Finance OS · Flujo" title="Qué alimenta cada módulo"/><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      {[
+        ['/growth-admin/finance/invoices','Facturación','Cliente → borrador → doble check → factura numerada → Google Sheet + XLSX + PDF → Drive → asiento → cobro.'],
+        ['/growth-admin/finance/expenses','Gastos','Manual o Gmail semanal → candidato → revisión → gasto contabilizado → justificante en Drive → libro registro.'],
+        ['/growth-admin/finance/cash','Caja y banco','Cobro/pago manual o Revolut → matching → propuesta de conciliación → confirmación → factura/gasto liquidado.'],
+        ['/growth-admin/finance/accounting','Contabilidad e impuestos','Asientos automáticos de doble partida, IVA, retenciones, trazabilidad y posición fiscal estimada.'],
+        ['/growth-admin/finance/reports','Informes','Mensual, trimestral, semestral y anual: P&L, cash flow, impuestos y comparativas.'],
+        ['/growth-admin/finance/integrations','Integraciones','Configuración fiscal, Drive, Gmail, Revolut y estado de automatizaciones.'],
+      ].map(([href,title,description])=><Link key={href} href={href} className={`${adminPanel} p-5 transition hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md`}><p className="font-semibold text-slate-950">{title}</p><p className="mt-2 text-xs leading-5 text-slate-500">{description}</p></Link>)}
+    </div></section>
   </AdminShell>
 }
