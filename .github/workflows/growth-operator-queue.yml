@@ -3,8 +3,9 @@ name: SC-Analytics Operating System — Operator Queue
 on:
   workflow_dispatch:
   schedule:
-    # Responsive worker for Control Center actions; GitHub cron has no sub-5-minute cadence.
-    - cron: '*/5 * * * *'
+    # Safety sweep only. UI actions should dispatch this workflow immediately.
+    # 22:00 UTC is midnight in Madrid during CEST and 23:00 during CET.
+    - cron: '0 22 * * *'
 
 concurrency:
   group: sc-analytics-operator-queue

@@ -13,10 +13,30 @@ export interface GrowthPerson {
   company_id?: string
   name: string
   role?: string
+  email?: string
+  phone?: string
+  phone_source_url?: string
+  phone_kind?: string
   linkedin_url?: string
   public_source_url?: string
   relevance_score?: number | string
   status?: string
+  evidence?: string
+  notes?: string
+  recommended_message?: string
+  outreach_angle?: string
+  connection_note?: string
+  follow_up_message?: string
+  recommended_action?: string
+  sc_analytics_action?: string
+  contact_reason?: string
+  research_context?: Record<string, unknown> | null
+  source?: string
+  completed_at?: string | null
+  personal_hook?: string
+  open_question?: string
+  recommended_service?: string
+  recommended_offer?: string
   created_at?: string
 }
 
@@ -114,13 +134,25 @@ export interface GrowthCompany {
   company_id: string
   name: string
   website: string
+  phone?: string
+  phone_source_url?: string
   linkedin_url?: string
+  source_url?: string
   score: number | string
   score_reason?: string
   fit_type?: string
   country?: string
   industry?: string
+  employee_range?: string
+  capabilities?: string[]
+  capability_gaps?: string[]
   status?: string
+  notes?: string
+  completed_at?: string | null
+  recommended_service?: string
+  recommended_offer?: string
+  partnership_model?: string
+  partnership_value?: string
   created_at?: string
 }
 
@@ -142,6 +174,7 @@ export interface GrowthInteraction {
   channel?: string
   direction?: string
   kind?: string
+  actor?: string
   content?: string
   occurred_at?: string
   next_action_at?: string | null
@@ -211,6 +244,7 @@ export interface GrowthOpportunity {
   company_id?: string | null
   primary_person_id?: string | null
   source_content_id?: string | null
+  source_signal_id?: string | null
   name: string
   stage: string
   value: number | string

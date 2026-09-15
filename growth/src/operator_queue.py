@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 
+from .commercial_intelligence import run_commercial_signal_scan
 from .editorial_ops import rewrite_content
 from .editorial_runtime import editorial_from_url, run_editorial_cycle
 from .prospecting import research_companies
@@ -15,6 +16,7 @@ OPERATOR_TYPES = {
     "OPERATOR_EDITORIAL_URL",
     "OPERATOR_REWRITE_CONTENT",
     "OPERATOR_PROSPECT",
+    "OPERATOR_COMMERCIAL_SIGNALS",
     "OPERATOR_PUBLISH_LINKEDIN",
     "OPERATOR_PUBLISH_ARTICLE",
 }
@@ -55,6 +57,8 @@ def _execute(task: dict[str, Any]) -> Any:
         return rewrite_content(str(inputs.get("content_id") or ""))
     if task_type == "OPERATOR_PROSPECT":
         return research_companies(str(inputs.get("mode") or "lead"), int(inputs.get("limit", 10) or 10))
+    if task_type == "OPERATOR_COMMERCIAL_SIGNALS":
+        return run_commercial_signal_scan(int(inputs.get("limit", 12) or 12))
     if task_type == "OPERATOR_PUBLISH_LINKEDIN":
         return publish_content(str(inputs.get("content_id") or ""))
     if task_type == "OPERATOR_PUBLISH_ARTICLE":

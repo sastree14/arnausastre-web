@@ -1,12 +1,14 @@
 import { randomUUID } from 'node:crypto'
 import { NextResponse } from 'next/server'
 import { insertGrowthRow, isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { dispatchOperatorQueue } from '@/lib/github-actions'
 
 const ACTION_TO_TYPE: Record<string, string> = {
   editorial_run: 'OPERATOR_EDITORIAL_RUN',
   editorial_url: 'OPERATOR_EDITORIAL_URL',
   rewrite_content: 'OPERATOR_REWRITE_CONTENT',
   prospect: 'OPERATOR_PROSPECT',
+  commercial_signals: 'OPERATOR_COMMERCIAL_SIGNALS',
   publish_linkedin: 'OPERATOR_PUBLISH_LINKEDIN',
   publish_article: 'OPERATOR_PUBLISH_ARTICLE',
 }
@@ -43,6 +45,8 @@ export async function POST(request: Request) {
       mode: String(form.get('mode') || 'lead'),
       limit: int(form.get('limit'), 10, 50),
     }
+  } else if (action === 'commercial_signals') {
+    inputs = { limit: int(form.get('limit'), 12, 40) }
   }
 
   const taskId = `task_${randomUUID().replaceAll('-', '').slice(0, 12)}`
@@ -58,8 +62,11 @@ export async function POST(request: Request) {
     created_at: new Date().toISOString(),
   })
 
+  const dispatch = await dispatchOperatorQueue()
   const returnTo = String(form.get('return_to') || '/growth-admin')
   const url = new URL(returnTo.startsWith('/') ? returnTo : '/growth-admin', request.url)
   url.searchParams.set('queued', taskId)
+  url.searchParams.set('dispatched', dispatch.dispatched ? '1' : '0')
+  if (!dispatch.dispatched) url.searchParams.set('dispatch_reason', dispatch.reason)
   return NextResponse.redirect(url, 303)
 }
