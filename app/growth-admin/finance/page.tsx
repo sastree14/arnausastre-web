@@ -1,85 +1,62 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
-import { Badge, EmptyState, PageHeader, SectionHeading, StatCard, adminButtonPrimary, adminInput, adminPanel, statusTone } from '@/components/growth-admin/AdminUi'
+import FinanceNav from '@/components/growth-admin/FinanceNav'
+import { Badge, PageHeader, SectionHeading, StatCard, adminPanel } from '@/components/growth-admin/AdminUi'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
-import { getFinanceBundle, type FinanceCounterparty } from '@/lib/growth-admin-performance'
+import { getFinanceBundle } from '@/lib/growth-admin-performance'
+import { financeGoogleReadiness } from '@/lib/google-drive-finance'
+import { gmailOAuthReadiness } from '@/lib/google-oauth-finance'
+import { revolutReadiness } from '@/lib/revolut-finance'
 
-export const dynamic = 'force-dynamic'
+export const dynamic='force-dynamic'
+const n=(value:unknown)=>Number(value||0)
+const euro=(value:unknown)=>`${n(value).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})} €`
 
-type Project={project_id:string;name:string;status:string}
-type Invoice={invoice_id:string;company_id?:string|null;counterparty_id?:string|null;project_id?:string|null;invoice_number?:string;issue_date?:string|null;due_date?:string|null;currency:string;subtotal:number|string;tax:number|string;withholding_amount?:number|string;total:number|string;status:string;review_status?:string;recipient_legal_name?:string;recipient_tax_id?:string;tax_profile?:string;source_system?:string;metadata?:Record<string,unknown>|null}
-type Expense={expense_id:string;project_id?:string|null;vendor?:string;category?:string;expense_date?:string|null;currency:string;subtotal?:number|string;tax?:number|string;total:number|string;status:string;review_status?:string;source_system?:string;metadata?:Record<string,unknown>|null}
-type Payment={payment_id:string;invoice_id?:string|null;expense_id?:string|null;company_id?:string|null;payment_date?:string|null;currency:string;amount:number|string;direction?:string;method?:string;reference?:string;status:string;review_status?:string}
-const n=(v:number|string|undefined)=>Number(v||0)
-const euro=(v:number)=>`${v.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})} €`
-const DRIVE_URL='https://drive.google.com/drive/folders/1la-zseMKNF1Byk1ErH2yAvYuZeqlnl5B'
-
-function ReviewButton({entity,id,status}:{entity:'invoice'|'expense'|'payment';id:string;status?:string}){
-  if(status==='confirmed') return <Badge tone="green">doble check ✓</Badge>
-  return <form action="/api/growth-admin/finance" method="post"><input type="hidden" name="type" value="review"/><input type="hidden" name="entity" value={entity}/><input type="hidden" name="entity_id" value={id}/><input type="hidden" name="decision" value="confirmed"/><button className="rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1.5 text-[11px] font-semibold text-emerald-700 hover:bg-emerald-100">Confirmar ✓</button></form>
-}
-
-export default async function FinancePage(){
+export default async function FinanceOverview(){
   if(!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
   const bundle=await getFinanceBundle()
-  const companies=bundle.companies
-  const counterparties=(bundle.counterparties||[]) as FinanceCounterparty[]
-  const projects=bundle.projects as Project[]
-  const invoices=bundle.invoices as unknown as Invoice[]
-  const expenses=bundle.expenses as unknown as Expense[]
-  const payments=bundle.payments as unknown as Payment[]
-  const companyById=new Map(companies.map(c=>[c.company_id,c]))
-  const counterpartyById=new Map(counterparties.map(c=>[c.counterparty_id,c]))
-  const invoiced=n(bundle.invoiced)
-  const received=n(bundle.received)
-  const spent=n(bundle.spent)
-  const outstanding=Math.max(0,invoiced-received)
-  const revenueBase=invoices.reduce((s,i)=>s+n(i.subtotal),0)
-  const expenseBase=expenses.reduce((s,e)=>s+n(e.subtotal||e.total),0)
-  const operatingResult=revenueBase-expenseBase
-  const pendingReviews=invoices.filter(i=>i.review_status!=='confirmed').length+expenses.filter(e=>e.review_status!=='confirmed').length+payments.filter(p=>p.review_status!=='confirmed').length
-  const anomalies=[...invoices.filter(i=>i.review_status==='needs_review'),...expenses.filter(e=>e.review_status==='needs_review')]
+  const invoiced=n(bundle.invoiced),received=n(bundle.received),spent=n(bundle.spent)
+  const outstanding=Math.max(0,invoiced-received),result=invoiced-spent,vatPosition=n(bundle.vat_output)-n(bundle.vat_input)
+  const pendingReview=[...bundle.invoices,...bundle.expenses,...bundle.payments].filter((row)=>String(row.review_status||'')==='pending_review').length + bundle.import_candidates.length
+  const settings=bundle.settings as Record<string,unknown>
+  const issuerReady=Boolean(settings.legal_name&&settings.tax_id&&settings.billing_address)
+  const google=financeGoogleReadiness(),gmail=gmailOAuthReadiness(),revolut=revolutReadiness()
 
   return <AdminShell active="finance">
-    <PageHeader eyebrow="Finance OS · SC-Analytics" title="Finanzas" description="Supabase es la fuente de verdad financiera y Google Drive conserva la documentación. Todo movimiento entra con revisión, moneda y trazabilidad antes de convertirse en dato confirmado."/>
-    {bundle.degraded&&<div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">Supabase ha cargado Finanzas en modo degradado. Refresca antes de registrar movimientos.</div>}
+    <PageHeader eyebrow="Cuadro de Mando Integral · Finanzas" title="Finance OS" description="Fuente de verdad financiera de SC-Analytics: facturación, gastos, caja, conciliación, fiscalidad, contabilidad, documentación y reporting conectados al mismo CRM." actions={<a href="https://drive.google.com/drive/folders/1la-zseMKNF1Byk1ErH2yAvYuZeqlnl5B" target="_blank" rel="noreferrer" className="rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/15">Abrir Drive financiero ↗</a>}/>
+    <FinanceNav active="/growth-admin/finance"/>
+    {bundle.degraded&&<div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">Finanzas ha cargado en modo seguro porque Supabase tardó demasiado. Refresca antes de tomar decisiones.</div>}
 
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
-      <StatCard label="Facturado" value={euro(invoiced)} tone="blue"/>
-      <StatCard label="Cobrado" value={euro(received)} tone="green"/>
-      <StatCard label="Pendiente" value={euro(outstanding)} tone="amber"/>
-      <StatCard label="Gastos" value={euro(spent)} tone="violet"/>
-      <StatCard label="Resultado base" value={euro(operatingResult)} tone="green"/>
-      <StatCard label="Pendientes revisar" value={String(pendingReviews)} tone="amber"/>
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <StatCard label="Facturado" value={euro(invoiced)} tone="blue" note="Devengo registrado"/>
+      <StatCard label="Cobrado" value={euro(received)} tone="green" note={`${euro(outstanding)} pendiente`}/>
+      <StatCard label="Gastos" value={euro(spent)} tone="violet" note="Gasto registrado"/>
+      <StatCard label="Resultado operativo" value={euro(result)} tone={result>=0?'green':'amber'} note="Antes de impuestos y ajustes de cierre"/>
+      <StatCard label="IVA estimado" value={euro(vatPosition)} tone="amber" note={`${euro(bundle.vat_output)} repercutido · ${euro(bundle.vat_input)} soportado`}/>
+      <StatCard label="IRPF retenido" value={euro(bundle.withholding_total)} tone="slate" note="Estimación desde facturas registradas"/>
+      <StatCard label="Pendiente doble check" value={pendingReview} tone={pendingReview?'amber':'green'} note="Movimientos + candidatos Gmail"/>
+      <StatCard label="Banco sin conciliar" value={bundle.bank_transactions.filter((row)=>row.reconciliation_status==='unmatched').length} tone="blue" note="Transacciones pendientes de asociación"/>
     </div>
 
-    <section className="mt-8 grid gap-4 lg:grid-cols-4">
-      <div className={`${adminPanel} p-5`}><p className="text-[10px] font-semibold uppercase tracking-[.18em] text-slate-400">IVA repercutido</p><p className="mt-2 text-2xl font-semibold">{euro(n(bundle.vat_output))}</p></div>
-      <div className={`${adminPanel} p-5`}><p className="text-[10px] font-semibold uppercase tracking-[.18em] text-slate-400">IVA soportado registrado</p><p className="mt-2 text-2xl font-semibold">{euro(n(bundle.vat_input))}</p></div>
-      <div className={`${adminPanel} p-5`}><p className="text-[10px] font-semibold uppercase tracking-[.18em] text-slate-400">IRPF retenido</p><p className="mt-2 text-2xl font-semibold">{euro(n(bundle.withholding_total))}</p></div>
-      <div className={`${adminPanel} p-5`}><p className="text-[10px] font-semibold uppercase tracking-[.18em] text-slate-400">Repositorio documental</p><Link href={DRIVE_URL} target="_blank" className="mt-2 inline-block text-sm font-semibold text-indigo-600 hover:underline">Abrir 04 Finanzas / Facturación ↗</Link><p className="mt-2 text-xs text-slate-500">Facturas, gastos, libros, cierres, plantillas y exportaciones.</p></div>
-    </section>
-
-    {anomalies.length>0&&<section className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-5"><p className="font-semibold text-amber-900">Datos históricos que requieren revisión</p><p className="mt-1 text-sm text-amber-800">Se han importado sin inventar correcciones. Hay {anomalies.length} registros con fecha/valor ambiguo en los libros originales.</p></section>}
-
-    <section className="mt-12"><SectionHeading eyebrow="Finance · Maestro" title="Clientes y proveedores" description="Crea una contraparte financiera para facturar o registrar gastos sin depender de que exista previamente como cuenta comercial." count={counterparties.length}/><div className="grid gap-5 xl:grid-cols-[1fr_2fr]">
-      <form action="/api/growth-admin/finance" method="post" className={`${adminPanel} p-5`}><input type="hidden" name="type" value="counterparty"/><p className="font-semibold">Nueva contraparte</p><div className="mt-4 grid gap-2 sm:grid-cols-2"><select name="kind" className={adminInput}><option value="client">Cliente</option><option value="vendor">Proveedor</option><option value="both">Cliente / proveedor</option></select><select name="currency" className={adminInput}><option>EUR</option><option>USD</option></select><input name="legal_name" required placeholder="Razón social" className={adminInput}/><input name="trade_name" placeholder="Nombre comercial" className={adminInput}/><input name="tax_id" placeholder="NIF / Tax ID" className={adminInput}/><input name="vat_id" placeholder="VAT ID" className={adminInput}/><input name="country_code" placeholder="País ISO (ES, FR, US…)" className={adminInput}/><input name="email" type="email" placeholder="Email facturación" className={adminInput}/><select name="tax_profile" className={`sm:col-span-2 ${adminInput}`}><option value="spain_b2b">España B2B</option><option value="eu_b2b">UE B2B / intracomunitario</option><option value="non_eu_b2b">Fuera UE B2B</option><option value="platform_export">Plataforma / liquidación</option><option value="manual">Manual / revisar</option></select><input name="billing_address" placeholder="Dirección fiscal" className={`sm:col-span-2 ${adminInput}`}/></div><button className={`mt-3 ${adminButtonPrimary}`}>Guardar contraparte</button></form>
-      <div className="grid gap-3 md:grid-cols-2">{counterparties.length===0?<EmptyState>No hay contrapartes.</EmptyState>:counterparties.slice(0,12).map(c=><div key={c.counterparty_id} className={`${adminPanel} p-4`}><div className="flex items-start justify-between"><div><p className="font-semibold text-slate-950">{c.legal_name}</p><p className="text-xs text-slate-500">{c.kind} · {c.country_code||'país pendiente'} · {c.currency}</p></div><Badge tone="blue">{c.tax_profile}</Badge></div><p className="mt-3 text-xs text-slate-500">{c.tax_id||c.vat_id||'Tax ID pendiente'}</p></div>)}</div>
+    <section className="mt-12"><SectionHeading eyebrow="Finance OS · Estado" title="Preparación del sistema" description="Lo estructural ya está construido. Las credenciales activan las automatizaciones sin cambiar el modelo financiero."/><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      {[
+        {label:'Datos fiscales SC-Analytics',ok:issuerReady,note:issuerReady?'Listos para emitir':'Completa razón social, NIF y dirección en Integraciones'},
+        {label:'Drive + Sheets',ok:google.configured,note:google.configured?'Generación PDF/XLSX/Sheets disponible':`Pendiente: ${google.missing.join(', ')}`},
+        {label:'Gmail financiero',ok:gmail.configured&&bundle.gmail_connections.length>0,note:bundle.gmail_connections.length?`${bundle.gmail_connections.length} cuenta(s) conectada(s)`:gmail.configured?'Credenciales listas; falta autorizar cuentas':`Pendiente: ${gmail.missing.join(', ')}`},
+        {label:'Revolut Business',ok:revolut.configured&&bundle.revolut_connections.length>0,note:bundle.revolut_connections.length?'Conectado para lectura y conciliación':revolut.configured?'Credenciales listas; falta consentimiento':`Pendiente: ${revolut.missing.join(', ')}`},
+      ].map((item)=><div key={item.label} className={`${adminPanel} p-5`}><div className="flex items-start justify-between gap-3"><p className="text-sm font-semibold text-slate-950">{item.label}</p><Badge tone={item.ok?'green':'amber'}>{item.ok?'Listo':'Pendiente'}</Badge></div><p className="mt-3 text-xs leading-5 text-slate-500">{item.note}</p></div>)}
     </div></section>
 
-    <section className="mt-12 rounded-3xl border border-indigo-100 bg-indigo-50/60 p-5 md:p-7"><SectionHeading eyebrow="Finance · Entrada manual" title="Registrar movimientos" description="Todos los movimientos nacen pendientes de revisión. EUR y USD están soportados; para USD puedes introducir el tipo EUR por unidad monetaria hasta automatizar FX."/><div className="grid gap-5 xl:grid-cols-3">
-      <form action="/api/growth-admin/finance" method="post" className={`${adminPanel} p-5`}><input type="hidden" name="type" value="invoice"/><p className="font-semibold">Borrador de factura</p><select name="counterparty_id" className={`mt-4 w-full ${adminInput}`}><option value="">Contraparte financiera</option>{counterparties.filter(c=>c.kind!=='vendor').map(c=><option key={c.counterparty_id} value={c.counterparty_id}>{c.legal_name}</option>)}</select><select name="company_id" className={`mt-2 w-full ${adminInput}`}><option value="">Cuenta CRM opcional</option>{companies.map(c=><option key={c.company_id} value={c.company_id}>{c.name}</option>)}</select><select name="project_id" className={`mt-2 w-full ${adminInput}`}><option value="">Proyecto opcional</option>{projects.map(p=><option key={p.project_id} value={p.project_id}>{p.name}</option>)}</select><input name="invoice_number" placeholder="Nº factura" className={`mt-2 w-full ${adminInput}`}/><input name="concept" placeholder="Concepto" className={`mt-2 w-full ${adminInput}`}/><div className="mt-2 grid grid-cols-2 gap-2"><input type="date" name="issue_date" className={adminInput}/><input type="date" name="due_date" className={adminInput}/></div><div className="mt-2 grid grid-cols-2 gap-2"><select name="currency" className={adminInput}><option>EUR</option><option>USD</option></select><input name="fx_rate" placeholder="FX → EUR (si USD)" className={adminInput}/></div><div className="mt-2 grid grid-cols-3 gap-2"><input name="subtotal" placeholder="Base" className={adminInput}/><input name="vat_rate" placeholder="IVA %" className={adminInput}/><input name="withholding_rate" placeholder="IRPF %" className={adminInput}/></div><select name="tax_profile" className={`mt-2 w-full ${adminInput}`}><option value="spain_b2b">España B2B</option><option value="eu_b2b">UE B2B</option><option value="non_eu_b2b">Fuera UE B2B</option><option value="manual">Manual</option></select><button className={`mt-3 ${adminButtonPrimary}`}>Guardar borrador</button></form>
-
-      <form action="/api/growth-admin/finance" method="post" className={`${adminPanel} p-5`}><input type="hidden" name="type" value="expense"/><p className="font-semibold">Nuevo gasto</p><select name="counterparty_id" className={`mt-4 w-full ${adminInput}`}><option value="">Proveedor opcional</option>{counterparties.filter(c=>c.kind!=='client').map(c=><option key={c.counterparty_id} value={c.counterparty_id}>{c.legal_name}</option>)}</select><select name="project_id" className={`mt-2 w-full ${adminInput}`}><option value="">Proyecto opcional</option>{projects.map(p=><option key={p.project_id} value={p.project_id}>{p.name}</option>)}</select><input name="vendor" required placeholder="Proveedor" className={`mt-2 w-full ${adminInput}`}/><input name="vendor_tax_id" placeholder="NIF proveedor" className={`mt-2 w-full ${adminInput}`}/><input name="category" placeholder="Categoría" className={`mt-2 w-full ${adminInput}`}/><input type="date" name="expense_date" className={`mt-2 w-full ${adminInput}`}/><div className="mt-2 grid grid-cols-2 gap-2"><select name="currency" className={adminInput}><option>EUR</option><option>USD</option></select><input name="fx_rate" placeholder="FX → EUR (si USD)" className={adminInput}/></div><div className="mt-2 grid grid-cols-3 gap-2"><input name="subtotal" placeholder="Base" className={adminInput}/><input name="vat_rate" placeholder="IVA %" className={adminInput}/><input name="total" placeholder="Total opcional" className={adminInput}/></div><input name="notes" placeholder="Nota / concepto" className={`mt-2 w-full ${adminInput}`}/><button className={`mt-3 ${adminButtonPrimary}`}>Registrar gasto</button></form>
-
-      <form action="/api/growth-admin/finance" method="post" className={`${adminPanel} p-5`}><input type="hidden" name="type" value="payment"/><p className="font-semibold">Cobro / pago</p><select name="direction" className={`mt-4 w-full ${adminInput}`}><option value="inflow">Cobro / entrada</option><option value="outflow">Pago / salida</option></select><select name="invoice_id" className={`mt-2 w-full ${adminInput}`}><option value="">Factura asociada</option>{invoices.map(i=><option key={i.invoice_id} value={i.invoice_id}>{i.invoice_number||i.invoice_id} · {n(i.total)} {i.currency}</option>)}</select><select name="expense_id" className={`mt-2 w-full ${adminInput}`}><option value="">Gasto asociado</option>{expenses.map(e=><option key={e.expense_id} value={e.expense_id}>{e.vendor||e.category||e.expense_id} · {n(e.total)} {e.currency}</option>)}</select><select name="company_id" className={`mt-2 w-full ${adminInput}`}><option value="">Empresa CRM opcional</option>{companies.map(c=><option key={c.company_id} value={c.company_id}>{c.name}</option>)}</select><input type="date" name="payment_date" className={`mt-2 w-full ${adminInput}`}/><div className="mt-2 grid grid-cols-2 gap-2"><select name="currency" className={adminInput}><option>EUR</option><option>USD</option></select><input name="fx_rate" placeholder="FX → EUR" className={adminInput}/></div><input name="amount" placeholder="Importe" className={`mt-2 w-full ${adminInput}`}/><input name="method" placeholder="Método / banco" className={`mt-2 w-full ${adminInput}`}/><input name="reference" placeholder="Referencia" className={`mt-2 w-full ${adminInput}`}/><button className={`mt-3 ${adminButtonPrimary}`}>Registrar movimiento</button></form>
+    <section className="mt-12 pb-12"><SectionHeading eyebrow="Finance OS · Flujo" title="Qué alimenta cada módulo"/><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      {[
+        ['/growth-admin/finance/invoices','Facturación','Cliente → borrador → doble check → factura numerada → Google Sheet + XLSX + PDF → Drive → asiento → cobro.'],
+        ['/growth-admin/finance/expenses','Gastos','Manual o Gmail semanal → candidato → revisión → gasto contabilizado → justificante en Drive → libro registro.'],
+        ['/growth-admin/finance/cash','Caja y banco','Cobro/pago manual o Revolut → matching → propuesta de conciliación → confirmación → factura/gasto liquidado.'],
+        ['/growth-admin/finance/accounting','Contabilidad e impuestos','Asientos automáticos de doble partida, IVA, retenciones, trazabilidad y posición fiscal estimada.'],
+        ['/growth-admin/finance/reports','Informes','Mensual, trimestral, semestral y anual: P&L, cash flow, impuestos y comparativas.'],
+        ['/growth-admin/finance/integrations','Integraciones','Configuración fiscal, Drive, Gmail, Revolut y estado de automatizaciones.'],
+      ].map(([href,title,description])=><Link key={href} href={href} className={`${adminPanel} p-5 transition hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md`}><p className="font-semibold text-slate-950">{title}</p><p className="mt-2 text-xs leading-5 text-slate-500">{description}</p></Link>)}
     </div></section>
-
-    <section className="mt-14"><SectionHeading eyebrow="Accounts receivable" title="Facturas" description="Histórico y borradores. Los dos registros con 29/02/2026 se mantienen en revisión porque el libro fuente contiene una fecha imposible." count={invoices.length}/>{invoices.length===0?<EmptyState>No hay facturas registradas.</EmptyState>:<div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white"><table className="min-w-full text-left text-xs"><thead className="bg-slate-50 text-slate-500"><tr><th className="px-4 py-3">Factura</th><th className="px-4 py-3">Cliente</th><th className="px-4 py-3">Fecha</th><th className="px-4 py-3">Base</th><th className="px-4 py-3">IVA</th><th className="px-4 py-3">IRPF</th><th className="px-4 py-3">Total</th><th className="px-4 py-3">Estado</th><th className="px-4 py-3">Revisión</th></tr></thead><tbody>{invoices.map(i=><tr key={i.invoice_id} className="border-t border-slate-200"><td className="px-4 py-3 font-medium">{i.invoice_number||i.invoice_id}</td><td className="px-4 py-3">{i.counterparty_id?counterpartyById.get(i.counterparty_id)?.legal_name:i.company_id?companyById.get(i.company_id)?.name:i.recipient_legal_name||'—'}</td><td className="px-4 py-3">{i.issue_date||'⚠ revisar fecha'}</td><td className="px-4 py-3">{n(i.subtotal).toLocaleString('es-ES')} {i.currency}</td><td className="px-4 py-3">{n(i.tax).toLocaleString('es-ES')}</td><td className="px-4 py-3">{n(i.withholding_amount).toLocaleString('es-ES')}</td><td className="px-4 py-3 font-semibold">{n(i.total).toLocaleString('es-ES')} {i.currency}</td><td className="px-4 py-3"><Badge tone={statusTone(i.status)}>{i.status}</Badge></td><td className="px-4 py-3"><ReviewButton entity="invoice" id={i.invoice_id} status={i.review_status}/></td></tr>)}</tbody></table></div>}</section>
-
-    <section className="mt-14 grid gap-8 xl:grid-cols-2"><div><SectionHeading eyebrow="Costs" title="Gastos" count={expenses.length}/>{expenses.length===0?<EmptyState>Sin gastos.</EmptyState>:<div className="space-y-3">{expenses.slice(0,60).map(e=><div key={e.expense_id} className={`${adminPanel} flex items-center justify-between gap-4 p-4`}><div><p className="text-sm font-semibold">{e.vendor||e.category||'Gasto'}</p><p className="text-xs text-slate-500">{e.expense_date||'⚠ revisar fecha'} · {e.category||'Sin categoría'} · {e.source_system||'crm'}</p></div><div className="flex items-center gap-3"><p className="font-semibold">{n(e.total).toLocaleString('es-ES')} {e.currency}</p><ReviewButton entity="expense" id={e.expense_id} status={e.review_status}/></div></div>)}</div>}</div><div><SectionHeading eyebrow="Cash" title="Cobros y pagos" count={payments.length}/>{payments.length===0?<EmptyState>Sin movimientos de caja confirmados todavía.</EmptyState>:<div className="space-y-3">{payments.slice(0,60).map(p=><div key={p.payment_id} className={`${adminPanel} flex items-center justify-between gap-4 p-4`}><div><p className="text-sm font-semibold">{p.reference||p.method||(p.direction==='outflow'?'Pago':'Cobro')}</p><p className="text-xs text-slate-500">{p.payment_date||'—'} · {p.method||'sin método'}</p></div><div className="flex items-center gap-3"><p className={`font-semibold ${p.direction==='outflow'?'text-rose-700':'text-emerald-700'}`}>{p.direction==='outflow'?'−':'+'}{n(p.amount).toLocaleString('es-ES')} {p.currency}</p><ReviewButton entity="payment" id={p.payment_id} status={p.review_status}/></div></div>)}</div>}</div></section>
-
-    <section className="mt-14 pb-12"><SectionHeading eyebrow="Control" title="Estado del sprint"/><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4"><div className={`${adminPanel} p-5`}><p className="font-semibold">Supabase</p><p className="mt-2 text-sm text-slate-500">Facturas, gastos, cobros/pagos, contrapartes, líneas, documentos, FX y periodos fiscales.</p></div><div className={`${adminPanel} p-5`}><p className="font-semibold">Drive corporativo</p><p className="mt-2 text-sm text-slate-500">Estructura creada bajo 04 Finanzas / Facturación.</p></div><div className={`${adminPanel} p-5`}><p className="font-semibold">Histórico importado</p><p className="mt-2 text-sm text-slate-500">5 facturas emitidas y 22 gastos, con anomalías preservadas para revisión.</p></div><div className={`${adminPanel} p-5`}><p className="font-semibold">Siguiente sprint</p><p className="mt-2 text-sm text-slate-500">Generación PDF/XLSX/Google Sheet y sincronización documental automática con Drive.</p></div></div></section>
   </AdminShell>
 }
