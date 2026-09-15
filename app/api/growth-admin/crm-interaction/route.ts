@@ -2,6 +2,14 @@ import { randomUUID } from 'node:crypto'
 import { NextResponse } from 'next/server'
 import { insertGrowthRow, isGrowthAdminAuthenticated, queryGrowthTable, updateGrowthRow } from '@/lib/growth-admin'
 
+type PersonRow = { person_id: string; company_id?: string | null; name?: string }
+type CompanyRow = { company_id: string; name?: string }
+type OpportunityRow = {
+  opportunity_id: string
+  source?: string
+  metadata?: Record<string, unknown> | null
+}
+
 const PERSON_STATUS_BY_KIND: Record<string, string | null> = {
   followed: 'followed',
   connection_requested: 'connection_requested',
@@ -52,14 +60,14 @@ async function syncOpportunity(personId: string, companyId: string, kind: string
   const milestone = OPPORTUNITY_MILESTONES[kind]
   if (!milestone) return
 
-  const people = await queryGrowthTable<any>('people', { person_id: `eq.${personId}`, limit: '1' })
+  const people = await queryGrowthTable<PersonRow>('people', { person_id: `eq.${personId}`, limit: '1' })
   const person = people[0]
   if (!person) return
 
   const resolvedCompanyId = companyId || person.company_id || ''
-  const companies = resolvedCompanyId ? await queryGrowthTable<any>('companies', { company_id: `eq.${resolvedCompanyId}`, limit: '1' }) : []
+  const companies = resolvedCompanyId ? await queryGrowthTable<CompanyRow>('companies', { company_id: `eq.${resolvedCompanyId}`, limit: '1' }) : []
   const company = companies[0]
-  const existing = await queryGrowthTable<any>('crm_opportunities', {
+  const existing = await queryGrowthTable<OpportunityRow>('crm_opportunities', {
     primary_person_id: `eq.${personId}`,
     order: 'updated_at.desc',
     limit: '1',
