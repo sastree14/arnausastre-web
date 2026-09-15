@@ -29,3 +29,4 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
           STATE_PROVIDER: supabase
+          CRM_UAT_PASS: v2
