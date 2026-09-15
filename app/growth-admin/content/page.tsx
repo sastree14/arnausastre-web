@@ -1,8 +1,9 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
+import EditorialPlanner from '@/components/growth-admin/EditorialPlanner'
 import { Badge, EmptyState, PageHeader, SectionHeading, adminButtonPrimary, adminButtonSecondary, adminInput, adminPanel, assetUrl, formatDate, publicationLabel, scheduleInputValue, statusTone } from '@/components/growth-admin/AdminUi'
 import { evaluatePublicationReadiness } from '@/lib/growth-approval'
-import { getPendingApprovals, getRecentContent, getRecentEditorialBriefs, isGrowthAdminAuthenticated, type GrowthEditorialBrief } from '@/lib/growth-admin'
+import { getPendingApprovals, getRecentContent, getRecentEditorialBriefs, getTasks, isGrowthAdminAuthenticated, type GrowthEditorialBrief } from '@/lib/growth-admin'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -24,11 +25,17 @@ function gateTone(ok: boolean) {
 export default async function ContentPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
   const params = await searchParams
-  const [content, briefs, approvals] = await Promise.all([getRecentContent(), getRecentEditorialBriefs(), getPendingApprovals()])
+  const [content, briefs, approvals, tasks] = await Promise.all([getRecentContent(), getRecentEditorialBriefs(), getPendingApprovals(), getTasks()])
   const briefById = new Map(briefs.map((brief) => [brief.brief_id, brief]))
   const approvalByTarget = new Map(approvals.filter((row) => ['publish_post', 'publish_article'].includes(row.action_type)).map((row) => [row.target_id, row]))
   const filter = typeof params.filter === 'string' ? params.filter : 'review'
   const queued = typeof params.queued === 'string' ? params.queued : ''
+  const currentTask = queued ? tasks.find((task) => task.task_id === queued) : undefined
+  const latestProposalTask = tasks.find((task) => {
+    if (task.type !== 'OPERATOR_EDITORIAL_PROPOSALS' || task.status !== 'completed') return false
+    const proposals = task.outputs?.proposals
+    return Array.isArray(proposals) && proposals.length > 0
+  })
 
   const enriched = content
     .filter((item) => !['rejected', 'failed', 'superseded_test', 'alternate'].includes(item.status))
@@ -61,21 +68,23 @@ export default async function ContentPage({ searchParams }: { searchParams: Prom
     <PageHeader
       eyebrow="CRM · Editorial"
       title="Editorial"
-      description="Un único espacio para generar, revisar, diseñar, aprobar, programar y publicar. La cola compacta enseña qué falta en cada pieza sin obligarte a recorrer una página interminable."
+      description="Un único espacio para decidir qué crear, investigar, revisar, diseñar, aprobar, programar y publicar. El motor editorial ya no empieza escribiendo: primero decide qué idea merece existir."
       actions={<>
         <form action="/api/growth-admin/operator-task" method="post">
           <input type="hidden" name="action" value="editorial_run" />
           <input type="hidden" name="max_briefs" value="1" />
           <input type="hidden" name="max_signals" value="30" />
           <input type="hidden" name="return_to" value="/growth-admin/content" />
-          <button className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">+ Generar contenido</button>
+          <button className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">+ Generación directa</button>
         </form>
         <a href="/growth-admin/visual-studio" className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-semibold text-white">Visual Studio</a>
         <a href="/growth-admin/calendar" className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-semibold text-white">Calendario</a>
       </>}
     />
 
-    {queued && <div className="mb-6 rounded-2xl border border-sky-200 bg-sky-50 px-5 py-4 text-sm text-sky-800"><strong>Motor editorial activado.</strong> La tarea {queued} está en cola. Puedes seguir trabajando y refrescar en unos minutos para ver las nuevas piezas.</div>}
+    {queued && <div className="mb-6 rounded-2xl border border-sky-200 bg-sky-50 px-5 py-4 text-sm text-sky-800"><strong>Motor editorial activado.</strong> La tarea {queued} está {currentTask?.status || 'en cola'}. Puedes seguir trabajando; el resultado aparecerá aquí cuando termine el worker.</div>}
+
+    <EditorialPlanner content={content} latestProposalTask={latestProposalTask} currentTask={currentTask} />
 
     <section className="mb-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
       <a href="/growth-admin/content?filter=review" className={`${adminPanel} p-4 transition hover:border-amber-300`}><p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Revisión</p><p className="mt-2 text-3xl font-semibold text-slate-950">{counts.review}</p><p className="mt-1 text-xs text-slate-500">Cambios o decisión humana</p></a>
@@ -161,7 +170,7 @@ export default async function ContentPage({ searchParams }: { searchParams: Prom
     </div>
 
     <section className="mt-10 pb-12 rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-600">
-      <strong className="text-slate-900">Flujo editorial:</strong> generar → revisar → diseñar visual si aplica → aprobar → programar/publicar. Todo vive aquí; “Aprobaciones” deja de ser un módulo separado.
+      <strong className="text-slate-900">Flujo editorial:</strong> idea → scoring → research → revisión → diseño visual si aplica → aprobación → calendario/publicación. Todo vive aquí.
     </section>
   </AdminShell>
 }
