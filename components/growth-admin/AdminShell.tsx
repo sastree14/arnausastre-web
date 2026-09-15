@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-export type OperatingModule = 'home' | 'commercial' | 'content' | 'calendar' | 'approvals' | 'crm' | 'research' | 'visual' | 'metrics' | 'analytics' | 'finance' | 'operations' | 'system'
+export type OperatingModule = 'home' | 'commercial' | 'content' | 'calendar' | 'approvals' | 'crm' | 'partners' | 'research' | 'visual' | 'metrics' | 'analytics' | 'finance' | 'operations' | 'system'
 
 type Sector = 'commercial' | 'finance' | 'metrics' | 'operations'
 
@@ -13,7 +13,7 @@ const SECTORS: Array<{ key: Sector; href: string; label: string; description: st
 ]
 
 function activeSector(active: OperatingModule): Sector | null {
-  if (['commercial', 'crm', 'content', 'calendar', 'approvals', 'research', 'visual'].includes(active)) return 'commercial'
+  if (['commercial', 'crm', 'partners', 'content', 'calendar', 'approvals', 'research', 'visual'].includes(active)) return 'commercial'
   if (['metrics', 'analytics'].includes(active)) return 'metrics'
   if (active === 'finance') return 'finance'
   if (['operations', 'system'].includes(active)) return 'operations'
@@ -50,7 +50,7 @@ export default function AdminShell({ active, children }: { active: OperatingModu
           </nav>
 
           <div className="hidden items-center gap-2 xl:flex">
-            {active === 'crm' && <form action="/api/growth-admin/calendly-sync" method="post"><button className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-xs font-semibold text-indigo-700 hover:bg-indigo-100">Sincronizar Calendly</button></form>}
+            {(active === 'crm' || active === 'partners') && <form action="/api/growth-admin/calendly-sync" method="post"><button className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-xs font-semibold text-indigo-700 hover:bg-indigo-100">Sincronizar Calendly</button></form>}
             <Link href="/growth-admin" prefetch={false} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">Cuadro integral</Link>
             <Link href="/growth-admin/system" prefetch={false} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">Sistema</Link>
             <form action="/api/growth-admin/logout" method="post"><button className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-50">Salir</button></form>
