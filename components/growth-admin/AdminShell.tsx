@@ -50,6 +50,7 @@ export default function AdminShell({ active, children }: { active: OperatingModu
           </nav>
 
           <div className="hidden items-center gap-2 xl:flex">
+            {active === 'crm' && <form action="/api/growth-admin/calendly-sync" method="post"><button className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-xs font-semibold text-indigo-700 hover:bg-indigo-100">Sincronizar Calendly</button></form>}
             <Link href="/growth-admin" prefetch={false} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">Cuadro integral</Link>
             <Link href="/growth-admin/system" prefetch={false} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">Sistema</Link>
             <form action="/api/growth-admin/logout" method="post"><button className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-50">Salir</button></form>
