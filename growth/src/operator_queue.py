@@ -4,8 +4,8 @@ from datetime import datetime, timezone
 from typing import Any
 
 from .editorial_ops import rewrite_content
-from .editorial_planner import build_content_proposals
-from .editorial_runtime import editorial_from_url, run_editorial_cycle
+from .editorial_planner import build_content_proposals, run_guided_editorial_cycle
+from .editorial_runtime import editorial_from_url
 from .prospecting import research_companies
 from .publishing import publish_content
 from .storage import get_store
@@ -49,10 +49,11 @@ def _execute(task: dict[str, Any]) -> Any:
             history_days=int(inputs.get("history_days", 60) or 60),
         )
     if task_type == "OPERATOR_EDITORIAL_RUN":
-        return run_editorial_cycle(
+        return run_guided_editorial_cycle(
             max_signals=int(inputs.get("max_signals", 30) or 30),
             max_briefs=int(inputs.get("max_briefs", 1) or 1),
             theme_hint=str(inputs.get("theme_hint") or ""),
+            avoid=str(inputs.get("avoid") or ""),
             strict_theme=_bool(inputs.get("strict_theme")),
             force_new=_bool(inputs.get("force_new")),
         )
