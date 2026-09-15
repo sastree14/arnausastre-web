@@ -12,6 +12,10 @@ type CrmPerson = {
   company_id?: string | null
   name: string
   role?: string
+  email?: string
+  phone?: string
+  phone_source_url?: string
+  phone_kind?: string
   linkedin_url?: string
   public_source_url?: string
   relevance_score?: number | string
@@ -25,6 +29,7 @@ type CrmPerson = {
   personal_hook?: string
   open_question?: string
   recommended_service?: string
+  recommended_offer?: string
   recommended_action?: string
   sc_analytics_action?: string
 }
@@ -45,6 +50,7 @@ type CrmCompany = {
   capability_gaps?: string[]
   status?: string
   recommended_service?: string
+  recommended_offer?: string
   partnership_model?: string
   partnership_value?: string
 }
@@ -163,7 +169,7 @@ function modeOfCompany(company: CrmCompany) {
 }
 
 function qualityRank(person: CrmPerson) {
-  return Number(Boolean(person.open_question)) + Number(Boolean(person.recommended_service)) + Number(Boolean(person.personal_hook))
+  return Number(Boolean(person.open_question)) + Number(Boolean(person.recommended_offer)) + Number(Boolean(person.recommended_service)) + Number(Boolean(person.personal_hook))
 }
 
 export default async function CommercialProspectingWorkspace({ mode, searchParams }: { mode: WorkspaceMode; searchParams: Promise<SearchParams> }) {
@@ -178,7 +184,7 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
   const personIds = new Set(people.map((person) => person.person_id))
   const activeCompanies = companies
     .filter((company) => !COMPANY_TERMINAL.has(company.status || 'candidate'))
-    .sort((a, b) => Number(Boolean(b.recommended_service)) - Number(Boolean(a.recommended_service)) || Number(b.score || 0) - Number(a.score || 0))
+    .sort((a, b) => Number(Boolean(b.recommended_offer)) - Number(Boolean(a.recommended_offer)) || Number(Boolean(b.recommended_service)) - Number(Boolean(a.recommended_service)) || Number(b.score || 0) - Number(a.score || 0))
   const activePeople = people
     .filter((person) => !PERSON_TERMINAL.has(person.status || 'candidate'))
     .sort((a, b) => qualityRank(b) - qualityRank(a) || Number(b.relevance_score || 0) - Number(a.relevance_score || 0))
@@ -186,7 +192,7 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
   const conversationPeople = people.filter((person) => CONVERSATION.has(person.status || ''))
   const opportunities = bundle.opportunities.filter((item) => Boolean(item.company_id && companyIds.has(item.company_id)))
   const meetings = bundle.meetings.filter((item) => Boolean((item.company_id && companyIds.has(item.company_id)) || (item.person_id && personIds.has(item.person_id))))
-  const tasks = bundle.prospect_tasks.filter((task) => String(task.inputs?.mode || 'lead') === mode)
+  const tasks = bundle.prospect_tasks.filter((task) => task.type === 'OPERATOR_PROSPECT' && String(task.inputs?.mode || 'lead') === mode)
   const interactions = bundle.interactions.filter((item) => Boolean((item.company_id && companyIds.has(item.company_id)) || (item.person_id && personIds.has(item.person_id))))
   const actionMessageByTarget = new Map<string, string>()
   for (const action of bundle.actions) {
@@ -198,25 +204,21 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
   const isPartner = mode === 'partner'
   const returnTo = isPartner ? '/growth-admin/partners' : '/growth-admin/crm'
   const queued = typeof params.queued === 'string' ? params.queued : ''
+  const dispatched = params.dispatched === '1'
+  const dispatchAttempted = typeof params.dispatched === 'string'
   const interactionSaved = typeof params.interaction_saved === 'string' ? params.interaction_saved : ''
   const personSaved = typeof params.person_saved === 'string' ? params.person_saved : ''
 
   return <AdminShell active={isPartner ? 'partners' : 'crm'} surface="light">
     <div className="pb-12">
       <header className="overflow-hidden rounded-[2rem] border border-slate-900 bg-slate-950 text-white shadow-sm">
-        <div className="px-6 pt-6 md:px-8 md:pt-8">
-          <div className="inline-flex rounded-xl border border-white/10 bg-white/5 p-1 text-xs font-semibold">
-            <a href="/growth-admin/crm" className={`rounded-lg px-4 py-2 transition ${!isPartner ? 'bg-white text-slate-950' : 'text-slate-300 hover:text-white'}`}>Clientes potenciales</a>
-            <a href="/growth-admin/partners" className={`rounded-lg px-4 py-2 transition ${isPartner ? 'bg-white text-slate-950' : 'text-slate-300 hover:text-white'}`}>Partners & canales</a>
-          </div>
-        </div>
-        <div className="grid gap-8 px-6 py-8 md:px-8 md:py-10 xl:grid-cols-[1fr_auto] xl:items-end">
+        <div className="grid gap-8 px-6 py-9 md:px-8 md:py-11 xl:grid-cols-[1fr_auto] xl:items-end">
           <div className="max-w-4xl">
             <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-indigo-300">Commercial OS · {isPartner ? 'Partnership engine' : 'Client acquisition'}</p>
             <h1 className="mt-4 text-4xl leading-tight md:text-6xl" style={{ fontFamily: 'var(--font-playfair)' }}>{isPartner ? 'Partners estratégicos' : 'Clientes potenciales'}</h1>
             <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-300 md:text-base">{isPartner
               ? 'Consultoras, boutiques de datos, recruitment/staffing y proveedores complementarios que pueden vender más, cubrir proyectos que hoy no asumen o derivar demanda especializada a SC-Analytics.'
-              : 'Empresas finales donde SC-Analytics puede resolver una decisión o proceso concreto. Una cuenta, un decisor, un servicio prioritario y una conversación personalizada.'}</p>
+              : 'Empresas finales donde SC-Analytics puede resolver una decisión o proceso concreto. Una cuenta, un decisor, una oferta prioritaria y una conversación personalizada.'}</p>
           </div>
           <form action="/api/growth-admin/operator-task" method="post" className="flex shrink-0 items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-2">
             <input type="hidden" name="action" value="prospect"/>
@@ -232,14 +234,14 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-400">
             <span><strong className="font-semibold text-slate-200">Contrato 1:1</strong> → {isPartner ? 'partner + decisor' : 'empresa + decisor'}</span>
             <span><strong className="font-semibold text-slate-200">LinkedIn</strong> → persona + empresa</span>
-            <span><strong className="font-semibold text-slate-200">Personalización</strong> → detalle profesional + servicio + pregunta abierta</span>
-            <span><strong className="font-semibold text-slate-200">CTA</strong> → conversación informativa sin coste ni compromiso</span>
+            <span><strong className="font-semibold text-slate-200">Personalización</strong> → detalle profesional + oferta + pregunta abierta</span>
+            <span><strong className="font-semibold text-slate-200">Teléfono</strong> → solo si existe contacto empresarial público y aporta valor</span>
           </div>
         </div>
       </header>
 
       {bundle.degraded && <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">El CRM se ha cargado en modo seguro porque Supabase ha tardado en responder. Refresca para recuperar el detalle.</div>}
-      {queued && <div className="mt-5 rounded-2xl border border-sky-200 bg-sky-50 px-5 py-4 text-sm text-sky-800">Búsqueda encolada: <strong>{queued}</strong>. Queda persistida en Supabase y el worker la revisa cada 5 minutos como máximo.</div>}
+      {queued && <div className={`mt-5 rounded-2xl border px-5 py-4 text-sm ${dispatched ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-sky-200 bg-sky-50 text-sky-800'}`}>{dispatched ? <>Búsqueda lanzada ahora: <strong>{queued}</strong>. GitHub Actions procesará la cola y los resultados aparecerán aquí al terminar.</> : <>Búsqueda guardada: <strong>{queued}</strong>. {dispatchAttempted ? 'No se ha podido disparar GitHub Actions al instante; el barrido diario queda como red de seguridad.' : 'Queda persistida en Supabase.'}</>}</div>}
       {interactionSaved && <div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">Acción guardada: <strong>{interactionSaved}</strong>.</div>}
       {personSaved && <div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">Contacto guardado: <strong>{personSaved}</strong>.</div>}
 
@@ -263,7 +265,7 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
       <section className="mt-10 rounded-3xl border border-indigo-100 bg-indigo-50/55 p-5 md:p-7">
         <SectionTitle eyebrow={isPartner ? 'Partner outreach' : 'Outreach directo'} title="A quién contactar ahora" description={isPartner
           ? 'Cada recomendación combina el hueco complementario del partner, un decisor, un detalle profesional público, el modelo de colaboración, una pregunta abierta y el mensaje sugerido.'
-          : 'Cada recomendación combina el contexto real de la empresa, el decisor, un detalle profesional público, el servicio con mejor encaje, una pregunta abierta y el mensaje sugerido.'} count={activePeople.length}/>
+          : 'Cada recomendación combina el contexto real de la empresa, el decisor, un detalle profesional público, la oferta con mejor encaje, una pregunta abierta y el mensaje sugerido.'} count={activePeople.length}/>
         {activePeople.length === 0 ? <div className="rounded-2xl border border-dashed border-indigo-200 bg-white/60 p-8 text-center text-sm text-slate-500">No hay contactos activos en este motor. Ejecuta una búsqueda para generar pares 1:1.</div> : <div className="grid gap-4 xl:grid-cols-2">
           {activePeople.slice(0, 30).map((person, index) => {
             const company = person.company_id ? companyById.get(person.company_id) : undefined
@@ -279,6 +281,8 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
                 <div className="flex shrink-0 flex-col items-end gap-2 text-xs font-semibold">
                   {person.linkedin_url && <a href={person.linkedin_url} target="_blank" rel="noreferrer" className="text-indigo-600 hover:text-indigo-800">LinkedIn persona ↗</a>}
                   {company?.linkedin_url && <a href={company.linkedin_url} target="_blank" rel="noreferrer" className="text-slate-600 hover:text-slate-900">LinkedIn empresa ↗</a>}
+                  {person.phone && <a href={`tel:${person.phone}`} className="text-emerald-700 hover:text-emerald-900">Llamar {person.phone}</a>}
+                  {person.phone_source_url && <a href={person.phone_source_url} target="_blank" rel="noreferrer" className="text-[10px] text-slate-400">Fuente teléfono ↗</a>}
                 </div>
               </div>
 
@@ -288,6 +292,7 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
                 {person.contact_reason && <div className="rounded-xl bg-slate-50 p-3 text-xs leading-5 text-slate-600 sm:col-span-2"><strong className="text-slate-800">Por qué esta persona:</strong> {person.contact_reason}</div>}
                 {person.personal_hook && <div className="rounded-xl border border-sky-100 bg-sky-50/70 p-3 text-xs leading-5 text-sky-900"><p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-sky-600">Detalle profesional personal</p><p className="mt-1">{person.personal_hook}</p></div>}
                 {person.recommended_service && <div className="rounded-xl border border-emerald-100 bg-emerald-50/70 p-3 text-xs leading-5 text-emerald-900"><p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-emerald-600">{isPartner ? 'Capacidad a complementar' : 'Servicio a priorizar'}</p><p className="mt-1 font-semibold">{person.recommended_service}</p></div>}
+                {person.recommended_offer && <div className="rounded-xl border border-indigo-100 bg-indigo-50/70 p-3 text-xs leading-5 text-indigo-900 sm:col-span-2"><p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-indigo-600">Oferta de entrada</p><p className="mt-1 font-semibold">{person.recommended_offer}</p></div>}
                 {person.open_question && <div className="rounded-xl border border-amber-100 bg-amber-50/70 p-3 text-xs leading-5 text-amber-950 sm:col-span-2"><p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-700">Pregunta abierta</p><p className="mt-1">{person.open_question}</p></div>}
               </div>
 
@@ -310,6 +315,7 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
             <div className="flex items-start justify-between gap-4"><div className="min-w-0"><div className="flex flex-wrap gap-2"><Pill tone={statusTone(company.status)}>{STATUS_LABELS[company.status || 'candidate'] || company.status || 'Pendiente'}</Pill>{isPartner && company.partnership_model && <Pill tone="sky">{company.partnership_model.replaceAll('-', ' ')}</Pill>}</div><p className="mt-3 font-semibold text-slate-950">{company.name}</p><p className="mt-1 text-xs text-slate-500">{company.industry || 'Industria por confirmar'} · {company.country || '—'}{company.employee_range ? ` · ${company.employee_range}` : ''}</p></div><Pill tone="indigo">fit {Number(company.score || 0).toFixed(1)}</Pill></div>
             {company.score_reason && <p className="mt-4 text-xs leading-5 text-slate-600">{company.score_reason}</p>}
             {company.recommended_service && <div className="mt-3 rounded-xl bg-emerald-50 px-3 py-2 text-xs text-emerald-800"><strong>{isPartner ? 'Gap a complementar:' : 'Servicio prioritario:'}</strong> {company.recommended_service}</div>}
+            {company.recommended_offer && <div className="mt-2 rounded-xl bg-indigo-50 px-3 py-2 text-xs text-indigo-800"><strong>Oferta de entrada:</strong> {company.recommended_offer}</div>}
             {isPartner && company.partnership_value && <div className="mt-2 rounded-xl bg-indigo-50 px-3 py-2 text-xs leading-5 text-indigo-800"><strong>Valor para ellos:</strong> {company.partnership_value}</div>}
             <div className="mt-4 flex flex-wrap gap-4 text-xs font-semibold">{company.linkedin_url && <a href={company.linkedin_url} target="_blank" rel="noreferrer" className="text-indigo-600 hover:text-indigo-800">LinkedIn empresa ↗</a>}{company.website && <a href={company.website} target="_blank" rel="noreferrer" className="text-slate-600 hover:text-slate-900">Web ↗</a>}{company.source_url && <a href={company.source_url} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-slate-700">Fuente ↗</a>}</div>
             <CompanyQuickActions companyId={company.company_id} currentStatus={company.status} returnTo={returnTo}/>
