@@ -237,8 +237,10 @@ export async function syncCalendlyCrm() {
   const user = current?.resource || current
   if (!user?.uri) throw new Error('Calendly current user could not be resolved')
 
-  const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString()
-  const qs = new URLSearchParams({ user: user.uri, count: '100', sort: 'start_time:desc', min_start_time: ninetyDaysAgo })
+  // Initial/manual sync deliberately avoids importing old test history. Webhooks keep
+  // the CRM current afterwards; this window only catches very recent bookings plus all future ones.
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+  const qs = new URLSearchParams({ user: user.uri, count: '100', sort: 'start_time:desc', min_start_time: sevenDaysAgo })
   const eventResponse = await calendlyFetch(`/scheduled_events?${qs.toString()}`)
   const events: Json[] = Array.isArray(eventResponse?.collection) ? eventResponse.collection : []
   const companies = await queryGrowthTable<Json>('companies', { tenant_id: `eq.${TENANT_ID}`, limit: '500' }, { cacheSeconds: 0 })
