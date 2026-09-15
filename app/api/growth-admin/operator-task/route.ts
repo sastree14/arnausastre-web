@@ -4,6 +4,7 @@ import { insertGrowthRow, isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { dispatchOperatorQueue } from '@/lib/github-actions'
 
 const ACTION_TO_TYPE: Record<string, string> = {
+  editorial_proposals: 'OPERATOR_EDITORIAL_PROPOSALS',
   editorial_run: 'OPERATOR_EDITORIAL_RUN',
   editorial_url: 'OPERATOR_EDITORIAL_URL',
   rewrite_content: 'OPERATOR_REWRITE_CONTENT',
@@ -18,6 +19,10 @@ function int(value: FormDataEntryValue | null, fallback: number, max = 100) {
   return Number.isFinite(parsed) ? Math.min(max, Math.max(1, Math.floor(parsed))) : fallback
 }
 
+function bool(value: FormDataEntryValue | null) {
+  return ['1', 'true', 'yes', 'on'].includes(String(value || '').toLowerCase())
+}
+
 export async function POST(request: Request) {
   if (!(await isGrowthAdminAuthenticated())) return new NextResponse('Unauthorized', { status: 401 })
   const form = await request.formData()
@@ -26,11 +31,21 @@ export async function POST(request: Request) {
   if (!type) return new NextResponse('Unsupported operator action', { status: 400 })
 
   let inputs: Record<string, unknown> = {}
-  if (action === 'editorial_run') {
+  if (action === 'editorial_proposals') {
+    inputs = {
+      focus: String(form.get('focus') || '').trim(),
+      avoid: String(form.get('avoid') || '').trim(),
+      count: int(form.get('count'), 3, 6),
+      history_days: int(form.get('history_days'), 60, 180),
+    }
+  } else if (action === 'editorial_run') {
     inputs = {
       theme_hint: String(form.get('theme_hint') || '').trim(),
+      avoid: String(form.get('avoid') || '').trim(),
       max_signals: int(form.get('max_signals'), 30),
       max_briefs: int(form.get('max_briefs'), 1),
+      strict_theme: bool(form.get('strict_theme')),
+      force_new: bool(form.get('force_new')),
     }
   } else if (action === 'editorial_url') {
     const url = String(form.get('url') || '').trim()

@@ -42,11 +42,10 @@ export default async function CommercialPage() {
     </section>
 
     <section className="mt-10">
-      <SectionHeading eyebrow="Conversión y autoridad" title="Módulos de soporte comercial" description="Editorial, calendario, aprobaciones y research apoyan captación y conversión; no sustituyen a los tres motores de adquisición." />
+      <SectionHeading eyebrow="Conversión y autoridad" title="Módulos de soporte comercial" description="Editorial, calendario y research apoyan captación y conversión; no sustituyen a los tres motores de adquisición." />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        <ModuleCard href="/growth-admin/content" title="Editorial & contenido" description={`${summary.active_content} piezas activas. Research, artículos, LinkedIn, CTA, visuals y aprendizaje comercial forman parte del área Comercial.`} tone="green" />
+        <ModuleCard href="/growth-admin/content" title="Editorial & contenido" description={`${summary.active_content} piezas activas. Generación, revisión humana, aprobaciones, artículos, LinkedIn, CTA, visuales y preparación para publicar viven en un único workspace.`} tone="green" />
         <ModuleCard href="/growth-admin/calendar" title="Calendario y distribución" description="Planificación de publicaciones, reprogramación, publicación inmediata e histórico de contenido." tone="blue" />
-        <ModuleCard href="/growth-admin/approvals" title="Aprobaciones" description="Human-in-the-loop para contenido y acciones externas. Autorizar no equivale a ejecutar." tone="amber" />
         <ModuleCard href="/growth-admin/research" title="Research editorial" description="Señales, evidencia, briefs e ideas que alimentan publicaciones y artículos con criterio de negocio." />
       </div>
     </section>
