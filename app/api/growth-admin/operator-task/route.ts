@@ -11,9 +11,9 @@ const ACTION_TO_TYPE: Record<string, string> = {
   publish_article: 'OPERATOR_PUBLISH_ARTICLE',
 }
 
-function int(value: FormDataEntryValue | null, fallback: number) {
+function int(value: FormDataEntryValue | null, fallback: number, max = 100) {
   const parsed = Number(value)
-  return Number.isFinite(parsed) ? Math.max(1, Math.floor(parsed)) : fallback
+  return Number.isFinite(parsed) ? Math.min(max, Math.max(1, Math.floor(parsed))) : fallback
 }
 
 export async function POST(request: Request) {
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
   } else if (action === 'prospect') {
     inputs = {
       mode: String(form.get('mode') || 'lead'),
-      limit: int(form.get('limit'), 10),
+      limit: int(form.get('limit'), 10, 50),
     }
   }
 
