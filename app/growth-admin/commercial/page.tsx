@@ -36,9 +36,8 @@ export default async function CommercialPage() {
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <ModuleCard href="/growth-admin/crm" title="Clientes potenciales" description={`${summary.lead_companies} empresas objetivo · ${summary.lead_people} decisores. Prospecting directo, LinkedIn, mensajes personalizados, reuniones y oportunidades.`} />
         <ModuleCard href="/growth-admin/partners" title="Partners & canales" description={`${summary.partner_companies} partners · ${summary.partner_people} contactos. Consultoras, boutiques de datos, recruitment/staffing y proveedores complementarios que pueden derivar o ampliar proyectos con SC-Analytics.`} tone="blue" />
-        <ModuleCard href="/growth-admin/content" title="Editorial & contenido" description={`${summary.active_content} piezas activas. Research, artículos, LinkedIn, CTA, visuals y aprendizaje comercial forman parte del área Comercial.`} tone="green" />
+        <ModuleCard href="/growth-admin/content" title="Editorial & contenido" description={`${summary.active_content} piezas activas. Generación, revisión humana, aprobaciones, artículos, LinkedIn, CTA, visuales y preparación para publicar viven en un único workspace.`} tone="green" />
         <ModuleCard href="/growth-admin/calendar" title="Calendario y distribución" description="Planificación de publicaciones, reprogramación, publicación inmediata e histórico de contenido." tone="blue" />
-        <ModuleCard href="/growth-admin/approvals" title="Aprobaciones" description="Human-in-the-loop para contenido y acciones externas. Autorizar no equivale a ejecutar." tone="amber" />
         <ModuleCard href="/growth-admin/research" title="Research editorial" description="Señales, evidencia, briefs e ideas que alimentan publicaciones y artículos con criterio de negocio." />
       </div>
     </section>
