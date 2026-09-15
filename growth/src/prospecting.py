@@ -158,6 +158,28 @@ SC-ANALYTICS BRAIN:
     }
 
 
+def _display_plan(outreach: dict[str, str | dict]) -> str:
+    arnau_action = str(outreach.get("recommended_action", "connect_then_message")).replace("_", " ")
+    sc_action = str(outreach.get("sc_analytics_action", "invite_to_follow_after_connection")).replace("_", " ")
+    connection_note = str(outreach.get("connection_note", "")).strip()
+    message = str(outreach.get("message", "")).strip()
+    follow_up = str(outreach.get("follow_up", "")).strip()
+    reason = str(outreach.get("contact_reason", "")).strip()
+    parts = [
+        f"ARNau · acción recomendada: {arnau_action}",
+        f"SC-Analytics · acción recomendada: {sc_action}",
+    ]
+    if reason:
+        parts.append(f"Por qué contactar: {reason}")
+    if connection_note:
+        parts.append(f"Nota de conexión:\n{connection_note}")
+    if message:
+        parts.append(f"Primer mensaje:\n{message}")
+    if follow_up:
+        parts.append(f"Follow-up:\n{follow_up}")
+    return "\n\n".join(parts)
+
+
 def _linkedin_search_url(company: CompanyCandidate, roles: list[str]) -> str:
     return "https://www.linkedin.com/search/results/people/?keywords=" + quote_plus(
         f"{company.name} {' OR '.join(roles)}"
@@ -292,8 +314,9 @@ SEARCH RESULTS:
         target_id = stored_person.get("person_id", person.person_id)
 
         outreach = _draft_outreach(mode, candidate, stored_person, brain, search, llm)
+        display_plan = _display_plan(outreach)
         person_updates = {
-            "recommended_message": outreach.get("message", ""),
+            "recommended_message": display_plan,
             "outreach_angle": outreach.get("angle", ""),
             "connection_note": outreach.get("connection_note", ""),
             "follow_up_message": outreach.get("follow_up", ""),
@@ -332,7 +355,7 @@ SEARCH RESULTS:
             payload=common_payload,
         )
         outreach_payload = dict(common_payload)
-        outreach_payload["message"] = outreach.get("message", "")
+        outreach_payload["message"] = str(outreach.get("message", ""))
         _queue_manual_action(
             store,
             tenant_id=tenant_id,
