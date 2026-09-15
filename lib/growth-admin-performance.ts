@@ -107,15 +107,36 @@ export type MetricsSummary = {
   degraded?: boolean
 }
 
+export type FinanceCounterparty = {
+  counterparty_id: string
+  kind: string
+  company_id?: string | null
+  legal_name: string
+  trade_name?: string | null
+  tax_id?: string | null
+  vat_id?: string | null
+  country_code?: string | null
+  billing_address?: string | null
+  email?: string | null
+  currency: string
+  tax_profile: string
+  status: string
+}
+
 export type FinanceBundle = {
   companies: Array<{ company_id: string; name: string }>
+  counterparties: FinanceCounterparty[]
   projects: Array<{ project_id: string; name: string; status: string }>
   invoices: Array<Record<string, unknown>>
   expenses: Array<Record<string, unknown>>
   payments: Array<Record<string, unknown>>
+  tax_periods: Array<Record<string, unknown>>
   invoiced: number
   received: number
   spent: number
+  vat_output: number
+  vat_input: number
+  withholding_total: number
   degraded?: boolean
 }
 
@@ -208,13 +229,18 @@ export function getMetricsSummary() {
 export function getFinanceBundle() {
   return safeRpc<FinanceBundle>('growth_finance_bundle', {
     companies: [],
+    counterparties: [],
     projects: [],
     invoices: [],
     expenses: [],
     payments: [],
+    tax_periods: [],
     invoiced: 0,
     received: 0,
     spent: 0,
+    vat_output: 0,
+    vat_input: 0,
+    withholding_total: 0,
   })
 }
 
