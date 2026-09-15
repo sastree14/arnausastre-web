@@ -25,6 +25,8 @@ type CrmPerson = {
   personal_hook?: string
   open_question?: string
   recommended_service?: string
+  recommended_action?: string
+  sc_analytics_action?: string
 }
 
 type CrmCompany = {
@@ -74,6 +76,16 @@ const STATUS_LABELS: Record<string, string> = {
   queued: 'En cola',
   running: 'Ejecutando',
   failed: 'Fallido',
+}
+
+const ACTION_LABELS: Record<string, string> = {
+  follow: 'Seguir',
+  connect: 'Conectar',
+  connect_then_message: 'Conectar → escribir',
+  message: 'Escribir',
+  invite_to_follow: 'Invitar a seguir la página',
+  invite_to_follow_after_connection: 'Invitar después de conectar',
+  none: 'Sin acción',
 }
 
 function Pill({ children, tone = 'slate' }: { children: React.ReactNode; tone?: Tone }) {
@@ -134,8 +146,24 @@ function fallbackMessage(person: CrmPerson, company: CrmCompany | undefined, mod
   return `Hola ${firstName}, soy Arnau Sastre, matemático y estadístico y fundador de SC-Analytics. He estado revisando ${companyName} y, por tu rol, veo una hipótesis concreta donde analítica avanzada podría ayudar a mejorar decisiones. Si tiene sentido, podemos hacer una llamada breve, sin coste ni compromiso, para contrastarlo y ver si existe valor real. ¿Qué decisión de negocio u operación os resulta más difícil anticipar o sistematizar ahora mismo?`
 }
 
+function extractFirstMessage(value: string) {
+  const text = String(value || '').replaceAll('\r', '')
+  const markers = ['Primer mensaje:\n', 'First message:\n']
+  const marker = markers.find((candidate) => text.includes(candidate))
+  if (!marker) return text.trim()
+  const start = text.indexOf(marker) + marker.length
+  const tails = ['\n\nFollow-up:', '\n\nFollow up:', '\n\nSeguimiento:']
+  const tailIndexes = tails.map((tail) => text.indexOf(tail, start)).filter((index) => index >= 0)
+  const end = tailIndexes.length ? Math.min(...tailIndexes) : text.length
+  return text.slice(start, end).trim()
+}
+
 function modeOfCompany(company: CrmCompany) {
   return company.fit_type === 'partner' ? 'partner' : 'lead'
+}
+
+function qualityRank(person: CrmPerson) {
+  return Number(Boolean(person.open_question)) + Number(Boolean(person.recommended_service)) + Number(Boolean(person.personal_hook))
 }
 
 export default async function CommercialProspectingWorkspace({ mode, searchParams }: { mode: WorkspaceMode; searchParams: Promise<SearchParams> }) {
@@ -148,10 +176,12 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
   const people = allPeople.filter((person) => Boolean(person.company_id && companyIds.has(person.company_id)))
   const companyById = new Map(companies.map((company) => [company.company_id, company]))
   const personIds = new Set(people.map((person) => person.person_id))
-  const activeCompanies = companies.filter((company) => !COMPANY_TERMINAL.has(company.status || 'candidate'))
+  const activeCompanies = companies
+    .filter((company) => !COMPANY_TERMINAL.has(company.status || 'candidate'))
+    .sort((a, b) => Number(Boolean(b.recommended_service)) - Number(Boolean(a.recommended_service)) || Number(b.score || 0) - Number(a.score || 0))
   const activePeople = people
     .filter((person) => !PERSON_TERMINAL.has(person.status || 'candidate'))
-    .sort((a, b) => Number(b.relevance_score || 0) - Number(a.relevance_score || 0))
+    .sort((a, b) => qualityRank(b) - qualityRank(a) || Number(b.relevance_score || 0) - Number(a.relevance_score || 0))
   const contactedPeople = people.filter((person) => CONTACTED.has(person.status || ''))
   const conversationPeople = people.filter((person) => CONVERSATION.has(person.status || ''))
   const opportunities = bundle.opportunities.filter((item) => Boolean(item.company_id && companyIds.has(item.company_id)))
@@ -209,7 +239,7 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
       </header>
 
       {bundle.degraded && <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">El CRM se ha cargado en modo seguro porque Supabase ha tardado en responder. Refresca para recuperar el detalle.</div>}
-      {queued && <div className="mt-5 rounded-2xl border border-sky-200 bg-sky-50 px-5 py-4 text-sm text-sky-800">Búsqueda encolada: <strong>{queued}</strong>. El resultado quedará guardado en Supabase.</div>}
+      {queued && <div className="mt-5 rounded-2xl border border-sky-200 bg-sky-50 px-5 py-4 text-sm text-sky-800">Búsqueda encolada: <strong>{queued}</strong>. Queda persistida en Supabase y el worker la revisa cada 5 minutos como máximo.</div>}
       {interactionSaved && <div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">Acción guardada: <strong>{interactionSaved}</strong>.</div>}
       {personSaved && <div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">Contacto guardado: <strong>{personSaved}</strong>.</div>}
 
@@ -237,7 +267,8 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
         {activePeople.length === 0 ? <div className="rounded-2xl border border-dashed border-indigo-200 bg-white/60 p-8 text-center text-sm text-slate-500">No hay contactos activos en este motor. Ejecuta una búsqueda para generar pares 1:1.</div> : <div className="grid gap-4 xl:grid-cols-2">
           {activePeople.slice(0, 30).map((person, index) => {
             const company = person.company_id ? companyById.get(person.company_id) : undefined
-            const message = person.recommended_message || actionMessageByTarget.get(person.person_id) || fallbackMessage(person, company, mode)
+            const plan = person.recommended_message || actionMessageByTarget.get(person.person_id) || fallbackMessage(person, company, mode)
+            const outboundMessage = extractFirstMessage(plan) || fallbackMessage(person, company, mode)
             return <article key={person.person_id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
@@ -252,6 +283,8 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
               </div>
 
               <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                <div className="rounded-xl border border-indigo-100 bg-indigo-50/70 p-3 text-xs leading-5 text-indigo-900"><p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-indigo-600">Arnau · LinkedIn</p><p className="mt-1 font-semibold">{ACTION_LABELS[person.recommended_action || 'connect_then_message'] || person.recommended_action || 'Conectar → escribir'}</p></div>
+                <div className="rounded-xl border border-violet-100 bg-violet-50/70 p-3 text-xs leading-5 text-violet-900"><p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-violet-600">SC-Analytics · página</p><p className="mt-1 font-semibold">{ACTION_LABELS[person.sc_analytics_action || 'invite_to_follow_after_connection'] || person.sc_analytics_action || 'Invitar después de conectar'}</p></div>
                 {person.contact_reason && <div className="rounded-xl bg-slate-50 p-3 text-xs leading-5 text-slate-600 sm:col-span-2"><strong className="text-slate-800">Por qué esta persona:</strong> {person.contact_reason}</div>}
                 {person.personal_hook && <div className="rounded-xl border border-sky-100 bg-sky-50/70 p-3 text-xs leading-5 text-sky-900"><p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-sky-600">Detalle profesional personal</p><p className="mt-1">{person.personal_hook}</p></div>}
                 {person.recommended_service && <div className="rounded-xl border border-emerald-100 bg-emerald-50/70 p-3 text-xs leading-5 text-emerald-900"><p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-emerald-600">{isPartner ? 'Capacidad a complementar' : 'Servicio a priorizar'}</p><p className="mt-1 font-semibold">{person.recommended_service}</p></div>}
@@ -259,8 +292,8 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
               </div>
 
               <details className="mt-4 rounded-xl border border-indigo-100 bg-indigo-50/45">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-xs font-semibold text-indigo-700"><span>Ver plan y mensaje personalizado</span><CopyButton text={message}/></summary>
-                <div className="border-t border-indigo-100 px-4 py-4"><p className="whitespace-pre-wrap text-xs leading-6 text-slate-700">{message}</p>{person.connection_note && <p className="mt-4 text-xs leading-5 text-slate-600"><strong>Nota de conexión:</strong> {person.connection_note}</p>}{person.follow_up_message && <p className="mt-3 text-xs leading-5 text-slate-600"><strong>Follow-up:</strong> {person.follow_up_message}</p>}</div>
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-xs font-semibold text-indigo-700"><span>Ver mensaje personalizado</span><CopyButton text={outboundMessage}/></summary>
+                <div className="border-t border-indigo-100 px-4 py-4"><p className="whitespace-pre-wrap text-xs leading-6 text-slate-700">{outboundMessage}</p>{person.connection_note && <p className="mt-4 text-xs leading-5 text-slate-600"><strong>Nota de conexión:</strong> {person.connection_note}</p>}{person.follow_up_message && <p className="mt-3 text-xs leading-5 text-slate-600"><strong>Follow-up:</strong> {person.follow_up_message}</p>}</div>
               </details>
               <PersonQuickActions personId={person.person_id} companyId={person.company_id} currentStatus={person.status} returnTo={returnTo}/>
             </article>
