@@ -2,6 +2,7 @@ type Props = {
   personId: string
   companyId?: string | null
   currentStatus?: string | null
+  returnTo?: string
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -21,13 +22,13 @@ const STATUS_LABELS: Record<string, string> = {
   discarded: 'Descartado',
 }
 
-export default function PersonQuickActions({ personId, companyId, currentStatus }: Props) {
+export default function PersonQuickActions({ personId, companyId, currentStatus, returnTo = '/growth-admin/crm' }: Props) {
   return <div className="mt-4 border-t border-slate-100 pt-4">
     <form action="/api/growth-admin/crm-interaction" method="post" className="grid gap-2 sm:grid-cols-2">
       <input type="hidden" name="person_id" value={personId}/>
       <input type="hidden" name="company_id" value={companyId || ''}/>
       <input type="hidden" name="channel" value="linkedin"/>
-      <input type="hidden" name="return_to" value="/growth-admin/crm"/>
+      <input type="hidden" name="return_to" value={returnTo}/>
       <select name="kind" defaultValue="followed" className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700">
         <optgroup label="Arnau · LinkedIn personal">
           <option value="followed">He seguido a esta persona</option>
