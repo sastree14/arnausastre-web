@@ -91,11 +91,7 @@ export default async function CompetitionPage({ searchParams }: { searchParams: 
   events.forEach((event) => eventByCompetitor.set(event.competitor_id, [...(eventByCompetitor.get(event.competitor_id) || []), event]))
   const monitored = competitors.filter((item) => item.is_monitored)
   const direct = competitors.filter((item) => item.category === 'direct')
-  const recentEvents = events.filter((item) => {
-    const created = new Date(item.created_at || item.observed_at || 0).getTime()
-    return Number.isFinite(created) && created >= Date.now() - 30 * 24 * 60 * 60 * 1000
-  })
-  const highImpact = recentEvents.filter((item) => Number(item.significance || 0) >= 8).length
+  const highImpact = events.filter((item) => Number(item.significance || 0) >= 8).length
   const visible = competitors.filter((item) => view === 'monitored' ? item.is_monitored : view === 'direct' ? item.category === 'direct' : view === 'adjacent' ? item.category === 'adjacent' : true)
 
   return <AdminShell active="competition">
@@ -114,7 +110,7 @@ export default async function CompetitionPage({ searchParams }: { searchParams: 
       <div className={`${adminPanel} p-5`}><p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Empresas fijas</p><p className="mt-2 text-3xl font-semibold text-slate-950">{competitors.length}</p><p className="mt-1 text-xs text-slate-500">No desaparecen al volver a buscar</p></div>
       <div className={`${adminPanel} p-5`}><p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Monitorizadas</p><p className="mt-2 text-3xl font-semibold text-emerald-700">{monitored.length}</p><p className="mt-1 text-xs text-slate-500">Revisión automática diaria</p></div>
       <div className={`${adminPanel} p-5`}><p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Competencia directa</p><p className="mt-2 text-3xl font-semibold text-indigo-700">{direct.length}</p><p className="mt-1 text-xs text-slate-500">Solape relevante de servicios</p></div>
-      <div className={`${adminPanel} p-5`}><p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Movimientos 30d</p><p className="mt-2 text-3xl font-semibold text-amber-700">{recentEvents.length}</p><p className="mt-1 text-xs text-slate-500">{highImpact} de impacto ≥ 8/10</p></div>
+      <div className={`${adminPanel} p-5`}><p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Movimientos registrados</p><p className="mt-2 text-3xl font-semibold text-amber-700">{events.length}</p><p className="mt-1 text-xs text-slate-500">{highImpact} de impacto ≥ 8/10</p></div>
     </section>
 
     <section className="mt-8 grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
