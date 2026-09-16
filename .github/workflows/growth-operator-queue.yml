@@ -32,6 +32,8 @@ jobs:
           TASK_ID: ${{ github.event.inputs.task_id || github.event.client_payload.task_id || '' }}
           EVENT_NAME: ${{ github.event_name }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_IMAGE_MODEL: ${{ vars.OPENAI_IMAGE_MODEL || 'gpt-image-2' }}
+          OPENAI_IMAGE_QUALITY: ${{ vars.OPENAI_IMAGE_QUALITY || 'low' }}
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
@@ -44,7 +46,7 @@ jobs:
           LINKEDIN_API_VERSION: ${{ vars.LINKEDIN_API_VERSION || '202608' }}
         run: |
           if [ "$EVENT_NAME" = "schedule" ]; then
-            python -m growth.src.cli run-operator-queue --recovery
+            python -m growth.src.cli run-operator-queue --recovery --recovery-minutes 10080
           else
             test -n "$TASK_ID"
             python -m growth.src.cli run-operator-queue --task-id "$TASK_ID"

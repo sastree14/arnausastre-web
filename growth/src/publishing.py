@@ -20,6 +20,7 @@ class PublishingError(RuntimeError):
 
 PUBLICATION_MODES = {"text_only", "text_with_visual", "visual_first", "image_only"}
 VISUAL_REQUIRED_MODES = {"text_with_visual", "visual_first", "image_only"}
+LINKEDIN_INTERNAL_MAX_CHARS = 2200
 
 
 def _linkedin_access() -> tuple[str, str]:
@@ -111,6 +112,18 @@ def _hashtag_line(item: dict) -> str:
     return " ".join(tags[:5])
 
 
+def _fit_commentary_with_hashtags(commentary: str, hashtags: str, max_chars: int = LINKEDIN_INTERNAL_MAX_CHARS) -> str:
+    main = str(commentary or "").strip()
+    tags = str(hashtags or "").strip()
+    suffix = f"\n\n{tags}" if tags else ""
+    budget = max(1, max_chars - len(suffix))
+    if len(main) > budget:
+        target = max(1, budget - 1)
+        shortened = main[:target].rsplit(" ", 1)[0].rstrip()
+        main = f"{shortened or main[:target]}…"
+    return f"{main}{suffix}"[:max_chars].strip()
+
+
 def _commentary_for_mode(item: dict) -> str:
     mode = _publication_mode(item)
     body = str(item.get("body") or "").strip()
@@ -120,8 +133,7 @@ def _commentary_for_mode(item: dict) -> str:
         commentary = os.environ.get("LINKEDIN_IMAGE_ONLY_COMMENTARY", "SC-Analytics").strip() or "SC-Analytics"
     else:
         commentary = body
-    hashtags = _hashtag_line(item)
-    return f"{commentary}\n\n{hashtags}".strip() if hashtags else commentary
+    return _fit_commentary_with_hashtags(commentary, _hashtag_line(item))
 
 
 def _visual_ref_for_mode(item: dict) -> str:

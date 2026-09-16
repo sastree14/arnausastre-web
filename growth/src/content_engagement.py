@@ -8,7 +8,14 @@ from .config import load_config
 from .llm import get_llm
 from .storage import get_store
 from .text_safety import sanitize_publication_text
-from .visuals import render_branded_card, render_business_diagram, render_comparison_visual, render_metric_visual, render_statement_visual
+from .visuals import (
+    render_branded_card,
+    render_business_diagram,
+    render_comparison_visual,
+    render_contextual_illustration,
+    render_metric_visual,
+    render_statement_visual,
+)
 
 
 def _clean_hashtags(values: Any) -> list[str]:
@@ -63,6 +70,16 @@ def _render_visual(item: dict[str, Any], brief: dict[str, Any], strategy: dict[s
     elif kind == "process" and visual.get("steps"):
         path = render_business_diagram(headline, [str(x) for x in visual.get("steps", [])], slug=slug, theme=theme)
         visual_type = "react_process_hook"
+    elif kind == "illustration":
+        concept = sanitize_publication_text(str(strategy.get("illustration_concept") or visual.get("concept") or supporting or headline))[:900]
+        try:
+            path = render_contextual_illustration(headline, concept, slug=slug, theme=theme)
+            visual_type = "generated_contextual_illustration"
+        except Exception:
+            # Illustration is enhancement, never a publishing blocker. A branded
+            # deterministic statement remains available if the image API is down.
+            path = render_statement_visual(headline, supporting, slug=slug, theme=theme)
+            visual_type = "react_statement_hook"
     elif kind in {"statement", "contrarian", "question"}:
         path = render_statement_visual(headline, supporting, slug=slug, theme=theme)
         visual_type = "react_statement_hook"
@@ -101,14 +118,17 @@ Return {{
   "hashtags":["3 to 5 relevant hashtags without #"],
   "visual_headline":"short stop-scroll headline, ideally <= 70 characters",
   "visual_support":"optional short supporting sentence <= 110 characters",
-  "visual_type":"metric|statement|comparison|process|question",
+  "visual_type":"metric|statement|comparison|process|question|illustration",
+  "illustration_concept":"only when visual_type is illustration: concise concrete scene/concept, no typography",
   "theme":"dark|light",
-  "hook_type":"metric|contrarian|question|insight|comparison|process"
+  "hook_type":"metric|contrarian|question|insight|comparison|process|illustration"
 }}.
 Rules:
 - The visual headline may be bolder than the post title but must remain accurate and professional.
 - Contrarian means a defensible tension or trade-off, never offensive sensationalism.
 - If the content includes a meaningful real metric, prefer metric.
+- Prefer comparison or process when the brief already contains those structures.
+- Use illustration sparingly: only when a concrete object, operational scene or simple visual metaphor materially improves stopping power and no meaningful real metric/comparison/process is available.
 - Questions must be genuinely answerable by the target audience.
 - Hashtags must be specific enough to aid discovery; avoid generic spam like #success or #motivation.
 - Never invent a metric, client result or fact.
@@ -124,6 +144,7 @@ Rules:
         "visual_headline": sanitize_publication_text(str(result.get("visual_headline") or item.get("title") or ""))[:100],
         "visual_support": sanitize_publication_text(str(result.get("visual_support") or ""))[:150],
         "visual_type": str(result.get("visual_type") or existing_strategy.get("visual_type") or "statement"),
+        "illustration_concept": sanitize_publication_text(str(result.get("illustration_concept") or existing_strategy.get("illustration_concept") or ""))[:900],
         "theme": "light" if str(result.get("theme") or existing_strategy.get("theme")) == "light" else "dark",
     }
     candidate_body = body

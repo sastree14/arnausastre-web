@@ -23,7 +23,7 @@ from .website_publishing import publish_article,publish_due_articles
 def main()->None:
     parser=argparse.ArgumentParser(prog="sc-growth");sub=parser.add_subparsers(dest="command",required=True)
     for command in("validate","brief","run-day","approvals","publish-approved","publish-due-articles"):sub.add_parser(command)
-    p_queue=sub.add_parser("run-operator-queue");p_queue.add_argument("--task-id",default="");p_queue.add_argument("--recovery",action="store_true");p_queue.add_argument("--limit",type=int,default=10);p_queue.add_argument("--recovery-minutes",type=int,default=30)
+    p_queue=sub.add_parser("run-operator-queue");p_queue.add_argument("--task-id",default="");p_queue.add_argument("--recovery",action="store_true");p_queue.add_argument("--limit",type=int,default=10);p_queue.add_argument("--recovery-minutes",type=int,default=10080)
     p_gmail=sub.add_parser("gmail-sync");p_gmail.add_argument("--limit",type=int,default=50);p_gmail.add_argument("--days",type=int,default=14)
     p_seo=sub.add_parser("seo-audit");p_seo.add_argument("--limit",type=int,default=6)
     sub.add_parser("plan-week")
