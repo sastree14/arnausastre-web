@@ -14,6 +14,11 @@ export default function GrowthActionFeedback() {
   const params = useSearchParams()
   const feedback: Feedback[] = []
 
+  const blocked = params.get('blocked')
+  if (blocked) feedback.push({ tone: 'amber', title: 'La publicación todavía no se puede aprobar', detail: `Falta resolver: ${blocked}. La pieza permanece en revisión; corrige esos puntos y vuelve a aprobar.` })
+  if (params.get('changes_requested')) feedback.push({ tone: 'amber', title: 'Cambios solicitados', detail: 'La pieza permanece en la cola editorial como “needs_review”. Puedes editar el visual o ejecutar “Reescribir y revalidar”; no se ha descartado ni perdido.' })
+  if (params.get('editorial_decision')) feedback.push({ tone: 'green', title: 'Publicación aprobada', detail: 'La aprobación está guardada. El siguiente paso es programarla o usar “Publicar ahora”; aprobar por sí solo no publica.' })
+
   const calendlySync = params.get('calendly_sync')
   if (calendlySync !== null) {
     const meetings = Number(calendlySync || 0)
@@ -35,9 +40,10 @@ export default function GrowthActionFeedback() {
 
   const gmailCandidates = params.get('gmail_candidates')
   if (gmailCandidates !== null) {
+    const candidates = Number(gmailCandidates || 0)
     const messages = Number(params.get('gmail_messages') || 0)
     const errors = Number(params.get('gmail_errors') || 0)
-    feedback.push({ tone: errors ? 'amber' : 'green', title: 'Escaneo de Gmail completado', detail: `${messages} mensaje${messages === 1 ? '' : 's'} revisado${messages === 1 ? '' : 's'} · ${Number(gmailCandidates || 0)} candidato${Number(gmailCandidates || 0) === 1 ? '' : 's'} de gasto detectado${Number(gmailCandidates || 0) === 1 ? '' : 's'}${errors ? ` · ${errors} error${errors === 1 ? '' : 'es'} parcial${errors === 1 ? '' : 'es'}` : ''}. Los candidatos siguen pendientes de confirmación humana.` })
+    feedback.push({ tone: errors ? 'amber' : 'green', title: 'Escaneo de Gmail completado', detail: `${messages} mensaje${messages === 1 ? '' : 's'} revisado${messages === 1 ? '' : 's'} · ${candidates} candidato${candidates === 1 ? '' : 's'} de gasto detectado${candidates === 1 ? '' : 's'}${errors ? ` · ${errors} error${errors === 1 ? '' : 'es'} parcial${errors === 1 ? '' : 'es'}` : ''}. Los candidatos siguen pendientes de confirmación humana.` })
   }
 
   const invoiceIssued = params.get('invoice_issued')
@@ -54,10 +60,34 @@ export default function GrowthActionFeedback() {
     feedback.push({ tone: 'rose', title: 'No se ha podido emitir la factura', detail: messages[invoiceError] || invoiceError })
   }
 
+  const closure = params.get('closure')
+  if (closure === 'generated') feedback.push({ tone: 'green', title: 'Cierre generado', detail: 'El cierre del periodo se ha generado correctamente en Sheet y PDF.' })
+  if (closure === 'failed') feedback.push({ tone: 'rose', title: 'No se pudo generar el cierre', detail: 'Los datos del informe siguen intactos. Revisa Google/Drive y vuelve a intentarlo.' })
+  const registerSync = params.get('register_sync')
+  if (registerSync) feedback.push({ tone: registerSync === 'ok' ? 'green' : 'amber', title: 'Sincronización de libros finalizada', detail: registerSync === 'ok' ? 'Los libros financieros se han actualizado.' : 'No había cambios nuevos que escribir; los libros existentes se conservan.' })
+
+  const reconciliation = params.get('reconciliation')
+  if (reconciliation) {
+    const map: Record<string, Feedback> = {
+      confirmed: { tone: 'green', title: 'Conciliación confirmada', detail: 'El movimiento bancario se ha vinculado y contabilizado; si completaba el importe, la factura o gasto se ha marcado como pagado.' },
+      rejected: { tone: 'amber', title: 'Conciliación rechazada', detail: 'El movimiento vuelve a quedar sin conciliar y no se contabiliza como match.' },
+      already_confirmed: { tone: 'amber', title: 'Conciliación ya confirmada', detail: 'No se ha contabilizado una segunda vez.' },
+      payment_missing: { tone: 'rose', title: 'No se pudo confirmar la conciliación', detail: 'Falta el movimiento de pago asociado; revisa la transacción antes de repetir el proceso.' },
+    }
+    if (map[reconciliation]) feedback.push(map[reconciliation])
+  }
+
   const revolutConnected = params.get('revolut_connected')
-  if (revolutConnected !== null) feedback.push({ tone: 'green', title: 'Revolut conectado', detail: `${Number(revolutConnected || 0)} cuenta${Number(revolutConnected || 0) === 1 ? '' : 's'} detectada${Number(revolutConnected || 0) === 1 ? '' : 's'} y guardada${Number(revolutConnected || 0) === 1 ? '' : 's'}.` })
+  if (revolutConnected !== null) {
+    const count = Number(revolutConnected || 0)
+    feedback.push({ tone: 'green', title: 'Revolut conectado', detail: `${count} cuenta${count === 1 ? '' : 's'} detectada${count === 1 ? '' : 's'} y guardada${count === 1 ? '' : 's'}.` })
+  }
   const revolutSynced = params.get('revolut_synced')
-  if (revolutSynced !== null) feedback.push({ tone: 'green', title: 'Banco sincronizado', detail: `${Number(revolutSynced || 0)} movimiento${Number(revolutSynced || 0) === 1 ? '' : 's'} sincronizado${Number(revolutSynced || 0) === 1 ? '' : 's'} · ${Number(params.get('reconciliations') || 0)} conciliación${Number(params.get('reconciliations') || 0) === 1 ? '' : 'es'} propuesta${Number(params.get('reconciliations') || 0) === 1 ? '' : 's'}. Revisa antes de contabilizar.` })
+  if (revolutSynced !== null) {
+    const count = Number(revolutSynced || 0)
+    const reconciliations = Number(params.get('reconciliations') || 0)
+    feedback.push({ tone: 'green', title: 'Banco sincronizado', detail: `${count} movimiento${count === 1 ? '' : 's'} sincronizado${count === 1 ? '' : 's'} · ${reconciliations} conciliación${reconciliations === 1 ? '' : 'es'} propuesta${reconciliations === 1 ? '' : 's'}. Revisa antes de contabilizar.` })
+  }
   const revolutError = params.get('revolut_error')
   if (revolutError) feedback.push({ tone: 'rose', title: 'Revolut necesita atención', detail: `La conexión o sincronización no se completó: ${revolutError}.` })
 
