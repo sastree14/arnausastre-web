@@ -107,15 +107,63 @@ export type MetricsSummary = {
   degraded?: boolean
 }
 
+export type FinanceCounterparty = {
+  counterparty_id: string
+  kind: string
+  company_id?: string | null
+  legal_name: string
+  trade_name?: string | null
+  tax_id?: string | null
+  vat_id?: string | null
+  country_code?: string | null
+  billing_address?: string | null
+  email?: string | null
+  billing_email?: string | null
+  phone?: string | null
+  payment_terms_days?: number | string
+  currency: string
+  tax_profile: string
+  status: string
+}
+
 export type FinanceBundle = {
+  settings: Record<string, unknown>
   companies: Array<{ company_id: string; name: string }>
+  counterparties: FinanceCounterparty[]
   projects: Array<{ project_id: string; name: string; status: string }>
-  invoices: Array<Record<string, unknown>>
-  expenses: Array<Record<string, unknown>>
-  payments: Array<Record<string, unknown>>
+  invoices: Array<Record<string, any>>
+  expenses: Array<Record<string, any>>
+  payments: Array<Record<string, any>>
+  documents: Array<Record<string, any>>
+  tax_periods: Array<Record<string, any>>
+  import_candidates: Array<Record<string, any>>
+  bank_accounts: Array<Record<string, any>>
+  bank_transactions: Array<Record<string, any>>
+  reconciliations: Array<Record<string, any>>
+  accounts: Array<Record<string, any>>
+  journal_entries: Array<Record<string, any>>
+  audit_events: Array<Record<string, any>>
+  gmail_connections: Array<Record<string, any>>
+  revolut_connections: Array<Record<string, any>>
   invoiced: number
   received: number
   spent: number
+  vat_output: number
+  vat_input: number
+  withholding_total: number
+  degraded?: boolean
+}
+
+export type FinancePeriodReport = {
+  period_start: string
+  period_end: string
+  invoiced: number | string
+  expenses: number | string
+  cash_in: number | string
+  cash_out: number | string
+  vat_output: number | string
+  vat_input: number | string
+  withholding: number | string
   degraded?: boolean
 }
 
@@ -141,9 +189,9 @@ export type CrmBundle = {
 
 const readOptions = { cacheSeconds: 8, timeoutMs: 3000, retries: 1 }
 
-async function safeRpc<T extends object>(name: string, fallback: T): Promise<T & { degraded?: boolean }> {
+async function safeRpc<T extends object>(name: string, fallback: T, params: Record<string,string> = {}): Promise<T & { degraded?: boolean }> {
   try {
-    return await queryGrowthRpc<T>(name, {}, readOptions)
+    return await queryGrowthRpc<T>(name, params, readOptions)
   } catch (error) {
     console.error(`Growth performance RPC ${name} failed`, error)
     return { ...fallback, degraded: true }
@@ -152,90 +200,50 @@ async function safeRpc<T extends object>(name: string, fallback: T): Promise<T &
 
 export function getDashboardSummary() {
   return safeRpc<DashboardSummary>('growth_dashboard_summary', {
-    companies: 0,
-    active_projects: 0,
-    opportunities: 0,
-    meetings: 0,
-    manual_actions: 0,
-    published_content: 0,
-    pending_approvals: 0,
-    open_tasks: 0,
-    failed_tasks: 0,
-    invoiced: 0,
-    collected: 0,
-    spent: 0,
-    overdue_invoices: 0,
-    web_sessions: 0,
-    linkedin_impressions: 0,
-    linkedin_posts_measured: 0,
-    linkedin_connected: false,
+    companies: 0, active_projects: 0, opportunities: 0, meetings: 0, manual_actions: 0,
+    published_content: 0, pending_approvals: 0, open_tasks: 0, failed_tasks: 0,
+    invoiced: 0, collected: 0, spent: 0, overdue_invoices: 0, web_sessions: 0,
+    linkedin_impressions: 0, linkedin_posts_measured: 0, linkedin_connected: false,
   })
 }
 
 export function getCommercialSummary() {
   return safeRpc<CommercialSummary>('growth_commercial_summary', {
-    companies: 0,
-    people: 0,
-    lead_companies: 0,
-    partner_companies: 0,
-    lead_people: 0,
-    partner_people: 0,
-    opportunities: 0,
-    meetings: 0,
-    manual_actions: 0,
-    active_content: 0,
+    companies: 0, people: 0, lead_companies: 0, partner_companies: 0, lead_people: 0,
+    partner_people: 0, opportunities: 0, meetings: 0, manual_actions: 0, active_content: 0,
   })
 }
 
 export function getCommercialIntelligenceBundle() {
-  return safeRpc<CommercialIntelligenceBundle>('growth_commercial_intelligence_bundle', {
-    signals: [],
-    offers: [],
-    channels: [],
-    tasks: [],
-  })
+  return safeRpc<CommercialIntelligenceBundle>('growth_commercial_intelligence_bundle', { signals: [], offers: [], channels: [], tasks: [] })
 }
 
 export function getMetricsSummary() {
-  return safeRpc<MetricsSummary>('growth_metrics_summary', {
-    sessions: 0,
-    key_events: 0,
-    linkedin_impressions: 0,
-    linkedin_posts_measured: 0,
-  })
+  return safeRpc<MetricsSummary>('growth_metrics_summary', { sessions: 0, key_events: 0, linkedin_impressions: 0, linkedin_posts_measured: 0 })
 }
 
 export function getFinanceBundle() {
   return safeRpc<FinanceBundle>('growth_finance_bundle', {
-    companies: [],
-    projects: [],
-    invoices: [],
-    expenses: [],
-    payments: [],
-    invoiced: 0,
-    received: 0,
-    spent: 0,
+    settings: {}, companies: [], counterparties: [], projects: [], invoices: [], expenses: [], payments: [], documents: [],
+    tax_periods: [], import_candidates: [], bank_accounts: [], bank_transactions: [], reconciliations: [], accounts: [],
+    journal_entries: [], audit_events: [], gmail_connections: [], revolut_connections: [],
+    invoiced: 0, received: 0, spent: 0, vat_output: 0, vat_input: 0, withholding_total: 0,
   })
 }
 
+export function getFinancePeriodReport(start: string, end: string) {
+  return safeRpc<FinancePeriodReport>('finance_period_report', {
+    period_start: start, period_end: end, invoiced: 0, expenses: 0, cash_in: 0, cash_out: 0,
+    vat_output: 0, vat_input: 0, withholding: 0,
+  }, { p_start: start, p_end: end })
+}
+
 export function getOperationsBundle() {
-  return safeRpc<OperationsBundle>('growth_operations_bundle', {
-    tasks: [],
-    projects: [],
-    companies: [],
-    opportunities: [],
-  })
+  return safeRpc<OperationsBundle>('growth_operations_bundle', { tasks: [], projects: [], companies: [], opportunities: [] })
 }
 
 export function getCrmBundle() {
   return safeRpc<CrmBundle>('growth_crm_bundle', {
-    companies: [],
-    people: [],
-    actions: [],
-    interactions: [],
-    opportunities: [],
-    meetings: [],
-    prospect_tasks: [],
-    calendly_connection: {},
+    companies: [], people: [], actions: [], interactions: [], opportunities: [], meetings: [], prospect_tasks: [], calendly_connection: {},
   })
 }
