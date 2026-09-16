@@ -1,8 +1,11 @@
+import { Suspense } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import GrowthActionFeedback from '@/components/growth-admin/GrowthActionFeedback'
 import OperatorRunTracker from '@/components/growth-admin/OperatorRunTracker'
+import SectorSubnav from '@/components/growth-admin/SectorSubnav'
 
-export type OperatingModule = 'home' | 'commercial' | 'content' | 'calendar' | 'approvals' | 'crm' | 'partners' | 'intelligence' | 'competition' | 'research' | 'visual' | 'metrics' | 'analytics' | 'finance' | 'operations' | 'system'
+export type OperatingModule = 'home' | 'commercial' | 'content' | 'calendar' | 'approvals' | 'crm' | 'partners' | 'deal-desk' | 'intelligence' | 'competition' | 'research' | 'visual' | 'metrics' | 'analytics' | 'finance' | 'operations' | 'system'
 
 type Sector = 'commercial' | 'finance' | 'metrics' | 'operations'
 
@@ -14,7 +17,7 @@ const SECTORS: Array<{ key: Sector; href: string; label: string; description: st
 ]
 
 function activeSector(active: OperatingModule): Sector | null {
-  if (['commercial', 'crm', 'partners', 'intelligence', 'competition', 'content', 'calendar', 'approvals', 'research', 'visual'].includes(active)) return 'commercial'
+  if (['commercial', 'crm', 'partners', 'deal-desk', 'intelligence', 'competition', 'content', 'calendar', 'approvals', 'research', 'visual'].includes(active)) return 'commercial'
   if (['metrics', 'analytics'].includes(active)) return 'metrics'
   if (active === 'finance') return 'finance'
   if (['operations', 'system'].includes(active)) return 'operations'
@@ -60,7 +63,10 @@ export default function AdminShell({ active, children }: { active: OperatingModu
         </div>
       </header>
 
-      <OperatorRunTracker />
+      <Suspense fallback={null}><OperatorRunTracker /></Suspense>
+
+      {sector && sector !== 'finance' && <div className="mx-auto max-w-[1780px] px-5 pt-4 md:px-8"><SectorSubnav sector={sector} active={active} /></div>}
+      <Suspense fallback={null}><div className="mx-auto max-w-[1780px] px-5 pt-4 md:px-8"><GrowthActionFeedback /></div></Suspense>
 
       <div className="mx-auto max-w-[1780px] px-5 py-6 md:px-8 lg:py-8">{children}</div>
     </main>
