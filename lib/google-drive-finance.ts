@@ -1,16 +1,15 @@
 import 'server-only'
 
-import { financeDriveRootId, getGoogleServiceAccountAccessToken, googleServiceAccountReadiness } from '@/lib/google-service-account'
+import { financeDriveRootId } from '@/lib/google-service-account'
+import { getCorporateGoogleAccessToken, gmailOAuthReadiness } from '@/lib/google-oauth-finance'
 
-const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive'
-const SHEETS_SCOPE = 'https://www.googleapis.com/auth/spreadsheets'
 const FOLDER_MIME = 'application/vnd.google-apps.folder'
 const SHEET_MIME = 'application/vnd.google-apps.spreadsheet'
 
 export type DriveFile = { id: string; name?: string; mimeType?: string; webViewLink?: string; parents?: string[] }
 
 async function token() {
-  return getGoogleServiceAccountAccessToken([DRIVE_SCOPE, SHEETS_SCOPE])
+  return getCorporateGoogleAccessToken()
 }
 
 async function googleFetch(url: string, init: RequestInit = {}) {
@@ -35,7 +34,11 @@ function escapeQuery(value: string) {
 }
 
 export function financeGoogleReadiness() {
-  return googleServiceAccountReadiness()
+  const oauth = gmailOAuthReadiness()
+  const folderConfigured = Boolean((process.env.GOOGLE_DRIVE_FINANCE_FOLDER_ID || '').trim())
+  const missing = [...oauth.missing]
+  if (!folderConfigured) missing.push('GOOGLE_DRIVE_FINANCE_FOLDER_ID')
+  return { configured: missing.length === 0, missing }
 }
 
 export async function findChild(parentId: string, name: string, mimeType?: string): Promise<DriveFile | null> {
@@ -104,23 +107,15 @@ export async function replaceSpreadsheetValues(spreadsheetId: string, title: str
   }
 
   await googleFetch(`https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}/values/${encodeURIComponent(`${title}!A:Z`)}:clear`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: '{}',
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}',
   })
-
   if (rows.length) {
     await googleFetch(`https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}/values/${encodeURIComponent(`${title}!A1`)}?valueInputOption=USER_ENTERED`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ range: `${title}!A1`, majorDimension: 'ROWS', values: rows }),
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ range: `${title}!A1`, majorDimension: 'ROWS', values: rows }),
     })
   }
-
   await googleFetch(`https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}:batchUpdate`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ requests: [
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ requests: [
       { updateSheetProperties: { properties: { sheetId, gridProperties: { frozenRowCount: 1 } }, fields: 'gridProperties.frozenRowCount' } },
       { repeatCell: { range: { sheetId, startRowIndex: 0, endRowIndex: 1 }, cell: { userEnteredFormat: { textFormat: { bold: true } } }, fields: 'userEnteredFormat.textFormat.bold' } },
       { autoResizeDimensions: { dimensions: { sheetId, dimension: 'COLUMNS', startIndex: 0, endIndex: Math.max(1, Math.min(26, rows[0]?.length || 1)) } } },
@@ -145,9 +140,7 @@ export async function uploadBinaryFile(parentId: string, name: string, mimeType:
     Buffer.from(`\r\n--${boundary}--`),
   ])
   const response = await googleFetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,mimeType,webViewLink,parents&supportsAllDrives=true', {
-    method: 'POST',
-    headers: { 'Content-Type': `multipart/related; boundary=${boundary}` },
-    body,
+    method: 'POST', headers: { 'Content-Type': `multipart/related; boundary=${boundary}` }, body,
   })
   return response.json() as Promise<DriveFile>
 }
