@@ -10,6 +10,9 @@ const ACTION_TO_TYPE: Record<string, string> = {
   rewrite_content: 'OPERATOR_REWRITE_CONTENT',
   prospect: 'OPERATOR_PROSPECT',
   commercial_signals: 'OPERATOR_COMMERCIAL_SIGNALS',
+  competitor_discover: 'OPERATOR_COMPETITOR_DISCOVER',
+  competitor_refresh: 'OPERATOR_COMPETITOR_REFRESH',
+  competitor_refresh_all: 'OPERATOR_COMPETITOR_REFRESH_ALL',
   publish_linkedin: 'OPERATOR_PUBLISH_LINKEDIN',
   publish_article: 'OPERATOR_PUBLISH_ARTICLE',
 }
@@ -62,6 +65,17 @@ export async function POST(request: Request) {
     }
   } else if (action === 'commercial_signals') {
     inputs = { limit: int(form.get('limit'), 12, 40) }
+  } else if (action === 'competitor_discover') {
+    inputs = {
+      limit: int(form.get('limit'), 8, 20),
+      focus: String(form.get('focus') || '').trim(),
+    }
+  } else if (action === 'competitor_refresh') {
+    const competitorId = String(form.get('competitor_id') || '').trim()
+    if (!competitorId) return new NextResponse('Missing competitor_id', { status: 400 })
+    inputs = { competitor_id: competitorId, max_events: int(form.get('max_events'), 8, 12) }
+  } else if (action === 'competitor_refresh_all') {
+    inputs = { limit: int(form.get('limit'), 20, 50) }
   }
 
   const taskId = `task_${randomUUID().replaceAll('-', '').slice(0, 12)}`
