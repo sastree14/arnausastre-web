@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
-import { Badge, EmptyState, SectionHeading, StatCard, adminButtonPrimary, adminButtonSecondary, adminPanel } from '@/components/growth-admin/AdminUi'
+import { Badge, EmptyState, SectionHeading, StatCard, adminButtonSecondary, adminPanel } from '@/components/growth-admin/AdminUi'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { getMetricsBundle } from '@/lib/growth-admin-performance'
 import { gmailOAuthReadiness } from '@/lib/google-oauth-finance'
