@@ -41,7 +41,17 @@ export function verifyGoogleOAuthState(value: string) {
 
 export function gmailAuthorizationUrl(accountType: string) {
   const ready = gmailOAuthReadiness()
-  if (!ready.configured) throw new Error(`Gmail OAuth is not configured: ${ready.missing.join(', ')}`)
+  if (!ready.configured) throw new Error(`Google OAuth is not configured: ${ready.missing.join(', ')}`)
+  const corporate = accountType !== 'personal'
+  const scopes = [
+    'openid',
+    'email',
+    'https://www.googleapis.com/auth/gmail.readonly',
+    ...(corporate ? [
+      'https://www.googleapis.com/auth/drive',
+      'https://www.googleapis.com/auth/spreadsheets',
+    ] : []),
+  ]
   const url = new URL('https://accounts.google.com/o/oauth2/v2/auth')
   url.searchParams.set('client_id', env('GOOGLE_OAUTH_CLIENT_ID'))
   url.searchParams.set('redirect_uri', env('GOOGLE_OAUTH_REDIRECT_URI'))
@@ -49,7 +59,7 @@ export function gmailAuthorizationUrl(accountType: string) {
   url.searchParams.set('access_type', 'offline')
   url.searchParams.set('prompt', 'consent')
   url.searchParams.set('include_granted_scopes', 'true')
-  url.searchParams.set('scope', ['openid','email','https://www.googleapis.com/auth/gmail.readonly'].join(' '))
+  url.searchParams.set('scope', scopes.join(' '))
   url.searchParams.set('state', createGoogleOAuthState(accountType))
   return url.toString()
 }
@@ -99,7 +109,7 @@ async function refreshAccessToken(refreshToken: string) {
 export async function getGmailAccessToken(connection: Connection) {
   const expiry = connection.token_expires_at ? new Date(String(connection.token_expires_at)).getTime() : 0
   if (connection.access_token_ciphertext && expiry > Date.now() + 120_000) return decryptIntegrationSecret(String(connection.access_token_ciphertext))
-  if (!connection.refresh_token_ciphertext) throw new Error(`Gmail connection ${connection.display_name || connection.connection_id} has no refresh token`)
+  if (!connection.refresh_token_ciphertext) throw new Error(`Google connection ${connection.display_name || connection.connection_id} has no refresh token`)
   const refreshed = await refreshAccessToken(decryptIntegrationSecret(String(connection.refresh_token_ciphertext)))
   const expiresAt = new Date(Date.now() + Number(refreshed.expires_in || 3600) * 1000).toISOString()
   await updateGrowthRow('integration_connections', 'connection_id', String(connection.connection_id), {
@@ -114,4 +124,25 @@ export function encryptGoogleToken(value: string) { return encryptIntegrationSec
 
 export function getGmailConnections() {
   return queryGrowthTable<Connection>('integration_connections', { tenant_id: 'eq.sc-analytics', provider: 'eq.gmail', order: 'updated_at.desc', limit: '10' }, { cacheSeconds: 0 })
+}
+
+export async function getCorporateGoogleConnection() {
+  const rows = await queryGrowthTable<Connection>('integration_connections', {
+    tenant_id: 'eq.sc-analytics',
+    provider: 'eq.gmail',
+    account_type: 'eq.corporate',
+    order: 'updated_at.desc',
+    limit: '1',
+  }, { cacheSeconds: 0 })
+  return rows[0] || null
+}
+
+export async function getCorporateGoogleAccessToken() {
+  const connection = await getCorporateGoogleConnection()
+  if (!connection) throw new Error('Corporate Google Workspace account is not connected. Connect arnau.sastre@sc-analytics.io from Finance > Integrations.')
+  const scopes = Array.isArray(connection.scopes) ? connection.scopes.map(String) : []
+  const required = ['https://www.googleapis.com/auth/drive','https://www.googleapis.com/auth/spreadsheets']
+  const missing = required.filter((scope)=>!scopes.includes(scope))
+  if (missing.length) throw new Error('Corporate Google Workspace connection must be re-authorized with Drive and Sheets permissions.')
+  return getGmailAccessToken(connection)
 }
