@@ -5,15 +5,19 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  // Finance OS uses heterogeneous Supabase JSON payloads while the schema is being
-  // normalized. Keep the exception local to the server-side finance integration
-  // layer instead of weakening the rule for the rest of the application.
+  // These server-backed operating-system surfaces consume heterogeneous JSON
+  // payloads from Supabase / external APIs. Keep the exception scoped here.
   {
     files: [
       "app/api/growth-admin/finance/**/*.ts",
       "app/api/growth-admin/google/**/*.ts",
+      "app/api/growth-admin/deal-desk/**/*.ts",
+      "app/growth-admin/deal-desk/**/*.tsx",
+      "app/growth-admin/commercial/**/*.tsx",
+      "app/growth-admin/finance/**/*.tsx",
       "lib/finance-*.ts",
       "lib/google-oauth-finance.ts",
+      "lib/google-marketing-analytics.ts",
       "lib/growth-admin-performance.ts",
     ],
     rules: {
@@ -26,9 +30,7 @@ const eslintConfig = defineConfig([
       "prefer-const": "off",
     },
   },
-  // Override default ignores of eslint-config-next.
   globalIgnores([
-    // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
     "build/**",
