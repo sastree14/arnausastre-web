@@ -1,22 +1,19 @@
-name: SC-Analytics Operating System — Operator Queue
+name: SC-Analytics Operating System — Competitor Monitor
 
 on:
   workflow_dispatch:
   schedule:
-    # Reliability sweep. UI actions still try an immediate workflow_dispatch,
-    # but queued work is never allowed to wait until the next day if that
-    # dispatch credential is missing or temporarily misconfigured.
-    - cron: '*/5 * * * *'
+    - cron: '0 22 * * *'
 
 permissions:
   contents: read
 
 concurrency:
-  group: sc-analytics-operator-queue
+  group: sc-analytics-competitor-monitor
   cancel-in-progress: false
 
 jobs:
-  operator-queue:
+  monitor-competitors:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -27,8 +24,8 @@ jobs:
           cache: pip
           cache-dependency-path: growth/requirements.txt
       - run: pip install -r growth/requirements.txt
-      - name: Process operator tasks
-        run: python -m growth.src.cli run-operator-queue
+      - name: Refresh monitored competitors
+        run: python -m growth.src.cli monitor-competitors --limit 30
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
