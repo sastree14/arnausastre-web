@@ -64,9 +64,8 @@ export default function AdminShell({ active, children }: { active: OperatingModu
       </header>
 
       <Suspense fallback={null}><OperatorRunTracker /></Suspense>
-
       {sector && sector !== 'finance' && <div className="mx-auto max-w-[1780px] px-5 pt-4 md:px-8"><SectorSubnav sector={sector} active={active} /></div>}
-      <Suspense fallback={null}><div className="mx-auto max-w-[1780px] px-5 pt-4 md:px-8"><GrowthActionFeedback /></div></Suspense>
+      <Suspense fallback={null}><GrowthActionFeedback /></Suspense>
 
       <div className="mx-auto max-w-[1780px] px-5 py-6 md:px-8 lg:py-8">{children}</div>
     </main>
