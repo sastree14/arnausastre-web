@@ -22,7 +22,7 @@ export async function getEditorialWorkspaceResetAt(): Promise<string | null> {
   return typeof resetAt === 'string' && resetAt ? resetAt : null
 }
 
-function createdAfter(resetAt: string | null) {
+function createdAfter(resetAt: string | null): Record<string, string> {
   return resetAt ? { created_at: `gte.${resetAt}` } : {}
 }
 
