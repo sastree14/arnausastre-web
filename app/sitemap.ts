@@ -1,49 +1,6 @@
 import type { MetadataRoute } from 'next'
-import { getAllArticles } from '@/lib/content'
-import { getAllProjects } from '@/lib/projects'
-import { getPublicGeneratedArticles } from '@/lib/public-growth'
+import { queryGrowthTable } from '@/lib/supabase-growth'
 
-const BASE_URL = 'https://sc-analytics.io'
-
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const staticRoutes: MetadataRoute.Sitemap = [
-    { url: BASE_URL, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
-    { url: `${BASE_URL}/services`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${BASE_URL}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${BASE_URL}/knowledge`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${BASE_URL}/projects`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${BASE_URL}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-  ]
-
-  const articleRoutes: MetadataRoute.Sitemap = getAllArticles().map((article) => ({
-    url: `${BASE_URL}/knowledge/${article.slug}`,
-    lastModified: new Date(article.date),
-    changeFrequency: 'monthly',
-    priority: 0.6,
-  }))
-
-  const generated = await getPublicGeneratedArticles()
-  const generatedBySlug = new Map<string, (typeof generated)[number]>()
-  generated.forEach((article) => {
-    const slug = article.brief_id || article.content_id
-    const current = generatedBySlug.get(slug)
-    if (!current || String(article.published_at || article.created_at || '') > String(current.published_at || current.created_at || '')) {
-      generatedBySlug.set(slug, article)
-    }
-  })
-  const generatedRoutes: MetadataRoute.Sitemap = [...generatedBySlug.entries()].map(([slug, article]) => ({
-    url: `${BASE_URL}/knowledge/${slug}`,
-    lastModified: new Date(article.published_at || article.created_at || Date.now()),
-    changeFrequency: 'monthly',
-    priority: 0.65,
-  }))
-
-  const projectRoutes: MetadataRoute.Sitemap = getAllProjects().map((project) => ({
-    url: `${BASE_URL}/projects/${project.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly',
-    priority: 0.7,
-  }))
-
-  return [...staticRoutes, ...articleRoutes, ...generatedRoutes, ...projectRoutes]
-}
+type SeoPage={slug:string;updated_at?:string;status:string}
+type Article={brief_id?:string;content_id:string;published_at?:string;status:string}
+export default async function sitemap():Promise<MetadataRoute.Sitemap>{const base='https://sc-analytics.io',staticRoutes=['','/services','/projects','/case-studies','/knowledge','/insights','/about','/contact'].map(path=>({url:`${base}${path}`,lastModified:new Date(),changeFrequency:path===''?'weekly' as const:'monthly' as const,priority:path===''?1:0.8}));try{const[pages,articles]=await Promise.all([queryGrowthTable<SeoPage>('seo_pages',{tenant_id:'eq.sc-analytics',status:'eq.published',limit:'200'},{cacheSeconds:300}),queryGrowthTable<Article>('content_items',{content_type:'eq.article',status:'eq.published',order:'published_at.desc',limit:'200'},{cacheSeconds:300})]);return[...staticRoutes,...pages.map(row=>({url:`${base}/services/${row.slug}`,lastModified:row.updated_at?new Date(row.updated_at):new Date(),changeFrequency:'monthly' as const,priority:0.85})),...articles.map(row=>({url:`${base}/knowledge/${row.brief_id||row.content_id}`,lastModified:row.published_at?new Date(row.published_at):new Date(),changeFrequency:'monthly' as const,priority:0.7}))]}catch{return staticRoutes}}

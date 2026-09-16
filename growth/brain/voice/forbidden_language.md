@@ -30,5 +30,6 @@ Never write:
 - fake urgency
 - guaranteed outcomes
 - vague "we have helped many companies" claims unless the underlying evidence exists
+- arrows or directional glyphs in final LinkedIn posts or web articles (for example horizontal or vertical arrows)
 
-Prefer concrete nouns, named decisions, named systems, actual constraints and measurable business mechanisms.
+Use bullets, hyphens or numbered lists when structure is useful. Prefer concrete nouns, named decisions, named systems, actual constraints and measurable business mechanisms.
