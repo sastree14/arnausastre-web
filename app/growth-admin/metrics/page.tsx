@@ -1,55 +1,40 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
-import { Badge, SectionHeading, adminPanel } from '@/components/growth-admin/AdminUi'
+import { Badge, EmptyState, SectionHeading, StatCard, adminButtonPrimary, adminButtonSecondary, adminPanel } from '@/components/growth-admin/AdminUi'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
-import { getMetricsSummary } from '@/lib/growth-admin-performance'
+import { getMetricsBundle } from '@/lib/growth-admin-performance'
+import { gmailOAuthReadiness } from '@/lib/google-oauth-finance'
 
-function MetricModule({ href, title, description, status, tone = 'amber' }: { href?: string; title: string; description: string; status: string; tone?: 'amber' | 'blue' | 'green' | 'violet' | 'slate' }) {
-  const body = <div className={`${adminPanel} h-full p-5 transition ${href ? 'hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md' : ''}`}>
-    <div className="flex items-start justify-between gap-3"><h3 className="text-lg font-semibold text-slate-950">{title}</h3><Badge tone={tone}>{status}</Badge></div>
-    <p className="mt-3 text-sm leading-6 text-slate-600">{description}</p>
-    {href && <p className="mt-5 text-xs font-semibold text-amber-700">Abrir módulo →</p>}
-  </div>
-  return href ? <a href={href}>{body}</a> : body
-}
+export const dynamic='force-dynamic'
+const n=(value:unknown)=>Number(value||0)
+const euro=(value:unknown)=>`${n(value).toLocaleString('es-ES',{minimumFractionDigits:0,maximumFractionDigits:0})} €`
+const pct=(value:unknown)=>`${(n(value)*100).toFixed(2)}%`
+const date=(value:unknown)=>value?new Date(String(value)).toLocaleString('es-ES',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Madrid'}):'Nunca'
 
-export default async function MetricsPage() {
-  if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
-  const summary = await getMetricsSummary()
+export default async function MetricsPage({searchParams}:{searchParams:Promise<{synced?:string;ga4_error?:string;gsc_error?:string;google_connected?:string}>}){
+  if(!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
+  const params=await searchParams
+  const metrics=await getMetricsBundle()
+  const oauth=gmailOAuthReadiness()
+  const liEngagement=n(metrics.linkedin.reactions)+n(metrics.linkedin.comments)+n(metrics.linkedin.reposts)+n(metrics.linkedin.saves)+n(metrics.linkedin.clicks)
+  const engagementRate=n(metrics.linkedin.reach||metrics.linkedin.impressions)>0?liEngagement/n(metrics.linkedin.reach||metrics.linkedin.impressions):0
+  const webEngagement=n(metrics.website.sessions)>0?n(metrics.website.engaged_sessions)/n(metrics.website.sessions):0
 
   return <AdminShell active="metrics">
-    <header className="overflow-hidden rounded-[2rem] border border-amber-950 bg-[#3a2a05] text-white shadow-sm">
-      <div className="grid gap-8 px-6 py-9 md:px-10 md:py-12 xl:grid-cols-[1fr_auto] xl:items-end">
-        <div className="max-w-4xl">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-amber-300">Cuadro de Mando Integral · Métricas</p>
-          <h1 className="mt-4 text-4xl md:text-6xl" style={{ fontFamily: 'var(--font-playfair)' }}>Métricas</h1>
-          <p className="mt-5 max-w-3xl text-sm leading-7 text-amber-100/80 md:text-base">Medición transversal de adquisición, contenido, web, SEO y conversión. El objetivo es conectar actividad con leads, oportunidades e ingresos.</p>
-        </div>
-        <div className="grid grid-cols-3 gap-2 text-xs"><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-amber-100/60">Sesiones</p><p className="mt-1 text-2xl font-semibold">{Number(summary.sessions).toLocaleString('es-ES')}</p></div><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-amber-100/60">Imp. LinkedIn</p><p className="mt-1 text-2xl font-semibold">{Number(summary.linkedin_impressions).toLocaleString('es-ES')}</p></div><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-amber-100/60">Key events</p><p className="mt-1 text-2xl font-semibold">{summary.key_events}</p></div></div>
-      </div>
-    </header>
+    <header className="overflow-hidden rounded-[2rem] border border-amber-950 bg-[#3a2a05] text-white shadow-sm"><div className="grid gap-8 px-6 py-9 md:px-10 md:py-12 xl:grid-cols-[1fr_auto] xl:items-end"><div className="max-w-4xl"><p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-amber-300">Cuadro de Mando Integral · Métricas</p><h1 className="mt-4 text-4xl md:text-6xl" style={{fontFamily:'var(--font-playfair)'}}>Métricas</h1><p className="mt-5 max-w-3xl text-sm leading-7 text-amber-100/80 md:text-base">Un solo tablero para comercial, web, SEO, LinkedIn y finanzas. Las métricas se calculan desde las mismas tablas operativas: si cambia una oportunidad, factura o sesión sincronizada, cambia aquí sin duplicar datos.</p></div><div className="flex flex-wrap gap-2">{metrics.sources.google_connected?<form action="/api/growth-admin/metrics/sync" method="post"><input type="hidden" name="days" value="365"/><input type="hidden" name="return_to" value="/growth-admin/metrics"/><button className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">Sincronizar Google ahora</button></form>:oauth.configured?<a href="/api/growth-admin/google/connect?account=corporate&return_to=/growth-admin/metrics" className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">Conectar Google Analytics + Search Console</a>:null}<a href="/growth-admin/analytics" className="rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white">Detalle por fuente</a></div></div></header>
 
-    {summary.degraded && <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">Resumen cargado en modo ligero. La navegación sigue disponible aunque una fuente de métricas esté lenta.</div>}
+    {params.synced&&<div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">Sincronización ejecutada. Los datos disponibles de GA4/Search Console se han persistido dentro del CRM.</div>}
+    {(params.ga4_error||params.gsc_error)&&<div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900">{params.ga4_error&&<p><strong>GA4:</strong> {params.ga4_error}</p>}{params.gsc_error&&<p><strong>Search Console:</strong> {params.gsc_error}</p>}</div>}
+    {metrics.degraded&&<div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">Alguna fuente ha tardado demasiado. Refresca antes de interpretar el cuadro integral.</div>}
 
-    <section className="mt-8">
-      <SectionHeading eyebrow="Módulos" title="Inteligencia de negocio" description="La pantalla Analytics existente concentra la medición detallada. Esta portada define la arquitectura completa y deja visibles las capas que todavía están pendientes." />
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        <MetricModule href="/growth-admin/analytics?account=arnau" title="LinkedIn · Arnau" description="Impresiones, reach, engagement, saves, clicks, profile activity y crecimiento atribuible al contenido." status="Import XLSX" tone="blue" />
-        <MetricModule href="/growth-admin/analytics?account=sc_analytics" title="LinkedIn · SC-Analytics" description="Rendimiento de la página, contenidos y audiencia mediante exports oficiales mientras la API restringida no esté disponible." status="Import XLSX" tone="blue" />
-        <MetricModule href="/growth-admin/analytics#website" title="Website · GA4" description="Sesiones, engagement, CTA, discovery y funnel web. Tracking activo; reporting automático dependerá de Data API." status="Tracking activo" tone="green" />
-        <MetricModule href="/growth-admin/analytics#seo" title="SEO · Search Console" description="Queries, impresiones orgánicas, CTR, posición, landing pages y contenido Knowledge." status="Pendiente" tone="amber" />
-        <MetricModule href="/growth-admin/analytics" title="Attribution & funnel" description="UTMs y relación Content → Web → Lead → Opportunity → Revenue. Es la capa que permite medir valor comercial real." status="Modelo preparado" tone="violet" />
-        <MetricModule href="/growth-admin/analytics" title="Editorial Intelligence" description="Comparación por familia, tema, industria, idioma, CTA y visual para aprender qué atrae, retiene y convierte." status="Evolutivo" tone="slate" />
-      </div>
-    </section>
+    <section className="mt-8"><SectionHeading eyebrow="Negocio" title="De actividad a resultado" description="Pipeline y finanzas salen directamente del CRM y Finance OS, no de una tabla manual de métricas."/><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6"><StatCard label="Oportunidades" value={n(metrics.commercial.opportunities)} tone="blue"/><StatCard label="Reuniones" value={n(metrics.commercial.meetings)} tone="violet"/><StatCard label="Pipeline abierto" value={euro(metrics.commercial.open_pipeline)} tone="blue"/><StatCard label="Facturado" value={euro(metrics.finance.invoiced)} tone="green"/><StatCard label="Cobrado" value={euro(metrics.finance.collected)} tone="green"/><StatCard label="Gasto" value={euro(metrics.finance.spent)} tone="amber"/></div></section>
 
-    <section className="mt-12 pb-12">
-      <SectionHeading eyebrow="Cadencia" title="Qué revisar" description="Métricas sin una rutina de lectura terminan siendo decoración. Esta es la cadencia mínima recomendada." />
-      <div className="grid gap-5 xl:grid-cols-3">
-        <div className={`${adminPanel} p-6`}><p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700">Semanal</p><ul className="mt-4 space-y-2 text-sm leading-6 text-slate-600"><li>- Posts y artículos con mejor/peor rendimiento.</li><li>- Tráfico web, CTA y discovery intent.</li><li>- Leads y oportunidades originadas por canal.</li><li>- Señales de saturación o temas que conviene repetir.</li></ul></div>
-        <div className={`${adminPanel} p-6`}><p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700">Mensual</p><ul className="mt-4 space-y-2 text-sm leading-6 text-slate-600"><li>- Funnel completo por canal.</li><li>- SEO, landing pages y crecimiento orgánico.</li><li>- Coste/tiempo invertido frente a pipeline generado.</li><li>- Benchmarks internos y objetivos del siguiente mes.</li></ul></div>
-        <div className={`${adminPanel} p-6`}><p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700">Trimestral</p><ul className="mt-4 space-y-2 text-sm leading-6 text-slate-600"><li>- Canales que merecen más o menos inversión.</li><li>- ICP que realmente convierte.</li><li>- Temas y servicios que generan negocio.</li><li>- Revisión de KPIs del Cuadro de Mando Integral.</li></ul></div>
-      </div>
-    </section>
+    <section className="mt-12"><SectionHeading eyebrow="Website · GA4" title="Funnel web dentro del CRM" description="La sincronización usa la propiedad asociada al Measurement ID G-3E1DK7935G y persiste los datos en Supabase para que no tengas que abrir GA4 para el seguimiento diario."/><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-7"><StatCard label="Usuarios" value={n(metrics.website.users).toLocaleString('es-ES')}/><StatCard label="Sesiones" value={n(metrics.website.sessions).toLocaleString('es-ES')}/><StatCard label="Engagement" value={`${(webEngagement*100).toFixed(1)}%`} tone="blue"/><StatCard label="Page views" value={n(metrics.website.page_views).toLocaleString('es-ES')}/><StatCard label="Key events" value={n(metrics.website.key_events)} tone="violet"/><StatCard label="Discovery intent" value={n(metrics.website.discovery_clicks)} tone="amber"/><StatCard label="Bookings" value={n(metrics.website.bookings)} tone="green"/></div><p className="mt-3 text-xs text-slate-500">Último dato: <strong>{metrics.website.latest_date||'sin sincronizar'}</strong></p></section>
+
+    <section className="mt-12"><SectionHeading eyebrow="SEO · Search Console" title="Visibilidad orgánica" description="Queries y landing pages se sincronizan a la base interna; la vista detallada permite inspeccionar qué búsquedas generan impresiones, clicks y posición."/><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><StatCard label="Clicks orgánicos" value={n(metrics.seo.clicks).toLocaleString('es-ES')} tone="green"/><StatCard label="Impresiones SEO" value={n(metrics.seo.impressions).toLocaleString('es-ES')} tone="blue"/><StatCard label="CTR" value={pct(metrics.seo.ctr)} tone="violet"/><StatCard label="Posición media" value={n(metrics.seo.position).toFixed(1)} tone="amber"/></div><p className="mt-3 text-xs text-slate-500">Último dato: <strong>{metrics.seo.latest_date||'sin sincronizar'}</strong></p></section>
+
+    <section className="mt-12"><SectionHeading eyebrow="LinkedIn" title="Rendimiento de contenido" description="La publicación usa la API oficial. Las métricas de rendimiento siguen entrando mediante export oficial XLS/XLSX porque el acceso analítico restringido de LinkedIn no está disponible para esta app; una vez importadas, todo el análisis ocurre aquí."/><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6"><StatCard label="Impressions" value={n(metrics.linkedin.impressions).toLocaleString('es-ES')}/><StatCard label="Reach" value={n(metrics.linkedin.reach).toLocaleString('es-ES')}/><StatCard label="Engagement" value={`${(engagementRate*100).toFixed(2)}%`} tone="blue"/><StatCard label="Saves" value={n(metrics.linkedin.saves)} tone="violet"/><StatCard label="Clicks" value={n(metrics.linkedin.clicks)} tone="green"/><StatCard label="Followers" value={n(metrics.linkedin.followers_gained)} tone="green"/></div><div className="mt-4"><a href="/growth-admin/analytics?account=arnau" className={adminButtonSecondary}>Importar / ver detalle LinkedIn</a></div></section>
+
+    <section className="mt-12 pb-12"><SectionHeading eyebrow="Fuentes" title="Estado de sincronización" description="Este bloque sustituye las etiquetas vagas de 'pendiente' por el estado real de cada fuente."/><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4"><div className={`${adminPanel} p-5`}><div className="flex items-center justify-between"><p className="font-semibold text-slate-950">CRM + Finance</p><Badge tone="green">Directo</Badge></div><p className="mt-3 text-xs leading-5 text-slate-500">Misma base Supabase. No hay proceso de copia: cambios operativos se reflejan al recargar.</p></div><div className={`${adminPanel} p-5`}><div className="flex items-center justify-between"><p className="font-semibold text-slate-950">LinkedIn</p><Badge tone={metrics.sources.linkedin_connected?'green':'amber'}>{metrics.sources.linkedin_connected?'Publicación conectada':'Sin conexión'}</Badge></div><p className="mt-3 text-xs leading-5 text-slate-500">Analytics: export oficial dentro del CRM. Posts medidos: {n(metrics.linkedin.posts_measured)}.</p></div><div className={`${adminPanel} p-5`}><div className="flex items-center justify-between"><p className="font-semibold text-slate-950">GA4</p><Badge tone={metrics.sources.google_connected?'green':'amber'}>{metrics.sources.google_connected?'Google conectado':'Falta OAuth'}</Badge></div><p className="mt-3 text-xs leading-5 text-slate-500">Última sync: {date(metrics.sources.last_ga4_sync)}</p></div><div className={`${adminPanel} p-5`}><div className="flex items-center justify-between"><p className="font-semibold text-slate-950">Search Console</p><Badge tone={metrics.sources.google_connected?'green':'amber'}>{metrics.sources.google_connected?'Google conectado':'Falta OAuth'}</Badge></div><p className="mt-3 text-xs leading-5 text-slate-500">Última sync: {date(metrics.sources.last_search_console_sync)}</p></div></div>{!metrics.sources.google_connected&&oauth.configured&&<div className="mt-5"><EmptyState>La automatización ya está construida. Falta una única autorización OAuth de tu cuenta corporativa para que SC-Analytics pueda leer GA4 y Search Console. <a className="font-semibold text-indigo-600" href="/api/growth-admin/google/connect?account=corporate&return_to=/growth-admin/metrics">Autorizar ahora →</a></EmptyState></div>}</section>
   </AdminShell>
 }
