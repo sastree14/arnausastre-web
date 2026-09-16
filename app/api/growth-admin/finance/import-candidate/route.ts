@@ -45,7 +45,7 @@ export async function POST(request: Request) {
   }
   const duplicateKey=createHash('sha256').update([candidate.source_account||'',data.vendor,data.invoice_number,data.expense_date,data.total,data.currency].join('|').toLowerCase()).digest('hex')
   const duplicateRows = await queryGrowthTable<Row>('finance_expenses',{tenant_id:'eq.sc-analytics',duplicate_key:`eq.${duplicateKey}`,limit:'1'},{cacheSeconds:0})
-  let expense = duplicateRows[0]
+  let expense: Row | null | undefined = duplicateRows[0]
   if (!expense) {
     const expenseId = `expense_${randomUUID().replaceAll('-', '').slice(0,12)}`
     const attachments = Array.isArray(data.attachment_files) ? data.attachment_files : []
