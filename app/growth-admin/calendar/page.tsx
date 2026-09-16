@@ -2,7 +2,8 @@ import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
 import { Badge, EmptyState, PageHeader, SectionHeading, adminButtonPrimary, adminButtonSecondary, adminInput, adminPanel, formatDate, publicationLabel, scheduleInputValue } from '@/components/growth-admin/AdminUi'
 import { controlCenterDateKey } from '@/lib/control-center-time'
-import { getRecentContent, isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { getWorkspaceContent } from '@/lib/editorial-workspace'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -29,7 +30,7 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
   const params = await searchParams
   const monthsRaw = typeof params.months === 'string' ? Number(params.months) : 1
   const months = [1,3,6].includes(monthsRaw) ? monthsRaw : 1
-  const content = await getRecentContent()
+  const content = await getWorkspaceContent()
   const scheduled = content.filter((item) => item.scheduled_at && ['approved','scheduled'].includes(item.status)).sort((a,b)=>String(a.scheduled_at).localeCompare(String(b.scheduled_at)))
   const published = content.filter((item) => item.status==='published' && item.published_at).slice(0,20)
   const byDate = new Map<string, typeof scheduled>()
@@ -43,6 +44,6 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
 
     <section className="mt-14"><SectionHeading eyebrow="CRM · Editorial schedule" title="Programaciones activas" description="Agenda operativa para reprogramar, quitar fecha o publicar ahora sin salir del flujo editorial." count={scheduled.length}/><div className="space-y-3">{scheduled.length===0&&<EmptyState>No hay publicaciones programadas.</EmptyState>}{scheduled.map((item)=><article id={`item-${item.content_id}`} key={item.content_id} className={`${adminPanel} p-5`}><div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between"><div className="min-w-0"><div className="flex flex-wrap gap-2"><Badge tone={item.content_type==='article'?'violet':'blue'}>{publicationLabel(item)}</Badge><Badge>{(item.language||'—').toUpperCase()}</Badge>{item.visual_path&&<Badge tone="green">visual</Badge>}</div><p className="mt-3 font-semibold text-slate-950">{item.title}</p><p className="mt-1 text-xs text-slate-500">{formatDate(item.scheduled_at,true)}</p></div><div className="flex flex-col gap-2 lg:flex-row lg:items-center"><form action="/api/growth-admin/schedule" method="post" className="flex flex-wrap gap-2"><input type="hidden" name="content_id" value={item.content_id}/><input name="scheduled_at" type="datetime-local" defaultValue={scheduleInputValue(item.scheduled_at)} className={adminInput}/><button className={adminButtonSecondary}>Reprogramar</button></form><form action="/api/growth-admin/schedule" method="post"><input type="hidden" name="content_id" value={item.content_id}/><input type="hidden" name="scheduled_at" value=""/><button className="rounded-lg border border-rose-200 bg-white px-4 py-2.5 text-sm font-semibold text-rose-700">Quitar fecha</button></form><form action="/api/growth-admin/publish-now" method="post"><input type="hidden" name="content_id" value={item.content_id}/><button className={adminButtonPrimary}>Publicar ahora</button></form><a href={`/growth-admin/preview/${item.content_id}`} className={adminButtonSecondary}>Preview</a></div></div></article>)}</div></section>
 
-    <section className="mt-14 pb-12"><SectionHeading eyebrow="Histórico editorial" title="Publicaciones recientes" description="Una pieza ejecutada sale de la agenda futura, pero permanece vinculada al CRM y a sus métricas." count={published.length}/><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{published.map((item)=><div key={item.content_id} className={`${adminPanel} p-5`}><div className="flex gap-2"><Badge tone="green">publicada</Badge><Badge>{publicationLabel(item)}</Badge></div><p className="mt-3 line-clamp-2 text-sm font-semibold text-slate-950">{item.title}</p><p className="mt-2 text-xs text-slate-500">{formatDate(item.published_at,true)}</p>{item.external_post_url&&<a href={item.external_post_url} target="_blank" className="mt-3 inline-block text-xs font-semibold text-emerald-700">Ver publicado ↗</a>}</div>)}</div></section>
+    <section className="mt-14 pb-12"><SectionHeading eyebrow="Histórico editorial" title="Publicaciones desde el último reinicio" description="El histórico anterior sigue conservado para proteger publicaciones y métricas, pero este workspace solo muestra la nueva etapa editorial." count={published.length}/><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{published.map((item)=><div key={item.content_id} className={`${adminPanel} p-5`}><div className="flex gap-2"><Badge tone="green">publicada</Badge><Badge>{publicationLabel(item)}</Badge></div><p className="mt-3 line-clamp-2 text-sm font-semibold text-slate-950">{item.title}</p><p className="mt-2 text-xs text-slate-500">{formatDate(item.published_at,true)}</p>{item.external_post_url&&<a href={item.external_post_url} target="_blank" className="mt-3 inline-block text-xs font-semibold text-emerald-700">Ver publicado ↗</a>}</div>)}</div></section>
   </AdminShell>
 }

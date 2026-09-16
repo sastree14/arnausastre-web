@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from .commercial_intelligence import run_commercial_signal_scan
+from .competitive_intelligence import discover_competitors, refresh_competitor, refresh_monitored_competitors
 from .editorial_ops import rewrite_content
 from .editorial_planner import build_content_proposals, run_guided_editorial_cycle
 from .editorial_runtime import editorial_from_url
@@ -19,6 +20,9 @@ OPERATOR_TYPES = {
     "OPERATOR_REWRITE_CONTENT",
     "OPERATOR_PROSPECT",
     "OPERATOR_COMMERCIAL_SIGNALS",
+    "OPERATOR_COMPETITOR_DISCOVER",
+    "OPERATOR_COMPETITOR_REFRESH",
+    "OPERATOR_COMPETITOR_REFRESH_ALL",
     "OPERATOR_PUBLISH_LINKEDIN",
     "OPERATOR_PUBLISH_ARTICLE",
 }
@@ -75,6 +79,18 @@ def _execute(task: dict[str, Any]) -> Any:
         return research_companies(str(inputs.get("mode") or "lead"), int(inputs.get("limit", 10) or 10))
     if task_type == "OPERATOR_COMMERCIAL_SIGNALS":
         return run_commercial_signal_scan(int(inputs.get("limit", 12) or 12))
+    if task_type == "OPERATOR_COMPETITOR_DISCOVER":
+        return discover_competitors(
+            limit=int(inputs.get("limit", 8) or 8),
+            focus=str(inputs.get("focus") or "").strip(),
+        )
+    if task_type == "OPERATOR_COMPETITOR_REFRESH":
+        competitor_id = str(inputs.get("competitor_id") or "").strip()
+        if not competitor_id:
+            raise ValueError("Missing competitor_id")
+        return refresh_competitor(competitor_id, int(inputs.get("max_events", 8) or 8))
+    if task_type == "OPERATOR_COMPETITOR_REFRESH_ALL":
+        return refresh_monitored_competitors(int(inputs.get("limit", 20) or 20))
     if task_type == "OPERATOR_PUBLISH_LINKEDIN":
         return publish_content(str(inputs.get("content_id") or ""))
     if task_type == "OPERATOR_PUBLISH_ARTICLE":
