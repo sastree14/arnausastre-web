@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
 import VisualStudioClientV2 from '@/components/visual-studio/VisualStudioClientV2'
-import { getRecentContent, isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
+import { isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
+import { getWorkspaceContent } from '@/lib/editorial-workspace'
 import type { PublicationMode, VisualFormatKey } from '@/lib/brand-system'
 import { createDesignFromTemplate, type VisualDesign, type VisualStudioContentSeed, type VisualTemplateKey } from '@/lib/visual-studio'
 
@@ -53,7 +54,7 @@ export default async function VisualStudioPage({ searchParams }: { searchParams?
 
   const params = searchParams ? await searchParams : undefined
   const [contentRows, savedDesignRows] = await Promise.all([
-    getRecentContent(),
+    getWorkspaceContent(),
     queryGrowthTable<VisualDesignRow>('visual_designs', { order: 'updated_at.desc', limit: '100' }),
   ])
 
@@ -83,17 +84,18 @@ export default async function VisualStudioPage({ searchParams }: { searchParams?
         <div className="max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Biblioteca visual</p>
           <p className="mt-1 text-sm text-slate-600">Los diseños guardados se reutilizan como <strong>plantillas</strong>: conservan composición y estilo, pero reciben el texto de la publicación seleccionada. Ya no arrastran el copy antiguo.</p>
+          {!activeSeed && <p className="mt-2 text-xs font-semibold text-amber-700">El workspace editorial está vacío. Genera una nueva pieza para volver a trabajar con plantillas; los diseños guardados se han conservado.</p>}
           {params?.deleted && <p className="mt-2 text-xs font-semibold text-emerald-700">Diseño eliminado correctamente.</p>}
         </div>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
-          <form action="/growth-admin/visual-studio" method="get" className="flex flex-col gap-2 sm:flex-row sm:items-end">
+          {content.length > 0 && <form action="/growth-admin/visual-studio" method="get" className="flex flex-col gap-2 sm:flex-row sm:items-end">
             <label className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Cambiar publicación
               <select name="content" defaultValue={activeSeed?.content_id || ''} className="mt-1 block max-w-md rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700">
                 {content.map((item) => <option key={item.content_id} value={item.content_id}>{item.content_type === 'article' ? 'Artículo' : 'LinkedIn'} · {(item.language || '—').toUpperCase()} · {item.title.slice(0, 70)}</option>)}
               </select>
             </label>
             <button className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-xs font-semibold text-indigo-700">Cargar</button>
-          </form>
+          </form>}
           <a href="/growth-admin/content" className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700">← Editorial</a>
         </div>
       </div>
