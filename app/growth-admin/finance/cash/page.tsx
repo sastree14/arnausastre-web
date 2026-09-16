@@ -22,7 +22,7 @@ export default async function CashPage({searchParams}:CashPageProps){
   const expenseById=new Map(bundle.expenses.map((e)=>[String(e.expense_id),e]))
   const importStatus=String(params.bank_import||'')
   return <AdminShell active="finance">
-    <PageHeader eyebrow="Finanzas · Treasury" title="Caja y banco" description="Importa extractos de Revolut Personal, registra movimientos y concilia cobros/pagos con confirmación humana. El sistema nunca mueve dinero desde tu banco." actions={bundle.revolut_connections.length?<form action="/api/growth-admin/revolut/sync" method="post"><input type="hidden" name="days" value="90"/><button className="rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/15">Sincronizar Revolut Business</button></form>:undefined}/>
+    <PageHeader eyebrow="Finanzas · Treasury" title="Caja y banco" description="Importa extractos de Revolut Personal, registra movimientos y concilia cobros/pagos con confirmación humana. El sistema nunca mueve dinero desde tu banco."/>
     <FinanceNav active="/growth-admin/finance/cash"/>
 
     {importStatus==='ok'&&<div className="mb-8 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800"><strong>Extracto procesado.</strong> {String(params.inserted||'0')} movimientos nuevos, {String(params.skipped||'0')} ya existentes y {String(params.proposed||'0')} conciliaciones propuestas.</div>}

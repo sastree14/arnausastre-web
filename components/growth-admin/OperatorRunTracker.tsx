@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 type TaskSnapshot = {
   task_id: string
@@ -93,10 +94,21 @@ function dispatchBlocked(run: TrackedRun) {
   return run.dispatchOk === false && ['queued', 'pending'].includes(status)
 }
 
+function traceHref(taskId: string) {
+  const encoded = encodeURIComponent(taskId)
+  return `/growth-admin/operations?task=${encoded}#task-${encoded}`
+}
+
 export default function OperatorRunTracker() {
+  const searchParams = useSearchParams()
+  const queued = searchParams.get('queued') || ''
+  const dispatched = searchParams.get('dispatched')
+  const dispatchReason = searchParams.get('dispatch_reason') || ''
   const [runs, setRuns] = useState<TrackedRun[]>([])
   const [expanded, setExpanded] = useState(false)
   const runsRef = useRef<TrackedRun[]>([])
+  const hydratedRef = useRef(false)
+  const lastParamSignature = useRef('')
 
   const commitRuns = useCallback((updater: (current: TrackedRun[]) => TrackedRun[]) => {
     setRuns((current) => {
@@ -109,14 +121,19 @@ export default function OperatorRunTracker() {
 
   useEffect(() => {
     const stored = loadStored()
-    const params = new URLSearchParams(window.location.search)
-    const queued = params.get('queued') || ''
-    const dispatched = params.get('dispatched')
-    const dispatchReason = params.get('dispatch_reason') || ''
+    runsRef.current = stored
+    setRuns(stored)
+    hydratedRef.current = true
+  }, [])
 
-    let initial = stored
-    if (queued) {
-      const existing = stored.find((run) => run.taskId === queued)
+  useEffect(() => {
+    if (!hydratedRef.current || !queued) return
+    const signature = `${queued}:${dispatched || ''}:${dispatchReason}`
+    if (signature === lastParamSignature.current) return
+    lastParamSignature.current = signature
+
+    commitRuns((current) => {
+      const existing = current.find((run) => run.taskId === queued)
       const nextRun: TrackedRun = {
         ...existing,
         taskId: queued,
@@ -124,14 +141,10 @@ export default function OperatorRunTracker() {
         dispatchReason: dispatchReason || existing?.dispatchReason,
         lastSeenAt: Date.now(),
       }
-      initial = [nextRun, ...stored.filter((run) => run.taskId !== queued)].slice(0, MAX_TRACKED)
-      setExpanded(true)
-    }
-
-    runsRef.current = initial
-    setRuns(initial)
-    storeRuns(initial)
-  }, [])
+      return [nextRun, ...current.filter((run) => run.taskId !== queued)]
+    })
+    setExpanded(true)
+  }, [queued, dispatched, dispatchReason, commitRuns])
 
   const refresh = useCallback(async (includeRecent = false) => {
     const current = runsRef.current
@@ -167,7 +180,7 @@ export default function OperatorRunTracker() {
     }
   }, [refresh])
 
-  const activeCount = runs.filter((run) => !run.task || ACTIVE.has(run.task.status)).length
+  const activeCount = runs.filter((run) => !dispatchBlocked(run) && (!run.task || ACTIVE.has(run.task.status))).length
   const failedCount = runs.filter((run) => run.task?.status === 'failed' || dispatchBlocked(run)).length
   const latest = runs[0]
   const latestCompleted = latest?.task && !ACTIVE.has(latest.task.status) && latest.task.status !== 'failed'
@@ -178,7 +191,7 @@ export default function OperatorRunTracker() {
   }
 
   async function retry(run: TrackedRun) {
-    let dispatched = false
+    let retryDispatched = false
     let reason = 'request_failed'
     try {
       const response = await fetch('/api/growth-admin/operator-task/retry', {
@@ -188,23 +201,23 @@ export default function OperatorRunTracker() {
       })
       if (response.ok) {
         const payload = await response.json() as { dispatched?: boolean; reason?: string }
-        dispatched = payload.dispatched === true
-        reason = payload.reason || (dispatched ? 'ok' : 'dispatch_failed')
+        retryDispatched = payload.dispatched === true
+        reason = payload.reason || (retryDispatched ? 'ok' : 'dispatch_failed')
       }
     } catch {
-      dispatched = false
+      retryDispatched = false
     }
 
     commitRuns((current) => current.map((item) => item.taskId === run.taskId ? {
       ...item,
-      dispatchOk: dispatched,
-      dispatchReason: dispatched ? '' : reason,
+      dispatchOk: retryDispatched,
+      dispatchReason: retryDispatched ? '' : reason,
       task: item.task ? { ...item.task, status: 'queued', outputs: {} } : item.task,
       result: null,
       lastSeenAt: Date.now(),
     } : item))
     setExpanded(true)
-    if (dispatched) window.setTimeout(() => void refresh(false), 700)
+    if (retryDispatched) window.setTimeout(() => void refresh(false), 700)
   }
 
   if (!runs.length) {
@@ -253,7 +266,7 @@ export default function OperatorRunTracker() {
                   <p className="mt-1.5 text-xs font-semibold text-slate-900">{processName(run.task)}</p>
                   {detail(run.task) && <p className="mt-1 line-clamp-2 text-[10px] leading-4 text-slate-600">{detail(run.task)}</p>}
                   {active && <p className="mt-1 text-[10px] leading-4 text-slate-500">Workflow en marcha. No hace falta permanecer en esta pantalla.</p>}
-                  {blocked && <p className="mt-1 text-[10px] leading-4 text-rose-700">GitHub Actions no se pudo disparar{run.dispatchReason ? ` (${run.dispatchReason})` : ''}. La tarea está guardada y puedes relanzarla ahora.</p>}
+                  {blocked && <p className="mt-1 text-[10px] leading-4 text-rose-700">GitHub Actions no se pudo disparar{run.dispatchReason ? ` (${run.dispatchReason})` : ''}. La tarea está guardada: puedes relanzarla ahora o dejar que el barrido automático la recupere.</p>}
                   {error && <p className="mt-1 line-clamp-2 text-[10px] leading-4 text-rose-700">{error}</p>}
                   {!active && !failed && run.result?.description && <p className="mt-1 text-[10px] leading-4 text-emerald-800">{run.result.description}</p>}
                 </div>
@@ -262,7 +275,7 @@ export default function OperatorRunTracker() {
               <div className="mt-2.5 flex flex-wrap gap-2">
                 {!active && !failed && run.result && <a href={run.result.href} className="rounded-lg bg-slate-950 px-3 py-2 text-[10px] font-semibold text-white">{run.result.label} →</a>}
                 {failed && <button type="button" onClick={() => void retry(run)} className="rounded-lg bg-rose-600 px-3 py-2 text-[10px] font-semibold text-white">Reintentar workflow</button>}
-                <a href="/growth-admin/operations" className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-[10px] font-semibold text-slate-600">Trazabilidad</a>
+                <a href={traceHref(run.taskId)} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-[10px] font-semibold text-slate-600">Trazabilidad</a>
               </div>
             </div>
           })}
