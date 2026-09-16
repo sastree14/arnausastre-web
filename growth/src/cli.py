@@ -7,6 +7,7 @@ from .approvals import decide, list_pending
 from .brain import validate_brain
 from .brief import build_brief
 from .commercial_intelligence import run_commercial_signal_scan
+from .competitive_intelligence import discover_competitors, refresh_competitor, refresh_monitored_competitors
 from .config import load_config
 from .content import create_content_from_case
 from .editorial_ops import rewrite_content
@@ -56,6 +57,17 @@ def main() -> None:
     p_signals = sub.add_parser("commercial-signals")
     p_signals.add_argument("--limit", type=int, default=12)
 
+    p_competitors = sub.add_parser("competitor-discover")
+    p_competitors.add_argument("--limit", type=int, default=8)
+    p_competitors.add_argument("--focus", default="")
+
+    p_competitor = sub.add_parser("competitor-refresh")
+    p_competitor.add_argument("competitor_id")
+    p_competitor.add_argument("--events", type=int, default=8)
+
+    p_monitor = sub.add_parser("monitor-competitors")
+    p_monitor.add_argument("--limit", type=int, default=20)
+
     p_approve = sub.add_parser("decide")
     p_approve.add_argument("approval_id")
     p_approve.add_argument("decision", choices=["approved", "rejected"])
@@ -101,6 +113,12 @@ def main() -> None:
         print(json.dumps(research_companies(args.mode, args.limit), indent=2, ensure_ascii=False))
     elif args.command == "commercial-signals":
         print(json.dumps(run_commercial_signal_scan(args.limit), indent=2, ensure_ascii=False))
+    elif args.command == "competitor-discover":
+        print(json.dumps(discover_competitors(args.limit, args.focus), indent=2, ensure_ascii=False))
+    elif args.command == "competitor-refresh":
+        print(json.dumps(refresh_competitor(args.competitor_id, args.events), indent=2, ensure_ascii=False))
+    elif args.command == "monitor-competitors":
+        print(json.dumps(refresh_monitored_competitors(args.limit), indent=2, ensure_ascii=False))
     elif args.command == "decide":
         print(json.dumps(decide(args.approval_id, args.decision), indent=2, ensure_ascii=False))
     elif args.command == "publish":
