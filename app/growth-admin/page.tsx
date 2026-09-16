@@ -67,7 +67,7 @@ export default async function GrowthAdminPage() {
       </div>
     </section>
 
-    <section className="mt-12">
+    <section id="approvals" className="mt-12">
       <SectionHeading eyebrow="Atención ejecutiva" title="Qué requiere revisión" description="No todo debe automatizarse. Esta bandeja concentra los puntos que conviene mirar antes de seguir trabajando." />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <a href="/growth-admin/approvals" className={`${adminPanel} p-5 transition hover:border-amber-300`}><Badge tone="amber">Editorial</Badge><p className="mt-4 text-3xl font-semibold text-slate-950">{summary.pending_approvals}</p><p className="mt-1 text-sm text-slate-500">aprobaciones pendientes</p></a>
@@ -91,7 +91,7 @@ export default async function GrowthAdminPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         <a href="https://drive.google.com/" target="_blank" rel="noreferrer" className={`${adminPanel} p-5 transition hover:-translate-y-0.5 hover:shadow-md`}><p className="text-sm font-semibold text-slate-950">Google Drive ↗</p><p className="mt-2 text-xs leading-5 text-slate-500">Knowledge, documentos, plantillas y archivos.</p></a>
         <a href="/growth-admin/visual-studio" className={`${adminPanel} p-5 transition hover:-translate-y-0.5 hover:shadow-md`}><p className="text-sm font-semibold text-slate-950">Visual Studio</p><p className="mt-2 text-xs leading-5 text-slate-500">Assets para publicaciones y artículos.</p></a>
-        <a href="/growth-admin/commercial#proposals" className={`${adminPanel} p-5 transition hover:-translate-y-0.5 hover:shadow-md`}><p className="text-sm font-semibold text-slate-950">Proposals & budgets</p><p className="mt-2 text-xs leading-5 text-slate-500">Proceso manual preparado para estandarizar.</p></a>
+        <a href="/growth-admin/deal-desk?step=proposal" className={`${adminPanel} p-5 transition hover:-translate-y-0.5 hover:shadow-md`}><p className="text-sm font-semibold text-slate-950">Proposals & budgets</p><p className="mt-2 text-xs leading-5 text-slate-500">Proposal Builder y pricing sobre oportunidades reales del pipeline.</p></a>
         <a href="/growth-admin/operations#knowledge" className={`${adminPanel} p-5 transition hover:-translate-y-0.5 hover:shadow-md`}><p className="text-sm font-semibold text-slate-950">Manuales & SOPs</p><p className="mt-2 text-xs leading-5 text-slate-500">Procedimientos, plantillas y documentación.</p></a>
         <a href="https://analytics.google.com/" target="_blank" rel="noreferrer" className={`${adminPanel} p-5 transition hover:-translate-y-0.5 hover:shadow-md`}><p className="text-sm font-semibold text-slate-950">Google Analytics ↗</p><p className="mt-2 text-xs leading-5 text-slate-500">Consulta directa mientras completamos la Data API.</p></a>
         <a href="/growth-admin/system" className={`${adminPanel} p-5 transition hover:-translate-y-0.5 hover:shadow-md`}><p className="text-sm font-semibold text-slate-950">Integraciones</p><p className="mt-2 text-xs leading-5 text-slate-500">LinkedIn, GA4, Apollo, Calendly y workers.</p></a>
