@@ -37,7 +37,7 @@ async function taskResult(task: GrowthTask): Promise<RunResult | null> {
   switch (task.type) {
     case 'OPERATOR_EDITORIAL_PROPOSALS':
       return {
-        href: '/growth-admin/content#editorial-planner',
+        href: '/growth-admin/content',
         label: 'Elegir propuesta',
         description: 'Las nuevas direcciones editoriales ya están disponibles. El siguiente paso es escoger una.',
       }
@@ -52,7 +52,7 @@ async function taskResult(task: GrowthTask): Promise<RunResult | null> {
         }
       }
       return {
-        href: '/growth-admin/content?filter=review#publication-workspace',
+        href: '/growth-admin/content?filter=review',
         label: 'Revisar publicaciones',
         description: 'El desarrollo editorial ha terminado. Continúa desde la cola de revisión.',
       }
