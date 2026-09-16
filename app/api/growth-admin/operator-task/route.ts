@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { NextResponse } from 'next/server'
 import { insertGrowthRow, isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { queryGrowthTable } from '@/lib/supabase-growth'
 import { dispatchOperatorQueue } from '@/lib/github-actions'
 
 const ACTION_TO_TYPE: Record<string, string> = {
@@ -17,6 +18,14 @@ const ACTION_TO_TYPE: Record<string, string> = {
   publish_article: 'OPERATOR_PUBLISH_ARTICLE',
 }
 
+type TaskRow = {
+  task_id: string
+  type: string
+  status: string
+  inputs?: Record<string, unknown> | null
+  created_at?: string | null
+}
+
 function int(value: FormDataEntryValue | null, fallback: number, max = 100) {
   const parsed = Number(value)
   return Number.isFinite(parsed) ? Math.min(max, Math.max(1, Math.floor(parsed))) : fallback
@@ -24,6 +33,12 @@ function int(value: FormDataEntryValue | null, fallback: number, max = 100) {
 
 function bool(value: FormDataEntryValue | null) {
   return ['1', 'true', 'yes', 'on'].includes(String(value || '').toLowerCase())
+}
+
+function sameInputs(a: Record<string, unknown> | null | undefined, b: Record<string, unknown>) {
+  const left = Object.entries(a || {}).sort(([ka], [kb]) => ka.localeCompare(kb))
+  const right = Object.entries(b).sort(([ka], [kb]) => ka.localeCompare(kb))
+  return JSON.stringify(left) === JSON.stringify(right)
 }
 
 export async function POST(request: Request) {
@@ -78,24 +93,41 @@ export async function POST(request: Request) {
     inputs = { limit: int(form.get('limit'), 20, 50) }
   }
 
-  const taskId = `task_${randomUUID().replaceAll('-', '').slice(0, 12)}`
-  await insertGrowthRow('tasks', {
-    task_id: taskId,
-    tenant_id: 'sc-analytics',
-    type,
-    scheduled_for: new Date().toISOString(),
-    status: 'queued',
-    requires_approval: false,
-    inputs,
-    outputs: {},
-    created_at: new Date().toISOString(),
+  const recent = await queryGrowthTable<TaskRow>('tasks', {
+    tenant_id: 'eq.sc-analytics',
+    type: `eq.${type}`,
+    order: 'created_at.desc',
+    limit: '5',
+  }, { cacheSeconds: 0 })
+  const duplicate = recent.find((task) => {
+    if (!['queued', 'pending', 'running'].includes(String(task.status || ''))) return false
+    const created = task.created_at ? Date.parse(task.created_at) : NaN
+    if (!Number.isFinite(created) || Date.now() - created > 30_000) return false
+    return sameInputs(task.inputs, inputs)
   })
+
+  const taskId = duplicate?.task_id || `task_${randomUUID().replaceAll('-', '').slice(0, 12)}`
+  if (!duplicate) {
+    const now = new Date().toISOString()
+    await insertGrowthRow('tasks', {
+      task_id: taskId,
+      tenant_id: 'sc-analytics',
+      type,
+      scheduled_for: now,
+      status: 'queued',
+      requires_approval: false,
+      inputs,
+      outputs: {},
+      created_at: now,
+    })
+  }
 
   const dispatch = await dispatchOperatorQueue()
   const returnTo = String(form.get('return_to') || '/growth-admin')
   const url = new URL(returnTo.startsWith('/') ? returnTo : '/growth-admin', request.url)
   url.searchParams.set('queued', taskId)
   url.searchParams.set('dispatched', dispatch.dispatched ? '1' : '0')
+  url.searchParams.set('deduplicated', duplicate ? '1' : '0')
   if (!dispatch.dispatched) url.searchParams.set('dispatch_reason', dispatch.reason)
   return NextResponse.redirect(url, 303)
 }
