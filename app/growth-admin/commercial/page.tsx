@@ -4,6 +4,7 @@ import { Badge, EmptyState, SectionHeading, adminPanel } from '@/components/grow
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { getCommercialIntelligenceBundle, getCommercialSummary, getCrmBundle } from '@/lib/growth-admin-performance'
 import { getCompetitors } from '@/lib/competition-admin'
+import { serverNowMs } from '@/lib/server-clock'
 
 function ModuleCard({href,title,description,status='Disponible',tone='violet'}:{href?:string;title:string;description:string;status?:string;tone?:'violet'|'blue'|'green'|'amber'|'slate'}){
   const body=<div className={`${adminPanel} h-full p-5 transition ${href?'hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md':''}`}><div className="flex items-start justify-between gap-3"><h3 className="text-lg font-semibold text-slate-950">{title}</h3><Badge tone={tone}>{status}</Badge></div><p className="mt-3 text-sm leading-6 text-slate-600">{description}</p>{href&&<p className="mt-5 text-xs font-semibold text-indigo-600">Abrir módulo →</p>}</div>
@@ -15,7 +16,7 @@ export default async function CommercialPage(){
   const [summary,intelligence,competitors,crm]=await Promise.all([getCommercialSummary(),getCommercialIntelligenceBundle(),getCompetitors(),getCrmBundle()])
   const strongSignals=intelligence.signals.filter((signal)=>Number(signal.strength||0)>=8).length
   const monitoredCompetitors=competitors.filter((item)=>item.is_monitored).length
-  const now=Date.now()
+  const now=serverNowMs()
   const opportunityActions=(crm.opportunities as Array<Record<string,any>>).filter((item)=>item.next_action_at&&new Date(String(item.next_action_at)).getTime()>=now).map((item)=>({kind:'Oportunidad',title:String(item.name||'Siguiente acción'),date:String(item.next_action_at),href:`/growth-admin/deal-desk?opportunity=${encodeURIComponent(String(item.opportunity_id))}`}))
   const meetings=(crm.meetings as Array<Record<string,any>>).filter((item)=>item.starts_at&&new Date(String(item.starts_at)).getTime()>=now&&String(item.status||'')!=='cancelled').map((item)=>({kind:'Reunión',title:String(item.metadata?.event_name||item.metadata?.name||'Discovery / reunión'),date:String(item.starts_at),href:item.opportunity_id?`/growth-admin/deal-desk?opportunity=${encodeURIComponent(String(item.opportunity_id))}`:'/growth-admin/crm'}))
   const agenda=[...opportunityActions,...meetings].sort((a,b)=>new Date(a.date).getTime()-new Date(b.date).getTime()).slice(0,12)
