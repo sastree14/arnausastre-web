@@ -90,6 +90,15 @@ function csvRows(input: string) {
   return rows.filter((r) => r.some((cell) => String(cell).trim()))
 }
 
+function excelCell(value: unknown): Cell {
+  if (value === null || value === undefined || typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || value instanceof Date) return value as Cell
+  if (typeof value === 'object' && value) {
+    if ('result' in value) return excelCell((value as { result?: unknown }).result)
+    if ('text' in value) return String((value as { text?: unknown }).text ?? '')
+  }
+  return String(value)
+}
+
 async function spreadsheetRows(buffer: Buffer) {
   const workbook = new ExcelJS.Workbook()
   await workbook.xlsx.load(buffer as unknown as ExcelJS.Buffer)
@@ -97,11 +106,8 @@ async function spreadsheetRows(buffer: Buffer) {
   if (!sheet) return [] as Cell[][]
   const rows: Cell[][] = []
   sheet.eachRow({ includeEmpty: false }, (row) => {
-    rows.push(row.values.slice(1).map((value: any) => {
-      if (value && typeof value === 'object' && 'result' in value) return value.result as Cell
-      if (value && typeof value === 'object' && 'text' in value) return value.text as Cell
-      return value as Cell
-    }))
+    const values = Array.isArray(row.values) ? row.values.slice(1) : []
+    rows.push(values.map((value) => excelCell(value)))
   })
   return rows
 }
@@ -246,7 +252,7 @@ export async function importBankStatement(fileName: string, mimeType: string, bu
   const accounts = new Map<string, Json>()
   for (const row of parsed) {
     const accountKey = `${row.product || 'Personal'}|${row.currency}`
-    let account = accounts.get(accountKey)
+    let account: Json | null | undefined = accounts.get(accountKey)
     if (!account) {
       account = await upsertGrowthRow<Json>('finance_bank_accounts', {
         bank_account_id: `bank_${createHash('sha256').update(`${PROVIDER}|${accountKey}`).digest('hex').slice(0,16)}`,
