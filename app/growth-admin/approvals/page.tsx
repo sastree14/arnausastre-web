@@ -7,6 +7,9 @@ export default async function ApprovalsPage({searchParams}:{searchParams:Promise
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
   const params=await searchParams
   const next=new URLSearchParams({filter:'review'})
-  if(typeof params.blocked==='string'&&params.blocked.trim()) next.set('blocked',params.blocked)
+  for(const key of ['blocked','editorial_decision','changes_requested']){
+    const value=params[key]
+    if(typeof value==='string'&&value.trim()) next.set(key,value)
+  }
   redirect(`/growth-admin/content?${next.toString()}`)
 }
