@@ -9,7 +9,9 @@ const COMMERCIAL: Item[] = [
   { key: 'deal-desk', href: '/growth-admin/deal-desk', label: 'Deal Desk', description: 'De interés a propuesta' },
   { key: 'intelligence', href: '/growth-admin/intelligence', label: 'Señales', description: 'Por qué contactar ahora' },
   { key: 'competition', href: '/growth-admin/competition', label: 'Competencia', description: 'Radar y movimientos' },
+  { key: 'research', href: '/growth-admin/research', label: 'Research', description: 'Evidencia y briefs' },
   { key: 'content', href: '/growth-admin/content', label: 'Editorial', description: 'Crear y revisar' },
+  { key: 'visual', href: '/growth-admin/visual-studio', label: 'Visual', description: 'Diseño y assets' },
   { key: 'calendar', href: '/growth-admin/calendar', label: 'Calendario', description: 'Programar y publicar' },
 ]
 
