@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import OperatorRunTracker from '@/components/growth-admin/OperatorRunTracker'
 
 export type OperatingModule = 'home' | 'commercial' | 'content' | 'calendar' | 'approvals' | 'crm' | 'partners' | 'intelligence' | 'competition' | 'research' | 'visual' | 'metrics' | 'analytics' | 'finance' | 'operations' | 'system'
 
@@ -58,6 +59,8 @@ export default function AdminShell({ active, children }: { active: OperatingModu
           </div>
         </div>
       </header>
+
+      <OperatorRunTracker />
 
       <div className="mx-auto max-w-[1780px] px-5 py-6 md:px-8 lg:py-8">{children}</div>
     </main>
