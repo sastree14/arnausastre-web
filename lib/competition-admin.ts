@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { queryGrowthTable } from '@/lib/supabase-growth'
+import { getWorkspaceResetAt } from '@/lib/workspace-reset'
 import type { GrowthTask } from '@/lib/growth-admin'
 
 export interface CompetitorRow {
@@ -49,25 +50,32 @@ export interface CompetitorEventRow {
 }
 
 export async function getCompetitors() {
+  const resetAt=await getWorkspaceResetAt('competition_reset')
   return queryGrowthTable<CompetitorRow>('competitors', {
     tenant_id: 'eq.sc-analytics',
     status: 'eq.active',
+    ...(resetAt?{created_at:`gte.${resetAt}`}:{ }),
     order: 'relevance_score.desc,updated_at.desc',
     limit: '100',
   }, { cacheSeconds: 0 })
 }
 
 export async function getCompetitorEvents() {
+  const resetAt=await getWorkspaceResetAt('competition_reset')
   return queryGrowthTable<CompetitorEventRow>('competitor_events', {
     tenant_id: 'eq.sc-analytics',
+    ...(resetAt?{created_at:`gte.${resetAt}`}:{ }),
     order: 'created_at.desc',
     limit: '250',
   }, { cacheSeconds: 0 })
 }
 
 export async function getCompetitionTasks() {
+  const resetAt=await getWorkspaceResetAt('competition_reset')
   return queryGrowthTable<GrowthTask>('tasks', {
+    tenant_id: 'eq.sc-analytics',
     type: 'in.(OPERATOR_COMPETITOR_DISCOVER,OPERATOR_COMPETITOR_REFRESH,OPERATOR_COMPETITOR_REFRESH_ALL)',
+    ...(resetAt?{created_at:`gte.${resetAt}`}:{ }),
     order: 'created_at.desc',
     limit: '100',
   }, { cacheSeconds: 0 })
