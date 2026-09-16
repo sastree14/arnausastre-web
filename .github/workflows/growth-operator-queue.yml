@@ -2,10 +2,12 @@ name: SC-Analytics Operating System — Operator Queue
 
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: [operator_queue]
   schedule:
-    # Reliability sweep. UI actions still try an immediate workflow_dispatch,
-    # but queued work is never allowed to wait until the next day if that
-    # dispatch credential is missing or temporarily misconfigured.
+    # Reliability sweep. UI actions first try an immediate workflow dispatch
+    # and then repository_dispatch as an independent permission-compatible
+    # fallback. The scheduled run remains only as a safety net.
     - cron: '*/5 * * * *'
 
 permissions:
