@@ -18,6 +18,8 @@ export default function GrowthActionFeedback() {
   if (blocked) feedback.push({ tone: 'amber', title: 'La publicación todavía no se puede aprobar', detail: `Falta resolver: ${blocked}. La pieza permanece en revisión; corrige esos puntos y vuelve a aprobar.` })
   if (params.get('changes_requested')) feedback.push({ tone: 'amber', title: 'Cambios solicitados', detail: 'La pieza permanece en la cola editorial como “needs_review”. Puedes editar el visual o ejecutar “Reescribir y revalidar”; no se ha descartado ni perdido.' })
   if (params.get('editorial_decision')) feedback.push({ tone: 'green', title: 'Publicación aprobada', detail: 'La aprobación está guardada. El siguiente paso es programarla o usar “Publicar ahora”; aprobar por sí solo no publica.' })
+  if (params.get('scheduled')) feedback.push({ tone: 'green', title: 'Publicación programada', detail: 'La nueva fecha se ha guardado. Conservas la misma vista del calendario y la pieza sigue enlazada a su workflow editorial.' })
+  if (params.get('unscheduled')) feedback.push({ tone: 'amber', title: 'Fecha eliminada', detail: 'La publicación ya no tiene fecha programada. La aprobación se conserva y puedes volver a programarla o publicarla manualmente.' })
 
   const calendlySync = params.get('calendly_sync')
   if (calendlySync !== null) {
