@@ -2,6 +2,24 @@ import { NextResponse } from 'next/server'
 import { getContentItem, isGrowthAdminAuthenticated, queryGrowthTable, updateGrowthRow, type GrowthApproval } from '@/lib/growth-admin'
 import { parseControlCenterDateTime } from '@/lib/control-center-time'
 
+function calendarReturnUrl(request: Request, contentId: string, scheduled: boolean) {
+  const fallback = new URL('/growth-admin/calendar', request.url)
+  const referer = request.headers.get('referer')
+  let url = fallback
+  if (referer) {
+    try {
+      const candidate = new URL(referer)
+      const origin = new URL(request.url).origin
+      if (candidate.origin === origin && candidate.pathname === '/growth-admin/calendar') url = candidate
+    } catch {
+      // Ignore invalid referrer and keep the safe internal fallback.
+    }
+  }
+  url.hash = `item-${contentId}`
+  url.searchParams.set(scheduled ? 'scheduled' : 'unscheduled', contentId)
+  return url
+}
+
 export async function POST(request: Request) {
   if (!(await isGrowthAdminAuthenticated())) return new NextResponse('Unauthorized', { status: 401 })
 
@@ -40,5 +58,5 @@ export async function POST(request: Request) {
 
   const updated = await updateGrowthRow('content_items', 'content_id', contentId, updates)
   if (!updated) return new NextResponse('Content not found', { status: 404 })
-  return NextResponse.redirect(new URL('/growth-admin/calendar', request.url), 303)
+  return NextResponse.redirect(calendarReturnUrl(request, contentId, Boolean(scheduledAt)), 303)
 }
