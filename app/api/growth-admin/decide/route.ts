@@ -40,13 +40,13 @@ export async function POST(request: Request) {
 
   if (approval.action_type === 'publish_post') {
     await updateGrowthRow('content_items', 'content_id', approval.target_id, {
-      status: decision === 'approved' ? 'approved' : 'rejected',
+      status: decision === 'approved' ? 'approved' : 'needs_review',
     })
   }
 
   if (approval.action_type === 'publish_article') {
     if (decision === 'rejected') {
-      await updateGrowthRow('content_items', 'content_id', approval.target_id, { status: 'rejected' })
+      await updateGrowthRow('content_items', 'content_id', approval.target_id, { status: 'needs_review' })
     } else {
       const item = await getContentItem(approval.target_id)
       if (!item) return new NextResponse('Content item not found', { status: 404 })
@@ -60,5 +60,7 @@ export async function POST(request: Request) {
     }
   }
 
-  return NextResponse.redirect(new URL('/growth-admin/approvals', request.url), 303)
+  const next = new URL('/growth-admin/approvals', request.url)
+  next.searchParams.set(decision === 'approved' ? 'editorial_decision' : 'changes_requested', approval.target_id)
+  return NextResponse.redirect(next, 303)
 }
