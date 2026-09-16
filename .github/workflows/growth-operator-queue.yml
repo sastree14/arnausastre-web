@@ -3,9 +3,13 @@ name: SC-Analytics Operating System — Operator Queue
 on:
   workflow_dispatch:
   schedule:
-    # Safety sweep only. UI actions should dispatch this workflow immediately.
-    # 22:00 UTC is midnight in Madrid during CEST and 23:00 during CET.
-    - cron: '0 22 * * *'
+    # Reliability sweep. UI actions still try an immediate workflow_dispatch,
+    # but queued work is never allowed to wait until the next day if that
+    # dispatch credential is missing or temporarily misconfigured.
+    - cron: '*/5 * * * *'
+
+permissions:
+  contents: read
 
 concurrency:
   group: sc-analytics-operator-queue
@@ -25,19 +29,6 @@ jobs:
       - run: pip install -r growth/requirements.txt
       - name: Process operator tasks
         run: python -m growth.src.cli run-operator-queue
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
-          GROWTH_ENCRYPTION_KEY: ${{ secrets.GROWTH_ENCRYPTION_KEY }}
-          STATE_PROVIDER: supabase
-          ASSET_PROVIDER: supabase
-          SUPABASE_ASSET_BUCKET: growth-assets
-          LINKEDIN_API_VERSION: ${{ vars.LINKEDIN_API_VERSION || '202608' }}
-      - name: Refresh monitored competitors
-        if: github.event_name == 'schedule'
-        run: python -m growth.src.cli monitor-competitors --limit 30
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
