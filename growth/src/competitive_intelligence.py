@@ -121,8 +121,13 @@ def discover_competitors(limit: int = 8, focus: str = '') -> list[dict]:
 
     hits = []
     for query in queries:
-        hits.extend(search.search(query, count=10))
+        try:
+            hits.extend(search.search(query, count=10))
+        except Exception:
+            continue
     hits = dedupe_hits(hits)[:120]
+    if not hits:
+        return []
     allowed_urls = {hit.url for hit in hits}
 
     result = llm.json(
@@ -177,11 +182,12 @@ SEARCH RESULTS:
             continue
 
         previous = by_domain.get(domain_key)
+        canonical_website = str(previous.get('website')) if previous else website
         row = {
             'competitor_id': str(previous.get('competitor_id')) if previous else new_id('competitor'),
             'tenant_id': tenant_id,
             'name': name,
-            'website': website,
+            'website': canonical_website,
             'country': str(raw.get('country', '')).strip(),
             'city': str(raw.get('city', '')).strip(),
             'employee_range': str(raw.get('employee_range', '')).strip() or 'boutique / size not verified',
@@ -201,7 +207,7 @@ SEARCH RESULTS:
             'last_discovered_at': now,
             'last_checked_at': previous.get('last_checked_at') if previous else None,
             'last_change_at': previous.get('last_change_at') if previous else None,
-            'created_at': previous.get('created_at') or now if previous else now,
+            'created_at': (previous.get('created_at') or now) if previous else now,
             'updated_at': now,
         }
         stored = store.upsert('competitors', row, key='tenant_id,website')
@@ -237,12 +243,27 @@ def refresh_competitor(competitor_id: str, max_events: int = 8) -> dict:
 
     hits = []
     for query in queries:
-        hits.extend(search.search(query, count=8))
+        try:
+            hits.extend(search.search(query, count=8))
+        except Exception:
+            continue
     hits = dedupe_hits(hits)[:70]
     allowed_urls = {hit.url for hit in hits}
     existing = store.filter('competitor_events', competitor_id=competitor_id)
     existing_urls = {str(row.get('source_url', '')).rstrip('/') for row in existing}
     existing_fingerprints = {str(row.get('fingerprint', '')) for row in existing}
+
+    now = _utc_now()
+    if not hits:
+        updated = store.update('competitors', 'competitor_id', competitor_id, {'last_checked_at': now, 'updated_at': now})
+        return {
+            'competitor_id': competitor_id,
+            'company': name,
+            'checked_at': now,
+            'new_events': [],
+            'new_event_count': 0,
+            'competitor': updated or {**competitor, 'last_checked_at': now, 'updated_at': now},
+        }
 
     result = llm.json(
         'You monitor a named competitor using public evidence only. Report concrete observable movements, not generic company descriptions. Never invent a date, client, service, hiring move, price, partnership or strategy.',
@@ -263,7 +284,6 @@ SEARCH RESULTS:
 {[{'title': h.title, 'url': h.url, 'snippet': h.snippet, 'query': h.query} for h in hits]}''',
     )
 
-    now = _utc_now()
     new_events: list[dict] = []
     for raw in _as_list(result):
         if not isinstance(raw, dict):
