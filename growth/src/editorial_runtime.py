@@ -40,7 +40,7 @@ def content_contract_issues(draft: dict[str, Any], content_type: str) -> list[st
             issues.append(f"LinkedIn body is {chars} characters; hard maximum is {LINKEDIN_HARD_MAX_CHARS}")
         elif chars < 450:
             issues.append(f"LinkedIn body is only {chars} characters; it is too thin for this editorial format")
-    elif content_type == "article":
+    elif content_type in {"article", "linkedin_article"}:
         words = _word_count(body)
         if words < ARTICLE_HARD_MIN_WORDS:
             issues.append(f"Article is {words} words; hard minimum is {ARTICLE_HARD_MIN_WORDS}")
@@ -74,6 +74,8 @@ def _writer_instructions(language: str, channel: str, content_type: str) -> str:
     target = names[language]
     if content_type == "article":
         return f"Write a native {target} website article for SC-Analytics. Use natural Markdown headings and explanatory prose."
+    if content_type == "linkedin_article":
+        return f"Write a native {target} long-form LinkedIn Article in Arnau Sastre's professional founder voice. Use clear headings and explanatory prose suitable for LinkedIn's article editor."
     if channel == "arnau_linkedin":
         return f"Write a native {target} LinkedIn post in Arnau Sastre's professional founder voice."
     return f"Write a native {target} LinkedIn post in SC-Analytics' company voice."
@@ -81,13 +83,12 @@ def _writer_instructions(language: str, channel: str, content_type: str) -> str:
 
 def _write_variant(brief: dict[str, Any], *, language: str, channel: str, content_type: str) -> dict[str, str]:
     brain = _editorial_brain(channel)
-    # Drafting does not need the most expensive reasoning profile. Strategic brief
-    # creation and the critic retain high reasoning; prose drafting uses balanced/fast.
-    llm = get_llm(profile="balanced" if content_type == "article" else "fast")
+    long_form = content_type in {"article", "linkedin_article"}
+    llm = get_llm(profile="balanced" if long_form else "fast")
     format_rules = (
         f"Target {ARTICLE_TARGET_MIN_WORDS}-{ARTICLE_TARGET_MAX_WORDS} words and never exceed {ARTICLE_HARD_MAX_WORDS}. "
         "Use useful section headings, no SEO padding, no fake quotes, and no hard sales CTA."
-        if content_type == "article"
+        if long_form
         else f"Target {LINKEDIN_TARGET_MIN_CHARS}-{LINKEDIN_TARGET_MAX_CHARS} characters and never exceed {LINKEDIN_HARD_MAX_CHARS}. "
         "Use natural paragraphs, no hashtag block, no forced CTA, no fake suspense, and no one-sentence-per-line formatting habit."
     )
@@ -159,7 +160,15 @@ BRAIN: {brain}
 
 
 def _variant_channel(content_type: str, channel: str) -> str:
-    return channel if content_type == "linkedin_post" else "website"
+    return "website" if content_type == "article" else channel
+
+
+def _approval_type(content_type: str) -> str:
+    if content_type == "linkedin_post":
+        return "publish_post"
+    if content_type == "linkedin_article":
+        return "publish_linkedin_article"
+    return "publish_article"
 
 
 def _existing_variant(brief_id: str, language: str, channel: str, content_type: str) -> dict[str, Any] | None:
@@ -177,7 +186,8 @@ def _ensure_approval(item: dict[str, Any], brief: dict[str, Any], *, primary: bo
     if not primary or not contract_valid or float(item.get("quality_score", 0) or 0) < 7.5:
         return ""
     store = get_store()
-    approval_type = "publish_post" if item.get("content_type") == "linkedin_post" else "publish_article"
+    content_type = str(item.get("content_type") or "")
+    approval_type = _approval_type(content_type)
     existing = [
         row for row in store.filter("approvals", target_id=item["content_id"])
         if row.get("action_type") == approval_type and row.get("status") in {"pending", "approved", "executed"}
@@ -185,12 +195,21 @@ def _ensure_approval(item: dict[str, Any], brief: dict[str, Any], *, primary: bo
     if existing:
         return str(existing[0].get("approval_id") or "")
 
+    if approval_type == "publish_post":
+        summary_prefix = "Approve LinkedIn post"
+        execution_mode = "official_api_when_configured"
+    elif approval_type == "publish_linkedin_article":
+        summary_prefix = "Approve LinkedIn Article for manual publication"
+        execution_mode = "manual_linkedin_article"
+    else:
+        summary_prefix = "Approve website article"
+        execution_mode = "website_publish_after_approval"
     approval = ApprovalItem(
         approval_id=new_id("approval"),
         tenant_id=item["tenant_id"],
         action_type=approval_type,
         target_id=item["content_id"],
-        summary=("Approve LinkedIn post" if approval_type == "publish_post" else "Approve website article") + f": {item.get('title', '')}",
+        summary=f"{summary_prefix}: {item.get('title', '')}",
         payload={
             "content_id": item["content_id"],
             "brief_id": brief["brief_id"],
@@ -204,7 +223,7 @@ def _ensure_approval(item: dict[str, Any], brief: dict[str, Any], *, primary: bo
             "critique": item.get("critique") or {},
             "source_urls": (brief.get("research") or {}).get("source_urls", []),
             "evidence_ids": item.get("evidence_ids") or [],
-            "execution_mode": "official_api_when_configured" if approval_type == "publish_post" else "website_publish_after_approval",
+            "execution_mode": execution_mode,
         },
     )
     store.insert("approvals", to_dict(approval))
@@ -240,9 +259,6 @@ def _persist_variant(brief: dict[str, Any], *, language: str, channel: str, cont
         contract_valid = not legacy_issues
 
         if legacy_issues:
-            # Records created before deterministic publishing contracts existed
-            # must not be grandfathered into approval. Rewrite them in place so
-            # idempotency is preserved and stale approval payloads cannot publish.
             critique["contract_valid"] = False
             critique["contract_issues"] = legacy_issues
             critique["rewrite_required"] = True
@@ -283,7 +299,7 @@ def _persist_variant(brief: dict[str, Any], *, language: str, channel: str, cont
                     f"{brief['brief_id']}-{language}-{channel}",
                 )
 
-            status = "draft" if primary or content_type == "article" else "alternate"
+            status = "draft" if primary else "alternate"
             if not contract_valid:
                 status = "needs_review"
 
@@ -301,8 +317,6 @@ def _persist_variant(brief: dict[str, Any], *, language: str, channel: str, cont
             _invalidate_active_approvals(result["content_id"], "content_rewritten_for_contract")
             result["contract_migrated"] = True
         else:
-            # Backfill deterministic contract metadata on valid legacy rows
-            # without paying for another LLM critique or changing their prose.
             critique["contract_valid"] = True
             critique["contract_issues"] = []
             if result.get("critique") != critique:
@@ -339,7 +353,6 @@ def _persist_variant(brief: dict[str, Any], *, language: str, channel: str, cont
     critique["contract_valid"] = contract_valid
     critique["contract_issues"] = contract_issues
     if not contract_valid:
-        # An LLM score can never override a deterministic publishing contract.
         quality = min(quality, 7.4)
 
     cfg = load_config()
@@ -347,7 +360,7 @@ def _persist_variant(brief: dict[str, Any], *, language: str, channel: str, cont
     if content_type == "linkedin_post":
         visual_type, visual_path = base._render_visual(brief, draft, f"{brief['brief_id']}-{language}-{channel}")
 
-    status = "draft" if primary or content_type == "article" else "alternate"
+    status = "draft" if primary else "alternate"
     if primary and not contract_valid:
         status = "needs_review"
 
@@ -394,6 +407,16 @@ def generate_variants(brief: dict[str, Any]) -> list[dict[str, Any]]:
                 language=language,
                 channel="arnau_linkedin",
                 content_type="linkedin_post",
+                primary=language == primary_language,
+            ))
+
+    if decision == "LINKEDIN_ARTICLE":
+        for language in SUPPORTED_LANGUAGES:
+            variants.append(_persist_variant(
+                brief,
+                language=language,
+                channel="arnau_linkedin",
+                content_type="linkedin_article",
                 primary=language == primary_language,
             ))
 
