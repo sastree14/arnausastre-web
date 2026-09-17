@@ -90,3 +90,44 @@ def test_recovery_window_recovers_two_hour_old_task(monkeypatch, tmp_path):
     result = operator_queue.run_operator_queue(recovery=True, recovery_minutes=10080)
     assert result[0]["status"] == "completed"
     assert store.filter("tasks", task_id="task_recovery_test")[0]["status"] == "completed"
+
+
+def test_recovery_requeues_and_executes_stale_running_task(monkeypatch, tmp_path):
+    store = LocalJsonStore(tmp_path)
+    created = (datetime.now(timezone.utc) - timedelta(minutes=60)).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    store.insert("tasks", {
+        "task_id": "task_stale_running",
+        "tenant_id": "sc-analytics",
+        "type": "OPERATOR_SEO_AUDIT",
+        "status": "running",
+        "scheduled_for": created,
+        "created_at": created,
+        "inputs": {},
+        "outputs": {},
+    })
+    monkeypatch.setattr(operator_queue, "get_store", lambda: store)
+    monkeypatch.setattr(operator_queue, "_execute", lambda task: {"ok": True})
+    result = operator_queue.run_operator_queue(recovery=True, recovery_minutes=10080)
+    saved = store.filter("tasks", task_id="task_stale_running")[0]
+    assert result[0]["status"] == "completed"
+    assert saved["status"] == "completed"
+
+
+def test_recovery_does_not_touch_recent_running_task(monkeypatch, tmp_path):
+    store = LocalJsonStore(tmp_path)
+    created = (datetime.now(timezone.utc) - timedelta(minutes=10)).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    store.insert("tasks", {
+        "task_id": "task_recent_running",
+        "tenant_id": "sc-analytics",
+        "type": "OPERATOR_SEO_AUDIT",
+        "status": "running",
+        "scheduled_for": created,
+        "created_at": created,
+        "inputs": {},
+        "outputs": {},
+    })
+    monkeypatch.setattr(operator_queue, "get_store", lambda: store)
+    monkeypatch.setattr(operator_queue, "_execute", lambda task: {"ok": True})
+    result = operator_queue.run_operator_queue(recovery=True, recovery_minutes=10080)
+    assert result == []
+    assert store.filter("tasks", task_id="task_recent_running")[0]["status"] == "running"
