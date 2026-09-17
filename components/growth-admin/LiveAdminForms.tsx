@@ -22,6 +22,7 @@ export default function LiveAdminForms(){
     const activeForms=new Map<string,{form:HTMLFormElement;button:HTMLButtonElement|null;scrollY:number}>()
 
     const onSubmit=(event:SubmitEvent)=>{
+      if(event.defaultPrevented)return
       const form=event.target
       if(!(form instanceof HTMLFormElement))return
       const submitter=event.submitter instanceof HTMLElement?event.submitter:null
@@ -79,10 +80,10 @@ export default function LiveAdminForms(){
       window.dispatchEvent(new CustomEvent(ADMIN_MUTATION_EVENT,{detail:{taskId:detail.taskId,status:detail.status,type:detail.type}}))
     }
 
-    document.addEventListener('submit',onSubmit,true)
+    document.addEventListener('submit',onSubmit)
     window.addEventListener(OPERATOR_UPDATE_EVENT,onUpdate)
     window.addEventListener(OPERATOR_TERMINAL_EVENT,onTerminal)
-    return()=>{document.removeEventListener('submit',onSubmit,true);window.removeEventListener(OPERATOR_UPDATE_EVENT,onUpdate);window.removeEventListener(OPERATOR_TERMINAL_EVENT,onTerminal)}
+    return()=>{document.removeEventListener('submit',onSubmit);window.removeEventListener(OPERATOR_UPDATE_EVENT,onUpdate);window.removeEventListener(OPERATOR_TERMINAL_EVENT,onTerminal)}
   },[router])
   return null
 }
