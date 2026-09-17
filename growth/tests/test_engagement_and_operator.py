@@ -1,7 +1,7 @@
 import base64
 from datetime import datetime, timedelta, timezone
 
-from growth.src import gmail_sync, operator_queue
+from growth.src import gmail_sync, operator_queue, visual_generation
 from growth.src.content_engagement import _clean_hashtags, _metric
 from growth.src.gmail_sync import _connection_access_token, _heuristic
 from growth.src.integrations import decrypt_secret, encrypt_secret
@@ -70,6 +70,46 @@ def test_gmail_refresh_persists_new_access_token(monkeypatch, tmp_path):
 def test_seo_slug_prefers_target_path():
     assert _slug("/services/demand-forecasting", "Demand Forecasting") == "demand-forecasting"
     assert _slug("", "AI Automation Services") == "ai-automation-services"
+
+
+def test_generate_contextual_visual_persists_asset(monkeypatch, tmp_path):
+    store = LocalJsonStore(tmp_path)
+    store.insert("content_items", {
+        "content_id": "content_visual_test",
+        "tenant_id": "sc-analytics",
+        "content_type": "linkedin_post",
+        "title": "Forecasting should change a decision",
+        "body": "A planning team comparing two operational paths.",
+        "status": "draft",
+        "publication_mode": "text_only",
+        "visual_strategy": {"visual_headline": "Forecasting should change a decision"},
+    })
+    rendered = tmp_path / "illustration.png"
+    rendered.write_bytes(b"png")
+
+    class Assets:
+        def put(self, path, key):
+            assert path == rendered
+            assert "content_visual_test-manual-illustration" in key
+            return "supabase://growth-assets/sc-analytics/editorial/manual/illustration.png"
+
+    monkeypatch.setattr(visual_generation, "get_store", lambda: store)
+    monkeypatch.setattr(visual_generation, "render_contextual_illustration", lambda *args, **kwargs: rendered)
+    monkeypatch.setattr(visual_generation, "get_asset_store", lambda: Assets())
+    monkeypatch.setattr(visual_generation, "load_config", lambda: {"company": {"tenant_id": "sc-analytics"}})
+    result = visual_generation.generate_contextual_visual("content_visual_test", concept="Two warehouse planners comparing scenarios", theme="dark")
+    saved = store.filter("content_items", content_id="content_visual_test")[0]
+    assert result["status"] == "generated"
+    assert saved["visual_type"] == "generated_contextual_illustration"
+    assert saved["publication_mode"] == "text_with_visual"
+    assert saved["visual_path"].startswith("supabase://")
+    assert saved["visual_strategy"]["illustration_concept"] == "Two warehouse planners comparing scenarios"
+
+
+def test_operator_executes_generate_visual(monkeypatch):
+    monkeypatch.setattr(operator_queue, "generate_contextual_visual", lambda content_id, concept="", theme="": {"content_id": content_id, "concept": concept, "theme": theme})
+    result = operator_queue._execute({"type": "OPERATOR_GENERATE_VISUAL", "inputs": {"content_id": "content_1", "concept": "scene", "theme": "light"}})
+    assert result == {"content_id": "content_1", "concept": "scene", "theme": "light"}
 
 
 def test_recovery_window_recovers_two_hour_old_task(monkeypatch, tmp_path):
