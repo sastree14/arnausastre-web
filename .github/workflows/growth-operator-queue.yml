@@ -40,6 +40,7 @@ jobs:
           GROWTH_ENCRYPTION_KEY: ${{ secrets.GROWTH_ENCRYPTION_KEY }}
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          LINKEDIN_ORGANIZATION_ID: ${{ secrets.LINKEDIN_ORGANIZATION_ID }}
           STATE_PROVIDER: supabase
           ASSET_PROVIDER: supabase
           SUPABASE_ASSET_BUCKET: growth-assets
