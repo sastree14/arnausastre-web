@@ -22,6 +22,7 @@ export async function POST(request: Request) {
   if (opportunityId) {
     opportunity = (await queryGrowthTable<OpportunityRow>('crm_opportunities', { tenant_id: 'eq.sc-analytics', opportunity_id: `eq.${opportunityId}`, limit: '1' }, { cacheSeconds: 0 }))[0]
     if (!opportunity) return new NextResponse('Opportunity not found', { status: 404 })
+    if (String(opportunity.stage || '').toLowerCase() !== 'won') return new NextResponse('Only won opportunities can be converted into delivery projects', { status: 409 })
     const existing = await queryGrowthTable<ProjectRow>('operations_projects', { tenant_id: 'eq.sc-analytics', opportunity_id: `eq.${opportunityId}`, limit: '1' }, { cacheSeconds: 0 })
     if (existing[0]) return NextResponse.redirect(new URL(`/growth-admin/operations?project=${encodeURIComponent(String(existing[0].project_id))}#delivery`, request.url), 303)
   }
