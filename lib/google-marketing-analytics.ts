@@ -88,19 +88,30 @@ export async function syncGa4(days=365){
   try{
     const {connection,accessToken}=await connectionAndToken(ANALYTICS_SCOPE)
     const propertyId=await resolveGa4Property(connection,accessToken)
-    const core=await googleJson(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,accessToken,{method:'POST',body:JSON.stringify({dateRanges:[{startDate:`${Math.max(1,days)}daysAgo`,endDate:'today'}],dimensions:[{name:'date'},{name:'sessionSource'},{name:'sessionMedium'},{name:'sessionCampaignName'},{name:'pagePath'},{name:'sessionManualAdContent'}],metrics:[{name:'activeUsers'},{name:'sessions'},{name:'engagedSessions'},{name:'screenPageViews'},{name:'keyEvents'}],limit:'100000'})})
-    const now=new Date().toISOString()
-    const rows:Json[]=(core.rows||[]).map((row:Json)=>{
-      const date=isoGaDate(dimension(row,0)),source=dimension(row,1)||'(direct)',medium=dimension(row,2)||'(none)',campaign=dimension(row,3),pagePath=dimension(row,4)||'/',contentId=dimension(row,5)
-      return {tenant_id:TENANT_ID,metric_date:date,source,medium,campaign,content_id:contentId||null,page_path:pagePath,users:metric(row,0),sessions:metric(row,1),engaged_sessions:metric(row,2),page_views:metric(row,3),key_events:metric(row,4),discovery_clicks:0,bookings:0,sync_key:hash('ga4',date,source,medium,campaign,contentId,pagePath),metadata:{provider:'ga4',property_id:propertyId},created_at:now}
+    const windowDays=Math.max(1,days)
+    const dateRange={startDate:`${windowDays}daysAgo`,endDate:'today'}
+    const [totals,acquisition,events]=await Promise.all([
+      googleJson(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,accessToken,{method:'POST',body:JSON.stringify({dateRanges:[dateRange],metrics:[{name:'activeUsers'},{name:'sessions'},{name:'engagedSessions'},{name:'screenPageViews'},{name:'keyEvents'}]})}),
+      googleJson(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,accessToken,{method:'POST',body:JSON.stringify({dateRanges:[dateRange],dimensions:[{name:'date'},{name:'sessionSource'},{name:'sessionMedium'},{name:'sessionCampaignName'},{name:'sessionManualAdContent'}],metrics:[{name:'sessions'},{name:'engagedSessions'},{name:'screenPageViews'},{name:'keyEvents'}],limit:'100000'})}),
+      googleJson(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,accessToken,{method:'POST',body:JSON.stringify({dateRanges:[dateRange],dimensions:[{name:'eventName'}],metrics:[{name:'eventCount'}],dimensionFilter:{filter:{fieldName:'eventName',inListFilter:{values:['contact_click','discovery_call_click','calendly_open','calendly_booked']}}},limit:'100'})}),
+    ])
+    const now=new Date().toISOString(),today=now.slice(0,10)
+    const total=Array.isArray(totals.rows)&&totals.rows.length?totals.rows[0]:{}
+    const totalRow:Json={
+      tenant_id:TENANT_ID,metric_date:today,source:'(total)',medium:'period',campaign:`${windowDays}d`,content_id:null,page_path:'(all)',
+      users:metric(total,0),sessions:metric(total,1),engaged_sessions:metric(total,2),page_views:metric(total,3),key_events:metric(total,4),discovery_clicks:0,bookings:0,
+      sync_key:hash('ga4_period_total',String(windowDays)),metadata:{provider:'ga4',property_id:propertyId,scope:'period_total',window_days:windowDays},created_at:now,
+    }
+    const acquisitionRows:Json[]=(acquisition.rows||[]).map((row:Json)=>{
+      const date=isoGaDate(dimension(row,0)),source=dimension(row,1)||'(direct)',medium=dimension(row,2)||'(none)',campaign=dimension(row,3),contentId=dimension(row,4)
+      return {tenant_id:TENANT_ID,metric_date:date,source,medium,campaign,content_id:contentId||null,page_path:'(all)',users:0,sessions:metric(row,0),engaged_sessions:metric(row,1),page_views:metric(row,2),key_events:metric(row,3),discovery_clicks:0,bookings:0,sync_key:hash('ga4_acquisition',date,source,medium,campaign,contentId),metadata:{provider:'ga4',property_id:propertyId,scope:'acquisition'},created_at:now}
     })
-    const events=await googleJson(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,accessToken,{method:'POST',body:JSON.stringify({dateRanges:[{startDate:`${Math.max(1,days)}daysAgo`,endDate:'today'}],dimensions:[{name:'date'},{name:'eventName'},{name:'pagePath'}],metrics:[{name:'eventCount'}],dimensionFilter:{filter:{fieldName:'eventName',inListFilter:{values:['contact_click','discovery_call_click','calendly_open','calendly_booked']}}},limit:'100000'})})
     const eventRows:Json[]=(events.rows||[]).map((row:Json)=>{
-      const date=isoGaDate(dimension(row,0)),eventName=dimension(row,1),pagePath=dimension(row,2)||'/',count=metric(row,0)
-      return {tenant_id:TENANT_ID,metric_date:date,source:'(events)',medium:'event',campaign:'',content_id:null,page_path:pagePath,users:0,sessions:0,engaged_sessions:0,page_views:0,key_events:0,discovery_clicks:['discovery_call_click','calendly_open'].includes(eventName)?count:0,bookings:eventName==='calendly_booked'?count:0,sync_key:hash('ga4_event',date,eventName,pagePath),metadata:{provider:'ga4',property_id:propertyId,event_name:eventName,event_count:count},created_at:now}
+      const eventName=dimension(row,0),count=metric(row,0)
+      return {tenant_id:TENANT_ID,metric_date:today,source:'(events_total)',medium:'period',campaign:`${windowDays}d`,content_id:null,page_path:'(all)',users:0,sessions:0,engaged_sessions:0,page_views:0,key_events:0,discovery_clicks:['discovery_call_click','calendly_open'].includes(eventName)?count:0,bookings:eventName==='calendly_booked'?count:0,sync_key:hash('ga4_period_event',String(windowDays),eventName),metadata:{provider:'ga4',property_id:propertyId,scope:'period_event',window_days:windowDays,event_name:eventName,event_count:count},created_at:now}
     })
-    const written=await bulkUpsert('web_analytics_daily',[...rows,...eventRows],'tenant_id,sync_key')
-    await completeRun(runId,written,{property_id:propertyId,measurement_id:MEASUREMENT_ID,core_rows:rows.length,event_rows:eventRows.length})
+    const written=await bulkUpsert('web_analytics_daily',[totalRow,...acquisitionRows,...eventRows],'tenant_id,sync_key')
+    await completeRun(runId,written,{property_id:propertyId,measurement_id:MEASUREMENT_ID,window_days:windowDays,total_rows:1,acquisition_rows:acquisitionRows.length,event_rows:eventRows.length})
     return {ok:true,rows:written,propertyId}
   }catch(error){await failRun(runId,error);throw error}
 }
