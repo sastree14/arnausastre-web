@@ -1,25 +1,31 @@
-name: SC-Analytics Growth Agent — Publish Approved
+name: SC-Analytics Operating System — Publish Due Content
 
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: '15 * * * *'
+    - cron: '*/5 * * * *'
 
 permissions:
   contents: read
 
+concurrency:
+  group: sc-analytics-due-publisher
+  cancel-in-progress: false
+
 jobs:
-  publish-approved:
-    if: github.event_name == 'workflow_dispatch' || vars.GROWTH_PUBLISHING_ENABLED == 'true'
+  publish-due:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+          cache: pip
+          cache-dependency-path: growth/requirements.txt
       - run: pip install -r growth/requirements.txt
-      - name: Publish already-approved content only
-        run: python -m growth.src.cli publish-approved
+      - name: Publish due approved content across supported destinations
+        run: python -m growth.src.cli publish-due
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
@@ -28,3 +34,6 @@ jobs:
           ASSET_PROVIDER: supabase
           SUPABASE_ASSET_BUCKET: growth-assets
           LINKEDIN_API_VERSION: ${{ vars.LINKEDIN_API_VERSION || '202608' }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_PERSON_URN: ${{ secrets.LINKEDIN_PERSON_URN }}
+          LINKEDIN_ORGANIZATION_ID: ${{ secrets.LINKEDIN_ORGANIZATION_ID }}
