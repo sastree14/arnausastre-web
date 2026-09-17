@@ -16,11 +16,12 @@ from .publishing import delete_linkedin_post, publish_content
 from .seo_ops import run_seo_audit
 from .storage import get_store
 from .text_safety import sanitize_content_item, sanitize_generated_content
+from .visual_generation import generate_contextual_visual
 from .website_publishing import publish_article, unpublish_article
 
 OPERATOR_TYPES = {
     "OPERATOR_EDITORIAL_PROPOSALS", "OPERATOR_EDITORIAL_RUN", "OPERATOR_EDITORIAL_URL",
-    "OPERATOR_REWRITE_CONTENT", "OPERATOR_PROSPECT", "OPERATOR_COMMERCIAL_SIGNALS",
+    "OPERATOR_REWRITE_CONTENT", "OPERATOR_GENERATE_VISUAL", "OPERATOR_PROSPECT", "OPERATOR_COMMERCIAL_SIGNALS",
     "OPERATOR_COMPETITOR_DISCOVER", "OPERATOR_COMPETITOR_REFRESH", "OPERATOR_COMPETITOR_REFRESH_ALL",
     "OPERATOR_PUBLISH_LINKEDIN", "OPERATOR_PUBLISH_ARTICLE", "OPERATOR_UNPUBLISH_LINKEDIN",
     "OPERATOR_UNPUBLISH_ARTICLE", "OPERATOR_DEAL_PROPOSAL", "OPERATOR_DEAL_BUDGET",
@@ -72,6 +73,12 @@ def _execute(task: dict[str, Any]) -> Any:
         return editorial_from_url(url, title=str(inputs.get("title") or ""), snippet=str(inputs.get("snippet") or ""), generate=True)
     if task_type == "OPERATOR_REWRITE_CONTENT":
         return rewrite_content(str(inputs.get("content_id") or ""))
+    if task_type == "OPERATOR_GENERATE_VISUAL":
+        return generate_contextual_visual(
+            str(inputs.get("content_id") or ""),
+            concept=str(inputs.get("concept") or ""),
+            theme=str(inputs.get("theme") or ""),
+        )
     if task_type == "OPERATOR_PROSPECT":
         return research_companies(str(inputs.get("mode") or "lead"), int(inputs.get("limit", 10) or 10))
     if task_type == "OPERATOR_COMMERCIAL_SIGNALS":
