@@ -12,7 +12,7 @@
     },
     {
       "path": "/api/cron/finance-weekly",
-      "schedule": "0 6 * * 1"
+      "schedule": "0 6 * * *"
     }
   ]
 }

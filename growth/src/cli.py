@@ -15,6 +15,7 @@ from .operator_queue import run_operator_queue
 from .orchestrator import run_day
 from .prospecting import research_companies
 from .publishing import publish_all_approved,publish_content
+from .scheduled_publishing import publish_due_content
 from .seo_ops import run_seo_audit
 from .storage import get_store
 from .strategy import build_weekly_plan
@@ -22,7 +23,7 @@ from .website_publishing import publish_article,publish_due_articles
 
 def main()->None:
     parser=argparse.ArgumentParser(prog="sc-growth");sub=parser.add_subparsers(dest="command",required=True)
-    for command in("validate","brief","run-day","approvals","publish-approved","publish-due-articles"):sub.add_parser(command)
+    for command in("validate","brief","run-day","approvals","publish-approved","publish-due-articles","publish-due"):sub.add_parser(command)
     p_queue=sub.add_parser("run-operator-queue");p_queue.add_argument("--task-id",default="");p_queue.add_argument("--recovery",action="store_true");p_queue.add_argument("--limit",type=int,default=10);p_queue.add_argument("--recovery-minutes",type=int,default=10080)
     p_gmail=sub.add_parser("gmail-sync");p_gmail.add_argument("--limit",type=int,default=50);p_gmail.add_argument("--days",type=int,default=14)
     p_seo=sub.add_parser("seo-audit");p_seo.add_argument("--limit",type=int,default=6)
@@ -63,6 +64,7 @@ def main()->None:
     elif args.command=="publish-approved":print(json.dumps(publish_all_approved(),indent=2,ensure_ascii=False))
     elif args.command=="publish-article":print(json.dumps(publish_article(args.content_id,force=args.force),indent=2,ensure_ascii=False))
     elif args.command=="publish-due-articles":print(json.dumps(publish_due_articles(),indent=2,ensure_ascii=False))
+    elif args.command=="publish-due":print(json.dumps(publish_due_content(),indent=2,ensure_ascii=False))
     elif args.command=="rewrite-content":print(json.dumps(rewrite_content(args.content_id),indent=2,ensure_ascii=False))
     elif args.command=="run-operator-queue":print(json.dumps(run_operator_queue(args.task_id or None,recovery=args.recovery,limit=args.limit,recovery_minutes=args.recovery_minutes),indent=2,ensure_ascii=False))
 if __name__=="__main__":main()

@@ -26,7 +26,7 @@ CONTENT_FAMILIES = (
     "case",
     "commercial",
 )
-OUTPUT_DECISIONS = ("IGNORE", "RESEARCH_MORE", "LINKEDIN", "ARTICLE", "LINKEDIN_AND_ARTICLE", "CASE")
+OUTPUT_DECISIONS = ("IGNORE", "RESEARCH_MORE", "LINKEDIN", "LINKEDIN_ARTICLE", "ARTICLE", "LINKEDIN_AND_ARTICLE", "CASE")
 
 STATIC_DISCOVERY_QUERIES = (
     "AI automation business operations companies implementation",
@@ -200,7 +200,7 @@ For every signal return:
 - signal_id
 - scores: icp_relevance, business_consequence, angle_originality, evidence_quality, principles_fit, reader_usefulness, commercial_adjacency (0-10 each)
 - family: one of {list(CONTENT_FAMILIES)}
-- decision: one of IGNORE, RESEARCH_MORE, LINKEDIN, ARTICLE, LINKEDIN_AND_ARTICLE, CASE
+- decision: one of IGNORE, RESEARCH_MORE, LINKEDIN, LINKEDIN_ARTICLE, ARTICLE, LINKEDIN_AND_ARTICLE, CASE
 - business_problem
 - possible_thesis
 - why_sc_analytics_should_care
@@ -316,7 +316,7 @@ Return exactly these fields:
 - why_now
 - reasoning: 2-5 concise points
 - practical_takeaway
-- output_decision: IGNORE, LINKEDIN, ARTICLE or LINKEDIN_AND_ARTICLE
+- output_decision: IGNORE, LINKEDIN, LINKEDIN_ARTICLE, ARTICLE or LINKEDIN_AND_ARTICLE
 - primary_linkedin_language: es, en or ca
 - article_value: short explanation
 - evidence: array of {{claim, url}} using ONLY URLs from SOURCE_URLS
@@ -344,7 +344,7 @@ BRAIN:
 """,
     )
     output_decision = str(result.get("output_decision", "IGNORE")).upper()
-    if output_decision not in ("IGNORE", "LINKEDIN", "ARTICLE", "LINKEDIN_AND_ARTICLE"):
+    if output_decision not in ("IGNORE", "LINKEDIN", "LINKEDIN_ARTICLE", "ARTICLE", "LINKEDIN_AND_ARTICLE"):
         output_decision = "IGNORE"
     if output_decision == "IGNORE":
         get_store().update("editorial_signals", "signal_id", signal["signal_id"], {
@@ -427,6 +427,8 @@ def _writer_instructions(language: str, channel: str, content_type: str) -> str:
     target = language_names[language]
     if content_type == "article":
         return f"Write a native {target} website article for SC-Analytics. Use natural Markdown headings and prose."
+    if content_type == "linkedin_article":
+        return f"Write a native {target} long-form LinkedIn Article in Arnau Sastre's professional founder voice. Use clear headings and explanatory prose suitable for LinkedIn's article editor."
     if channel == "arnau_linkedin":
         return f"Write a native {target} LinkedIn post in Arnau Sastre's professional founder voice."
     return f"Write a native {target} LinkedIn post in SC-Analytics' company voice."
@@ -434,10 +436,11 @@ def _writer_instructions(language: str, channel: str, content_type: str) -> str:
 
 def _write_variant(brief: dict[str, Any], *, language: str, channel: str, content_type: str) -> dict[str, Any]:
     brain = _editorial_brain(channel)
-    llm = get_llm(high_reasoning=content_type == "article")
+    long_form = content_type in {"article", "linkedin_article"}
+    llm = get_llm(high_reasoning=long_form)
     format_rules = (
         "900-1600 words, useful section headings, no SEO padding, no fake quotes, and no hard sales CTA."
-        if content_type == "article"
+        if long_form
         else "Usually 900-1800 characters. Natural paragraphs, no hashtag block, no forced CTA, no fake suspense, and no one-sentence-per-line formatting habit."
     )
     raw = llm.json(
@@ -544,10 +547,11 @@ def _persist_variant(brief: dict[str, Any], *, language: str, channel: str, cont
     if content_type == "linkedin_post":
         visual_type, visual_path = _render_visual(brief, draft, f"{brief['brief_id']}-{language}-{channel}")
 
+    actual_channel = "website" if content_type == "article" else channel
     item = ContentItem(
         content_id=content_id,
         tenant_id=cfg["company"]["tenant_id"],
-        channel=channel if content_type == "linkedin_post" else "website",
+        channel=actual_channel,
         content_type=content_type,
         title=draft["title"],
         body=draft["body"],
@@ -569,13 +573,24 @@ def _persist_variant(brief: dict[str, Any], *, language: str, channel: str, cont
     get_store().insert("content_items", payload)
 
     if primary and quality >= 7.5:
-        approval_type = "publish_post" if content_type == "linkedin_post" else "publish_article"
+        if content_type == "linkedin_post":
+            approval_type = "publish_post"
+            summary_prefix = "Approve LinkedIn post"
+            execution_mode = "official_api_when_configured"
+        elif content_type == "linkedin_article":
+            approval_type = "publish_linkedin_article"
+            summary_prefix = "Approve LinkedIn Article for manual publication"
+            execution_mode = "manual_linkedin_article"
+        else:
+            approval_type = "publish_article"
+            summary_prefix = "Approve website article"
+            execution_mode = "website_publish_after_approval"
         approval = ApprovalItem(
             approval_id=new_id("approval"),
             tenant_id=cfg["company"]["tenant_id"],
             action_type=approval_type,
             target_id=content_id,
-            summary=("Approve LinkedIn post" if content_type == "linkedin_post" else "Approve website article") + f": {item.title}",
+            summary=f"{summary_prefix}: {item.title}",
             payload={
                 "content_id": content_id,
                 "brief_id": brief["brief_id"],
@@ -589,7 +604,7 @@ def _persist_variant(brief: dict[str, Any], *, language: str, channel: str, cont
                 "critique": critique,
                 "source_urls": (brief.get("research") or {}).get("source_urls", []),
                 "evidence_ids": item.evidence_ids,
-                "execution_mode": "official_api_when_configured" if content_type == "linkedin_post" else "website_publish_after_approval",
+                "execution_mode": execution_mode,
             },
         )
         get_store().insert("approvals", to_dict(approval))
@@ -611,6 +626,16 @@ def generate_variants(brief: dict[str, Any]) -> list[dict[str, Any]]:
                 language=language,
                 channel="arnau_linkedin",
                 content_type="linkedin_post",
+                primary=language == primary_language,
+            ))
+
+    if decision == "LINKEDIN_ARTICLE":
+        for language in SUPPORTED_LANGUAGES:
+            variants.append(_persist_variant(
+                brief,
+                language=language,
+                channel="arnau_linkedin",
+                content_type="linkedin_article",
                 primary=language == primary_language,
             ))
 

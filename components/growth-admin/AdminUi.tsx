@@ -42,37 +42,21 @@ export function SectionHeading({ eyebrow, title, description, count }: { eyebrow
 }
 
 export function StatCard({ label, value, note, tone = 'slate', href }: { label: string; value: number | string; note?: string; tone?: 'slate' | 'blue' | 'amber' | 'green' | 'violet'; href?: string }) {
-  const accents = {
-    slate: 'bg-slate-950',
-    blue: 'bg-sky-500',
-    amber: 'bg-amber-500',
-    green: 'bg-emerald-500',
-    violet: 'bg-indigo-600',
-  }
+  const accents = { slate: 'bg-slate-950', blue: 'bg-sky-500', amber: 'bg-amber-500', green: 'bg-emerald-500', violet: 'bg-indigo-600' }
   const body = <div className={`relative h-full overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition ${href ? 'hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md' : ''}`}><span className={`absolute inset-y-0 left-0 w-1 ${accents[tone]}`} /><p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">{label}</p><p className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">{value}</p>{note && <p className="mt-2 text-xs leading-5 text-slate-500">{note}</p>}</div>
   return href ? <a href={href}>{body}</a> : body
 }
 
-export function EmptyState({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-7 text-center text-sm leading-6 text-slate-500">{children}</div>
-}
+export function EmptyState({ children }: { children: React.ReactNode }) { return <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-7 text-center text-sm leading-6 text-slate-500">{children}</div> }
 
 export const adminPanel = 'rounded-2xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]'
 export const adminInput = 'rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100'
 export const adminButtonPrimary = 'rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800'
 export const adminButtonSecondary = 'rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50'
 
-export function assetUrl(item: GrowthContentItem) {
-  return item.visual_path?.startsWith('supabase://') ? `/api/growth-admin/asset?ref=${encodeURIComponent(item.visual_path)}` : null
-}
-
-export function formatDate(value?: string | null, withTime = false) {
-  return formatControlCenterDate(value, withTime)
-}
-
-export function scheduleInputValue(value?: string | null) {
-  return toControlCenterDateTimeLocal(value)
-}
+export function assetUrl(item: GrowthContentItem) { return item.visual_path?.startsWith('supabase://') ? `/api/growth-admin/asset?ref=${encodeURIComponent(item.visual_path)}` : null }
+export function formatDate(value?: string | null, withTime = false) { return formatControlCenterDate(value, withTime) }
+export function scheduleInputValue(value?: string | null) { return toControlCenterDateTimeLocal(value) }
 
 export function statusTone(status: string): 'slate' | 'green' | 'amber' | 'blue' | 'violet' | 'rose' {
   if (status === 'published' || status === 'executed' || status === 'done' || status === 'completed') return 'green'
@@ -82,6 +66,21 @@ export function statusTone(status: string): 'slate' | 'green' | 'amber' | 'blue'
   return 'slate'
 }
 
-export function publicationLabel(item: GrowthContentItem) {
-  return item.content_type === 'article' ? 'Artículo web' : 'LinkedIn'
+export type PublicationKind='linkedin_post'|'linkedin_article'|'web_article'
+export function publicationKind(item:Pick<GrowthContentItem,'content_type'|'channel'>):PublicationKind {
+  const type=String(item.content_type||'').toLowerCase(),channel=String(item.channel||'').toLowerCase()
+  if(type==='linkedin_article'||(type==='article'&&channel.includes('linkedin')))return'linkedin_article'
+  if(type==='article'||type==='web_article'||channel==='website')return'web_article'
+  return'linkedin_post'
+}
+export function publicationLabel(item:Pick<GrowthContentItem,'content_type'|'channel'>) {
+  const kind=publicationKind(item)
+  return kind==='linkedin_article'?'Artículo LinkedIn':kind==='web_article'?'Artículo web':'Post LinkedIn'
+}
+export function publicationLifecycle(item:Pick<GrowthContentItem,'status'|'scheduled_at'|'published_at'>){
+  if(item.status==='published'||item.published_at)return{step:5,total:5,label:'Publicada'}
+  if(item.status==='scheduled'||item.scheduled_at)return{step:4,total:5,label:'Programada'}
+  if(item.status==='approved')return{step:3,total:5,label:'Aprobada'}
+  if(item.status==='needs_review'||item.status==='draft')return{step:2,total:5,label:'Revisión'}
+  return{step:1,total:5,label:'Borrador'}
 }

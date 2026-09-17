@@ -40,6 +40,14 @@ _STOPWORDS = {
     "problema", "tesis", "servicio", "industria", "contenido", "exactly", "use", "none", "additional", "exclusions",
 }
 
+_FORMAT_TO_DECISION = {
+    "linkedin_post": "LINKEDIN",
+    "linkedin_article": "LINKEDIN_ARTICLE",
+    "article": "ARTICLE",
+    "web_article": "ARTICLE",
+    "linkedin_and_article": "LINKEDIN_AND_ARTICLE",
+}
+
 
 def _parse_date(value: Any) -> datetime | None:
     if not value:
@@ -196,7 +204,7 @@ For every proposal return:
 - service
 - business_problem
 - thesis
-- recommended_format: linkedin_post | article | linkedin_and_article
+- recommended_format: linkedin_post | linkedin_article | article | linkedin_and_article
 - primary_language: es | en | ca
 - cta: a natural commercial next step
 - scores: repetition_risk, commercial_potential, cta_fit, evidenceability (0-10)
@@ -240,10 +248,14 @@ Return {{"proposals": [...]}} only.
         service = str(item.get("service") or "Data & AI Strategy").strip()
         problem = str(item.get("business_problem") or "").strip()
         thesis = str(item.get("thesis") or "").strip()
+        recommended = str(item.get("recommended_format") or "linkedin_post").strip()
+        if recommended not in _FORMAT_TO_DECISION:
+            recommended = "linkedin_post"
         avoid_note = avoid.strip()
         generation_hint = (
             f"Selected editorial proposal. Industry: {industry}. Service: {service}. "
             f"Title direction: {title}. Business problem: {problem}. Thesis: {thesis}. "
+            f"Required format: {recommended}. "
             f"Required focus: {focus.strip() or 'use this proposal exactly'}. "
             f"Avoid: {avoid_note or 'no additional exclusions'}."
         )
@@ -255,7 +267,7 @@ Return {{"proposals": [...]}} only.
             "service": service,
             "business_problem": problem,
             "thesis": thesis,
-            "recommended_format": str(item.get("recommended_format") or "linkedin_post"),
+            "recommended_format": recommended,
             "primary_language": str(item.get("primary_language") or "es"),
             "cta": str(item.get("cta") or "").strip(),
             "rationale": str(item.get("rationale") or "").strip(),
@@ -288,6 +300,7 @@ def run_guided_editorial_cycle(
     avoid: str = "",
     strict_theme: bool = False,
     force_new: bool = False,
+    recommended_format: str = "",
 ) -> dict[str, Any]:
     # Import here so the planner remains a thin orchestration layer and avoids
     # coupling the core editorial runtime back to proposal planning.
@@ -321,16 +334,20 @@ def run_guided_editorial_cycle(
             brief = _get_or_create_brief(signal)
             if not brief:
                 continue
-            # Preserve the selected proposal direction inside an existing JSON
-            # column so future rewrites can understand why this topic was chosen.
             research = dict(brief.get("research") or {})
             research["editorial_direction"] = {
                 "theme_hint": theme_hint,
                 "avoid": avoid,
                 "strict": strict_theme,
+                "recommended_format": recommended_format,
+                "format_locked": bool(recommended_format),
             }
-            get_store().update("editorial_briefs", "brief_id", brief["brief_id"], {"research": research})
-            brief = {**brief, "research": research}
+            updates: dict[str, Any] = {"research": research}
+            decision = _FORMAT_TO_DECISION.get(recommended_format.strip())
+            if decision:
+                updates["output_decision"] = decision
+            get_store().update("editorial_briefs", "brief_id", brief["brief_id"], updates)
+            brief = {**brief, **updates}
             created_briefs.append(brief)
             variants.extend(generate_variants(brief))
 
@@ -341,6 +358,7 @@ def run_guided_editorial_cycle(
         "avoid": avoid,
         "strict_theme": strict_theme,
         "force_new": force_new,
+        "recommended_format": recommended_format,
         "resumed_briefs": len(resumed_briefs),
         "discovered": len(discovered),
         "evaluated": len(evaluated),

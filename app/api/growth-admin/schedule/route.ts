@@ -10,9 +10,9 @@ function calendarReturnUrl(request: Request, contentId: string, scheduled: boole
     try {
       const candidate = new URL(referer)
       const origin = new URL(request.url).origin
-      if (candidate.origin === origin && candidate.pathname === '/growth-admin/calendar') url = candidate
+      if (candidate.origin === origin && candidate.pathname.startsWith('/growth-admin')) url = candidate
     } catch {
-      // Ignore invalid referrer and keep the safe internal fallback.
+      // Keep safe fallback.
     }
   }
   url.hash = `item-${contentId}`
@@ -20,25 +20,26 @@ function calendarReturnUrl(request: Request, contentId: string, scheduled: boole
   return url
 }
 
+function approvalAction(contentType:string){if(contentType==='article'||contentType==='web_article')return'publish_article';return'publish_post'}
+
 export async function POST(request: Request) {
   if (!(await isGrowthAdminAuthenticated())) return new NextResponse('Unauthorized', { status: 401 })
-
   const form = await request.formData()
-  const contentId = String(form.get('content_id') || '')
+  const contentId = String(form.get('content_id') || '').trim()
   const scheduledRaw = String(form.get('scheduled_at') || '').trim()
   if (!contentId) return new NextResponse('Missing content_id', { status: 400 })
 
   const item = await getContentItem(contentId)
   if (!item) return new NextResponse('Content not found', { status: 404 })
   if (item.status === 'published') return new NextResponse('Published content must be handled from publication history', { status: 409 })
+  if (item.content_type === 'linkedin_article') return new NextResponse('LinkedIn Articles use the manual publication flow and cannot be scheduled in the automatic publisher.', { status: 409 })
 
   let scheduledAt: string | null = null
   if (scheduledRaw) {
     try {
       scheduledAt = parseControlCenterDateTime(scheduledRaw).toISOString()
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Invalid date'
-      return new NextResponse(message, { status: 400 })
+      return new NextResponse(error instanceof Error ? error.message : 'Invalid date', { status: 400 })
     }
   }
 
@@ -46,16 +47,16 @@ export async function POST(request: Request) {
     target_id: `eq.${contentId}`,
     status: 'eq.approved',
     order: 'decided_at.desc',
-    limit: '5',
-  })
-  const hasApprovedPublication = approvals.some((row) => row.action_type === 'publish_post' || row.action_type === 'publish_article')
-  const updates: Record<string, unknown> = { scheduled_at: scheduledAt }
+    limit: '10',
+  }, { cacheSeconds: 0 })
+  const requiredAction = approvalAction(String(item.content_type||''))
+  const approved = approvals.some((row) => row.action_type === requiredAction)
+  if (scheduledAt && !approved) return new NextResponse('Approve the publication before scheduling it', { status: 409 })
 
-  if (hasApprovedPublication) {
-    if (item.content_type === 'article') updates.status = scheduledAt ? 'scheduled' : 'approved'
-    else updates.status = 'approved'
+  const updates: Record<string, unknown> = {
+    scheduled_at: scheduledAt,
+    status: approved ? (scheduledAt ? 'scheduled' : 'approved') : item.status,
   }
-
   const updated = await updateGrowthRow('content_items', 'content_id', contentId, updates)
   if (!updated) return new NextResponse('Content not found', { status: 404 })
   return NextResponse.redirect(calendarReturnUrl(request, contentId, Boolean(scheduledAt)), 303)
