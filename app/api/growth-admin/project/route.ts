@@ -3,17 +3,26 @@ import { NextResponse } from 'next/server'
 import { insertGrowthRow, isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { queryGrowthTable, updateGrowthRow } from '@/lib/supabase-growth'
 
-type Row = Record<string, any>
+type OpportunityRow = {
+  opportunity_id: string
+  company_id?: string | null
+  name?: string | null
+  stage?: string | null
+  value?: number | string | null
+  currency?: string | null
+  metadata?: Record<string, unknown> | null
+}
+type ProjectRow = { project_id: string }
 
 export async function POST(request: Request) {
   if (!(await isGrowthAdminAuthenticated())) return new NextResponse('Unauthorized', { status: 401 })
   const form = await request.formData()
   const opportunityId = String(form.get('opportunity_id') || '').trim()
-  let opportunity: Row | undefined
+  let opportunity: OpportunityRow | undefined
   if (opportunityId) {
-    opportunity = (await queryGrowthTable<Row>('crm_opportunities', { tenant_id: 'eq.sc-analytics', opportunity_id: `eq.${opportunityId}`, limit: '1' }, { cacheSeconds: 0 }))[0]
+    opportunity = (await queryGrowthTable<OpportunityRow>('crm_opportunities', { tenant_id: 'eq.sc-analytics', opportunity_id: `eq.${opportunityId}`, limit: '1' }, { cacheSeconds: 0 }))[0]
     if (!opportunity) return new NextResponse('Opportunity not found', { status: 404 })
-    const existing = await queryGrowthTable<Row>('operations_projects', { tenant_id: 'eq.sc-analytics', opportunity_id: `eq.${opportunityId}`, limit: '1' }, { cacheSeconds: 0 })
+    const existing = await queryGrowthTable<ProjectRow>('operations_projects', { tenant_id: 'eq.sc-analytics', opportunity_id: `eq.${opportunityId}`, limit: '1' }, { cacheSeconds: 0 })
     if (existing[0]) return NextResponse.redirect(new URL(`/growth-admin/operations?project=${encodeURIComponent(String(existing[0].project_id))}#delivery`, request.url), 303)
   }
 
@@ -39,7 +48,7 @@ export async function POST(request: Request) {
     updated_at: now,
   })
   if (opportunity) {
-    const previousMeta = (opportunity.metadata || {}) as Row
+    const previousMeta = opportunity.metadata || {}
     const previousTimeline = Array.isArray(previousMeta.timeline) ? previousMeta.timeline : []
     await updateGrowthRow('crm_opportunities', 'opportunity_id', opportunityId, {
       stage: 'won', probability: 100, updated_at: now,
