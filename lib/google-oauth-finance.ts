@@ -25,7 +25,7 @@ export const GOOGLE_SCOPES = {
 export function googleOAuthConfig(origin = '') {
   const clientId = firstEnv('GOOGLE_OAUTH_CLIENT_ID', 'GOOGLE_CLIENT_ID')
   const clientSecret = firstEnv('GOOGLE_OAUTH_CLIENT_SECRET', 'GOOGLE_CLIENT_SECRET')
-  const configuredRedirect = firstEnv('GOOGLE_OAUTH_REDIRECT_URI', 'GOOGLE_GMAIL_REDIRECT_URI')
+  const configuredRedirect = env('GOOGLE_OAUTH_REDIRECT_URI')
   const redirectUri = configuredRedirect || (origin ? `${origin}/api/growth-admin/google/callback` : '')
   const missing: string[] = []
   if (!clientId) missing.push('GOOGLE_OAUTH_CLIENT_ID / GOOGLE_CLIENT_ID')
