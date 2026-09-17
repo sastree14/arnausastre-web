@@ -63,14 +63,12 @@ export async function POST(request: Request) {
   const reportType = String(form.get('report_type') || 'content')
   if (!(file instanceof File)) return new NextResponse('Missing XLSX file', { status: 400 })
   if (!['arnau','sc_analytics'].includes(accountType)) return new NextResponse('Invalid account type', { status: 400 })
+  if (reportType !== 'content') return new NextResponse('Only the official LinkedIn Content / post performance export is supported by this importer.', { status: 400 })
   if (file.size > 12_000_000) return new NextResponse('File too large', { status: 413 })
-  if (!/\.(xlsx|xls)$/i.test(file.name)) return new NextResponse('Upload an official LinkedIn XLS/XLSX export', { status: 400 })
+  if (!/\.xlsx$/i.test(file.name)) return new NextResponse('Upload the official LinkedIn Content / post performance export as XLSX. Legacy XLS is not supported.', { status: 400 })
 
   const workbook = new ExcelJS.Workbook()
   try {
-    // ExcelJS currently exposes a Buffer type that differs slightly from recent
-    // @types/node generics. Cast through the function's declared input type so
-    // runtime bytes stay unchanged without weakening lint/type safety with `any`.
     const workbookBytes = Buffer.from(await file.arrayBuffer())
     const excelInput = workbookBytes as unknown as Parameters<typeof workbook.xlsx.load>[0]
     await workbook.xlsx.load(excelInput)
@@ -132,8 +130,9 @@ export async function POST(request: Request) {
     }
   }
 
+  if (!imported) return new NextResponse('No compatible post-performance rows were found in this XLSX. Use the official LinkedIn Content / post performance export.', { status: 422 })
   await insertGrowthRow('linkedin_analytics_imports', {
-    import_id:importId, tenant_id:'sc-analytics', account_type:accountType, report_type:reportType,
+    import_id:importId, tenant_id:'sc-analytics', account_type:accountType, report_type:'content',
     period_start:minDate||null, period_end:maxDate||null, source_filename:file.name, rows_imported:imported,
     metadata:{sheets:sheetMeta}, imported_at:new Date().toISOString(),
   })
