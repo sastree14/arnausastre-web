@@ -46,6 +46,7 @@ export default function LiveAdminForms(){
           form.dataset.operatorTaskId=taskId
           activeForms.set(taskId,{form,button,scrollY})
           setButton(button,dispatched?'En cola…':'No lanzado · reintentar',!dispatched)
+          if(dispatched&&form.dataset.hideProposal==='1')form.closest<HTMLElement>('[data-proposal-card]')?.classList.add('hidden')
           window.dispatchEvent(new CustomEvent<OperatorQueuedDetail>(OPERATOR_QUEUED_EVENT,{detail:{taskId,dispatched,reason}}))
           if(!dispatched){delete form.dataset.liveBusy;restoreScroll(scrollY)}
           return
