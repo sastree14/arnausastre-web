@@ -90,7 +90,7 @@ def test_generate_contextual_visual_persists_asset(monkeypatch, tmp_path):
     class Assets:
         def put(self, path, key):
             assert path == rendered
-            assert "content_visual_test-manual-illustration" in key
+            assert key == "sc-analytics/editorial/manual/illustration.png"
             return "supabase://growth-assets/sc-analytics/editorial/manual/illustration.png"
 
     monkeypatch.setattr(visual_generation, "get_store", lambda: store)
