@@ -11,7 +11,6 @@ const ANALYTICS_SCOPE='https://www.googleapis.com/auth/analytics.readonly'
 const SEARCH_SCOPE='https://www.googleapis.com/auth/webmasters.readonly'
 
 function hash(...parts:string[]){return createHash('sha256').update(parts.join('|')).digest('hex')}
-function isoGaDate(value:string){return /^\d{8}$/.test(value)?`${value.slice(0,4)}-${value.slice(4,6)}-${value.slice(6,8)}`:value}
 function metric(row:Json,index:number){return Number(row.metricValues?.[index]?.value||0)}
 function dimension(row:Json,index:number){return String(row.dimensionValues?.[index]?.value||'')}
 function dateDaysAgo(days:number){const d=new Date();d.setUTCDate(d.getUTCDate()-days);return d.toISOString().slice(0,10)}
@@ -92,7 +91,7 @@ export async function syncGa4(days=365){
     const dateRange={startDate:`${windowDays}daysAgo`,endDate:'today'}
     const [totals,acquisition,events]=await Promise.all([
       googleJson(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,accessToken,{method:'POST',body:JSON.stringify({dateRanges:[dateRange],metrics:[{name:'activeUsers'},{name:'sessions'},{name:'engagedSessions'},{name:'screenPageViews'},{name:'keyEvents'}]})}),
-      googleJson(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,accessToken,{method:'POST',body:JSON.stringify({dateRanges:[dateRange],dimensions:[{name:'date'},{name:'sessionSource'},{name:'sessionMedium'},{name:'sessionCampaignName'},{name:'sessionManualAdContent'}],metrics:[{name:'sessions'},{name:'engagedSessions'},{name:'screenPageViews'},{name:'keyEvents'}],limit:'100000'})}),
+      googleJson(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,accessToken,{method:'POST',body:JSON.stringify({dateRanges:[dateRange],dimensions:[{name:'sessionSource'},{name:'sessionMedium'},{name:'sessionCampaignName'},{name:'sessionManualAdContent'}],metrics:[{name:'sessions'},{name:'engagedSessions'},{name:'screenPageViews'},{name:'keyEvents'}],limit:'100000'})}),
       googleJson(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,accessToken,{method:'POST',body:JSON.stringify({dateRanges:[dateRange],dimensions:[{name:'eventName'}],metrics:[{name:'eventCount'}],dimensionFilter:{filter:{fieldName:'eventName',inListFilter:{values:['contact_click','discovery_call_click','calendly_open','calendly_booked']}}},limit:'100'})}),
     ])
     const now=new Date().toISOString(),today=now.slice(0,10)
@@ -103,8 +102,8 @@ export async function syncGa4(days=365){
       sync_key:hash('ga4_period_total',String(windowDays)),metadata:{provider:'ga4',property_id:propertyId,scope:'period_total',window_days:windowDays},created_at:now,
     }
     const acquisitionRows:Json[]=(acquisition.rows||[]).map((row:Json)=>{
-      const date=isoGaDate(dimension(row,0)),source=dimension(row,1)||'(direct)',medium=dimension(row,2)||'(none)',campaign=dimension(row,3),contentId=dimension(row,4)
-      return {tenant_id:TENANT_ID,metric_date:date,source,medium,campaign,content_id:contentId||null,page_path:'(all)',users:0,sessions:metric(row,0),engaged_sessions:metric(row,1),page_views:metric(row,2),key_events:metric(row,3),discovery_clicks:0,bookings:0,sync_key:hash('ga4_acquisition',date,source,medium,campaign,contentId),metadata:{provider:'ga4',property_id:propertyId,scope:'acquisition'},created_at:now}
+      const source=dimension(row,0)||'(direct)',medium=dimension(row,1)||'(none)',campaign=dimension(row,2),contentId=dimension(row,3)
+      return {tenant_id:TENANT_ID,metric_date:today,source,medium,campaign,content_id:contentId||null,page_path:'(all)',users:0,sessions:metric(row,0),engaged_sessions:metric(row,1),page_views:metric(row,2),key_events:metric(row,3),discovery_clicks:0,bookings:0,sync_key:hash('ga4_acquisition_period',String(windowDays),source,medium,campaign,contentId),metadata:{provider:'ga4',property_id:propertyId,scope:'acquisition',window_days:windowDays},created_at:now}
     })
     const eventRows:Json[]=(events.rows||[]).map((row:Json)=>{
       const eventName=dimension(row,0),count=metric(row,0)
