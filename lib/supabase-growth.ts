@@ -1,133 +1,17 @@
 import 'server-only'
 
-function env(name: string): string {
-  return (process.env[name] || '').trim()
-}
-
-export function growthSupabaseUrl(): string {
-  const url = env('SUPABASE_URL').replace(/\/$/, '')
-  if (!url) throw new Error('SUPABASE_URL is not configured')
-  return url
-}
-
-export function growthSupabaseKey(): string {
-  const key = env('SUPABASE_SECRET_KEY') || env('SUPABASE_SERVICE_ROLE_KEY')
-  if (!key) throw new Error('SUPABASE_SECRET_KEY is not configured')
-  return key
-}
-
-export function growthSupabaseHeaders(extra: Record<string, string> = {}): Record<string, string> {
-  const key = growthSupabaseKey()
-  const headers: Record<string, string> = {
-    apikey: key,
-    'Content-Type': 'application/json',
-    ...extra,
-  }
-  // Legacy service_role keys are JWTs. Modern sb_secret_* keys are API keys and
-  // should not be presented as a Bearer JWT.
-  if (key.startsWith('eyJ')) headers.Authorization = `Bearer ${key}`
-  return headers
-}
-
-export type GrowthReadOptions = {
-  cacheSeconds?: number
-  timeoutMs?: number
-  retries?: number
-}
-
-const RETRYABLE_STATUS = new Set([408, 425, 429, 500, 502, 503, 504])
-const DEFAULT_READ_CACHE_SECONDS = 5
-const DEFAULT_TIMEOUT_MS = 4500
-
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-async function readRequest(url: URL | string, options: GrowthReadOptions = {}): Promise<Response> {
-  const cacheSeconds = options.cacheSeconds ?? DEFAULT_READ_CACHE_SECONDS
-  const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS
-  const retries = options.retries ?? 1
-  let lastError: unknown = null
-
-  for (let attempt = 0; attempt <= retries; attempt += 1) {
-    const controller = new AbortController()
-    const timer = setTimeout(() => controller.abort(), timeoutMs)
-    try {
-      const response = await fetch(url, {
-        headers: growthSupabaseHeaders(),
-        signal: controller.signal,
-        ...(cacheSeconds > 0
-          ? { cache: 'force-cache' as const, next: { revalidate: cacheSeconds } }
-          : { cache: 'no-store' as const }),
-      })
-      clearTimeout(timer)
-      if (response.ok || !RETRYABLE_STATUS.has(response.status) || attempt === retries) return response
-      await response.body?.cancel().catch(() => undefined)
-      await sleep(120 * (attempt + 1))
-    } catch (error) {
-      clearTimeout(timer)
-      lastError = error
-      if (attempt === retries) throw error
-      await sleep(120 * (attempt + 1))
-    }
-  }
-
-  throw lastError instanceof Error ? lastError : new Error('Supabase read failed')
-}
-
-export async function queryGrowthTable<T>(table: string, params: Record<string, string> = {}, options: GrowthReadOptions = {}): Promise<T[]> {
-  const url = new URL(`${growthSupabaseUrl()}/rest/v1/${table}`)
-  url.searchParams.set('select', '*')
-  Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value))
-  const response = await readRequest(url, options)
-  if (!response.ok) throw new Error(`Supabase ${table} query failed: ${response.status} ${await response.text()}`)
-  return response.json() as Promise<T[]>
-}
-
-export async function queryGrowthRpc<T>(functionName: string, params: Record<string, string> = {}, options: GrowthReadOptions = {}): Promise<T> {
-  const url = new URL(`${growthSupabaseUrl()}/rest/v1/rpc/${functionName}`)
-  Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value))
-  const response = await readRequest(url, options)
-  if (!response.ok) throw new Error(`Supabase RPC ${functionName} failed: ${response.status} ${await response.text()}`)
-  return response.json() as Promise<T>
-}
-
-export async function updateGrowthRow<T>(table: string, key: string, value: string, changes: Record<string, unknown>): Promise<T | null> {
-  const url = new URL(`${growthSupabaseUrl()}/rest/v1/${table}`)
-  url.searchParams.set(key, `eq.${value}`)
-  const response = await fetch(url, {
-    method: 'PATCH',
-    headers: growthSupabaseHeaders({ Prefer: 'return=representation' }),
-    body: JSON.stringify(changes),
-    cache: 'no-store',
-  })
-  if (!response.ok) throw new Error(`Supabase ${table} update failed: ${response.status} ${await response.text()}`)
-  const rows = await response.json() as T[]
-  return rows[0] || null
-}
-
-export async function insertGrowthRow<T>(table: string, row: Record<string, unknown>): Promise<T | null> {
-  const response = await fetch(`${growthSupabaseUrl()}/rest/v1/${table}`, {
-    method: 'POST',
-    headers: growthSupabaseHeaders({ Prefer: 'return=representation' }),
-    body: JSON.stringify(row),
-    cache: 'no-store',
-  })
-  if (!response.ok) throw new Error(`Supabase ${table} insert failed: ${response.status} ${await response.text()}`)
-  const rows = await response.json() as T[]
-  return rows[0] || null
-}
-
-export async function upsertGrowthRow<T>(table: string, row: Record<string, unknown>, onConflict: string): Promise<T | null> {
-  const url = new URL(`${growthSupabaseUrl()}/rest/v1/${table}`)
-  url.searchParams.set('on_conflict', onConflict)
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: growthSupabaseHeaders({ Prefer: 'resolution=merge-duplicates,return=representation' }),
-    body: JSON.stringify(row),
-    cache: 'no-store',
-  })
-  if (!response.ok) throw new Error(`Supabase ${table} upsert failed: ${response.status} ${await response.text()}`)
-  const rows = await response.json() as T[]
-  return rows[0] || null
-}
+function env(name:string){return (process.env[name]||'').trim()}
+export function growthSupabaseUrl(){const url=env('SUPABASE_URL').replace(/\/$/,'');if(!url)throw new Error('SUPABASE_URL is not configured');return url}
+export function growthSupabaseKey(){const key=env('SUPABASE_SECRET_KEY')||env('SUPABASE_SERVICE_ROLE_KEY');if(!key)throw new Error('SUPABASE_SECRET_KEY is not configured');return key}
+export function growthSupabaseHeaders(extra:Record<string,string>={}){const key=growthSupabaseKey();const headers:Record<string,string>={apikey:key,'Content-Type':'application/json',...extra};if(key.startsWith('eyJ'))headers.Authorization=`Bearer ${key}`;return headers}
+export type GrowthReadOptions={cacheSeconds?:number;timeoutMs?:number;retries?:number}
+const RETRYABLE_STATUS=new Set([408,425,429,500,502,503,504]), DEFAULT_READ_CACHE_SECONDS=5, DEFAULT_TIMEOUT_MS=4500
+const sleep=(ms:number)=>new Promise(resolve=>setTimeout(resolve,ms))
+async function readRequest(url:URL|string,options:GrowthReadOptions={}){const cacheSeconds=options.cacheSeconds??DEFAULT_READ_CACHE_SECONDS,timeoutMs=options.timeoutMs??DEFAULT_TIMEOUT_MS,retries=options.retries??1;let lastError:unknown=null;for(let attempt=0;attempt<=retries;attempt+=1){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);try{const response=await fetch(url,{headers:growthSupabaseHeaders(),signal:controller.signal,...(cacheSeconds>0?{cache:'force-cache' as const,next:{revalidate:cacheSeconds}}:{cache:'no-store' as const})});clearTimeout(timer);if(response.ok||!RETRYABLE_STATUS.has(response.status)||attempt===retries)return response;await response.body?.cancel().catch(()=>undefined);await sleep(120*(attempt+1))}catch(error){clearTimeout(timer);lastError=error;if(attempt===retries)throw error;await sleep(120*(attempt+1))}}throw lastError instanceof Error?lastError:new Error('Supabase read failed')}
+export async function queryGrowthTable<T>(table:string,params:Record<string,string>={},options:GrowthReadOptions={}){const url=new URL(`${growthSupabaseUrl()}/rest/v1/${table}`);url.searchParams.set('select','*');Object.entries(params).forEach(([key,value])=>url.searchParams.set(key,value));const response=await readRequest(url,options);if(!response.ok)throw new Error(`Supabase ${table} query failed: ${response.status} ${await response.text()}`);return response.json() as Promise<T[]>}
+export async function queryGrowthRpc<T>(functionName:string,params:Record<string,string>={},options:GrowthReadOptions={}){const url=new URL(`${growthSupabaseUrl()}/rest/v1/rpc/${functionName}`);Object.entries(params).forEach(([key,value])=>url.searchParams.set(key,value));const response=await readRequest(url,options);if(!response.ok)throw new Error(`Supabase RPC ${functionName} failed: ${response.status} ${await response.text()}`);return response.json() as Promise<T>}
+export async function updateGrowthRow<T>(table:string,key:string,value:string,changes:Record<string,unknown>){const url=new URL(`${growthSupabaseUrl()}/rest/v1/${table}`);url.searchParams.set(key,`eq.${value}`);const response=await fetch(url,{method:'PATCH',headers:growthSupabaseHeaders({Prefer:'return=representation'}),body:JSON.stringify(changes),cache:'no-store'});if(!response.ok)throw new Error(`Supabase ${table} update failed: ${response.status} ${await response.text()}`);const rows=await response.json() as T[];return rows[0]||null}
+export async function insertGrowthRow<T>(table:string,row:Record<string,unknown>){const response=await fetch(`${growthSupabaseUrl()}/rest/v1/${table}`,{method:'POST',headers:growthSupabaseHeaders({Prefer:'return=representation'}),body:JSON.stringify(row),cache:'no-store'});if(!response.ok)throw new Error(`Supabase ${table} insert failed: ${response.status} ${await response.text()}`);const rows=await response.json() as T[];return rows[0]||null}
+export async function upsertGrowthRow<T>(table:string,row:Record<string,unknown>,onConflict:string){const url=new URL(`${growthSupabaseUrl()}/rest/v1/${table}`);url.searchParams.set('on_conflict',onConflict);const response=await fetch(url,{method:'POST',headers:growthSupabaseHeaders({Prefer:'resolution=merge-duplicates,return=representation'}),body:JSON.stringify(row),cache:'no-store'});if(!response.ok)throw new Error(`Supabase ${table} upsert failed: ${response.status} ${await response.text()}`);const rows=await response.json() as T[];return rows[0]||null}
+export async function deleteGrowthRows(table:string,params:Record<string,string>){const url=new URL(`${growthSupabaseUrl()}/rest/v1/${table}`);Object.entries(params).forEach(([key,value])=>url.searchParams.set(key,value));const response=await fetch(url,{method:'DELETE',headers:growthSupabaseHeaders({Prefer:'return=representation'}),cache:'no-store'});if(!response.ok)throw new Error(`Supabase ${table} delete failed: ${response.status} ${await response.text()}`);return response.json() as Promise<Array<Record<string,unknown>>>}
+export async function deleteGrowthAsset(ref?:string|null){const value=String(ref||'').trim();if(!value.startsWith('supabase://'))return false;const rest=value.slice('supabase://'.length),slash=rest.indexOf('/');if(slash<=0)return false;const bucket=rest.slice(0,slash),path=rest.slice(slash+1);if(!path)return false;const encodedPath=path.split('/').map(encodeURIComponent).join('/');const response=await fetch(`${growthSupabaseUrl()}/storage/v1/object/${encodeURIComponent(bucket)}/${encodedPath}`,{method:'DELETE',headers:growthSupabaseHeaders(),cache:'no-store'});if(!response.ok&&response.status!==404)throw new Error(`Supabase asset delete failed: ${response.status} ${await response.text()}`);return response.ok}

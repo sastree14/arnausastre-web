@@ -1,22 +1,20 @@
 name: SC-Analytics Operating System — Operator Queue
-
 on:
   workflow_dispatch:
+    inputs:
+      task_id:
+        description: Exact operator task to execute
+        required: true
+        type: string
   repository_dispatch:
     types: [operator_queue]
   schedule:
-    # Reliability sweep. UI actions first try an immediate workflow dispatch
-    # and then repository_dispatch as an independent permission-compatible
-    # fallback. The scheduled run remains only as a safety net.
     - cron: '*/5 * * * *'
-
 permissions:
   contents: read
-
 concurrency:
-  group: sc-analytics-operator-queue
+  group: sc-analytics-operator-${{ github.event.inputs.task_id || github.event.client_payload.task_id || github.run_id }}
   cancel-in-progress: false
-
 jobs:
   operator-queue:
     runs-on: ubuntu-latest
@@ -29,15 +27,27 @@ jobs:
           cache: pip
           cache-dependency-path: growth/requirements.txt
       - run: pip install -r growth/requirements.txt
-      - name: Process operator tasks
-        run: python -m growth.src.cli run-operator-queue
+      - name: Process requested operator task
         env:
+          TASK_ID: ${{ github.event.inputs.task_id || github.event.client_payload.task_id || '' }}
+          EVENT_NAME: ${{ github.event_name }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_IMAGE_MODEL: ${{ vars.OPENAI_IMAGE_MODEL || 'gpt-image-2' }}
+          OPENAI_IMAGE_QUALITY: ${{ vars.OPENAI_IMAGE_QUALITY || 'low' }}
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
           GROWTH_ENCRYPTION_KEY: ${{ secrets.GROWTH_ENCRYPTION_KEY }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           STATE_PROVIDER: supabase
           ASSET_PROVIDER: supabase
           SUPABASE_ASSET_BUCKET: growth-assets
           LINKEDIN_API_VERSION: ${{ vars.LINKEDIN_API_VERSION || '202608' }}
+        run: |
+          if [ "$EVENT_NAME" = "schedule" ]; then
+            python -m growth.src.cli run-operator-queue --recovery --recovery-minutes 10080
+          else
+            test -n "$TASK_ID"
+            python -m growth.src.cli run-operator-queue --task-id "$TASK_ID"
+          fi

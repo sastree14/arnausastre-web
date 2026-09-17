@@ -27,55 +27,50 @@ function headers(token: string) {
   }
 }
 
-async function workflowDispatch(token: string) {
+async function workflowDispatch(token: string, taskId: string) {
   return fetch(`https://api.github.com/repos/${OWNER}/${REPO}/actions/workflows/${WORKFLOW}/dispatches`, {
     method: 'POST',
     headers: headers(token),
-    body: JSON.stringify({ ref: 'main' }),
+    body: JSON.stringify({ ref: 'main', inputs: { task_id: taskId } }),
     cache: 'no-store',
   })
 }
 
-async function repositoryDispatch(token: string) {
+async function repositoryDispatch(token: string, taskId: string) {
   return fetch(`https://api.github.com/repos/${OWNER}/${REPO}/dispatches`, {
     method: 'POST',
     headers: headers(token),
     body: JSON.stringify({
       event_type: 'operator_queue',
-      client_payload: { source: 'growth-admin', requested_at: new Date().toISOString() },
+      client_payload: { source: 'growth-admin', task_id: taskId, requested_at: new Date().toISOString() },
     }),
     cache: 'no-store',
   })
 }
 
-export async function dispatchOperatorQueue(): Promise<DispatchResult> {
+export async function dispatchOperatorQueue(taskId: string): Promise<DispatchResult> {
+  const normalizedTaskId = String(taskId || '').trim()
+  if (!normalizedTaskId) return { dispatched: false, reason: 'github_error' }
   const tokens = githubTokens()
   if (!tokens.length) return { dispatched: false, reason: 'missing_token' }
 
   let networkFailed = false
-
   for (const token of tokens) {
     try {
-      const response = await workflowDispatch(token)
+      const response = await workflowDispatch(token, normalizedTaskId)
       if (response.ok) return { dispatched: true, reason: 'ok', transport: 'workflow_dispatch' }
-      const detail = (await response.text()).slice(0, 300)
-      console.error('GitHub operator workflow_dispatch failed', response.status, detail)
+      console.error('GitHub operator workflow_dispatch failed', response.status, (await response.text()).slice(0, 300))
     } catch (error) {
       networkFailed = true
       console.error('GitHub operator workflow_dispatch request failed', error)
     }
   }
 
-  // Fine-grained PATs require Actions:write for workflow_dispatch, but
-  // repository_dispatch only requires Contents:write. Keep this independent
-  // fallback so CRM buttons can still start the worker immediately when the
-  // existing token has repository write access but not Actions write access.
   for (const token of tokens) {
     try {
-      const response = await repositoryDispatch(token)
+      const response = await repositoryDispatch(token, normalizedTaskId)
       if (response.ok) return { dispatched: true, reason: 'ok', transport: 'repository_dispatch' }
-      const detail = (await response.text()).slice(0, 300)
-      console.error('GitHub operator repository_dispatch failed', response.status, detail)
+      console.error('GitHub operator repository_dispatch failed', response.status, (await response.text()).slice(0, 300))
     } catch (error) {
       networkFailed = true
       console.error('GitHub operator repository_dispatch request failed', error)

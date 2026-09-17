@@ -4,8 +4,6 @@ import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto'
 import { queryGrowthTable, upsertGrowthRow, updateGrowthRow } from '@/lib/supabase-growth'
 
 const TENANT_ID = 'sc-analytics'
-const LINKEDIN_PROVIDER = 'linkedin'
-const LINKEDIN_ACCOUNT_TYPE = 'member'
 
 export interface IntegrationConnection {
   connection_id: string
@@ -43,43 +41,35 @@ export function decryptIntegrationSecret(value: string): string {
   if (version !== 'v1' || !ivRaw || !tagRaw || !cipherRaw) throw new Error('Unsupported encrypted secret format')
   const decipher = createDecipheriv('aes-256-gcm', encryptionKey(), Buffer.from(ivRaw, 'base64url'))
   decipher.setAuthTag(Buffer.from(tagRaw, 'base64url'))
-  return Buffer.concat([
-    decipher.update(Buffer.from(cipherRaw, 'base64url')),
-    decipher.final(),
-  ]).toString('utf8')
+  return Buffer.concat([decipher.update(Buffer.from(cipherRaw, 'base64url')), decipher.final()]).toString('utf8')
+}
+
+async function getConnection(provider: string, accountType: string, subject?: string) {
+  const params: Record<string, string> = {
+    tenant_id: `eq.${TENANT_ID}`,
+    provider: `eq.${provider}`,
+    account_type: `eq.${accountType}`,
+    order: 'updated_at.desc',
+    limit: subject ? '1' : '20',
+  }
+  if (subject) params.provider_subject = `eq.${subject}`
+  return queryGrowthTable<IntegrationConnection>('integration_connections', params, { cacheSeconds: 0 })
 }
 
 export async function getLinkedInConnection(): Promise<IntegrationConnection | null> {
-  const rows = await queryGrowthTable<IntegrationConnection>('integration_connections', {
-    tenant_id: `eq.${TENANT_ID}`,
-    provider: `eq.${LINKEDIN_PROVIDER}`,
-    account_type: `eq.${LINKEDIN_ACCOUNT_TYPE}`,
-    order: 'updated_at.desc',
-    limit: '1',
-  })
-  return rows[0] || null
+  return (await getConnection('linkedin', 'member'))[0] || null
 }
 
-export async function saveLinkedInConnection(input: {
-  subject: string
-  displayName: string
-  accessToken: string
-  expiresInSeconds?: number
-  scopes: string[]
-  metadata?: Record<string, unknown>
-}): Promise<IntegrationConnection | null> {
+export async function saveLinkedInConnection(input: { subject: string; displayName: string; accessToken: string; expiresInSeconds?: number; scopes: string[]; metadata?: Record<string, unknown> }) {
   const now = new Date()
-  const expires = input.expiresInSeconds
-    ? new Date(now.getTime() + input.expiresInSeconds * 1000).toISOString()
-    : null
   return upsertGrowthRow<IntegrationConnection>('integration_connections', {
     tenant_id: TENANT_ID,
-    provider: LINKEDIN_PROVIDER,
-    account_type: LINKEDIN_ACCOUNT_TYPE,
+    provider: 'linkedin',
+    account_type: 'member',
     provider_subject: input.subject,
     display_name: input.displayName,
     access_token_ciphertext: encryptIntegrationSecret(input.accessToken),
-    token_expires_at: expires,
+    token_expires_at: input.expiresInSeconds ? new Date(now.getTime() + input.expiresInSeconds * 1000).toISOString() : null,
     scopes: input.scopes,
     metadata: input.metadata || {},
     connected_at: now.toISOString(),
@@ -87,29 +77,20 @@ export async function saveLinkedInConnection(input: {
   }, 'tenant_id,provider,account_type,provider_subject')
 }
 
-export async function getLinkedInAccess(): Promise<{ token: string; personUrn: string; connection: IntegrationConnection }> {
+export async function getLinkedInAccess() {
   const connection = await getLinkedInConnection()
   if (!connection) throw new Error('LinkedIn is not connected')
-  if (connection.token_expires_at && new Date(connection.token_expires_at).getTime() <= Date.now()) {
-    throw new Error('LinkedIn access token has expired; reconnect LinkedIn')
-  }
+  if (connection.token_expires_at && new Date(connection.token_expires_at).getTime() <= Date.now()) throw new Error('LinkedIn access token has expired; reconnect LinkedIn')
   const personUrn = String(connection.metadata?.person_urn || '')
   if (!personUrn) throw new Error('LinkedIn connection is missing person_urn')
-  return {
-    token: decryptIntegrationSecret(connection.access_token_ciphertext),
-    personUrn,
-    connection,
-  }
+  return { token: decryptIntegrationSecret(connection.access_token_ciphertext), personUrn, connection }
 }
 
-export async function disconnectLinkedIn(): Promise<void> {
+export async function disconnectLinkedIn() {
   const connection = await getLinkedInConnection()
   if (!connection) return
   await updateGrowthRow('integration_connections', 'connection_id', connection.connection_id, {
-    access_token_ciphertext: 'disconnected',
-    token_expires_at: new Date(0).toISOString(),
-    updated_at: new Date().toISOString(),
-    metadata: { ...(connection.metadata || {}), disconnected: true },
+    access_token_ciphertext: 'disconnected', token_expires_at: new Date(0).toISOString(), updated_at: new Date().toISOString(), metadata: { ...(connection.metadata || {}), disconnected: true },
   })
 }
 
@@ -118,4 +99,53 @@ export function linkedInConnectionStatus(connection: IntegrationConnection | nul
   const disconnected = Boolean(connection.metadata?.disconnected)
   const expired = disconnected || Boolean(connection.token_expires_at && new Date(connection.token_expires_at).getTime() <= Date.now())
   return { connected: !expired, expired }
+}
+
+export async function getGmailConnections(): Promise<IntegrationConnection[]> {
+  const rows = await getConnection('gmail', 'mailbox')
+  return rows.filter((row) => !row.metadata?.disconnected)
+}
+
+export async function getGmailConnection(email: string): Promise<IntegrationConnection | null> {
+  return (await getConnection('gmail', 'mailbox', email.toLowerCase()))[0] || null
+}
+
+export async function saveGmailConnection(input: {
+  email: string
+  displayName?: string
+  accessToken: string
+  refreshToken?: string
+  expiresInSeconds?: number
+  scopes: string[]
+  metadata?: Record<string, unknown>
+}) {
+  const email = input.email.trim().toLowerCase()
+  const existing = await getGmailConnection(email)
+  const now = new Date()
+  const previous = existing?.metadata || {}
+  const refreshTokenCiphertext = input.refreshToken
+    ? encryptIntegrationSecret(input.refreshToken)
+    : String(previous.refresh_token_ciphertext || '')
+  if (!refreshTokenCiphertext) throw new Error('Google did not return a refresh token. Reconnect with consent enabled.')
+  return upsertGrowthRow<IntegrationConnection>('integration_connections', {
+    tenant_id: TENANT_ID,
+    provider: 'gmail',
+    account_type: 'mailbox',
+    provider_subject: email,
+    display_name: input.displayName || email,
+    access_token_ciphertext: encryptIntegrationSecret(input.accessToken),
+    token_expires_at: input.expiresInSeconds ? new Date(now.getTime() + input.expiresInSeconds * 1000).toISOString() : null,
+    scopes: input.scopes,
+    metadata: { ...previous, ...(input.metadata || {}), email, refresh_token_ciphertext: refreshTokenCiphertext, disconnected: false },
+    connected_at: existing?.connected_at || now.toISOString(),
+    updated_at: now.toISOString(),
+  }, 'tenant_id,provider,account_type,provider_subject')
+}
+
+export async function disconnectGmail(email: string) {
+  const connection = await getGmailConnection(email.trim().toLowerCase())
+  if (!connection) return
+  await updateGrowthRow('integration_connections', 'connection_id', connection.connection_id, {
+    access_token_ciphertext: 'disconnected', token_expires_at: new Date(0).toISOString(), updated_at: new Date().toISOString(), metadata: { ...(connection.metadata || {}), disconnected: true },
+  })
 }
