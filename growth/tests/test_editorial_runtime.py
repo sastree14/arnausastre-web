@@ -15,6 +15,33 @@ def test_content_contract_enforces_article_bounds():
     assert any("hard maximum" in issue for issue in runtime.content_contract_issues(too_long, "article"))
 
 
+def test_linkedin_article_uses_long_form_contract():
+    too_short = {"title": "A title", "body": "word " * 100}
+    valid = {"title": "A title", "body": "word " * 900}
+    assert any("hard minimum" in issue for issue in runtime.content_contract_issues(too_short, "linkedin_article"))
+    assert runtime.content_contract_issues(valid, "linkedin_article") == []
+
+
+def test_linkedin_article_decision_generates_linkedin_article_variants(monkeypatch):
+    generated = []
+    monkeypatch.setattr(runtime, "_persist_variant", lambda brief, **kwargs: generated.append(kwargs) or kwargs)
+
+    class Store:
+        def update(self, *args, **kwargs):
+            return None
+
+    monkeypatch.setattr(runtime, "get_store", lambda: Store())
+    runtime.generate_variants({
+        "brief_id": "brief_linkedin_article",
+        "output_decision": "LINKEDIN_ARTICLE",
+        "primary_linkedin_language": "es",
+    })
+    assert len(generated) == len(runtime.SUPPORTED_LANGUAGES)
+    assert {row["content_type"] for row in generated} == {"linkedin_article"}
+    assert {row["channel"] for row in generated} == {"arnau_linkedin"}
+    assert sum(1 for row in generated if row["primary"]) == 1
+
+
 def test_persist_variant_is_idempotent_and_does_not_duplicate_approval(monkeypatch, tmp_path):
     store = LocalJsonStore(tmp_path)
     monkeypatch.setattr(runtime, "get_store", lambda: store)
@@ -80,6 +107,32 @@ def test_invalid_contract_never_creates_approval(monkeypatch, tmp_path):
     assert item["status"] == "needs_review"
     assert len(store.list("approvals")) == 0
 
+
+def test_linkedin_article_creates_manual_publication_approval(monkeypatch, tmp_path):
+    store = LocalJsonStore(tmp_path)
+    monkeypatch.setattr(runtime, "get_store", lambda: store)
+    monkeypatch.setattr(runtime, "_write_variant", lambda *args, **kwargs: {"title": "Long-form insight", "body": "word " * 900})
+    monkeypatch.setattr(runtime, "_critic", lambda *args, **kwargs: {
+        "quality_score": 8.8,
+        "generic_ai_risk": 1,
+        "rewrite_required": False,
+        "contract_valid": True,
+        "contract_issues": [],
+    })
+    brief = {
+        "brief_id": "brief_manual_li",
+        "tenant_id": "sc-analytics",
+        "family": "insight",
+        "target_audience": ["COO"],
+        "evidence_ids": [],
+        "research": {"source_urls": []},
+    }
+    item = runtime._persist_variant(brief, language="es", channel="arnau_linkedin", content_type="linkedin_article", primary=True)
+    assert item["content_type"] == "linkedin_article"
+    assert item["channel"] == "arnau_linkedin"
+    approval = store.list("approvals")[0]
+    assert approval["action_type"] == "publish_linkedin_article"
+    assert approval["payload"]["execution_mode"] == "manual_linkedin_article"
 
 
 def test_legacy_invalid_variant_is_rewritten_in_place(monkeypatch, tmp_path):
