@@ -1,0 +1,19 @@
+import { redirect } from 'next/navigation'
+import AdminShell from '@/components/growth-admin/AdminShell'
+import { Badge, PageHeader, SectionHeading, adminPanel } from '@/components/growth-admin/AdminUi'
+import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { METRIC_CATALOG, MODE_LABEL } from '@/lib/metrics-catalog'
+
+export const dynamic='force-dynamic'
+const tone=(mode:string)=>mode==='automatic'?'green':mode==='scheduled'?'blue':mode==='manual_import'?'amber':'slate'
+
+export default async function MetricDictionaryPage(){
+  if(!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
+  const groups=[...new Set(METRIC_CATALOG.map(row=>row.group))]
+  return <AdminShell active="metrics">
+    <PageHeader eyebrow="Métricas · Data lineage" title="Diccionario de métricas" description="De dónde sale cada KPI, cómo se calcula, dónde se guarda, cuándo se actualiza y qué significa ver un cero. Esta es la fuente de verdad para interpretar el cuadro de mando." actions={<a href="/growth-admin/metrics" className="rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white">← Volver a Métricas</a>}/>
+    <section><SectionHeading eyebrow="Reglas" title="Cómo leer el sistema" description="Automático no significa inventado: todas las métricas derivan de una tabla o integración concreta. PDF no se usa como fuente genérica de KPIs porque no ofrece estructura fiable; para importaciones usamos formatos estructurados como XLS/XLSX/CSV."/><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">{Object.entries(MODE_LABEL).map(([key,label])=><div key={key} className={`${adminPanel} p-4`}><Badge tone={tone(key)}>{label}</Badge><p className="mt-3 text-xs leading-5 text-slate-500">{key==='automatic'?'Se recalcula desde la misma base operativa al usar el CRM.':key==='scheduled'?'Una integración/worker actualiza la fuente y después el KPI se recalcula.':key==='manual_import'?'Necesita un fichero oficial/estructurado antes de poder actualizarse.':'Necesita que introduzcas el dato explícitamente.'}</p></div>)}</div></section>
+    {groups.map(group=><section key={group} className="mt-12"><SectionHeading eyebrow="Linaje" title={group}/><div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white"><table className="min-w-[1100px] w-full text-left text-xs"><thead className="bg-slate-50 text-slate-500"><tr><th className="px-4 py-3">Métrica</th><th className="px-4 py-3">Fuente</th><th className="px-4 py-3">Tabla</th><th className="px-4 py-3">Fórmula</th><th className="px-4 py-3">Modo</th><th className="px-4 py-3">Refresh</th><th className="px-4 py-3">Qué significa 0</th></tr></thead><tbody>{METRIC_CATALOG.filter(row=>row.group===group).map(row=><tr key={`${row.group}-${row.metric}`} className="border-t border-slate-100 align-top"><td className="px-4 py-3 font-semibold text-slate-900">{row.metric}</td><td className="px-4 py-3 text-slate-700">{row.source}</td><td className="px-4 py-3 font-mono text-[10px] text-slate-500">{row.storage}</td><td className="max-w-sm px-4 py-3 leading-5 text-slate-600">{row.formula}</td><td className="px-4 py-3"><Badge tone={tone(row.mode)}>{MODE_LABEL[row.mode]}</Badge></td><td className="px-4 py-3 leading-5 text-slate-600">{row.refresh}</td><td className="max-w-sm px-4 py-3 leading-5 text-slate-600">{row.zeroMeaning}</td></tr>)}</tbody></table></div></section>)}
+    <section className="mt-12 pb-12"><div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-xs leading-6 text-amber-900"><strong>Importante:</strong> un KPI financiero solo incluye documentos confirmados/revisados. Un candidato Gmail, una transacción bancaria sin conciliar o una factura pendiente de doble check no entra en los totales confirmados. LinkedIn Analytics es manual porque el acceso analítico restringido no está concedido a esta app; publicación y analítica son permisos distintos.</div></section>
+  </AdminShell>
+}
