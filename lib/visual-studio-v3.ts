@@ -82,6 +82,27 @@ function flowArrows(elements: VisualElement[], formatKey: VisualFormatKey): Visu
   })
 }
 
+function attachedIllustration(seed: VisualStudioContentSeed, formatKey: VisualFormatKey): VisualElement | null {
+  const strategy = seed.visual_strategy && typeof seed.visual_strategy === 'object' ? seed.visual_strategy : {}
+  const source = clean(seed.visual_path)
+  const generated = String(seed.visual_type || '') === 'generated_contextual_illustration' || String(strategy.visual_type || '') === 'illustration'
+  if (!source || !generated) return null
+  const format = VISUAL_FORMATS[formatKey]
+  const width = Math.round(format.width * 0.38)
+  const height = Math.round(format.height * 0.36)
+  return {
+    id: 'attached-generated-illustration',
+    kind: 'logo',
+    role: 'illustration',
+    src: source,
+    locked: false,
+    x: Math.round(format.width * 0.57),
+    y: Math.round(format.height * 0.43),
+    w: width,
+    h: height,
+  }
+}
+
 export function enhanceVisualDesign(design: VisualDesign, seed: VisualStudioContentSeed): VisualDesign {
   const hook = deriveVisualHook(seed)
   const support = deriveVisualSupport(seed)
@@ -114,8 +135,10 @@ export function enhanceVisualDesign(design: VisualDesign, seed: VisualStudioCont
     return element
   })
 
-  elements = elements.filter((element) => element.role !== 'flow-arrow')
+  elements = elements.filter((element) => element.role !== 'flow-arrow' && element.id !== 'attached-generated-illustration')
   if (design.templateKey === 'process_steps') elements = [...elements, ...flowArrows(elements, design.formatKey)]
+  const illustration = attachedIllustration(seed, design.formatKey)
+  if (illustration) elements = [...elements, illustration]
 
   return {
     ...design,
