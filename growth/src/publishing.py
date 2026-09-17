@@ -142,7 +142,7 @@ def _visual_ref_for_mode(item: dict) -> str:
 
 def _validate_publication_contract(item: dict) -> tuple[str, str]:
     if item.get("content_type") != "linkedin_post" or "linkedin" not in str(item.get("channel") or ""):
-        raise PublishingError("LinkedIn publisher only accepts LinkedIn content items")
+        raise PublishingError("LinkedIn publisher only accepts LinkedIn posts; LinkedIn Articles use a separate workflow")
     mode, visual_ref = _publication_mode(item), _visual_ref_for_mode(item)
     if mode in VISUAL_REQUIRED_MODES and not visual_ref:
         raise PublishingError(f"Publication mode '{mode}' requires an attached visual")
@@ -154,32 +154,46 @@ def _linkedin_post_url(post_id: str) -> str:
 
 
 def publish_content(content_id: str) -> dict:
-    store = get_store(); items = store.filter("content_items", content_id=content_id)
-    if not items: raise PublishingError(f"Content item not found: {content_id}")
+    store = get_store()
+    items = store.filter("content_items", content_id=content_id)
+    if not items:
+        raise PublishingError(f"Content item not found: {content_id}")
     item = items[0]
-    if item.get("status") != "approved": raise PublishingError("Content item is not approved")
-    if not _scheduled_is_due(item): return {"content_id": content_id, "status": "scheduled", "scheduled_at": item.get("scheduled_at")}
-    if item.get("external_post_id"): return {"content_id": content_id, "post_id": item["external_post_id"], "status": "already_published"}
+    if item.get("status") not in {"approved", "scheduled"}:
+        raise PublishingError("Content item is not approved or scheduled")
+    if not _scheduled_is_due(item):
+        return {"content_id": content_id, "status": "scheduled", "scheduled_at": item.get("scheduled_at")}
+    if item.get("external_post_id"):
+        return {"content_id": content_id, "post_id": item["external_post_id"], "status": "already_published"}
     approvals = [a for a in store.filter("approvals", target_id=content_id) if a.get("action_type") == "publish_post" and a.get("status") == "approved"]
-    if not approvals: raise PublishingError("No approved publish action exists for this content item")
+    if not approvals:
+        raise PublishingError("No approved publish action exists for this content item")
     mode, visual_ref = _validate_publication_contract(item)
-    token, person_urn = _linkedin_access(); author = _author_for_channel(item.get("channel", ""), person_urn)
+    token, person_urn = _linkedin_access()
+    author = _author_for_channel(item.get("channel", ""), person_urn)
     payload = {"author": author, "commentary": _commentary_for_mode(item), "visibility": "PUBLIC", "distribution": {"feedDistribution": "MAIN_FEED", "targetEntities": [], "thirdPartyDistributionChannels": []}, "lifecycleState": "PUBLISHED", "isReshareDisabledByAuthor": False}
     visual = _materialize_visual(visual_ref) if visual_ref else None
     if visual:
         payload["content"] = {"media": {"id": upload_image(visual, author, token), "altText": item.get("title", "SC-Analytics visual")[:200]}}
     response = requests.post("https://api.linkedin.com/rest/posts", headers=_headers(token), json=payload, timeout=60)
-    if response.status_code not in {200, 201}: raise PublishingError(f"LinkedIn post failed {response.status_code}: {response.text[:500]}")
-    post_id = response.headers.get("x-restli-id", ""); post_url = _linkedin_post_url(post_id); published_at = utc_now()
+    if response.status_code not in {200, 201}:
+        raise PublishingError(f"LinkedIn post failed {response.status_code}: {response.text[:500]}")
+    post_id = response.headers.get("x-restli-id", "")
+    post_url = _linkedin_post_url(post_id)
+    published_at = utc_now()
     store.update("content_items", "content_id", content_id, {"status": "published", "external_post_id": post_id, "external_post_url": post_url, "published_at": published_at})
-    for approval in approvals: store.update("approvals", "approval_id", approval["approval_id"], {"status": "executed", "executed_at": published_at})
+    for approval in approvals:
+        store.update("approvals", "approval_id", approval["approval_id"], {"status": "executed", "executed_at": published_at})
     return {"content_id": content_id, "post_id": post_id, "post_url": post_url, "status": "published", "publication_mode": mode}
 
 
 def delete_linkedin_post(content_id: str) -> dict:
-    store = get_store(); rows = store.filter("content_items", content_id=content_id)
-    if not rows: raise PublishingError(f"Content item not found: {content_id}")
-    item = rows[0]; post_id = str(item.get("external_post_id") or "").strip()
+    store = get_store()
+    rows = store.filter("content_items", content_id=content_id)
+    if not rows:
+        raise PublishingError(f"Content item not found: {content_id}")
+    item = rows[0]
+    post_id = str(item.get("external_post_id") or "").strip()
     if post_id:
         token, _ = _linkedin_access()
         response = requests.delete(f"https://api.linkedin.com/rest/posts/{quote(post_id, safe='')}", headers={**_headers(token), "X-RestLi-Method": "DELETE"}, timeout=60)
@@ -191,10 +205,20 @@ def delete_linkedin_post(content_id: str) -> dict:
     return {"content_id": content_id, "status": "unpublished", "external_deleted": bool(post_id)}
 
 
-def publish_all_approved(limit: int = 5) -> list[dict]:
-    store = get_store(); candidates = [row for row in store.list("content_items") if row.get("content_type") == "linkedin_post" and "linkedin" in str(row.get("channel") or "") and row.get("status") == "approved" and not row.get("external_post_id") and _scheduled_is_due(row)][:limit]
-    results=[]
+def publish_all_approved(limit: int = 20) -> list[dict]:
+    store = get_store()
+    candidates = [
+        row for row in store.list("content_items")
+        if row.get("content_type") == "linkedin_post"
+        and "linkedin" in str(row.get("channel") or "")
+        and row.get("status") in {"approved", "scheduled"}
+        and not row.get("external_post_id")
+        and _scheduled_is_due(row)
+    ][:limit]
+    results = []
     for item in candidates:
-        try: results.append(publish_content(item["content_id"]))
-        except Exception as exc: results.append({"content_id": item.get("content_id"), "status": "failed", "error": str(exc)})
+        try:
+            results.append(publish_content(item["content_id"]))
+        except Exception as exc:
+            results.append({"content_id": item.get("content_id"), "status": "failed", "error": str(exc)})
     return results
