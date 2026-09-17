@@ -28,14 +28,13 @@ export function googleOAuthConfig(origin = '') {
   const missing: string[] = []
   if (!clientId) missing.push('GOOGLE_OAUTH_CLIENT_ID / GOOGLE_CLIENT_ID')
   if (!clientSecret) missing.push('GOOGLE_OAUTH_CLIENT_SECRET / GOOGLE_CLIENT_SECRET')
-  if (!redirectUri) missing.push('GOOGLE_OAUTH_REDIRECT_URI')
   if (!env('GROWTH_ENCRYPTION_KEY') || !encryptionConfigured()) missing.push('GROWTH_ENCRYPTION_KEY')
-  return { clientId, clientSecret, redirectUri, configured: missing.length === 0, missing }
+  return { clientId, clientSecret, redirectUri, configured: missing.length === 0, missing, redirectMode: configuredRedirect ? 'env' as const : 'runtime' as const }
 }
 
 export function gmailOAuthReadiness(origin = '') {
   const config = googleOAuthConfig(origin)
-  return { configured: config.configured, missing: config.missing, redirectUri: config.redirectUri }
+  return { configured: config.configured, missing: config.missing, redirectUri: config.redirectUri, redirectMode: config.redirectMode }
 }
 
 function stateSecret() {
@@ -65,6 +64,7 @@ export function verifyGoogleOAuthState(value: string) {
 export function gmailAuthorizationUrl(accountType: string, returnTo = '', origin = '') {
   const config = googleOAuthConfig(origin)
   if (!config.configured) throw new Error(`Google OAuth is not configured: ${config.missing.join(', ')}`)
+  if (!config.redirectUri) throw new Error('Google OAuth callback URL could not be resolved')
   const kind = accountType === 'personal' ? 'personal' : 'corporate'
   const scopes = GOOGLE_SCOPES[kind]
   const url = new URL('https://accounts.google.com/o/oauth2/v2/auth')
