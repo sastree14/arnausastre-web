@@ -26,8 +26,21 @@ def _decode_key() -> bytes:
     return key
 
 
+def _b64url_encode(value: bytes) -> str:
+    return base64.urlsafe_b64encode(value).decode("ascii").rstrip("=")
+
+
 def _b64url_decode(value: str) -> bytes:
     return base64.urlsafe_b64decode(value + "=" * (-len(value) % 4))
+
+
+def encrypt_secret(value: str) -> str:
+    if not value:
+        raise IntegrationError("Cannot encrypt an empty integration secret")
+    iv = os.urandom(12)
+    encrypted = AESGCM(_decode_key()).encrypt(iv, value.encode("utf-8"), None)
+    ciphertext, tag = encrypted[:-16], encrypted[-16:]
+    return ".".join(("v1", _b64url_encode(iv), _b64url_encode(tag), _b64url_encode(ciphertext)))
 
 
 def decrypt_secret(value: str) -> str:

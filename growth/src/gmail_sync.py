@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import os
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from email.utils import parseaddr, parsedate_to_datetime
 from typing import Any
 
 import requests
 
-from .integrations import decrypt_secret
+from .integrations import decrypt_secret, encrypt_secret
 from .llm import get_llm
 from .storage import get_store
 
@@ -32,7 +32,7 @@ def _parse_time(value: str | None) -> datetime | None:
         return None
 
 
-def _connection_access_token(connection: dict[str, Any]) -> str:
+def _connection_access_token(connection: dict[str, Any], store: Any) -> str:
     expires = _parse_time(connection.get("token_expires_at"))
     if expires and expires > datetime.now(timezone.utc):
         return decrypt_secret(str(connection.get("access_token_ciphertext") or ""))
@@ -51,9 +51,20 @@ def _connection_access_token(connection: dict[str, Any]) -> str:
     )
     if response.status_code >= 400:
         raise RuntimeError(f"Google token refresh failed {response.status_code}: {response.text[:300]}")
-    token = str(response.json().get("access_token") or "")
+    payload = response.json()
+    token = str(payload.get("access_token") or "")
     if not token:
         raise RuntimeError("Google token refresh returned no access token")
+    try:
+        expires_in = max(60, int(payload.get("expires_in") or 3600))
+    except (TypeError, ValueError):
+        expires_in = 3600
+    expires_at = (datetime.now(timezone.utc) + timedelta(seconds=expires_in)).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    connection_id = str(connection.get("connection_id") or "").strip()
+    if connection_id:
+        changes = {"access_token_ciphertext": encrypt_secret(token), "token_expires_at": expires_at, "updated_at": _now()}
+        store.update("integration_connections", "connection_id", connection_id, changes)
+        connection.update(changes)
     return token
 
 
@@ -163,7 +174,7 @@ def sync_gmail(limit_per_account: int = 50, newer_than_days: int = 14) -> dict[s
         if not account:
             continue
         try:
-            token = _connection_access_token(connection)
+            token = _connection_access_token(connection, store)
             headers = {"Authorization": f"Bearer {token}"}
             listing = requests.get("https://gmail.googleapis.com/gmail/v1/users/me/messages", headers=headers, params={"q": f"newer_than:{max(1, newer_than_days)}d", "maxResults": max(1, min(100, limit_per_account))}, timeout=30)
             if listing.status_code >= 400:
