@@ -27,6 +27,8 @@ OPERATOR_TYPES = {
     "OPERATOR_GMAIL_SYNC", "OPERATOR_SEO_AUDIT",
 }
 
+STALE_RUNNING_MINUTES = 35
+
 
 def _parse_time(value: str | None) -> datetime | None:
     if not value:
@@ -53,7 +55,16 @@ def _execute(task: dict[str, Any]) -> Any:
     if task_type == "OPERATOR_EDITORIAL_PROPOSALS":
         return build_research_aware_proposals(focus=str(inputs.get("focus") or "").strip(), avoid=str(inputs.get("avoid") or "").strip(), count=int(inputs.get("count", 3) or 3), history_days=int(inputs.get("history_days", 60) or 60))
     if task_type == "OPERATOR_EDITORIAL_RUN":
-        return run_editorial_with_library(research_brief_id=str(inputs.get("research_brief_id") or "").strip(), max_signals=int(inputs.get("max_signals", 30) or 30), max_briefs=int(inputs.get("max_briefs", 1) or 1), theme_hint=str(inputs.get("theme_hint") or ""), avoid=str(inputs.get("avoid") or ""), strict_theme=_bool(inputs.get("strict_theme")), force_new=_bool(inputs.get("force_new")))
+        return run_editorial_with_library(
+            research_brief_id=str(inputs.get("research_brief_id") or "").strip(),
+            max_signals=int(inputs.get("max_signals", 30) or 30),
+            max_briefs=int(inputs.get("max_briefs", 1) or 1),
+            theme_hint=str(inputs.get("theme_hint") or ""),
+            avoid=str(inputs.get("avoid") or ""),
+            strict_theme=_bool(inputs.get("strict_theme")),
+            force_new=_bool(inputs.get("force_new")),
+            recommended_format=str(inputs.get("recommended_format") or "").strip(),
+        )
     if task_type == "OPERATOR_EDITORIAL_URL":
         url = str(inputs.get("url") or "").strip()
         if not url:
@@ -125,6 +136,23 @@ def _run_one(store: Any, task: dict[str, Any]) -> dict[str, Any]:
         return {"task_id": task_id, "status": "failed", "error": str(exc)}
 
 
+def _recover_stale_running(store: Any, row: dict[str, Any], now: datetime) -> dict[str, Any] | None:
+    if row.get("status") != "running":
+        return row
+    created = _parse_time(row.get("created_at"))
+    if created is None or created > now - timedelta(minutes=STALE_RUNNING_MINUTES):
+        return None
+    outputs = dict(row.get("outputs") or {})
+    outputs["recovery"] = {
+        "reason": "stale_running_timeout",
+        "previous_status": "running",
+        "recovered_at": now.isoformat().replace("+00:00", "Z"),
+        "stale_after_minutes": STALE_RUNNING_MINUTES,
+    }
+    store.update("tasks", "task_id", str(row.get("task_id") or ""), {"status": "queued", "outputs": outputs})
+    return {**row, "status": "queued", "outputs": outputs}
+
+
 def run_operator_queue(task_id: str | None = None, *, recovery: bool = False, limit: int = 10, recovery_minutes: int = 10080) -> list[dict[str, Any]]:
     store = get_store()
     if task_id:
@@ -136,12 +164,16 @@ def run_operator_queue(task_id: str | None = None, *, recovery: bool = False, li
         raise ValueError("run_operator_queue requires task_id unless recovery=True")
 
     # Reliability sweep: recover due tasks created during the last seven days by
-    # default. This is intentionally much wider than the 5-minute scheduler so a
-    # temporary GitHub outage cannot strand a legitimate CRM action forever.
-    cutoff = datetime.now(timezone.utc) - timedelta(minutes=max(1, recovery_minutes))
+    # default. Runs that have remained `running` longer than the GitHub job timeout
+    # are first returned to `queued`, so a killed runner cannot strand CRM work.
+    now = datetime.now(timezone.utc)
+    cutoff = now - timedelta(minutes=max(1, recovery_minutes))
     pending: list[dict[str, Any]] = []
-    for row in store.list("tasks"):
-        if row.get("type") not in OPERATOR_TYPES or row.get("status") not in {"pending", "queued"} or not _due(row.get("scheduled_for")):
+    for raw in store.list("tasks"):
+        if raw.get("type") not in OPERATOR_TYPES or not _due(raw.get("scheduled_for")):
+            continue
+        row = _recover_stale_running(store, raw, now)
+        if row is None or row.get("status") not in {"pending", "queued"}:
             continue
         created = _parse_time(row.get("created_at")) or _parse_time(row.get("scheduled_for"))
         if created is None or created < cutoff:
