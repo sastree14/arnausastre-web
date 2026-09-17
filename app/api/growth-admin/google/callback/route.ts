@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { NextResponse } from 'next/server'
-import { exchangeGoogleCode, gmailProfile, verifyGoogleOAuthState, encryptGoogleToken } from '@/lib/google-oauth-finance'
+import { CORPORATE_GOOGLE_EMAIL, exchangeGoogleCode, gmailProfile, verifyGoogleOAuthState, encryptGoogleToken } from '@/lib/google-oauth-finance'
 import { queryGrowthTable, insertGrowthRow, updateGrowthRow } from '@/lib/supabase-growth'
 
 type ConnectionRow = {
@@ -18,15 +18,16 @@ export async function GET(request: Request) {
   if (!code || !state) return new NextResponse('Missing code/state', { status: 400 })
   try {
     const stateData = verifyGoogleOAuthState(state)
+    const accountType = String(stateData.accountType || 'corporate') === 'personal' ? 'personal' : 'corporate'
     const token = await exchangeGoogleCode(code, String(stateData.redirectUri || ''))
     const profile = await gmailProfile(String(token.access_token))
     const email = String(profile.emailAddress || '').toLowerCase()
     if (!email) throw new Error('Gmail profile did not return an email address')
+    if (accountType === 'corporate' && email !== CORPORATE_GOOGLE_EMAIL) throw new Error(`Seleccionaste ${email}. La cuenta corporativa debe ser ${CORPORATE_GOOGLE_EMAIL}.`)
     const existing = await queryGrowthTable<ConnectionRow>('integration_connections', { tenant_id: 'eq.sc-analytics', provider: 'eq.gmail', provider_subject: `eq.${email}`, limit: '1' }, { cacheSeconds: 0 })
     const now = new Date().toISOString()
     const expiresAt = new Date(Date.now() + Number(token.expires_in || 3600) * 1000).toISOString()
     const previousMetadata = existing[0]?.metadata && typeof existing[0].metadata === 'object' ? existing[0].metadata : {}
-    const accountType = String(stateData.accountType || 'corporate') === 'personal' ? 'personal' : 'corporate'
     const scopes = String(token.scope || '').split(' ').filter(Boolean)
     const changes: Record<string, unknown> = {
       account_type: accountType,
