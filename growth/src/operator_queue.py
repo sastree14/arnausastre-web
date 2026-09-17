@@ -7,8 +7,8 @@ from .commercial_intelligence import run_commercial_signal_scan
 from .competitive_intelligence import discover_competitors, refresh_competitor, refresh_monitored_competitors
 from .content_engagement import enrich_generated_content
 from .deal_desk_ops import generate_deal_budget, generate_deal_proposal
+from .editorial_library import build_research_aware_proposals, run_editorial_with_library
 from .editorial_ops import rewrite_content
-from .editorial_planner import build_content_proposals, run_guided_editorial_cycle
 from .editorial_runtime import editorial_from_url
 from .gmail_sync import sync_gmail
 from .prospecting import research_companies
@@ -51,9 +51,9 @@ def _execute(task: dict[str, Any]) -> Any:
     task_type = str(task.get("type") or "")
     inputs = dict(task.get("inputs") or {})
     if task_type == "OPERATOR_EDITORIAL_PROPOSALS":
-        return build_content_proposals(focus=str(inputs.get("focus") or "").strip(), avoid=str(inputs.get("avoid") or "").strip(), count=int(inputs.get("count", 3) or 3), history_days=int(inputs.get("history_days", 60) or 60))
+        return build_research_aware_proposals(focus=str(inputs.get("focus") or "").strip(), avoid=str(inputs.get("avoid") or "").strip(), count=int(inputs.get("count", 3) or 3), history_days=int(inputs.get("history_days", 60) or 60))
     if task_type == "OPERATOR_EDITORIAL_RUN":
-        return run_guided_editorial_cycle(max_signals=int(inputs.get("max_signals", 30) or 30), max_briefs=int(inputs.get("max_briefs", 1) or 1), theme_hint=str(inputs.get("theme_hint") or ""), avoid=str(inputs.get("avoid") or ""), strict_theme=_bool(inputs.get("strict_theme")), force_new=_bool(inputs.get("force_new")))
+        return run_editorial_with_library(research_brief_id=str(inputs.get("research_brief_id") or "").strip(), max_signals=int(inputs.get("max_signals", 30) or 30), max_briefs=int(inputs.get("max_briefs", 1) or 1), theme_hint=str(inputs.get("theme_hint") or ""), avoid=str(inputs.get("avoid") or ""), strict_theme=_bool(inputs.get("strict_theme")), force_new=_bool(inputs.get("force_new")))
     if task_type == "OPERATOR_EDITORIAL_URL":
         url = str(inputs.get("url") or "").strip()
         if not url:
