@@ -20,6 +20,8 @@ function calendarReturnUrl(request: Request, contentId: string, scheduled: boole
   return url
 }
 
+function approvalAction(contentType:string){if(contentType==='article'||contentType==='web_article')return'publish_article';return'publish_post'}
+
 export async function POST(request: Request) {
   if (!(await isGrowthAdminAuthenticated())) return new NextResponse('Unauthorized', { status: 401 })
   const form = await request.formData()
@@ -30,6 +32,7 @@ export async function POST(request: Request) {
   const item = await getContentItem(contentId)
   if (!item) return new NextResponse('Content not found', { status: 404 })
   if (item.status === 'published') return new NextResponse('Published content must be handled from publication history', { status: 409 })
+  if (item.content_type === 'linkedin_article') return new NextResponse('LinkedIn Articles use the manual publication flow and cannot be scheduled in the automatic publisher.', { status: 409 })
 
   let scheduledAt: string | null = null
   if (scheduledRaw) {
@@ -46,7 +49,7 @@ export async function POST(request: Request) {
     order: 'decided_at.desc',
     limit: '10',
   }, { cacheSeconds: 0 })
-  const requiredAction = ['article', 'web_article'].includes(item.content_type) ? 'publish_article' : 'publish_post'
+  const requiredAction = approvalAction(String(item.content_type||''))
   const approved = approvals.some((row) => row.action_type === requiredAction)
   if (scheduledAt && !approved) return new NextResponse('Approve the publication before scheduling it', { status: 409 })
 
