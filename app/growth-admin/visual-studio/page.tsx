@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
-import { publicationLabel } from '@/components/growth-admin/AdminUi'
+import { assetUrl, publicationLabel } from '@/components/growth-admin/AdminUi'
 import ConfirmFormButton from '@/components/growth-admin/ConfirmFormButton'
 import VisualStudioClientV3 from '@/components/visual-studio/VisualStudioClientV3'
 import { isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
@@ -76,7 +76,7 @@ export default async function VisualStudioPage({ searchParams }: { searchParams?
     language: item.language,
     content_family: item.content_family,
     visual_type: item.visual_type,
-    visual_path: item.visual_path,
+    visual_path: assetUrl(item) || item.visual_path,
     publication_mode: item.publication_mode,
     hashtags: item.hashtags || [],
     visual_strategy: item.visual_strategy || {},
@@ -84,6 +84,8 @@ export default async function VisualStudioPage({ searchParams }: { searchParams?
   const activeSeed = content.find((item) => item.content_id === params?.content) || content[0]
   const savedDesigns = savedDesignRows.map((row) => adaptSavedDesignToContent(row, activeSeed))
   const returnTo = safeReturnTo(params?.return_to)
+  const concept = String(activeSeed?.visual_strategy?.illustration_concept || '')
+  const theme = String(activeSeed?.visual_strategy?.theme || 'dark') === 'light' ? 'light' : 'dark'
 
   return <AdminShell active="visual">
     <div className="mb-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -109,6 +111,23 @@ export default async function VisualStudioPage({ searchParams }: { searchParams?
         </div>
       </div>
 
+      {activeSeed && <details className="mt-4 rounded-xl border border-sky-100 bg-sky-50/60 p-4">
+        <summary className="cursor-pointer text-xs font-semibold text-sky-900">Generar ilustración contextual con IA</summary>
+        <form action="/api/growth-admin/operator-task" method="post" className="mt-3 grid gap-3 lg:grid-cols-[1fr_140px_auto]">
+          <input type="hidden" name="action" value="generate_visual"/>
+          <input type="hidden" name="content_id" value={activeSeed.content_id}/>
+          <input type="hidden" name="return_to" value={`/growth-admin/visual-studio?content=${encodeURIComponent(activeSeed.content_id)}&return_to=${encodeURIComponent(returnTo)}`}/>
+          <label className="text-[11px] font-semibold text-sky-900">Concepto visual
+            <input name="concept" defaultValue={concept} placeholder="Déjalo vacío para que la IA proponga una escena concreta" className="mt-1 w-full rounded-lg border border-sky-200 bg-white px-3 py-2 text-xs text-slate-800"/>
+          </label>
+          <label className="text-[11px] font-semibold text-sky-900">Tema
+            <select name="theme" defaultValue={theme} className="mt-1 w-full rounded-lg border border-sky-200 bg-white px-3 py-2 text-xs text-slate-800"><option value="dark">Oscuro</option><option value="light">Claro</option></select>
+          </label>
+          <button className="self-end rounded-lg bg-sky-700 px-4 py-2.5 text-xs font-semibold text-white">Generar imagen IA</button>
+        </form>
+        <p className="mt-2 text-[10px] leading-4 text-sky-700">La imagen se genera sin texto ni logos; después el sistema compone el branding real de SC-Analytics y la adjunta a esta publicación.</p>
+      </details>}
+
       {savedDesignRows.length > 0 && <details className="mt-4">
         <summary className="cursor-pointer text-xs font-semibold text-slate-700">Gestionar diseños guardados ({savedDesignRows.length})</summary>
         <div className="mt-3 grid gap-2 md:grid-cols-2 xl:grid-cols-3">
@@ -121,7 +140,7 @@ export default async function VisualStudioPage({ searchParams }: { searchParams?
     </div>
 
     <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
-      <VisualStudioClientV3 content={content} savedDesigns={savedDesigns} initialContentId={activeSeed?.content_id} returnTo={returnTo}/>
+      <VisualStudioClientV3 key={`${activeSeed?.content_id || 'none'}:${activeSeed?.visual_path || 'none'}`} content={content} savedDesigns={savedDesigns} initialContentId={activeSeed?.content_id} returnTo={returnTo}/>
     </div>
   </AdminShell>
 }
