@@ -3,4 +3,30 @@ import { queryGrowthTable } from '@/lib/supabase-growth'
 
 type SeoPage={slug:string;updated_at?:string;status:string}
 type Article={brief_id?:string;content_id:string;published_at?:string;status:string}
-export default async function sitemap():Promise<MetadataRoute.Sitemap>{const base='https://sc-analytics.io',staticRoutes=['','/services','/projects','/case-studies','/knowledge','/insights','/about','/contact'].map(path=>({url:`${base}${path}`,lastModified:new Date(),changeFrequency:path===''?'weekly' as const:'monthly' as const,priority:path===''?1:0.8}));try{const[pages,articles]=await Promise.all([queryGrowthTable<SeoPage>('seo_pages',{tenant_id:'eq.sc-analytics',status:'eq.published',limit:'200'},{cacheSeconds:300}),queryGrowthTable<Article>('content_items',{content_type:'eq.article',status:'eq.published',order:'published_at.desc',limit:'200'},{cacheSeconds:300})]);return[...staticRoutes,...pages.map(row=>({url:`${base}/services/${row.slug}`,lastModified:row.updated_at?new Date(row.updated_at):new Date(),changeFrequency:'monthly' as const,priority:0.85})),...articles.map(row=>({url:`${base}/knowledge/${row.brief_id||row.content_id}`,lastModified:row.published_at?new Date(row.published_at):new Date(),changeFrequency:'monthly' as const,priority:0.7}))]}catch{return staticRoutes}}
+
+function uniqueByUrl(entries:MetadataRoute.Sitemap):MetadataRoute.Sitemap{
+  const seen=new Set<string>()
+  return entries.filter(entry=>{
+    if(seen.has(entry.url))return false
+    seen.add(entry.url)
+    return true
+  })
+}
+
+export default async function sitemap():Promise<MetadataRoute.Sitemap>{
+  const base='https://sc-analytics.io'
+  const staticRoutes:MetadataRoute.Sitemap=['','/services','/projects','/case-studies','/knowledge','/insights','/about','/contact'].map(path=>({url:`${base}${path}`,lastModified:new Date(),changeFrequency:path===''?'weekly':'monthly',priority:path===''?1:0.8}))
+  try{
+    const[pages,articles]=await Promise.all([
+      queryGrowthTable<SeoPage>('seo_pages',{tenant_id:'eq.sc-analytics',status:'eq.published',limit:'200'},{cacheSeconds:300}),
+      queryGrowthTable<Article>('content_items',{content_type:'eq.article',status:'eq.published',order:'published_at.desc',limit:'200'},{cacheSeconds:300}),
+    ])
+    const dynamicRoutes:MetadataRoute.Sitemap=[
+      ...pages.map(row=>({url:`${base}/services/${row.slug}`,lastModified:row.updated_at?new Date(row.updated_at):new Date(),changeFrequency:'monthly' as const,priority:0.85})),
+      ...articles.map(row=>({url:`${base}/knowledge/${row.brief_id||row.content_id}`,lastModified:row.published_at?new Date(row.published_at):new Date(),changeFrequency:'monthly' as const,priority:0.7})),
+    ]
+    return uniqueByUrl([...staticRoutes,...dynamicRoutes])
+  }catch{
+    return staticRoutes
+  }
+}
