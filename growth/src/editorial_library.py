@@ -15,6 +15,14 @@ _STOPWORDS = {
     "machine", "learning", "intelligence", "artificial", "sistema", "sistemas", "modelo", "modelos", "proceso", "procesos",
 }
 
+_FORMAT_TO_DECISION = {
+    "linkedin_post": "LINKEDIN",
+    "linkedin_article": "LINKEDIN_ARTICLE",
+    "article": "ARTICLE",
+    "web_article": "ARTICLE",
+    "linkedin_and_article": "LINKEDIN_AND_ARTICLE",
+}
+
 
 def _tokens(value: Any) -> set[str]:
     return {
@@ -74,6 +82,22 @@ def _match_brief(proposal: dict[str, Any], briefs: list[dict[str, Any]]) -> dict
     return best[2]
 
 
+def _apply_recommended_format(brief: dict[str, Any], recommended_format: str) -> dict[str, Any]:
+    requested = recommended_format.strip()
+    decision = _FORMAT_TO_DECISION.get(requested)
+    if not decision:
+        return brief
+    research = dict(brief.get("research") or {})
+    direction = dict(research.get("editorial_direction") or {})
+    direction["recommended_format"] = requested
+    direction["format_locked"] = True
+    research["editorial_direction"] = direction
+    updates = {"output_decision": decision, "research": research}
+    if brief.get("brief_id"):
+        get_store().update("editorial_briefs", "brief_id", str(brief["brief_id"]), updates)
+    return {**brief, **updates}
+
+
 def build_research_aware_proposals(*, focus: str = "", avoid: str = "", count: int = 3, history_days: int = 60) -> dict[str, Any]:
     store = get_store()
     content = sorted(store.list("content_items"), key=lambda row: str(row.get("created_at") or ""), reverse=True)
@@ -103,6 +127,10 @@ def build_research_aware_proposals(*, focus: str = "", avoid: str = "", count: i
     proposals = list(result.get("proposals") or [])
     linked = 0
     for proposal in proposals:
+        recommended = str(proposal.get("recommended_format") or "linkedin_post").strip()
+        if recommended not in _FORMAT_TO_DECISION:
+            recommended = "linkedin_post"
+        proposal["recommended_format"] = recommended
         matched = _match_brief(proposal, briefs)
         if matched:
             proposal["research_brief_id"] = str(matched.get("brief_id") or "")
@@ -112,7 +140,8 @@ def build_research_aware_proposals(*, focus: str = "", avoid: str = "", count: i
         proposal["generation_hint"] = (
             f"Selected editorial proposal. Industry: {proposal.get('industry', '')}. Service: {proposal.get('service', '')}. "
             f"Title direction: {proposal.get('title', '')}. Business problem: {proposal.get('business_problem', '')}. "
-            f"Thesis: {proposal.get('thesis', '')}. Required focus: {focus.strip() or 'use this proposal exactly'}. "
+            f"Thesis: {proposal.get('thesis', '')}. Required format: {recommended}. "
+            f"Required focus: {focus.strip() or 'use this proposal exactly'}. "
             f"Avoid: {avoid.strip() or 'no additional exclusions'}."
         )
 
@@ -136,18 +165,20 @@ def run_editorial_with_library(
     avoid: str = "",
     strict_theme: bool = False,
     force_new: bool = False,
+    recommended_format: str = "",
 ) -> dict[str, Any]:
     brief_id = research_brief_id.strip()
     if brief_id:
         rows = get_store().filter("editorial_briefs", brief_id=brief_id)
         if rows:
-            brief = dict(rows[0])
+            brief = _apply_recommended_format(dict(rows[0]), recommended_format)
             variants = generate_variants(brief)
             return {
                 "brief_ids": [brief_id],
                 "variants": variants,
                 "reused_research": True,
                 "research_brief_id": brief_id,
+                "recommended_format": recommended_format,
                 "source_urls": list((brief.get("research") or {}).get("source_urls") or []),
                 "signals_discovered": 0,
                 "signals_evaluated": 0,
@@ -159,7 +190,9 @@ def run_editorial_with_library(
         avoid=avoid,
         strict_theme=strict_theme,
         force_new=force_new,
+        recommended_format=recommended_format,
     )
     if isinstance(result, dict):
         result["reused_research"] = False
+        result["recommended_format"] = recommended_format
     return result
