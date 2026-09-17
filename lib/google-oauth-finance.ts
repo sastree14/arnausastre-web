@@ -8,6 +8,8 @@ type Connection = Record<string, unknown>
 const env = (name: string) => (process.env[name] || '').trim()
 const firstEnv = (...names: string[]) => names.map(env).find(Boolean) || ''
 
+export const CORPORATE_GOOGLE_EMAIL = 'arnau.sastre@sc-analytics.io'
+
 export const GOOGLE_SCOPES = {
   personal: ['openid', 'email', 'profile', 'https://www.googleapis.com/auth/gmail.readonly'],
   corporate: [
@@ -128,7 +130,9 @@ export async function getCorporateGoogleConnection() {
 }
 export async function getCorporateGoogleAccessToken() {
   const connection = await getCorporateGoogleConnection()
-  if (!connection) throw new Error('Corporate Google Workspace account is not connected. Connect arnau.sastre@ecenalytics.io from the CRM.')
+  if (!connection) throw new Error(`Corporate Google Workspace account is not connected. Connect ${CORPORATE_GOOGLE_EMAIL} from the CRM.`)
+  const connectedEmail = String(connection.provider_subject || connection.display_name || '').toLowerCase()
+  if (connectedEmail && connectedEmail !== CORPORATE_GOOGLE_EMAIL) throw new Error(`The corporate Google connection is ${connectedEmail}; reconnect ${CORPORATE_GOOGLE_EMAIL} as the corporate account.`)
   const scopes = Array.isArray(connection.scopes) ? connection.scopes.map(String) : []
   const required = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets']
   const missing = required.filter((scope) => !scopes.includes(scope))
