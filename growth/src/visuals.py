@@ -131,11 +131,14 @@ def render_contextual_illustration(title: str, concept: str, *, slug: str, theme
         quality = "low"
     subject = (concept or title).strip()[:900]
     prompt = (
-        "Create a sophisticated editorial business illustration for a data and AI consultancy LinkedIn post. "
-        "No text, no letters, no numbers, no logos, no UI screenshots, no watermark. "
-        "Use a restrained professional composition with one clear focal idea, realistic or clean conceptual style, "
-        "subtle depth, premium consulting-publication aesthetic, and enough visual simplicity to survive a square social crop. "
-        f"Concept: {subject}"
+        "Create a premium editorial SYMBOL / EMBLEM for a Data & AI consultancy publication, not a conventional AI-generated scene. "
+        "The composition must center on ONE instantly legible, non-proprietary symbol connected to the industry or business problem. "
+        "Use refined holographic linework, translucent glass-like layers, etched geometry, precise vector-like contours and very restrained luminous accents. "
+        "Think high-end annual report key visual, technical editorial identity or Swiss-style business design — minimal, calm and intentional. "
+        "Do not create people, faces, offices, cinematic environments, generic 3D objects, robots, glowing brains, sci-fi scenes, fake dashboards, stock-photo compositions or decorative AI clutter. "
+        "No text, letters, numbers, logos, watermarks or brand marks inside the generated artwork. "
+        "Keep the symbol isolated with generous negative space and a simple background compatible with later SC-Analytics typography. "
+        f"Theme: {theme}. Editorial direction: {subject}"
     )
     response = requests.post(
         "https://api.openai.com/v1/images/generations",
@@ -171,13 +174,22 @@ def render_contextual_illustration(title: str, concept: str, *, slug: str, theme
         draw.text((86, y), line_text, fill=text, font=headline_font)
         y += 68 if len(headline_lines) <= 2 else 58
 
-    panel_box = (86, 430, 1114, 1000)
-    panel_w, panel_h = panel_box[2] - panel_box[0], panel_box[3] - panel_box[1]
-    fitted = ImageOps.fit(generated, (panel_w, panel_h), method=Image.Resampling.LANCZOS, centering=(0.5, 0.5))
-    mask = Image.new("L", (panel_w, panel_h), 0)
-    ImageDraw.Draw(mask).rounded_rectangle((0, 0, panel_w, panel_h), radius=30, fill=255)
-    canvas.paste(fitted, (panel_box[0], panel_box[1]), mask)
-    draw.rounded_rectangle(panel_box, radius=30, outline=line, width=2)
+    # Treat generated artwork as an editorial emblem, not a full-bleed AI scene.
+    # Typography remains deterministic and brand-controlled.
+    symbol_box = (650, 390, 1114, 854)
+    symbol_w, symbol_h = symbol_box[2] - symbol_box[0], symbol_box[3] - symbol_box[1]
+    fitted = ImageOps.fit(generated, (symbol_w, symbol_h), method=Image.Resampling.LANCZOS, centering=(0.5, 0.5))
+    mask = Image.new("L", (symbol_w, symbol_h), 0)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, symbol_w, symbol_h), radius=42, fill=255)
+    canvas.paste(fitted, (symbol_box[0], symbol_box[1]), mask)
+    draw.rounded_rectangle(symbol_box, radius=42, outline=line, width=2)
+
+    draw.text((86, 510), "EDITORIAL SYMBOL", fill=muted, font=_font(20, True))
+    draw.line((86, 558, 520, 558), fill=line, width=2)
+    draw.text((86, 590), "Industry / problem", fill=text, font=_font(30, True))
+    draw.text((86, 642), "expressed as one clear", fill=muted, font=_font(26))
+    draw.text((86, 682), "visual signal.", fill=muted, font=_font(26))
+    draw.line((86, 850, 520, 850), fill=line, width=2)
     draw.text((86, 1075), "Comprender antes de construir. · sc-analytics.io", fill=muted, font=_font(22))
     canvas.save(path, format="PNG", optimize=True)
     return path

@@ -64,6 +64,70 @@ def _direct_client_size_allowed(employee_range: str, score: float) -> bool:
     return score >= DIRECT_CLIENT_MIN_SCORE
 
 
+def _verify_direct_client_size(company_name: str, website: str, search: BraveResearchClient, llm) -> dict:
+    """Second-pass size verification so strong SME prospects are not lost just
+    because the broad discovery snippets omitted headcount.
+
+    Returns only evidence-backed scale information. Unknown remains unknown.
+    """
+    domain = _website_key(website)
+    queries = [
+        f'"{company_name}" employees company size',
+        f'"{company_name}" employees Spain',
+        f'"{company_name}" "51-200" OR "11-50" OR "201-500"',
+        f'site:linkedin.com/company "{company_name}" employees',
+    ]
+    if domain:
+        queries.extend([
+            f'site:{domain} employees OR team OR "our people" OR plantilla',
+            f'site:{domain} "about us" OR nosotros OR equipo',
+        ])
+    hits = []
+    for query in queries:
+        hits.extend(search.search(query, count=8))
+    hits = dedupe_hits(hits)[:30]
+    if not hits:
+        return {"employee_range": "", "classification": "unknown", "source_url": "", "evidence": ""}
+
+    result = llm.json(
+        "Verify company size conservatively using only the supplied public snippets. Never guess an exact headcount.",
+        f"""Company: {company_name}
+Website: {website}
+
+Return one JSON object with:
+- employee_range: explicit numeric count/range only when directly supported; otherwise empty string
+- classification: one of under_200, from_201_to_500, over_500, likely_sme, unknown
+- source_url: strongest supplied URL supporting the classification
+- evidence: one concise evidence sentence
+
+Rules:
+- over_500 if supplied evidence clearly indicates >500 employees or a large/global enterprise;
+- under_200 / from_201_to_500 only when numeric evidence supports it;
+- likely_sme only when public evidence explicitly describes the company as SME/small/mid-sized and there is no evidence of enterprise scale;
+- unknown if evidence is insufficient or conflicting;
+- do not infer size from revenue, brand familiarity or website design.
+
+RESULTS:
+{[{'title': h.title, 'url': h.url, 'snippet': h.snippet} for h in hits]}
+""",
+    )
+    if not isinstance(result, dict):
+        return {"employee_range": "", "classification": "unknown", "source_url": "", "evidence": ""}
+    allowed_urls = {h.url for h in hits}
+    source_url = str(result.get("source_url", "")).strip()
+    if source_url and source_url not in allowed_urls:
+        source_url = ""
+    classification = str(result.get("classification", "unknown")).strip()
+    if classification not in {"under_200", "from_201_to_500", "over_500", "likely_sme", "unknown"}:
+        classification = "unknown"
+    return {
+        "employee_range": str(result.get("employee_range", "")).strip(),
+        "classification": classification,
+        "source_url": source_url,
+        "evidence": str(result.get("evidence", "")).strip(),
+    }
+
+
 def _website_key(value: str) -> str:
     raw = str(value or "").strip()
     if not raw:
@@ -253,7 +317,7 @@ Return one JSON object with:
 - angle: a short relationship angle focused on shared interests, learning, contribution or future collaboration
 - open_question: one genuine open question about their work, field or current technical interests
 - recommended_action: one of follow, connect, connect_then_message
-- sc_analytics_action: one of invite_to_follow_after_connection, invite_to_follow, none
+- sc_analytics_action: normally invite_to_follow_after_connection; use invite_to_follow only when there is already a natural interaction/context; use none only when an invitation would clearly be premature
 - connection_note: personalized invitation, max 250 characters, with NO pitch
 - message: first message after connection, 55-110 words, conversational and non-commercial
 - follow_up: optional follow-up, 35-70 words, only if it adds something useful
@@ -278,8 +342,9 @@ RULES:
 4. Use the personal_hook only if supported by public professional evidence.
 5. End the first message with the open question or a natural equivalent.
 6. No empty flattery, engagement bait, fake familiarity, guilt, scarcity or pressure.
-7. Default to natural Spanish for Spain unless evidence supports English.
-8. Never use private or sensitive personal information.
+7. Building the SC-Analytics page audience is a real objective, but sequence matters: first create context through following/connecting/conversation, then invite the person to follow SC-Analytics. Do not put the company-page invitation inside the first cold connection note.
+8. Default to natural Spanish for Spain unless evidence supports English.
+9. Never use private or sensitive personal information.
 
 SC-ANALYTICS BRAIN:
 {brain}
@@ -477,7 +542,7 @@ HEADCOUNT IS A CORE ICP FILTER:
 - ideal: 10-200 employees;
 - acceptable stretch: 201-500 employees only with unusually strong fit;
 - exclude companies above 500 employees, global enterprises and household-name multinationals;
-- employee size must be supported by the supplied public evidence; if a numeric employee range/count is not supported, do not return the candidate.
+- prefer queries that surface employee-size evidence, but do not discard an otherwise relevant SME candidate solely because the first search result does not contain a numeric headcount; size is verified in a dedicated second pass.
 Diversify across ecommerce/retail, manufacturing, wholesale/distribution, regional logistics operators, food, healthcare groups, hospitality/travel, financial services and growing B2B companies.
 Look for observable operational complexity: expansion, inventory, demand, capacity, pricing, planning, finance/risk, resource allocation, reporting or repetitive workflows where one SC-Analytics capability could improve an actual decision."""
     return f"""Generate 12 distinct public-web search queries to find NEW {mode} candidates for SC-Analytics.
@@ -517,7 +582,7 @@ Do not choose a partner merely because it is another consultancy; explain the ac
 - HARD MAXIMUM: 500 employees. Never select a candidate above 500 employees;
 - candidates in the 201-500 range require materially stronger fit than candidates below 200;
 - exclude global enterprises, household-name multinationals and large corporate groups even when one local unit appears relevant;
-- employee_range is REQUIRED, must contain a numeric range/count, and must be grounded in supplied public evidence; if size is unclear, DO NOT select the candidate;
+- employee_range should contain a numeric range/count when the supplied discovery evidence supports one; if not, leave it empty rather than dropping an otherwise credible candidate because a dedicated second-pass verifier will check company size;
 - candidates with 201-500 employees must have score >= 8.0 and a particularly strong fit;
 - exclude consultancies, marketing agencies, ERP vendors, data/AI service firms and recruitment companies;
 - diversify industries;
@@ -622,12 +687,43 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
 
         employee_range = str(raw.get("employee_range", "")).strip()
         score = float(raw.get("score", 0) or 0)
+        size_verification = {"classification": "", "source_url": "", "evidence": ""}
         if mode == "lead":
-            # Headcount is a hard ICP gate, not a soft prompt. Unknown size used to
-            # let enterprise names through (for example global logistics groups).
-            # Prefer fewer, verifiable prospects over a full list with weak fit.
-            if not _direct_client_size_allowed(employee_range, score):
-                continue
+            # Two-pass ICP gate:
+            # 1) use numeric size from the broad qualification result when present;
+            # 2) otherwise run a dedicated size lookup before rejecting the company.
+            # This keeps enterprise names out without turning missing snippets into
+            # an automatic rejection of every otherwise-good SME.
+            if employee_range:
+                if not _direct_client_size_allowed(employee_range, score):
+                    continue
+                size_verification = {
+                    "classification": "verified_numeric",
+                    "source_url": str(raw.get("source_url", "")).strip(),
+                    "evidence": f"Employee range from discovery evidence: {employee_range}",
+                }
+            else:
+                size_verification = _verify_direct_client_size(
+                    str(raw.get("name", "")).strip(),
+                    website,
+                    search,
+                    llm,
+                )
+                verified_range = str(size_verification.get("employee_range", "")).strip()
+                classification = str(size_verification.get("classification", "unknown"))
+                if classification == "over_500":
+                    continue
+                if verified_range:
+                    employee_range = verified_range
+                    if not _direct_client_size_allowed(employee_range, score):
+                        continue
+                elif classification == "likely_sme":
+                    # Allow a strong, evidence-backed SME candidate through for
+                    # manual review even when no exact headcount is public.
+                    if score < DIRECT_CLIENT_STRETCH_MIN_SCORE:
+                        continue
+                else:
+                    continue
 
         company_extra = {
             "recommended_service": "" if mode == "network" else str(raw.get("recommended_service", "")).strip(),

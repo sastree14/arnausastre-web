@@ -33,19 +33,48 @@ def _derive_concept(item: dict[str, Any], explicit: str) -> str:
     try:
         result = get_llm(profile="fast").json(
             "You are an editorial art director for SC-Analytics. Return JSON only.",
-            f"""Propose one concrete visual scene for this publication. The scene must work without any text, numbers, logos or UI screenshots and must communicate the business idea visually. Avoid generic robots, glowing brains and stock-photo cliches.
+            f"""Choose a symbolic editorial motif for this publication. Do NOT design a literal scene or stock-style illustration.
 
 TITLE: {title}
 BODY: {body[:3500]}
 
-Return {{"concept":"one concise concrete scene description"}}.""",
+The visual should feel like premium editorial identity: one instantly legible symbol connected to the industry or business problem, with optional abstract analytical geometry around it.
+
+Examples of the level of abstraction:
+- pharma / healthcare → Bowl of Hygieia, capsule, medical cross or molecule;
+- hospitality / workforce → menu, order ticket, tray or service bell;
+- logistics → route nodes, parcel, warehouse grid or directional path;
+- manufacturing → gear, production line schematic or factory geometry;
+- finance → ledger, cash-flow curve, coin geometry or risk grid;
+- retail / ecommerce → tag, package, cart or demand curve;
+- forecasting → signal wave, horizon bands or probability fan;
+- optimisation → network, route, constrained nodes or allocation grid.
+
+Return JSON with:
+- domain: short industry/domain label
+- problem: short business problem label
+- symbol: ONE primary non-proprietary symbol or motif
+- supporting_motif: optional simple geometric/analytical motif
+
+Avoid people, offices, robots, brains, generic futuristic scenes, dashboards and photorealistic storytelling.""",
         )
-        candidate = sanitize_publication_text(str((result or {}).get("concept") or "")).strip()
-        if candidate:
-            return candidate[:900]
+        if isinstance(result, dict):
+            domain = sanitize_publication_text(str(result.get("domain") or "")).strip()
+            problem = sanitize_publication_text(str(result.get("problem") or "")).strip()
+            symbol = sanitize_publication_text(str(result.get("symbol") or "")).strip()
+            supporting = sanitize_publication_text(str(result.get("supporting_motif") or "")).strip()
+            parts = [
+                f"Domain: {domain}" if domain else "",
+                f"Business problem: {problem}" if problem else "",
+                f"Primary symbol: {symbol}" if symbol else "",
+                f"Supporting motif: {supporting}" if supporting else "",
+            ]
+            candidate = ". ".join(part for part in parts if part)
+            if candidate:
+                return candidate[:900]
     except Exception:
         pass
-    return sanitize_publication_text(f"{title}. {body[:500]}").strip()[:900] or "A precise operational business decision represented through a concrete real-world scene"
+    return sanitize_publication_text(f"Primary symbol derived from: {title}. Business context: {body[:420]}").strip()[:900] or "A precise editorial symbol representing a business decision"
 
 
 def generate_contextual_visual(content_id: str, concept: str = "", theme: str = "") -> dict[str, Any]:
