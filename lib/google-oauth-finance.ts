@@ -25,8 +25,12 @@ export const GOOGLE_SCOPES = {
 export function googleOAuthConfig(origin = '') {
   const clientId = firstEnv('GOOGLE_OAUTH_CLIENT_ID', 'GOOGLE_CLIENT_ID')
   const clientSecret = firstEnv('GOOGLE_OAUTH_CLIENT_SECRET', 'GOOGLE_CLIENT_SECRET')
-  const configuredRedirect = env('GOOGLE_OAUTH_REDIRECT_URI')
-  const redirectUri = configuredRedirect || (origin ? `${origin}/api/growth-admin/google/callback` : '')
+  // Keep one canonical callback URL for every Google capability. The original
+  // Gmail integration already used /api/google/gmail/callback, so reusing it
+  // avoids redirect_uri_mismatch when Google Cloud still has the legacy URI.
+  // GOOGLE_GMAIL_REDIRECT_URI remains the explicit override for local/dev use.
+  const configuredRedirect = firstEnv('GOOGLE_GMAIL_REDIRECT_URI')
+  const redirectUri = configuredRedirect || (origin ? `${origin.replace(/\/$/, '')}/api/google/gmail/callback` : 'https://sc-analytics.io/api/google/gmail/callback')
   const missing: string[] = []
   if (!clientId) missing.push('GOOGLE_OAUTH_CLIENT_ID / GOOGLE_CLIENT_ID')
   if (!clientSecret) missing.push('GOOGLE_OAUTH_CLIENT_SECRET / GOOGLE_CLIENT_SECRET')
