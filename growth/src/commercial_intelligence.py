@@ -8,6 +8,7 @@ from .config import load_config
 from .llm import get_llm
 from .models import CompanyCandidate, PersonCandidate, new_id, to_dict
 from .prospecting import (
+    _direct_client_size_allowed,
     _discover_primary_person,
     _display_plan,
     _draft_outreach,
@@ -66,6 +67,44 @@ def _as_list(value) -> list:
 def _normalize_offer(value: str) -> str:
     value = str(value or '').strip()
     return value if value in OFFER_KEYS else ''
+
+
+def _verified_employee_range(company_name: str, website: str, search: BraveResearchClient, llm) -> tuple[str, str]:
+    host = _website_key(website)
+    queries = [
+        f'"{company_name}" employees company size',
+        f'"{company_name}" "employees"',
+        f'site:linkedin.com/company "{company_name}" employees',
+    ]
+    if host:
+        queries.append(f'site:{host} employees OR "our team" OR "team of"')
+    hits = []
+    for query in queries:
+        hits.extend(search.search(query, count=6))
+    hits = dedupe_hits(hits)[:16]
+    if not hits:
+        return '', ''
+
+    response = llm.json(
+        'Extract company headcount only when it is explicitly supported by the supplied public search snippets. Never infer or estimate headcount.',
+        f'''Company: {company_name}
+Website: {website}
+Return one JSON object with employee_range and source_url.
+Rules:
+- employee_range must contain an explicit numeric employee count or range from the supplied evidence, e.g. 11-50, 51-200, 201-500.
+- source_url must be one of the supplied result URLs.
+- if the size is unclear, conflicting or only described qualitatively, return empty strings.
+RESULTS:
+{[{'title': h.title, 'url': h.url, 'snippet': h.snippet} for h in hits]}''',
+    )
+    if not isinstance(response, dict):
+        return '', ''
+    employee_range = str(response.get('employee_range', '')).strip()
+    source_url = str(response.get('source_url', '')).strip()
+    allowed = {h.url for h in hits}
+    if not employee_range or source_url not in allowed:
+        return '', ''
+    return employee_range, source_url
 
 
 def _observed_at(value: str) -> str | None:
@@ -140,7 +179,7 @@ def run_commercial_signal_scan(limit: int = 12) -> list[dict]:
         'You are a trigger-based B2B sales intelligence analyst. Use only supplied public search evidence. Never invent a company event, date, role or pain point.',
         f'''Select up to {requested * 2} strong commercial signals for SC-Analytics from the search results.
 Return a JSON array. Each item must contain:
-company_name, website, country, industry, signal_type, title, summary, source_url, observed_at, evidence, strength (0-10), recommended_service, recommended_offer, suggested_roles (array).
+company_name, website, country, industry, employee_range, signal_type, title, summary, source_url, observed_at, evidence, strength (0-10), recommended_service, recommended_offer, suggested_roles (array).
 
 Allowed signal_type examples: hiring_supply_chain, hiring_fpa, hiring_ai, hiring_operations, funding, warehouse_expansion, network_expansion, international_expansion, erp_migration, new_management, capacity_growth, process_scaling, reporting_growth.
 Allowed recommended_offer values exactly:
@@ -156,7 +195,10 @@ Rules:
 - recommended_service is the technical capability; recommended_offer is the packaged entry offer.
 - suggested_roles should name 2-4 decision-maker roles appropriate to the event.
 - Never claim the company has a private/internal problem. Frame the commercial opportunity as a hypothesis from the observable signal.
-- Prefer Spain/EU operating companies where a focused discovery could plausibly lead to forecasting, optimization, financial planning, Data/BI or AI automation work.
+- Apply the same direct-client ICP as the prospecting engine: 10-200 employees is ideal; 201-500 is stretch-only with unusually strong fit; never select companies above 500 employees.
+- employee_range must contain a numeric range/count grounded in the supplied public evidence. If size is not supported, leave employee_range empty; the downstream verifier may try to confirm it, otherwise the signal will be rejected.
+- Exclude global enterprises, household-name multinationals, large corporate groups, consultancies/agencies/data vendors and recruitment firms.
+- Prefer Spain/EU operating companies where SC-Analytics could plausibly become the primary external Data/Analytics/AI specialist and where a focused discovery could lead to forecasting, optimization, financial planning, Data/BI or AI automation work.
 
 SC-ANALYTICS BRAIN:
 {brain}
@@ -195,6 +237,13 @@ SEARCH RESULTS:
         if existing and str(existing.get('fit_type') or 'lead') == 'partner':
             continue
 
+        employee_range = str(existing.get('employee_range', '')).strip() if existing else str(raw.get('employee_range', '')).strip()
+        employee_size_source_url = ''
+        if not employee_range:
+            employee_range, employee_size_source_url = _verified_employee_range(company_name, website, search, llm)
+        if not _direct_client_size_allowed(employee_range, strength):
+            continue
+
         offer = _normalize_offer(str(raw.get('recommended_offer', '')))
         service = str(raw.get('recommended_service', '')).strip()
         suggested_roles = [str(role).strip() for role in (raw.get('suggested_roles') or []) if str(role).strip()][:4]
@@ -211,7 +260,7 @@ SEARCH RESULTS:
             website=website,
             country=str(raw.get('country', '')).strip(),
             industry=str(raw.get('industry', '')).strip(),
-            employee_range=str(existing.get('employee_range', '')) if existing else '',
+            employee_range=employee_range,
             source_url=source_url,
             fit_type='lead',
             score=max(float(existing.get('score', 0) or 0), strength) if existing else strength,
@@ -314,7 +363,7 @@ SEARCH RESULTS:
             'phone': phone,
             'phone_source_url': phone_source_url,
             'status': 'new',
-            'metadata': {'person_id': person_id},
+            'metadata': {'person_id': person_id, 'employee_range': employee_range, 'employee_size_source_url': employee_size_source_url},
             'created_at': datetime.now(timezone.utc).isoformat(),
         }
         stored_signal = store.upsert('commercial_signals', signal, key='tenant_id,source_url')
