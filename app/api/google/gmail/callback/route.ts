@@ -17,6 +17,18 @@ function inboxUrl(request: NextRequest, params: Record<string, string>) {
 
 export async function GET(request: NextRequest) {
   const returnedState = request.nextUrl.searchParams.get('state') || ''
+
+  // Unified Google Workspace/Gmail OAuth uses a signed state payload. Google
+  // still returns to this legacy callback URL so existing Google Cloud OAuth
+  // configuration remains valid; we then hand the code to the unified handler.
+  if (returnedState.includes('.')) {
+    const target = new URL('/api/growth-admin/google/callback', request.url)
+    for (const key of ['code', 'state', 'error', 'error_description', 'scope', 'authuser', 'prompt']) {
+      const value = request.nextUrl.searchParams.get(key)
+      if (value) target.searchParams.set(key, value)
+    }
+    return NextResponse.redirect(target)
+  }
   const expectedState = request.cookies.get(STATE_COOKIE)?.value || ''
   const redirectUri = request.cookies.get('sc_gmail_redirect_uri')?.value || (process.env.GOOGLE_GMAIL_REDIRECT_URI || '').trim() || `${request.nextUrl.origin}/api/google/gmail/callback`
   if (!expectedState || returnedState !== expectedState) return NextResponse.redirect(inboxUrl(request, { gmail: 'error', reason: 'invalid_state' }))
