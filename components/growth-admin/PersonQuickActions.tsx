@@ -13,6 +13,7 @@ const STATUS_LABELS: Record<string, string> = {
   contacted: 'Mensaje enviado',
   replied: 'Ha respondido',
   follow_up: 'Follow-up',
+  company_invite_sent: 'Invitado a seguir SC-Analytics',
   discovery_proposed: 'Discovery propuesta',
   discovery_booked: 'Discovery agendada',
   proposal_sent: 'Propuesta enviada',
