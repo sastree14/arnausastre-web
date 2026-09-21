@@ -253,7 +253,7 @@ Return one JSON object with:
 - angle: a short relationship angle focused on shared interests, learning, contribution or future collaboration
 - open_question: one genuine open question about their work, field or current technical interests
 - recommended_action: one of follow, connect, connect_then_message
-- sc_analytics_action: one of invite_to_follow_after_connection, invite_to_follow, none
+- sc_analytics_action: normally invite_to_follow_after_connection; use invite_to_follow only when there is already a natural interaction/context; use none only when an invitation would clearly be premature
 - connection_note: personalized invitation, max 250 characters, with NO pitch
 - message: first message after connection, 55-110 words, conversational and non-commercial
 - follow_up: optional follow-up, 35-70 words, only if it adds something useful
@@ -278,8 +278,9 @@ RULES:
 4. Use the personal_hook only if supported by public professional evidence.
 5. End the first message with the open question or a natural equivalent.
 6. No empty flattery, engagement bait, fake familiarity, guilt, scarcity or pressure.
-7. Default to natural Spanish for Spain unless evidence supports English.
-8. Never use private or sensitive personal information.
+7. Building the SC-Analytics page audience is a real objective, but sequence matters: first create context through following/connecting/conversation, then invite the person to follow SC-Analytics. Do not put the company-page invitation inside the first cold connection note.
+8. Default to natural Spanish for Spain unless evidence supports English.
+9. Never use private or sensitive personal information.
 
 SC-ANALYTICS BRAIN:
 {brain}
