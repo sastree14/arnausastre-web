@@ -33,6 +33,7 @@ PARTNER_MODELS = [
 DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES = 200
 DIRECT_CLIENT_HARD_MAX_EMPLOYEES = 500
 DIRECT_CLIENT_MIN_SCORE = 6.0
+DIRECT_CLIENT_STRETCH_MIN_SCORE = 8.0
 
 
 def _employee_upper_bound(value: str) -> int | None:
@@ -50,6 +51,17 @@ def _employee_upper_bound(value: str) -> int | None:
     if "+" in raw:
         upper += 1
     return upper
+
+
+def _direct_client_size_allowed(employee_range: str, score: float) -> bool:
+    employee_upper = _employee_upper_bound(employee_range)
+    if employee_upper is None:
+        return False
+    if employee_upper > DIRECT_CLIENT_HARD_MAX_EMPLOYEES:
+        return False
+    if employee_upper > DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES and score < DIRECT_CLIENT_STRETCH_MIN_SCORE:
+        return False
+    return score >= DIRECT_CLIENT_MIN_SCORE
 
 
 def _website_key(value: str) -> str:
@@ -371,7 +383,7 @@ HEADCOUNT IS A CORE ICP FILTER:
 - ideal: 10-200 employees;
 - acceptable stretch: 201-500 employees only with unusually strong fit;
 - exclude companies above 500 employees, global enterprises and household-name multinationals;
-- avoid candidates whose employee size cannot be supported from the supplied public evidence unless the evidence clearly establishes that they are an SME.
+- employee size must be supported by the supplied public evidence; if a numeric employee range/count is not supported, do not return the candidate.
 Diversify across ecommerce/retail, manufacturing, wholesale/distribution, regional logistics operators, food, healthcare groups, hospitality/travel, financial services and growing B2B companies.
 Look for observable operational complexity: expansion, inventory, demand, capacity, pricing, planning, finance/risk, resource allocation, reporting or repetitive workflows where one SC-Analytics capability could improve an actual decision."""
     return f"""Generate 12 distinct public-web search queries to find NEW {mode} candidates for SC-Analytics.
@@ -401,7 +413,8 @@ Do not choose a partner merely because it is another consultancy; explain the ac
 - HARD MAXIMUM: 500 employees. Never select a candidate above 500 employees;
 - candidates in the 201-500 range require materially stronger fit than candidates below 200;
 - exclude global enterprises, household-name multinationals and large corporate groups even when one local unit appears relevant;
-- employee_range must be grounded in supplied public evidence; if size is unclear, score conservatively rather than guessing;
+- employee_range is REQUIRED, must contain a numeric range/count, and must be grounded in supplied public evidence; if size is unclear, DO NOT select the candidate;
+- candidates with 201-500 employees must have score >= 8.0 and a particularly strong fit;
 - exclude consultancies, marketing agencies, ERP vendors, data/AI service firms and recruitment companies;
 - diversify industries;
 - recommended_service: choose the ONE SC-Analytics capability most relevant from {SERVICES};
@@ -451,12 +464,12 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
     queries = [str(q) for q in _as_list(query_plan)[:12]]
     if mode == "lead":
         queries.extend([
-            'Spain ecommerce retailer inventory logistics expansion company',
-            'Spain manufacturer production planning capacity growth company',
-            'Spain wholesale distributor inventory warehouses company',
-            'Spain logistics operator fleet capacity expansion company',
-            'Spain healthcare clinics group expansion operations company',
-            'Spain hospitality hotel group expansion revenue operations company',
+            'Spain SME ecommerce retailer inventory logistics expansion employees',
+            'Spain SME manufacturer production planning capacity growth employees',
+            'Spain SME wholesale distributor inventory warehouses employees',
+            'Spain regional logistics operator fleet capacity expansion employees',
+            'Spain SME healthcare clinics group expansion operations employees',
+            'Spain SME hospitality hotel group expansion revenue operations employees',
         ])
     else:
         queries.extend([
@@ -493,12 +506,12 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
             continue
 
         employee_range = str(raw.get("employee_range", "")).strip()
-        employee_upper = _employee_upper_bound(employee_range)
         score = float(raw.get("score", 0) or 0)
         if mode == "lead":
-            if employee_upper is not None and employee_upper > DIRECT_CLIENT_HARD_MAX_EMPLOYEES:
-                continue
-            if score < DIRECT_CLIENT_MIN_SCORE:
+            # Headcount is a hard ICP gate, not a soft prompt. Unknown size used to
+            # let enterprise names through (for example global logistics groups).
+            # Prefer fewer, verifiable prospects over a full list with weak fit.
+            if not _direct_client_size_allowed(employee_range, score):
                 continue
 
         company_extra = {
