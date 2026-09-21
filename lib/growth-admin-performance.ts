@@ -31,7 +31,9 @@ export type OperationsBundle={tasks:Array<Record<string,unknown>>;projects:Array
 export type CrmBundle={companies:GrowthCompany[];people:GrowthPerson[];actions:GrowthApproval[];interactions:GrowthInteraction[];opportunities:GrowthOpportunity[];meetings:GrowthMeeting[];prospect_tasks:GrowthTask[];calendly_connection?:Record<string,unknown>;degraded?:boolean}
 
 const readOptions={cacheSeconds:8,timeoutMs:3000,retries:1}
+const liveReadOptions={cacheSeconds:0,timeoutMs:3000,retries:1}
 async function safeRpc<T extends object>(name:string,fallback:T,params:Record<string,string>={}):Promise<T&{degraded?:boolean}>{try{return await queryGrowthRpc<T>(name,params,readOptions)}catch(error){console.error(`Growth performance RPC ${name} failed`,error);return {...fallback,degraded:true}}}
+async function safeLiveRpc<T extends object>(name:string,fallback:T,params:Record<string,string>={}):Promise<T&{degraded?:boolean}>{try{return await queryGrowthRpc<T>(name,params,liveReadOptions)}catch(error){console.error(`Growth live RPC ${name} failed`,error);return {...fallback,degraded:true}}}
 
 export function getDashboardSummary(){return safeRpc<DashboardSummary>('growth_dashboard_summary',{companies:0,active_projects:0,opportunities:0,meetings:0,manual_actions:0,published_content:0,pending_approvals:0,open_tasks:0,failed_tasks:0,invoiced:0,collected:0,spent:0,overdue_invoices:0,web_sessions:0,linkedin_impressions:0,linkedin_posts_measured:0,linkedin_connected:false})}
 export function getCommercialSummary(){return safeRpc<CommercialSummary>('growth_commercial_summary',{companies:0,people:0,lead_companies:0,partner_companies:0,lead_people:0,partner_people:0,opportunities:0,meetings:0,manual_actions:0,active_content:0})}
@@ -42,4 +44,4 @@ export function getDealDeskBundle(){return safeRpc<DealDeskBundle>('growth_deal_
 export function getFinanceBundle(){return safeRpc<FinanceBundle>('growth_finance_bundle',{settings:{},companies:[],counterparties:[],projects:[],invoices:[],expenses:[],payments:[],documents:[],tax_periods:[],import_candidates:[],bank_accounts:[],bank_transactions:[],reconciliations:[],accounts:[],journal_entries:[],audit_events:[],gmail_connections:[],revolut_connections:[],invoiced:0,received:0,spent:0,vat_output:0,vat_input:0,withholding_total:0})}
 export function getFinancePeriodReport(start:string,end:string){return safeRpc<FinancePeriodReport>('finance_period_report',{period_start:start,period_end:end,invoiced:0,expenses:0,cash_in:0,cash_out:0,vat_output:0,vat_input:0,withholding:0},{p_start:start,p_end:end})}
 export function getOperationsBundle(){return safeRpc<OperationsBundle>('growth_operations_bundle',{tasks:[],projects:[],companies:[],opportunities:[]})}
-export function getCrmBundle(){return safeRpc<CrmBundle>('growth_crm_bundle',{companies:[],people:[],actions:[],interactions:[],opportunities:[],meetings:[],prospect_tasks:[],calendly_connection:{}})}
+export function getCrmBundle(){return safeLiveRpc<CrmBundle>('growth_crm_bundle',{companies:[],people:[],actions:[],interactions:[],opportunities:[],meetings:[],prospect_tasks:[],calendly_connection:{}})}

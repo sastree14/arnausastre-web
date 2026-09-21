@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from urllib.parse import quote_plus, urlparse
 
 from .brain import load_brain
@@ -28,6 +29,27 @@ PARTNER_MODELS = [
     "recruitment-channel",
     "technology-implementation-partner",
 ]
+
+DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES = 200
+DIRECT_CLIENT_HARD_MAX_EMPLOYEES = 500
+DIRECT_CLIENT_MIN_SCORE = 6.0
+
+
+def _employee_upper_bound(value: str) -> int | None:
+    raw = str(value or "").strip().lower()
+    if not raw:
+        return None
+    numbers = []
+    for token in re.findall(r"\d[\d.,\s]*", raw):
+        digits = re.sub(r"\D", "", token)
+        if digits:
+            numbers.append(int(digits))
+    if not numbers:
+        return None
+    upper = max(numbers)
+    if "+" in raw:
+        upper += 1
+    return upper
 
 
 def _website_key(value: str) -> str:
@@ -343,7 +365,15 @@ def _query_prompt(mode: str, existing_websites: set[str], brain: str) -> str:
 A good partner should gain something concrete: sell larger/deeper projects, avoid saying no to specialist work, add white-label technical delivery, handle overflow, or create a referral/subcontracting channel.
 Avoid full-stack Data Science/AI consultancies whose offer substantially duplicates SC-Analytics unless the evidence shows a clear complementary niche."""
     else:
-        target = """Find END-CLIENT/OPERATING companies, not consultancies/agencies/data vendors. Diversify across ecommerce/retail, manufacturing, wholesale/distribution, logistics operators, food, healthcare networks, hospitality/travel, financial services and growing B2B companies. Look for observable operational complexity: expansion, inventory, demand, capacity, pricing, planning, finance/risk, resource allocation, reporting or repetitive workflows where one SC-Analytics capability could improve an actual decision."""
+        target = """Find END-CLIENT/OPERATING SMEs and lower-mid-market companies, not consultancies/agencies/data vendors.
+SC-Analytics should plausibly be able to become their primary external Data/Analytics/AI specialist rather than one vendor among dozens.
+HEADCOUNT IS A CORE ICP FILTER:
+- ideal: 10-200 employees;
+- acceptable stretch: 201-500 employees only with unusually strong fit;
+- exclude companies above 500 employees, global enterprises and household-name multinationals;
+- avoid candidates whose employee size cannot be supported from the supplied public evidence unless the evidence clearly establishes that they are an SME.
+Diversify across ecommerce/retail, manufacturing, wholesale/distribution, regional logistics operators, food, healthcare groups, hospitality/travel, financial services and growing B2B companies.
+Look for observable operational complexity: expansion, inventory, demand, capacity, pricing, planning, finance/risk, resource allocation, reporting or repetitive workflows where one SC-Analytics capability could improve an actual decision."""
     return f"""Generate 12 distinct public-web search queries to find NEW {mode} candidates for SC-Analytics.
 Return JSON array of strings only.
 {target}
@@ -366,6 +396,12 @@ Do not choose a partner merely because it is another consultancy; explain the ac
     else:
         rules = f"""For DIRECT CLIENT mode:
 - choose operating/end-client companies with a plausible business decision/process SC-Analytics could improve;
+- target companies where SC-Analytics could realistically act as the main external Data/Analytics/AI provider;
+- IDEAL HEADCOUNT: 10-200 employees;
+- HARD MAXIMUM: 500 employees. Never select a candidate above 500 employees;
+- candidates in the 201-500 range require materially stronger fit than candidates below 200;
+- exclude global enterprises, household-name multinationals and large corporate groups even when one local unit appears relevant;
+- employee_range must be grounded in supplied public evidence; if size is unclear, score conservatively rather than guessing;
 - exclude consultancies, marketing agencies, ERP vendors, data/AI service firms and recruitment companies;
 - diversify industries;
 - recommended_service: choose the ONE SC-Analytics capability most relevant from {SERVICES};
@@ -456,6 +492,15 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
         if not raw.get("name") or not website or not normalized_website or normalized_website in seen_websites:
             continue
 
+        employee_range = str(raw.get("employee_range", "")).strip()
+        employee_upper = _employee_upper_bound(employee_range)
+        score = float(raw.get("score", 0) or 0)
+        if mode == "lead":
+            if employee_upper is not None and employee_upper > DIRECT_CLIENT_HARD_MAX_EMPLOYEES:
+                continue
+            if score < DIRECT_CLIENT_MIN_SCORE:
+                continue
+
         company_extra = {
             "recommended_service": str(raw.get("recommended_service", "")).strip(),
             "partnership_model": str(raw.get("partnership_model", "")).strip() if mode == "partner" else "",
@@ -468,10 +513,10 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
             website=website,
             country=str(raw.get("country", "")).strip(),
             industry=str(raw.get("industry", "")).strip(),
-            employee_range=str(raw.get("employee_range", "")).strip(),
+            employee_range=employee_range,
             source_url=str(raw.get("source_url", "")).strip(),
             fit_type=mode,
-            score=float(raw.get("score", 0) or 0),
+            score=score,
             score_reason=str(raw.get("score_reason", "")).strip(),
             capabilities=list(raw.get("capabilities") or []),
             capability_gaps=list(raw.get("capability_gaps") or []),

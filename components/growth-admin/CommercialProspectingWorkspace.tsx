@@ -235,6 +235,7 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
             <span><strong className="font-semibold text-slate-200">Contrato 1:1</strong> → {isPartner ? 'partner + decisor' : 'empresa + decisor'}</span>
             <span><strong className="font-semibold text-slate-200">LinkedIn</strong> → persona + empresa</span>
             <span><strong className="font-semibold text-slate-200">Personalización</strong> → detalle profesional + oferta + pregunta abierta</span>
+            {!isPartner&&<span><strong className="font-semibold text-slate-200">ICP tamaño</strong> → 10–200 ideal · 500 empleados máximo</span>}
             <span><strong className="font-semibold text-slate-200">Teléfono</strong> → solo si existe contacto empresarial público y aporta valor</span>
           </div>
         </div>
