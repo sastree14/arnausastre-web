@@ -162,13 +162,48 @@ function Canvas({ design, selectedId, onSelect, onPointerDown, svgRef, selection
   return <svg ref={svgRef} viewBox={`0 0 ${format.width} ${format.height}`} width={format.width} height={format.height} className="h-auto w-full bg-white"><defs><marker id="flow-arrow-head" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill={SC_BRAND.colors.accentBlue}/></marker></defs><rect x="0" y="0" width={format.width} height={format.height} fill={design.background}/>{design.elements.map((element) => <g key={element.id} onPointerDown={onPointerDown ? (event) => onPointerDown(event, element) : undefined} onClick={() => onSelect?.(element.id)} className={onPointerDown && !element.locked ? 'cursor-move' : ''}><SvgElement element={element}/>{selection && selected?.id === element.id && !element.hidden && <rect data-selection="true" x={element.x - 7} y={element.y - 7} width={element.w + 14} height={element.h + 14} fill="none" stroke="#38BDF8" strokeWidth={3} strokeDasharray="12 8" pointerEvents="none"/>}</g>)}</svg>
 }
 
+function previewInline(value: string) {
+  return String(value || '')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1')
+    .replace(/[\*_\`]+/g, '')
+    .trim()
+}
+
+function ArticlePreviewBody({ body }: { body: string }) {
+  const lines = String(body || '').split('\n')
+  const nodes: React.ReactNode[] = []
+  let bullets: string[] = []
+
+  const flushBullets = () => {
+    if (!bullets.length) return
+    nodes.push(<ul key={`preview-list-${nodes.length}`} className="my-3 list-disc space-y-1 pl-5">{bullets.map((item, index) => <li key={`${item}-${index}`}>{previewInline(item)}</li>)}</ul>)
+    bullets = []
+  }
+
+  lines.forEach((raw, index) => {
+    const line = raw.trim()
+    if (line.startsWith('- ')) {
+      bullets.push(line.slice(2))
+      return
+    }
+    flushBullets()
+    if (!line) return
+    if (line.startsWith('### ')) nodes.push(<h4 key={index} className="mb-1 mt-4 text-sm font-semibold text-slate-900">{previewInline(line.slice(4))}</h4>)
+    else if (line.startsWith('## ')) nodes.push(<h3 key={index} className="mb-1 mt-5 text-base font-semibold text-slate-900">{previewInline(line.slice(3))}</h3>)
+    else if (line.startsWith('# ')) nodes.push(<h3 key={index} className="mb-1 mt-5 text-base font-semibold text-slate-900">{previewInline(line.slice(2))}</h3>)
+    else nodes.push(<p key={index} className="my-2">{previewInline(line)}</p>)
+  })
+  flushBullets()
+  return <div className="mt-4 max-h-56 overflow-auto text-sm leading-6 text-slate-600">{nodes}</div>
+}
+
 function PublicationPreview({ seed, design }: { seed: VisualStudioContentSeed; design: VisualDesign }) {
   const showVisual = design.publicationMode !== 'text_only'
   if (isLinkedInArticleType(seed.content_type)) {
-    return <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white text-slate-900 shadow-sm"><div className="border-b border-slate-100 p-4"><p className="text-[10px] font-semibold uppercase tracking-[.14em] text-sky-700">LinkedIn article preview</p><p className="mt-1 text-xs text-slate-500">Portada + título + cuerpo largo</p></div>{showVisual && <Canvas design={design} selection={false}/>}<div className="p-5"><h3 className="text-xl font-semibold">{seed.title}</h3><div className="mt-4 max-h-56 overflow-auto whitespace-pre-wrap text-sm leading-6 text-slate-600">{seed.body}</div></div></div>
+    return <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white text-slate-900 shadow-sm"><div className="border-b border-slate-100 p-4"><p className="text-[10px] font-semibold uppercase tracking-[.14em] text-sky-700">LinkedIn article preview</p><p className="mt-1 text-xs text-slate-500">Portada + título + cuerpo largo</p></div>{showVisual && <Canvas design={design} selection={false}/>}<div className="p-5"><h3 className="text-xl font-semibold">{seed.title}</h3><ArticlePreviewBody body={seed.body}/></div></div>
   }
   if (isArticleContentType(seed.content_type)) {
-    return <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white text-slate-900 shadow-sm">{showVisual && <Canvas design={design} selection={false}/>}<div className="p-5"><p className="text-[10px] font-semibold uppercase tracking-[.14em] text-indigo-600">Artículo web</p><h3 className="mt-2 text-xl font-semibold">{seed.title}</h3><div className="mt-4 max-h-56 overflow-auto whitespace-pre-wrap text-sm leading-6 text-slate-600">{seed.body}</div></div></div>
+    return <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white text-slate-900 shadow-sm">{showVisual && <Canvas design={design} selection={false}/>}<div className="p-5"><p className="text-[10px] font-semibold uppercase tracking-[.14em] text-indigo-600">Artículo web</p><h3 className="mt-2 text-xl font-semibold">{seed.title}</h3><ArticlePreviewBody body={seed.body}/></div></div>
   }
   return <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white text-slate-900 shadow-sm"><div className="flex items-center gap-3 p-4"><div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-xs font-semibold text-white">AS</div><div><p className="text-sm font-semibold">Arnau Sastre · SC-Analytics</p><p className="text-[11px] text-slate-500">LinkedIn post preview</p></div></div>{showVisual && <Canvas design={design} selection={false}/>}<div className="p-4"><p className="whitespace-pre-wrap text-sm leading-6 text-slate-700">{design.publicationMode === 'image_only' ? 'SC-Analytics · Comprender antes de construir.' : seed.body}</p></div></div>
 }
