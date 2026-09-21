@@ -30,7 +30,13 @@ export function googleOAuthConfig(origin = '') {
   // avoids redirect_uri_mismatch when Google Cloud still has the legacy URI.
   // GOOGLE_GMAIL_REDIRECT_URI remains the explicit override for local/dev use.
   const configuredRedirect = firstEnv('GOOGLE_GMAIL_REDIRECT_URI')
-  const redirectUri = configuredRedirect || (origin ? `${origin.replace(/\/$/, '')}/api/google/gmail/callback` : 'https://sc-analytics.io/api/google/gmail/callback')
+  const productionRedirect = 'https://sc-analytics.io/api/google/gmail/callback'
+  const normalizedOrigin = origin.replace(/\/$/, '')
+  // Production must always emit one deterministic callback URI. This prevents a
+  // stale Vercel env override from reintroducing redirect_uri_mismatch.
+  const redirectUri = normalizedOrigin === 'https://sc-analytics.io'
+    ? productionRedirect
+    : configuredRedirect || (normalizedOrigin ? `${normalizedOrigin}/api/google/gmail/callback` : productionRedirect)
   const missing: string[] = []
   if (!clientId) missing.push('GOOGLE_OAUTH_CLIENT_ID / GOOGLE_CLIENT_ID')
   if (!clientSecret) missing.push('GOOGLE_OAUTH_CLIENT_SECRET / GOOGLE_CLIENT_SECRET')
