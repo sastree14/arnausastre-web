@@ -1,4 +1,4 @@
-import type { MetricsComparisonBundle, MetricsPeriodKind, MetricsTrendKey, PeriodMetrics, PeriodOption } from '@/lib/metrics-periods'
+import type { MetricsComparisonBundle, MetricsTrendKey, PeriodOption } from '@/lib/metrics-periods'
 import { adminPanel } from '@/components/growth-admin/AdminUi'
 
 const TREND_OPTIONS:Array<{key:MetricsTrendKey;label:string;format:'number'|'euro'}>=[
