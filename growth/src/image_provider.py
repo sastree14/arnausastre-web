@@ -25,12 +25,13 @@ def generate_editorial_image(concept: str, slug: str) -> Path:
     if not api_key:
         raise ImageGenerationError("OPENAI_API_KEY is required")
     brand_context = load_brain(["company/identity.md", "content/content_strategy.md"])
-    prompt = f"""Create a sophisticated editorial visual for a Data & AI consultancy LinkedIn post.
+    prompt = f"""Create a premium editorial symbol / emblem for a Data & AI consultancy publication.
 Concept: {concept}
 Brand context: {brand_context}
-Visual rules: dark, restrained, premium consulting aesthetic; no fake dashboards; no robots; no glowing brains;
-no written words, letters, logos or watermarks; leave useful negative space for later brand composition.
-The image must communicate the business idea rather than merely look futuristic."""
+The result must look like designed editorial identity, not like a conventional AI-generated image.
+Use ONE clear industry/problem symbol, refined holographic linework, translucent layers, precise vector-like geometry and generous negative space.
+Do not create people, offices, stock-photo scenes, cinematic environments, generic 3D renders, robots, glowing brains, fake dashboards or sci-fi clutter.
+No written words, letters, numbers, logos or watermarks. Branding and exact typography will be composited programmatically afterwards."""
     response = requests.post(
         "https://api.openai.com/v1/images/generations",
         headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
