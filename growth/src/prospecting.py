@@ -111,6 +111,8 @@ RESULTS:
 def _discover_primary_person(company: CompanyCandidate, roles: list[str], search: BraveResearchClient, llm, mode: str) -> dict | None:
     if mode == "partner":
         roles = roles or ["Founder", "CEO", "Managing Partner", "Partner", "Head of Consulting", "Business Development", "Head of Recruitment"]
+    elif mode == "network":
+        roles = roles or ["Founder", "Data Scientist", "ML Engineer", "AI Engineer", "Head of Data", "Analytics Lead", "Operations Research", "Technical Creator"]
     else:
         roles = roles or ["CEO", "Founder", "COO", "Head of Operations", "CFO", "CTO"]
     role_query = " OR ".join(f'"{role}"' for role in roles[:7])
@@ -169,6 +171,13 @@ def _public_company_context(company: CompanyCandidate, search: BraveResearchClie
         ]
         if domain:
             queries.append(f'site:{domain} services OR consulting OR analytics OR Power BI OR data OR recruitment OR partners')
+    elif mode == "network":
+        queries = [
+            f'"{company.name}" data AI analytics engineering research community',
+            f'"{company.name}" conference meetup podcast article machine learning analytics',
+        ]
+        if domain:
+            queries.append(f'site:{domain} data OR AI OR analytics OR research OR engineering OR events')
     else:
         queries = [
             f'"{company.name}" {company.industry} operations growth expansion',
@@ -225,6 +234,78 @@ def _role_angle(role: str, industry: str) -> str:
 def _draft_outreach(mode: str, company: CompanyCandidate, person: dict, company_extra: dict, brain: str, search: BraveResearchClient, llm) -> dict[str, str | dict]:
     company_context = _public_company_context(company, search, mode)
     person_context = _public_person_context(person, company, search)
+
+    if mode == "network":
+        response = llm.json(
+            "You are a professional relationship strategist writing as Arnau Sastre. Build genuine peer-to-peer networking outreach. Never turn the person into a sales lead, never pressure, and never invent familiarity.",
+            f"""Build a LinkedIn relationship plan for this exact professional.
+Return one JSON object with:
+- contact_reason: why this person is relevant to Arnau's professional network
+- business_signal: one public professional signal grounded ONLY in supplied evidence
+- personal_hook: one specific public professional detail worth referencing naturally; empty if unsupported
+- recommended_service: empty string
+- service_hypothesis: empty string
+- angle: a short relationship angle focused on shared interests, learning, contribution or future collaboration
+- open_question: one genuine open question about their work, field or current technical interests
+- recommended_action: one of follow, connect, connect_then_message
+- sc_analytics_action: one of invite_to_follow_after_connection, invite_to_follow, none
+- connection_note: personalized invitation, max 250 characters, with NO pitch
+- message: first message after connection, 55-110 words, conversational and non-commercial
+- follow_up: optional follow-up, 35-70 words, only if it adds something useful
+- language: es or en
+
+Person: {person}
+Professional context / organization: {company.name}
+Website: {company.website}
+Country: {company.country}
+Industry: {company.industry}
+Why this context was selected: {company.score_reason}
+Public organization context: {company_context}
+Public person context: {person_context}
+
+GOAL:
+Arnau is a mathematician and statistician and founder of SC-Analytics. He wants to become better known inside the Data/AI/analytics/optimization ecosystem by building real professional relationships: learning from peers, following good work, exchanging ideas, contributing when useful, and leaving the door open to future collaborations. This is NOT client acquisition.
+
+RULES:
+1. Mention Arnau and SC-Analytics naturally as context, not as a service pitch.
+2. Do not propose a discovery call, audit, free consultation, commercial offer or sales meeting.
+3. Prefer a thoughtful comment/follow/connect path over immediate messaging when evidence supports it.
+4. Use the personal_hook only if supported by public professional evidence.
+5. End the first message with the open question or a natural equivalent.
+6. No empty flattery, engagement bait, fake familiarity, guilt, scarcity or pressure.
+7. Default to natural Spanish for Spain unless evidence supports English.
+8. Never use private or sensitive personal information.
+
+SC-ANALYTICS BRAIN:
+{brain}
+""",
+        )
+        if not isinstance(response, dict):
+            response = {}
+        return {
+            "contact_reason": str(response.get("contact_reason", "")).strip(),
+            "business_signal": str(response.get("business_signal", "")).strip(),
+            "personal_hook": str(response.get("personal_hook", "")).strip(),
+            "recommended_service": "",
+            "service_hypothesis": "",
+            "angle": str(response.get("angle", "")).strip() or "Relación profesional y aprendizaje mutuo",
+            "open_question": str(response.get("open_question", "")).strip(),
+            "recommended_action": str(response.get("recommended_action", "connect_then_message")).strip() or "connect_then_message",
+            "sc_analytics_action": str(response.get("sc_analytics_action", "invite_to_follow_after_connection")).strip() or "invite_to_follow_after_connection",
+            "connection_note": str(response.get("connection_note", "")).strip()[:250],
+            "message": str(response.get("message", "")).strip(),
+            "follow_up": str(response.get("follow_up", "")).strip(),
+            "language": str(response.get("language", "es")).strip() or "es",
+            "research_context": {
+                "public_company_context": company_context,
+                "public_person_context": person_context,
+                "business_signal": str(response.get("business_signal", "")).strip(),
+                "personal_hook": str(response.get("personal_hook", "")).strip(),
+                "open_question": str(response.get("open_question", "")).strip(),
+                "networking_goal": "professional_recognition_relationships_learning_future_collaboration",
+            },
+        }
+
     partner_block = ""
     if mode == "partner":
         partner_block = f"""
@@ -324,6 +405,8 @@ def _display_plan(outreach: dict[str, str | dict], mode: str, company_extra: dic
     ]
     if mode == "partner" and company_extra.get("partnership_model"):
         parts.append(f"Modelo de partnership: {company_extra.get('partnership_model')}")
+    if mode == "network":
+        parts.append("Objetivo: relación profesional, reconocimiento, aprendizaje y colaboración futura; no venta directa.")
     for label, key in [
         ("Por qué contactar", "contact_reason"),
         ("Detalle profesional personal", "personal_hook"),
@@ -376,6 +459,12 @@ def _query_prompt(mode: str, existing_websites: set[str], brain: str) -> str:
 - agencies/advisories with strong client access but incomplete technical depth.
 A good partner should gain something concrete: sell larger/deeper projects, avoid saying no to specialist work, add white-label technical delivery, handle overflow, or create a referral/subcontracting channel.
 Avoid full-stack Data Science/AI consultancies whose offer substantially duplicates SC-Analytics unless the evidence shows a clear complementary niche."""
+    elif mode == "network":
+        target = """Find professional PEER NETWORK contexts in Spain/EU where a real named person is likely to be active in Data Science, AI/ML, analytics, operations research, forecasting, optimization, data engineering or technical entrepreneurship.
+This is NOT lead generation and NOT partner sourcing. The objective is to find approachable peers worth following and knowing because they publish, speak, build, research, organize communities, share technical work or are active practitioners/founders in the field.
+Prioritize boutiques/startups, technical communities, specialist firms, research/innovation teams and visible practitioners over celebrities or huge corporate executives.
+Prefer evidence of public professional activity: articles, talks, meetups, podcasts, open source, technical writing, conference participation, community leadership or product/research work.
+The organization is context only; it is not a sales target."""
     else:
         target = """Find END-CLIENT/OPERATING SMEs and lower-mid-market companies, not consultancies/agencies/data vendors.
 SC-Analytics should plausibly be able to become their primary external Data/Analytics/AI specialist rather than one vendor among dozens.
@@ -405,6 +494,16 @@ def _qualification_prompt(mode: str, pool_target: int, existing_websites: set[st
 - recommended_service: choose the ONE SC-Analytics capability that best fills their likely gap from {SERVICES}
 - recommended_roles: prioritize Founder/CEO/Managing Partner/Partner/Head of Consulting/Delivery/Business Development/Recruitment.
 Do not choose a partner merely because it is another consultancy; explain the actual complementary gap or channel logic."""
+    elif mode == "network":
+        rules = """For NETWORK mode:
+- the company/organization is only the professional context used to find ONE real person;
+- prioritize contexts where a named practitioner/founder/creator can be supported by public evidence;
+- recommended_roles should prioritize Founder, Data Scientist, ML/AI Engineer, Head of Data, Analytics Lead, Operations Research specialist, technical creator, researcher, speaker or community organizer;
+- score reflects professional relevance + evidence of public activity + realistic approachability, NOT buying intent;
+- recommended_service must be an empty string;
+- partnership_model and partnership_value must be empty strings;
+- employee_range may be empty; company size is not an ICP constraint here;
+- avoid politicians, celebrities and generic corporate executives with no visible connection to the technical ecosystem."""
     else:
         rules = f"""For DIRECT CLIENT mode:
 - choose operating/end-client companies with a plausible business decision/process SC-Analytics could improve;
@@ -437,7 +536,7 @@ SEARCH RESULTS:
 
 
 def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
-    mode = "partner" if mode == "partner" else "lead"
+    mode = mode if mode in {"lead", "partner", "network"} else "lead"
     cfg = load_config()
     tenant_id = cfg["company"]["tenant_id"]
     brain = load_brain([
@@ -470,6 +569,17 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
             'Spain regional logistics operator fleet capacity expansion employees',
             'Spain SME healthcare clinics group expansion operations employees',
             'Spain SME hospitality hotel group expansion revenue operations employees',
+        ])
+    elif mode == "network":
+        queries.extend([
+            'Spain data science founder speaker analytics podcast',
+            'Barcelona machine learning engineer meetup speaker data',
+            'Spain operations research optimization practitioner conference',
+            'Spain AI founder technical blog machine learning',
+            'Barcelona data analytics community organizer speaker',
+            'Spain forecasting data science practitioner article',
+            'Spain data engineering founder technical community',
+            'Spain applied AI analytics startup founder technical',
         ])
     else:
         queries.extend([
@@ -515,7 +625,7 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
                 continue
 
         company_extra = {
-            "recommended_service": str(raw.get("recommended_service", "")).strip(),
+            "recommended_service": "" if mode == "network" else str(raw.get("recommended_service", "")).strip(),
             "partnership_model": str(raw.get("partnership_model", "")).strip() if mode == "partner" else "",
             "partnership_value": str(raw.get("partnership_value", "")).strip() if mode == "partner" else "",
         }
@@ -559,7 +669,7 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
         person_dict = to_dict(person)
         person_dict.update({
             "email": "",
-            "source": "partner_prospecting" if mode == "partner" else "prospecting",
+            "source": "partner_prospecting" if mode == "partner" else "networking" if mode == "network" else "prospecting",
             "evidence": str(primary_raw.get("evidence", "")).strip(),
             "notes": "",
             "completed_at": None,
@@ -624,7 +734,7 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
             tenant_id=tenant_id,
             action_type="contact_partner" if mode == "partner" else "send_message",
             target_id=target_id,
-            summary=f"{'Partner' if mode == 'partner' else 'Lead'} outreach: {candidate.name} ({candidate.score:.1f}/10)",
+            summary=f"{'Partner' if mode == 'partner' else 'Network' if mode == 'network' else 'Lead'} outreach: {candidate.name} ({candidate.score:.1f}/10)",
             payload=outreach_payload,
         )
 
