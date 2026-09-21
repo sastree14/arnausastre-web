@@ -17,6 +17,7 @@ type RealtimePayload = {
     table?: string
     type?: string
     record?: Record<string, unknown>
+    old_record?: Record<string, unknown>
   }
 }
 
@@ -49,7 +50,13 @@ export default function SupabaseRealtimeInvalidator() {
     const scheduleRefresh = (payload?: RealtimePayload) => {
       if (refreshRef.current) window.clearTimeout(refreshRef.current)
       refreshRef.current = window.setTimeout(() => {
-        const detail = payload?.data || {}
+        const data = payload?.data || {}
+        const record = data.record || data.old_record || {}
+        const detail = {
+          table: String(record.source_table || data.table || ''),
+          eventType: String(record.event_type || data.type || ''),
+          changedAt: String(record.changed_at || ''),
+        }
         window.dispatchEvent(new CustomEvent(CRM_REALTIME_EVENT, { detail }))
         router.refresh()
       }, REFRESH_DEBOUNCE_MS)
