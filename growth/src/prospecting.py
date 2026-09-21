@@ -53,6 +53,17 @@ def _employee_upper_bound(value: str) -> int | None:
     return upper
 
 
+def _direct_client_size_allowed(employee_range: str, score: float) -> bool:
+    employee_upper = _employee_upper_bound(employee_range)
+    if employee_upper is None:
+        return False
+    if employee_upper > DIRECT_CLIENT_HARD_MAX_EMPLOYEES:
+        return False
+    if employee_upper > DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES and score < DIRECT_CLIENT_STRETCH_MIN_SCORE:
+        return False
+    return score >= DIRECT_CLIENT_MIN_SCORE
+
+
 def _website_key(value: str) -> str:
     raw = str(value or "").strip()
     if not raw:
@@ -495,19 +506,12 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
             continue
 
         employee_range = str(raw.get("employee_range", "")).strip()
-        employee_upper = _employee_upper_bound(employee_range)
         score = float(raw.get("score", 0) or 0)
         if mode == "lead":
             # Headcount is a hard ICP gate, not a soft prompt. Unknown size used to
             # let enterprise names through (for example global logistics groups).
             # Prefer fewer, verifiable prospects over a full list with weak fit.
-            if employee_upper is None:
-                continue
-            if employee_upper > DIRECT_CLIENT_HARD_MAX_EMPLOYEES:
-                continue
-            if employee_upper > DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES and score < DIRECT_CLIENT_STRETCH_MIN_SCORE:
-                continue
-            if score < DIRECT_CLIENT_MIN_SCORE:
+            if not _direct_client_size_allowed(employee_range, score):
                 continue
 
         company_extra = {
