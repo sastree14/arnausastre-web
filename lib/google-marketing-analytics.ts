@@ -89,10 +89,12 @@ export async function syncGa4(days=365){
     const propertyId=await resolveGa4Property(connection,accessToken)
     const windowDays=Math.max(1,days)
     const dateRange={startDate:`${windowDays}daysAgo`,endDate:'today'}
-    const [totals,acquisition,events]=await Promise.all([
+    const [totals,acquisition,events,dailyTotals,dailyEvents]=await Promise.all([
       googleJson(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,accessToken,{method:'POST',body:JSON.stringify({dateRanges:[dateRange],metrics:[{name:'activeUsers'},{name:'sessions'},{name:'engagedSessions'},{name:'screenPageViews'},{name:'keyEvents'}]})}),
       googleJson(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,accessToken,{method:'POST',body:JSON.stringify({dateRanges:[dateRange],dimensions:[{name:'sessionSource'},{name:'sessionMedium'},{name:'sessionCampaignName'},{name:'sessionManualAdContent'}],metrics:[{name:'sessions'},{name:'engagedSessions'},{name:'screenPageViews'},{name:'keyEvents'}],limit:'100000'})}),
       googleJson(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,accessToken,{method:'POST',body:JSON.stringify({dateRanges:[dateRange],dimensions:[{name:'eventName'}],metrics:[{name:'eventCount'}],dimensionFilter:{filter:{fieldName:'eventName',inListFilter:{values:['contact_click','discovery_call_click','calendly_open','calendly_booked']}}},limit:'100'})}),
+      googleJson(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,accessToken,{method:'POST',body:JSON.stringify({dateRanges:[dateRange],dimensions:[{name:'date'}],metrics:[{name:'activeUsers'},{name:'sessions'},{name:'engagedSessions'},{name:'screenPageViews'},{name:'keyEvents'}],limit:'100000'})}),
+      googleJson(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,accessToken,{method:'POST',body:JSON.stringify({dateRanges:[dateRange],dimensions:[{name:'date'},{name:'eventName'}],metrics:[{name:'eventCount'}],dimensionFilter:{filter:{fieldName:'eventName',inListFilter:{values:['contact_click','discovery_call_click','calendly_open','calendly_booked']}}},limit:'100000'})}),
     ])
     const now=new Date().toISOString(),today=now.slice(0,10)
     const total=Array.isArray(totals.rows)&&totals.rows.length?totals.rows[0]:{}
@@ -109,8 +111,25 @@ export async function syncGa4(days=365){
       const eventName=dimension(row,0),count=metric(row,0)
       return {tenant_id:TENANT_ID,metric_date:today,source:'(events_total)',medium:'period',campaign:`${windowDays}d`,content_id:null,page_path:'(all)',users:0,sessions:0,engaged_sessions:0,page_views:0,key_events:0,discovery_clicks:['discovery_call_click','calendly_open'].includes(eventName)?count:0,bookings:eventName==='calendly_booked'?count:0,sync_key:hash('ga4_period_event',String(windowDays),eventName),metadata:{provider:'ga4',property_id:propertyId,scope:'period_event',window_days:windowDays,event_name:eventName,event_count:count},created_at:now}
     })
-    const written=await bulkUpsert('web_analytics_daily',[totalRow,...acquisitionRows,...eventRows],'tenant_id,sync_key')
-    await completeRun(runId,written,{property_id:propertyId,measurement_id:MEASUREMENT_ID,window_days:windowDays,total_rows:1,acquisition_rows:acquisitionRows.length,event_rows:eventRows.length})
+    const eventByDate=new Map<string,{discovery:number;bookings:number}>()
+    for(const row of (dailyEvents.rows||[]) as Json[]){
+      const rawDate=dimension(row,0),eventName=dimension(row,1),count=metric(row,0)
+      if(!/^\d{8}$/.test(rawDate))continue
+      const date=`${rawDate.slice(0,4)}-${rawDate.slice(4,6)}-${rawDate.slice(6,8)}`
+      const current=eventByDate.get(date)||{discovery:0,bookings:0}
+      if(['discovery_call_click','calendly_open'].includes(eventName))current.discovery+=count
+      if(eventName==='calendly_booked')current.bookings+=count
+      eventByDate.set(date,current)
+    }
+    const dailyRows:Json[]=(dailyTotals.rows||[]).map((row:Json)=>{
+      const rawDate=dimension(row,0)
+      if(!/^\d{8}$/.test(rawDate))return null
+      const date=`${rawDate.slice(0,4)}-${rawDate.slice(4,6)}-${rawDate.slice(6,8)}`
+      const attributed=eventByDate.get(date)||{discovery:0,bookings:0}
+      return {tenant_id:TENANT_ID,metric_date:date,source:'(daily_total)',medium:'day',campaign:'',content_id:null,page_path:'(all)',users:metric(row,0),sessions:metric(row,1),engaged_sessions:metric(row,2),page_views:metric(row,3),key_events:metric(row,4),discovery_clicks:attributed.discovery,bookings:attributed.bookings,sync_key:hash('ga4_daily_total',date),metadata:{provider:'ga4',property_id:propertyId,scope:'daily_total'},created_at:now}
+    }).filter(Boolean) as Json[]
+    const written=await bulkUpsert('web_analytics_daily',[totalRow,...acquisitionRows,...eventRows,...dailyRows],'tenant_id,sync_key')
+    await completeRun(runId,written,{property_id:propertyId,measurement_id:MEASUREMENT_ID,window_days:windowDays,total_rows:1,acquisition_rows:acquisitionRows.length,event_rows:eventRows.length,daily_rows:dailyRows.length})
     return {ok:true,rows:written,propertyId}
   }catch(error){await failRun(runId,error);throw error}
 }
