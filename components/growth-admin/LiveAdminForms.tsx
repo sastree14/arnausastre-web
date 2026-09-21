@@ -77,6 +77,10 @@ export default function LiveAdminForms(){
       const active=activeForms.get(detail.taskId),scrollY=active?.scrollY??window.scrollY
       if(active){setButton(active.button,detail.status==='completed'?'Completado ✓':'Error · revisar',false);delete active.form.dataset.liveBusy;activeForms.delete(detail.taskId)}
       router.refresh();restoreScroll(scrollY)
+      if(detail.status==='completed'){
+        window.setTimeout(()=>{router.refresh();restoreScroll(scrollY)},450)
+        window.setTimeout(()=>{router.refresh();restoreScroll(scrollY)},1200)
+      }
       window.dispatchEvent(new CustomEvent(ADMIN_MUTATION_EVENT,{detail:{taskId:detail.taskId,status:detail.status,type:detail.type}}))
     }
 
