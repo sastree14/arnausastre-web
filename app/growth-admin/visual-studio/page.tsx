@@ -112,20 +112,20 @@ export default async function VisualStudioPage({ searchParams }: { searchParams?
       </div>
 
       {activeSeed && <details className="mt-4 rounded-xl border border-sky-100 bg-sky-50/60 p-4">
-        <summary className="cursor-pointer text-xs font-semibold text-sky-900">Generar ilustración contextual con IA</summary>
+        <summary className="cursor-pointer text-xs font-semibold text-sky-900">Generar símbolo editorial</summary>
         <form action="/api/growth-admin/operator-task" method="post" className="mt-3 grid gap-3 lg:grid-cols-[1fr_140px_auto]">
           <input type="hidden" name="action" value="generate_visual"/>
           <input type="hidden" name="content_id" value={activeSeed.content_id}/>
           <input type="hidden" name="return_to" value={`/growth-admin/visual-studio?content=${encodeURIComponent(activeSeed.content_id)}&return_to=${encodeURIComponent(returnTo)}`}/>
           <label className="text-[11px] font-semibold text-sky-900">Concepto visual
-            <input name="concept" defaultValue={concept} placeholder="Déjalo vacío para que la IA proponga una escena concreta" className="mt-1 w-full rounded-lg border border-sky-200 bg-white px-3 py-2 text-xs text-slate-800"/>
+            <input name="concept" defaultValue={concept} placeholder="Déjalo vacío para que el sistema elija el símbolo de industria/problema" className="mt-1 w-full rounded-lg border border-sky-200 bg-white px-3 py-2 text-xs text-slate-800"/>
           </label>
           <label className="text-[11px] font-semibold text-sky-900">Tema
             <select name="theme" defaultValue={theme} className="mt-1 w-full rounded-lg border border-sky-200 bg-white px-3 py-2 text-xs text-slate-800"><option value="dark">Oscuro</option><option value="light">Claro</option></select>
           </label>
-          <button className="self-end rounded-lg bg-sky-700 px-4 py-2.5 text-xs font-semibold text-white">Generar imagen IA</button>
+          <button className="self-end rounded-lg bg-sky-700 px-4 py-2.5 text-xs font-semibold text-white">Generar símbolo</button>
         </form>
-        <p className="mt-2 text-[10px] leading-4 text-sky-700">La imagen se genera sin texto ni logos; después el sistema compone el branding real de SC-Analytics y la adjunta a esta publicación.</p>
+        <p className="mt-2 text-[10px] leading-4 text-sky-700">El sistema genera un símbolo editorial ligado a la industria o al problema —no una escena fotográfica— y después compone el título y el branding real de SC-Analytics de forma determinista.</p>
       </details>}
 
       {savedDesignRows.length > 0 && <details className="mt-4">
