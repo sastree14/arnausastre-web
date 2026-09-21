@@ -132,8 +132,13 @@ def _discover_primary_person(company: CompanyCandidate, roles: list[str], search
     if not hits:
         return None
 
+    identity_instruction = (
+        "Identify one real professional peer strictly from supplied public search snippets. Never invent a person, role or organization association."
+        if mode == "network"
+        else "Identify one real B2B decision maker strictly from supplied public search snippets. Never invent a person, role or company association."
+    )
     response = llm.json(
-        "Identify one real B2B decision maker strictly from supplied public search snippets. Never invent a person, role or company association.",
+        identity_instruction,
         f"""Find the SINGLE best person at {company.name} for this commercial mode: {mode}.
 Preferred roles: {roles}.
 Return JSON with: name, role, linkedin_url, public_source_url, relevance_score (0-10), evidence.
@@ -599,7 +604,7 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
     hits = dedupe_hits(hits)[: max(pool_target * 5, 280)]
 
     raw_candidates = llm.json(
-        "You are a strict B2B qualification analyst. Score conservatively and never invent missing facts.",
+        "You are a strict professional-network researcher. Score conservatively and never invent missing facts." if mode == "network" else "You are a strict B2B qualification analyst. Score conservatively and never invent missing facts.",
         _qualification_prompt(mode, pool_target, existing_websites, brain, hits),
     )
 
