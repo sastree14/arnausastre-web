@@ -626,6 +626,41 @@ def _as_list(value) -> list:
     return []
 
 
+def _lead_discovery_queries(existing_count: int) -> list[str]:
+    """Rotate regions x operating models so repeated runs do not exhaust the
+    same nationally ranked companies. The matrix intentionally represents a
+    universe far larger than a single 10/50-result run.
+    """
+    regions = [
+        "Barcelona", "Madrid", "Valencia", "Alicante", "Murcia", "Zaragoza",
+        "Bilbao", "Sevilla", "Malaga", "Girona", "Tarragona", "Lleida",
+        "Navarra", "Galicia", "Asturias", "Castilla y Leon", "Castilla-La Mancha",
+        "Balearic Islands", "Canary Islands", "Basque Country",
+    ]
+    templates = [
+        "{region} ecommerce brand online store inventory SME",
+        "{region} small manufacturer production planning factory SME",
+        "{region} wholesale distributor importer warehouse SME",
+        "{region} regional logistics 3PL fleet warehouse SME",
+        "{region} restaurant group multiple locations reservations inventory",
+        "{region} hotel aparthotel tourism operator bookings pricing SME",
+        "{region} dental veterinary physiotherapy clinic appointments SME",
+        "{region} academy training company scheduling students SME",
+        "{region} property management holiday rentals bookings operations SME",
+        "{region} maintenance installation field service technicians scheduling SME",
+        "{region} food distributor inventory demand planning SME",
+        "{region} autónomo online business bookings orders automation",
+    ]
+    matrix = [template.format(region=region) for region in regions for template in templates]
+    if not matrix:
+        return []
+    # Move through the matrix as the database grows instead of always querying
+    # the same first page of the same sectors/cities.
+    start = (max(0, int(existing_count)) * 11) % len(matrix)
+    rotated = matrix[start:] + matrix[:start]
+    return rotated[:24]
+
+
 def _query_prompt(mode: str, existing_websites: set[str], brain: str) -> str:
     if mode == "partner":
         target = """Find complementary PARTNER/CHANNEL companies, not ordinary end clients. Prioritize Spain/EU:
@@ -760,26 +795,11 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
     )
     queries = [str(q) for q in _as_list(query_plan)[:12]]
     if mode == "lead":
+        queries.extend(_lead_discovery_queries(len(existing_companies)))
         queries.extend([
-            'Spain ecommerce brand online store inventory founder SME',
             'Spain marketplace seller ecommerce operations inventory autónomo',
-            'Spain small manufacturer production planning capacity SME factory',
-            'Spain workshop manufacturing orders scheduling inventory SME',
-            'Spain wholesale distributor importer inventory warehouse SME',
-            'Spain regional logistics 3PL fleet warehouse SME',
-            'Spain restaurant group multiple locations operations reservations inventory',
-            'Spain independent hotel aparthotel hospitality group bookings pricing SME',
-            'Spain dental clinic group appointments operations SME',
-            'Spain veterinary clinic group appointments scheduling SME',
-            'Spain physiotherapy clinic multiple centers appointments SME',
-            'Spain academy training company scheduling students operations SME',
-            'Spain property management holiday rentals operations bookings SME',
-            'Spain tour operator travel company bookings operations SME',
-            'Spain maintenance installation field service scheduling technicians SME',
-            'Spain fleet service company route scheduling technicians SME',
             'Spain small financial advisory recurring reporting automation SME',
             'Spain professional services company repetitive reporting workflow automation SME',
-            'Spain food distributor inventory demand planning SME',
             'Spain growing B2B company manual Excel reporting operations SME',
         ])
     elif mode == "network":
@@ -806,7 +826,7 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
         ])
 
     hits = []
-    for query in queries[:32]:
+    for query in queries[:40]:
         hits.extend(search.search(query, count=12))
     hits = dedupe_hits(hits)[: max(pool_target * 5, 280)]
 
