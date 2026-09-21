@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
-import { gmailAuthorizationUrl } from '@/lib/google-oauth-finance'
+import { gmailAuthorizationUrl, googleOAuthConfig } from '@/lib/google-oauth-finance'
 
 export async function GET(request: Request) {
   if (!(await isGrowthAdminAuthenticated())) return new NextResponse('Unauthorized', { status: 401 })
@@ -9,6 +9,15 @@ export async function GET(request: Request) {
   const requested = url.searchParams.get('return_to') || ''
   const returnTo = requested.startsWith('/growth-admin/') ? requested : ''
   try {
+    const config = googleOAuthConfig(url.origin)
+    console.info('Google OAuth diagnostic', {
+      account,
+      client_id: config.clientId,
+      client_secret_configured: Boolean(config.clientSecret),
+      redirect_uri: config.redirectUri,
+      redirect_mode: config.redirectMode,
+      origin: url.origin,
+    })
     return NextResponse.redirect(gmailAuthorizationUrl(account, returnTo, url.origin))
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
