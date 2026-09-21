@@ -197,8 +197,10 @@ export async function POST(request: Request) {
     if (row) await recordFinanceAudit({entityType:'expense',entityId:expenseId,action:'created',after:row})
   } else if (type === 'payment') {
     const amount = money(form.get('amount'))
+    if (amount <= 0) return new NextResponse('Payment amount must be greater than zero', { status: 400 })
     const currency = text(form, 'currency') || 'EUR'
     const fxRate = money(form.get('fx_rate')) || null
+    const manualConfirmed = text(form, 'confirm') === '1'
     const paymentId = `payment_${randomUUID().replaceAll('-', '').slice(0, 12)}`
     const row = await insertGrowthRow<Row>('finance_payments', {
       payment_id: paymentId,
@@ -213,16 +215,24 @@ export async function POST(request: Request) {
       fx_rate: fxRate,
       fx_date: text(form, 'fx_date') || null,
       direction: text(form, 'direction') || 'inflow',
-      method: text(form, 'method'),
+      method: text(form, 'method') || (manualConfirmed ? 'manual' : ''),
       reference: text(form, 'reference'),
-      status: 'recorded',
-      review_status: 'pending_review',
-      source_system: 'crm',
-      reconciliation_status: 'unmatched',
-      metadata: {},
+      status: manualConfirmed ? 'confirmed' : 'recorded',
+      review_status: manualConfirmed ? 'confirmed' : 'pending_review',
+      source_system: manualConfirmed ? 'manual' : 'crm',
+      reconciliation_status: manualConfirmed ? 'manual' : 'unmatched',
+      reviewed_at: manualConfirmed ? now : null,
+      metadata: manualConfirmed ? { manual_confirmation: true, actor: 'arnau' } : {},
       created_at: now,
     })
-    if (row) await recordFinanceAudit({entityType:'payment',entityId:paymentId,action:'created',after:row})
+    if (row) {
+      await recordFinanceAudit({entityType:'payment',entityId:paymentId,action:manualConfirmed?'manual_confirmed':'created',after:row})
+      if (manualConfirmed) {
+        await postPaymentAccounting(paymentId)
+        await maybeMarkSettled(row)
+        await syncFinanceRegisters().catch((error)=>console.error('Register sync after manual payment failed',error))
+      }
+    }
   } else if (type === 'review') {
     const entity = text(form, 'entity')
     const entityId = text(form, 'entity_id')
