@@ -5,6 +5,7 @@ from growth.src.prospecting import (
     DIRECT_CLIENT_STRETCH_MIN_SCORE,
     _direct_client_business_allowed,
     _direct_client_size_allowed,
+    _lead_discovery_queries,
     _employee_upper_bound,
     _query_prompt,
 )
@@ -71,3 +72,13 @@ def test_business_gate_prioritizes_low_internal_data_capacity():
         "enterprise_risk": "high",
         "specialist_gap": "clear",
     }, 9.0) is False
+
+
+def test_lead_discovery_matrix_rotates_across_large_target_universe():
+    first = _lead_discovery_queries(0)
+    later = _lead_discovery_queries(100)
+    assert len(first) == 24
+    assert len(set(first)) == 24
+    assert first != later
+    assert any("autónomo" in query for query in first + later)
+    assert any("Barcelona" in query or "Madrid" in query or "Valencia" in query for query in first + later)
