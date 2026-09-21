@@ -30,10 +30,27 @@ PARTNER_MODELS = [
     "technology-implementation-partner",
 ]
 
-DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES = 200
+NON_OFFICIAL_COMPANY_HOSTS = {
+    "linkedin.com",
+    "jooble.org",
+    "indeed.com",
+    "glassdoor.com",
+    "infojobs.net",
+    "talent.com",
+    "jobtoday.com",
+    "investinspain.org",
+    "catalonia.com",
+    "crunchbase.com",
+    "pitchbook.com",
+    "wikipedia.org",
+}
+
+DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES = 250
 DIRECT_CLIENT_HARD_MAX_EMPLOYEES = 500
-DIRECT_CLIENT_MIN_SCORE = 6.0
-DIRECT_CLIENT_STRETCH_MIN_SCORE = 8.0
+DIRECT_CLIENT_MIN_SCORE = 5.5
+DIRECT_CLIENT_STRETCH_MIN_SCORE = 7.5
+DIRECT_CLIENT_MICRO_MAX_EMPLOYEES = 9
+DIRECT_CLIENT_MICRO_MIN_SCORE = 6.5
 
 
 def _employee_upper_bound(value: str) -> int | None:
@@ -54,14 +71,58 @@ def _employee_upper_bound(value: str) -> int | None:
 
 
 def _direct_client_size_allowed(employee_range: str, score: float) -> bool:
+    """Use headcount as a guardrail, not as the discovery bottleneck.
+
+    Unknown size is allowed to continue when the business itself looks like a
+    plausible external-analytics buyer. Enterprise evidence is filtered
+    separately. Microbusinesses/autónomos can qualify when the operational
+    leverage is strong enough to justify an external system.
+    """
     employee_upper = _employee_upper_bound(employee_range)
     if employee_upper is None:
-        return False
+        return score >= DIRECT_CLIENT_MIN_SCORE
     if employee_upper > DIRECT_CLIENT_HARD_MAX_EMPLOYEES:
         return False
-    if employee_upper > DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES and score < DIRECT_CLIENT_STRETCH_MIN_SCORE:
-        return False
+    if employee_upper > DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES:
+        return score >= DIRECT_CLIENT_STRETCH_MIN_SCORE
+    if employee_upper <= DIRECT_CLIENT_MICRO_MAX_EMPLOYEES:
+        return score >= DIRECT_CLIENT_MICRO_MIN_SCORE
     return score >= DIRECT_CLIENT_MIN_SCORE
+
+
+def _direct_client_business_allowed(raw: dict, score: float) -> bool:
+    """Filter on business economics and likely internal Data Science capacity.
+
+    The desired universe is deliberately broad (well above 1,000 potential
+    Spanish/EU targets), so missing headcount or a missing named executive is
+    not itself a reason to throw away a company.
+    """
+    if score < DIRECT_CLIENT_MIN_SCORE:
+        return False
+
+    business_fit = str(raw.get("business_model_fit", "")).strip().lower()
+    operational_leverage = str(raw.get("operational_leverage", "")).strip().lower()
+    data_team_likelihood = str(raw.get("internal_data_team_likelihood", "")).strip().lower()
+    enterprise_risk = str(raw.get("enterprise_risk", "")).strip().lower()
+    specialist_gap = str(raw.get("specialist_gap", "")).strip().lower()
+
+    if business_fit in {"excluded", "weak"}:
+        return False
+    if operational_leverage == "weak":
+        return False
+    if enterprise_risk == "high":
+        return False
+
+    # A business that very likely already has an internal Data Science function
+    # is normally a weaker direct-client target. Keep only an unusually strong,
+    # evidence-backed specialist gap.
+    if data_team_likelihood == "high":
+        return score >= 8.0 and specialist_gap in {"clear", "strong"}
+
+    if data_team_likelihood == "medium" and score < 6.5:
+        return False
+
+    return True
 
 
 def _verify_direct_client_size(company_name: str, website: str, search: BraveResearchClient, llm) -> dict:
@@ -74,7 +135,8 @@ def _verify_direct_client_size(company_name: str, website: str, search: BraveRes
     queries = [
         f'"{company_name}" employees company size',
         f'"{company_name}" employees Spain',
-        f'"{company_name}" "51-200" OR "11-50" OR "201-500"',
+        f'"{company_name}" "1-10" OR "2-10" OR "11-50" OR "51-200" OR "201-500"',
+        f'"{company_name}" autónomo OR "self-employed" OR microempresa OR SME',
         f'site:linkedin.com/company "{company_name}" employees',
     ]
     if domain:
@@ -96,13 +158,14 @@ Website: {website}
 
 Return one JSON object with:
 - employee_range: explicit numeric count/range only when directly supported; otherwise empty string
-- classification: one of under_200, from_201_to_500, over_500, likely_sme, unknown
+- classification: one of solo_or_micro, under_250, from_251_to_500, over_500, likely_sme, unknown
 - source_url: strongest supplied URL supporting the classification
 - evidence: one concise evidence sentence
 
 Rules:
 - over_500 if supplied evidence clearly indicates >500 employees or a large/global enterprise;
-- under_200 / from_201_to_500 only when numeric evidence supports it;
+- solo_or_micro for a supported self-employed/sole proprietor or <=9 employee business;
+- under_250 / from_251_to_500 only when numeric evidence supports it;
 - likely_sme only when public evidence explicitly describes the company as SME/small/mid-sized and there is no evidence of enterprise scale;
 - unknown if evidence is insufficient or conflicting;
 - do not infer size from revenue, brand familiarity or website design.
@@ -118,7 +181,7 @@ RESULTS:
     if source_url and source_url not in allowed_urls:
         source_url = ""
     classification = str(result.get("classification", "unknown")).strip()
-    if classification not in {"under_200", "from_201_to_500", "over_500", "likely_sme", "unknown"}:
+    if classification not in {"solo_or_micro", "under_250", "from_251_to_500", "over_500", "likely_sme", "unknown"}:
         classification = "unknown"
     return {
         "employee_range": str(result.get("employee_range", "")).strip(),
@@ -137,6 +200,50 @@ def _website_key(value: str) -> str:
         return host.rstrip("/")
     except ValueError:
         return raw.rstrip("/").lower()
+
+
+def _company_name_key(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", str(value or "").lower())
+
+
+def _is_non_official_company_host(value: str) -> bool:
+    host = _website_key(value)
+    return any(host == blocked or host.endswith("." + blocked) for blocked in NON_OFFICIAL_COMPANY_HOSTS)
+
+
+def _resolve_official_website(company_name: str, suggested_website: str, search: BraveResearchClient, llm) -> str:
+    """Keep evidence URLs separate from the company's canonical website."""
+    suggested = str(suggested_website or "").strip()
+    if suggested and not _is_non_official_company_host(suggested):
+        return suggested
+
+    hits = []
+    for query in [
+        f'"{company_name}" official website Spain',
+        f'"{company_name}" empresa web oficial',
+    ]:
+        hits.extend(search.search(query, count=8))
+    candidates = [h for h in dedupe_hits(hits) if not _is_non_official_company_host(h.url)][:12]
+    if not candidates:
+        return suggested
+
+    result = llm.json(
+        "Select the official website for the named company strictly from the supplied public search results. Never invent a domain.",
+        f"""Company: {company_name}
+Return JSON with official_website only. Use an empty string if none is sufficiently supported.
+
+RESULTS:
+{[{'title': h.title, 'url': h.url, 'snippet': h.snippet} for h in candidates]}
+""",
+    )
+    if isinstance(result, dict):
+        selected = str(result.get("official_website", "")).strip()
+        allowed = {h.url for h in candidates}
+        if selected in allowed:
+            parsed = urlparse(selected if "://" in selected else f"https://{selected}")
+            if parsed.scheme and parsed.netloc:
+                return f"{parsed.scheme}://{parsed.netloc}/"
+    return suggested
 
 
 def _linkedin_company_search_url(company_name: str) -> str:
@@ -178,7 +285,7 @@ def _discover_primary_person(company: CompanyCandidate, roles: list[str], search
     elif mode == "network":
         roles = roles or ["Founder", "Data Scientist", "ML Engineer", "AI Engineer", "Head of Data", "Analytics Lead", "Operations Research", "Technical Creator"]
     else:
-        roles = roles or ["CEO", "Founder", "COO", "Head of Operations", "CFO", "CTO"]
+        roles = roles or ["Owner", "Founder", "CEO", "Gerente", "COO", "Head of Operations", "CFO"]
     role_query = " OR ".join(f'"{role}"' for role in roles[:7])
     domain = _website_key(company.website)
     queries = [
@@ -519,6 +626,41 @@ def _as_list(value) -> list:
     return []
 
 
+def _lead_discovery_queries(existing_count: int) -> list[str]:
+    """Rotate regions x operating models so repeated runs do not exhaust the
+    same nationally ranked companies. The matrix intentionally represents a
+    universe far larger than a single 10/50-result run.
+    """
+    regions = [
+        "Barcelona", "Madrid", "Valencia", "Alicante", "Murcia", "Zaragoza",
+        "Bilbao", "Sevilla", "Malaga", "Girona", "Tarragona", "Lleida",
+        "Navarra", "Galicia", "Asturias", "Castilla y Leon", "Castilla-La Mancha",
+        "Balearic Islands", "Canary Islands", "Basque Country",
+    ]
+    templates = [
+        "{region} ecommerce brand online store inventory SME",
+        "{region} small manufacturer production planning factory SME",
+        "{region} wholesale distributor importer warehouse SME",
+        "{region} regional logistics 3PL fleet warehouse SME",
+        "{region} restaurant group multiple locations reservations inventory",
+        "{region} hotel aparthotel tourism operator bookings pricing SME",
+        "{region} dental veterinary physiotherapy clinic appointments SME",
+        "{region} academy training company scheduling students SME",
+        "{region} property management holiday rentals bookings operations SME",
+        "{region} maintenance installation field service technicians scheduling SME",
+        "{region} food distributor inventory demand planning SME",
+        "{region} autónomo online business bookings orders automation",
+    ]
+    matrix = [template.format(region=region) for region in regions for template in templates]
+    if not matrix:
+        return []
+    # Move through the matrix as the database grows instead of always querying
+    # the same first page of the same sectors/cities.
+    start = (max(0, int(existing_count)) * 11) % len(matrix)
+    rotated = matrix[start:] + matrix[:start]
+    return rotated[:24]
+
+
 def _query_prompt(mode: str, existing_websites: set[str], brain: str) -> str:
     if mode == "partner":
         target = """Find complementary PARTNER/CHANNEL companies, not ordinary end clients. Prioritize Spain/EU:
@@ -536,15 +678,27 @@ Prioritize boutiques/startups, technical communities, specialist firms, research
 Prefer evidence of public professional activity: articles, talks, meetups, podcasts, open source, technical writing, conference participation, community leadership or product/research work.
 The organization is context only; it is not a sales target."""
     else:
-        target = """Find END-CLIENT/OPERATING SMEs and lower-mid-market companies, not consultancies/agencies/data vendors.
-SC-Analytics should plausibly be able to become their primary external Data/Analytics/AI specialist rather than one vendor among dozens.
-HEADCOUNT IS A CORE ICP FILTER:
-- ideal: 10-200 employees;
-- acceptable stretch: 201-500 employees only with unusually strong fit;
-- exclude companies above 500 employees, global enterprises and household-name multinationals;
-- prefer queries that surface employee-size evidence, but do not discard an otherwise relevant SME candidate solely because the first search result does not contain a numeric headcount; size is verified in a dedicated second pass.
-Diversify across ecommerce/retail, manufacturing, wholesale/distribution, regional logistics operators, food, healthcare groups, hospitality/travel, financial services and growing B2B companies.
-Look for observable operational complexity: expansion, inventory, demand, capacity, pricing, planning, finance/risk, resource allocation, reporting or repetitive workflows where one SC-Analytics capability could improve an actual decision."""
+        target = """Find END-CLIENT operating businesses where external Data/Analytics/AI systems can create measurable value and where an internal Data Science team is unlikely or incomplete.
+The target universe must be intentionally broad enough to sustain AT LEAST 1,000 plausible prospects across Spain/EU. Include self-employed professionals/autónomos, microbusinesses, SMEs and lower-mid-market companies when the economics make sense.
+BUSINESS TYPE AND INTERNAL DATA CAPACITY MATTER MORE THAN HEADCOUNT:
+- ideal scale: self-employed / 1-250 employees when there is recurring operational complexity or repeated decision volume;
+- 251-500 employees are acceptable with strong fit and no evidence of a mature internal Data Science function;
+- exclude >500 employees, global enterprises, household-name multinationals and companies that obviously have mature in-house Data/AI teams unless there is a very clear specialist gap;
+- unknown headcount is acceptable when there are no enterprise red flags;
+- do NOT reject a company because the first search result omits employee count.
+Prioritize business models where advanced analytics is useful but a dedicated Data Science team is improbable:
+- ecommerce brands and marketplace sellers;
+- manufacturers, workshops and production businesses;
+- wholesalers, distributors, importers and regional logistics/3PL operators;
+- food businesses, restaurant groups, hospitality, aparthotels and tourism operators;
+- clinics, dental/veterinary/physio groups and appointment-based service businesses;
+- academies, training companies and subscription/member businesses;
+- property managers, holiday-rental operators and real-estate operating businesses;
+- maintenance, installation, field-service, fleet and route-based companies;
+- professional/financial/administrative service firms with repetitive reporting or workflow volume;
+- autonomous professionals with enough bookings, orders, inventory, quotes, customers or recurring administration to benefit from automation/decision systems.
+Exclude Data/AI consultancies, BI/ERP vendors, software vendors, recruitment firms and agencies whose core product overlaps SC-Analytics; route those to PARTNER mode instead.
+Look for either a concrete trigger OR evergreen operational leverage: inventory, demand, bookings, staffing, routing, capacity, pricing, scheduling, cash-flow, risk, reporting, repetitive workflows, multi-location operations or high transaction volume."""
     return f"""Generate 12 distinct public-web search queries to find NEW {mode} candidates for SC-Analytics.
 Return JSON array of strings only.
 {target}
@@ -576,21 +730,29 @@ Do not choose a partner merely because it is another consultancy; explain the ac
 - avoid politicians, celebrities and generic corporate executives with no visible connection to the technical ecosystem."""
     else:
         rules = f"""For DIRECT CLIENT mode:
-- choose operating/end-client companies with a plausible business decision/process SC-Analytics could improve;
-- target companies where SC-Analytics could realistically act as the main external Data/Analytics/AI provider;
-- IDEAL HEADCOUNT: 10-200 employees;
-- HARD MAXIMUM: 500 employees. Never select a candidate above 500 employees;
-- candidates in the 201-500 range require materially stronger fit than candidates below 200;
+- choose operating/end-client businesses with a plausible decision/process SC-Analytics could improve;
+- the PRIMARY criterion is business-model leverage + probability that the company does NOT have a mature internal Data Science team;
+- include autónomos and 1-9 employee microbusinesses when recurring bookings/orders/inventory/scheduling/reporting/administration create enough leverage to justify a system;
+- ideal headcount: 1-250 employees; 251-500 requires stronger fit; >500 is excluded;
+- unknown headcount is acceptable unless supplied evidence indicates enterprise scale;
 - exclude global enterprises, household-name multinationals and large corporate groups even when one local unit appears relevant;
-- employee_range should contain a numeric range/count when the supplied discovery evidence supports one; if not, leave it empty rather than dropping an otherwise credible candidate because a dedicated second-pass verifier will check company size;
-- candidates with 201-500 employees must have score >= 8.0 and a particularly strong fit;
-- exclude consultancies, marketing agencies, ERP vendors, data/AI service firms and recruitment companies;
-- diversify industries;
+- exclude consultancies, marketing agencies, ERP/BI/software vendors, Data/AI service firms and recruitment companies from DIRECT CLIENT mode;
+- a current expansion/hiring/news trigger is valuable but NOT mandatory: stable operational complexity can itself be a valid signal;
+- prefer organizations where SC-Analytics could become the main external analytics/automation specialist rather than compete with a large in-house data department;
+- score should combine economic leverage, evidence quality, likely external-buying fit and approachability. Do not reward company size by itself;
+- employee_range should contain a numeric range/count only when supported; otherwise leave it empty;
+- return business_model_fit: one of strong, medium, weak, excluded;
+- return operational_leverage: one of strong, medium, weak;
+- return internal_data_team_likelihood: one of low, medium, high, unknown;
+- return enterprise_risk: one of low, medium, high;
+- return specialist_gap: one of clear, possible, none, unknown;
 - recommended_service: choose the ONE SC-Analytics capability most relevant from {SERVICES};
 - partnership_model and partnership_value must be empty strings."""
     return f"""From the public search results below, select up to {pool_target} credible NEW company candidates so a downstream process can build one company + one decision-maker pair per requested lead.
 Return a JSON array. Each item must contain:
 name, website, country, industry, employee_range, source_url, capabilities (array), capability_gaps (array), score (0-10), score_reason, recommended_roles (array), recommended_service, partnership_model, partnership_value.
+For DIRECT CLIENT mode also return business_model_fit, operational_leverage, internal_data_team_likelihood, enterprise_risk and specialist_gap.
+IMPORTANT: website must be the company's official website/home domain when supported. source_url is the public evidence/article/job posting that triggered the candidate; never put a job board/news article in website when an official company site is supported.
 
 Mode: {mode}
 {rules}
@@ -623,6 +785,7 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
 
     existing_companies = store.filter("companies", tenant_id=tenant_id)
     existing_websites = {_website_key(str(row.get("website", ""))) for row in existing_companies if row.get("website")}
+    existing_names = {_company_name_key(str(row.get("name", ""))) for row in existing_companies if row.get("name")}
     requested = max(1, min(int(limit), 50))
     pool_target = max(requested * 5, 50)
 
@@ -632,13 +795,12 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
     )
     queries = [str(q) for q in _as_list(query_plan)[:12]]
     if mode == "lead":
+        queries.extend(_lead_discovery_queries(len(existing_companies)))
         queries.extend([
-            'Spain SME ecommerce retailer inventory logistics expansion employees',
-            'Spain SME manufacturer production planning capacity growth employees',
-            'Spain SME wholesale distributor inventory warehouses employees',
-            'Spain regional logistics operator fleet capacity expansion employees',
-            'Spain SME healthcare clinics group expansion operations employees',
-            'Spain SME hospitality hotel group expansion revenue operations employees',
+            'Spain marketplace seller ecommerce operations inventory autónomo',
+            'Spain small financial advisory recurring reporting automation SME',
+            'Spain professional services company repetitive reporting workflow automation SME',
+            'Spain growing B2B company manual Excel reporting operations SME',
         ])
     elif mode == "network":
         queries.extend([
@@ -664,7 +826,7 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
         ])
 
     hits = []
-    for query in queries[:22]:
+    for query in queries[:40]:
         hits.extend(search.search(query, count=12))
     hits = dedupe_hits(hits)[: max(pool_target * 5, 280)]
 
@@ -675,25 +837,33 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
 
     output: list[dict] = []
     seen_websites = set(existing_websites)
+    seen_names = set(existing_names)
     for raw in _as_list(raw_candidates):
         if len(output) >= requested:
             break
         if not isinstance(raw, dict):
             continue
-        website = str(raw.get("website", "")).strip()
+        company_name = str(raw.get("name", "")).strip()
+        if not company_name:
+            continue
+        name_key = _company_name_key(company_name)
+        if not name_key or name_key in seen_names:
+            continue
+
+        website = _resolve_official_website(company_name, str(raw.get("website", "")).strip(), search, llm)
         normalized_website = _website_key(website)
-        if not raw.get("name") or not website or not normalized_website or normalized_website in seen_websites:
+        if not website or not normalized_website or normalized_website in seen_websites:
             continue
 
         employee_range = str(raw.get("employee_range", "")).strip()
         score = float(raw.get("score", 0) or 0)
         size_verification = {"classification": "", "source_url": "", "evidence": ""}
         if mode == "lead":
-            # Two-pass ICP gate:
-            # 1) use numeric size from the broad qualification result when present;
-            # 2) otherwise run a dedicated size lookup before rejecting the company.
-            # This keeps enterprise names out without turning missing snippets into
-            # an automatic rejection of every otherwise-good SME.
+            if not _direct_client_business_allowed(raw, score):
+                continue
+
+            # Headcount enriches prioritisation but no longer destroys the funnel.
+            # Unknown size survives unless we find explicit enterprise evidence.
             if employee_range:
                 if not _direct_client_size_allowed(employee_range, score):
                     continue
@@ -717,23 +887,25 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
                     employee_range = verified_range
                     if not _direct_client_size_allowed(employee_range, score):
                         continue
-                elif classification == "likely_sme":
-                    # Allow a strong, evidence-backed SME candidate through for
-                    # manual review even when no exact headcount is public.
-                    if score < DIRECT_CLIENT_STRETCH_MIN_SCORE:
-                        continue
-                else:
-                    continue
 
         company_extra = {
             "recommended_service": "" if mode == "network" else str(raw.get("recommended_service", "")).strip(),
             "partnership_model": str(raw.get("partnership_model", "")).strip() if mode == "partner" else "",
             "partnership_value": str(raw.get("partnership_value", "")).strip() if mode == "partner" else "",
+            "notes": (
+                "Prospecting qualification — "
+                f"business_fit={str(raw.get('business_model_fit', '')).strip() or 'unknown'}; "
+                f"operational_leverage={str(raw.get('operational_leverage', '')).strip() or 'unknown'}; "
+                f"internal_data_team={str(raw.get('internal_data_team_likelihood', '')).strip() or 'unknown'}; "
+                f"enterprise_risk={str(raw.get('enterprise_risk', '')).strip() or 'unknown'}; "
+                f"size={employee_range or str(size_verification.get('classification', 'unknown'))}; "
+                f"size_evidence={str(size_verification.get('evidence', '')).strip() or 'pending'}"
+            ) if mode == "lead" else "",
         }
         candidate = CompanyCandidate(
             company_id=new_id("company"),
             tenant_id=tenant_id,
-            name=str(raw.get("name", "")).strip(),
+            name=company_name,
             website=website,
             country=str(raw.get("country", "")).strip(),
             industry=str(raw.get("industry", "")).strip(),
@@ -747,15 +919,25 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
         )
         roles = [str(r) for r in (raw.get("recommended_roles") or [])][:7]
         candidate.linkedin_url = _linkedin_company_url(candidate.name, search, llm)
-        primary_raw = _discover_primary_person(candidate, roles, search, llm, mode)
-        if not primary_raw:
-            continue
 
+        # Persist a valid company BEFORE person enrichment. A missing public
+        # executive profile should never erase a commercially valid target.
         company_row = to_dict(candidate)
         company_row.update(company_extra)
         stored_candidate = store.upsert("companies", company_row, key="tenant_id,website")
         candidate.company_id = stored_candidate.get("company_id", candidate.company_id)
         seen_websites.add(normalized_website)
+        seen_names.add(name_key)
+
+        primary_raw = _discover_primary_person(candidate, roles, search, llm, mode)
+        if not primary_raw:
+            enriched = dict(company_row)
+            enriched["company_id"] = candidate.company_id
+            enriched["people"] = []
+            enriched["decision_maker_status"] = "pending_enrichment"
+            enriched["requested_batch_size"] = requested
+            output.append(enriched)
+            continue
 
         person = PersonCandidate(
             person_id=new_id("person"),
