@@ -4,6 +4,8 @@ import { Badge, EmptyState, SectionHeading, StatCard, adminButtonSecondary, admi
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { getMetricsBundle } from '@/lib/growth-admin-performance'
 import { CORPORATE_GOOGLE_EMAIL, gmailOAuthReadiness } from '@/lib/google-oauth-finance'
+import MetricsPeriodComparison from '@/components/growth-admin/MetricsPeriodComparison'
+import { getMetricsComparison, normalizePeriodKind, periodOptions } from '@/lib/metrics-periods'
 
 export const dynamic='force-dynamic'
 const n=(value:unknown)=>Number(value||0)
@@ -11,10 +13,15 @@ const euro=(value:unknown)=>`${n(value).toLocaleString('es-ES',{minimumFractionD
 const date=(value:unknown)=>value?new Date(String(value)).toLocaleString('es-ES',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Madrid'}):'Nunca'
 const show=(ready:boolean,value:unknown,format:(v:unknown)=>string=(v)=>n(v).toLocaleString('es-ES'))=>ready?format(value):'—'
 
-export default async function MetricsPage({searchParams}:{searchParams:Promise<{synced?:string;ga4_error?:string;gsc_error?:string;google_connected?:string}>}){
+export default async function MetricsPage({searchParams}:{searchParams:Promise<{synced?:string;ga4_error?:string;gsc_error?:string;google_connected?:string;period_kind?:string;period_a?:string;period_b?:string;trend_metric?:string}>}){
   if(!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
   const params=await searchParams
-  const metrics=await getMetricsBundle()
+  const kind=normalizePeriodKind(params.period_kind)
+  const options=periodOptions(kind)
+  const [metrics,comparison]=await Promise.all([
+    getMetricsBundle(),
+    getMetricsComparison({kind,periodA:params.period_a,periodB:params.period_b,trendMetric:params.trend_metric}),
+  ])
   const oauth=gmailOAuthReadiness()
   const liReady=n(metrics.linkedin.posts_measured)>0
   const webReady=Boolean(metrics.website.latest_date)
@@ -31,7 +38,9 @@ export default async function MetricsPage({searchParams}:{searchParams:Promise<{
     {params.synced&&!params.ga4_error&&!params.gsc_error&&<div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">Sincronización completada. GA4 y Search Console se han persistido correctamente en el CRM.</div>}
     {(params.ga4_error||params.gsc_error)&&<div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900"><p className="mb-2 font-semibold">La sincronización no ha terminado correctamente.</p>{params.ga4_error&&<p><strong>GA4:</strong> {params.ga4_error}</p>}{params.gsc_error&&<p><strong>Search Console:</strong> {params.gsc_error}</p>}</div>}
 
-    <section className="mt-8"><SectionHeading eyebrow="Negocio" title="De actividad a resultado" description="CRM y Finance son automáticos: al actualizar deals, facturas, cobros o gastos confirmados, estos KPIs se recalculan desde Supabase."/><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6"><StatCard label="Oportunidades" value={n(metrics.commercial.opportunities)} tone="blue"/><StatCard label="Reuniones" value={n(metrics.commercial.meetings)} tone="violet"/><StatCard label="Pipeline abierto" value={euro(metrics.commercial.open_pipeline)} tone="blue"/><StatCard label="Facturado" value={euro(metrics.finance.invoiced)} tone="green"/><StatCard label="Cobrado" value={euro(metrics.finance.collected)} tone="green"/><StatCard label="Gasto" value={euro(metrics.finance.spent)} tone="amber"/></div></section>
+    <MetricsPeriodComparison bundle={comparison} options={options}/>
+
+    <section className="mt-12"><SectionHeading eyebrow="Negocio" title="De actividad a resultado" description="CRM y Finance son automáticos: al actualizar deals, facturas, cobros o gastos confirmados, estos KPIs se recalculan desde Supabase."/><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6"><StatCard label="Oportunidades" value={n(metrics.commercial.opportunities)} tone="blue"/><StatCard label="Reuniones" value={n(metrics.commercial.meetings)} tone="violet"/><StatCard label="Pipeline abierto" value={euro(metrics.commercial.open_pipeline)} tone="blue"/><StatCard label="Facturado" value={euro(metrics.finance.invoiced)} tone="green"/><StatCard label="Cobrado" value={euro(metrics.finance.collected)} tone="green"/><StatCard label="Gasto" value={euro(metrics.finance.spent)} tone="amber"/></div></section>
 
     <section className="mt-12"><SectionHeading eyebrow="Website · GA4" title="Funnel web" description={webReady?`Último total de periodo sincronizado: ${metrics.website.latest_date}. Usuarios y sesiones proceden del informe GA4 sin dimensiones, evitando duplicidades por canal/página.`:'No existe todavía un total GA4 con el esquema corregido. Los guiones no son ceros.'}/><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-7"><StatCard label="Usuarios" value={show(webReady,metrics.website.users)}/><StatCard label="Sesiones" value={show(webReady,metrics.website.sessions)}/><StatCard label="Engagement" value={webReady&&webEngagement!==null?`${(webEngagement*100).toFixed(1)}%`:'—'} tone="blue"/><StatCard label="Page views" value={show(webReady,metrics.website.page_views)}/><StatCard label="Key events" value={show(webReady,metrics.website.key_events)} tone="violet"/><StatCard label="Discovery intent" value={show(webReady,metrics.website.discovery_clicks)} tone="amber"/><StatCard label="Bookings" value={show(webReady,metrics.website.bookings)} tone="green"/></div>{!webReady&&<div className="mt-4"><EmptyState>{metrics.sources.google_connected?'Google está conectado pero falta ejecutar una sincronización GA4 con el esquema corregido. Pulsa “Sincronizar Google ahora”.':'Google Workspace/GA4 está desconectado. Autoriza la cuenta corporativa para obtener datos.'}</EmptyState></div>}</section>
 
