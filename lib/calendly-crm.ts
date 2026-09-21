@@ -3,6 +3,7 @@ import 'server-only'
 
 import { randomUUID } from 'node:crypto'
 import { insertGrowthRow, queryGrowthTable, updateGrowthRow } from '@/lib/supabase-growth'
+import { encryptIntegrationSecret } from '@/lib/integration-secrets'
 
 type Json = Record<string, any>
 
@@ -212,6 +213,7 @@ async function recordConnection(user: Json, synced: number) {
     account_type: 'host',
     provider_subject: user.uri || '',
     display_name: user.name || user.email || 'Calendly',
+    access_token_ciphertext: encryptIntegrationSecret(token()),
     metadata: {
       email: user.email || '',
       scheduling_url: user.scheduling_url || '',
