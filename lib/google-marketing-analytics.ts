@@ -103,7 +103,7 @@ export async function syncGa4(days=365){
     }
     const acquisitionRows:Json[]=(acquisition.rows||[]).map((row:Json)=>{
       const source=dimension(row,0)||'(direct)',medium=dimension(row,1)||'(none)',campaign=dimension(row,2),contentId=dimension(row,3)
-      return {tenant_id:TENANT_ID,metric_date:today,source,medium,campaign,content_id:contentId||null,page_path:'(all)',users:0,sessions:metric(row,0),engaged_sessions:metric(row,1),page_views:metric(row,2),key_events:metric(row,3),discovery_clicks:0,bookings:0,sync_key:hash('ga4_acquisition_period',String(windowDays),source,medium,campaign,contentId),metadata:{provider:'ga4',property_id:propertyId,scope:'acquisition',window_days:windowDays},created_at:now}
+      return {tenant_id:TENANT_ID,metric_date:today,source,medium,campaign,content_id:null,page_path:'(all)',users:0,sessions:metric(row,0),engaged_sessions:metric(row,1),page_views:metric(row,2),key_events:metric(row,3),discovery_clicks:0,bookings:0,sync_key:hash('ga4_acquisition_period',String(windowDays),source,medium,campaign,contentId),metadata:{provider:'ga4',property_id:propertyId,scope:'acquisition',window_days:windowDays,session_manual_ad_content:contentId&&contentId!=='(not set)'?contentId:null},created_at:now}
     })
     const eventRows:Json[]=(events.rows||[]).map((row:Json)=>{
       const eventName=dimension(row,0),count=metric(row,0)
