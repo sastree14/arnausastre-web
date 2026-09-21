@@ -30,6 +30,21 @@ PARTNER_MODELS = [
     "technology-implementation-partner",
 ]
 
+NON_OFFICIAL_COMPANY_HOSTS = {
+    "linkedin.com",
+    "jooble.org",
+    "indeed.com",
+    "glassdoor.com",
+    "infojobs.net",
+    "talent.com",
+    "jobtoday.com",
+    "investinspain.org",
+    "catalonia.com",
+    "crunchbase.com",
+    "pitchbook.com",
+    "wikipedia.org",
+}
+
 DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES = 250
 DIRECT_CLIENT_HARD_MAX_EMPLOYEES = 500
 DIRECT_CLIENT_MIN_SCORE = 5.5
@@ -185,6 +200,50 @@ def _website_key(value: str) -> str:
         return host.rstrip("/")
     except ValueError:
         return raw.rstrip("/").lower()
+
+
+def _company_name_key(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", str(value or "").lower())
+
+
+def _is_non_official_company_host(value: str) -> bool:
+    host = _website_key(value)
+    return any(host == blocked or host.endswith("." + blocked) for blocked in NON_OFFICIAL_COMPANY_HOSTS)
+
+
+def _resolve_official_website(company_name: str, suggested_website: str, search: BraveResearchClient, llm) -> str:
+    """Keep evidence URLs separate from the company's canonical website."""
+    suggested = str(suggested_website or "").strip()
+    if suggested and not _is_non_official_company_host(suggested):
+        return suggested
+
+    hits = []
+    for query in [
+        f'"{company_name}" official website Spain',
+        f'"{company_name}" empresa web oficial',
+    ]:
+        hits.extend(search.search(query, count=8))
+    candidates = [h for h in dedupe_hits(hits) if not _is_non_official_company_host(h.url)][:12]
+    if not candidates:
+        return suggested
+
+    result = llm.json(
+        "Select the official website for the named company strictly from the supplied public search results. Never invent a domain.",
+        f"""Company: {company_name}
+Return JSON with official_website only. Use an empty string if none is sufficiently supported.
+
+RESULTS:
+{[{'title': h.title, 'url': h.url, 'snippet': h.snippet} for h in candidates]}
+""",
+    )
+    if isinstance(result, dict):
+        selected = str(result.get("official_website", "")).strip()
+        allowed = {h.url for h in candidates}
+        if selected in allowed:
+            parsed = urlparse(selected if "://" in selected else f"https://{selected}")
+            if parsed.scheme and parsed.netloc:
+                return f"{parsed.scheme}://{parsed.netloc}/"
+    return suggested
 
 
 def _linkedin_company_search_url(company_name: str) -> str:
@@ -691,6 +750,7 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
 
     existing_companies = store.filter("companies", tenant_id=tenant_id)
     existing_websites = {_website_key(str(row.get("website", ""))) for row in existing_companies if row.get("website")}
+    existing_names = {_company_name_key(str(row.get("name", ""))) for row in existing_companies if row.get("name")}
     requested = max(1, min(int(limit), 50))
     pool_target = max(requested * 5, 50)
 
@@ -757,14 +817,22 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
 
     output: list[dict] = []
     seen_websites = set(existing_websites)
+    seen_names = set(existing_names)
     for raw in _as_list(raw_candidates):
         if len(output) >= requested:
             break
         if not isinstance(raw, dict):
             continue
-        website = str(raw.get("website", "")).strip()
+        company_name = str(raw.get("name", "")).strip()
+        if not company_name:
+            continue
+        name_key = _company_name_key(company_name)
+        if not name_key or name_key in seen_names:
+            continue
+
+        website = _resolve_official_website(company_name, str(raw.get("website", "")).strip(), search, llm)
         normalized_website = _website_key(website)
-        if not raw.get("name") or not website or not normalized_website or normalized_website in seen_websites:
+        if not website or not normalized_website or normalized_website in seen_websites:
             continue
 
         employee_range = str(raw.get("employee_range", "")).strip()
@@ -817,7 +885,7 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
         candidate = CompanyCandidate(
             company_id=new_id("company"),
             tenant_id=tenant_id,
-            name=str(raw.get("name", "")).strip(),
+            name=company_name,
             website=website,
             country=str(raw.get("country", "")).strip(),
             industry=str(raw.get("industry", "")).strip(),
@@ -839,6 +907,7 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
         stored_candidate = store.upsert("companies", company_row, key="tenant_id,website")
         candidate.company_id = stored_candidate.get("company_id", candidate.company_id)
         seen_websites.add(normalized_website)
+        seen_names.add(name_key)
 
         primary_raw = _discover_primary_person(candidate, roles, search, llm, mode)
         if not primary_raw:
