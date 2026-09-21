@@ -58,7 +58,7 @@ export default async function CommercialIntelligencePage({ searchParams }: { sea
           </form>
         </div>
         <div className="border-t border-white/10 bg-white/[0.035] px-6 py-4 md:px-10">
-          <div className="grid gap-2 text-xs text-slate-400 md:grid-cols-4"><span><strong className="text-slate-200">Trigger Engine</strong> → detecta el evento</span><span><strong className="text-slate-200">Offer Engine</strong> → selecciona la entrada</span><span><strong className="text-slate-200">Channel Engine</strong> → decide distribución</span><span><strong className="text-slate-200">CRM</strong> → ejecuta y aprende</span></div>
+          <div className="grid gap-2 text-xs text-slate-400 md:grid-cols-5"><span><strong className="text-slate-200">Trigger Engine</strong> → detecta el evento</span><span><strong className="text-slate-200">Offer Engine</strong> → selecciona la entrada</span><span><strong className="text-slate-200">Channel Engine</strong> → decide distribución</span><span><strong className="text-slate-200">ICP tamaño</strong> → 10–200 ideal · 500 máximo verificado</span><span><strong className="text-slate-200">CRM</strong> → ejecuta y aprende</span></div>
         </div>
       </header>
 
