@@ -129,7 +129,7 @@ function aggregatePeriod(
   result.seo_ctr=result.seo_impressions>0?result.seo_clicks/result.seo_impressions:null
   result.seo_position=result.seo_impressions>0?positionWeight/result.seo_impressions:null
   result.opportunities=opportunities.filter(row=>inRange(dateOnly(row.created_at),period.start,period.end)).length
-  result.meetings=meetings.filter(row=>inRange(dateOnly(row.starts_at),period.start,period.end)&&String(row.status||'').toLowerCase()!=='cancelled').length
+  result.meetings=meetings.filter(row=>inRange(dateOnly(row.starts_at),period.start,period.end)&&!['cancelled','canceled'].includes(String(row.status||'').toLowerCase())).length
   result.invoiced=invoices
     .filter(row=>inRange(dateOnly(row.issue_date),period.start,period.end)&&!['void','cancelled'].includes(String(row.status||''))&&['reviewed','confirmed'].includes(String(row.review_status||'')))
     .reduce((sum,row)=>sum+money(row),0)
@@ -152,7 +152,7 @@ export async function getMetricsComparison(input:{kind:MetricsPeriodKind;periodA
   const kind=input.kind
   const options=periodOptions(kind)
   const periodA=resolvePeriod(kind,input.periodA,options)
-  const periodB=resolvePeriod(kind,input.periodB,options.slice(1).length?options.slice(1):options)
+  const periodB=input.periodB?resolvePeriod(kind,input.periodB,options):(options[1]||options[0])
   const allowedTrend:MetricsTrendKey[]=['sessions','page_views','seo_clicks','seo_impressions','opportunities','meetings','invoiced','collected','spent']
   const trendMetric=allowedTrend.includes(input.trendMetric as MetricsTrendKey)?input.trendMetric as MetricsTrendKey:'sessions'
   const trendPeriods=options.slice(0,kind==='month'?12:kind==='quarter'?8:5).reverse()
