@@ -34,7 +34,8 @@ export function googleOAuthConfig(origin = '') {
   const normalizedOrigin = origin.replace(/\/$/, '')
   // Production must always emit one deterministic callback URI. This prevents a
   // stale Vercel env override from reintroducing redirect_uri_mismatch.
-  const redirectUri = normalizedOrigin === 'https://sc-analytics.io'
+  const isProductionOrigin = normalizedOrigin === 'https://sc-analytics.io' || normalizedOrigin === 'https://www.sc-analytics.io'
+  const redirectUri = isProductionOrigin
     ? productionRedirect
     : configuredRedirect || (normalizedOrigin ? `${normalizedOrigin}/api/google/gmail/callback` : productionRedirect)
   const missing: string[] = []
