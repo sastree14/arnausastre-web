@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto'
 import { NextResponse } from 'next/server'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
-import { queryGrowthRpc, queryGrowthTable, updateGrowthRow } from '@/lib/supabase-growth'
+import { mutateGrowthRpc, queryGrowthTable, updateGrowthRow } from '@/lib/supabase-growth'
 import { generateInvoiceDriveArtifacts, syncFinanceRegisters } from '@/lib/finance-documents'
 import { postInvoiceAccounting } from '@/lib/finance-accounting'
 import { recordFinanceAudit } from '@/lib/finance-audit'
@@ -29,37 +29,36 @@ export async function POST(request: Request) {
   const googleReady = financeGoogleReadiness()
   if (!googleReady.configured) return NextResponse.redirect(new URL(`${returnTo}?invoice_error=google_not_configured`, request.url), 303)
 
-  let invoiceNumber = String(invoice.invoice_number || '').trim()
-  if (!invoiceNumber) {
-    const year = Number(String(invoice.issue_date || new Date().toISOString().slice(0,10)).slice(0,4))
-    invoiceNumber = await queryGrowthRpc<string>('finance_next_invoice_number', {
-      p_tenant_id: 'sc-analytics',
-      p_series: String(invoice.series || settings.invoice_series || 'SC'),
-      p_fiscal_year: String(year),
-    }, { cacheSeconds: 0 })
-    await updateGrowthRow('finance_invoices', 'invoice_id', invoiceId, { invoice_number: invoiceNumber, updated_at: new Date().toISOString() })
-  }
-
-  const lines = await queryGrowthTable<Row>('finance_invoice_lines', { tenant_id: 'eq.sc-analytics', invoice_id: `eq.${invoiceId}`, order: 'position.asc', limit: '100' }, { cacheSeconds: 0 })
-  const canonical = JSON.stringify({
-    invoice_id: invoiceId,
-    invoice_number: invoiceNumber,
-    issue_date: invoice.issue_date,
-    due_date: invoice.due_date,
-    recipient_legal_name: invoice.recipient_legal_name,
-    recipient_tax_id: invoice.recipient_tax_id,
-    recipient_country_code: invoice.recipient_country_code,
-    currency: invoice.currency,
-    subtotal: invoice.subtotal,
-    tax: invoice.tax,
-    withholding_amount: invoice.withholding_amount,
-    total: invoice.total,
-    tax_rule_key: invoice.tax_rule_key,
-    lines,
-  })
-  const immutableHash = createHash('sha256').update(canonical).digest('hex')
-
   try {
+    let invoiceNumber = String(invoice.invoice_number || '').trim()
+    if (!invoiceNumber) {
+      const year = Number(String(invoice.issue_date || new Date().toISOString().slice(0,10)).slice(0,4))
+      invoiceNumber = await mutateGrowthRpc<string>('finance_next_invoice_number', {
+        p_tenant_id: 'sc-analytics',
+        p_series: String(invoice.series || settings.invoice_series || 'SC'),
+        p_fiscal_year: year,
+      })
+      await updateGrowthRow('finance_invoices', 'invoice_id', invoiceId, { invoice_number: invoiceNumber, updated_at: new Date().toISOString() })
+    }
+
+    const lines = await queryGrowthTable<Row>('finance_invoice_lines', { tenant_id: 'eq.sc-analytics', invoice_id: `eq.${invoiceId}`, order: 'position.asc', limit: '100' }, { cacheSeconds: 0 })
+    const canonical = JSON.stringify({
+      invoice_id: invoiceId,
+      invoice_number: invoiceNumber,
+      issue_date: invoice.issue_date,
+      due_date: invoice.due_date,
+      recipient_legal_name: invoice.recipient_legal_name,
+      recipient_tax_id: invoice.recipient_tax_id,
+      recipient_country_code: invoice.recipient_country_code,
+      currency: invoice.currency,
+      subtotal: invoice.subtotal,
+      tax: invoice.tax,
+      withholding_amount: invoice.withholding_amount,
+      total: invoice.total,
+      tax_rule_key: invoice.tax_rule_key,
+      lines,
+    })
+    const immutableHash = createHash('sha256').update(canonical).digest('hex')
     const artifacts = await generateInvoiceDriveArtifacts(invoiceId)
     await postInvoiceAccounting(invoiceId)
     const now = new Date().toISOString()
