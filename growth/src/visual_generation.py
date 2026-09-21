@@ -23,7 +23,7 @@ def _update_pending_approval(content_id: str, changes: dict[str, Any]) -> None:
 def _derive_concept(item: dict[str, Any], explicit: str) -> str:
     explicit = sanitize_publication_text(explicit).strip()
     if explicit:
-        return f"Core editorial motif requested by the user: {explicit[:780]}"
+        return explicit[:900]
     strategy = dict(item.get("visual_strategy") or {})
     configured = sanitize_publication_text(str(strategy.get("illustration_concept") or "")).strip()
     if configured:
