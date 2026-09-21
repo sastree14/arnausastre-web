@@ -114,7 +114,8 @@ BODY: {body}
 BRIEF: {brief}
 
 Return {{
-  "engagement_question":"one natural open question that invites practitioners to share experience; no fake suspense",
+  "engagement_question":"one natural open question that invites practitioners to reply in the comments with a real opinion or experience; no fake suspense",
+  "follow_line":"one short, natural sentence inviting readers who value this kind of applied Data/AI/business thinking to follow SC-Analytics; no sales pitch and no begging",
   "hashtags":["3 to 5 relevant hashtags without #"],
   "visual_headline":"short stop-scroll headline, ideally <= 70 characters",
   "visual_support":"optional short supporting sentence <= 110 characters",
@@ -129,7 +130,8 @@ Rules:
 - If the content includes a meaningful real metric, prefer metric.
 - Prefer comparison or process when the brief already contains those structures.
 - Use illustration sparingly: only when a concrete object, operational scene or simple visual metaphor materially improves stopping power and no meaningful real metric/comparison/process is available.
-- Questions must be genuinely answerable by the target audience.
+- Questions must be genuinely answerable by the target audience and should create a reason to comment, disagree, add a case or share experience.
+- The follow_line must explicitly mention SC-Analytics and invite following the page softly. Vary the wording; never use engagement bait, guilt, urgency or a hard sell.
 - Hashtags must be specific enough to aid discovery; avoid generic spam like #success or #motivation.
 - Never invent a metric, client result or fact.
 """,
@@ -137,27 +139,36 @@ Rules:
     except Exception:
         result = {}
     question = sanitize_publication_text(str(result.get("engagement_question") or existing_strategy.get("engagement_question") or "")).strip()
+    follow_line = sanitize_publication_text(str(result.get("follow_line") or existing_strategy.get("follow_line") or "")).strip()
     hashtags = _clean_hashtags(result.get("hashtags") or item.get("hashtags") or [])
     strategy = {
         **existing_strategy,
         "engagement_question": question,
+        "follow_line": follow_line,
+        "engagement_goal": "comments_and_sc_analytics_follow_growth",
         "visual_headline": sanitize_publication_text(str(result.get("visual_headline") or item.get("title") or ""))[:100],
         "visual_support": sanitize_publication_text(str(result.get("visual_support") or ""))[:150],
         "visual_type": str(result.get("visual_type") or existing_strategy.get("visual_type") or "statement"),
         "illustration_concept": sanitize_publication_text(str(result.get("illustration_concept") or existing_strategy.get("illustration_concept") or ""))[:900],
         "theme": "light" if str(result.get("theme") or existing_strategy.get("theme")) == "light" else "dark",
     }
-    candidate_body = body
-    if question and question not in body and not body.rstrip().endswith("?"):
-        appended = f"{body.rstrip()}\n\n{question}".strip()
-        if len(appended) <= 2200:
-            candidate_body = appended
+    candidate_body = body.rstrip()
+    additions: list[str] = []
+    if question and question not in candidate_body:
+        additions.append(question)
+    if follow_line and follow_line not in candidate_body:
+        additions.append(follow_line)
+    # Reserve room for the hashtag line that is appended by the LinkedIn publisher.
+    for addition in additions:
+        proposed = f"{candidate_body}\n\n{addition}".strip()
+        if len(proposed) <= 2050:
+            candidate_body = proposed
     changes: dict[str, Any] = {
         "body": candidate_body,
         "hashtags": hashtags,
         "visual_strategy": strategy,
         "hook_type": str(result.get("hook_type") or item.get("hook_type") or "insight"),
-        "cta_type": "conversation" if question else (item.get("cta_type") or "none"),
+        "cta_type": "conversation_and_follow" if question and follow_line else "conversation" if question else "follow" if follow_line else (item.get("cta_type") or "none"),
     }
     rendered = _render_visual({**item, **changes}, brief, strategy)
     if rendered:
