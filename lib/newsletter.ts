@@ -100,8 +100,33 @@ export async function subscribeNewsletter(input:{email:string;name?:string;compa
       updated_at:now,
     })
   }
-  if(row)await sendWelcome(row).catch(error=>console.error('Newsletter welcome email failed',error))
+  if(row){
+    await Promise.allSettled([
+      sendWelcome(row).catch(error=>console.error('Newsletter welcome email failed',error)),
+      sendOwnerSubscriptionNotification(row,{isNew:!existing}).catch(error=>console.error('Newsletter owner notification failed',error)),
+    ])
+  }
   return row
+}
+
+async function sendOwnerSubscriptionNotification(subscriber:NewsletterSubscriber,{isNew}:{isNew:boolean}){
+  const transporter=smtpTransport()
+  if(!transporter)return
+  const from=process.env.SMTP_USER!
+  const to=process.env.NEWSLETTER_NOTIFY_EMAIL||process.env.CONTACT_TO_EMAIL||'arnau.sastre@sc-analytics.io'
+  const interests=(subscriber.interests||[]).join(', ')||'—'
+  const name=subscriber.name||'—'
+  const company=subscriber.company||'—'
+  const source=subscriber.source_path||'web'
+  const state=isNew?'Nueva suscripción':'Suscripción reactivada/actualizada'
+  await transporter.sendMail({
+    from:`"SC-Analytics website" <${from}>`,
+    to,
+    replyTo:subscriber.email,
+    subject:`[SC-Analytics Briefing] ${state}: ${subscriber.email}`,
+    text:`${state}\n\nNombre: ${name}\nEmpresa: ${company}\nEmail: ${subscriber.email}\nIdioma: ${subscriber.language.toUpperCase()}\nIntereses: ${interests}\nOrigen: ${source}\n\nEl suscriptor ya está guardado en CRM > Comercial > Audiencia propia.`,
+    html:`<div style="font-family:Arial,sans-serif;max-width:620px;color:#0f172a"><p style="font-size:12px;letter-spacing:.12em;color:#4f46e5;font-weight:700">SC-ANALYTICS BRIEFING</p><h2>${escapeHtml(state)}</h2><p><strong>Nombre:</strong> ${escapeHtml(name)}</p><p><strong>Empresa:</strong> ${escapeHtml(company)}</p><p><strong>Email:</strong> <a href="mailto:${escapeHtml(subscriber.email)}">${escapeHtml(subscriber.email)}</a></p><p><strong>Idioma:</strong> ${escapeHtml(subscriber.language.toUpperCase())}</p><p><strong>Intereses:</strong> ${escapeHtml(interests)}</p><p><strong>Origen:</strong> ${escapeHtml(source)}</p><p style="margin-top:24px;color:#64748b">Ya aparece en CRM → Comercial → Audiencia propia.</p></div>`,
+  })
 }
 
 async function sendWelcome(subscriber:NewsletterSubscriber){
