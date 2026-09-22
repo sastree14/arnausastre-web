@@ -4,7 +4,8 @@ import {Badge,PageHeader,adminButtonPrimary,adminButtonSecondary,adminInput,asse
 import ConfirmFormButton from '@/components/growth-admin/ConfirmFormButton'
 import LinkedInPreview from '@/components/growth-admin/LinkedInPreview'
 import GeneratedArticleContent from '@/components/GeneratedArticleContent'
-import {getContentItem,isGrowthAdminAuthenticated,queryGrowthTable,type GrowthContentItem} from '@/lib/growth-admin'
+import {getContentItem,isGrowthAdminAuthenticated,type GrowthContentItem} from '@/lib/growth-admin'
+import {queryGrowthTable} from '@/lib/supabase-growth'
 import {getContentPublicationReadiness} from '@/lib/growth-approval'
 
 export const dynamic='force-dynamic'
