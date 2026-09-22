@@ -74,8 +74,9 @@ function extractHeadings(body: string): string[] {
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export default function ArticleContent({ article }: { article: Article }) {
-  const { lang } = useSiteLanguage()
+export default function ArticleContent({ article, forcedLanguage }: { article: Article; forcedLanguage?: 'en'|'es'|'ca' }) {
+  const { lang: siteLang } = useSiteLanguage()
+  const lang = forcedLanguage || siteLang
   const labels={
     en:{back:'← Knowledge',min:'min read',sections:'sections',toc:'In this article'},
     es:{back:'← Conocimiento',min:'min de lectura',sections:'secciones',toc:'En este artículo'},
