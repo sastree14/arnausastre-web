@@ -1,0 +1,49 @@
+Headline:
+AI Accounting & Finance Operations Agents
+
+Industry:
+Finance Operations
+
+Capability:
+AI Agents, Automation, Data Engineering
+
+Challenge:
+Automation
+
+Audience:
+Founder, Finance Director, Operations Director
+
+Description:
+A controlled agent-based finance workflow that turns invoices, bank evidence, email and accounting rules into structured operational actions while preserving human approval, auditability and reconciliation controls.
+
+Metrics:
+* Workflow: Email → evidence → finance records
+* Controls: Human approval where money matters
+* Traceability: Audit trail by transaction
+* Integration: Gmail, Drive and finance data
+
+Image:
+__generated__
+
+Status:
+Published
+
+Sections:
+
+Context:
+Finance operations in a small or growing company often become fragmented long before the business is large enough to justify a full internal systems team. Invoices arrive by email, payment evidence lives in banking exports, documents are stored in Drive and the operating record is maintained in separate spreadsheets or administrative tools.
+
+Problem:
+The difficulty is not simply moving information from one place to another. Finance workflows contain exceptions, incomplete evidence, timing differences and decisions that should not be automated blindly. A useful system must reduce repetitive work without pretending that every accounting event is deterministic.
+
+Approach:
+The architecture separates extraction, classification, reconciliation and accounting actions. Agents can interpret documents and propose actions, while explicit rules define when a human review is required. The underlying records remain structured and traceable instead of being hidden inside an LLM conversation.
+
+System Developed:
+The system connects email, document storage, invoice records, payments and finance controls. It can identify candidate documents, prepare structured entries, reconcile evidence, surface exceptions and maintain an audit history. Human confirmation remains part of the workflow for sensitive actions.
+
+Results:
+The result is a reusable operating layer for finance administration: repetitive handling is reduced, evidence is easier to trace and the company can add automation incrementally without giving an autonomous agent unrestricted control over financial records.
+
+Confidentiality:
+Internal system example. No confidential client accounting data is disclosed.
