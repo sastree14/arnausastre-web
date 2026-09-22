@@ -63,7 +63,7 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
   const [visibleCount,setVisibleCount] = useState(PAGE_SIZE)
   const hasFilters = Boolean(industry || challenge || audience)
   const reset = () => setVisibleCount(PAGE_SIZE)
-  const contentLanguage = lang === 'en' ? 'en' : 'es'
+  const contentLanguage = lang
 
   const generatedGroups = useMemo(() => {
     const groups = new Map<string, PublicGeneratedArticle[]>()
@@ -78,8 +78,8 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
     const staticItems = articles.map((article) => ({
       key: `static:${article.slug}`,
       href: `/knowledge/${article.slug}`,
-      title: contentLanguage === 'en' ? article.titleEn : article.titleEs,
-      excerpt: contentLanguage === 'en' ? article.excerptEn : article.excerptEs,
+      title: contentLanguage === 'en' ? article.titleEn : contentLanguage === 'ca' ? (article.titleCa || article.titleEs) : article.titleEs,
+      excerpt: contentLanguage === 'en' ? article.excerptEn : contentLanguage === 'ca' ? (article.excerptCa || article.excerptEs) : article.excerptEs,
       industry: article.industry,
       challenge: article.challenge,
       audience: article.audience,
@@ -143,6 +143,5 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
     </div>}
 
     {visibleCount<filtered.length && <div className="mt-6 text-center"><button onClick={()=>setVisibleCount((value)=>value+PAGE_SIZE)} className="rounded-lg border border-slate-300 bg-white px-6 py-3 text-sm font-medium text-slate-700 hover:border-slate-500">{t.more} · {filtered.length-visibleCount}</button></div>}
-    {lang==='ca' && articles.length>0 && <p className="mt-6 text-xs leading-5 text-slate-400">Els articles històrics anteriors a la versió trilingüe es mostren en castellà. Les noves publicacions editorials poden tenir versió nativa en català.</p>}
   </section>
 }
