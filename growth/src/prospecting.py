@@ -46,9 +46,10 @@ NON_OFFICIAL_COMPANY_HOSTS = {
 }
 
 DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES = 250
-DIRECT_CLIENT_HARD_MAX_EMPLOYEES = 500
+DIRECT_CLIENT_LARGE_EMPLOYEE_THRESHOLD = 500
 DIRECT_CLIENT_MIN_SCORE = 5.5
-DIRECT_CLIENT_STRETCH_MIN_SCORE = 7.5
+DIRECT_CLIENT_STRETCH_MIN_SCORE = 6.5
+DIRECT_CLIENT_LARGE_MIN_SCORE = 7.5
 DIRECT_CLIENT_MICRO_MAX_EMPLOYEES = 9
 DIRECT_CLIENT_MICRO_MIN_SCORE = 6.5
 
@@ -71,18 +72,17 @@ def _employee_upper_bound(value: str) -> int | None:
 
 
 def _direct_client_size_allowed(employee_range: str, score: float) -> bool:
-    """Use headcount as a guardrail, not as the discovery bottleneck.
+    """Use headcount only to prioritize, never as a hard discovery exclusion.
 
-    Unknown size is allowed to continue when the business itself looks like a
-    plausible external-analytics buyer. Enterprise evidence is filtered
-    separately. Microbusinesses/autónomos can qualify when the operational
-    leverage is strong enough to justify an external system.
+    Small and mid-market companies remain easier default buyers, but a large
+    organization can still contain a business unit, specialist gap or bounded
+    project where external Data/AI work creates material value.
     """
     employee_upper = _employee_upper_bound(employee_range)
     if employee_upper is None:
         return score >= DIRECT_CLIENT_MIN_SCORE
-    if employee_upper > DIRECT_CLIENT_HARD_MAX_EMPLOYEES:
-        return False
+    if employee_upper > DIRECT_CLIENT_LARGE_EMPLOYEE_THRESHOLD:
+        return score >= DIRECT_CLIENT_LARGE_MIN_SCORE
     if employee_upper > DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES:
         return score >= DIRECT_CLIENT_STRETCH_MIN_SCORE
     if employee_upper <= DIRECT_CLIENT_MICRO_MAX_EMPLOYEES:
@@ -110,14 +110,16 @@ def _direct_client_business_allowed(raw: dict, score: float) -> bool:
         return False
     if operational_leverage == "weak":
         return False
+    # Enterprise scale is a prioritization penalty, not an automatic rejection.
+    # Keep only evidence-backed large-company opportunities where a bounded
+    # specialist gap or external-capacity need is plausible.
     if enterprise_risk == "high":
-        return False
+        return score >= 8.0 and specialist_gap == "clear" and operational_leverage == "strong"
 
-    # A business that very likely already has an internal Data Science function
-    # is normally a weaker direct-client target. Keep only an unusually strong,
-    # evidence-backed specialist gap.
+    # Mature internal Data Science capacity reduces default fit, but specialist
+    # optimisation/forecasting/ML/automation gaps can still justify outreach.
     if data_team_likelihood == "high":
-        return score >= 8.0 and specialist_gap in {"clear", "strong"}
+        return score >= 8.0 and specialist_gap == "clear"
 
     if data_team_likelihood == "medium" and score < 6.5:
         return False
@@ -638,17 +640,17 @@ def _lead_discovery_queries(existing_count: int) -> list[str]:
         "Balearic Islands", "Canary Islands", "Basque Country",
     ]
     templates = [
-        "{region} ecommerce brand online store inventory SME",
-        "{region} small manufacturer production planning factory SME",
-        "{region} wholesale distributor importer warehouse SME",
-        "{region} regional logistics 3PL fleet warehouse SME",
-        "{region} restaurant group multiple locations reservations inventory",
-        "{region} hotel aparthotel tourism operator bookings pricing SME",
-        "{region} dental veterinary physiotherapy clinic appointments SME",
-        "{region} academy training company scheduling students SME",
-        "{region} property management holiday rentals bookings operations SME",
-        "{region} maintenance installation field service technicians scheduling SME",
-        "{region} food distributor inventory demand planning SME",
+        "{region} ecommerce brand online store inventory demand planning",
+        "{region} manufacturer production planning factory scheduling optimization",
+        "{region} wholesale distributor importer warehouse inventory analytics",
+        "{region} logistics 3PL fleet warehouse route optimization",
+        "{region} restaurant group multiple locations reservations inventory analytics",
+        "{region} hotel aparthotel tourism operator bookings pricing forecasting",
+        "{region} dental veterinary physiotherapy clinic appointments capacity planning",
+        "{region} academy training company scheduling students automation",
+        "{region} property management holiday rentals bookings operations analytics",
+        "{region} maintenance installation field service technicians scheduling optimization",
+        "{region} food distributor inventory demand planning forecasting",
         "{region} autónomo online business bookings orders automation",
     ]
     matrix = [template.format(region=region) for region in regions for template in templates]
@@ -679,13 +681,14 @@ Prefer evidence of public professional activity: articles, talks, meetups, podca
 The organization is context only; it is not a sales target."""
     else:
         target = """Find END-CLIENT operating businesses where external Data/Analytics/AI systems can create measurable value and where an internal Data Science team is unlikely or incomplete.
-The target universe must be intentionally broad enough to sustain AT LEAST 1,000 plausible prospects across Spain/EU. Include self-employed professionals/autónomos, microbusinesses, SMEs and lower-mid-market companies when the economics make sense.
-BUSINESS TYPE AND INTERNAL DATA CAPACITY MATTER MORE THAN HEADCOUNT:
-- ideal scale: self-employed / 1-250 employees when there is recurring operational complexity or repeated decision volume;
-- 251-500 employees are acceptable with strong fit and no evidence of a mature internal Data Science function;
-- exclude >500 employees, global enterprises, household-name multinationals and companies that obviously have mature in-house Data/AI teams unless there is a very clear specialist gap;
-- unknown headcount is acceptable when there are no enterprise red flags;
-- do NOT reject a company because the first search result omits employee count.
+The target universe must be intentionally broad enough to sustain AT LEAST 1,000 plausible prospects across Spain/EU. Include self-employed professionals/autónomos, microbusinesses, SMEs, mid-market companies and larger organisations when the economics make sense.
+BUSINESS OPPORTUNITY MATTERS MORE THAN HEADCOUNT OR SECTOR ASSUMPTIONS:
+- 1-250 employees is a high-priority segment, not a hard boundary;
+- 251-500 employees are fully acceptable when there is meaningful leverage;
+- >500 employees and large/global companies are lower-priority, but DO NOT automatically reject them when a business unit, specialist modelling gap, overflow need or bounded external project is plausible;
+- unknown headcount is acceptable;
+- do NOT reject a company because the first search result omits employee count;
+- actively look for non-obvious opportunities: data can improve planning, allocation, pricing, reporting, scheduling, risk or workflows even when the company is not in an obvious "data-heavy" industry.
 Prioritize business models where advanced analytics is useful but a dedicated Data Science team is improbable:
 - ecommerce brands and marketplace sellers;
 - manufacturers, workshops and production businesses;
@@ -733,9 +736,9 @@ Do not choose a partner merely because it is another consultancy; explain the ac
 - choose operating/end-client businesses with a plausible decision/process SC-Analytics could improve;
 - the PRIMARY criterion is business-model leverage + probability that the company does NOT have a mature internal Data Science team;
 - include autónomos and 1-9 employee microbusinesses when recurring bookings/orders/inventory/scheduling/reporting/administration create enough leverage to justify a system;
-- ideal headcount: 1-250 employees; 251-500 requires stronger fit; >500 is excluded;
-- unknown headcount is acceptable unless supplied evidence indicates enterprise scale;
-- exclude global enterprises, household-name multinationals and large corporate groups even when one local unit appears relevant;
+- 1-250 employees is a high-priority segment; 251-500 requires slightly stronger evidence; >500 is lower-priority but NOT automatically excluded;
+- unknown headcount is acceptable;
+- for large/global enterprises, keep candidates only when supplied evidence supports a specific business-unit opportunity, specialist gap, overflow need or bounded project where external expertise is credible;
 - exclude consultancies, marketing agencies, ERP/BI/software vendors, Data/AI service firms and recruitment companies from DIRECT CLIENT mode;
 - a current expansion/hiring/news trigger is valuable but NOT mandatory: stable operational complexity can itself be a valid signal;
 - prefer organizations where SC-Analytics could become the main external analytics/automation specialist rather than compete with a large in-house data department;
