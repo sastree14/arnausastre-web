@@ -7,8 +7,10 @@ export interface Article {
   slug: string
   titleEn: string
   titleEs: string
+  titleCa?: string
   excerptEn: string
   excerptEs: string
+  excerptCa?: string
   date: string
   readingTime: number
   industry: string
@@ -19,8 +21,10 @@ export interface Article {
   published: boolean
   tagsEn: string[]
   tagsEs: string[]
+  tagsCa?: string[]
   bodyEn: string
   bodyEs: string
+  bodyCa?: string
   image?: string
 }
 
@@ -53,9 +57,10 @@ function parseFrontmatter(raw: string): { data: Record<string, unknown>; content
   return { data, content: raw.slice(match[0].length) }
 }
 
-function splitBody(content: string): [string, string] {
-  const [bodyEn, bodyEs = ''] = content.split(/\n?<!--\s*ES\s*-->\n?/)
-  return [bodyEn.trim(), bodyEs.trim()]
+function splitBody(content: string): [string, string, string] {
+  const [beforeCa, bodyCa = ''] = content.split(/\n?<!--\s*CA\s*-->\n?/)
+  const [bodyEn, bodyEs = ''] = beforeCa.split(/\n?<!--\s*ES\s*-->\n?/)
+  return [bodyEn.trim(), bodyEs.trim(), bodyCa.trim()]
 }
 
 export function getAllArticles(): Article[] {
@@ -68,8 +73,8 @@ export function getAllArticles(): Article[] {
       const raw = fs.readFileSync(path.join(ARTICLES_DIR, filename), 'utf-8')
       const { data, content } = parseFrontmatter(raw)
       if (!data.published) return null
-      const [bodyEn, bodyEs] = splitBody(content)
-      return { ...data, bodyEn, bodyEs } as unknown as Article
+      const [bodyEn, bodyEs, bodyCa] = splitBody(content)
+      return { ...data, bodyEn, bodyEs, bodyCa } as unknown as Article
     })
     .filter((a): a is Article => a !== null)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -89,7 +94,7 @@ export function getAllProjects(): Project[] {
       const raw = fs.readFileSync(path.join(PROJECTS_DIR, filename), 'utf-8')
       const { data, content } = parseFrontmatter(raw)
       if (!data.published) return null
-      const [bodyEn, bodyEs] = splitBody(content)
+      const [bodyEn, bodyEs, bodyCa] = splitBody(content)
       return { ...data, bodyEn, bodyEs } as unknown as Project
     })
     .filter((p): p is Project => p !== null)
