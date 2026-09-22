@@ -5,7 +5,7 @@ type Step = { number: string; title: string; body: string }
 type Principle = { title: string; body: string }
 
 export const publicCopy: Record<SiteLanguage, {
-  nav: { home: string; services: string; projects: string; knowledge: string; about: string; contact: string }
+  nav: { home: string; services: string; projects: string; knowledge: string; briefing: string; about: string; contact: string }
   footer: { statement: string; navigation: string; capabilities: string; rights: string; note: string }
   home: {
     eyebrow: string; title: string; intro: string; primaryCta: string; secondaryCta: string
@@ -41,7 +41,7 @@ export const publicCopy: Record<SiteLanguage, {
   knowledge: { generatedLabel: string; generatedTitle: string; generatedIntro: string; read: string; published: string }
 }> = {
   en: {
-    nav: { home: 'Home', services: 'How we work', projects: 'Projects', knowledge: 'Knowledge', about: 'About us', contact: 'Contact' },
+    nav: { home: 'Home', services: 'How we work', projects: 'Projects', knowledge: 'Knowledge', briefing: 'Briefing', about: 'About us', contact: 'Contact' },
     footer: {
       statement: 'Data & AI consulting for better decisions, stronger operations and measurable business value.',
       navigation: 'Navigation', capabilities: 'Capabilities', rights: '© 2026 SC-Analytics. All rights reserved.',
@@ -141,7 +141,7 @@ export const publicCopy: Record<SiteLanguage, {
     knowledge: { generatedLabel: 'SC-ANALYTICS VIEW', generatedTitle: 'Recent analysis', generatedIntro: 'Selected ideas and analyses that passed our editorial filter and were approved for publication.', read: 'Read analysis', published: 'Published' }
   },
   es: {
-    nav: { home: 'Inicio', services: 'Cómo trabajamos', projects: 'Proyectos', knowledge: 'Conocimiento', about: 'Sobre nosotros', contact: 'Contacto' },
+    nav: { home: 'Inicio', services: 'Cómo trabajamos', projects: 'Proyectos', knowledge: 'Conocimiento', briefing: 'Briefing', about: 'Sobre nosotros', contact: 'Contacto' },
     footer: {
       statement: 'Consultoría de Data & AI para tomar mejores decisiones, operar mejor y generar valor empresarial medible.',
       navigation: 'Navegación', capabilities: 'Capacidades', rights: '© 2026 SC-Analytics. Todos los derechos reservados.',
@@ -241,7 +241,7 @@ export const publicCopy: Record<SiteLanguage, {
     knowledge: { generatedLabel: 'VISIÓN SC-ANALYTICS', generatedTitle: 'Análisis recientes', generatedIntro: 'Ideas y análisis seleccionados que han superado nuestro filtro editorial y han sido aprobados para publicación.', read: 'Leer análisis', published: 'Publicado' }
   },
   ca: {
-    nav: { home: 'Inici', services: 'Com treballem', projects: 'Projectes', knowledge: 'Coneixement', about: 'Sobre nosaltres', contact: 'Contacte' },
+    nav: { home: 'Inici', services: 'Com treballem', projects: 'Projectes', knowledge: 'Coneixement', briefing: 'Briefing', about: 'Sobre nosaltres', contact: 'Contacte' },
     footer: {
       statement: 'Consultoria de Data & AI per prendre millors decisions, operar millor i generar valor empresarial mesurable.',
       navigation: 'Navegació', capabilities: 'Capacitats', rights: '© 2026 SC-Analytics. Tots els drets reservats.',
