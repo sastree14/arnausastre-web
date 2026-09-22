@@ -1,6 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "regions": ["dub1"],
+  "regions": [
+    "dub1"
+  ],
   "crons": [
     {
       "path": "/api/cron/finance-bank-daily",
@@ -13,6 +15,10 @@
     {
       "path": "/api/cron/finance-weekly",
       "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/newsletter-weekly",
+      "schedule": "30 6 * * 1"
     }
   ]
 }
