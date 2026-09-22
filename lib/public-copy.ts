@@ -84,8 +84,8 @@ export const publicCopy: Record<SiteLanguage, {
         { title: 'Clear communication', body: 'We explain assumptions, risks, limitations and expected results without hiding behind jargon.' },
         { title: 'Long-term trust', body: 'If an initiative does not have a reasonable case, saying no is part of the work.' },
       ],
-      audienceLabel: 'WHO WE WORK WITH', audienceTitle: 'Companies that have built something valuable and want to operate better.',
-      audienceBody: 'Our work is especially relevant for SMEs, mid-market companies, established traditional businesses and consolidated startups that need stronger analytical capability without adding unnecessary organisational or technological layers.',
+      audienceLabel: 'WHO WE WORK WITH', audienceTitle: 'From independent professionals to large organisations — when better use of data can unlock value.',
+      audienceBody: 'We work with self-employed professionals, small businesses, SMEs, scale-ups, mid-market companies and larger organisations. Size is not the deciding factor: the important question is whether data, mathematics, automation or AI can reveal a better decision, reduce friction or uncover an opportunity that is not obvious today.',
       ctaTitle: 'Bring us the problem, not the technology.', ctaBody: 'The first conversation is about understanding what is happening, what should improve and whether there is a sensible case for doing anything at all.', ctaButton: 'Start the conversation'
     },
     services: {
@@ -112,7 +112,7 @@ export const publicCopy: Record<SiteLanguage, {
       ctaTitle: 'Have a process, decision or problem worth improving?', ctaBody: 'We can start by understanding it. The technology comes later.', ctaButton: 'Discuss the problem'
     },
     about: {
-      eyebrow: 'ABOUT SC-ANALYTICS', title: 'A Data & AI consultancy built around judgment and trust.',
+      eyebrow: 'ABOUT SC-ANALYTICS', title: 'A Data + AI consultancy built around judgment and trust.',
       intro: 'SC-Analytics combines quantitative capability with a deliberately direct way of working. We want clients to speak with people who understand the problem, can explain the trade-offs and are accountable for the result.',
       purposeLabel: 'PURPOSE', purposeTitle: 'Use data, mathematics and AI with criterion.',
       purposeBody: 'We exist to help companies understand problems, make difficult decisions, improve processes and evaluate technological opportunities without defaulting to oversized solutions. Knowing what not to build is part of the job.',
@@ -131,12 +131,12 @@ export const publicCopy: Record<SiteLanguage, {
     },
     contact: {
       eyebrow: 'CONTACT', title: 'Start with the problem.', intro: 'Tell us what is happening, what decision or process you want to improve and why it matters. We will begin there rather than assuming a solution in advance.',
-      formLabel: 'YOUR CONTEXT', formTitle: 'What should improve?', noCommitment: 'The first conversation is exploratory. No solution is assumed in advance.',
+      formLabel: 'YOUR CONTEXT', formTitle: 'What should improve?', noCommitment: 'The first 30-minute diagnostic is free and without commitment. We use it to understand the business and identify where data, modelling or automation may create value — even if no project follows.',
       name: 'Name', company: 'Company', email: 'Email', message: 'Context', placeholder: 'What is happening today, what should improve and what constraints matter?',
-      send: 'Send context', sending: 'Sending…', success: 'Thank you. We have received the context and will reply directly.', error: 'The message could not be sent. Please try again or contact us directly.', or: 'or', calendly: 'Schedule a 30-minute call',
+      send: 'Send context', sending: 'Sending…', success: 'Thank you. We have received the context and will reply directly.', error: 'The message could not be sent. Please try again or contact us directly.', or: 'or', calendly: 'Book the free 30-minute diagnostic',
       nextLabel: 'WHAT HAPPENS NEXT', nextTitle: 'A useful first conversation.',
       nextSteps: ['We understand the current process and the business objective.', 'We assess whether data, modelling, automation or AI can create enough value.', 'If there is a fit, we define a proportionate next step. If there is not, we say so.'],
-      trust: 'No generic demo, no pre-selected technology and no obligation to continue.'
+      trust: 'No generic demo, no pre-selected technology, no fee for the first diagnostic and no obligation to continue. The conversation should be useful even if the conclusion is not to build anything.'
     },
     knowledge: { generatedLabel: 'SC-ANALYTICS VIEW', generatedTitle: 'Recent analysis', generatedIntro: 'Selected ideas and analyses that passed our editorial filter and were approved for publication.', read: 'Read analysis', published: 'Published' }
   },
@@ -184,8 +184,8 @@ export const publicCopy: Record<SiteLanguage, {
         { title: 'Comunicación clara', body: 'Explicamos supuestos, riesgos, limitaciones y resultados esperables sin escondernos detrás de jerga.' },
         { title: 'Confianza a largo plazo', body: 'Si una iniciativa no tiene un caso razonable, decir que no también forma parte del trabajo.' },
       ],
-      audienceLabel: 'CON QUIÉN TRABAJAMOS', audienceTitle: 'Empresas que ya han construido algo valioso y quieren operar mejor.',
-      audienceBody: 'Nuestro trabajo encaja especialmente con PYMEs, empresas medianas, negocios tradicionales consolidados y startups maduras que necesitan más capacidad analítica sin añadir capas organizativas o tecnológicas innecesarias.',
+      audienceLabel: 'CON QUIÉN TRABAJAMOS', audienceTitle: 'Desde autónomos hasta grandes empresas: cuando los datos pueden descubrir valor.',
+      audienceBody: 'Trabajamos con autónomos, pequeños negocios, PYMEs, scale-ups, empresas medianas y organizaciones grandes. El tamaño no es el criterio decisivo: importa que datos, matemáticas, automatización o IA puedan revelar una mejor decisión, eliminar fricción o descubrir una oportunidad que hoy todavía no es evidente.',
       ctaTitle: 'Tráenos el problema, no la tecnología.', ctaBody: 'La primera conversación sirve para entender qué ocurre, qué debería mejorar y si existe un caso razonable para hacer algo.', ctaButton: 'Empezar la conversación'
     },
     services: {
@@ -212,7 +212,7 @@ export const publicCopy: Record<SiteLanguage, {
       ctaTitle: '¿Hay un proceso, decisión o problema que merece mejorar?', ctaBody: 'Podemos empezar por entenderlo. La tecnología viene después.', ctaButton: 'Hablar del problema'
     },
     about: {
-      eyebrow: 'SOBRE SC-ANALYTICS', title: 'Una consultora de Data & AI construida alrededor del criterio y la confianza.',
+      eyebrow: 'SOBRE SC-ANALYTICS', title: 'Una consultora de Data + AI construida alrededor del criterio y la confianza.',
       intro: 'SC-Analytics combina capacidad cuantitativa con una forma de trabajar deliberadamente directa. Queremos que el cliente hable con personas que entienden el problema, pueden explicar los trade-offs y asumen responsabilidad sobre el resultado.',
       purposeLabel: 'PROPÓSITO', purposeTitle: 'Utilizar datos, matemáticas e IA con criterio.',
       purposeBody: 'Existimos para ayudar a empresas a comprender problemas, tomar decisiones difíciles, mejorar procesos y evaluar oportunidades tecnológicas sin caer por defecto en soluciones sobredimensionadas. Saber qué no hace falta construir también forma parte del trabajo.',
@@ -231,12 +231,12 @@ export const publicCopy: Record<SiteLanguage, {
     },
     contact: {
       eyebrow: 'CONTACTO', title: 'Empecemos por el problema.', intro: 'Cuéntanos qué está ocurriendo, qué decisión o proceso quieres mejorar y por qué importa. Empezaremos por ahí en lugar de asumir una solución de antemano.',
-      formLabel: 'TU CONTEXTO', formTitle: '¿Qué debería mejorar?', noCommitment: 'La primera conversación es exploratoria. No asumimos ninguna solución de antemano.',
+      formLabel: 'TU CONTEXTO', formTitle: '¿Qué debería mejorar?', noCommitment: 'El primer diagnóstico de 30 minutos es gratuito y sin compromiso. Lo usamos para entender el negocio e identificar dónde datos, modelización o automatización pueden crear valor, aunque después no exista ningún proyecto.',
       name: 'Nombre', company: 'Empresa', email: 'Email', message: 'Contexto', placeholder: '¿Qué ocurre hoy, qué debería mejorar y qué restricciones son importantes?',
-      send: 'Enviar contexto', sending: 'Enviando…', success: 'Gracias. Hemos recibido el contexto y te responderemos directamente.', error: 'No se ha podido enviar el mensaje. Inténtalo de nuevo o contáctanos directamente.', or: 'o', calendly: 'Reservar una llamada de 30 minutos',
+      send: 'Enviar contexto', sending: 'Enviando…', success: 'Gracias. Hemos recibido el contexto y te responderemos directamente.', error: 'No se ha podido enviar el mensaje. Inténtalo de nuevo o contáctanos directamente.', or: 'o', calendly: 'Reservar diagnóstico gratuito de 30 minutos',
       nextLabel: 'QUÉ PASA DESPUÉS', nextTitle: 'Una primera conversación útil.',
       nextSteps: ['Entendemos el proceso actual y el objetivo empresarial.', 'Evaluamos si datos, modelización, automatización o IA pueden crear suficiente valor.', 'Si hay encaje, definimos un siguiente paso proporcional. Si no lo hay, lo decimos.'],
-      trust: 'Sin demo genérica, sin tecnología preseleccionada y sin obligación de continuar.'
+      trust: 'Sin demo genérica, sin tecnología preseleccionada, sin coste por el primer diagnóstico y sin obligación de continuar. La conversación debe ser útil incluso si la conclusión es no construir nada.'
     },
     knowledge: { generatedLabel: 'VISIÓN SC-ANALYTICS', generatedTitle: 'Análisis recientes', generatedIntro: 'Ideas y análisis seleccionados que han superado nuestro filtro editorial y han sido aprobados para publicación.', read: 'Leer análisis', published: 'Publicado' }
   },
@@ -281,8 +281,8 @@ export const publicCopy: Record<SiteLanguage, {
         { title: 'Comunicació clara', body: 'Expliquem supòsits, riscos, limitacions i resultats esperables sense amagar-nos darrere de la jerga.' },
         { title: 'Confiança a llarg termini', body: 'Si una iniciativa no té un cas raonable, dir que no també forma part de la feina.' },
       ],
-      audienceLabel: 'AMB QUI TREBALLEM', audienceTitle: 'Empreses que ja han construït alguna cosa valuosa i volen operar millor.',
-      audienceBody: 'El nostre treball encaixa especialment amb PIMEs, empreses mitjanes, negocis tradicionals consolidats i startups madures que necessiten més capacitat analítica sense afegir capes organitzatives o tecnològiques innecessàries.',
+      audienceLabel: 'AMB QUI TREBALLEM', audienceTitle: 'Des d’autònoms fins a grans empreses: quan les dades poden descobrir valor.',
+      audienceBody: 'Treballem amb autònoms, petits negocis, PIMEs, scale-ups, empreses mitjanes i organitzacions grans. La mida no és el criteri decisiu: importa que dades, matemàtiques, automatització o IA puguin revelar una millor decisió, eliminar fricció o descobrir una oportunitat que avui encara no és evident.',
       ctaTitle: 'Porta’ns el problema, no la tecnologia.', ctaBody: 'La primera conversa serveix per entendre què passa, què hauria de millorar i si existeix un cas raonable per fer alguna cosa.', ctaButton: 'Començar la conversa'
     },
     services: {
@@ -307,7 +307,7 @@ export const publicCopy: Record<SiteLanguage, {
       ctaTitle: 'Hi ha un procés, decisió o problema que mereix millorar?', ctaBody: 'Podem començar per entendre’l. La tecnologia ve després.', ctaButton: 'Parlar del problema'
     },
     about: {
-      eyebrow: 'SOBRE SC-ANALYTICS', title: 'Una consultora de Data & AI construïda al voltant del criteri i la confiança.', intro: 'SC-Analytics combina capacitat quantitativa amb una manera de treballar deliberadament directa. Volem que el client parli amb persones que entenen el problema, poden explicar els trade-offs i assumeixen responsabilitat sobre el resultat.',
+      eyebrow: 'SOBRE SC-ANALYTICS', title: 'Una consultora de Data + AI construïda al voltant del criteri i la confiança.', intro: 'SC-Analytics combina capacitat quantitativa amb una manera de treballar deliberadament directa. Volem que el client parli amb persones que entenen el problema, poden explicar els trade-offs i assumeixen responsabilitat sobre el resultat.',
       purposeLabel: 'PROPÒSIT', purposeTitle: 'Utilitzar dades, matemàtiques i IA amb criteri.', purposeBody: 'Existim per ajudar empreses a comprendre problemes, prendre decisions difícils, millorar processos i avaluar oportunitats tecnològiques sense caure per defecte en solucions sobredimensionades. Saber què no cal construir també forma part de la feina.',
       valuesLabel: 'VALORS', valuesTitle: 'Com volem que se senti i funcioni la nostra feina.',
       values: [
@@ -323,10 +323,10 @@ export const publicCopy: Record<SiteLanguage, {
     },
     contact: {
       eyebrow: 'CONTACTE', title: 'Comencem pel problema.', intro: 'Explica’ns què està passant, quina decisió o procés vols millorar i per què importa. Començarem per aquí en lloc d’assumir una solució per endavant.',
-      formLabel: 'EL TEU CONTEXT', formTitle: 'Què hauria de millorar?', noCommitment: 'La primera conversa és exploratòria. No assumim cap solució per endavant.',
+      formLabel: 'EL TEU CONTEXT', formTitle: 'Què hauria de millorar?', noCommitment: 'El primer diagnòstic de 30 minuts és gratuït i sense compromís. El fem servir per entendre el negoci i identificar on dades, modelització o automatització poden crear valor, encara que després no hi hagi cap projecte.',
       name: 'Nom', company: 'Empresa', email: 'Email', message: 'Context', placeholder: 'Què passa avui, què hauria de millorar i quines restriccions són importants?',
-      send: 'Enviar context', sending: 'Enviant…', success: 'Gràcies. Hem rebut el context i et respondrem directament.', error: 'No s’ha pogut enviar el missatge. Torna-ho a provar o contacta’ns directament.', or: 'o', calendly: 'Reservar una trucada de 30 minuts',
-      nextLabel: 'QUÈ PASSA DESPRÉS', nextTitle: 'Una primera conversa útil.', nextSteps: ['Entenem el procés actual i l’objectiu empresarial.', 'Avaluem si dades, modelització, automatització o IA poden crear prou valor.', 'Si hi ha encaix, definim un següent pas proporcional. Si no n’hi ha, ho diem.'], trust: 'Sense demo genèrica, sense tecnologia preseleccionada i sense obligació de continuar.'
+      send: 'Enviar context', sending: 'Enviant…', success: 'Gràcies. Hem rebut el context i et respondrem directament.', error: 'No s’ha pogut enviar el missatge. Torna-ho a provar o contacta’ns directament.', or: 'o', calendly: 'Reservar diagnòstic gratuït de 30 minuts',
+      nextLabel: 'QUÈ PASSA DESPRÉS', nextTitle: 'Una primera conversa útil.', nextSteps: ['Entenem el procés actual i l’objectiu empresarial.', 'Avaluem si dades, modelització, automatització o IA poden crear prou valor.', 'Si hi ha encaix, definim un següent pas proporcional. Si no n’hi ha, ho diem.'], trust: 'Sense demo genèrica, sense tecnologia preseleccionada, sense cost pel primer diagnòstic i sense obligació de continuar. La conversa ha de ser útil fins i tot si la conclusió és no construir res.'
     },
     knowledge: { generatedLabel: 'VISIÓ SC-ANALYTICS', generatedTitle: 'Anàlisis recents', generatedIntro: 'Idees i anàlisis seleccionades que han superat el nostre filtre editorial i han estat aprovades per a publicació.', read: 'Llegir anàlisi', published: 'Publicat' }
   }
