@@ -23,6 +23,7 @@ export default function ContactPage() {
         body: JSON.stringify({ ...form, language: lang, sourcePath: '/contact' }),
       })
       if (!response.ok) throw new Error('Request failed')
+      window.gtag?.('event','contact_form_submitted',{language:lang,source_path:'/contact'})
       setSubmitted(true)
     } catch {
       setError(true)
