@@ -1,5 +1,6 @@
 from growth.src.prospecting import (
-    DIRECT_CLIENT_HARD_MAX_EMPLOYEES,
+    DIRECT_CLIENT_LARGE_EMPLOYEE_THRESHOLD,
+    DIRECT_CLIENT_LARGE_MIN_SCORE,
     DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES,
     DIRECT_CLIENT_MICRO_MIN_SCORE,
     DIRECT_CLIENT_STRETCH_MIN_SCORE,
@@ -21,31 +22,33 @@ def test_employee_upper_bound_parses_common_ranges():
     assert _employee_upper_bound("") is None
 
 
-def test_direct_client_icp_is_broad_but_has_enterprise_guardrails():
+def test_direct_client_icp_is_broad_and_opportunity_first():
     assert DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES == 250
-    assert DIRECT_CLIENT_HARD_MAX_EMPLOYEES == 500
+    assert DIRECT_CLIENT_LARGE_EMPLOYEE_THRESHOLD == 500
     prompt = _query_prompt("lead", set(), "brain")
     assert "1-250" in prompt
     assert "autónomos" in prompt
-    assert "internal Data Science team" in prompt
     assert "AT LEAST 1,000" in prompt
     assert ">500" in prompt
+    assert "DO NOT automatically reject" in prompt
 
 
-def test_direct_client_size_gate_allows_unknown_but_rejects_enterprise():
+def test_direct_client_size_gate_allows_strong_large_company_opportunities():
     assert _direct_client_size_allowed("", 6.0) is True
-    assert _direct_client_size_allowed("1,001-5,000 employees", 10.0) is False
-    assert _direct_client_size_allowed("500+", 10.0) is False
+    assert DIRECT_CLIENT_LARGE_MIN_SCORE == 7.5
+    assert _direct_client_size_allowed("1,001-5,000 employees", 7.4) is False
+    assert _direct_client_size_allowed("1,001-5,000 employees", 7.5) is True
+    assert _direct_client_size_allowed("500+", 8.0) is True
 
 
 def test_direct_client_size_gate_requires_quality_for_micro_and_stretch():
     assert DIRECT_CLIENT_MICRO_MIN_SCORE == 6.5
-    assert DIRECT_CLIENT_STRETCH_MIN_SCORE == 7.5
+    assert DIRECT_CLIENT_STRETCH_MIN_SCORE == 6.5
     assert _direct_client_size_allowed("1-9 employees", 6.4) is False
     assert _direct_client_size_allowed("1-9 employees", 6.5) is True
     assert _direct_client_size_allowed("51-200 employees", 5.5) is True
-    assert _direct_client_size_allowed("251-500 employees", 7.4) is False
-    assert _direct_client_size_allowed("251-500 employees", 7.5) is True
+    assert _direct_client_size_allowed("251-500 employees", 6.4) is False
+    assert _direct_client_size_allowed("251-500 employees", 6.5) is True
 
 
 def test_business_gate_prioritizes_low_internal_data_capacity():
@@ -71,7 +74,7 @@ def test_business_gate_prioritizes_low_internal_data_capacity():
         "internal_data_team_likelihood": "low",
         "enterprise_risk": "high",
         "specialist_gap": "clear",
-    }, 9.0) is False
+    }, 9.0) is True
 
 
 def test_lead_discovery_matrix_rotates_across_large_target_universe():
