@@ -66,6 +66,7 @@ export default function NewsletterSignup({compact=false}:{compact?:boolean}){
         body:JSON.stringify({name,email,language:lang,interests:t.topics,sourcePath:pathname,consent:true}),
       })
       if(!response.ok)throw new Error('subscribe_failed')
+      window.gtag?.('event','newsletter_subscribe',{language:lang,source_path:pathname})
       setState('success')
       setEmail('')
       setName('')
