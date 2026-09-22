@@ -77,7 +77,7 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
   const items = useMemo(() => {
     const staticItems = articles.map((article) => ({
       key: `static:${article.slug}`,
-      href: `/knowledge/${article.slug}`,
+      href: `/knowledge/${article.slug}/${lang}`,
       title: contentLanguage === 'en' ? article.titleEn : contentLanguage === 'ca' ? (article.titleCa || article.titleEs) : article.titleEs,
       excerpt: contentLanguage === 'en' ? article.excerptEn : contentLanguage === 'ca' ? (article.excerptCa || article.excerptEs) : article.excerptEs,
       industry: article.industry,
