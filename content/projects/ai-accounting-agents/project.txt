@@ -1,5 +1,5 @@
 Headline:
-AI Accounting & Finance Operations Agents
+Claude-Powered Accounting & Finance Operations Agents
 
 Industry:
 Finance Operations
@@ -14,7 +14,7 @@ Audience:
 Founder, Finance Director, Operations Director
 
 Description:
-A controlled agent-based finance workflow that turns invoices, bank evidence, email and accounting rules into structured operational actions while preserving human approval, auditability and reconciliation controls.
+A controlled Claude-powered finance workflow that turns invoices, bank evidence, email and accounting rules into structured operational actions while preserving human approval, auditability and reconciliation controls.
 
 Metrics:
 * Workflow: Email → evidence → finance records
@@ -37,7 +37,7 @@ Problem:
 The difficulty is not simply moving information from one place to another. Finance workflows contain exceptions, incomplete evidence, timing differences and decisions that should not be automated blindly. A useful system must reduce repetitive work without pretending that every accounting event is deterministic.
 
 Approach:
-The architecture separates extraction, classification, reconciliation and accounting actions. Agents can interpret documents and propose actions, while explicit rules define when a human review is required. The underlying records remain structured and traceable instead of being hidden inside an LLM conversation.
+The architecture separates extraction, classification, reconciliation and accounting actions. Claude is used for document interpretation and structured reasoning where language understanding adds value, while explicit rules define when a human review is required. The underlying records remain structured and traceable instead of being hidden inside an LLM conversation.
 
 System Developed:
 The system connects email, document storage, invoice records, payments and finance controls. It can identify candidate documents, prepare structured entries, reconcile evidence, surface exceptions and maintain an audit history. Human confirmation remains part of the workflow for sensitive actions.
