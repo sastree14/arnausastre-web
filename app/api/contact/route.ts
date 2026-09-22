@@ -53,8 +53,8 @@ export async function POST(req: NextRequest) {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_SECURE } = process.env
 
   if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASSWORD) {
-    console.error('Missing SMTP configuration environment variables')
-    return NextResponse.json({ error: 'Email service not configured' }, { status: 500 })
+    console.error('Missing SMTP configuration environment variables; inquiry is safely stored in CRM')
+    return NextResponse.json({ ok: true, inquiry_id: inquiryId, notification: false })
   }
 
   const transporter = nodemailer.createTransport({
@@ -83,11 +83,11 @@ export async function POST(req: NextRequest) {
       `,
     })
   } catch (err) {
-    console.error('Failed to send contact email', err)
-    return NextResponse.json({ error: 'Failed to send message' }, { status: 502 })
+    console.error('Failed to send contact email; inquiry remains stored in CRM', err)
+    return NextResponse.json({ ok: true, inquiry_id: inquiryId, notification: false })
   }
 
-  return NextResponse.json({ ok: true, inquiry_id: inquiryId })
+  return NextResponse.json({ ok: true, inquiry_id: inquiryId, notification: true })
 }
 
 function escapeHtml(value: string) {
