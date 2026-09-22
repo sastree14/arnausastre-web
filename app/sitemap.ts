@@ -24,12 +24,12 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
   }))
 
   const repositoryContent:MetadataRoute.Sitemap=[
-    ...getAllArticles().map(article=>({
-      url:`${base}/knowledge/${article.slug}`,
+    ...getAllArticles().flatMap(article=>(['en','es','ca'] as const).map(locale=>({
+      url:`${base}/knowledge/${article.slug}/${locale}`,
       lastModified:article.date?new Date(article.date):undefined,
       changeFrequency:'monthly' as const,
       priority:0.72,
-    })),
+    }))),
     ...getAllProjects().map(project=>({
       url:`${base}/projects/${project.slug}`,
       changeFrequency:'monthly' as const,
