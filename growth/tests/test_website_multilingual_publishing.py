@@ -62,7 +62,7 @@ def test_publish_article_publishes_complete_language_family(tmp_path: Path, monk
 def test_publish_article_blocks_incomplete_translation_family(tmp_path: Path, monkeypatch):
     store = LocalJsonStore(tmp_path)
     seed_family(store)
-    store.delete("content_items", "content_id", "content_ca")
+    store.replace_all("content_items", [row for row in store.list("content_items") if row.get("content_id") != "content_ca"])
     monkeypatch.setattr(website_publishing, "get_store", lambda: store)
 
     with pytest.raises(website_publishing.WebsitePublishingError, match="Missing language variants"):
