@@ -53,8 +53,8 @@ const localized: Record<string, Partial<Record<'es'|'ca', LocalizedProject>>> = 
     },
   },
   'ai-accounting-agents': {
-    es: { headline:'Agentes IA para operaciones contables y financieras', description:'Workflow controlado de agentes que convierte facturas, evidencia bancaria, email y reglas financieras en acciones estructuradas manteniendo aprobación humana, trazabilidad y conciliación.', industry:'Operaciones financieras', challenge:'Automatización' },
-    ca: { headline:'Agents IA per a operacions comptables i financeres', description:'Workflow controlat d’agents que converteix factures, evidència bancària, email i regles financeres en accions estructurades mantenint aprovació humana, traçabilitat i conciliació.', industry:'Operacions financeres', challenge:'Automatització' },
+    es: { headline:'Agentes contables con Claude para operaciones financieras', description:'Workflow controlado con Claude que convierte facturas, evidencia bancaria, email y reglas financieras en acciones estructuradas manteniendo aprobación humana, trazabilidad y conciliación.', industry:'Operaciones financieras', challenge:'Automatización' },
+    ca: { headline:'Agents comptables amb Claude per a operacions financeres', description:'Workflow controlat amb Claude que converteix factures, evidència bancària, email i regles financeres en accions estructurades mantenint aprovació humana, traçabilitat i conciliació.', industry:'Operacions financeres', challenge:'Automatització' },
   },
   'business-operating-crm': {
     es: { headline:'CRM y sistema operativo empresarial integrado', description:'Sistema integrado que conecta actividad comercial, editorial, finanzas, delivery, métricas web y automatización para gestionar el crecimiento desde una única fuente de verdad.', industry:'Servicios profesionales', challenge:'Sistemas de decisión' },
