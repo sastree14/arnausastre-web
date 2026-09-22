@@ -115,7 +115,7 @@ def _paste_brand_logo(canvas: Image.Image, theme: str) -> None:
     canvas.paste(logo, (86, 72), logo)
 
 
-def render_contextual_illustration(title: str, concept: str, *, slug: str, theme: str = "dark") -> Path:
+def render_contextual_illustration(title: str, concept: str, *, slug: str, theme: str = "dark", language_neutral: bool = False) -> Path:
     """Generate a contextual image only when editorial strategy explicitly asks for it.
 
     The model is asked for an image without typography or branding. SC-Analytics' real
@@ -167,30 +167,33 @@ def render_contextual_illustration(title: str, concept: str, *, slug: str, theme
     draw.rounded_rectangle((54, 54, 1146, 1146), radius=34, outline=line, width=2)
     _paste_brand_logo(canvas, theme)
 
-    headline_lines = _wrap_words(title, max_chars=31, max_lines=3)
-    headline_font = _font(56 if len(headline_lines) <= 2 else 48, True)
-    y = 220
-    for line_text in headline_lines:
-        draw.text((86, y), line_text, fill=text, font=headline_font)
-        y += 68 if len(headline_lines) <= 2 else 58
+    if language_neutral:
+        # Website articles are published in ES/CA/EN as one family. Keep their
+        # shared art free of language-specific typography so one image can serve
+        # every locale without rendering the wrong headline.
+        symbol_box = (210, 250, 990, 1030)
+        symbol_w, symbol_h = symbol_box[2] - symbol_box[0], symbol_box[3] - symbol_box[1]
+        fitted = ImageOps.fit(generated, (symbol_w, symbol_h), method=Image.Resampling.LANCZOS, centering=(0.5, 0.5))
+        mask = Image.new("L", (symbol_w, symbol_h), 0)
+        ImageDraw.Draw(mask).rounded_rectangle((0, 0, symbol_w, symbol_h), radius=56, fill=255)
+        canvas.paste(fitted, (symbol_box[0], symbol_box[1]), mask)
+        draw.rounded_rectangle(symbol_box, radius=56, outline=line, width=2)
+    else:
+        headline_lines = _wrap_words(title, max_chars=31, max_lines=3)
+        headline_font = _font(56 if len(headline_lines) <= 2 else 48, True)
+        y = 220
+        for line_text in headline_lines:
+            draw.text((86, y), line_text, fill=text, font=headline_font)
+            y += 68 if len(headline_lines) <= 2 else 58
 
-    # Treat generated artwork as an editorial emblem, not a full-bleed AI scene.
-    # Typography remains deterministic and brand-controlled.
-    symbol_box = (650, 390, 1114, 854)
-    symbol_w, symbol_h = symbol_box[2] - symbol_box[0], symbol_box[3] - symbol_box[1]
-    fitted = ImageOps.fit(generated, (symbol_w, symbol_h), method=Image.Resampling.LANCZOS, centering=(0.5, 0.5))
-    mask = Image.new("L", (symbol_w, symbol_h), 0)
-    ImageDraw.Draw(mask).rounded_rectangle((0, 0, symbol_w, symbol_h), radius=42, fill=255)
-    canvas.paste(fitted, (symbol_box[0], symbol_box[1]), mask)
-    draw.rounded_rectangle(symbol_box, radius=42, outline=line, width=2)
-
-    draw.text((86, 510), "EDITORIAL SYMBOL", fill=muted, font=_font(20, True))
-    draw.line((86, 558, 520, 558), fill=line, width=2)
-    draw.text((86, 590), "Industry / problem", fill=text, font=_font(30, True))
-    draw.text((86, 642), "expressed as one clear", fill=muted, font=_font(26))
-    draw.text((86, 682), "visual signal.", fill=muted, font=_font(26))
-    draw.line((86, 850, 520, 850), fill=line, width=2)
-    draw.text((86, 1075), "Comprender antes de construir. · sc-analytics.io", fill=muted, font=_font(22))
+        # Treat generated artwork as an editorial emblem, not a full-bleed AI scene.
+        symbol_box = (650, 390, 1114, 854)
+        symbol_w, symbol_h = symbol_box[2] - symbol_box[0], symbol_box[3] - symbol_box[1]
+        fitted = ImageOps.fit(generated, (symbol_w, symbol_h), method=Image.Resampling.LANCZOS, centering=(0.5, 0.5))
+        mask = Image.new("L", (symbol_w, symbol_h), 0)
+        ImageDraw.Draw(mask).rounded_rectangle((0, 0, symbol_w, symbol_h), radius=42, fill=255)
+        canvas.paste(fitted, (symbol_box[0], symbol_box[1]), mask)
+        draw.rounded_rectangle(symbol_box, radius=42, outline=line, width=2)
     canvas.save(path, format="PNG", optimize=True)
     return path
 
