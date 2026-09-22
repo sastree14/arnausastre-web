@@ -2,12 +2,16 @@
 slug: why-inventory-visibility-is-not-inventory-control-and-what-that-costs
 titleEn: Why Inventory Visibility Is Not Inventory Control – And What That Costs
 titleEs: Por Qué la Visibilidad del Inventario No Es Control del Inventario – Y Cuál Es Su Costo
+titleCa: Per Què la Visibilitat de l’Inventari No És Control de l’Inventari – I Quin Cost Té
 excerptEn: Many logistics firms invest heavily in real-time inventory visibility, only to find working capital remains tied
   up and service levels are inconsistent. True inventory control demands optimization, not just a clearer view, and the distinction
   has significant economic consequences.
 excerptEs: Muchas empresas de logística invierten fuertemente en la visibilidad del inventario en tiempo real, solo para descubrir
   que el capital de trabajo sigue inmovilizado y los niveles de servicio son inconsistentes. El verdadero control del inventario
   exige optimización, no solo una vista más clara, y la distinción tiene consecuencias económicas significativas.
+excerptCa: Moltes empreses logístiques inverteixen fortament en visibilitat d’inventari en temps real i descobreixen que el
+  capital circulant continua immobilitzat i els nivells de servei segueixen sent inconsistents. El veritable control de
+  l’inventari exigeix optimització, no només una vista més clara, i la diferència té conseqüències econòmiques importants.
 date: '2024-07-25'
 readingTime: 6
 industry: Logistics
@@ -24,6 +28,10 @@ tagsEs:
 - Optimización de Inventario
 - Logística
 - Capital de Trabajo
+tagsCa:
+- Optimització d’Inventari
+- Logística
+- Capital Circulant
 image: /knowledge/why-inventory-visibility-is-not-inventory-control-and-what-that-costs.svg
 ---
 
@@ -64,3 +72,32 @@ La implementación de un motor de optimización de inventario, uno que utilice a
 Existen **riesgos** significativos: un modelo alimentado con datos maestros de mala calidad (tiempos de entrega inexactos, listas de materiales, historiales de demanda) generará recomendaciones poco fiables, lo que provocará una rápida pérdida de confianza del usuario. Una percepción de 'caja negra' puede llevar a los planificadores a ignorar o anular manualmente el sistema, anulando sus beneficios. Las **limitaciones** también son importantes: un motor de optimización no puede eliminar mágicamente la volatilidad de la demanda o la falta de fiabilidad de los proveedores; solo puede ayudar a gestionar su impacto de forma más eficaz. También requiere un cambio cultural: los equipos de compras deben pasar de negociar compras grandes e infrecuentes a pedidos más frecuentes, más pequeños y de tamaño dinámico. Las operaciones deben confiar en las recomendaciones del modelo, incluso si contradicen décadas de 'experiencia'. El requisito organizacional es fundamental: alinear los incentivos en compras, ventas y operaciones para optimizar el capital de trabajo de toda la empresa, no solo los KPI de los departamentos individuales.
 
 El diagnóstico más rápido para saber si su sistema de inventario está realmente optimizado, en lugar de ser solo visible, es examinar la varianza en la rotación de su inventario para los SKU críticos. Si la varianza es alta y fluctúa drásticamente, sugiere una estrategia de inventario reactiva, en lugar de proactiva. Si sus equipos de compras todavía operan principalmente por 'intuición' o puntos de reorden fijos basados en promedios históricos, en lugar de políticas dinámicas impulsadas por modelos y ajustadas a las señales de demanda en tiempo real y las interrupciones de la cadena de suministro, el costo no es simplemente mantener inventario, es el costo de decisiones que optimizan transacciones individuales en lugar del balance de la empresa.
+
+
+<!-- CA -->
+
+El principal origen de la ineficiència del capital circulant en logística rarament és la manca d’informació; és confondre aquesta informació amb control. Les empreses inverteixen en sistemes que ofereixen dashboards en temps real amb els nivells d’estoc de magatzems i centres de distribució pensant que així resolen els problemes d’inventari. Anys després poden descobrir que, tot i saber amb una precisió inèdita on és cada SKU, la rotació continua sent lenta, els costos d’obsolescència persisteixen i els planificadors encara anul·len manualment les recomanacions del sistema basant-se en intuïció o regles antigues. La visibilitat, per si sola, pot institucionalitzar polítiques d’inventari subòptimes en lloc de corregir-les.
+
+**La Il·lusió de les Dades en Temps Real**
+Considerem un operador 3PL que gestiona inventari de diversos clients en una xarxa de dipòsits regionals. Operacions pot veure immediatament l’estoc actual de components i SKU crítics. Però quan un client industrial pateix un pic inesperat de demanda d’un component, la resposta continua sent una cursa. La pantalla mostra que un dipòsit disposa de 200 unitats i un altre de 150, però cap dels dos pot cobrir una necessitat immediata de 500. Llavors apareixen transferències urgents entre centres o transport aeri des del hub central, amb retard, interrupcions i cost extra.
+
+Econòmicament això implica transport no planificat, possibles penalitzacions per incomplir SLA i deteriorament de la confiança del client. Organitzativament es crea un cicle de gestió reactiva d’excepcions: el responsable de logística aprova urgències contínuament, però ningú qüestiona la política de posicionament d’inventari que ha fet necessària l’emergència.
+
+**Per Què Visibilitat No Vol Dir Control**
+Aquest escenari no persisteix perquè faltin dades, sinó perquè l’estructura de decisió està desalineada. Els KPI del responsable de magatzem poden estar vinculats al fill rate i a l’eficiència local, no al cost global de tenir massa estoc immobilitzat en una instal·lació ni al cost sistèmic de les transferències urgents. Compres, centrada en cost unitari, pot preferir comandes grans i poc freqüents per obtenir descomptes de volum sense incorporar completament el cost de manteniment o el risc d’obsolescència. Mentrestant, el COO veu dashboards en temps real i pot assumir que “veure” equival a “controlar”, ajornant la inversió en una veritable optimització d’inventari.
+
+Fins que el cost econòmic complet d’aquestes decisions no es faci visible i no quedi connectat amb els incentius dels equips, una inversió en optimització avançada competirà en desavantatge amb projectes que semblen tenir un ROI operatiu més immediat.
+
+**Els Límits de les Eines de Reporting**
+Moltes empreses inverteixen en data warehouses i eines de Business Intelligence per centralitzar les dades d’inventari. Aquestes eines poden informar molt bé sobre *què* tenim i *on* ho tenim. Però no necessàriament responen *quant* hauríem de tenir, *quan* hauríem de reposar o *on* hauríem de posicionar l’estoc en una xarxa sotmesa a demanda variable i lead times incerts.
+
+Això no és un problema de reporting; és un problema d’optimització dinàmica. Basar-se exclusivament en visibilitat fomenta una mentalitat de “per si de cas”, augmentant safety stock a tot arreu i immobilitzant capital, en lloc d’una política que adapti posicions i nivells d’inventari a la demanda i al risc reals.
+
+**Implementar una Optimització Real de l’Inventari: Els Trade-offs**
+Un motor d’optimització que utilitzi analítica predictiva i programació matemàtica pot establir de manera dinàmica punts de reposició, safety stock i polítiques de transferència. Però no és una victòria ràpida ni una simple instal·lació de software. El **cost i la complexitat** poden ser importants: cal integrar ERP, WMS, TMS i altres fonts, desenvolupar i calibrar models i validar-los iterativament. Durant aquest **temps fins al valor**, els processos manuals poden haver de continuar en paral·lel.
+
+També hi ha **riscos**. Un model alimentat amb dades mestres pobres —lead times incorrectes, BOM incompletes, històrics de demanda inconsistents— generarà recomanacions poc fiables i destruirà ràpidament la confiança dels usuaris. Una percepció de “caixa negra” pot provocar que els planificadors ignorin o sobreescriguin sistemàticament les recomanacions. I hi ha **limitacions**: cap motor elimina la volatilitat de la demanda ni converteix un proveïdor poc fiable en un de fiable; només ajuda a gestionar millor aquests riscos.
+
+El canvi organitzatiu també és rellevant. Compres pot haver de passar de grans comandes esporàdiques a comandes més freqüents i dinàmiques. Operacions ha de confiar en polítiques que poden contradir hàbits adquirits durant anys. I els incentius de compres, vendes i operacions han d’apuntar a optimitzar el capital circulant i el servei de tota l’empresa, no únicament el KPI local de cada departament.
+
+El diagnòstic més ràpid per saber si un sistema d’inventari està realment optimitzat, i no només ben visualitzat, és observar la variabilitat de la rotació dels SKU crítics i com es prenen les decisions de reposició. Si la política continua basada sobretot en intuïció o punts fixos calculats amb mitjanes històriques, i no en polítiques dinàmiques ajustades al comportament de la demanda i als riscos de subministrament, el cost no és només mantenir estoc. És el cost de prendre decisions que optimitzen transaccions individuals en lloc del balanç i el nivell de servei de l’empresa.
