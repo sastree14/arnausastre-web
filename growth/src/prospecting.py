@@ -865,8 +865,9 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
             if not _direct_client_business_allowed(raw, score):
                 continue
 
-            # Headcount enriches prioritisation but no longer destroys the funnel.
-            # Unknown size survives unless we find explicit enterprise evidence.
+            # Headcount enriches prioritisation but never becomes a categorical
+            # rejection by itself. Large-company evidence simply raises the
+            # quality threshold required to keep the opportunity.
             if employee_range:
                 if not _direct_client_size_allowed(employee_range, score):
                     continue
@@ -884,7 +885,7 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
                 )
                 verified_range = str(size_verification.get("employee_range", "")).strip()
                 classification = str(size_verification.get("classification", "unknown"))
-                if classification == "over_500":
+                if classification == "over_500" and score < DIRECT_CLIENT_LARGE_MIN_SCORE:
                     continue
                 if verified_range:
                     employee_range = verified_range
