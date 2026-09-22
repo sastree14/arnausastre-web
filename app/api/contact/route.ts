@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
+import { randomUUID } from 'node:crypto'
+import { insertGrowthRow } from '@/lib/supabase-growth'
 
 const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL || 'arnau.sastre@sc-analytics.io'
 
 export async function POST(req: NextRequest) {
-  let body: { name?: string; company?: string; email?: string; message?: string }
+  let body: { name?: string; company?: string; email?: string; message?: string; language?: string; sourcePath?: string }
   try {
     body = await req.json()
   } catch {
@@ -15,6 +17,8 @@ export async function POST(req: NextRequest) {
   const company = (body.company || '').trim()
   const email = (body.email || '').trim()
   const message = (body.message || '').trim()
+  const language = ['es','ca','en'].includes(String(body.language)) ? String(body.language) : 'es'
+  const sourcePath = String(body.sourcePath || '/contact').trim().slice(0,500)
 
   if (!name || !email || !message) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -23,6 +27,27 @@ export async function POST(req: NextRequest) {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailPattern.test(email)) {
     return NextResponse.json({ error: 'Invalid email address' }, { status: 400 })
+  }
+
+  const now = new Date().toISOString()
+  const inquiryId = `inquiry_${randomUUID().replaceAll('-', '').slice(0,16)}`
+  try {
+    await insertGrowthRow('website_inquiries', {
+      inquiry_id: inquiryId,
+      tenant_id: 'sc-analytics',
+      name,
+      company: company || null,
+      email,
+      message,
+      language,
+      source_path: sourcePath,
+      status: 'new',
+      created_at: now,
+      updated_at: now,
+    })
+  } catch (err) {
+    console.error('Failed to persist website inquiry', err)
+    return NextResponse.json({ error: 'Failed to save inquiry' }, { status: 502 })
   }
 
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_SECURE } = process.env
@@ -62,7 +87,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to send message' }, { status: 502 })
   }
 
-  return NextResponse.json({ ok: true })
+  return NextResponse.json({ ok: true, inquiry_id: inquiryId })
 }
 
 function escapeHtml(value: string) {
