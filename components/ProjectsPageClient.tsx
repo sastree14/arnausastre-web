@@ -50,7 +50,7 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
               return (
                 <Link key={project.slug} href={`/projects/${project.slug}`} className="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-200/50">
                   <div className="aspect-[3/2] w-full overflow-hidden">
-                    <ProjectCover image={project.image} imagePath={project.imagePath} headline={project.headline} industry={project.industry} capability={project.capability}/>
+                    <ProjectCover image={project.image} imagePath={project.imagePath} headline={project.headline} industry={project.industry} capability={project.capability} forceBrand/>
                   </div>
                   <div className="p-6">
                     <div className="flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-[0.12em]"><span className="text-indigo-600">{project.industry}</span><span className="text-slate-300">·</span><span className="text-slate-500">{project.challenge}</span></div>
