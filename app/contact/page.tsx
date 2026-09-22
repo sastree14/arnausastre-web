@@ -20,7 +20,7 @@ export default function ContactPage() {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, language: lang, sourcePath: '/contact' }),
       })
       if (!response.ok) throw new Error('Request failed')
       setSubmitted(true)
