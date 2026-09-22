@@ -1,0 +1,49 @@
+Headline:
+Integrated CRM & Business Operating System
+
+Industry:
+Professional Services
+
+Capability:
+CRM, Analytics, Automation, Data Engineering
+
+Challenge:
+Decision Systems
+
+Audience:
+Founder, CEO, Operations Director
+
+Description:
+An integrated operating system connecting commercial activity, editorial workflows, finance, delivery, web analytics and automation so a small company can manage growth from one coherent source of truth.
+
+Metrics:
+* Operating areas: Commercial, Finance, Metrics, Operations
+* Updates: Realtime event-driven UI
+* Integrations: Google, LinkedIn, Calendly
+* Control model: Human-in-the-loop
+
+Image:
+__generated__
+
+Status:
+Published
+
+Sections:
+
+Context:
+As a professional-services business grows, the same customer can appear in prospecting lists, conversations, proposals, invoices, project documents, analytics and content attribution. When each function lives in a different tool, the founder spends more time reconstructing context than making decisions.
+
+Problem:
+A generic CRM can store contacts but rarely connects the full operating model. The business needs to know not only who a prospect is, but where the relationship came from, what content influenced it, what has been proposed, what has been delivered, what has been invoiced and which processes are waiting for human attention.
+
+Approach:
+The system was designed around a shared data model rather than around a collection of dashboards. Commercial, finance, metrics and operations remain distinct domains, but they share identifiers, events and traceability.
+
+System Developed:
+The operating system combines prospecting, professional networking, deal management, editorial production, LinkedIn activity, GA4 and Search Console metrics, finance controls, project operations and integrations. Background workflows write to a common data layer and the interface updates through realtime events.
+
+Results:
+The system creates one operational view of the company while retaining human approvals for actions that should not be autonomous. It also provides a platform on which additional automations can be added without creating another disconnected tool.
+
+Confidentiality:
+SC-Analytics internal system. Screens and implementation details shown publicly may be simplified.
