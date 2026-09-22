@@ -21,9 +21,13 @@ export default function WebAnalytics() {
     if (!pathname || pathname.startsWith('/growth-admin')) return
     sentDepth.current = new Set()
     if (pathname.startsWith('/knowledge/')) {
+      const parts=pathname.split('/').filter(Boolean)
+      const maybeLocale=parts.at(-1)||''
+      const localized=['es','ca','en'].includes(maybeLocale)
       track('article_view', {
         page_path: pathname,
-        content_slug: pathname.split('/').filter(Boolean).pop() || '',
+        content_slug: localized?(parts.at(-2)||''):maybeLocale,
+        content_language: localized?maybeLocale:undefined,
       })
     }
 
