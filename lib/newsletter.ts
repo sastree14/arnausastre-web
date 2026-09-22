@@ -125,7 +125,7 @@ function chooseVariant(group:Article[],lang:NewsletterLanguage){
 
 export async function sendNewsletterDigest(opts:{force?:boolean;subscriberLimit?:number}={}){
   const subscribers=await queryGrowthTable<NewsletterSubscriber>('newsletter_subscribers',{tenant_id:'eq.sc-analytics',status:'eq.active',order:'created_at.asc',limit:String(opts.subscriberLimit||200)},{cacheSeconds:0})
-  const articles=(await queryGrowthTable<Article>('content_items',{tenant_id:'eq.sc-analytics',content_type:'eq.article',status:'eq.published',order:'published_at.desc',limit:'300'},{cacheSeconds:0})).filter(a=>a.published_at)
+  const articles=(await queryGrowthTable<Article>('content_items',{tenant_id:'eq.sc-analytics',channel:'eq.website',content_type:'eq.article',status:'eq.published',order:'published_at.desc',limit:'300'},{cacheSeconds:0})).filter(a=>a.published_at)
   const groups=new Map<string,Article[]>()
   articles.forEach(article=>{const key=article.brief_id||article.content_id;groups.set(key,[...(groups.get(key)||[]),article])})
   const now=new Date()
@@ -135,9 +135,11 @@ export async function sendNewsletterDigest(opts:{force?:boolean;subscriberLimit?
   if(!transporter)return{sent:0,failed:0,skipped:subscribers.length,reason:'smtp_not_configured'}
   for(const subscriber of subscribers){
     const baseline=subscriber.last_sent_at?new Date(subscriber.last_sent_at):new Date(now.getTime()-8*24*60*60*1000)
-    const fresh=[...groups.entries()].filter(([,variants])=>variants.some(v=>v.published_at&&new Date(v.published_at)>baseline)).slice(0,6)
+    const allGroups=[...groups.entries()]
+    const fresh=allGroups.filter(([,variants])=>variants.some(v=>v.published_at&&new Date(v.published_at)>baseline)).slice(0,6)
     if(!fresh.length&&!opts.force){skipped+=1;continue}
-    const selected=fresh.map(([key,variants])=>({key,item:chooseVariant(variants,subscriber.language)})).filter(x=>x.item)
+    const sourceGroups=fresh.length?fresh:allGroups.slice(0,6)
+    const selected=sourceGroups.map(([key,variants])=>({key,item:chooseVariant(variants,subscriber.language)})).filter(x=>x.item)
     if(!selected.length){skipped+=1;continue}
     const copy=DIGEST[subscriber.language]||DIGEST.es
     const unsubscribe=`https://sc-analytics.io/unsubscribe?token=${encodeURIComponent(subscriber.unsubscribe_token)}`
