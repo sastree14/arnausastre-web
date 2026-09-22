@@ -93,17 +93,17 @@ export function publicProject(project: Project, lang: SiteLanguage) {
 
 export const projectUi = {
   en: {
-    label: 'PROJECTS', title: 'Real systems built around real decisions.', sub: 'Selected work across forecasting, optimisation, risk, analytics and quantitative systems. Client-sensitive information is anonymised where required.',
+    label: 'PROJECTS', title: 'Real systems built around real decisions.', sub: 'Client cases, internal systems and technical builds across forecasting, optimisation, AI, automation, risk and decision systems. Sensitive information is anonymised where required.',
     back: '← All projects', sourceNote: 'Detailed case documentation is currently maintained in English to preserve the original evidence record.',
     detailCta: 'Have a similar decision or process to improve?', detailCtaSub: 'We can start by understanding the operating problem and decide whether an analytical system is justified.', contact: 'Discuss the problem',
   },
   es: {
-    label: 'PROYECTOS', title: 'Sistemas reales construidos alrededor de decisiones reales.', sub: 'Una selección de trabajos de forecasting, optimización, riesgo, analytics y sistemas cuantitativos. La información sensible de clientes se anonimiza cuando corresponde.',
+    label: 'PROYECTOS', title: 'Sistemas reales construidos alrededor de decisiones reales.', sub: 'Casos de cliente, sistemas internos y desarrollos técnicos de forecasting, optimización, IA, automatización, riesgo y sistemas de decisión. La información sensible se anonimiza cuando corresponde.',
     back: '← Todos los proyectos', sourceNote: 'La documentación detallada de estos casos históricos se mantiene actualmente en inglés para conservar el registro original de evidencia.',
     detailCta: '¿Tienes una decisión o proceso parecido que mejorar?', detailCtaSub: 'Podemos empezar por comprender el problema operativo y decidir si un sistema analítico está justificado.', contact: 'Hablar del problema',
   },
   ca: {
-    label: 'PROJECTES', title: 'Sistemes reals construïts al voltant de decisions reals.', sub: 'Una selecció de treballs de forecasting, optimització, risc, analytics i sistemes quantitatius. La informació sensible de clients s’anonimitza quan correspon.',
+    label: 'PROJECTES', title: 'Sistemes reals construïts al voltant de decisions reals.', sub: 'Casos de client, sistemes interns i desenvolupaments tècnics de forecasting, optimització, IA, automatització, risc i sistemes de decisió. La informació sensible s’anonimitza quan correspon.',
     back: '← Tots els projectes', sourceNote: 'La documentació detallada d’aquests casos històrics es manté actualment en anglès per conservar el registre original d’evidència.',
     detailCta: 'Tens una decisió o procés semblant que cal millorar?', detailCtaSub: 'Podem començar per comprendre el problema operatiu i decidir si un sistema analític està justificat.', contact: 'Parlar del problema',
   },
