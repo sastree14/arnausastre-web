@@ -96,7 +96,7 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
       const locale = lang === 'ca' ? 'ca-ES' : lang === 'es' ? 'es-ES' : 'en-GB'
       return item ? {
         key: `generated:${key}`,
-        href: `/knowledge/${key}`,
+        href: `/knowledge/${key}/${lang}`,
         title: item.title,
         excerpt: compactExcerpt(item.body),
         industry: item.industry || '',
