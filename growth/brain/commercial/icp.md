@@ -5,14 +5,16 @@ Primary direct-sales ICP:
 - The core target is not defined only by company size. It is defined by the economics of the business and the likelihood that advanced analytics, automation or optimization can help while a mature internal Data Science team is absent.
 - The target universe should be broad enough to sustain well above 1,000 plausible prospects across Spain/EU.
 - Include autónomos, sole proprietors and microbusinesses when they have enough recurring bookings, orders, inventory, pricing, scheduling, reporting, customers or administrative volume for a system to create material leverage.
-- Ideal operating scale: self-employed / 1–250 employees.
-- 251–500 employees can qualify when fit is strong and there is no evidence of a mature internal Data Science organization.
-- More than 500 employees, global enterprises and household-name multinationals are normally out of scope for direct prospecting.
-- Unknown headcount is not a rejection reason. Size is a prioritization/enrichment signal, not the first discovery gate.
+- There is no hard employee-count cutoff. Self-employed professionals, microbusinesses, SMEs, mid-market companies and larger organisations can all qualify when the underlying decision/process has material analytical leverage.
+- 1–250 employees remains a high-priority segment because external specialist support is often easier to buy and internal Data Science capacity is often limited.
+- 251–500 employees are also strong candidates when the opportunity is concrete.
+- More than 500 employees and large enterprises are lower-priority by default, not automatically rejected. Keep them when there is a clear specialist gap, an underserved business unit, a bounded project or an external-capacity need.
+- Unknown headcount is never a rejection reason. Size is a prioritization/enrichment signal, not a discovery gate.
 - Traditional companies with ERP/Excel/manual planning and meaningful operational complexity are particularly attractive.
 - Scale-ups whose planning, analytics or operating processes have outgrown informal tools remain strong candidates.
 - Companies without a full internal Data/AI team are preferred because SC-Analytics can become their main external specialist.
-- Companies with analysts or technical staff can still qualify when they clearly lack specialist forecasting, optimization, ML, simulation or AI-automation depth.
+- Companies with analysts or technical staff still qualify when a specialist forecasting, optimization, ML, simulation, data-engineering or AI-automation gap exists.
+- A mature internal Data/AI team is a prioritization penalty, not an automatic exclusion: an independent business unit, unusual modelling problem, overflow need or external validation can still create a valid opportunity.
 
 High-probability business types:
 
@@ -54,8 +56,8 @@ Direct-client exclusions:
 - BI, ERP or analytics software vendors.
 - Recruitment/staffing firms.
 - Marketing agencies and other service providers whose core offer overlaps the work SC-Analytics sells.
-- Mature enterprises with clear in-house Data Science / AI capacity unless there is a very specific specialist gap.
+- No automatic size-based exclusion. Large organisations with mature in-house Data Science / AI are simply lower priority unless there is a specific specialist gap, independent business-unit need, overflow requirement or externally valuable project.
 
 Qualification principle:
 
-A candidate should survive discovery when there is plausible economic leverage, realistic external-buying potential and no strong enterprise/internal-data-team red flag. Do not discard a company merely because employee count or a named decision maker is not immediately available. Company discovery, size enrichment and person enrichment are separate stages.
+A candidate should survive discovery when there is plausible economic leverage and a realistic reason SC-Analytics could add external value. Do not discard a company merely because of employee count, sector assumptions, current internal tooling or because the opportunity is not obvious at first glance. Discovery should actively look for non-obvious leverage in planning, pricing, allocation, reporting, automation, risk, scheduling, operations and decision-making. Company discovery, size enrichment and person enrichment are separate stages.

@@ -1,6 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import AnalyticalPartnerSection from '@/components/AnalyticalPartnerSection'
+import FreeDiagnosticSection from '@/components/FreeDiagnosticSection'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import { publicCopy } from '@/lib/public-copy'
 
@@ -62,6 +64,9 @@ export default function ServicesPage() {
           <p className="mt-5 max-w-3xl text-base leading-8 text-slate-700">{t.notFitBody}</p>
         </div>
       </section>
+
+      <FreeDiagnosticSection />
+      <AnalyticalPartnerSection />
 
       <section className="border-t border-slate-200 bg-slate-950 text-white">
         <div className="mx-auto max-w-7xl px-6 py-16 md:flex md:items-end md:justify-between md:gap-10">

@@ -4,7 +4,8 @@ import {Badge,PageHeader,adminButtonPrimary,adminButtonSecondary,adminInput,asse
 import ConfirmFormButton from '@/components/growth-admin/ConfirmFormButton'
 import LinkedInPreview from '@/components/growth-admin/LinkedInPreview'
 import GeneratedArticleContent from '@/components/GeneratedArticleContent'
-import {getContentItem,isGrowthAdminAuthenticated} from '@/lib/growth-admin'
+import {getContentItem,isGrowthAdminAuthenticated,type GrowthContentItem} from '@/lib/growth-admin'
+import {queryGrowthTable} from '@/lib/supabase-growth'
 import {getContentPublicationReadiness} from '@/lib/growth-approval'
 
 export const dynamic='force-dynamic'
@@ -21,6 +22,10 @@ export default async function PublicationPreviewPage({params,searchParams}:Props
 
   const isLinkedInPost=item.content_type==='linkedin_post'
   const isLinkedInArticle=item.content_type==='linkedin_article'
+  const isWebsiteArticle=item.content_type==='article'&&item.channel==='website'
+  const articleFamily=isWebsiteArticle&&item.brief_id?await queryGrowthTable<GrowthContentItem>('content_items',{tenant_id:'eq.sc-analytics',brief_id:`eq.${item.brief_id}`,channel:'eq.website',content_type:'eq.article',order:'language.asc',limit:'10'},{cacheSeconds:0}):[]
+  const articleLanguages=new Set(articleFamily.map(row=>String(row.language||'')))
+  const articleFamilyComplete=['es','ca','en'].every(language=>articleLanguages.has(language))
   const image=assetUrl(item)
   const gate=await getContentPublicationReadiness(contentId)
   const issues=gate?.readiness.issues||[]
@@ -37,6 +42,8 @@ export default async function PublicationPreviewPage({params,searchParams}:Props
     {query.manual_unpublish&&isLinkedInArticle&&published&&<div className="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"><strong>Retirada manual necesaria.</strong> Abre el artículo en LinkedIn, elimínalo allí y después confirma la retirada en este CRM. No marcaremos la pieza como retirada antes de que tú lo confirmes.</div>}
 
     <div className="mb-5 flex flex-wrap gap-2"><Badge tone={isLinkedInPost?'blue':'violet'}>{publicationLabel(item)}</Badge><Badge>{(item.language||'—').toUpperCase()}</Badge><Badge>{item.publication_mode||'text_only'}</Badge>{item.visual_path&&<Badge tone="green">visual adjunto</Badge>}<Badge>{item.status}</Badge>{Boolean((item.critique as Record<string,unknown>|null)?.manual_edited_at)&&<Badge tone="violet">editado manualmente</Badge>}</div>
+
+    {isWebsiteArticle&&articleFamily.length>1&&<section className="mb-5 rounded-2xl border border-indigo-200 bg-indigo-50 p-5"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-[.14em] text-indigo-700">Publicación web multilingüe</p><p className="mt-2 max-w-3xl text-xs leading-5 text-indigo-900">Este artículo se publica como una sola familia. Al aprobar y publicar una versión, el workflow publicará ES, CA y EN juntos siempre que las tres traducciones hayan superado la revisión automática. LinkedIn sigue siendo una publicación independiente en un único idioma.</p></div><Badge tone={articleFamilyComplete?'green':'amber'}>{articleFamilyComplete?'ES · CA · EN listos':'Faltan traducciones'}</Badge></div><div className="mt-4 grid gap-2 sm:grid-cols-3">{['es','ca','en'].map(language=>{const variant=articleFamily.find(row=>row.language===language);return <a key={language} href={variant?`/growth-admin/preview/${variant.content_id}`:'#'} className={`rounded-xl border p-3 ${variant?'border-indigo-100 bg-white':'border-amber-200 bg-amber-50'}`}><div className="flex items-center justify-between"><span className="text-xs font-semibold">{language.toUpperCase()}</span><Badge tone={variant?.status==='needs_review'?'amber':variant?.status==='published'?'green':'slate'}>{variant?.status||'missing'}</Badge></div><p className="mt-2 line-clamp-2 text-[11px] leading-4 text-slate-500">{variant?.title||'Variante no generada'}</p></a>})}</div>{item.visual_path&&Boolean((item.visual_strategy as Record<string,unknown>|null)?.language_neutral)&&<p className="mt-3 text-[11px] text-indigo-700">El visual adjunto es neutro de idioma y se reutilizará en las tres versiones.</p>}</section>}
 
     {!published&&<section id="decision" className="mb-5 grid gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
       <form action="/api/growth-admin/content-edit" method="post" data-live-form="1" className="rounded-2xl border border-slate-200 bg-white p-5">

@@ -87,7 +87,14 @@ def generate_contextual_visual(content_id: str, concept: str = "", theme: str = 
     title = sanitize_publication_text(str(strategy.get("visual_headline") or item.get("title") or "SC-Analytics insight")).strip()[:95]
     concept_text = _derive_concept(item, concept)
     selected_theme = "light" if str(theme or strategy.get("theme") or "dark").strip().lower() == "light" else "dark"
-    path = render_contextual_illustration(title, concept_text, slug=f"{content_id}-manual-illustration", theme=selected_theme)
+    language_neutral = item.get("content_type") == "article" and item.get("channel") == "website"
+    path = render_contextual_illustration(
+        title,
+        concept_text,
+        slug=f"{content_id}-manual-illustration",
+        theme=selected_theme,
+        language_neutral=language_neutral,
+    )
     cfg = load_config()
     asset_key = f"{cfg['company']['tenant_id']}/editorial/{item.get('brief_id') or 'manual'}/{path.name}"
     asset_ref = get_asset_store().put(path, asset_key)
@@ -97,6 +104,7 @@ def generate_contextual_visual(content_id: str, concept: str = "", theme: str = 
         "theme": selected_theme,
         "visual_headline": title,
         "generated_manually": True,
+        "language_neutral": language_neutral,
     })
     changes: dict[str, Any] = {
         "visual_path": asset_ref,

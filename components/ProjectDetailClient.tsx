@@ -1,7 +1,7 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
+import ProjectCover from '@/components/ProjectCover'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import { projectUi, publicProject } from '@/lib/project-public-copy'
 import type { Project } from '@/lib/projects'
@@ -39,7 +39,7 @@ export default function ProjectDetailClient({ project: raw }: { project: Project
               <p className="mt-6 max-w-xl text-base leading-8 text-slate-600">{project.description}</p>
               {lang !== 'en' && <p className="mt-5 text-xs leading-5 text-slate-400">{t.sourceNote}</p>}
             </div>
-            <div className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl"><Image src={project.imagePath} alt={project.headline} fill className="object-cover" sizes="(max-width:1024px) 100vw,50vw" priority /></div>
+            <div className="aspect-[3/2] w-full overflow-hidden rounded-2xl"><ProjectCover image={project.image} imagePath={project.imagePath} headline={project.headline} industry={project.industry} capability={project.capability} priority/></div>
           </div>
         </div>
       </section>

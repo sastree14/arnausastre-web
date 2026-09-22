@@ -1,0 +1,49 @@
+Headline:
+Reinforcement Learning for Sequential Business Decisions
+
+Industry:
+Decision Science
+
+Capability:
+Reinforcement Learning, Simulation, Optimization
+
+Challenge:
+Decision Systems
+
+Audience:
+Operations Director, Data Lead, Product Lead
+
+Description:
+A reinforcement-learning decision framework for problems where today's action changes tomorrow's state, combining simulation, constraints and offline evaluation before any policy is allowed near real operations.
+
+Metrics:
+* Decision type: Sequential
+* Training environment: Simulation
+* Evaluation: Offline policy testing
+* Safety: Explicit operational constraints
+
+Image:
+__generated__
+
+Status:
+Published
+
+Sections:
+
+Context:
+Some business problems cannot be reduced to a single prediction. Inventory policies, dynamic allocation, trading, pricing and control systems involve sequences of actions where each decision changes the state faced by the next decision.
+
+Problem:
+Optimising one step at a time can produce locally sensible actions that perform poorly over a full horizon. Reinforcement learning can model the sequential objective, but deploying a learned policy without a realistic environment and rigorous evaluation introduces unacceptable risk.
+
+Approach:
+The framework separates environment modelling, reward design, constraints, policy learning and evaluation. Historical or simulated trajectories are used to test behaviour under multiple regimes before real-world deployment is considered.
+
+System Developed:
+A modular RL experimentation environment supports state/action design, reward shaping, policy training, benchmark comparison and stress testing. Traditional optimisation or rule-based policies remain as baselines so added complexity must demonstrate a measurable advantage.
+
+Results:
+The framework makes reinforcement learning a testable decision method rather than an AI label. It is particularly useful for comparing whether a sequential policy genuinely outperforms simpler rules under realistic constraints.
+
+Confidentiality:
+Research and system-development example. No client-specific policy parameters or proprietary datasets are disclosed.

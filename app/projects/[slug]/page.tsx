@@ -28,7 +28,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
       description,
       url:`https://sc-analytics.io${canonical}`,
       type:'article',
-      images:project.imagePath?[{url:project.imagePath,alt:project.headline}]:undefined,
+      images:project.image&&project.image!=='__generated__'?[{url:project.imagePath,alt:project.headline}]:undefined,
     },
   }
 }

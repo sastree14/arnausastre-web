@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import type { PublicGeneratedArticle } from '@/lib/public-growth'
 
-type Props = { variants: PublicGeneratedArticle[] }
+type Props = { variants: PublicGeneratedArticle[]; forcedLanguage?: 'es'|'ca'|'en' }
 
 function selectVariant(variants: PublicGeneratedArticle[], lang: string) {
   return variants.find((item) => item.language === lang)
@@ -70,9 +70,10 @@ const CTA_COPY = {
   },
 } as const
 
-export default function GeneratedArticleContent({ variants }: Props) {
+export default function GeneratedArticleContent({ variants, forcedLanguage }: Props) {
   const { lang } = useSiteLanguage()
-  const article = selectVariant(variants, lang)
+  const activeLanguage = forcedLanguage || lang
+  const article = selectVariant(variants, activeLanguage)
   if (!article) return null
 
   const hasVisual = Boolean(article.visual_path?.startsWith('supabase://'))
@@ -81,7 +82,7 @@ export default function GeneratedArticleContent({ variants }: Props) {
   return (
     <main className="bg-white text-slate-950">
       <article className="mx-auto max-w-4xl px-6 py-20 md:px-8 md:py-24">
-        <Link href="/knowledge" className="text-sm font-medium text-indigo-600 hover:text-indigo-800">← Knowledge</Link>
+        <Link href="/knowledge" className="text-sm font-medium text-indigo-600 hover:text-indigo-800">← {activeLanguage==='es'?'Conocimiento':activeLanguage==='ca'?'Coneixement':'Knowledge'}</Link>
         <div className="mt-8 flex flex-wrap gap-2 text-xs text-slate-500">
           {article.content_family && <span className="rounded-full border border-slate-200 px-3 py-1">{article.content_family}</span>}
           {article.language && <span className="rounded-full border border-slate-200 px-3 py-1 uppercase">{article.language}</span>}

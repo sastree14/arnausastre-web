@@ -75,7 +75,11 @@ Rules:
 - Do not repeat the exact keyword unnaturally.
 - Cover the problem, decisions, data requirements, approach, limitations and when the service is/not useful.
 - 3 to 5 sections per page.
+- Write in the natural language of the target keyword (Spanish for Spanish queries, Catalan for Catalan queries, English otherwise).
 - Make each target genuinely distinct.
+- Link naturally to relevant projects, knowledge or /partner-analitico when it helps the searcher's decision.
+- The conversion path should make the free 30-minute diagnostic clear without turning the page into a hard sell.
+- Prefer decision/problem language and concrete use cases over generic claims such as "transform your business with AI".
 
 TARGETS:
 {compact}""",

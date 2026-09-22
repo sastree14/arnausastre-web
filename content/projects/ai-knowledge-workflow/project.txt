@@ -1,0 +1,49 @@
+Headline:
+AI Document & Knowledge Workflow
+
+Industry:
+Professional Services
+
+Capability:
+AI Automation, Retrieval, Data Engineering
+
+Challenge:
+Automation
+
+Audience:
+Founder, Operations Director, Knowledge Team
+
+Description:
+A controlled AI workflow for turning documents, email and internal knowledge into structured research, drafts and operational actions while keeping sources, approvals and traceability visible.
+
+Metrics:
+* Inputs: Documents, email and structured records
+* Retrieval: Evidence-linked context
+* Controls: Review before external actions
+* Output: Reusable structured knowledge
+
+Image:
+__generated__
+
+Status:
+Published
+
+Sections:
+
+Context:
+Knowledge-intensive teams accumulate valuable information in proposals, emails, reports, notes and cloud documents. Generic chat tools can answer isolated questions but usually do not preserve provenance, workflow state or the distinction between a suggestion and an approved business action.
+
+Problem:
+The opportunity is not simply to add a chatbot. The system must retrieve the right context, retain source evidence, create structured outputs and know when a person needs to approve what happens next.
+
+Approach:
+The workflow uses retrieval, structured prompts and task state rather than one open-ended agent. Source references travel with the output, and actions are separated into automatic, proposed and human-approved steps.
+
+System Developed:
+The architecture connects document sources to a controlled AI workflow that can research, summarise, draft, classify and prepare actions. Audit metadata makes it possible to trace what evidence informed each result.
+
+Results:
+The system turns scattered knowledge into a reusable operational asset while reducing the risk of autonomous actions based on weak or unverifiable context.
+
+Confidentiality:
+Representative AI workflow architecture. No confidential client documents are included.

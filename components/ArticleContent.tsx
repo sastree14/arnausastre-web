@@ -1,8 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useLanguage } from './LanguageProvider'
-import { translations } from '@/lib/translations'
+import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import type { Article } from '@/lib/content'
 
 // ── Inline markdown renderer ───────────────────────────────────────────────────
@@ -75,14 +74,18 @@ function extractHeadings(body: string): string[] {
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export default function ArticleContent({ article }: { article: Article }) {
-  const { lang } = useLanguage()
-  const tc = translations[lang].common
-  const ti = translations[lang].insights
-
-  const title = lang === 'en' ? article.titleEn : article.titleEs
-  const body = lang === 'en' ? article.bodyEn : article.bodyEs
-  const tags = lang === 'en' ? article.tagsEn : article.tagsEs
+export default function ArticleContent({ article, forcedLanguage }: { article: Article; forcedLanguage?: 'en'|'es'|'ca' }) {
+  const { lang: siteLang } = useSiteLanguage()
+  const lang = forcedLanguage || siteLang
+  const labels={
+    en:{back:'← Knowledge',min:'min read',sections:'sections',toc:'In this article'},
+    es:{back:'← Conocimiento',min:'min de lectura',sections:'secciones',toc:'En este artículo'},
+    ca:{back:'← Coneixement',min:'min de lectura',sections:'seccions',toc:'En aquest article'},
+  } as const
+  const tc=labels[lang]
+  const title = lang === 'en' ? article.titleEn : lang === 'ca' ? (article.titleCa || article.titleEs) : article.titleEs
+  const body = lang === 'en' ? article.bodyEn : lang === 'ca' ? (article.bodyCa || article.bodyEs) : article.bodyEs
+  const tags = lang === 'en' ? article.tagsEn : lang === 'ca' ? (article.tagsCa || article.tagsEs) : article.tagsEs
 
   const segments = parseBody(body)
   const headings = extractHeadings(body)
@@ -98,7 +101,7 @@ export default function ArticleContent({ article }: { article: Article }) {
             href="/knowledge"
             className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 transition mb-10"
           >
-            {tc.backToInsights}
+            {tc.back}
           </Link>
 
           <div className="flex flex-wrap gap-2 mb-6">
@@ -122,11 +125,11 @@ export default function ArticleContent({ article }: { article: Article }) {
           <div className="mt-6 flex items-center gap-3 flex-wrap">
             <span className="text-sm text-slate-400">{article.date}</span>
             <span className="h-1 w-1 rounded-full bg-slate-300" />
-            <span className="text-sm text-slate-400">{article.readingTime} {tc.minRead}</span>
+            <span className="text-sm text-slate-400">{article.readingTime} {tc.min}</span>
             {headings.length > 0 && (
               <>
                 <span className="h-1 w-1 rounded-full bg-slate-300" />
-                <span className="text-sm text-slate-400">{headings.length} {lang === 'en' ? 'sections' : 'secciones'}</span>
+                <span className="text-sm text-slate-400">{headings.length} {tc.sections}</span>
               </>
             )}
           </div>
@@ -199,7 +202,7 @@ export default function ArticleContent({ article }: { article: Article }) {
           {headings.length > 0 && (
             <aside className="hidden lg:block sticky top-24 self-start">
               <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.18em] text-slate-400">
-                {ti.inThisArticle}
+                {tc.toc}
               </p>
               <nav className="space-y-3 border-l border-slate-200 pl-4">
                 {headings.map((h, idx) => (

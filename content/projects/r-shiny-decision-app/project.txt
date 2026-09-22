@@ -1,0 +1,49 @@
+Headline:
+R Shiny Decision-Support Application
+
+Industry:
+Business Analytics
+
+Capability:
+R, Shiny, Analytics, Simulation
+
+Challenge:
+Business Intelligence
+
+Audience:
+Analyst, Operations Director, Management Team
+
+Description:
+An interactive R Shiny application that packages statistical analysis, scenario modelling and business logic into a usable decision interface for teams that need more than a static report.
+
+Metrics:
+* Interface: Interactive web application
+* Engine: R statistical models
+* Usage: Scenario and what-if analysis
+* Delivery: Reproducible analytical workflow
+
+Image:
+__generated__
+
+Status:
+Published
+
+Sections:
+
+Context:
+Analytical work often stops at a notebook, spreadsheet or slide deck. The model may be sound, but if a manager has to ask an analyst to rerun it every time an assumption changes, the analysis is not yet an operational system.
+
+Problem:
+The team needs direct access to scenarios and outputs without exposing implementation complexity or allowing accidental changes to the underlying methodology.
+
+Approach:
+The application separates model logic, data preparation and interface components. Users interact with a small number of meaningful business controls while the statistical calculations remain reproducible and versioned.
+
+System Developed:
+The Shiny interface combines interactive inputs, scenario comparisons, statistical outputs and exportable management views. The same analytical engine can be extended as new data or decisions are introduced.
+
+Results:
+The result converts a repeatable analytical process into a tool that can be used directly by non-technical stakeholders while preserving the rigor of the underlying R workflow.
+
+Confidentiality:
+Representative R Shiny system example. Screens and client-specific data are not disclosed.
