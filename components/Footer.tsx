@@ -29,7 +29,7 @@ export default function Footer() {
             <Link href="/knowledge">{nav.knowledge}</Link>
             <Link href="/about">{nav.about}</Link>
             <Link href="/partner-analitico">{lang==='es'?'Partner analítico':lang==='ca'?'Partner analític':'Analytical partner'}</Link>
-            <Link href="/knowledge">{lang==='es'?'SC-Analytics Briefing':lang==='ca'?'SC-Analytics Briefing':'SC-Analytics Briefing'}</Link>
+            <Link href="/briefing">SC-Analytics Briefing</Link>
             <Link href="/contact">{nav.contact}</Link>
           </div>
         </div>
