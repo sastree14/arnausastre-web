@@ -218,7 +218,250 @@ Examples:
 
 Cross-category comparisons are allowed and encouraged when they help a real decision.
 
-## 5. Editorial diversity
+## 5. Content families
+
+A content family is the primary narrative structure of a piece. It is not the topic, channel, visual style or commercial objective.
+
+The canonical v2 families are:
+
+### 5.1 Explain / Understand — `explain_understand`
+
+Use when the purpose is to make a concept, distinction or mechanism understandable in a way that improves a decision.
+
+Typical structure:
+
+Concept or confusion → mechanism → why it matters → practical implication.
+
+Examples:
+
+- What Value at Risk actually measures.
+- Data Science vs Data Analysis in practice.
+- What SARIMA captures that a generic regression does not.
+
+Avoid textbook definitions that do not change a decision.
+
+### 5.2 Compare — `compare`
+
+Use when two or more approaches, tools, methods or operating choices need to be contrasted.
+
+Typical structure:
+
+Decision context → comparison criteria → trade-offs → conditions where each option fits.
+
+Examples:
+
+- Azure vs AWS for an analytics team.
+- ARIMA vs XGBoost for demand forecasting.
+- Anaplan vs SAP Analytics Cloud.
+
+A comparison should help a real choice; it should not become a feature checklist with no conclusion.
+
+### 5.3 Decision Guide — `decision_guide`
+
+Use when the reader needs a rule for choosing whether, when or how to use something.
+
+Typical structure:
+
+Decision → conditions → trade-offs → decision rule → practical next step.
+
+Examples:
+
+- When Monte Carlo is worth the additional complexity.
+- When not to use machine learning.
+- When a company should move beyond Excel for planning.
+
+### 5.4 Diagnose — `diagnose`
+
+Use when the purpose is to identify symptoms, root causes or signals that reveal a deeper operating problem.
+
+Typical structure:
+
+Observed symptom → diagnostic mechanism → root cause → test or question to validate it.
+
+Examples:
+
+- Signs a forecasting system is not trusted.
+- Why a reporting process can look functional while remaining operationally broken.
+
+### 5.5 Failure Modes & Mistakes — `failure_modes_mistakes`
+
+Use when the value comes from showing how implementations, models, processes or decisions fail in practice.
+
+Typical structure:
+
+Common approach → failure mechanism → consequence → prevention or better decision rule.
+
+Examples:
+
+- Why ML projects fail after deployment.
+- Common mistakes in planning implementations.
+- Why bad assumptions make Monte Carlo look more sophisticated than it is.
+
+### 5.6 Framework / Playbook — `framework_playbook`
+
+Use when SC-Analytics can give the reader a reusable sequence, evaluation model or operating framework.
+
+Typical structure:
+
+Decision problem → framework → stages/criteria → application → limitations.
+
+Examples:
+
+- How to evaluate a forecasting system.
+- A practical data-maturity framework.
+- A framework for deciding what to automate first.
+
+### 5.7 Case / Project Proof — `case_project_proof`
+
+Use for approved real work grounded in `Portfolio_SC_Analytics`.
+
+Typical structure:
+
+Business problem → constraints → reasoning → system/solution → evidence/result → reusable lesson.
+
+The project is the evidence source. Never invent project facts, metrics, tools or outcomes.
+
+### 5.8 System / Architecture — `system_architecture`
+
+Use when understanding how components interact is the main value.
+
+Typical structure:
+
+Inputs → data/process layer → logic/models → decision/application layer → outputs/feedback.
+
+Examples:
+
+- A forecasting-to-inventory decision architecture.
+- How an Azure analytics stack can be structured.
+- How CRM, delivery, finance and metrics connect in an operating system.
+
+### 5.9 Evidence / Measurement — `evidence_measurement`
+
+Use when the central question is what the data shows or how success should be evaluated.
+
+Typical structure:
+
+Question → evidence/metric → interpretation → trade-off → decision implication.
+
+Examples:
+
+- Forecast accuracy vs inventory cost.
+- Which metrics actually show decision quality.
+- Model performance vs business performance.
+
+### 5.10 Transformation — `transformation`
+
+Use when the value comes from showing a change in an operating model, process or decision system.
+
+Typical structure:
+
+Before → friction/cost → intervention → after → measurable or operational difference.
+
+Examples:
+
+- Manual reporting → connected decision system.
+- Fragmented workflow → automated exception-based process.
+
+### 5.11 Current Development / Implication — `current_development_implication`
+
+Use for current events, releases, regulation or market changes when there is a meaningful implication for operators.
+
+Typical structure:
+
+Development → what actually changed → business implication → trade-off → practical takeaway.
+
+The news is not the content. Reject pieces that merely repeat an announcement.
+
+### 5.12 Point of View / Contrarian — `point_of_view_contrarian`
+
+Use when SC-Analytics has a clear, defensible position that challenges a common assumption or reframes a decision.
+
+Typical structure:
+
+Common belief → position → reasoning → boundary conditions → implication.
+
+Examples:
+
+- Most companies do not need AI agents for every workflow.
+- A dashboard is often the wrong solution.
+- More model complexity does not guarantee a better decision.
+
+Contrarian does not mean provocative for engagement. Nuance and evidence are mandatory.
+
+### Retired v1 families
+
+The following v1 labels should not be used as primary families in new content:
+
+- `educational`: too broad; map to Explain, Decision Guide, Framework or another specific family.
+- `insight`: too vague; every strong piece should contain an insight.
+- `opinion`: map to Point of View / Contrarian.
+- `contrarian`: map to Point of View / Contrarian.
+- `current_affairs`: map to Current Development / Implication.
+- `case`: map to Case / Project Proof.
+- `commercial`: commercial intent is an objective, not a narrative family.
+
+Legacy content may retain old labels for historical compatibility, but new generation uses the v2 families.
+
+## 6. Editorial angles
+
+An angle is the specific lens applied to a topic inside a content family.
+
+Families are controlled. Angles are deliberately open and extensible.
+
+Useful recurring angles include:
+
+- when to use;
+- when not to use;
+- X vs Y;
+- why it fails;
+- common mistakes;
+- hidden cost;
+- trade-offs;
+- limitations;
+- risks;
+- what actually matters;
+- what people misunderstand;
+- myth vs reality;
+- simple vs complex;
+- build vs buy;
+- manual vs automated;
+- traditional vs modern;
+- model vs business outcome;
+- technical vs business perspective;
+- short term vs long term;
+- small company vs large company;
+- prototype vs production;
+- implementation;
+- adoption;
+- ROI / economic impact;
+- measurement;
+- decision quality;
+- scalability;
+- cost;
+- time to value;
+- maturity level;
+- industry lens;
+- project lens;
+- executive lens;
+- technical lens;
+- what changed;
+- what comes next.
+
+Do not create a new content family merely because a new angle appears.
+
+Examples:
+
+- Topic: Monte Carlo simulation; family: Decision Guide; angle: when to use / complexity proportionality.
+- Topic: Azure + AWS; family: Compare; angle: cost, ecosystem and company context.
+- Topic: SARIMA + XGBoost; family: Compare; angle: classical time series vs machine learning.
+- Topic: Anaplan; family: Failure Modes & Mistakes; angle: implementation complexity.
+- Topic: Value at Risk; family: Explain / Understand; angle: what it measures vs what it misses.
+
+A canonical content idea should therefore be representable as:
+
+`pillar + topic entity/entities + family + angle + business question + thesis + evidence`.
+
+## 7. Editorial diversity
 
 Diversity should come from combining pillars, entities, industries, methods, tools, business problems and angles — not from creating dozens of top-level pillars.
 
@@ -228,7 +471,7 @@ The portfolio is an important source of ideas, but it is not the boundary of the
 
 Likewise, public research can expand the editorial universe, but it cannot be used to fabricate SC-Analytics experience.
 
-## 6. Independent dimensions
+## 8. Independent dimensions
 
 These dimensions must remain separate:
 
@@ -250,7 +493,7 @@ For example:
 - "AWS" is not a content family;
 - "Technical Blueprint" is not a channel.
 
-## 7. Current output channels
+## 9. Current output channels
 
 The common editorial system may feed:
 
@@ -265,7 +508,7 @@ Not every approved idea should be adapted to every channel.
 
 Channel selection happens after the canonical content idea is defined.
 
-## 8. Current visual layer
+## 10. Current visual layer
 
 The visual system is a separate layer from the editorial taxonomy.
 
@@ -285,7 +528,7 @@ Current visual languages include:
 
 The final mapping rules between editorial angles, visual families and channels are defined separately as the system evolves.
 
-## 9. Source hierarchy
+## 11. Source hierarchy
 
 Use the most authoritative relevant source for each type of claim.
 
@@ -297,7 +540,7 @@ Use the most authoritative relevant source for each type of claim.
 
 Google Drive is not an independent competing taxonomy. It mirrors the canonical architecture and may contain historical planning material.
 
-## 10. Historical material
+## 12. Historical material
 
 Previous topic banks, spreadsheets, taxonomies and content lists may remain available as historical idea sources.
 
