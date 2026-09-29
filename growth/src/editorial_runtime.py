@@ -381,7 +381,7 @@ def _persist_variant(brief: dict[str, Any], *, language: str, channel: str, cont
         source_case="",
         brief_id=brief["brief_id"],
         language=language,
-        content_family=brief.get("family", "insight"),
+        content_family=brief.get("family", "explain_understand"),
         quality_score=quality,
         critique=critique,
         source_url=(brief.get("research") or {}).get("source_urls", [""])[0] if (brief.get("research") or {}).get("source_urls") else "",
