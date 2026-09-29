@@ -1,23 +1,33 @@
-# SC-Analytics — Editorial Playbook v1
+# SC-Analytics — Editorial Playbook v2
 
 ## Editorial purpose
+
 Content exists to build useful authority with business decision-makers, strengthen trust in SC-Analytics and create better commercial conversations. It does not exist to maximise posting volume, chase trends or demonstrate technical sophistication.
 
 The editorial system must behave like a selective analyst, not a content factory.
 
-## Central editorial rule
-Never ask first: "How can we make a post about this?"
-Ask:
-1. Is there a real business problem, decision or lesson here?
-2. Is it relevant to the companies SC-Analytics wants to serve?
-3. Does SC-Analytics have a useful and defensible perspective?
-4. Can the idea be explained without selling technology for its own sake?
-5. Is the evidence strong enough for the claims we want to make?
+The canonical taxonomy lives in `content/editorial_architecture.md`. This playbook defines how to use it.
 
-If the answer is no, ignore the topic. Zero posts is a valid output.
+## Central editorial rule
+
+Never ask first: "How can we make a post about this?"
+
+Ask:
+
+1. Is there a real business problem, decision, mechanism or lesson here?
+2. Which editorial pillar does it belong to?
+3. What topic entity or entities are actually being discussed?
+4. Which content family best structures the idea?
+5. What angle makes the piece useful rather than generic?
+6. Is the evidence strong enough for the claims we want to make?
+7. Only then: which channel and visual representation fit?
+
+If there is no strong answer, ignore the topic. Zero posts is a valid output.
 
 ## SC-Analytics editorial lens
+
 Every strong piece should reflect one or more of these principles:
+
 - Understand before building.
 - Value before technology.
 - Complexity must be proportional to the problem.
@@ -28,120 +38,220 @@ Every strong piece should reflect one or more of these principles:
 - Rigor must serve business usefulness.
 - Trust and long-term relationships matter more than maximising one transaction.
 
+## Canonical content object
+
+Before writing copy, the system should be able to describe the idea with:
+
+- editorial pillar;
+- topic entity/entities;
+- content family;
+- angle;
+- business question/problem;
+- target audience;
+- thesis;
+- evidence or project source;
+- practical takeaway;
+- risks/limits;
+- candidate channels;
+- candidate visual representation.
+
+Channel, copy length and visual style are downstream decisions.
+
 ## Content families
 
-### 1. Current affairs / Actualidad
-Use when a current event, product release, market move, regulation, company decision or technical development has a real implication for business operators.
+### Explain / Understand — `explain_understand`
 
-Structure:
-Event → what actually matters → business implication → SC-Analytics perspective → practical takeaway.
+Explain a concept, distinction or mechanism so the reader can make a better decision.
 
-Reject if the piece would only repeat the news.
+Structure: concept/confusion → mechanism → why it matters → practical implication.
 
-### 2. Opinion
-Use when SC-Analytics has a clear, defensible position on a business or technology decision.
+### Compare — `compare`
 
-Structure:
-Observation or common belief → position → reasoning → trade-off → implication.
+Compare alternatives against criteria that matter to a real decision.
 
-The opinion must be reasoned, not provocative for engagement.
+Structure: decision context → criteria → trade-offs → fit conditions.
 
-### 3. Educational
-Use to explain something a decision-maker can use to make a better decision.
+Avoid feature-list comparisons with no operating conclusion.
 
-Structure:
-Problem → concept/mechanism → simple framework → when it matters → practical application.
+### Decision Guide — `decision_guide`
 
-Avoid generic tutorials and definitions that can be found anywhere.
+Help the reader decide whether, when or how to use an approach.
 
-### 4. Contrarian
-Use when a popular practice, technology trend or management assumption deserves challenge.
+Structure: decision → conditions → trade-offs → decision rule → next step.
 
-Structure:
-Common practice → why it can fail → conditions where it is valid → better decision rule.
+### Diagnose — `diagnose`
 
-Contrarian does not mean inflammatory. Nuance is required.
+Reveal root causes through symptoms, signals or diagnostic tests.
 
-### 5. Insight
-Use for a concise observation that reveals an important mechanism, trade-off or decision pattern.
+Structure: symptom → mechanism → root cause → test/question.
 
-Structure:
-Observation → meaning → consequence.
+### Failure Modes & Mistakes — `failure_modes_mistakes`
 
-Can be text-only and short when the idea is strong enough.
+Show how something fails in practice and how to avoid the failure.
 
-### 6. Case / Experience
-Use approved real cases, anonymised when necessary.
+Structure: common approach → failure mechanism → consequence → prevention/better rule.
 
-Structure:
-Business problem → constraints → reasoning → proportional solution → result → reusable lesson.
+### Framework / Playbook — `framework_playbook`
 
-Never imply facts, experience or causality that the evidence does not support.
+Give the reader a reusable framework, process or evaluation sequence.
 
-### 7. Commercial
-Use sparingly to explain a problem SC-Analytics can solve or a way of working that differentiates the company.
+Structure: decision problem → framework → stages/criteria → application → limitations.
 
-Structure:
-Business pain → cost/risk of leaving it unresolved → decision logic → how SC-Analytics approaches it → soft next step.
+### Case / Project Proof — `case_project_proof`
 
-The piece must still be useful to someone who never becomes a client.
+Use approved project facts from `sastree14/Portfolio_SC_Analytics`.
+
+Structure: problem → constraints → reasoning → system → evidence/result → reusable lesson.
+
+Never fabricate experience, causality, metrics, tools or outcomes.
+
+### System / Architecture — `system_architecture`
+
+Explain how components interact.
+
+Structure: inputs → data/process layer → logic/models → decision/application layer → outputs/feedback.
+
+### Evidence / Measurement — `evidence_measurement`
+
+Center the piece on evidence, metrics or evaluation.
+
+Structure: question → evidence → interpretation → trade-off → decision implication.
+
+### Transformation — `transformation`
+
+Show a meaningful operational or system change.
+
+Structure: before → friction/cost → intervention → after → difference.
+
+### Current Development / Implication — `current_development_implication`
+
+Interpret a current development instead of repeating it.
+
+Structure: development → what changed → business implication → trade-off → takeaway.
+
+### Point of View / Contrarian — `point_of_view_contrarian`
+
+Defend a clear position or challenge a common assumption with nuance.
+
+Structure: common belief → position → reasoning → boundary conditions → implication.
+
+## Editorial angles
+
+Angles are open modifiers, not controlled top-level families.
+
+Common examples:
+
+- when to use / when not to use;
+- X vs Y;
+- why it fails;
+- common mistakes;
+- hidden cost;
+- trade-offs;
+- limitations and risks;
+- what actually matters;
+- what people misunderstand;
+- myth vs reality;
+- simple vs complex;
+- build vs buy;
+- manual vs automated;
+- traditional vs modern;
+- model vs business outcome;
+- technical vs business perspective;
+- short vs long term;
+- small vs large organisation;
+- prototype vs production;
+- implementation;
+- adoption;
+- ROI / economic impact;
+- measurement;
+- decision quality;
+- scalability;
+- cost;
+- time to value;
+- maturity;
+- industry, project, executive or technical lens;
+- what changed;
+- what comes next.
+
+Do not add a new family merely because a useful new angle appears.
+
+## Commercial intent
+
+"Commercial" is not a content family.
+
+Commercial adjacency is an objective or scoring dimension. Any family can support a commercial conversation when the piece starts from a real problem and gives the reader genuine value.
+
+The CTA must follow naturally from the argument. Do not force a sales ending onto every piece.
 
 ## Editorial scoring
-Score candidate topics from 0 to 10 on:
-- ICP relevance
-- business consequence
-- originality of SC-Analytics angle
-- evidence quality
-- fit with SC-Analytics principles
-- potential usefulness to the reader
-- commercial adjacency without forced selling
+
+Score candidate ideas from 0 to 10 on:
+
+- ICP relevance;
+- business consequence;
+- originality of the SC-Analytics angle;
+- evidence quality;
+- fit with SC-Analytics principles;
+- usefulness to the reader;
+- commercial adjacency without forced selling;
+- diversity contribution versus recent content.
 
 A high trend score does not compensate for low business relevance or weak evidence.
 
 Recommended decision:
-- 8.0+ strong candidate
-- 6.5–7.9 research further / optional
-- below 6.5 usually ignore
+
+- 8.0+ strong candidate;
+- 6.5–7.9 research further / optional;
+- below 6.5 usually ignore.
 
 ## Output decision
-For each approved idea, decide independently whether it deserves:
-- LinkedIn post
-- website article
-- case study / project page
-- visual asset
-- no public output
+
+For each approved canonical idea, decide independently whether it deserves:
+
+- Arnau LinkedIn;
+- SC-Analytics LinkedIn;
+- website article;
+- website project/case page;
+- marketplace adaptation;
+- GitHub/portfolio asset;
+- visual asset;
+- no public output.
 
 Do not mechanically create every format from every idea.
 
-## Article decision
-Prefer an article when the idea:
-- needs meaningful context, evidence or explanation;
-- has evergreen value;
-- answers a recurring client question;
-- supports a core SC-Analytics capability or point of view;
-- can become a useful reference beyond the current news cycle.
-
-Prefer LinkedIn-only when one strong idea can be communicated clearly without long-form depth.
-
 ## Visual decision
-A visual is optional. Use it only when it clarifies, demonstrates or strengthens the argument.
-Priority:
-1. real data or chart;
-2. business diagram or framework;
-3. real project/screenshot asset;
-4. branded deterministic React composition;
-5. generative editorial image when genuinely appropriate;
-6. text-only.
+
+Visual design is downstream from the editorial idea.
+
+Current reusable visual families:
+
+- Carousel / Diagnostic;
+- Dataviz;
+- Architecture / Diagram;
+- Before / After.
+
+Current visual languages:
+
+- A — Dark Editorial;
+- B — Off-White Executive;
+- C — Technical Blueprint;
+- D — Analytical Report.
+
+The detailed family/angle → visual mapping is maintained separately. Do not let a visual template dictate the editorial idea.
 
 ## Quality gate before approval
+
 Reject or rewrite if any of the following are true:
-- the post sounds like generic AI/LinkedIn content;
+
+- the piece sounds like generic AI/LinkedIn content;
 - it could have been written by any consultancy;
+- the topic exists but there is no useful angle;
 - it overstates certainty or evidence;
-- it introduces technology before the business problem;
+- it invents project experience or results;
+- it introduces technology before the business question without a reason;
 - it uses complexity as a proxy for expertise;
 - it contains a forced sales CTA;
 - the reader learns nothing useful;
-- the piece repeats a source without adding interpretation;
+- it repeats a source without adding interpretation;
 - the language feels translated rather than naturally written;
 - the tone does not sound credible coming from Arnau or SC-Analytics.
