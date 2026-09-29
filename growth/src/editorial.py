@@ -17,16 +17,45 @@ from .storage import get_store
 from .visuals import render_branded_card, render_business_diagram, render_comparison_visual
 
 SUPPORTED_LANGUAGES = ("es", "en", "ca")
-CONTENT_FAMILIES = (
-    "current_affairs",
-    "opinion",
-    "educational",
-    "contrarian",
-    "insight",
-    "case",
-    "commercial",
+EDITORIAL_PILLARS = (
+    "projects_proof",
+    "industries_use_cases",
+    "data_science_explained",
+    "models_methods_decision_science",
+    "technology_platforms_business_systems",
+    "data_ai_today",
+    "consulting_decision_insights",
 )
+CONTENT_FAMILIES = (
+    "explain_understand",
+    "compare",
+    "decision_guide",
+    "diagnose",
+    "failure_modes_mistakes",
+    "framework_playbook",
+    "case_project_proof",
+    "system_architecture",
+    "evidence_measurement",
+    "transformation",
+    "current_development_implication",
+    "point_of_view_contrarian",
+)
+LEGACY_FAMILY_MAP = {
+    "current_affairs": "current_development_implication",
+    "opinion": "point_of_view_contrarian",
+    "educational": "explain_understand",
+    "contrarian": "point_of_view_contrarian",
+    "insight": "explain_understand",
+    "case": "case_project_proof",
+    "commercial": "decision_guide",
+}
 OUTPUT_DECISIONS = ("IGNORE", "RESEARCH_MORE", "LINKEDIN", "LINKEDIN_ARTICLE", "ARTICLE", "LINKEDIN_AND_ARTICLE", "CASE")
+
+
+def _canonical_family(value: Any) -> str:
+    family = str(value or "").strip()
+    family = LEGACY_FAMILY_MAP.get(family, family)
+    return family if family in CONTENT_FAMILIES else "explain_understand"
 
 STATIC_DISCOVERY_QUERIES = (
     "AI automation business operations companies implementation",
@@ -201,7 +230,10 @@ def evaluate_signals(signals: list[dict[str, Any]]) -> list[dict[str, Any]]:
 For every signal return:
 - signal_id
 - scores: icp_relevance, business_consequence, angle_originality, evidence_quality, principles_fit, reader_usefulness, commercial_adjacency (0-10 each)
+- editorial_pillar: one of {list(EDITORIAL_PILLARS)}
+- topic_entities: array of the specific methods, technologies, industries, projects or business concepts being discussed
 - family: one of {list(CONTENT_FAMILIES)}
+- angle: a concise open-text editorial angle such as when_to_use, x_vs_y, hidden_cost, trade_offs, implementation, adoption or decision_quality
 - decision: one of IGNORE, RESEARCH_MORE, LINKEDIN, LINKEDIN_ARTICLE, ARTICLE, LINKEDIN_AND_ARTICLE, CASE
 - business_problem
 - possible_thesis
@@ -240,15 +272,21 @@ SIGNALS:
         decision = str(item.get("decision", "IGNORE")).upper()
         if decision not in OUTPUT_DECISIONS:
             decision = "IGNORE"
-        family = str(item.get("family", "insight"))
-        if family not in CONTENT_FAMILIES:
-            family = "insight"
+        family = _canonical_family(item.get("family"))
+        pillar = str(item.get("editorial_pillar", "")).strip()
+        if pillar not in EDITORIAL_PILLARS:
+            pillar = "consulting_decision_insights"
+        angle = str(item.get("angle", "")).strip()
+        topic_entities = [str(x).strip() for x in (item.get("topic_entities") or []) if str(x).strip()]
         evaluation = {
             **item,
             "scores": scores,
             "weighted_score": score,
             "decision": decision,
+            "editorial_pillar": pillar,
+            "topic_entities": topic_entities,
             "family": family,
+            "angle": angle,
         }
         status = "ignored" if decision == "IGNORE" or score < 6.5 else "evaluated"
         store.update("editorial_signals", "signal_id", sid, {
@@ -311,7 +349,10 @@ The brief must reflect SC-Analytics' business-first philosophy and evidence poli
 
 Return exactly these fields:
 - canonical_title
+- editorial_pillar: one of {list(EDITORIAL_PILLARS)}
+- topic_entities: array
 - family: one of {list(CONTENT_FAMILIES)}
+- angle: concise open-text editorial angle
 - thesis
 - business_problem
 - target_audience: array
@@ -367,9 +408,16 @@ BRAIN:
 
     cfg = load_config()
     brief_id = new_id("brief")
-    family = str(result.get("family", evaluation.get("family", "insight")))
-    if family not in CONTENT_FAMILIES:
-        family = "insight"
+    family = _canonical_family(result.get("family", evaluation.get("family")))
+    pillar = str(result.get("editorial_pillar", evaluation.get("editorial_pillar", ""))).strip()
+    if pillar not in EDITORIAL_PILLARS:
+        pillar = "consulting_decision_insights"
+    angle = str(result.get("angle", evaluation.get("angle", ""))).strip()
+    topic_entities = [
+        str(x).strip()
+        for x in (result.get("topic_entities") or evaluation.get("topic_entities") or [])
+        if str(x).strip()
+    ]
     primary_language = str(result.get("primary_linkedin_language", evaluation.get("recommended_linkedin_language", "es")))
     if primary_language not in SUPPORTED_LANGUAGES:
         primary_language = cfg["company"].get("default_language", "es")
@@ -393,7 +441,15 @@ BRAIN:
         "scores": evaluation.get("scores", {}),
         "weighted_score": score,
         "evidence": clean_evidence,
-        "research": {"source_urls": research["source_urls"]},
+        "research": {
+            "source_urls": research["source_urls"],
+            "editorial_taxonomy": {
+                "pillar": pillar,
+                "topic_entities": topic_entities,
+                "family": family,
+                "angle": angle,
+            },
+        },
         "risks_or_limits": list(result.get("risks_or_limits") or []),
         "status": "draft",
         "created_at": _utc_now(),
@@ -566,7 +622,7 @@ def _persist_variant(brief: dict[str, Any], *, language: str, channel: str, cont
         source_case="",
         brief_id=brief["brief_id"],
         language=language,
-        content_family=brief.get("family", "insight"),
+        content_family=brief.get("family", "explain_understand"),
         quality_score=quality,
         critique=critique,
         source_url=(brief.get("research") or {}).get("source_urls", [""])[0] if (brief.get("research") or {}).get("source_urls") else "",
