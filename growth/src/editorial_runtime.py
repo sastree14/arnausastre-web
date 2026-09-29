@@ -64,6 +64,7 @@ def _editorial_brain(channel: str) -> str:
         "voice/forbidden_language.md",
         "evidence/evidence_policy.md",
         "content/content_strategy.md",
+        "content/editorial_architecture.md",
         "content/editorial_playbook.md",
         "content/language_strategy.md",
     ])
