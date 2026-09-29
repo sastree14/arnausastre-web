@@ -1,8 +1,10 @@
-# Taxonomy
+# Taxonomy — Legacy Compatibility
 
-All valid category values for the SC-Analytics editorial system.
-The content engine reads this file to validate and classify generated articles.
-Add new values here to extend the system — no code changes required.
+> LEGACY FILE. Do not extend this file as the source of truth for the v2 editorial system.
+>
+> Canonical editorial architecture: `growth/brain/content/editorial_architecture.md`
+>
+> This file remains temporarily available for legacy article-generation compatibility. If it conflicts with the canonical architecture, the canonical architecture governs.
 
 ## Industry
 
