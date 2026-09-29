@@ -201,6 +201,10 @@ Portfolio rules:
 For every proposal return:
 - title
 - hook: one concise opening angle
+- editorial_pillar: one of projects_proof | industries_use_cases | data_science_explained | models_methods_decision_science | technology_platforms_business_systems | data_ai_today | consulting_decision_insights
+- topic_entities: array of specific methods, technologies, industries, projects or business concepts
+- family: one of explain_understand | compare | decision_guide | diagnose | failure_modes_mistakes | framework_playbook | case_project_proof | system_architecture | evidence_measurement | transformation | current_development_implication | point_of_view_contrarian
+- angle: concise open-text editorial angle
 - industry
 - service
 - business_problem
@@ -253,8 +257,14 @@ Return {{"proposals": [...]}} only.
         if recommended not in _FORMAT_TO_DECISION:
             recommended = "linkedin_post"
         avoid_note = avoid.strip()
+        editorial_pillar = str(item.get("editorial_pillar") or "consulting_decision_insights").strip()
+        topic_entities = [str(x).strip() for x in (item.get("topic_entities") or []) if str(x).strip()]
+        family = str(item.get("family") or "explain_understand").strip()
+        angle = str(item.get("angle") or "").strip()
         generation_hint = (
-            f"Selected editorial proposal. Industry: {industry}. Service: {service}. "
+            f"Selected editorial proposal. Pillar: {editorial_pillar}. Family: {family}. Angle: {angle or 'open'}. "
+            f"Entities: {', '.join(topic_entities) if topic_entities else 'none specified'}. "
+            f"Industry: {industry}. Service: {service}. "
             f"Title direction: {title}. Business problem: {problem}. Thesis: {thesis}. "
             f"Required format: {recommended}. "
             f"Required focus: {focus.strip() or 'use this proposal exactly'}. "
@@ -264,6 +274,10 @@ Return {{"proposals": [...]}} only.
             "proposal_id": f"proposal_{index + 1}",
             "title": title,
             "hook": str(item.get("hook") or "").strip(),
+            "editorial_pillar": editorial_pillar,
+            "topic_entities": topic_entities,
+            "family": family,
+            "angle": angle,
             "industry": industry,
             "service": service,
             "business_problem": problem,
