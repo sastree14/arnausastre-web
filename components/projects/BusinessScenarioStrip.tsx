@@ -1,4 +1,6 @@
 import type { WebsiteProjectGoldStandard } from '@/lib/website-project-gold-standard'
+import type { SiteLanguage } from '@/lib/public-copy'
+import { sc12BusinessOutcomeMetrics } from '@/lib/project-commercial-copy'
 
 export default function BusinessScenarioStrip({
   outcome,
@@ -6,12 +8,14 @@ export default function BusinessScenarioStrip({
   headline,
   summary,
   note,
+  lang,
 }: {
   outcome: WebsiteProjectGoldStandard['businessOutcome']
   label: string
   headline: string
   summary: string
   note: string
+  lang: SiteLanguage
 }) {
   return (
     <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
@@ -26,7 +30,7 @@ export default function BusinessScenarioStrip({
           </div>
 
           <div className="grid border-y border-[#5E86A8] sm:grid-cols-3 sm:divide-x sm:divide-[#5E86A8]">
-            {outcome.metrics.map((metric) => (
+            {sc12BusinessOutcomeMetrics[lang].map((metric) => (
               <div key={metric.label} className="border-b border-[#5E86A8] px-5 py-5 last:border-b-0 sm:border-b-0">
                 <p className="text-[32px] font-semibold leading-none text-white">{metric.value}</p>
                 <p className="mt-3 text-[13px] font-semibold uppercase tracking-[0.1em] text-[#A8BACB]">{metric.label}</p>
