@@ -248,3 +248,36 @@ The CRM should later act as an orchestration/review surface:
 - approve publication.
 
 The CRM must not become a second implementation of the visual planner or renderer.
+
+
+## Evidence provenance and safe fallback
+
+Visual generation inherits provenance from the Canonical Content Object.
+
+Each Visual Spec carries `source_refs` resolved from:
+- verified canonical claims;
+- project source references from `Portfolio_SC_Analytics`;
+- approved public sources;
+- approved internal sources.
+
+The visual layer must never silently detach a factual chart from its evidence.
+
+For Dataviz, the evidence mode is constrained by the actual package:
+- real structured values/series + verified evidence may be empirical;
+- when no quantitative evidence is present and the visual is conceptual, the planner falls back to `illustrative`;
+- an illustrative fallback uses conceptual chart grammar and disclosure rather than inventing numbers to make a chart possible.
+
+This fallback remains deterministic even if the visual-planning LLM is unavailable.
+
+## Database integrity
+
+Runtime relations are enforced, not merely implied:
+- `publication_plans.content_object_id` → `canonical_content_objects.content_object_id`;
+- `presentation_packages.content_object_id` → `canonical_content_objects.content_object_id`;
+- `presentation_packages.plan_id` → `publication_plans.plan_id`;
+- `visual_candidates.package_id` → `presentation_packages.package_id`;
+- `visual_render_runs.candidate_id` → `visual_candidates.candidate_id`;
+- `visual_render_runs.design_id` → `visual_designs.design_id`;
+- only one selected visual candidate is permitted per presentation package.
+
+Empty-string defaults were removed from canonical content references so a runtime object cannot be created without an explicit parent identifier.
