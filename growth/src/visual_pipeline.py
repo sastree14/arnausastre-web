@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import json
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 from PIL import Image
+from jsonschema import Draft202012Validator
 
 from .assets import get_asset_store
 from .config import load_config
@@ -28,6 +30,18 @@ def _now() -> str:
 
 def _tenant_id() -> str:
     return str(load_config()["company"]["tenant_id"])
+
+
+def _validate_content_object(content_object: dict[str, Any]) -> None:
+    schema_path = Path(__file__).resolve().parents[1] / "schemas" / "canonical_content_object.schema.json"
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    errors = sorted(Draft202012Validator(schema).iter_errors(content_object), key=lambda e: list(e.path))
+    if errors:
+        details = []
+        for error in errors[:8]:
+            path = ".".join(str(x) for x in error.path) or "<root>"
+            details.append(f"{path}: {error.message}")
+        raise ValueError("Canonical Content Object validation failed: " + "; ".join(details))
 
 
 def _persist_canonical_content(store: Any, content_object: dict[str, Any], tenant_id: str, content_object_id: str) -> None:
@@ -231,7 +245,11 @@ def run_visual_pipeline(
 ) -> dict[str, Any]:
     """Run Phase 5 end-to-end without CRM/UI coupling."""
     candidate_count = max(1, min(3, int(candidate_count)))
-    content_object_id = str(content_object.get("content_object_id") or new_id("content"))
+    content_object = dict(content_object)
+    if not content_object.get("content_object_id"):
+        content_object["content_object_id"] = new_id("content")
+    _validate_content_object(content_object)
+    content_object_id = str(content_object["content_object_id"])
     tenant_id = _tenant_id()
     store = get_store() if persist else None
     if store:
