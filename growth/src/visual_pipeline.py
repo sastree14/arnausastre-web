@@ -30,6 +30,44 @@ def _tenant_id() -> str:
     return str(load_config()["company"]["tenant_id"])
 
 
+def _persist_canonical_content(store: Any, content_object: dict[str, Any], tenant_id: str, content_object_id: str) -> None:
+    now = _now()
+    row = {
+        "content_object_id": content_object_id,
+        "tenant_id": tenant_id,
+        "status": str(content_object.get("status") or "draft"),
+        "origin": str(content_object.get("origin") or "manual_idea"),
+        "editorial_pillar": str(content_object.get("editorial_pillar") or "consulting_decision_insights"),
+        "content_family": str(content_object.get("content_family") or "explain_understand"),
+        "angle": str(content_object.get("angle") or ""),
+        "topic_entities": content_object.get("topic_entities") if isinstance(content_object.get("topic_entities"), list) else [],
+        "business_problem": str(content_object.get("business_problem") or ""),
+        "business_question": str(content_object.get("business_question") or ""),
+        "thesis": str(content_object.get("thesis") or ""),
+        "key_points": content_object.get("key_points") if isinstance(content_object.get("key_points"), list) else [],
+        "commercial_spine": content_object.get("commercial_spine") if isinstance(content_object.get("commercial_spine"), dict) else {},
+        "evidence": content_object.get("evidence") if isinstance(content_object.get("evidence"), dict) else {},
+        "primary_objective": str(content_object.get("primary_objective") or "authority"),
+        "secondary_objectives": content_object.get("secondary_objectives") if isinstance(content_object.get("secondary_objectives"), list) else [],
+        "practical_takeaway": str(content_object.get("practical_takeaway") or ""),
+        "desired_reader_action": str(content_object.get("desired_reader_action") or "understand_concept"),
+        "target_audience": content_object.get("target_audience") if isinstance(content_object.get("target_audience"), list) else [],
+        "industry_context": content_object.get("industry_context") if isinstance(content_object.get("industry_context"), list) else [],
+        "funnel_stage": str(content_object.get("funnel_stage") or "awareness"),
+        "timeliness": str(content_object.get("timeliness") or "evergreen"),
+        "why_now": str(content_object.get("why_now") or ""),
+        "valid_until": content_object.get("valid_until"),
+        "confidentiality": str(content_object.get("confidentiality") or "public"),
+        "language_context": content_object.get("language_context") if isinstance(content_object.get("language_context"), list) else [],
+        "risks_or_limits": content_object.get("risks_or_limits") if isinstance(content_object.get("risks_or_limits"), list) else [],
+        "output_hints": content_object.get("output_hints") if isinstance(content_object.get("output_hints"), dict) else {},
+        "payload": {**content_object, "content_object_id": content_object_id},
+        "created_at": str(content_object.get("created_at") or now),
+        "updated_at": now,
+    }
+    store.upsert("canonical_content_objects", row, "content_object_id")
+
+
 def _clip(value: str, limit: int) -> str:
     value = str(value or "").strip()
     if len(value) <= limit:
@@ -196,6 +234,8 @@ def run_visual_pipeline(
     content_object_id = str(content_object.get("content_object_id") or new_id("content"))
     tenant_id = _tenant_id()
     store = get_store() if persist else None
+    if store:
+        _persist_canonical_content(store, content_object, tenant_id, content_object_id)
 
     format_options = recommend_visual_formats(content_object, channel=channel, max_options=3)
     selected_format = str(format_key or (format_options[0]["format"] if format_options else "carousel"))
