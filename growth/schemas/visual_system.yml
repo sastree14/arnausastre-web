@@ -149,10 +149,10 @@ format_layouts:
     C: {eyebrow_top: 227, title_top: 269, content_top: 535}
     D: {eyebrow_top: 217, title_top: 273, content_top: 565, side_rail_x: 810, side_rail_width: 190}
   dataviz:
-    A: {title_top: 288, context_top: 536, chart: {x: 120, y: 500, width: 840, height: 430}, takeaway: {x: 140, y: 1030, width: 800, height: 150}}
-    B: {title_top: 352, context_top: 623, chart: {x: 100, y: 560, width: 800, height: 400}, takeaway: {x: 80, y: 1040, width: 920, height: 130}, side_rail_x: 814}
-    C: {title_top: 269, context_top: 426, chart: {x: 90, y: 550, width: 900, height: 460}, takeaway: {x: 90, y: 1035, width: 900, height: 145}}
-    D: {title_top: 275, context_top: 416, chart: {x: 80, y: 600, width: 920, height: 430}, takeaway: {x: 80, y: 1045, width: 920, height: 140}}
+    A: {title_top: 288, context_top: 536, chart: {x: 150, y: 620, width: 700, height: 350}, takeaway: {x: 140, y: 1030, width: 800, height: 150}}
+    B: {title_top: 352, context_top: 623, chart: {x: 120, y: 735, width: 700, height: 335}, takeaway: {x: 89, y: 1139, width: 869, height: 102}, side_rail_x: 814, side_rail_rule_x: 786.5}
+    C: {title_top: 269, context_top: 426, chart: {x: 74, y: 474, width: 899, height: 527}, takeaway: {x: 90, y: 1035, width: 900, height: 145}}
+    D: {title_top: 275, context_top: 416, chart: {x: 80, y: 600, width: 920, height: 431}, takeaway: {x: 80, y: 1045, width: 920, height: 140}}
   architecture:
     A: {title_top: 288, context_top: 536, diagram_top: 605}
     B: {title_top: 352, context_top: 623, diagram_top: 730}
