@@ -28,6 +28,7 @@ REQUIRED_BRAIN_FILES = [
     "content/editorial_playbook.md",
     "content/visual_system.md",
     "content/visual_engine.md",
+    "content/website_project_gold_standard.md",
     "content/language_strategy.md",
 ]
 
