@@ -395,3 +395,22 @@ Additional fields depend on the content origin and intended use.
 - Human-readable mirror: Google Drive
 
 If an operational implementation conflicts with this model definition, the model definition governs until intentionally versioned.
+
+
+## Portfolio adapter
+
+Project-led canonical content is created through the portfolio adapter:
+
+- implementation: `growth/src/portfolio.py`
+- operating rules: `growth/brain/content/portfolio_integration.md`
+- factual source: `sastree14/Portfolio_SC_Analytics`
+
+The adapter resolves Project Manifest v2 first, loads only the evidence needed for the selected angle, preserves exact project source references and validates the resulting object against this model.
+
+For `origin = portfolio_project`:
+
+- `editorial_pillar` is `projects_proof`;
+- `evidence.project_sources` must point to the portfolio project;
+- factual claims use `source_type = portfolio_project` and an approved source path;
+- `commercial_spine.proof.type` is `portfolio_project`;
+- public portfolio proof must not be converted into a named client claim without separate approved evidence.
