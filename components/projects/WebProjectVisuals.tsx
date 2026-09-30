@@ -70,13 +70,13 @@ function ArchitectureNode({
   detail: string
 }) {
   return (
-    <div className="border border-[#5E86A8] bg-[#13283C] px-5 py-5">
-      <div className="flex items-start gap-4">
+    <div className="border border-[#5E86A8] bg-[#13283C]">
+      <div className="border-b border-[#496C8A] px-4 py-2.5 text-center">
         <span className="font-mono text-[13px] text-[#7A7DFF]">{String(index).padStart(2, '0')}</span>
-        <div>
-          <h3 className="text-[16px] font-semibold leading-6 text-[#EAF0F6]">{title}</h3>
-          <p className="mt-2 text-[14px] leading-6 text-[#A8BACB]">{detail}</p>
-        </div>
+      </div>
+      <div className="px-5 py-5">
+        <h3 className="text-[16px] font-semibold leading-6 text-[#EAF0F6]">{title}</h3>
+        <p className="mt-2 text-[14px] leading-6 text-[#A8BACB]">{detail}</p>
       </div>
     </div>
   )
