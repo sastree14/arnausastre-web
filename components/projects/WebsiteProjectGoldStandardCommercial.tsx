@@ -13,7 +13,6 @@ function Section({
   label,
   title,
   body,
-  tone = 'white',
   children,
 }: {
   id: string
@@ -23,22 +22,19 @@ function Section({
   tone?: 'white' | 'paper' | 'dark'
   children: React.ReactNode
 }) {
-  const dark = tone === 'dark'
-  const bg = dark ? 'bg-[#0D1B2A]' : tone === 'paper' ? 'bg-[#F4F1EA]' : 'bg-white'
-
   return (
-    <section id={id} className={`scroll-mt-24 border-b ${dark ? 'border-[#496C8A]' : 'border-slate-300'} ${bg}`}>
+    <section id={id} className="scroll-mt-24 border-b border-slate-300 bg-transparent">
       <div className="px-6 py-12 lg:px-10 lg:py-14">
-        <p className={`text-[13px] font-semibold uppercase tracking-[0.14em] ${dark ? 'text-[#7A7DFF]' : 'text-indigo-700'}`}>
+        <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">
           {label}
         </p>
         <h2
-          className={`mt-3 max-w-4xl text-[34px] leading-[1.06] tracking-[-0.02em] sm:text-[40px] ${dark ? 'text-white' : 'text-slate-950'}`}
+          className="mt-3 max-w-4xl text-[34px] leading-[1.06] tracking-[-0.02em] text-slate-950 sm:text-[40px]"
           style={{ fontFamily: 'var(--font-playfair)' }}
         >
           {title}
         </h2>
-        {body ? <p className={`mt-4 max-w-3xl text-[16px] leading-8 ${dark ? 'text-[#EAF0F6]' : 'text-slate-600'}`}>{body}</p> : null}
+        {body ? <p className="mt-4 max-w-3xl text-[16px] leading-8 text-slate-600">{body}</p> : null}
         <div className="mt-8">{children}</div>
       </div>
     </section>
@@ -114,10 +110,11 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl lg:grid lg:grid-cols-[210px_minmax(0,1fr)] lg:px-8">
-        <CaseStudySidebar items={items} repositoryUrl={project.proofUrl} contactHref={project.cta.primaryHref} />
+      <div className="border-b border-slate-300 bg-[#FAFAF7]">
+        <div className="mx-auto max-w-7xl lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:px-8">
+          <CaseStudySidebar items={items} repositoryUrl={project.proofUrl} contactHref={project.cta.primaryHref} />
 
-        <div className="min-w-0 border-x border-slate-300 lg:border-l-0">
+          <div className="min-w-0">
           <Section id="problem" label={c.problemLabel} title={c.problemTitle} body={c.problemBody} tone="paper">
             <div className="border-t border-slate-500">
               {c.problemRows.map((row, index) => (
@@ -192,13 +189,16 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
             </div>
           </Section>
 
-          <section className="border-b border-[#496C8A] bg-[#0D1B2A] px-6 py-12 text-white lg:px-10 lg:py-14">
-            <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.takeawayLabel}</p>
-            <h2 className="mt-3 max-w-4xl text-[36px] leading-[1.06] text-white sm:text-[42px]" style={{ fontFamily: 'var(--font-playfair)' }}>
-              {c.takeawayTitle}
-            </h2>
-            <p className="mt-5 max-w-3xl text-[16px] leading-8 text-[#EAF0F6]">{c.takeawayBody}</p>
+          <section className="px-6 py-12 lg:px-10 lg:py-14">
+            <div className="border border-[#496C8A] bg-[#0D1B2A] px-6 py-7 text-white lg:px-8 lg:py-8">
+              <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.takeawayLabel}</p>
+              <h2 className="mt-3 max-w-4xl text-[34px] leading-[1.06] text-white sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>
+                {c.takeawayTitle}
+              </h2>
+              <p className="mt-5 max-w-3xl text-[16px] leading-8 text-[#EAF0F6]">{c.takeawayBody}</p>
+            </div>
           </section>
+          </div>
         </div>
       </div>
     </main>
