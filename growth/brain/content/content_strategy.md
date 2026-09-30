@@ -82,6 +82,15 @@ Only after that does it decide whether the idea should become:
 
 Do not mechanically turn every idea into every channel.
 
+## Channel contracts
+
+The definitive rules for adapting a canonical idea to LinkedIn, website articles, website project/case studies, marketplaces and GitHub/portfolio are defined in:
+
+- `growth/brain/content/channel_contracts.md`
+- `growth/schemas/channel_contracts.yml`
+
+A channel output may change narrative depth, title, CTA and presentation, but it must not change the canonical thesis, evidence or project provenance.
+
 ## Preferred channels
 
 - Arnau personal LinkedIn: main attention, trust and point-of-view channel. Prefer 1–2 strong posts per week at most.
