@@ -121,10 +121,10 @@ export const SC12_WEBSITE_GOLD_STANDARD: WebsiteProjectGoldStandard = {
     'https://github.com/sastree14/Portfolio_SC_Analytics/tree/main/projects/sc-12-multi-horizon-demand-forecasting',
   proofLabel: 'Inspect the technical implementation',
   heroFacts: [
-    { label: 'Planning horizons', value: 'H1 · H3 · H6 · H9' },
-    { label: 'Evaluation', value: 'WAPE · MAE · Bias' },
-    { label: 'Decision KPIs', value: 'Service level · Coverage' },
-    { label: 'Serving path', value: 'FastAPI · PostgreSQL' },
+    { label: 'Planning horizons', value: '1 · 3 · 6 · 9 days' },
+    { label: 'Decision', value: 'Purchasing · Inventory' },
+    { label: 'Trade-off', value: 'Service · Stock · Cash' },
+    { label: 'Measured through', value: 'WAPE · Bias · Coverage' },
   ],
   businessProblem: {
     eyebrow: '01 · BUSINESS PROBLEM',
