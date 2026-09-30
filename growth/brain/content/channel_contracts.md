@@ -193,17 +193,29 @@ Technical/factual proof
 
 ## Visual relationship
 
-Channel contracts do not choose a final visual language.
+Channel contracts define the role and amount of copy around a visual; they do not contain the visual design system itself.
 
-They may specify visual needs or semantics. The separate visual decision layer chooses:
+The visual layer may choose, when eligible:
 
 - Carousel / Diagnostic;
 - Dataviz;
 - Architecture / Diagram;
 - Before / After;
-- Project Visual;
-- Text-only;
+- Text-only when no visual adds value.
 
-and then visual language A/B/C/D.
+The dedicated visual system then selects or accepts visual language A/B/C/D, generates a format-ready Presentation Content Package, ranks up to three valid compositions and renders them deterministically.
 
-Do not embed visual-style decisions into the canonical content object or channel contract.
+Important channel behaviours:
+
+- LinkedIn + Carousel: the carousel is the primary narrative; outside copy stays minimal.
+- LinkedIn + Dataviz/Architecture/Before-After: the visual carries the analytical mechanism while post copy explains the business meaning.
+- Website Article: visuals are supporting evidence/explanation; the article remains a complete long-form argument.
+- Website Project: visuals support business proof and technical credibility and may point deeper readers to Portfolio_SC_Analytics.
+- Marketplace Project: visuals are concise capability proof.
+
+Canonical documentation:
+
+- `growth/brain/content/visual_system.md`
+- `growth/brain/content/visual_engine.md`
+
+Do not embed pixel rules or style implementation inside the Canonical Content Object or channel contract.
