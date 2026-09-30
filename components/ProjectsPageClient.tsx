@@ -145,11 +145,11 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
                   key={filter}
                   type="button"
                   onClick={() => setActiveFilter(filter)}
-                  className={\`relative shrink-0 py-1 text-[14px] transition-colors after:absolute after:-bottom-[15px] after:left-0 after:h-px after:w-full after:origin-left after:bg-slate-950 after:transition-transform \${
+                  className={`relative shrink-0 py-1 text-[14px] transition-colors after:absolute after:-bottom-[15px] after:left-0 after:h-px after:w-full after:origin-left after:bg-slate-950 after:transition-transform ${
                     active
                       ? 'font-semibold text-slate-950 after:scale-x-100'
                       : 'font-medium text-slate-500 after:scale-x-0 hover:text-slate-950'
-                  }\`}
+                  }`}
                 >
                   {c.filters[filter]}
                 </button>
@@ -168,7 +168,7 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
             return (
               <Link
                 key={project.slug}
-                href={\`/projects/\${project.slug}\`}
+                href={`/projects/${project.slug}`}
                 className="group grid gap-3 border-b border-slate-300 py-[15px] transition-colors hover:bg-white/80 sm:grid-cols-[54px_1fr_110px] sm:items-center sm:gap-5"
               >
                 <span className="font-mono text-[12px] text-slate-400">{String(index + 1).padStart(2, '0')}</span>
