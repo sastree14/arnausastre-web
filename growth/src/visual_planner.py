@@ -23,6 +23,46 @@ def _schema() -> dict[str, Any]:
     return json.loads((ROOT / "schemas" / "visual_spec.schema.json").read_text(encoding="utf-8"))
 
 
+def _has_quantitative_data(package: dict[str, Any]) -> bool:
+    content = package.get("content") or {}
+    if not isinstance(content, dict):
+        return False
+    for key in ("data", "series", "values"):
+        value = content.get(key)
+        if isinstance(value, list) and value:
+            return True
+        if isinstance(value, dict) and value:
+            return True
+    return False
+
+
+def _source_refs(content_object: dict[str, Any]) -> list[str]:
+    evidence = content_object.get("evidence") or {}
+    refs: list[str] = []
+    if not isinstance(evidence, dict):
+        return refs
+    for claim in evidence.get("claims") or []:
+        if not isinstance(claim, dict) or not claim.get("verified"):
+            continue
+        ref = claim.get("source_ref") or claim.get("source_url")
+        if ref:
+            refs.append(str(ref))
+    for source in evidence.get("project_sources") or []:
+        if not isinstance(source, dict):
+            continue
+        repo = str(source.get("repository") or "").strip()
+        project_id = str(source.get("project_id") or "").strip()
+        source_path = str(source.get("path") or "").strip()
+        if repo and project_id:
+            ref = f"{repo}:{project_id}"
+            if source_path:
+                ref += f":{source_path}"
+            refs.append(ref)
+    refs.extend(str(x) for x in (evidence.get("public_sources") or []) if x)
+    refs.extend(str(x) for x in (evidence.get("internal_sources") or []) if x)
+    return list(dict.fromkeys(refs))
+
+
 def _infer_intent(content_object: dict[str, Any], package: dict[str, Any]) -> dict[str, Any]:
     try:
         result = get_llm(high_reasoning=True).json(
@@ -53,15 +93,31 @@ PACKAGE:
 {package}
 """,
         )
-        return result if isinstance(result, dict) else {}
+        if not isinstance(result, dict):
+            result = {}
+        fmt = str(package.get("format") or "")
+        has_quant = _has_quantitative_data(package)
+        hinted_quant = bool((((content_object.get("output_hints") or {}).get("visual_semantics") or {}).get("quantitative_evidence")))
+        if fmt == "dataviz" and not has_quant and not hinted_quant:
+            result["evidence_mode"] = "illustrative"
+            if str(result.get("relationship") or "") not in {
+                "conceptual_curve", "process", "architecture", "transformation"
+            }:
+                result["relationship"] = "conceptual_curve"
+            result.setdefault("semantic_pattern", "conceptual_curve")
+            result["quantitative_data_available"] = False
+        return result
     except Exception:
         fmt = str(package.get("format") or "")
+        has_quant = _has_quantitative_data(package)
+        hinted_quant = bool((((content_object.get("output_hints") or {}).get("visual_semantics") or {}).get("quantitative_evidence")))
+        illustrative = fmt == "dataviz" and not has_quant and not hinted_quant
         return {
-            "relationship": "architecture" if fmt == "architecture" else "transformation" if fmt == "before_after" else "comparison",
-            "semantic_pattern": "pipeline" if fmt == "architecture" else "before_after" if fmt == "before_after" else "comparison",
-            "evidence_mode": "empirical",
-            "quantitative_data_available": False,
-            "planner_reason": "Deterministic fallback.",
+            "relationship": "architecture" if fmt == "architecture" else "transformation" if fmt == "before_after" else "conceptual_curve" if illustrative else "comparison",
+            "semantic_pattern": "pipeline" if fmt == "architecture" else "before_after" if fmt == "before_after" else "conceptual_curve" if illustrative else "comparison",
+            "evidence_mode": "illustrative" if illustrative else "empirical",
+            "quantitative_data_available": has_quant,
+            "planner_reason": "Deterministic fallback constrained by available evidence.",
         }
 
 
@@ -182,7 +238,7 @@ def plan_visual_candidates(
                 "annotations": [],
                 "options": row.get("options") if isinstance(row.get("options"),dict) else {},
             },
-            "source_refs": [],
+            "source_refs": _source_refs(content_object),
             "illustrative_disclosure": disclosure,
             "planner_reason": str(row.get("reason") or intent.get("planner_reason") or ""),
             "planner_score": float(row.get("score") or 0),
