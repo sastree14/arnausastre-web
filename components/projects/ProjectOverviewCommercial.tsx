@@ -78,7 +78,6 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
 
       {commercial && goldStandard ? (
         <BusinessScenarioStrip
-          outcome={goldStandard.businessOutcome}
           label={ui.scenario}
           headline={commercial.scenarioHeadline}
           summary={commercial.scenarioSummary}
