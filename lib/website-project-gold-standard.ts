@@ -121,7 +121,7 @@ export const SC12_WEBSITE_GOLD_STANDARD: WebsiteProjectGoldStandard = {
     'https://github.com/sastree14/Portfolio_SC_Analytics/tree/main/projects/sc-12-multi-horizon-demand-forecasting',
   proofLabel: 'Inspect the technical implementation',
   heroFacts: [
-    { label: 'Planning horizons', value: '1 · 3 · 6 · 9 days' },
+    { label: 'Planning horizons', value: '1 · 3 · 6 · 9 months' },
     { label: 'Decision', value: 'Purchasing · Inventory' },
     { label: 'Trade-off', value: 'Service · Stock · Cash' },
     { label: 'Measured through', value: 'WAPE · Bias · Coverage' },
@@ -152,12 +152,12 @@ export const SC12_WEBSITE_GOLD_STANDARD: WebsiteProjectGoldStandard = {
     eyebrow: '02 · WHY HORIZON MATTERS',
     title: 'The same model can be useful at one horizon and weak at another.',
     body:
-      'SC-12 evaluates forecasting quality separately at H1, H3, H6 and H9. Each horizon is backtested rather than hidden inside a single blended metric.',
+      'SC-12 evaluates forecasting quality separately at 1, 3, 6 and 9 months. Each horizon is backtested rather than hidden inside a single blended metric.',
     horizons: [
-      { horizon: 'H1', label: 'Near-term', note: 'Evaluate immediate forecast behaviour separately.' },
-      { horizon: 'H3', label: 'Short range', note: 'Retain an independent error and bias view.' },
-      { horizon: 'H6', label: 'Medium range', note: 'Make degradation visible instead of averaging it away.' },
-      { horizon: 'H9', label: 'Longer range', note: 'Treat long-horizon usefulness as its own decision question.' },
+      { horizon: '1M', label: 'Near-term', note: 'Evaluate immediate forecast behaviour separately.' },
+      { horizon: '3M', label: 'Short range', note: 'Retain an independent error and bias view.' },
+      { horizon: '6M', label: 'Medium range', note: 'Make degradation visible instead of averaging it away.' },
+      { horizon: '9M', label: 'Longer range', note: 'Treat long-horizon usefulness as its own decision question.' },
     ],
     takeaway:
       'The objective is not to make every horizon look equally accurate. It is to make the trade-off explicit enough to support a better planning decision.',
@@ -186,7 +186,7 @@ export const SC12_WEBSITE_GOLD_STANDARD: WebsiteProjectGoldStandard = {
       { title: 'Feature engineering', detail: 'Prepare model-ready signals and horizon context.' },
       { title: 'Baseline models', detail: 'Maintain simple reference points for every comparison.' },
       { title: 'ML candidates', detail: 'Evaluate XGBoost and LightGBM alongside statistical approaches.' },
-      { title: 'Backtesting by horizon', detail: 'Measure performance separately at H1, H3, H6 and H9.' },
+      { title: 'Backtesting by horizon', detail: 'Measure performance separately at 1, 3, 6 and 9 months.' },
       { title: 'Forecast selection', detail: 'Prefer out-of-sample performance and operational simplicity.' },
       { title: 'Planning output', detail: 'Expose forecasts, intervals and decision-relevant KPIs.' },
     ],
