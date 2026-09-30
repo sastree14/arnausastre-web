@@ -130,7 +130,7 @@ def _valid_canonical_object() -> dict:
             "proof": {"type": "reasoned_point_of_view", "source_ref": None, "note": "Illustrative explanation."},
             "service_adjacency": ["Machine Learning", "Decision Systems"],
             "conversion_intent": "Demonstrate disciplined model evaluation.",
-            "next_best_action": "understand_concept"
+            "next_best_action": "reconsider_process"
         },
         "evidence": {
             "claims": [],
