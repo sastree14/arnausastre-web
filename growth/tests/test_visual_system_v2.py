@@ -206,3 +206,83 @@ def test_visual_pipeline_orchestrates_validated_content_without_persistence(tmp_
     assert result["selected_candidate_id"]
     assert result["candidates"][0]["qa"]["passed"]
     assert result["candidates"][0]["spec"]["evidence_mode"] == "illustrative"
+
+
+def test_visual_planner_falls_back_to_illustrative_without_quantitative_evidence(monkeypatch):
+    import growth.src.visual_planner as vp
+
+    class BrokenLLM:
+        def json(self, *args, **kwargs):
+            raise RuntimeError("offline")
+
+    monkeypatch.setattr(vp, "get_llm", lambda **kwargs: BrokenLLM())
+    content_object = _valid_canonical_object()
+    package = {
+        "package_id": "pkg_no_data",
+        "content_object_id": content_object["content_object_id"],
+        "channel": "linkedin",
+        "format": "dataviz",
+        "visual_language": "D",
+        "visual_role": "primary_evidence",
+        "external_copy_mode": "medium",
+        "external_copy": "",
+        "hashtags": [],
+        "content": {
+            "title": "Overfitting is a generalisation problem.",
+            "context": "Conceptual explanation.",
+            "analytical_question": "What happens as complexity increases?",
+            "takeaway": "Validation behaviour matters."
+        },
+        "created_at": "2026-09-30T12:00:00Z"
+    }
+    specs = vp.plan_visual_candidates(content_object, package, candidate_count=1)
+    assert specs[0]["evidence_mode"] == "illustrative"
+    assert specs[0]["composition"]["chart_type"] in {"illustrative_line", "illustrative_multi_line"}
+    assert specs[0]["illustrative_disclosure"]
+
+
+def test_visual_spec_keeps_verified_evidence_references(monkeypatch):
+    import growth.src.visual_planner as vp
+
+    class FixedLLM:
+        def json(self, instructions, input_text):
+            if "semantic visual intent" in input_text:
+                return {
+                    "relationship": "comparison",
+                    "semantic_pattern": "comparison",
+                    "evidence_mode": "empirical",
+                    "quantitative_data_available": True,
+                    "planner_reason": "Real measured comparison."
+                }
+            return {"ranking": [{"variant_key": "bar", "semantic_fit": .9, "clarity": .9, "visual_balance": .8, "information_density": .8, "novelty": .5, "reason": "Clear."}]}
+
+    monkeypatch.setattr(vp, "get_llm", lambda **kwargs: FixedLLM())
+    content_object = _valid_canonical_object()
+    content_object["evidence"]["claims"] = [{
+        "text": "Observed metric.",
+        "source_type": "public_source",
+        "source_ref": "source-1",
+        "source_url": "https://example.com/evidence",
+        "verified": True,
+        "accessed_at": "2026-09-30T12:00:00Z"
+    }]
+    package = {
+        "package_id": "pkg_evidence",
+        "content_object_id": content_object["content_object_id"],
+        "channel": "linkedin",
+        "format": "dataviz",
+        "visual_language": "D",
+        "visual_role": "primary_evidence",
+        "external_copy_mode": "medium",
+        "external_copy": "",
+        "hashtags": [],
+        "content": {
+            "title": "Measured comparison.",
+            "analytical_relationship": "comparison",
+            "data": [{"label": "A", "value": 10}, {"label": "B", "value": 15}],
+            "takeaway": "B is higher in this source."
+        },
+        "created_at": "2026-09-30T12:00:00Z"
+    }
+    specs = vp.plan_visual_candidates(content_object, package, candidate_count=1)
+    assert "source-1" in specs[0]["source_refs"]
