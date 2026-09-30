@@ -136,7 +136,7 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
 
       <section className="border-b border-slate-300 bg-white">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex min-w-0 items-center gap-6 overflow-x-auto py-3.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex min-w-0 items-center gap-6 overflow-x-auto py-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <span className="shrink-0 text-[12px] font-semibold uppercase tracking-[0.14em] text-slate-400">{c.filterLabel}</span>
             {filterOrder.map((filter) => {
               const active = activeFilter === filter
