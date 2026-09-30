@@ -1,0 +1,197 @@
+# Website Project Gold Standard v1
+
+Status: draft implementation for review  
+Reference implementation: SC-12  
+Route: `/projects/ecommerce-demand-forecasting`
+
+## Purpose
+
+The Website Project Gold Standard is the commercial case-study layer between the executive website and the technical Portfolio_SC_Analytics repository.
+
+It must let a business buyer understand, within the first 10–20 seconds:
+
+- what problem the system addresses;
+- why the problem matters;
+- what was built;
+- what evidence exists;
+- what the system does not claim.
+
+A technical reader can then inspect implementation detail in Portfolio_SC_Analytics.
+
+## Source hierarchy
+
+For project facts:
+
+1. `Portfolio_SC_Analytics` manifest + evidence files are authoritative.
+2. The website may reframe and order facts commercially.
+3. The website may not invent client status, performance uplift, measured impact or unsupported technical detail.
+4. Public portfolio implementations must be labelled as such.
+5. Named client language is prohibited unless separate approved evidence explicitly permits it.
+
+## Page architecture
+
+Required blocks:
+
+1. Hero
+2. Evidence/provenance notice
+3. Business problem
+4. Decision context / why the problem matters
+5. What was built
+6. Architecture / system logic
+7. Technical decisions / approach
+8. Evidence / what is measured
+9. Technical overview
+10. Limitations
+11. Business takeaway
+12. Technical proof CTA
+13. Commercial CTA
+
+Optional blocks:
+
+- Before/After
+- Dataviz
+- Timeline
+- Comparison
+- Process
+- Additional evidence
+- Related project
+- Service adjacency
+
+## Web design language
+
+The website has one stable SC-Analytics identity. A/B/C/D are embedded editorial asset languages, not page-level website themes.
+
+Core website palette:
+
+- Deep navy: `#071522`
+- Dark surface: `#0D1B2A`
+- Paper: `#F8FAFC`
+- Analytical paper: `#FAFAF7`
+- Main ink: `#0F172A`
+- Muted text: `#475569`
+- Indigo accent: `#4F46E5`
+- Structural blue: `#496C8A`
+
+Typography:
+
+- Display: Playfair Display
+- Body/UI: Inter
+
+## Layout
+
+Desktop:
+- Outer page width: `max-w-7xl`
+- Standard horizontal padding: 24 px mobile / 32 px desktop equivalent
+- Reading width: ~720–820 px
+- Full visual width: up to ~1180 px
+- Section vertical rhythm: 80–112 px
+- Large section radius: 24–32 px
+- Primary body line height: 1.75–2.0
+
+Mobile:
+- Single-column flow.
+- No visual may require horizontal page scrolling.
+- Complex system maps may internally reflow or stack.
+- Buttons wrap rather than shrink below readable size.
+- Large display title reduces through responsive typography rather than clipping.
+
+## Hero contract
+
+Required:
+- project evidence type;
+- project ID;
+- title;
+- concise description;
+- thesis;
+- industry;
+- capabilities;
+- 3–4 decision facts;
+- technical proof CTA;
+- route CTA;
+- explicit provenance note when not a client case.
+
+The hero must not lead with technology names.
+
+## Evidence contract
+
+Separate:
+- model/evaluation metrics;
+- decision metrics;
+- implementation facts;
+- measured outcomes.
+
+If measured client outcomes do not exist, the page must never substitute invented uplift percentages.
+
+Conceptual visuals are allowed when clearly framed as conceptual.
+
+## Architecture contract
+
+Architecture diagrams on website pages should explain system responsibility and boundaries rather than reproduce low-level infrastructure.
+
+Preferred order:
+- input/source;
+- feature/validation layer;
+- baseline/model layer;
+- horizon/evaluation layer;
+- selection/decision layer;
+- planning/integration output.
+
+Integration boundaries should be visually separate from the primary analytical flow.
+
+## Technical proof
+
+Every public-portfolio project page should expose a clear path to its Portfolio_SC_Analytics implementation.
+
+The website remains:
+- business-first;
+- evidence-aware;
+- concise.
+
+Portfolio_SC_Analytics remains:
+- technical;
+- reproducible;
+- implementation-oriented.
+
+## Responsive and QA
+
+Hard failures:
+- unsupported claim;
+- missing provenance notice for public portfolio implementation;
+- clipped title;
+- horizontal page overflow;
+- unreadable body copy;
+- broken external technical-proof link;
+- architecture labels smaller than readable mobile text;
+- CTA collision;
+- inaccessible contrast.
+
+## SC-12 reference
+
+SC-12 demonstrates the Gold Standard using only documented facts:
+
+- H1 / H3 / H6 / H9 horizon evaluation;
+- WAPE / MAE / forecast bias;
+- service level / inventory coverage;
+- statistical baselines;
+- XGBoost / LightGBM candidates;
+- out-of-sample model selection;
+- FastAPI / PostgreSQL integration boundary;
+- public portfolio provenance;
+- documented limitations.
+
+The prior website copy contained claims of client-specific performance uplift that are not supported by the public portfolio manifest. The Gold Standard branch intentionally replaces those claims with verified public-implementation evidence.
+
+## Implementation files
+
+- `lib/website-project-gold-standard.ts`
+- `components/projects/WebsiteProjectGoldStandard.tsx`
+- `components/projects/WebProjectVisuals.tsx`
+- `app/projects/[slug]/page.tsx`
+
+Machine contract:
+- `growth/schemas/website_project.schema.json`
+
+Reference branch:
+- `feat/web-project-gold-standard-sc12`
+
+This implementation is intentionally isolated from `main` until visual review and approval.
