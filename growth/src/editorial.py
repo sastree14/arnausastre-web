@@ -358,6 +358,7 @@ Return exactly these fields:
 - thesis
 - business_problem
 - target_audience: array
+- commercial_spine: object with target_buyer (array), buyer_problem, business_consequence, value_mechanism, proof, service_adjacency (array), conversion_intent, next_best_action
 - why_now
 - reasoning: 2-5 concise points
 - practical_takeaway
@@ -424,6 +425,7 @@ BRAIN:
     if primary_language not in SUPPORTED_LANGUAGES:
         primary_language = cfg["company"].get("default_language", "es")
 
+    commercial_spine = result.get("commercial_spine") if isinstance(result.get("commercial_spine"), dict) else {}
     brief = {
         "brief_id": brief_id,
         "tenant_id": cfg["company"]["tenant_id"],
@@ -451,6 +453,7 @@ BRAIN:
                 "family": family,
                 "angle": angle,
             },
+            "commercial_spine": commercial_spine,
         },
         "risks_or_limits": list(result.get("risks_or_limits") or []),
         "status": "draft",
