@@ -324,7 +324,7 @@
           "minItems": 3,
           "maxItems": 9,
           "items": {
-            "$ref": "#/$defs/titledBody"
+            "$ref": "#/$defs/titledDetail"
           }
         },
         "integrations": {
@@ -332,7 +332,7 @@
           "minItems": 1,
           "maxItems": 5,
           "items": {
-            "$ref": "#/$defs/titledBody"
+            "$ref": "#/$defs/titledDetail"
           }
         }
       }
@@ -528,6 +528,22 @@
           "type": "string"
         },
         "secondaryHref": {
+          "type": "string"
+        }
+      }
+    },
+    "titledDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "detail"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "detail": {
           "type": "string"
         }
       }
