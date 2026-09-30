@@ -297,3 +297,34 @@ Desktop rows should prioritise:
 - minimal auxiliary metadata.
 
 Titles should remain readable on one line at normal desktop widths where possible. The index should help a buyer recognise their own problem before asking them to understand SC-Analytics technology.
+
+
+## Case discovery filters
+
+The case index remains problem-led. Solution-type taxonomy is a secondary navigation aid, not the primary information architecture.
+
+Approved filter families:
+- Forecasting / Prediction
+- AI & Agents
+- Automation
+- Optimisation
+- Risk
+- Decision Systems
+- Analytics Apps
+
+A case may belong to several filters. Filter controls should remain visually subordinate to the problem-led case titles and use a restrained editorial treatment rather than pill-heavy SaaS UI.
+
+## Unified case-study canvas
+
+Desktop deep-dive pages use one continuous case-study canvas:
+- sticky left navigation;
+- one vertical structural divider;
+- consistent page background across sections;
+- internal diagrams, tables and evidence modules provide contrast;
+- large background-colour changes should not make the main content look like a floating central rectangle.
+
+Dark visual languages such as Architecture C are embedded as bounded editorial assets inside the common page canvas rather than turning the whole content column into a separate dark panel.
+
+## Horizon terminology
+
+SC-12 public website copy uses 1, 3, 6 and 9 months consistently. Do not mix these planning horizons with days in website or case-study copy.
