@@ -432,10 +432,10 @@ Carousel title anchors:
 - D: eyebrow top≈217; title top≈273; optional analytical rail starts at x≈810.
 
 Dataviz anchors:
-- A: title top≈288; context≈536; chart region constrained by the remaining content band; takeaway around y≈1030.
-- B: title top≈352; executive rail x≈814; context≈623; chart region constrained by the remaining content band; takeaway around y≈1040.
-- C: title top≈269; context≈426; chart x≈90 y≈550 w≈900 h≈460; takeaway x≈90 y≈1035 w≈900 h≈145.
-- D: title top≈275; context≈416; chart x≈80 y≈600 w≈920 h≈430; takeaway x≈80 y≈1045 w≈920 h≈140.
+- A: title top≈288; context≈536; canonical chart region x≈150 y≈620 w≈700 h≈350; takeaway x≈140 y≈1030 w≈800 h≈150.
+- B: title top≈352; executive rail x≈814 with structural rule x≈786.5; context≈623; canonical chart region x≈120 y≈735 w≈700 h≈335; takeaway x≈89 y≈1139 w≈869 h≈102.
+- C: title top≈269; context≈426; outer chart/readout panel x≈74 y≈474 w≈899 h≈527; plotted axes live inside this panel; takeaway x≈90 y≈1035 w≈900 h≈145.
+- D: title top≈275; context≈416; chart panel x≈80 y≈600 w≈920 h≈431; takeaway x≈80 y≈1045 w≈920 h≈140.
 
 Architecture anchors:
 - A: title top≈288; context≈536; diagram begins around y≈605.
