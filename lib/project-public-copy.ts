@@ -7,12 +7,12 @@ const localized: Record<string, Partial<Record<'es'|'ca', LocalizedProject>>> = 
   'ecommerce-demand-forecasting': {
     es: {
       headline: 'Forecasting de demanda para decidir cuánto comprar y cuánto stock mantener',
-      description: 'Sistema multi-horizonte a 1, 3, 6 y 9 días para separar la calidad del forecast por horizonte y convertirla en mejores decisiones de compra, cobertura y nivel de servicio.',
+      description: 'Sistema multi-horizonte a 1, 3, 6 y 9 meses para separar la calidad del forecast por horizonte y convertirla en mejores decisiones de compra, cobertura y nivel de servicio.',
       industry: 'E-commerce', challenge: 'Forecasting',
     },
     ca: {
       headline: 'Forecasting de demanda per decidir quant comprar i quant estoc mantenir',
-      description: 'Sistema multi-horitzó a 1, 3, 6 i 9 dies per separar la qualitat del forecast per horitzó i convertir-la en millors decisions de compra, cobertura i nivell de servei.',
+      description: 'Sistema multi-horitzó a 1, 3, 6 i 9 mesos per separar la qualitat del forecast per horitzó i convertir-la en millors decisions de compra, cobertura i nivell de servei.',
       industry: 'E-commerce', challenge: 'Forecasting',
     },
   },
