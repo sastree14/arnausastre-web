@@ -414,3 +414,24 @@ For `origin = portfolio_project`:
 - factual claims use `source_type = portfolio_project` and an approved source path;
 - `commercial_spine.proof.type` is `portfolio_project`;
 - public portfolio proof must not be converted into a named client claim without separate approved evidence.
+
+
+## Channel rendering contracts
+
+Canonical content objects are adapted to publication surfaces through channel contracts.
+
+Human-readable rules:
+
+- `growth/brain/content/channel_contracts.md`
+
+Machine-readable contracts:
+
+- `growth/schemas/channel_contracts.yml`
+
+Renderer:
+
+- `growth/src/channel_renderer.py`
+
+The renderer may change narrative order, depth, CTA wording and length, but it must preserve the canonical thesis, Commercial Spine, evidence and provenance.
+
+Current contracts cover LinkedIn posts, LinkedIn articles, website articles, website project/case studies, marketplace projects and GitHub/portfolio technical proof.
