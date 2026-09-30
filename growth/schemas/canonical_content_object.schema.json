@@ -13,6 +13,7 @@
     "business_question",
     "thesis",
     "key_points",
+    "commercial_spine",
     "evidence",
     "primary_objective",
     "practical_takeaway",
@@ -421,6 +422,95 @@
     "updated_at": {
       "type": "string",
       "format": "date-time"
+    },
+    "commercial_spine": {
+      "type": "object",
+      "required": [
+        "target_buyer",
+        "buyer_problem",
+        "business_consequence",
+        "value_mechanism",
+        "proof",
+        "service_adjacency",
+        "conversion_intent",
+        "next_best_action"
+      ],
+      "properties": {
+        "target_buyer": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "buyer_problem": {
+          "type": "string",
+          "minLength": 1
+        },
+        "business_consequence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value_mechanism": {
+          "type": "string",
+          "minLength": 1
+        },
+        "proof": {
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "portfolio_project",
+                "public_evidence",
+                "internal_evidence",
+                "reasoned_point_of_view"
+              ]
+            },
+            "source_ref": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "service_adjacency": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "conversion_intent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "next_best_action": {
+          "type": "string",
+          "enum": [
+            "explore_case_study",
+            "explore_technical_implementation",
+            "visit_service",
+            "read_article",
+            "start_conversation",
+            "book_discovery_call",
+            "compare_options",
+            "reconsider_process"
+          ]
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false
