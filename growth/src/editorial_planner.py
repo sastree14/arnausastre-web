@@ -178,6 +178,7 @@ def build_content_proposals(*, focus: str = "", avoid: str = "", count: int = 3,
         "content/content_strategy.md",
         "content/editorial_architecture.md",
         "content/canonical_content_model.md",
+        "content/portfolio_integration.md",
         "content/editorial_playbook.md",
     ])
     llm = get_llm(profile="balanced")
