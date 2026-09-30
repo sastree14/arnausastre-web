@@ -14,10 +14,10 @@ Audience:
 CEO, COO, Supply Chain, Head of Data
 
 Description:
-A public portfolio implementation that compares statistical baselines and machine-learning models across H1, H3, H6 and H9, evaluates forecast quality by horizon, and connects forecasting outputs to inventory and planning decisions.
+A public portfolio implementation that compares statistical baselines and machine-learning models across 1, 3, 6 and 9 months, evaluates forecast quality by horizon, and connects forecasting outputs to inventory and planning decisions.
 
 Metrics:
-* Planning horizons: H1 · H3 · H6 · H9
+* Planning horizons: 1 · 3 · 6 · 9 months
 * Evaluation: WAPE · MAE · Forecast bias
 * Decision KPIs: Service level · Inventory coverage
 * Serving path: FastAPI · PostgreSQL
@@ -37,7 +37,7 @@ Problem:
 A single blended accuracy score can hide weak long-range performance. Complex models can also appear useful without proving that they outperform simple baselines out of sample.
 
 Approach:
-The implementation keeps statistical baselines in the model competition, evaluates candidates separately at H1, H3, H6 and H9, and selects models based on out-of-sample behaviour rather than in-sample fit.
+The implementation keeps statistical baselines in the model competition, evaluates candidates separately at 1, 3, 6 and 9 months, and selects models based on out-of-sample behaviour rather than in-sample fit.
 
 System Developed:
 Orders and inventory flow through feature engineering, baseline models and machine-learning candidates before horizon-level backtesting, forecast selection and planning-oriented outputs.
