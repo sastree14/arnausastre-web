@@ -26,6 +26,8 @@ REQUIRED_BRAIN_FILES = [
     "content/portfolio_integration.md",
     "content/channel_contracts.md",
     "content/editorial_playbook.md",
+    "content/visual_system.md",
+    "content/visual_engine.md",
     "content/language_strategy.md",
 ]
 
