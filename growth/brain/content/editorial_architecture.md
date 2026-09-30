@@ -547,3 +547,18 @@ Previous topic banks, spreadsheets, taxonomies and content lists may remain avai
 They must not override this architecture.
 
 If an older document conflicts with this file, this file governs the v2 editorial system until it is intentionally revised.
+
+
+## 13. Canonical content model
+
+The canonical editorial taxonomy in this file classifies ideas.
+
+The structured content object used before channel rendering is defined separately in:
+
+- `growth/brain/content/canonical_content_model.md`
+
+Machine validation contract:
+
+- `growth/schemas/canonical_content_object.schema.json`
+
+The canonical content object must be created before channel-specific copy, CTA wording or visual rendering decisions are treated as final.
