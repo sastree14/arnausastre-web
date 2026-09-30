@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getAllProjects, getProjectBySlug } from '@/lib/projects'
-import ProjectOverviewClient from '@/components/projects/ProjectOverviewClient'
+import ProjectOverviewCommercial from '@/components/projects/ProjectOverviewCommercial'
 import { getWebsiteProjectGoldStandard } from '@/lib/website-project-gold-standard'
 
 type Props = {
@@ -48,5 +48,5 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound()
 
   const goldStandard = getWebsiteProjectGoldStandard(slug)
-  return <ProjectOverviewClient project={project} goldStandard={goldStandard} />
+  return <ProjectOverviewCommercial project={project} goldStandard={goldStandard} />
 }
