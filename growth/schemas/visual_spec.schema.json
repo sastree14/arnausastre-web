@@ -1,0 +1,37 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://sc-analytics.io/schemas/visual_spec.schema.json",
+  "title":"SC-Analytics Visual Specification",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["visual_spec_id","format","visual_language","semantic_pattern","evidence_mode","content","composition","created_at"],
+  "properties":{
+    "visual_spec_id":{"type":"string","minLength":1},
+    "format":{"enum":["carousel","dataviz","architecture","before_after"]},
+    "visual_language":{"enum":["A","B","C","D"]},
+    "semantic_pattern":{"type":"string","minLength":1},
+    "evidence_mode":{"enum":["empirical","illustrative","mixed"]},
+    "visual_role":{"type":"string"},
+    "channel":{"type":"string"},
+    "content":{"type":"object"},
+    "composition":{
+      "type":"object",
+      "required":["variant_key"],
+      "properties":{
+        "variant_key":{"type":"string"},
+        "orientation":{"enum":["auto","horizontal","vertical","radial","grid","free"]},
+        "chart_type":{"type":["string","null"]},
+        "connector_type":{"type":["string","null"]},
+        "density":{"enum":["low","medium","high"]},
+        "annotations":{"type":"array","items":{"type":"object"}},
+        "options":{"type":"object"}
+      },
+      "additionalProperties":false
+    },
+    "source_refs":{"type":"array","items":{"type":"string"}},
+    "illustrative_disclosure":{"type":["string","null"]},
+    "planner_reason":{"type":"string"},
+    "planner_score":{"type":"number","minimum":0,"maximum":1},
+    "created_at":{"type":"string","format":"date-time"}
+  }
+}
