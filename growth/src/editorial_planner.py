@@ -417,3 +417,22 @@ def build_portfolio_content_object(
         target_buyer=target_buyer,
         evidence_keys=evidence_keys,
     )
+
+
+def render_canonical_content_outputs(
+    content_object: dict[str, Any],
+    *,
+    output_types: list[str] | tuple[str, ...],
+    language: str = "en",
+) -> list[dict[str, Any]]:
+    """Render one canonical object into one or more channel-specific outputs."""
+    from .channel_renderer import render_channel_output
+
+    return [
+        render_channel_output(
+            content_object,
+            output_type=str(output_type),
+            language=language,
+        )
+        for output_type in output_types
+    ]
