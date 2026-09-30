@@ -333,7 +333,7 @@ export default function WebsiteProjectGoldStandard({ project }: { project: Websi
             {project.technical.highlights.map((highlight) => (
               <div key={highlight} className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-indigo-600" />
-                <p className="text-sm leading-7 text-slate-650 text-slate-600">{highlight}</p>
+                <p className="text-sm leading-7 text-slate-600">{highlight}</p>
               </div>
             ))}
           </div>
