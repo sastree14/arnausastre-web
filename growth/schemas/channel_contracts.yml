@@ -50,9 +50,9 @@ contracts:
     length:
       unit: words
       target_min: 900
-      target_max: 1600
+      target_max: 1400
       hard_min: 650
-      hard_max: 1900
+      hard_max: 1700
     required_components:
       - hero_thesis
       - business_context
