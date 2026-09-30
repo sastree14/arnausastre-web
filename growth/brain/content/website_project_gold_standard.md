@@ -244,7 +244,7 @@ It contains:
 - technical proof;
 - commercial next step.
 
-A persistent section selector, repository action and contact action make the detailed case navigable without scanning the entire page.
+A persistent left-hand section rail on desktop, plus repository and contact actions, makes the detailed case navigable without scanning the entire page. Mobile keeps a compact horizontal section strip rather than a dropdown.
 
 ## Cases naming policy
 
@@ -256,3 +256,44 @@ Reason:
 - that label should only be used where client provenance and measured impact are explicitly approved.
 
 Verified client engagements may later receive a distinct `Success story / Caso de éxito` evidence type.
+
+
+## Commercial first-impression rule
+
+Every case must answer the following in the first 20–30 seconds:
+
+1. What business problem exists?
+2. What changed because of the system?
+3. What operating or financial consequence matters?
+4. What evidence mode supports the claim?
+5. Where can the buyer go next?
+
+Technology names should not be required to understand the case.
+
+### Quantification hierarchy
+
+Prefer quantification in this order:
+
+1. Verified measured client outcome.
+2. Verified project KPI or operating metric.
+3. Clearly labelled illustrative business scenario with explicit assumptions.
+4. Qualitative business consequence when no defensible number is available.
+
+Illustrative scenarios are allowed to make business economics understandable, but they must be labelled as illustrative and must never be presented as measured client impact.
+
+For example:
+
+`€2.0M inventory × 5% illustrative reduction in excess stock = €100k working capital released`
+
+is acceptable only when the page states that the 5% is an illustrative assumption rather than a measured result.
+
+## Case index rule
+
+The public case index is a buyer navigation surface, not a portfolio gallery.
+
+Desktop rows should prioritise:
+- one problem-led title;
+- one clear open-case action;
+- minimal auxiliary metadata.
+
+Titles should remain readable on one line at normal desktop widths where possible. The index should help a buyer recognise their own problem before asking them to understand SC-Analytics technology.
