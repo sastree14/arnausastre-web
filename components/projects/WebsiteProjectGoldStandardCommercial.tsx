@@ -5,7 +5,7 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import CaseStudySidebar from '@/components/projects/CaseStudySidebar'
 import { ArchitectureSystemVisual, EvidenceFrameworkVisual, HorizonDecisionVisual } from '@/components/projects/WebProjectVisuals'
-import { sc12CaseStudyCopy } from '@/lib/project-commercial-copy'
+import { sc12BusinessOutcomeMetrics, sc12CaseStudyCopy } from '@/lib/project-commercial-copy'
 import type { WebsiteProjectGoldStandard } from '@/lib/website-project-gold-standard'
 
 function Section({
@@ -85,7 +85,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
               <p className="mt-3 text-[25px] leading-8 text-white" style={{ fontFamily: 'var(--font-playfair)' }}>{c.scenarioHeadline}</p>
 
               <div className="mt-6 grid grid-cols-3 divide-x divide-[#5E86A8] border-y border-[#5E86A8]">
-                {project.businessOutcome.metrics.map((metric) => (
+                {sc12BusinessOutcomeMetrics[lang].map((metric) => (
                   <div key={metric.label} className="px-4 py-4 first:pl-0 last:pr-0">
                     <p className="text-[27px] font-semibold leading-none text-white">{metric.value}</p>
                     <p className="mt-2 text-[12px] uppercase tracking-[0.08em] text-[#A8BACB]">{metric.label}</p>
@@ -149,7 +149,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
           <Section id="evidence" label={c.evidenceLabel} title={c.evidenceTitle} body={c.evidenceBody} tone="paper">
             <EvidenceFrameworkVisual data={project.evidence} />
             <div className="mt-6 grid gap-4 border-y border-slate-400 py-5 sm:grid-cols-3">
-              {project.businessOutcome.metrics.map((metric) => (
+              {sc12BusinessOutcomeMetrics[lang].map((metric) => (
                 <div key={metric.label}>
                   <p className="text-[26px] font-semibold text-slate-950">{metric.value}</p>
                   <p className="mt-1 text-[13px] font-semibold uppercase tracking-[0.1em] text-slate-500">{metric.label}</p>
