@@ -6,13 +6,13 @@ type LocalizedProject = { headline: string; description: string; industry: strin
 const localized: Record<string, Partial<Record<'es'|'ca', LocalizedProject>>> = {
   'ecommerce-demand-forecasting': {
     es: {
-      headline: 'Sistema de forecasting de demanda y planificación de inventario',
-      description: 'Sistema multi-horizonte a 30, 90, 180 y 270 días para mejorar decisiones de inventario, reducir roturas de stock y dar soporte a compras y planificación de capital circulante.',
+      headline: 'Forecasting de demanda para decidir cuánto comprar y cuánto stock mantener',
+      description: 'Sistema multi-horizonte a 1, 3, 6 y 9 días para separar la calidad del forecast por horizonte y convertirla en mejores decisiones de compra, cobertura y nivel de servicio.',
       industry: 'E-commerce', challenge: 'Forecasting',
     },
     ca: {
-      headline: 'Sistema de forecasting de demanda i planificació d’inventari',
-      description: 'Sistema multi-horitzó a 30, 90, 180 i 270 dies per millorar decisions d’inventari, reduir ruptures d’estoc i donar suport a compres i planificació de capital circulant.',
+      headline: 'Forecasting de demanda per decidir quant comprar i quant estoc mantenir',
+      description: 'Sistema multi-horitzó a 1, 3, 6 i 9 dies per separar la qualitat del forecast per horitzó i convertir-la en millors decisions de compra, cobertura i nivell de servei.',
       industry: 'E-commerce', challenge: 'Forecasting',
     },
   },
@@ -108,3 +108,47 @@ export const projectUi = {
     detailCta: 'Tens una decisió o procés semblant que cal millorar?', detailCtaSub: 'Podem començar per comprendre el problema operatiu i decidir si un sistema analític està justificat.', contact: 'Parlar del problema',
   },
 } as const
+
+
+const caseIndexTitles: Record<SiteLanguage, Record<string, string>> = {
+  es: {
+    'ai-accounting-agents': 'Automatizar operaciones contables sin perder control humano',
+    'ai-knowledge-workflow': 'Convertir documentos y conocimiento interno en acciones con IA',
+    'banking-risk-decision-system': 'Reducir riesgo y revisión manual en decisiones de crédito',
+    'business-operating-crm': 'Centralizar ventas, operaciones y métricas en un único sistema',
+    'ecommerce-demand-forecasting': 'Predecir la demanda para decidir mejor el inventario',
+    'erp-operations-control': 'Controlar pedidos, proveedores, inventario y finanzas desde una sola capa',
+    'investment-analytics-platform': 'Entender rentabilidad, clientes e inversiones desde una única visión',
+    'quantitative-trading-framework': 'Combinar señales, riesgo y ejecución en un sistema cuantitativo',
+    'reinforcement-learning-decision-system': 'Optimizar decisiones que cambian el estado del negocio con el tiempo',
+    'r-shiny-decision-app': 'Convertir análisis estadístico en una herramienta que el negocio pueda usar',
+  },
+  ca: {
+    'ai-accounting-agents': 'Automatitzar operacions comptables sense perdre control humà',
+    'ai-knowledge-workflow': 'Convertir documents i coneixement intern en accions amb IA',
+    'banking-risk-decision-system': 'Reduir risc i revisió manual en decisions de crèdit',
+    'business-operating-crm': 'Centralitzar vendes, operacions i mètriques en un únic sistema',
+    'ecommerce-demand-forecasting': 'Predir la demanda per decidir millor l’inventari',
+    'erp-operations-control': 'Controlar comandes, proveïdors, inventari i finances des d’una sola capa',
+    'investment-analytics-platform': 'Entendre rendibilitat, clients i inversions des d’una única visió',
+    'quantitative-trading-framework': 'Combinar senyals, risc i execució en un sistema quantitatiu',
+    'reinforcement-learning-decision-system': 'Optimitzar decisions que canvien l’estat del negoci amb el temps',
+    'r-shiny-decision-app': 'Convertir anàlisi estadística en una eina que el negoci pugui utilitzar',
+  },
+  en: {
+    'ai-accounting-agents': 'Automate accounting operations without losing human control',
+    'ai-knowledge-workflow': 'Turn documents and internal knowledge into AI-assisted actions',
+    'banking-risk-decision-system': 'Reduce risk and manual review in credit decisions',
+    'business-operating-crm': 'Bring sales, operations and metrics into one operating system',
+    'ecommerce-demand-forecasting': 'Forecast demand to make better inventory decisions',
+    'erp-operations-control': 'Control orders, suppliers, inventory and finance from one layer',
+    'investment-analytics-platform': 'Understand clients, investment performance and profitability in one view',
+    'quantitative-trading-framework': 'Combine signals, risk and execution in one quantitative system',
+    'reinforcement-learning-decision-system': 'Optimise decisions whose consequences evolve over time',
+    'r-shiny-decision-app': 'Turn statistical analysis into a tool business teams can use',
+  },
+}
+
+export function projectCaseIndexTitle(project: Project, lang: SiteLanguage) {
+  return caseIndexTitles[lang]?.[project.slug] || publicProject(project, lang).headline
+}
