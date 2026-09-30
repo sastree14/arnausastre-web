@@ -132,7 +132,71 @@ key_points:
   - Accuracy alone is not sufficient for model selection.
 ```
 
-### 4. Evidence and provenance
+### 4. Commercial spine
+
+Every public SC-Analytics content object has a commercial purpose, even when the visible editorial objective is education, authority, proof or awareness.
+
+Commercial intent does not mean hard selling. It means that the content must connect useful expertise to a recognisable buyer problem and a credible next step.
+
+Fields:
+
+- `target_buyer`
+- `buyer_problem`
+- `business_consequence`
+- `value_mechanism`
+- `proof`
+- `service_adjacency`
+- `conversion_intent`
+- `next_best_action`
+
+Definitions:
+
+- `target_buyer`: the role or buying group most likely to recognise the problem.
+- `buyer_problem`: the practical problem expressed in buyer language.
+- `business_consequence`: the operational, financial, risk, growth or decision consequence of leaving the problem unresolved.
+- `value_mechanism`: how a better analytical, technical or operating approach creates value.
+- `proof`: the evidence that makes SC-Analytics credible on this topic. This may reference a real portfolio project, approved evidence or defensible research.
+- `service_adjacency`: the SC-Analytics capability or service naturally connected to the problem.
+- `conversion_intent`: what commercial perception or opportunity the content should create.
+- `next_best_action`: the most useful next step for a qualified reader. This is a semantic action, not final CTA copy.
+
+Example:
+
+```yaml
+commercial_spine:
+  target_buyer:
+    - COO
+    - Supply Chain Director
+  buyer_problem: >
+    Forecasts exist, but purchasing decisions still rely on manual judgement.
+  business_consequence: >
+    Excess stock, stock-outs and inefficient working-capital allocation.
+  value_mechanism: >
+    Connect forecast horizons with purchasing, inventory and profitability decisions.
+  proof:
+    type: portfolio_project
+    source_ref: ecommerce-demand-forecasting
+  service_adjacency:
+    - Forecasting & Planning
+    - Decision Systems
+  conversion_intent: >
+    Demonstrate that SC-Analytics can connect predictive models to real operating decisions.
+  next_best_action: explore_case_study
+```
+
+Commercial readiness rule:
+
+A public content object should normally be rejected or revised when it cannot answer:
+
+1. Which buyer problem is this adjacent to?
+2. Why does that problem matter economically or operationally?
+3. What judgement, capability or evidence does SC-Analytics bring?
+4. What proves that credibility?
+5. What is the natural next step for a qualified reader?
+
+The final renderer decides whether that next step appears as a link, a project reference, a service page, a conversation prompt, a discovery call or no explicit CTA.
+
+### 5. Evidence and provenance
 
 Fields:
 
@@ -172,7 +236,7 @@ Rules:
 - No project source means no claim of real SC-Analytics project experience.
 - Limitations and uncertainty should be preserved, not removed by the renderer.
 
-### 5. Value and objective
+### 6. Value and objective
 
 Fields:
 
@@ -205,7 +269,7 @@ Typical desired reader actions include:
 
 The desired reader action is not the final written CTA. CTA wording belongs to the channel renderer.
 
-### 6. Context and constraints
+### 7. Context and constraints
 
 Fields:
 
@@ -228,7 +292,7 @@ Recommended timeliness values:
 
 Time-sensitive content should preserve why it matters now and, when appropriate, a validity horizon.
 
-### 7. Output hints
+### 8. Output hints
 
 Fields:
 
@@ -315,6 +379,7 @@ A canonical content object should not be considered ready until it has, at minim
 - a business problem or business question;
 - a thesis;
 - a target audience;
+- a complete commercial spine;
 - an evidence/provenance state appropriate to the claim type;
 - a practical takeaway.
 
