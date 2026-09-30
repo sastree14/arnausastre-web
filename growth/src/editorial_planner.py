@@ -394,3 +394,26 @@ def run_guided_editorial_cycle(
         "variants_resumed": sum(1 for row in variants if row.get("resumed")),
         "brief_ids": [row["brief_id"] for row in all_briefs],
     }
+
+def build_portfolio_content_object(
+    project_id: str,
+    *,
+    family: str = "case_project_proof",
+    angle: str = "business_value_and_implementation",
+    target_buyer: str = "",
+    evidence_keys: list[str] | tuple[str, ...] | None = None,
+) -> dict[str, Any]:
+    """Build a canonical project-led content object from Portfolio_SC_Analytics.
+
+    This is the CRM/editorial-planner entry point for Projects & Proof.
+    The portfolio adapter owns source resolution and provenance validation.
+    """
+    from .portfolio import create_project_content_object
+
+    return create_project_content_object(
+        project_id,
+        family=family,
+        angle=angle,
+        target_buyer=target_buyer,
+        evidence_keys=evidence_keys,
+    )
