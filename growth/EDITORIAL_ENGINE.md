@@ -38,10 +38,15 @@ It is deliberately not a content factory. The valid result of a cycle can be zer
    - A separate high-reasoning critic scores voice, evidence, usefulness and generic-AI risk.
    - Weak drafts receive one controlled rewrite and a second critique.
 
-7. Visual decision
-   - A visual is optional.
-   - When useful, the current React-first renderer creates deterministic insight, comparison or process-flow assets.
-   - Visual design remains a controlled brand system; the LLM chooses structured content, not pixel positions.
+7. Presentation + visual decision
+   - The Canonical Content Object is adapted through the channel contract before final visual copy is written.
+   - AUTO format selection ranks only valid SC-Analytics formats: Carousel, Dataviz, Architecture or Before/After.
+   - A Presentation Content Package gives the visual engine structured slots rather than unconstrained prose.
+   - Up to three compositions are generated inside one selected visual language.
+   - The LLM decides semantic intent and ranks valid candidates; it never supplies authoritative pixel positions.
+   - The deterministic renderer owns canvas, typography bounds, colours, margins, geometry, chart placement, diagram routing and SVG/PNG export.
+   - Illustrative analytical graphics are allowed when explicitly marked illustrative; empirical-looking evidence may not be fabricated.
+   - Hard QA is authoritative. A vision-based Visual Critic may rank valid renders but cannot override hard failures.
 
 8. Human approval
    - Approval is always separate from generation and external execution.
@@ -52,7 +57,13 @@ It is deliberately not a content factory. The valid result of a cycle can be zer
 ## Data model
 
 - `editorial_signals`: discovered topics and first-pass evaluation.
-- `editorial_briefs`: canonical, evidence-aware editorial decisions.
+- `editorial_briefs`: evidence-aware editorial decisions and compatibility bridge to the canonical object.
+- `canonical_content_objects`: mutable operational instances of the approved Canonical Content Object.
+- `publication_plans`: channel/format decisions before rendering.
+- `presentation_packages`: channel- and format-ready copy/semantic slots.
+- `visual_candidates`: 1–3 bounded visual alternatives.
+- `visual_render_runs`: rendered assets, layout manifests, adaptation attempts and QA.
+- `visual_designs`: selected visual output, now linked to the visual-system version and candidate.
 - `content_items`: actual language/channel variants, with `brief_id`, `language`, `content_family`, `quality_score`, `critique` and `source_url`.
 - `evidence`: public-source or real-case claims used by content.
 - `approvals`: human permission state.
@@ -90,3 +101,21 @@ The system is technically usable before calibration, but final editorial quality
 During the first 20-30 opportunities, record what is approved, rejected or rewritten. Recurrent feedback should be converted into Brain rules and golden examples rather than relying on hidden prompt intuition.
 
 The target operating model is roughly 10-15 minutes of weekly human review, not manual content production.
+
+
+## Visual system v1
+
+Canonical human rules:
+- `growth/brain/content/visual_system.md`
+- `growth/brain/content/visual_engine.md`
+
+Canonical machine rules:
+- `growth/schemas/visual_system.yml`
+- `growth/schemas/visual_spec.schema.json`
+- `growth/schemas/presentation_package.schema.json`
+- `growth/schemas/visual_publication_plan.schema.json`
+
+Primary runtime:
+- `growth/src/visual_pipeline.py`
+
+The visual engine is intentionally callable without CRM coupling. CRM integration is a later orchestration/UI phase.
