@@ -1,0 +1,283 @@
+version: 1
+name: SC-Analytics Visual System
+status: active
+
+canvas:
+  width: 1080
+  height: 1350
+  aspect_ratio: "4:5"
+  export: {svg: true, png_scale: 2}
+
+principles:
+  - "AI decides meaning; deterministic rules enforce design; geometry algorithms place elements."
+  - "One asset or carousel uses exactly one visual language."
+  - "Visual intelligence chooses only among valid SC-Analytics compositions."
+  - "Illustrative analytical visuals are allowed only when evidence_mode=illustrative."
+  - "Feed readability has priority over decorative density."
+
+fonts:
+  display_serif: {family: "Playfair Display", fallback: "Georgia, serif"}
+  ui_sans: {family: "Inter", fallback: "Arial, Helvetica, sans-serif"}
+
+brand_geometry:
+  logo:
+    left: 80
+    top: 34
+    preferred_width: 150
+    aspect_ratio_locked: true
+    light_asset: "public/brand/logo-horizontal-transparent.png"
+    dark_asset: "public/brand/logo-white.png"
+  footer:
+    rule_y: 1256
+    label_y: 1297
+    content_bottom: 1210
+
+hard_rules:
+  no_style_mixing: true
+  minimum_outer_margin: 80
+  maximum_title_lines: 4
+  prohibit_overlap: true
+  prohibit_clipping: true
+  prohibit_logo_distortion: true
+  prohibit_unlabeled_empirical_inference: true
+  footer_reserved: true
+  technical_detail_cannot_dominate_executive_layer: true
+  maximum_adaptation_passes: 2
+
+visual_languages:
+  A:
+    name: dark_editorial
+    intent: "Editorial, high-contrast, thesis-led, sparse and memorable."
+    safe_margin: 80
+    palette:
+      background: "#0D1B2A"
+      surface: "#13283C"
+      surface_alt: "#102338"
+      text: "#F5F7FA"
+      text_soft: "#EAF0F6"
+      muted: "#B0BAC8"
+      structure: "#496C8A"
+      structure_alt: "#3E81B1"
+      accent: "#818CF8"
+      bright_blue: "#178EE3"
+    strokes: {hairline: 1.5, secondary: 2, primary: 3}
+    radii: {compact: 9, standard: 10.5, large: 20.5}
+    typography:
+      title: {font: display_serif, preferred: 64, min: 50, max: 68, line_height: 1.05, max_lines: 4}
+      subtitle: {font: ui_sans, preferred: 24, min: 20, max: 28, line_height: 1.25, max_lines: 3}
+      body: {font: ui_sans, preferred: 22, min: 18, max: 24, line_height: 1.35}
+      label: {font: ui_sans, preferred: 18, min: 14, max: 20, line_height: 1.2}
+      metadata: {font: ui_sans, preferred: 14, min: 11, max: 16, line_height: 1.15}
+
+  B:
+    name: executive_off_white
+    intent: "Executive memo, consulting note, structured comparison and decision support."
+    safe_margin: 80
+    palette:
+      background: "#F4F1EA"
+      surface: "#FAF8F3"
+      surface_alt: "#EEEAF4"
+      text: "#0D1B2A"
+      muted: "#586574"
+      divider: "#C8C3B8"
+      accent: "#6265D8"
+      positive: "#4F8A67"
+      negative: "#B45C5C"
+    strokes: {hairline: 1.5, secondary: 2, primary: 3}
+    radii: {compact: 10, standard: 11.5, large: 12}
+    typography:
+      title: {font: display_serif, preferred: 52, min: 44, max: 56, line_height: 1.08, max_lines: 3}
+      subtitle: {font: ui_sans, preferred: 24, min: 18, max: 28, line_height: 1.3, max_lines: 3}
+      body: {font: ui_sans, preferred: 20, min: 17, max: 23, line_height: 1.35}
+      label: {font: ui_sans, preferred: 18, min: 14, max: 20, line_height: 1.2}
+      metadata: {font: ui_sans, preferred: 14, min: 11, max: 17, line_height: 1.15}
+
+  C:
+    name: technical_blueprint
+    intent: "Technical operating logic, systems, diagnostics, architecture and explicit structure."
+    safe_margin: 80
+    palette:
+      background: "#0D1B2A"
+      surface: "#13283C"
+      surface_alt: "#1A3248"
+      text: "#EAF0F6"
+      muted: "#A8BACB"
+      structure: "#5E86A8"
+      structure_alt: "#496C8A"
+      accent: "#7A7DFF"
+      accent_alt: "#818CF8"
+    strokes: {hairline: 1.5, secondary: 2, primary: 3, emphasis: 5}
+    radii: {compact: 2.5, standard: 3.5, large: 21.5}
+    typography:
+      title: {font: ui_sans, preferred: 50, min: 42, max: 54, line_height: 1.08, max_lines: 3}
+      subtitle: {font: display_serif, preferred: 24, min: 18, max: 28, line_height: 1.25, max_lines: 3}
+      body: {font: ui_sans, preferred: 20, min: 16, max: 24, line_height: 1.3}
+      label: {font: ui_sans, preferred: 18, min: 14, max: 20, line_height: 1.15}
+      metadata: {font: ui_sans, preferred: 14, min: 11, max: 16, line_height: 1.1}
+
+  D:
+    name: analytical_report
+    intent: "Analytical report, evidence, restrained hierarchy and information discipline."
+    safe_margin: 80
+    palette:
+      background: "#FAFAF7"
+      surface: "#F2F5F7"
+      surface_alt: "#F0F0FC"
+      surface_takeaway: "#EDEAF8"
+      text: "#102033"
+      text_alt: "#1D2B44"
+      muted: "#7D8793"
+      divider: "#D8DDE3"
+      divider_alt: "#D8DCE4"
+      accent: "#6B6EF9"
+      blue: "#4A78A8"
+      blue_alt: "#456C9A"
+      chart_blue: "#496C8A"
+    strokes: {hairline: 1.5, secondary: 2, chart: 3}
+    radii: {compact: 1.5, standard: 2, emphasis: 6}
+    typography:
+      title: {font: display_serif, preferred: 48, min: 40, max: 52, line_height: 1.08, max_lines: 3}
+      subtitle: {font: ui_sans, preferred: 24, min: 18, max: 30, line_height: 1.25, max_lines: 3}
+      body: {font: ui_sans, preferred: 18, min: 15, max: 22, line_height: 1.35}
+      label: {font: ui_sans, preferred: 14, min: 12, max: 18, line_height: 1.2}
+      metadata: {font: ui_sans, preferred: 12, min: 11, max: 15, line_height: 1.15}
+
+format_layouts:
+  carousel:
+    A: {eyebrow_top: 205, title_top: 243, content_top: 560}
+    B: {eyebrow_top: 249, title_top: 332, content_top: 705, side_rail_x: 814, side_rail_width: 186}
+    C: {eyebrow_top: 227, title_top: 269, content_top: 535}
+    D: {eyebrow_top: 217, title_top: 273, content_top: 565, side_rail_x: 810, side_rail_width: 190}
+  dataviz:
+    A: {title_top: 288, context_top: 536, chart: {x: 120, y: 500, width: 840, height: 430}, takeaway: {x: 140, y: 1030, width: 800, height: 150}}
+    B: {title_top: 352, context_top: 623, chart: {x: 100, y: 560, width: 800, height: 400}, takeaway: {x: 80, y: 1040, width: 920, height: 130}, side_rail_x: 814}
+    C: {title_top: 269, context_top: 426, chart: {x: 90, y: 550, width: 900, height: 460}, takeaway: {x: 90, y: 1035, width: 900, height: 145}}
+    D: {title_top: 275, context_top: 416, chart: {x: 80, y: 600, width: 920, height: 430}, takeaway: {x: 80, y: 1045, width: 920, height: 140}}
+  architecture:
+    A: {title_top: 288, context_top: 536, diagram_top: 605}
+    B: {title_top: 352, context_top: 623, diagram_top: 730}
+    C: {title_top: 264, context_top: 423, diagram_top: 486}
+  before_after:
+    A: {title_top: 288, context_top: 536, comparison_top: 590}
+    B: {title_top: 352, context_top: 623, comparison_top: 702}
+    C: {title_top: 269, context_top: 501, comparison_top: 564}
+
+format_contracts:
+  carousel:
+    allowed_languages: [A, B, C, D]
+    slide_count: {preferred: 6, min: 4, max: 8}
+    roles: [cover, process, comparison, evidence, framework, conclusion]
+    role_capacity:
+      cover: {title_lines: 4, subtitle_lines: 2, micro_visuals: 1}
+      process: {steps: 5, labels_per_step: 2}
+      comparison: {options: 2, metrics: 5}
+      evidence: {primary_metrics: 4, comparison_entities: 3}
+      framework: {layers: 2, items_per_layer: 6}
+      conclusion: {takeaways: 3, closing_statement_lines: 3}
+    compositions:
+      cover: [editorial_statement, split_summary, statement_with_micro_visual]
+      process: [horizontal_process, vertical_process, grouped_process]
+      comparison: [two_card_comparison, comparison_table, comparison_matrix]
+      evidence: [metric_cards, evidence_table, mini_dataviz]
+      framework: [two_layer_framework, framework_grid, decision_chain]
+      conclusion: [takeaway_panel, closing_steps, principle_plus_summary]
+
+  dataviz:
+    allowed_languages: [A, B, C, D]
+    max_line_series: 4
+    max_primary_annotations: 2
+    donut_max_categories: 5
+    requires_interpretation: true
+
+  architecture:
+    allowed_languages: [A, B, C]
+    patterns: [linear_flow, pipeline, layered_system, hierarchy, hub_spoke, network, cycle, feedback_loop]
+    horizontal_max_nodes: 5
+    wrapped_max_nodes: 8
+    grouped_max_nodes: 14
+    clean_crossing_target: 0
+
+  before_after:
+    allowed_languages: [A, B, C]
+    patterns: [before_after, fragmented_network_to_pipeline, manual_to_automated, messy_to_controlled]
+    compositions: [side_by_side_transformation, split_panel_transformation, stacked_transformation]
+
+chart_grammar:
+  trend: [line, area, small_multiples]
+  multi_series_trend: [multi_line, small_multiples, heatmap]
+  comparison: [bar, grouped_bar, dot_plot]
+  ranking: [sorted_bar, lollipop, dot_plot]
+  distribution: [histogram, boxplot, violin]
+  correlation: [scatter, scatter_trend]
+  composition: [stacked_bar, stacked_area, donut]
+  change: [slope, dumbbell, delta_bar]
+  target_vs_actual: [bullet, paired_bar, dot_plot]
+  uncertainty: [line_band, interval_plot, scenario_fan]
+  anomaly: [annotated_line, scatter, highlighted_bar]
+  conceptual_curve: [illustrative_line, illustrative_multi_line]
+
+diagram_grammar:
+  connector_semantics:
+    sequential: [straight, orthogonal]
+    dependency: [orthogonal]
+    feedback: [curved_return]
+    reciprocal: [bidirectional]
+    hierarchy: [orthogonal_branch]
+    fragmented_manual: [curved_crossing]
+  orientation:
+    horizontal: {node_max: 5, avg_label_chars_max: 28}
+    grid: {node_max: 8}
+    vertical: {node_max: 8}
+    layered: {node_max: 14}
+
+illustrative_policy:
+  allowed: true
+  evidence_mode: illustrative
+  examples: [overfitting, bias_variance, diminishing_returns, maturity_curve, conceptual_tradeoff, process_failure]
+  require_disclosure_when_empirical_confusion_possible: true
+  forbidden:
+    - fabricated_client_metrics
+    - fabricated_public_benchmarks
+    - invented_quantitative_improvement_presented_as_real
+
+candidate_scoring:
+  semantic_fit: 0.35
+  clarity: 0.25
+  visual_balance: 0.15
+  brand_fit: 0.10
+  information_density: 0.10
+  novelty: 0.05
+  hard_reject: [overflow, clipping, overlap, font_below_minimum, margin_violation, unsupported_evidence, mixed_visual_language, clean_system_connector_crossing]
+
+adaptation:
+  title: [reflow, font_reduce_within_range, semantic_shorten, alternate_valid_composition, needs_review]
+  content: [reduce_secondary_copy, abbreviate_labels, remove_optional_annotation, lower_density_component, split_or_group, needs_review]
+  diagram: [reduce_gap_within_minimum, wrap_horizontal, switch_vertical, group_layers, needs_review]
+  chart: [abbreviate_labels, move_legend, reduce_annotations, small_multiples, needs_review]
+
+channel_visual_contracts:
+  linkedin:
+    carousel: {visual_role: primary_narrative, external_copy: minimal, hashtags_min: 3, hashtags_max: 5}
+    dataviz: {visual_role: primary_evidence, external_copy: medium, hashtags_min: 3, hashtags_max: 5}
+    architecture: {visual_role: explanatory_diagram, external_copy: medium}
+    before_after: {visual_role: transformation_proof, external_copy: medium}
+  website_article:
+    any_visual: {visual_role: supporting_evidence, external_copy: long, visual_count_min: 1, visual_count_max: 4}
+  website_project:
+    any_visual: {visual_role: proof_and_explanation, external_copy: long, visual_count_min: 2, visual_count_max: 6}
+  marketplace_project:
+    any_visual: {visual_role: capability_proof, external_copy: medium, visual_count_min: 1, visual_count_max: 3}
+
+format_selection:
+  case_project_proof: [carousel, architecture, dataviz, before_after]
+  system_architecture: [architecture, carousel, before_after]
+  evidence_measurement: [dataviz, carousel]
+  transformation: [before_after, carousel, architecture]
+  compare: [carousel, dataviz, before_after]
+  decision_guide: [carousel, architecture, dataviz]
+  framework_playbook: [carousel, architecture]
+  diagnose: [carousel, before_after, architecture, dataviz]
+  failure_modes_mistakes: [carousel, before_after, dataviz]
+  explain_understand: [carousel, dataviz, architecture]
+  current_development_implication: [carousel, dataviz, architecture]
+  point_of_view_contrarian: [carousel, dataviz]
