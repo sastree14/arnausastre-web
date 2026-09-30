@@ -22,6 +22,7 @@ REQUIRED_BRAIN_FILES = [
     "evidence/evidence_policy.md",
     "content/content_strategy.md",
     "content/editorial_architecture.md",
+    "content/canonical_content_model.md",
     "content/editorial_playbook.md",
     "content/language_strategy.md",
 ]
