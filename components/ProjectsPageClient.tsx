@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
-import { projectUi, publicProject } from '@/lib/project-public-copy'
+import { projectCaseIndexTitle, projectUi, publicProject } from '@/lib/project-public-copy'
 import type { Project } from '@/lib/projects'
 
 const copy = {
@@ -35,8 +35,8 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-slate-300">
-        <div className="mx-auto max-w-7xl px-6 pb-12 pt-14 lg:px-8 lg:pb-14 lg:pt-16">
-          <div className="grid gap-8 lg:grid-cols-[220px_1fr] lg:items-end">
+        <div className="mx-auto max-w-7xl px-6 pb-10 pt-12 lg:px-8 lg:pb-12 lg:pt-14">
+          <div className="grid gap-7 lg:grid-cols-[180px_1fr] lg:items-end">
             <div>
               <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-indigo-700">{t.label}</p>
               <p className="mt-5 font-mono text-[13px] text-slate-500">
@@ -45,40 +45,37 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
             </div>
             <div>
               <h1
-                className="max-w-4xl text-5xl leading-[1.02] tracking-[-0.03em] text-slate-950 sm:text-6xl lg:text-[66px]"
+                className="max-w-4xl text-4xl leading-[1.02] tracking-[-0.03em] text-slate-950 sm:text-5xl lg:text-[54px]"
                 style={{ fontFamily: 'var(--font-playfair)' }}
               >
                 {t.title}
               </h1>
-              <p className="mt-5 max-w-3xl text-[17px] leading-8 text-slate-600">{t.sub}</p>
-              <p className="mt-3 text-[14px] font-medium text-slate-500">{c.instruction}</p>
+              <p className="mt-4 max-w-3xl text-[16px] leading-7 text-slate-600">{t.sub}</p>
+              <p className="mt-2 text-[14px] font-medium text-slate-500">{c.instruction}</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-8 lg:px-8 lg:py-10">
+      <section className="mx-auto max-w-7xl px-6 py-6 lg:px-8 lg:py-8">
         <div className="border-t border-slate-400">
           {projects.map((raw, index) => {
             const project = publicProject(raw, lang)
+            const caseTitle = projectCaseIndexTitle(raw, lang)
             return (
               <Link
                 key={project.slug}
                 href={`/projects/${project.slug}`}
-                className="group grid gap-3 border-b border-slate-300 py-6 transition-colors hover:bg-white/80 sm:grid-cols-[64px_180px_1fr_120px] sm:items-center sm:gap-5 lg:py-7"
+                className="group grid gap-3 border-b border-slate-300 py-4 transition-colors hover:bg-white/80 sm:grid-cols-[56px_1fr_110px] sm:items-center sm:gap-5 lg:py-[18px]"
               >
                 <span className="font-mono text-[13px] text-slate-400">{String(index + 1).padStart(2, '0')}</span>
 
-                <div className="hidden sm:block">
-                  <p className="text-[13px] font-semibold uppercase tracking-[0.11em] text-slate-500">{project.industry}</p>
-                  <p className="mt-1 text-[13px] text-slate-400">{project.challenge}</p>
-                </div>
-
                 <h2
-                  className="max-w-3xl text-[28px] leading-[1.12] tracking-[-0.015em] text-slate-950 transition-colors group-hover:text-indigo-800 sm:text-[31px] lg:text-[35px]"
+                  className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[22px] leading-[1.08] tracking-[-0.012em] text-slate-950 transition-colors group-hover:text-indigo-800 sm:text-[24px] lg:text-[26px]"
                   style={{ fontFamily: 'var(--font-playfair)' }}
+                  title={caseTitle}
                 >
-                  {project.headline}
+                  {caseTitle}
                 </h2>
 
                 <span className="inline-flex items-center gap-2 text-[14px] font-semibold text-slate-600 transition group-hover:text-slate-950 sm:justify-end">
