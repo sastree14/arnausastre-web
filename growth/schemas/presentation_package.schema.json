@@ -1,0 +1,21 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://sc-analytics.io/schemas/presentation_package.schema.json",
+  "title":"SC-Analytics Presentation Content Package",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["package_id","content_object_id","channel","format","visual_role","external_copy_mode","content","created_at"],
+  "properties":{
+    "package_id":{"type":"string"},
+    "content_object_id":{"type":"string"},
+    "channel":{"enum":["linkedin","website_article","website_project","marketplace_project"]},
+    "format":{"enum":["carousel","dataviz","architecture","before_after","text_only"]},
+    "visual_language":{"enum":["AUTO","A","B","C","D"]},
+    "visual_role":{"type":"string"},
+    "external_copy_mode":{"enum":["minimal","medium","long","none"]},
+    "external_copy":{"type":"string"},
+    "hashtags":{"type":"array","items":{"type":"string"}},
+    "content":{"type":"object"},
+    "created_at":{"type":"string","format":"date-time"}
+  }
+}
