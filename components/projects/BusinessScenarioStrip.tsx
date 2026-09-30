@@ -1,16 +1,13 @@
-import type { WebsiteProjectGoldStandard } from '@/lib/website-project-gold-standard'
 import type { SiteLanguage } from '@/lib/public-copy'
 import { sc12BusinessOutcomeMetrics } from '@/lib/project-commercial-copy'
 
 export default function BusinessScenarioStrip({
-  outcome,
   label,
   headline,
   summary,
   note,
   lang,
 }: {
-  outcome: WebsiteProjectGoldStandard['businessOutcome']
   label: string
   headline: string
   summary: string
