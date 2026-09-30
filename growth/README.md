@@ -11,9 +11,12 @@ The system can:
 - identify likely decision-makers from public search evidence without scraping LinkedIn;
 - score candidates and prepare personalized founder-led outreach;
 - create separate approval items for connecting/following and messaging;
-- generate evidence-aware LinkedIn posts from approved anonymized SC-Analytics cases;
-- create 1200x1200 branded metric visuals, business diagrams and cards;
-- persist generated visuals to private object storage;
+- generate evidence-aware editorial content from approved internal/public/portfolio sources;
+- build format-ready presentation packages for Carousel, Dataviz, Architecture and Before/After;
+- generate up to three bounded visual candidates inside the SC-Analytics A/B/C/D design system;
+- render deterministic 1080×1350 SVG/PNG assets and reject hard design violations before selection;
+- support explicitly illustrative analytical visuals without fabricating empirical metrics;
+- persist generated visuals and visual workflow state to Supabase/private object storage;
 - expose a private `/growth-admin` console where Arnau reviews posts, visuals, people and messages;
 - publish approved posts through the official LinkedIn Posts + Images APIs when permissions are configured;
 - record completed manual LinkedIn actions as interactions;
@@ -25,7 +28,7 @@ The system intentionally does **not** scrape LinkedIn or automate browser clicks
 
 - `brain/` — editable business context, values, positioning, ICP, voice and content policy.
 - `src/` — Python orchestration and service code.
-- `schemas/` — data contracts.
+- `schemas/` — editorial, channel, presentation and visual-system data contracts.
 - `tests/` — deterministic tests.
 - `generated/` — local generated previews; ignored by git.
 - `data/` — local JSON development state; ignored by git.
@@ -162,3 +165,38 @@ When adding information, distinguish internal/confidential context from content 
 ## Legacy v1
 
 The existing article generator and old five-post LinkedIn Pack remain untouched while v2 is validated. They can be retired progressively after the corresponding v2 capability proves better in production.
+
+
+## Visual Engine v2
+
+Human source of truth:
+- `brain/content/visual_system.md`
+- `brain/content/visual_engine.md`
+
+Machine source of truth:
+- `schemas/visual_system.yml`
+
+Runtime:
+- `src/visual_format_planner.py`
+- `src/presentation.py`
+- `src/visual_planner.py`
+- `src/visual_renderer_v2.py`
+- `src/visual_qa.py`
+- `src/visual_critic.py`
+- `src/visual_pipeline.py`
+
+A visual pipeline can be run without CRM coupling:
+
+```bash
+STATE_PROVIDER=supabase ASSET_PROVIDER=supabase \
+python -m growth.src.cli visual-run /path/to/content_object.json \
+  --channel linkedin \
+  --format auto \
+  --style AUTO \
+  --candidates 3 \
+  --language en
+```
+
+Use `--no-persist` for a local/dry runtime that should not write publication/candidate state.
+
+The future CRM should call this engine rather than implement its own visual rules.
