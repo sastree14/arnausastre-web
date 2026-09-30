@@ -6,93 +6,139 @@ type Evidence = WebsiteProjectGoldStandard['evidence']
 
 export function HorizonDecisionVisual({ data }: { data: HorizonLogic }) {
   return (
-    <div className="overflow-hidden rounded-[28px] border border-slate-200 bg-[#FAFAF7]">
-      <div className="border-b border-slate-200 px-6 py-5 sm:px-8">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Horizon-level evaluation</p>
-          <span className="rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-indigo-700">
-            Conceptual view
-          </span>
-        </div>
+    <div className="border border-[#D8DDE3] bg-[#FAFAF7]">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D8DDE3] px-6 py-4">
+        <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-600">Horizon-level evaluation</p>
+        <p className="text-[13px] text-slate-500">Illustrative structure · evaluation remains horizon-specific</p>
       </div>
 
-      <div className="relative px-6 py-8 sm:px-8 sm:py-10">
-        <div className="pointer-events-none absolute left-8 right-8 top-[92px] hidden h-px bg-slate-300 md:block" />
-        <div className="grid gap-4 md:grid-cols-4">
-          {data.horizons.map((item, index) => (
-            <div key={item.horizon} className="relative">
-              <div className="mb-5 hidden items-center md:flex">
-                <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 bg-[#FAFAF7] text-[10px] font-bold text-slate-700">
-                  {index + 1}
-                </span>
-              </div>
-              <div className="min-h-[186px] rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_14px_40px_-28px_rgba(15,23,42,.35)]">
-                <div className="flex items-baseline justify-between gap-3">
-                  <span className="font-mono text-xl font-semibold text-indigo-700">{item.horizon}</span>
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">{item.label}</span>
-                </div>
-                <p className="mt-7 text-sm leading-6 text-slate-600">{item.note}</p>
-              </div>
+      <div className="grid divide-y divide-[#D8DDE3] md:grid-cols-4 md:divide-x md:divide-y-0">
+        {data.horizons.map((item) => (
+          <div key={item.horizon} className="min-h-[188px] px-6 py-6">
+            <div className="flex items-baseline justify-between gap-4 border-b border-slate-200 pb-4">
+              <span className="font-mono text-2xl font-semibold text-[#1D2B44]">{item.horizon}</span>
+              <span className="text-right text-[13px] font-medium uppercase tracking-[0.1em] text-slate-500">{item.label}</span>
             </div>
-          ))}
-        </div>
+            <p className="mt-6 text-[15px] leading-7 text-slate-600">{item.note}</p>
+          </div>
+        ))}
+      </div>
 
-        <div className="mt-6 rounded-2xl border border-indigo-100 bg-indigo-50/70 px-5 py-4 text-sm leading-6 text-slate-700 sm:px-6">
-          <span className="font-semibold text-slate-950">Decision rule:</span> {data.takeaway}
+      <div className="border-t border-[#D8DDE3] px-6 py-5">
+        <p className="text-[15px] leading-7 text-slate-700">
+          <span className="font-semibold text-slate-950">Decision rule — </span>
+          {data.takeaway}
+        </p>
+      </div>
+    </div>
+  )
+}
+
+function Connector() {
+  return (
+    <div className="hidden min-w-8 flex-1 items-center lg:flex" aria-hidden="true">
+      <div className="h-px flex-1 bg-[#5E86A8]" />
+      <svg viewBox="0 0 12 12" className="-ml-px h-3 w-3 shrink-0 text-[#5E86A8]">
+        <path d="M1 1l8 5-8 5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter" />
+      </svg>
+    </div>
+  )
+}
+
+function ArchitectureColumn({
+  label,
+  children,
+}: {
+  label: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className="min-w-0 flex-1">
+      <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.14em] text-[#A8BACB]">{label}</p>
+      {children}
+    </div>
+  )
+}
+
+function ArchitectureNode({
+  index,
+  title,
+  detail,
+}: {
+  index: number
+  title: string
+  detail: string
+}) {
+  return (
+    <div className="border border-[#5E86A8] bg-[#13283C] px-5 py-5">
+      <div className="flex items-start gap-4">
+        <span className="font-mono text-[13px] text-[#7A7DFF]">{String(index).padStart(2, '0')}</span>
+        <div>
+          <h3 className="text-[16px] font-semibold leading-6 text-[#EAF0F6]">{title}</h3>
+          <p className="mt-2 text-[14px] leading-6 text-[#A8BACB]">{detail}</p>
         </div>
       </div>
     </div>
   )
 }
 
-const layerStyles = [
-  'border-sky-200 bg-sky-50 text-sky-950',
-  'border-indigo-200 bg-indigo-50 text-indigo-950',
-  'border-violet-200 bg-violet-50 text-violet-950',
-  'border-slate-300 bg-white text-slate-950',
-]
-
 export function ArchitectureSystemVisual({ data }: { data: Architecture }) {
+  const [orders, feature, baseline, ml, backtest, selection, planning] = data.steps
+
   return (
-    <div className="overflow-hidden rounded-[30px] border border-slate-800 bg-[#0D1B2A] text-white shadow-[0_24px_80px_-45px_rgba(15,23,42,.85)]">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-6 py-5 sm:px-8">
+    <div className="border border-[#5E86A8] bg-[#0D1B2A] text-white">
+      <div className="grid gap-2 border-b border-[#5E86A8] px-6 py-5 md:grid-cols-[1fr_auto] md:items-end">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-sky-300">SC-12 · System map</p>
-          <p className="mt-1 text-sm text-slate-400">Data → modelling → evaluation → planning</p>
+          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">SC-12 · System architecture</p>
+          <p className="mt-2 text-[15px] leading-6 text-[#A8BACB]">Data → modelling → evaluation → planning</p>
         </div>
-        <span className="rounded-full border border-white/10 bg-white/[.04] px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-slate-300">
-          Public implementation
-        </span>
+        <p className="text-[13px] text-[#A8BACB]">Public portfolio implementation</p>
       </div>
 
-      <div className="px-5 py-8 sm:px-8 sm:py-10">
-        <div className="grid gap-3 lg:grid-cols-7 lg:items-stretch">
-          {data.steps.map((step, index) => (
-            <div key={step.title} className="relative flex min-w-0">
-              <div className="flex w-full flex-col rounded-2xl border border-[#496C8A] bg-[#13283C] px-4 py-5">
-                <span className="mb-4 flex h-7 w-7 items-center justify-center rounded-full border border-sky-300/30 bg-sky-300/10 text-[10px] font-bold text-sky-200">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <h3 className="text-sm font-semibold leading-5 text-white">{step.title}</h3>
-                <p className="mt-2 text-xs leading-5 text-slate-400">{step.detail}</p>
-              </div>
-              {index < data.steps.length - 1 && (
-                <div className="pointer-events-none absolute -right-[9px] top-1/2 z-10 hidden -translate-y-1/2 text-sky-300/70 lg:block">
-                  →
-                </div>
-              )}
+      <div className="px-6 py-7 lg:px-8 lg:py-8">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-4">
+          <ArchitectureColumn label="Inputs">
+            <div className="space-y-3">
+              {orders ? <ArchitectureNode index={1} title={orders.title} detail={orders.detail} /> : null}
+              {feature ? <ArchitectureNode index={2} title={feature.title} detail={feature.detail} /> : null}
             </div>
-          ))}
+          </ArchitectureColumn>
+
+          <Connector />
+
+          <ArchitectureColumn label="Models">
+            <div className="space-y-3">
+              {baseline ? <ArchitectureNode index={3} title={baseline.title} detail={baseline.detail} /> : null}
+              {ml ? <ArchitectureNode index={4} title={ml.title} detail={ml.detail} /> : null}
+            </div>
+          </ArchitectureColumn>
+
+          <Connector />
+
+          <ArchitectureColumn label="Evaluation">
+            <div className="space-y-3">
+              {backtest ? <ArchitectureNode index={5} title={backtest.title} detail={backtest.detail} /> : null}
+              {selection ? <ArchitectureNode index={6} title={selection.title} detail={selection.detail} /> : null}
+            </div>
+          </ArchitectureColumn>
+
+          <Connector />
+
+          <ArchitectureColumn label="Decision output">
+            {planning ? <ArchitectureNode index={7} title={planning.title} detail={planning.detail} /> : null}
+          </ArchitectureColumn>
         </div>
 
-        <div className="mt-7 grid gap-3 md:grid-cols-3">
-          {data.integrations.map((integration, index) => (
-            <div key={integration.title} className={`rounded-2xl border p-4 ${layerStyles[index % layerStyles.length]}`}>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] opacity-60">Integration boundary</p>
-              <h4 className="mt-2 text-sm font-semibold">{integration.title}</h4>
-              <p className="mt-2 text-xs leading-5 opacity-75">{integration.detail}</p>
-            </div>
-          ))}
+        <div className="mt-8 border-t border-[#5E86A8] pt-5">
+          <p className="mb-4 text-[13px] font-semibold uppercase tracking-[0.14em] text-[#A8BACB]">Integration boundaries</p>
+          <div className="grid border-y border-[#5E86A8] md:grid-cols-3 md:divide-x md:divide-[#5E86A8]">
+            {data.integrations.map((integration) => (
+              <div key={integration.title} className="border-b border-[#5E86A8] px-5 py-5 last:border-b-0 md:border-b-0">
+                <h4 className="text-[15px] font-semibold text-[#EAF0F6]">{integration.title}</h4>
+                <p className="mt-2 text-[14px] leading-6 text-[#A8BACB]">{integration.detail}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -101,30 +147,25 @@ export function ArchitectureSystemVisual({ data }: { data: Architecture }) {
 
 export function EvidenceFrameworkVisual({ data }: { data: Evidence }) {
   return (
-    <div className="rounded-[28px] border border-slate-200 bg-white p-5 sm:p-7">
-      <div className="grid gap-4 md:grid-cols-5">
-        {data.metrics.map((metric, index) => (
-          <div
-            key={metric.label}
-            className={`rounded-2xl border p-4 ${index < 3 ? 'border-slate-200 bg-slate-50' : 'border-indigo-100 bg-indigo-50/55'}`}
-          >
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">{metric.label}</p>
-            <p className="mt-4 text-lg font-semibold text-slate-950">{metric.value}</p>
-            <p className="mt-2 text-xs leading-5 text-slate-500">{metric.note}</p>
-          </div>
-        ))}
+    <div className="border border-[#D8DDE3] bg-white">
+      <div className="grid border-b border-[#D8DDE3] md:grid-cols-[3fr_2fr]">
+        <div className="border-b border-[#D8DDE3] px-6 py-4 md:border-b-0 md:border-r">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-600">Forecast evaluation</p>
+        </div>
+        <div className="px-6 py-4">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-600">Decision relevance</p>
+        </div>
       </div>
 
-      <div className="mt-5 grid gap-3 rounded-2xl bg-slate-950 p-5 text-white md:grid-cols-[1fr_auto_1fr] md:items-center">
-        <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.17em] text-slate-400">Forecast layer</p>
-          <p className="mt-1 text-sm text-slate-200">Error magnitude + bias by horizon</p>
-        </div>
-        <div className="hidden text-slate-600 md:block">→</div>
-        <div className="md:text-right">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.17em] text-slate-400">Decision layer</p>
-          <p className="mt-1 text-sm text-slate-200">Service level + inventory coverage</p>
-        </div>
+      <div className="grid md:grid-cols-5 md:divide-x md:divide-[#D8DDE3]">
+        {data.metrics.map((metric, index) => (
+          <div key={metric.label} className="border-b border-[#D8DDE3] px-5 py-6 last:border-b-0 md:border-b-0">
+            <p className="text-[13px] font-semibold uppercase tracking-[0.1em] text-slate-500">{metric.label}</p>
+            <p className="mt-5 text-[20px] font-semibold text-[#1D2B44]">{metric.value}</p>
+            <p className="mt-3 text-[14px] leading-6 text-slate-600">{metric.note}</p>
+            {index === 2 ? <div className="mt-5 h-px bg-[#496C8A] md:hidden" /> : null}
+          </div>
+        ))}
       </div>
     </div>
   )
