@@ -210,6 +210,7 @@ For every proposal return:
 - service
 - business_problem
 - thesis
+- commercial_spine: object with target_buyer (array), buyer_problem, business_consequence, value_mechanism, proof, service_adjacency (array), conversion_intent, next_best_action
 - recommended_format: linkedin_post | linkedin_article | article | linkedin_and_article
 - primary_language: es | en | ca
 - cta: a natural commercial next step
@@ -262,10 +263,16 @@ Return {{"proposals": [...]}} only.
         topic_entities = [str(x).strip() for x in (item.get("topic_entities") or []) if str(x).strip()]
         family = str(item.get("family") or "explain_understand").strip()
         angle = str(item.get("angle") or "").strip()
+        commercial_spine = item.get("commercial_spine") if isinstance(item.get("commercial_spine"), dict) else {}
         generation_hint = (
             f"Selected editorial proposal. Pillar: {editorial_pillar}. Family: {family}. Angle: {angle or 'open'}. "
             f"Entities: {', '.join(topic_entities) if topic_entities else 'none specified'}. "
             f"Industry: {industry}. Service: {service}. "
+            f"Buyer: {commercial_spine.get('target_buyer', [])}. Buyer problem: {commercial_spine.get('buyer_problem', problem)}. "
+            f"Business consequence: {commercial_spine.get('business_consequence', '')}. "
+            f"Value mechanism: {commercial_spine.get('value_mechanism', '')}. "
+            f"Proof: {commercial_spine.get('proof', '')}. Service adjacency: {commercial_spine.get('service_adjacency', [])}. "
+            f"Conversion intent: {commercial_spine.get('conversion_intent', '')}. Next best action: {commercial_spine.get('next_best_action', '')}. "
             f"Title direction: {title}. Business problem: {problem}. Thesis: {thesis}. "
             f"Required format: {recommended}. "
             f"Required focus: {focus.strip() or 'use this proposal exactly'}. "
@@ -283,6 +290,7 @@ Return {{"proposals": [...]}} only.
             "service": service,
             "business_problem": problem,
             "thesis": thesis,
+            "commercial_spine": commercial_spine,
             "recommended_format": recommended,
             "primary_language": str(item.get("primary_language") or "es"),
             "cta": str(item.get("cta") or "").strip(),
