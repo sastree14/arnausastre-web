@@ -435,3 +435,33 @@ Renderer:
 The renderer may change narrative order, depth, CTA wording and length, but it must preserve the canonical thesis, Commercial Spine, evidence and provenance.
 
 Current contracts cover LinkedIn posts, LinkedIn articles, website articles, website project/case studies, marketplace projects and GitHub/portfolio technical proof.
+
+
+## Runtime persistence
+
+The model definition stays in Git. Supabase stores mutable operational instances in:
+
+- `canonical_content_objects`
+
+This table is not a competing source of truth. It exists so the editorial/visual runtime can persist an approved or in-progress object, link it to publication plans, presentation packages, visual candidates, approvals and later CRM review.
+
+Project provenance remains authoritative in `Portfolio_SC_Analytics`; copying a project reference into Supabase does not make the database the factual source of the project.
+
+The current visual pipeline persists the canonical object before producing channel-specific presentation packages. This preserves the separation:
+
+```text
+Portfolio / evidence source
+→ Canonical Content Object
+→ Publication Plan
+→ Presentation Package
+→ Visual Candidate(s)
+→ Render / QA
+→ Channel Output
+```
+
+Runtime implementation:
+- `growth/src/visual_pipeline.py`
+
+Database migrations:
+- `supabase/migrations/20260930130135_canonical_content_runtime.sql`
+- `supabase/migrations/20260930131310_canonical_commercial_spine.sql`
