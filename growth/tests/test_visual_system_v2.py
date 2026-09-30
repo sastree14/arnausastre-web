@@ -286,3 +286,27 @@ def test_visual_spec_keeps_verified_evidence_references(monkeypatch):
     }
     specs = vp.plan_visual_candidates(content_object, package, candidate_count=1)
     assert "source-1" in specs[0]["source_refs"]
+
+
+@pytest.mark.parametrize(
+    ("visual_language", "expected"),
+    [
+        ("A", (150, 620, 700, 350)),
+        ("B", (120, 735, 700, 335)),
+        ("C", (74, 474, 899, 527)),
+        ("D", (80, 600, 920, 431)),
+    ],
+)
+def test_dataviz_renderer_preserves_audited_chart_geometry(tmp_path: Path, visual_language: str, expected: tuple[int, int, int, int]):
+    spec = _illustrative_spec()
+    spec["visual_language"] = visual_language
+    rendered = render_visual_spec(spec, output_dir=tmp_path, slug=f"geometry-{visual_language}")
+    chart = next(box for box in rendered["layout"]["boxes"] if box.get("kind") == "chart")
+    assert (
+        round(chart["x"]),
+        round(chart["y"]),
+        round(chart["width"]),
+        round(chart["height"]),
+    ) == expected
+    qa = hard_qa(spec, rendered["layout"])
+    assert qa["passed"], qa
