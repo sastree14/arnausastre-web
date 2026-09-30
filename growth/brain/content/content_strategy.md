@@ -32,6 +32,8 @@ A real project can generate multiple content pieces. The project remains the evi
 
 ## Commercial purpose without hard selling
 
+Content is part of the SC-Analytics commercial system, not a parallel marketing activity.
+
 Every public piece must create a credible next step for a real buyer problem. The content should be useful on its own, but it must not end as an intellectual dead end.
 
 - Start from a concrete business symptom, decision, risk, inefficiency or missed opportunity that a decision-maker can recognise.
@@ -40,6 +42,8 @@ Every public piece must create a credible next step for a real buyer problem. Th
 - End with one low-friction next step when appropriate: reply/message us, visit the relevant SC-Analytics service page, contact us, or book a conversation through the website/Calendly flow.
 - The CTA must follow naturally from the argument. Never use generic phrases such as "contact us to learn more", artificial urgency, exaggerated promises or hard-selling language.
 - Website articles should include a contextual conversion block after the editorial body. LinkedIn posts may use a concise conversational CTA when it genuinely fits the idea.
+- Every canonical content object must define its Commercial Spine: target buyer, buyer problem, business consequence, value mechanism, proof, service adjacency, conversion intent and next best action.
+- Executive communication comes first. Technical depth should be available underneath through case studies, evidence and the portfolio rather than dominating the opening narrative.
 
 ## Topic, industry, method and technology diversity
 
