@@ -1,5 +1,6 @@
 from __future__ import annotations
 import argparse,json
+from pathlib import Path
 from .approvals import decide,list_pending
 from .brain import validate_brain
 from .brief import build_brief
@@ -20,6 +21,7 @@ from .seo_ops import run_seo_audit
 from .storage import get_store
 from .strategy import build_weekly_plan
 from .website_publishing import publish_article,publish_due_articles
+from .visual_pipeline import run_visual_pipeline
 
 def main()->None:
     parser=argparse.ArgumentParser(prog="sc-growth");sub=parser.add_subparsers(dest="command",required=True)
@@ -40,6 +42,7 @@ def main()->None:
     p_publish=sub.add_parser("publish");p_publish.add_argument("content_id")
     p_publish_article=sub.add_parser("publish-article");p_publish_article.add_argument("content_id");p_publish_article.add_argument("--force",action="store_true")
     p_rewrite=sub.add_parser("rewrite-content");p_rewrite.add_argument("content_id")
+    p_visual=sub.add_parser("visual-run");p_visual.add_argument("content_object_json");p_visual.add_argument("--channel",choices=["linkedin","website_article","website_project","marketplace_project"],default="linkedin");p_visual.add_argument("--format",choices=["auto","carousel","dataviz","architecture","before_after"],default="auto");p_visual.add_argument("--style",choices=["AUTO","A","B","C","D"],default="AUTO");p_visual.add_argument("--candidates",type=int,default=3);p_visual.add_argument("--language",choices=["es","en","ca"],default="en");p_visual.add_argument("--no-persist",action="store_true")
     args=parser.parse_args()
     if args.command=="validate":cfg=load_config();print(json.dumps({"ok":True,"tenant":cfg["company"]["tenant_id"],"brain_files":validate_brain()},indent=2))
     elif args.command=="brief":print(build_brief())
@@ -66,5 +69,9 @@ def main()->None:
     elif args.command=="publish-due-articles":print(json.dumps(publish_due_articles(),indent=2,ensure_ascii=False))
     elif args.command=="publish-due":print(json.dumps(publish_due_content(),indent=2,ensure_ascii=False))
     elif args.command=="rewrite-content":print(json.dumps(rewrite_content(args.content_id),indent=2,ensure_ascii=False))
+    elif args.command=="visual-run":
+        content_object=json.loads(Path(args.content_object_json).read_text(encoding="utf-8"))
+        result=run_visual_pipeline(content_object,channel=args.channel,format_key=None if args.format=="auto" else args.format,visual_language=args.style,candidate_count=args.candidates,language=args.language,persist=not args.no_persist)
+        print(json.dumps(result,indent=2,ensure_ascii=False))
     elif args.command=="run-operator-queue":print(json.dumps(run_operator_queue(args.task_id or None,recovery=args.recovery,limit=args.limit,recovery_minutes=args.recovery_minutes),indent=2,ensure_ascii=False))
 if __name__=="__main__":main()
