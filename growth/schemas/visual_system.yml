@@ -6,7 +6,7 @@ canvas:
   width: 1080
   height: 1350
   aspect_ratio: "4:5"
-  export: {svg: true, png_scale: 2}
+  export: {svg: true, png_width: 1080, png_height: 1350}
 
 principles:
   - "AI decides meaning; deterministic rules enforce design; geometry algorithms place elements."
@@ -30,7 +30,7 @@ brand_geometry:
   footer:
     rule_y: 1256
     label_y: 1297
-    content_bottom: 1210
+    content_bottom: 1244
 
 hard_rules:
   no_style_mixing: true
