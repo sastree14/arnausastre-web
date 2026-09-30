@@ -4,6 +4,7 @@ from typing import Any
 
 from . import editorial as base
 from .brain import load_brain
+from .channel_contracts import channel_contract_prompt
 from .config import load_config
 from .llm import get_llm
 from .models import ApprovalItem, ContentItem, new_id, to_dict
@@ -67,9 +68,16 @@ def _editorial_brain(channel: str) -> str:
         "content/editorial_architecture.md",
         "content/canonical_content_model.md",
         "content/portfolio_integration.md",
+        "content/channel_contracts.md",
         "content/editorial_playbook.md",
         "content/language_strategy.md",
     ])
+
+
+def _channel_contract_type(content_type: str) -> str:
+    if content_type == "article":
+        return "website_article"
+    return content_type
 
 
 def _writer_instructions(language: str, channel: str, content_type: str) -> str:
@@ -100,6 +108,9 @@ def _write_variant(brief: dict[str, Any], *, language: str, channel: str, conten
         f"""Write from the CANONICAL BRIEF below. Do not add factual claims beyond its evidence.
 Preserve the thesis and nuance; do not mechanically translate from another language.
 {format_rules}
+
+CHANNEL CONTRACT:
+{channel_contract_prompt(_channel_contract_type(content_type))}
 
 Return {{"title": "...", "body": "..."}} only.
 
@@ -147,6 +158,10 @@ def _rewrite_variant(
         _writer_instructions(language, channel, content_type),
         f"""Rewrite the draft once using the critic instructions. Preserve evidence and thesis exactly.
 {contract}
+
+CHANNEL CONTRACT:
+{channel_contract_prompt(_channel_contract_type(content_type))}
+
 Do not solve length by turning prose into telegraphic fragments.
 Return {{"title": "...", "body": "..."}} only.
 
