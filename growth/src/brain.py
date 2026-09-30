@@ -24,6 +24,7 @@ REQUIRED_BRAIN_FILES = [
     "content/editorial_architecture.md",
     "content/canonical_content_model.md",
     "content/portfolio_integration.md",
+    "content/channel_contracts.md",
     "content/editorial_playbook.md",
     "content/language_strategy.md",
 ]
