@@ -1,0 +1,427 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CanonicalContentObject",
+  "type": "object",
+  "required": [
+    "content_object_id",
+    "status",
+    "origin",
+    "editorial_pillar",
+    "content_family",
+    "topic_entities",
+    "business_problem",
+    "business_question",
+    "thesis",
+    "key_points",
+    "evidence",
+    "primary_objective",
+    "practical_takeaway",
+    "desired_reader_action",
+    "target_audience",
+    "timeliness",
+    "output_hints",
+    "created_at",
+    "updated_at"
+  ],
+  "properties": {
+    "content_object_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "researching",
+        "validated",
+        "approved",
+        "archived"
+      ]
+    },
+    "origin": {
+      "type": "string",
+      "enum": [
+        "portfolio_project",
+        "public_research",
+        "internal_knowledge",
+        "manual_idea",
+        "current_event",
+        "hybrid"
+      ]
+    },
+    "editorial_pillar": {
+      "type": "string",
+      "enum": [
+        "projects_proof",
+        "industries_use_cases",
+        "data_science_explained",
+        "models_methods_decision_science",
+        "technology_platforms_business_systems",
+        "data_ai_today",
+        "consulting_decision_insights"
+      ]
+    },
+    "content_family": {
+      "type": "string",
+      "enum": [
+        "explain_understand",
+        "compare",
+        "decision_guide",
+        "diagnose",
+        "failure_modes_mistakes",
+        "framework_playbook",
+        "case_project_proof",
+        "system_architecture",
+        "evidence_measurement",
+        "transformation",
+        "current_development_implication",
+        "point_of_view_contrarian"
+      ]
+    },
+    "angle": {
+      "type": "string"
+    },
+    "topic_entities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "name"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "project",
+              "technology",
+              "platform",
+              "method",
+              "model",
+              "industry",
+              "business_problem",
+              "business_process",
+              "company",
+              "regulation",
+              "concept",
+              "metric"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "business_problem": {
+      "type": "string"
+    },
+    "business_question": {
+      "type": "string"
+    },
+    "thesis": {
+      "type": "string",
+      "minLength": 1
+    },
+    "key_points": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": [
+        "claims",
+        "project_sources",
+        "public_sources",
+        "internal_sources",
+        "limitations"
+      ],
+      "properties": {
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "text",
+              "source_type",
+              "verified"
+            ],
+            "properties": {
+              "text": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_type": {
+                "type": "string",
+                "enum": [
+                  "portfolio_project",
+                  "public_source",
+                  "internal_source",
+                  "manual_assertion"
+                ]
+              },
+              "source_ref": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "source_url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "verified": {
+                "type": "boolean"
+              },
+              "accessed_at": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "project_sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "repository": {
+                "type": "string"
+              },
+              "project_id": {
+                "type": "string"
+              },
+              "path": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "repository",
+              "project_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "public_sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "internal_sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "primary_objective": {
+      "type": "string",
+      "enum": [
+        "authority",
+        "education",
+        "proof",
+        "awareness",
+        "demand_generation",
+        "trust",
+        "engagement",
+        "seo",
+        "portfolio_visibility"
+      ]
+    },
+    "secondary_objectives": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "authority",
+          "education",
+          "proof",
+          "awareness",
+          "demand_generation",
+          "trust",
+          "engagement",
+          "seo",
+          "portfolio_visibility"
+        ]
+      }
+    },
+    "practical_takeaway": {
+      "type": "string"
+    },
+    "desired_reader_action": {
+      "type": "string",
+      "enum": [
+        "understand_concept",
+        "compare_options",
+        "reconsider_process",
+        "visit_project",
+        "read_article",
+        "start_conversation",
+        "book_discovery_call"
+      ]
+    },
+    "target_audience": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "industry_context": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "funnel_stage": {
+      "type": "string"
+    },
+    "timeliness": {
+      "type": "string",
+      "enum": [
+        "evergreen",
+        "timely",
+        "breaking",
+        "seasonal"
+      ]
+    },
+    "why_now": {
+      "type": "string"
+    },
+    "valid_until": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "confidentiality": {
+      "type": "string",
+      "enum": [
+        "public",
+        "anonymized",
+        "restricted",
+        "internal"
+      ]
+    },
+    "language_context": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "es",
+          "en",
+          "ca"
+        ]
+      }
+    },
+    "risks_or_limits": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "output_hints": {
+      "type": "object",
+      "required": [
+        "eligible_channels",
+        "recommended_channels",
+        "visual_semantics"
+      ],
+      "properties": {
+        "eligible_channels": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "arnau_linkedin",
+              "sc_analytics_linkedin",
+              "website_article",
+              "website_project",
+              "marketplace",
+              "github_portfolio"
+            ]
+          }
+        },
+        "recommended_channels": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "arnau_linkedin",
+              "sc_analytics_linkedin",
+              "website_article",
+              "website_project",
+              "marketplace",
+              "github_portfolio"
+            ]
+          }
+        },
+        "visual_semantics": {
+          "type": "object",
+          "required": [
+            "comparison",
+            "architecture_available",
+            "quantitative_evidence",
+            "before_after",
+            "project_assets_available"
+          ],
+          "properties": {
+            "comparison": {
+              "type": "boolean"
+            },
+            "architecture_available": {
+              "type": "boolean"
+            },
+            "quantitative_evidence": {
+              "type": "boolean"
+            },
+            "before_after": {
+              "type": "boolean"
+            },
+            "project_assets_available": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}
