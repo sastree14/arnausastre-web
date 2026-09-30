@@ -1,0 +1,129 @@
+version: 1
+contracts:
+  linkedin_post:
+    label: LinkedIn Post
+    purpose: executive_discovery
+    default_channel: arnau_linkedin
+    length:
+      unit: characters
+      target_min: 750
+      target_max: 1800
+      hard_min: 450
+      hard_max: 2200
+    required_components:
+      - buyer_problem
+      - business_consequence
+      - sc_analytics_point_of_view
+      - useful_insight_or_proof
+      - business_meaning
+      - natural_next_step
+    technical_depth: light
+    commercial_intensity: high_but_natural
+    project_depth_target: website_project
+    technical_proof_target: github_portfolio
+
+  linkedin_article:
+    label: LinkedIn Article
+    purpose: founder_long_form_authority
+    default_channel: arnau_linkedin
+    length:
+      unit: words
+      target_min: 900
+      target_max: 1400
+      hard_min: 650
+      hard_max: 1700
+    required_components:
+      - business_thesis
+      - context
+      - reasoning
+      - evidence
+      - trade_offs
+      - practical_implication
+      - natural_next_step
+    technical_depth: medium
+    commercial_intensity: high_but_natural
+
+  website_article:
+    label: Website Article
+    purpose: durable_authority_and_conversion
+    default_channel: website
+    length:
+      unit: words
+      target_min: 900
+      target_max: 1600
+      hard_min: 650
+      hard_max: 1900
+    required_components:
+      - hero_thesis
+      - business_context
+      - analysis
+      - evidence
+      - framework_or_method
+      - buyer_implications
+      - practical_takeaway
+      - contextual_conversion
+    technical_depth: medium
+    commercial_intensity: high_but_contextual
+
+  website_project:
+    label: Website Project Case Study
+    purpose: executive_to_technical_proof
+    default_channel: website
+    length:
+      unit: words
+      target_min: 700
+      target_max: 1400
+      hard_min: 500
+      hard_max: 1800
+    required_components:
+      - executive_hero
+      - business_problem
+      - business_consequence
+      - what_was_built
+      - architecture
+      - approach
+      - evidence_or_results
+      - operating_value
+      - technical_overview
+      - business_takeaway
+      - technical_proof_link
+      - natural_next_step
+    technical_depth: medium_with_deep_link
+    commercial_intensity: high
+    requires_project_source: true
+
+  marketplace_project:
+    label: Marketplace Project
+    purpose: concise_capability_proof
+    default_channel: marketplace
+    length:
+      unit: words
+      target_min: 220
+      target_max: 550
+      hard_min: 140
+      hard_max: 750
+    required_components:
+      - problem
+      - what_was_built
+      - business_value
+      - evidence_or_result
+      - relevant_stack
+      - proof_path
+    technical_depth: concise
+    commercial_intensity: very_high
+    requires_project_source: true
+
+  github_portfolio:
+    label: GitHub Portfolio
+    purpose: technical_proof
+    default_channel: github_portfolio
+    required_components:
+      - architecture
+      - implementation
+      - technologies
+      - validation
+      - examples
+      - limitations
+      - execution_path
+    technical_depth: deep
+    commercial_intensity: indirect
