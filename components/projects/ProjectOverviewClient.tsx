@@ -62,28 +62,49 @@ const ui = {
 
 const sc12Summary = {
   en: {
+    hook: 'Forecast demand so inventory decisions change before stock becomes a problem.',
     problem:
-      'A single aggregate forecast score can hide weak performance exactly at the horizon where inventory decisions are made.',
+      'Purchasing and stock decisions become fragile when one blended forecast hides how accuracy changes between the next day and longer planning horizons.',
     built:
-      'A multi-horizon forecasting pipeline for H1, H3, H6 and H9, with statistical baselines, XGBoost/LightGBM candidates, horizon-level backtesting and a FastAPI/PostgreSQL serving path.',
+      'Demand is estimated separately at 1, 3, 6 and 9 days so purchasing and inventory decisions can use the horizon that actually matters.',
     utility:
-      'It makes model usefulness visible by planning horizon and connects forecast evaluation to inventory-oriented indicators such as service level and coverage.',
+      'The system makes the trade-off between availability, excess stock and working capital visible before a purchasing decision is made.',
   },
   es: {
+    hook: 'Predecir la demanda para cambiar la decisión de inventario antes de que el stock se convierta en un problema.',
     problem:
-      'Un único error agregado puede ocultar un rendimiento débil justo en el horizonte donde se toman decisiones de inventario.',
+      'Compras e inventario se vuelven frágiles cuando un único forecast agregado oculta cómo cambia la precisión entre mañana y los horizontes de planificación más largos.',
     built:
-      'Un pipeline de forecasting multi-horizonte H1, H3, H6 y H9 con baselines estadísticos, candidatos XGBoost/LightGBM, backtesting por horizonte y serving con FastAPI/PostgreSQL.',
+      'La demanda se estima por separado a 1, 3, 6 y 9 días para que compras e inventario se apoyen en el horizonte que realmente importa.',
     utility:
-      'Permite ver qué modelo resulta útil en cada horizonte y conectar la evaluación del forecast con indicadores de inventario como nivel de servicio y cobertura.',
+      'El sistema hace visible el equilibrio entre disponibilidad, exceso de stock y capital circulante antes de decidir cuánto comprar o mantener.',
   },
   ca: {
+    hook: 'Predir la demanda per canviar la decisió d’inventari abans que l’estoc es converteixi en un problema.',
     problem:
-      'Un únic error agregat pot ocultar un rendiment dèbil just a l’horitzó on es prenen decisions d’inventari.',
+      'Compres i inventari es tornen fràgils quan un únic forecast agregat oculta com canvia la precisió entre demà i els horitzons de planificació més llargs.',
     built:
-      'Un pipeline de forecasting multi-horitzó H1, H3, H6 i H9 amb baselines estadístics, candidats XGBoost/LightGBM, backtesting per horitzó i serving amb FastAPI/PostgreSQL.',
+      'La demanda s’estima per separat a 1, 3, 6 i 9 dies perquè compres i inventari es basin en l’horitzó que realment importa.',
     utility:
-      'Permet veure quin model és útil a cada horitzó i connectar l’avaluació del forecast amb indicadors d’inventari com nivell de servei i cobertura.',
+      'El sistema fa visible l’equilibri entre disponibilitat, excés d’estoc i capital circulant abans de decidir quant comprar o mantenir.',
+  },
+} as const
+
+const sc12Scenario = {
+  en: {
+    headline: 'A small inventory improvement can release material cash.',
+    summary:
+      'If a €2.0M inventory position can be reduced by 5% without damaging service, €100k of working capital is released. This is illustrative arithmetic, not a claimed client result.',
+  },
+  es: {
+    headline: 'Una pequeña mejora de inventario puede liberar una cantidad material de caja.',
+    summary:
+      'Si una posición de inventario de €2,0M puede reducirse un 5% sin deteriorar el servicio, se liberan €100k de capital circulante. Es aritmética ilustrativa, no un resultado atribuido a un cliente.',
+  },
+  ca: {
+    headline: 'Una petita millora d’inventari pot alliberar una quantitat material de caixa.',
+    summary:
+      'Si una posició d’inventari de €2,0M es pot reduir un 5% sense deteriorar el servei, s’alliberen €100k de capital circulant. És aritmètica il·lustrativa, no un resultat atribuït a un client.',
   },
 } as const
 
