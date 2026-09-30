@@ -1,69 +1,168 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
-import ProjectCover from '@/components/ProjectCover'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import { projectUi, publicProject } from '@/lib/project-public-copy'
+import { getWebsiteProjectGoldStandard } from '@/lib/website-project-gold-standard'
 import type { Project } from '@/lib/projects'
+
+const copy = {
+  es: {
+    index: 'Índice de proyectos',
+    systems: 'sistemas publicados',
+    view: 'Ver caso',
+    proof: 'Repositorio',
+    evidence: 'Evidencia pública',
+    intro:
+      'Una selección de sistemas de forecasting, optimización, riesgo, automatización y decisión. Cada página separa con claridad el problema, el sistema construido, la evidencia disponible y la implementación técnica.',
+  },
+  ca: {
+    index: 'Índex de projectes',
+    systems: 'sistemes publicats',
+    view: 'Veure cas',
+    proof: 'Repositori',
+    evidence: 'Evidència pública',
+    intro:
+      'Una selecció de sistemes de forecasting, optimització, risc, automatització i decisió. Cada pàgina separa amb claredat el problema, el sistema construït, l’evidència disponible i la implementació tècnica.',
+  },
+  en: {
+    index: 'Project index',
+    systems: 'published systems',
+    view: 'View case',
+    proof: 'Repository',
+    evidence: 'Public evidence',
+    intro:
+      'A selection of forecasting, optimisation, risk, automation and decision systems. Each project page separates the problem, the system built, available evidence and technical implementation.',
+  },
+} as const
 
 export default function ProjectsPageClient({ projects }: { projects: Project[] }) {
   const { lang } = useSiteLanguage()
   const t = projectUi[lang]
-  const libraryLabel=lang==='es'?'Biblioteca de sistemas':lang==='ca'?'Biblioteca de sistemes':'Systems library'
-  const libraryBody=lang==='es'
-    ?'No todo lo que construimos nace como un caso público de cliente. También documentamos sistemas internos, prototipos, herramientas y arquitecturas que demuestran capacidad técnica reutilizable.'
-    :lang==='ca'
-      ?'No tot el que construïm neix com un cas públic de client. També documentem sistemes interns, prototips, eines i arquitectures que demostren capacitat tècnica reutilitzable.'
-      :'Not everything we build starts as a public client case. We also document internal systems, prototypes, tools and architectures that demonstrate reusable technical capability.'
+  const c = copy[lang]
 
   return (
-    <main className="bg-white text-slate-950">
-      <section className="border-b border-slate-800 bg-slate-950 text-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 md:py-28 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-300">{t.label}</p>
-            <h1 className="mt-5 max-w-4xl text-5xl leading-[1.08] md:text-6xl" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-            <p className="mt-7 max-w-3xl text-lg leading-8 text-slate-300">{t.sub}</p>
+    <main className="bg-[#FAFAF7] text-slate-950">
+      <section className="border-b border-slate-300 bg-[#FAFAF7]">
+        <div className="mx-auto max-w-7xl px-6 pb-16 pt-14 lg:px-8 lg:pb-20 lg:pt-20">
+          <div className="grid gap-10 lg:grid-cols-[.9fr_1.1fr] lg:items-end">
+            <div>
+              <p className="text-[13px] font-semibold uppercase tracking-[0.18em] text-indigo-700">{t.label}</p>
+              <h1
+                className="mt-5 max-w-3xl text-5xl leading-[1.02] tracking-[-0.03em] text-slate-950 sm:text-6xl lg:text-[68px]"
+                style={{ fontFamily: 'var(--font-playfair)' }}
+              >
+                {t.title}
+              </h1>
+            </div>
+            <div className="border-l border-slate-300 pl-6 lg:pl-10">
+              <p className="max-w-2xl text-lg leading-8 text-slate-600">{t.sub}</p>
+              <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-500">{c.intro}</p>
+            </div>
           </div>
-          <div className="relative hidden min-h-[260px] items-center justify-center lg:flex">
-            <div className="absolute h-60 w-60 rounded-full border border-indigo-300/10"/>
-            <Image src="/brand/logo-horizontal-transparent.png" alt="SC-Analytics" width={620} height={320} className="relative z-10 w-full max-w-md object-contain" priority/>
+
+          <div className="mt-14 flex flex-wrap items-end justify-between gap-6 border-t border-slate-300 pt-6">
+            <div>
+              <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-slate-500">{c.index}</p>
+              <p className="mt-2 text-sm text-slate-500">
+                <span className="mr-2 font-mono text-2xl font-semibold text-slate-950">{String(projects.length).padStart(2, '0')}</span>
+                {c.systems}
+              </p>
+            </div>
+            <p className="max-w-xl text-right text-sm leading-6 text-slate-500">
+              {lang === 'es'
+                ? 'Casos de capacidad e implementación. Cuando existe evidencia técnica pública, se enlaza directamente.'
+                : lang === 'ca'
+                  ? 'Casos de capacitat i implementació. Quan existeix evidència tècnica pública, s’enllaça directament.'
+                  : 'Capability and implementation cases. When public technical evidence exists, it is linked directly.'}
+            </p>
           </div>
         </div>
       </section>
 
-      <section className="border-b border-slate-200 bg-slate-50">
-        <div className="mx-auto grid max-w-7xl gap-6 px-6 py-10 md:grid-cols-[.35fr_1.65fr]">
-          <div><p className="text-xs font-semibold uppercase tracking-[.18em] text-indigo-600">{libraryLabel}</p><p className="mt-2 text-3xl font-semibold text-slate-950">{projects.length}</p></div>
-          <p className="max-w-3xl text-sm leading-7 text-slate-600">{libraryBody}</p>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-6 py-20">
+      <section className="mx-auto max-w-7xl px-6 py-10 lg:px-8 lg:py-14">
         {projects.length === 0 ? (
-          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-12 text-center text-sm text-slate-500">No published projects yet.</div>
+          <div className="border border-slate-300 bg-white p-12 text-center text-sm text-slate-500">No published projects yet.</div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {projects.map((raw) => {
+          <div className="border-t border-slate-300">
+            {projects.map((raw, index) => {
               const project = publicProject(raw, lang)
+              const goldStandard = getWebsiteProjectGoldStandard(project.slug)
+              const facts = project.metrics.slice(0, 3)
+
               return (
-                <Link key={project.slug} href={`/projects/${project.slug}`} className="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-200/50">
-                  <div className="aspect-[3/2] w-full overflow-hidden">
-                    <ProjectCover image={project.image} imagePath={project.imagePath} headline={project.headline} industry={project.industry} capability={project.capability} forceBrand/>
+                <article
+                  key={project.slug}
+                  className="group grid gap-7 border-b border-slate-300 py-9 transition-colors hover:bg-white/70 md:grid-cols-[72px_1fr] lg:grid-cols-[72px_1.05fr_.95fr_160px] lg:items-start lg:gap-8"
+                >
+                  <div className="font-mono text-[13px] text-slate-400">{String(index + 1).padStart(2, '0')}</div>
+
+                  <div>
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] font-semibold uppercase tracking-[0.13em]">
+                      <span className="text-indigo-700">{project.industry}</span>
+                      <span className="text-slate-300">/</span>
+                      <span className="text-slate-500">{project.challenge}</span>
+                    </div>
+
+                    <Link href={`/projects/${project.slug}`} className="block">
+                      <h2
+                        className="mt-4 max-w-2xl text-3xl leading-[1.12] tracking-[-0.02em] text-slate-950 transition-colors group-hover:text-indigo-800 lg:text-[34px]"
+                        style={{ fontFamily: 'var(--font-playfair)' }}
+                      >
+                        {project.headline}
+                      </h2>
+                    </Link>
+
+                    <p className="mt-4 max-w-2xl text-[15px] leading-7 text-slate-600">{project.description}</p>
+
+                    <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                      <Link href={`/projects/${project.slug}`} className="inline-flex items-center gap-2 font-semibold text-slate-950 underline decoration-slate-300 underline-offset-4 transition hover:decoration-slate-950">
+                        {c.view}
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                      {goldStandard ? (
+                        <a
+                          href={goldStandard.proofUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 font-medium text-slate-500 underline decoration-slate-300 underline-offset-4 transition hover:text-slate-950 hover:decoration-slate-950"
+                        >
+                          {c.proof}
+                          <ArrowUpRight className="h-4 w-4" />
+                        </a>
+                      ) : null}
+                    </div>
                   </div>
-                  <div className="p-6">
-                    <div className="flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-[0.12em]"><span className="text-indigo-600">{project.industry}</span><span className="text-slate-300">·</span><span className="text-slate-500">{project.challenge}</span></div>
-                    <h2 className="mt-4 text-xl leading-snug text-slate-950 transition group-hover:text-indigo-700" style={{ fontFamily: 'var(--font-playfair)' }}>{project.headline}</h2>
-                    <p className="mt-3 line-clamp-3 text-sm leading-7 text-slate-600">{project.description}</p>
-                    {project.metrics.length > 0 && <div className="mt-5 grid grid-cols-2 gap-2 border-t border-slate-100 pt-5">{project.metrics.slice(0,4).map((metric)=><div key={metric.label} className="px-1 py-2"><p className="text-[10px] leading-tight text-slate-400">{metric.label}</p><p className="mt-1 text-sm font-semibold text-slate-900">{metric.value}</p></div>)}</div>}
+
+                  <div className="grid gap-0 border-y border-slate-200 lg:border-y-0 lg:border-l lg:border-slate-300 lg:pl-8">
+                    {facts.length > 0 ? (
+                      facts.map((metric) => (
+                        <div key={metric.label} className="grid grid-cols-[.9fr_1.1fr] gap-4 border-b border-slate-200 py-3 last:border-b-0 lg:first:pt-0">
+                          <p className="text-[12px] leading-5 text-slate-500">{metric.label}</p>
+                          <p className="text-right text-[13px] font-semibold leading-5 text-slate-900">{metric.value}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="py-3 text-sm leading-6 text-slate-500">{project.capability}</div>
+                    )}
                   </div>
-                </Link>
+
+                  <div className="hidden lg:block">
+                    <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                      {goldStandard ? c.evidence : project.capability.split(',')[0]}
+                    </p>
+                    <div className="mt-4 h-[2px] w-12 bg-indigo-600 transition-all group-hover:w-20" />
+                  </div>
+                </article>
               )
             })}
           </div>
         )}
-        {lang !== 'en' && projects.length > 0 && <p className="mt-8 text-xs leading-5 text-slate-400">{t.sourceNote}</p>}
+
+        {lang !== 'en' && projects.length > 0 ? (
+          <p className="mt-8 max-w-3xl text-xs leading-5 text-slate-400">{t.sourceNote}</p>
+        ) : null}
       </section>
     </main>
   )
