@@ -195,3 +195,64 @@ Reference branch:
 - `feat/web-project-gold-standard-sc12`
 
 This implementation is intentionally isolated from `main` until visual review and approval.
+
+
+## Two-level case experience
+
+The website now separates fast evaluation from deep technical explanation.
+
+### Level 1 — Case overview
+
+Route:
+
+`/projects/[slug]`
+
+Purpose:
+
+A buyer should understand the project in roughly 20–30 seconds.
+
+Required content:
+- problem;
+- what was built;
+- operational utility or verified impact;
+- 3–4 evidence facts when verified;
+- direct CTA to the full case;
+- direct technical repository link when public proof exists;
+- direct contact CTA.
+
+This page must remain concise. It is not the place for architecture detail, methodology, long limitations or implementation notes.
+
+### Level 2 — Full case study
+
+Route:
+
+`/projects/[slug]/case-study`
+
+Purpose:
+
+Expose the complete reasoning for readers who actively want more depth.
+
+It contains:
+- business problem;
+- decision context;
+- system design;
+- architecture;
+- analytical decisions;
+- evidence;
+- technical overview;
+- limitations;
+- technical proof;
+- commercial next step.
+
+A persistent section selector, repository action and contact action make the detailed case navigable without scanning the entire page.
+
+## Cases naming policy
+
+Public navigation uses `Cases / Casos`, not `Success stories / Casos de éxito` by default.
+
+Reason:
+- some entries are public portfolio implementations, internal systems or capability proofs;
+- `success story` implies a verified real-world outcome;
+- that label should only be used where client provenance and measured impact are explicitly approved.
+
+Verified client engagements may later receive a distinct `Success story / Caso de éxito` evidence type.
