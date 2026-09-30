@@ -29,7 +29,8 @@
     "limitations",
     "takeaway",
     "cta",
-    "sourceNote"
+    "sourceNote",
+    "businessOutcome"
   ],
   "properties": {
     "slug": {
@@ -135,6 +136,9 @@
     "sourceNote": {
       "type": "string",
       "minLength": 1
+    },
+    "businessOutcome": {
+      "$ref": "#/$defs/businessOutcome"
     }
   },
   "$defs": {
@@ -545,6 +549,67 @@
         },
         "detail": {
           "type": "string"
+        }
+      }
+    },
+    "businessOutcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "label",
+        "headline",
+        "summary",
+        "metrics",
+        "disclaimer"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "verified",
+            "illustrative_scenario"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "headline": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metrics": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "value",
+              "label",
+              "note"
+            ],
+            "properties": {
+              "value": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "disclaimer": {
+          "type": "string",
+          "minLength": 1
         }
       }
     }
