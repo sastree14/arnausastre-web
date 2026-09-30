@@ -9,6 +9,7 @@ import hashlib
 
 from .assets import get_asset_store
 from .brain import load_brain
+from .channel_contracts import channel_contract_prompt
 from .config import load_config
 from .llm import get_llm
 from .models import ApprovalItem, ContentItem, Evidence, new_id, to_dict
@@ -132,6 +133,7 @@ def _editorial_brain(channel: str = "arnau_linkedin") -> str:
         "content/editorial_architecture.md",
         "content/canonical_content_model.md",
         "content/portfolio_integration.md",
+        "content/channel_contracts.md",
         "content/editorial_playbook.md",
         "content/language_strategy.md",
     ]
@@ -146,6 +148,7 @@ def _dynamic_queries(theme_hint: str = "") -> list[str]:
         "content/editorial_architecture.md",
         "content/canonical_content_model.md",
         "content/portfolio_integration.md",
+        "content/channel_contracts.md",
         "content/editorial_playbook.md",
     ])
     payload = llm.json(
@@ -487,6 +490,12 @@ BRAIN:
     return brief
 
 
+def _channel_contract_type(content_type: str) -> str:
+    if content_type == "article":
+        return "website_article"
+    return content_type
+
+
 def _writer_instructions(language: str, channel: str, content_type: str) -> str:
     language_names = {"es": "Spanish", "en": "English", "ca": "Catalan"}
     target = language_names[language]
@@ -513,6 +522,9 @@ def _write_variant(brief: dict[str, Any], *, language: str, channel: str, conten
         f"""Write from the CANONICAL BRIEF below. Do not add factual claims beyond its evidence.
 Preserve the thesis and nuance; do not mechanically translate from another language.
 {format_rules}
+
+CHANNEL CONTRACT:
+{channel_contract_prompt(_channel_contract_type(content_type))}
 
 Return {{"title": "...", "body": "..."}} only.
 
@@ -554,6 +566,8 @@ Reject or request rewrite if it:
 CONTENT TYPE: {content_type}
 CHANNEL: {channel}
 LANGUAGE: {language}
+CHANNEL CONTRACT:
+{channel_contract_prompt(_channel_contract_type(content_type))}
 BRIEF: {brief}
 DRAFT: {draft}
 BRAIN: {brain}
@@ -568,6 +582,10 @@ def _rewrite_variant(brief: dict[str, Any], draft: dict[str, Any], critique: dic
     result = llm.json(
         _writer_instructions(language, channel, content_type),
         f"""Rewrite the draft once using the critic instructions. Preserve evidence and thesis exactly.
+
+CHANNEL CONTRACT:
+{channel_contract_prompt(_channel_contract_type(content_type))}
+
 Return {{"title": "...", "body": "..."}} only.
 
 BRIEF: {brief}
