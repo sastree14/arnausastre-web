@@ -83,6 +83,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
           headline={commercial.scenarioHeadline}
           summary={commercial.scenarioSummary}
           note={ui.scenarioNote}
+          lang={lang}
         />
       ) : null}
 
