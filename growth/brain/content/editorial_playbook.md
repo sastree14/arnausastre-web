@@ -177,11 +177,34 @@ Do not add a new family merely because a useful new angle appears.
 
 ## Commercial intent
 
+Every public SC-Analytics piece has an underlying commercial purpose.
+
+This does not mean every piece must contain a sales CTA. It means every canonical idea must contain a Commercial Spine:
+
+- target buyer;
+- buyer problem;
+- business consequence;
+- value mechanism;
+- proof;
+- service adjacency;
+- conversion intent;
+- next best action.
+
+The preferred narrative hierarchy is:
+
+```text
+Buyer problem
+→ Business consequence
+→ SC-Analytics point of view
+→ Solution / framework / system
+→ Proof
+→ Optional depth
+→ Natural next step
+```
+
+For project-led content, the executive layer should be understandable by a CEO, COO or CFO while technical depth remains available through the website case study and `Portfolio_SC_Analytics`.
+
 "Commercial" is not a content family.
-
-Commercial adjacency is an objective or scoring dimension. Any family can support a commercial conversation when the piece starts from a real problem and gives the reader genuine value.
-
-The CTA must follow naturally from the argument. Do not force a sales ending onto every piece.
 
 ## Editorial scoring
 
