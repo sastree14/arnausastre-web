@@ -452,7 +452,7 @@ def _render_dataviz(spec: dict[str, Any]) -> tuple[str, dict[str, Any]]:
     labels, series = _normalized_series(content, str(spec.get("semantic_pattern") or ""), str(spec.get("evidence_mode") or "empirical"))
     chart_type = str((spec.get("composition") or {}).get("chart_type") or "line")
     parts.append(_render_chart(chart_type, rect, labels, series, style, str(spec.get("evidence_mode") or "empirical")))
-    boxes.append({"kind":"chart","x":_num(rect.get("x")),"y":_num(rect.get("y")),"width":_num(rect.get("width")),"height":_num(rect.get("height")),"content_box":True,"collision_sensitive":False})
+    boxes.append({"kind":"chart","x":_num(rect.get("x")),"y":_num(rect.get("y")),"width":_num(rect.get("width")),"height":_num(rect.get("height")),"content_box":False,"collision_sensitive":False})
     takeaway = str(content.get("takeaway") or content.get("practical_takeaway") or content.get("interpretation") or "")
     trect = dict(layout_cfg.get("takeaway") or {"x":80,"y":1045,"width":920,"height":140})
     surface = str(palette.get("surface_takeaway") or palette.get("surface_alt") or palette.get("surface") or "transparent")
