@@ -124,7 +124,7 @@ def load_project_evidence(
     max_chars_per_source: int = 12000,
 ) -> dict[str, dict[str, str]]:
     paths = project_evidence_paths(project_id)
-    keys = tuple(evidence_keys or DEFAULT_EVIDENCE_KEYS)
+    keys = tuple(DEFAULT_EVIDENCE_KEYS if evidence_keys is None else evidence_keys)
     result: dict[str, dict[str, str]] = {}
     for key in keys:
         path = paths.get(str(key))
@@ -251,6 +251,7 @@ def create_project_content_object(
     ])
     llm = get_llm(high_reasoning=True)
     now = _utc_now()
+    content_object_id = new_id("cco")
     result = llm.json(
         "You are the SC-Analytics senior content strategist. Build one canonical content object from verified portfolio evidence. Return JSON only.",
         f"""Create one Canonical Content Object for the portfolio project below.
@@ -281,7 +282,7 @@ funnel_stage, timeliness, why_now, valid_until, confidentiality,
 language_context, risks_or_limits, output_hints, created_at, updated_at.
 
 Use:
-- content_object_id: {new_id('cco')}
+- content_object_id: {content_object_id}
 - status: draft
 - origin: portfolio_project
 - created_at and updated_at: {now}
@@ -306,6 +307,7 @@ BRAIN:
         raise PortfolioError("LLM did not return a canonical content object")
 
     # Enforce source identity after generation.
+    result["content_object_id"] = content_object_id
     result["origin"] = "portfolio_project"
     result["editorial_pillar"] = "projects_proof"
     result["content_family"] = family
