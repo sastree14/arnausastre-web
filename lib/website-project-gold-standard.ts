@@ -92,6 +92,14 @@ export type WebsiteProjectGoldStandard = {
     secondaryLabel: string
     secondaryHref: string
   }
+  businessOutcome: {
+    mode: 'verified' | 'illustrative_scenario'
+    label: string
+    headline: string
+    summary: string
+    metrics: Array<{ value: string; label: string; note: string }>
+    disclaimer: string
+  }
   sourceNote: string
 }
 
@@ -274,6 +282,20 @@ export const SC12_WEBSITE_GOLD_STANDARD: WebsiteProjectGoldStandard = {
     secondaryLabel: 'Open technical proof',
     secondaryHref:
       'https://github.com/sastree14/Portfolio_SC_Analytics/tree/main/projects/sc-12-multi-horizon-demand-forecasting',
+  },
+  businessOutcome: {
+    mode: 'illustrative_scenario',
+    label: 'Illustrative business economics',
+    headline: 'Better forecasting only matters when it changes stock, service or cash.',
+    summary:
+      'For an illustrative €2.0M inventory position, a 5% reduction in excess inventory would release €100k of working capital. The arithmetic is explicit so the commercial relevance can be understood without presenting a hypothetical scenario as a measured client result.',
+    metrics: [
+      { value: '€2.0M', label: 'Scenario inventory', note: 'Illustrative operating base.' },
+      { value: '5%', label: 'Scenario reduction', note: 'Assumed reduction in excess inventory.' },
+      { value: '€100k', label: 'Capital released', note: '€2.0M × 5%; illustrative arithmetic.' },
+    ],
+    disclaimer:
+      'Illustrative scenario, not a client result or forecasted guarantee. Actual value depends on inventory economics, service targets, margins and operating constraints.',
   },
   sourceNote:
     'SC-12 is a public portfolio implementation. It is presented as capability and implementation proof, not as a named client case or a claim of measured organisation-wide impact.',
