@@ -1,16 +1,5 @@
 import Link from 'next/link'
-import {
-  ArrowRight,
-  ArrowUpRight,
-  BarChart3,
-  CheckCircle2,
-  Code2,
-  Database,
-  Gauge,
-  GitBranch,
-  Layers3,
-  ShieldCheck,
-} from 'lucide-react'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import type { WebsiteProjectGoldStandard } from '@/lib/website-project-gold-standard'
 import { ArchitectureSystemVisual, EvidenceFrameworkVisual, HorizonDecisionVisual } from '@/components/projects/WebProjectVisuals'
 
@@ -25,46 +14,65 @@ const sectionLinks = [
   ['limitations', 'Limitations'],
 ] as const
 
-function SectionEyebrow({ children }: { children: React.ReactNode }) {
-  return <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-indigo-600">{children}</p>
-}
-
-function SectionHeading({
-  title,
-  body,
-}: {
-  title: string
-  body?: string
-}) {
+function SectionEyebrow({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
   return (
-    <div className="max-w-3xl">
-      <h2 className="mt-4 text-3xl leading-[1.08] tracking-[-0.02em] text-slate-950 sm:text-4xl lg:text-[42px]" style={{ fontFamily: 'var(--font-playfair)' }}>
-        {title}
-      </h2>
-      {body ? <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">{body}</p> : null}
-    </div>
+    <p className={`text-[13px] font-semibold uppercase tracking-[0.16em] ${dark ? 'text-[#7A7DFF]' : 'text-indigo-700'}`}>
+      {children}
+    </p>
   )
 }
 
-function SectionShell({
+function SectionTitle({
+  title,
+  body,
+  dark = false,
+}: {
+  title: string
+  body?: string
+  dark?: boolean
+}) {
+  return (
+    <>
+      <h2
+        className={`mt-4 text-4xl leading-[1.06] tracking-[-0.025em] sm:text-[44px] ${dark ? 'text-white' : 'text-slate-950'}`}
+        style={{ fontFamily: 'var(--font-playfair)' }}
+      >
+        {title}
+      </h2>
+      {body ? (
+        <p className={`mt-5 text-[16px] leading-8 ${dark ? 'text-slate-300' : 'text-slate-600'}`}>{body}</p>
+      ) : null}
+    </>
+  )
+}
+
+function EditorialSection({
   id,
-  children,
   tone = 'white',
+  eyebrow,
+  title,
+  body,
+  children,
 }: {
   id: string
-  children: React.ReactNode
   tone?: 'white' | 'paper' | 'dark'
+  eyebrow: string
+  title: string
+  body?: string
+  children: React.ReactNode
 }) {
-  const toneClass =
-    tone === 'dark'
-      ? 'bg-[#071522] text-white'
-      : tone === 'paper'
-        ? 'bg-[#F8FAFC] text-slate-950'
-        : 'bg-white text-slate-950'
+  const dark = tone === 'dark'
+  const background = dark ? 'bg-[#0D1B2A]' : tone === 'paper' ? 'bg-[#F4F1EA]' : 'bg-white'
 
   return (
-    <section id={id} className={`scroll-mt-28 border-b border-slate-200/80 ${toneClass}`}>
-      <div className="mx-auto max-w-7xl px-6 py-20 sm:py-24 lg:px-8 lg:py-28">{children}</div>
+    <section id={id} className={`scroll-mt-32 border-b ${dark ? 'border-[#496C8A]' : 'border-slate-300'} ${background}`}>
+      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-[.36fr_.64fr] lg:gap-14 lg:px-8 lg:py-20">
+        <div>
+          <SectionEyebrow dark={dark}>{eyebrow}</SectionEyebrow>
+          <SectionTitle title={title} body={body} dark={dark} />
+        </div>
+        <div className="lg:pt-[2px]">{children}</div>
+      </div>
     </section>
   )
 }
@@ -72,357 +80,314 @@ function SectionShell({
 export default function WebsiteProjectGoldStandard({ project }: { project: WebsiteProjectGoldStandard }) {
   return (
     <main className="bg-white text-slate-950">
-      <section className="relative overflow-hidden border-b border-slate-800 bg-[#071522] text-white">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -right-24 -top-32 h-[420px] w-[420px] rounded-full border border-indigo-300/10" />
-          <div className="absolute right-12 top-20 h-72 w-72 rotate-12 border border-sky-300/[.06]" />
-          <div className="absolute bottom-0 left-[52%] h-px w-[36%] bg-gradient-to-r from-transparent via-indigo-400/40 to-transparent" />
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-6 pb-16 pt-12 sm:pb-20 sm:pt-16 lg:px-8 lg:pb-24">
-          <Link
-            href="/projects"
-            className="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-white"
-          >
+      <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
+        <div className="mx-auto max-w-7xl px-6 pb-14 pt-10 lg:px-8 lg:pb-18 lg:pt-14">
+          <Link href="/projects" className="inline-flex items-center gap-2 text-[14px] text-[#A8BACB] transition hover:text-white">
             <span aria-hidden="true">←</span>
             Projects
           </Link>
 
-          <div className="mt-14 grid gap-12 lg:grid-cols-[1.18fr_.82fr] lg:items-start">
+          <div className="mt-12 grid gap-12 lg:grid-cols-[1.18fr_.82fr] lg:items-start">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-indigo-300">{project.eyebrow}</p>
+              <SectionEyebrow dark>{project.eyebrow}</SectionEyebrow>
               <h1
-                className="mt-6 max-w-4xl text-5xl leading-[1.03] tracking-[-0.035em] text-white sm:text-6xl lg:text-[72px]"
+                className="mt-6 max-w-4xl text-5xl leading-[1.01] tracking-[-0.035em] text-white sm:text-6xl lg:text-[70px]"
                 style={{ fontFamily: 'var(--font-playfair)' }}
               >
                 {project.title}
               </h1>
-              <p className="mt-7 max-w-3xl text-lg leading-8 text-slate-300 sm:text-xl">{project.description}</p>
+              <p className="mt-7 max-w-3xl text-[18px] leading-8 text-[#EAF0F6]">{project.description}</p>
 
-              <div className="mt-8 flex flex-wrap gap-2">
-                <span className="rounded-full border border-white/10 bg-white/[.05] px-3 py-1.5 text-xs font-medium text-white">
-                  {project.industry}
-                </span>
+              <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[#496C8A] pt-5 text-[13px] uppercase tracking-[0.1em] text-[#A8BACB]">
+                <span className="text-white">{project.industry}</span>
                 {project.capabilities.map((capability) => (
-                  <span
-                    key={capability}
-                    className="rounded-full border border-indigo-300/20 bg-indigo-300/[.06] px-3 py-1.5 text-xs font-medium text-indigo-200"
-                  >
+                  <span key={capability} className="before:mr-4 before:text-[#496C8A] before:content-['/']">
                     {capability}
                   </span>
                 ))}
               </div>
 
-              <div className="mt-10 flex flex-wrap gap-3">
+              <div className="mt-8 flex flex-wrap gap-5 text-[15px]">
                 <a
                   href={project.proofUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-100"
+                  className="inline-flex items-center gap-2 font-semibold text-white underline decoration-[#5E86A8] underline-offset-4 transition hover:decoration-white"
                 >
                   {project.proofLabel}
                   <ArrowUpRight className="h-4 w-4" />
                 </a>
-                <a
-                  href="#problem"
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[.04] px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/[.08]"
+                <Link
+                  href={project.cta.primaryHref}
+                  className="inline-flex items-center gap-2 font-semibold text-[#A8BACB] underline decoration-[#496C8A] underline-offset-4 transition hover:text-white hover:decoration-white"
                 >
-                  Read the case study
+                  {project.cta.primaryLabel}
                   <ArrowRight className="h-4 w-4" />
-                </a>
+                </Link>
               </div>
             </div>
 
-            <aside className="rounded-[28px] border border-white/10 bg-white/[.045] p-5 shadow-[0_30px_80px_-50px_rgba(0,0,0,.9)] backdrop-blur sm:p-6">
-              <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-5">
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">Project ID</p>
-                  <p className="mt-1 font-mono text-sm text-white">{project.projectId}</p>
-                </div>
-                <div className="rounded-xl border border-emerald-300/15 bg-emerald-300/[.06] px-3 py-2 text-right">
-                  <p className="text-[9px] font-semibold uppercase tracking-[0.17em] text-emerald-300">Evidence mode</p>
-                  <p className="mt-1 text-xs text-emerald-100">Public implementation</p>
-                </div>
+            <aside className="border-y border-[#5E86A8]">
+              <div className="grid grid-cols-[.9fr_1.1fr] gap-5 border-b border-[#496C8A] py-4">
+                <p className="text-[13px] uppercase tracking-[0.12em] text-[#A8BACB]">Project ID</p>
+                <p className="text-right font-mono text-[14px] font-semibold text-white">{project.projectId}</p>
               </div>
-
-              <div className="divide-y divide-white/10">
-                {project.heroFacts.map((fact) => (
-                  <div key={fact.label} className="grid grid-cols-[.42fr_.58fr] gap-4 py-4">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">{fact.label}</p>
-                    <p className="text-right text-sm font-medium leading-6 text-slate-200">{fact.value}</p>
-                  </div>
-                ))}
+              <div className="grid grid-cols-[.9fr_1.1fr] gap-5 border-b border-[#496C8A] py-4">
+                <p className="text-[13px] uppercase tracking-[0.12em] text-[#A8BACB]">Evidence</p>
+                <p className="text-right text-[14px] font-semibold text-white">Public implementation</p>
               </div>
-
-              <div className="mt-4 rounded-2xl bg-[#0D1B2A] p-5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.17em] text-sky-300">Core thesis</p>
-                <p className="mt-3 text-sm leading-6 text-slate-200">{project.thesis}</p>
+              {project.heroFacts.map((fact) => (
+                <div key={fact.label} className="grid grid-cols-[.9fr_1.1fr] gap-5 border-b border-[#496C8A] py-4 last:border-b-0">
+                  <p className="text-[13px] uppercase tracking-[0.1em] text-[#A8BACB]">{fact.label}</p>
+                  <p className="text-right text-[14px] font-semibold leading-6 text-[#EAF0F6]">{fact.value}</p>
+                </div>
+              ))}
+              <div className="border-t border-[#5E86A8] py-5">
+                <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">Core thesis</p>
+                <p className="mt-3 text-[15px] leading-7 text-[#EAF0F6]">{project.thesis}</p>
               </div>
             </aside>
           </div>
 
-          <div className="mt-14 border-t border-white/10 pt-5">
-            <p className="max-w-4xl text-xs leading-6 text-slate-500">{project.sourceNote}</p>
-          </div>
+          <p className="mt-10 max-w-4xl border-t border-[#496C8A] pt-5 text-[13px] leading-6 text-[#A8BACB]">{project.sourceNote}</p>
         </div>
       </section>
 
-      <div className="border-b border-slate-200 bg-white">
-        <div className="mx-auto hidden max-w-7xl grid-cols-[220px_1fr] gap-12 px-6 lg:grid lg:px-8">
-          <aside className="relative border-r border-slate-200 py-16">
-            <div className="sticky top-28 pr-8">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">On this page</p>
-              <nav className="mt-5 space-y-1">
-                {sectionLinks.map(([id, label]) => (
-                  <a
-                    key={id}
-                    href={`#${id}`}
-                    className="block border-l border-transparent py-1.5 pl-3 text-sm text-slate-500 transition hover:border-indigo-400 hover:text-slate-950"
-                  >
-                    {label}
-                  </a>
-                ))}
-              </nav>
-            </div>
-          </aside>
-
-          <div className="py-16">
-            <p className="max-w-3xl text-2xl leading-10 text-slate-700" style={{ fontFamily: 'var(--font-playfair)' }}>
-              {project.thesis}
-            </p>
+      <div className="sticky top-[64px] z-30 border-b border-slate-300 bg-[#FAFAF7]/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center gap-4 px-6 py-3 lg:px-8">
+          <nav className="flex min-w-0 flex-1 gap-5 overflow-x-auto whitespace-nowrap pb-1 text-[13px] text-slate-500 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {sectionLinks.map(([id, label]) => (
+              <a key={id} href={`#${id}`} className="transition hover:text-slate-950">
+                {label}
+              </a>
+            ))}
+          </nav>
+          <div className="hidden shrink-0 items-center gap-4 border-l border-slate-300 pl-4 sm:flex">
+            <a
+              href={project.proofUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-700 underline decoration-slate-300 underline-offset-4 hover:text-slate-950"
+            >
+              Repository
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </a>
+            <Link
+              href={project.cta.primaryHref}
+              className="inline-flex items-center gap-1.5 bg-slate-950 px-3.5 py-2 text-[13px] font-semibold text-white transition hover:bg-slate-800"
+            >
+              Contact
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
         </div>
       </div>
 
-      <SectionShell id="problem" tone="paper">
-        <SectionEyebrow>{project.businessProblem.eyebrow}</SectionEyebrow>
-        <SectionHeading title={project.businessProblem.title} />
-        <div className="mt-10 grid gap-10 lg:grid-cols-[.9fr_1.1fr]">
-          <div className="space-y-5 text-base leading-8 text-slate-600">
+      <EditorialSection
+        id="problem"
+        tone="paper"
+        eyebrow={project.businessProblem.eyebrow}
+        title={project.businessProblem.title}
+      >
+        <div className="grid gap-8">
+          <div className="grid gap-5 text-[16px] leading-8 text-slate-700 md:grid-cols-2">
             {project.businessProblem.body.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
           </div>
-
-          <div className="grid gap-4">
+          <div className="border-t border-slate-400">
             {project.businessProblem.consequences.map((consequence, index) => (
-              <div key={consequence.title} className="grid gap-5 rounded-2xl border border-slate-200 bg-white p-5 sm:grid-cols-[44px_1fr] sm:p-6">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-950 text-sm font-semibold text-white">
-                  {String(index + 1).padStart(2, '0')}
-                </div>
-                <div>
-                  <h3 className="text-base font-semibold text-slate-950">{consequence.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{consequence.body}</p>
-                </div>
+              <div key={consequence.title} className="grid gap-3 border-b border-slate-300 py-5 md:grid-cols-[72px_.85fr_1.15fr] md:items-start">
+                <span className="font-mono text-[13px] text-slate-500">{String(index + 1).padStart(2, '0')}</span>
+                <h3 className="text-[16px] font-semibold text-slate-950">{consequence.title}</h3>
+                <p className="text-[15px] leading-7 text-slate-600">{consequence.body}</p>
               </div>
             ))}
           </div>
         </div>
-      </SectionShell>
+      </EditorialSection>
 
-      <SectionShell id="horizon">
-        <SectionEyebrow>{project.horizonLogic.eyebrow}</SectionEyebrow>
-        <SectionHeading title={project.horizonLogic.title} body={project.horizonLogic.body} />
-        <div className="mt-10">
-          <HorizonDecisionVisual data={project.horizonLogic} />
-        </div>
-      </SectionShell>
+      <EditorialSection
+        id="horizon"
+        eyebrow={project.horizonLogic.eyebrow}
+        title={project.horizonLogic.title}
+        body={project.horizonLogic.body}
+      >
+        <HorizonDecisionVisual data={project.horizonLogic} />
+      </EditorialSection>
 
-      <SectionShell id="system" tone="paper">
-        <SectionEyebrow>{project.solution.eyebrow}</SectionEyebrow>
-        <SectionHeading title={project.solution.title} body={project.solution.body} />
-
-        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <EditorialSection
+        id="system"
+        tone="paper"
+        eyebrow={project.solution.eyebrow}
+        title={project.solution.title}
+        body={project.solution.body}
+      >
+        <div className="grid border-t border-slate-400 md:grid-cols-2">
           {project.solution.bullets.map((bullet, index) => (
-            <div key={bullet} className="group rounded-2xl border border-slate-200 bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-200/50">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-xs text-slate-400">{String(index + 1).padStart(2, '0')}</span>
-                <CheckCircle2 className="h-4 w-4 text-indigo-500" />
-              </div>
-              <p className="mt-7 text-sm leading-6 text-slate-700">{bullet}</p>
+            <div
+              key={bullet}
+              className={`grid grid-cols-[48px_1fr] gap-4 border-b border-slate-300 py-5 md:pr-7 ${index % 2 === 1 ? 'md:border-l md:pl-7' : ''}`}
+            >
+              <span className="font-mono text-[13px] text-slate-500">{String(index + 1).padStart(2, '0')}</span>
+              <p className="text-[15px] leading-7 text-slate-700">{bullet}</p>
             </div>
           ))}
         </div>
-      </SectionShell>
+      </EditorialSection>
 
-      <SectionShell id="architecture" tone="dark">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-300">{project.architecture.eyebrow}</p>
-        <div className="max-w-3xl">
-          <h2
-            className="mt-4 text-3xl leading-[1.08] tracking-[-0.02em] text-white sm:text-4xl lg:text-[42px]"
-            style={{ fontFamily: 'var(--font-playfair)' }}
-          >
-            {project.architecture.title}
-          </h2>
-          <p className="mt-5 text-base leading-8 text-slate-300 sm:text-lg">{project.architecture.body}</p>
-        </div>
+      <EditorialSection
+        id="architecture"
+        tone="dark"
+        eyebrow={project.architecture.eyebrow}
+        title={project.architecture.title}
+        body={project.architecture.body}
+      >
+        <ArchitectureSystemVisual data={project.architecture} />
+      </EditorialSection>
 
-        <div className="mt-10">
-          <ArchitectureSystemVisual data={project.architecture} />
-        </div>
-      </SectionShell>
-
-      <SectionShell id="decisions">
-        <SectionEyebrow>{project.decisions.eyebrow}</SectionEyebrow>
-        <SectionHeading title={project.decisions.title} body={project.decisions.body} />
-
-        <div className="mt-10 grid gap-5 lg:grid-cols-3">
-          {project.decisions.items.map((decision, index) => {
-            const icons = [GitBranch, Gauge, ShieldCheck]
-            const Icon = icons[index] ?? CheckCircle2
-            return (
-              <div key={decision.title} className="rounded-[24px] border border-slate-200 bg-white p-6">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-700">
-                  <Icon className="h-5 w-5" />
-                </div>
-                <h3 className="mt-8 text-xl text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>
-                  {decision.title}
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{decision.body}</p>
-              </div>
-            )
-          })}
-        </div>
-      </SectionShell>
-
-      <SectionShell id="evidence" tone="paper">
-        <SectionEyebrow>{project.evidence.eyebrow}</SectionEyebrow>
-        <SectionHeading title={project.evidence.title} body={project.evidence.body} />
-        <div className="mt-10">
-          <EvidenceFrameworkVisual data={project.evidence} />
-        </div>
-        <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm leading-6 text-amber-950">
-          <span className="font-semibold">Evidence note.</span> {project.evidence.note}
-        </div>
-      </SectionShell>
-
-      <SectionShell id="technical">
-        <SectionEyebrow>{project.technical.eyebrow}</SectionEyebrow>
-        <SectionHeading title={project.technical.title} body={project.technical.body} />
-
-        <div className="mt-10 grid gap-8 lg:grid-cols-[.8fr_1.2fr]">
-          <div className="rounded-[24px] border border-slate-200 bg-slate-950 p-6 text-white">
-            <div className="flex items-center gap-3">
-              <Code2 className="h-5 w-5 text-indigo-300" />
-              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">Technology footprint</p>
+      <EditorialSection
+        id="decisions"
+        eyebrow={project.decisions.eyebrow}
+        title={project.decisions.title}
+        body={project.decisions.body}
+      >
+        <div className="border-t border-slate-400">
+          {project.decisions.items.map((decision, index) => (
+            <div key={decision.title} className="grid gap-3 border-b border-slate-300 py-6 md:grid-cols-[72px_.72fr_1.28fr]">
+              <span className="font-mono text-[13px] text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
+              <h3 className="text-[18px] leading-7 text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>
+                {decision.title}
+              </h3>
+              <p className="text-[15px] leading-7 text-slate-600">{decision.body}</p>
             </div>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {project.technical.technologies.map((technology) => (
-                <span key={technology} className="rounded-lg border border-white/10 bg-white/[.04] px-3 py-2 text-xs font-medium text-slate-200">
-                  {technology}
-                </span>
-              ))}
-            </div>
-            <div className="mt-8 grid grid-cols-3 gap-3 border-t border-white/10 pt-6">
-              <div>
-                <Database className="h-4 w-4 text-sky-300" />
-                <p className="mt-3 text-[10px] uppercase tracking-[0.15em] text-slate-500">Data</p>
-              </div>
-              <div>
-                <BarChart3 className="h-4 w-4 text-indigo-300" />
-                <p className="mt-3 text-[10px] uppercase tracking-[0.15em] text-slate-500">Models</p>
-              </div>
-              <div>
-                <Layers3 className="h-4 w-4 text-violet-300" />
-                <p className="mt-3 text-[10px] uppercase tracking-[0.15em] text-slate-500">Serving</p>
-              </div>
-            </div>
+          ))}
+        </div>
+      </EditorialSection>
+
+      <EditorialSection
+        id="evidence"
+        tone="paper"
+        eyebrow={project.evidence.eyebrow}
+        title={project.evidence.title}
+        body={project.evidence.body}
+      >
+        <EvidenceFrameworkVisual data={project.evidence} />
+        <p className="mt-5 border-l-2 border-slate-400 pl-4 text-[14px] leading-7 text-slate-600">
+          <span className="font-semibold text-slate-900">Evidence note — </span>
+          {project.evidence.note}
+        </p>
+      </EditorialSection>
+
+      <EditorialSection
+        id="technical"
+        eyebrow={project.technical.eyebrow}
+        title={project.technical.title}
+        body={project.technical.body}
+      >
+        <div className="border-t border-slate-400">
+          <div className="grid gap-5 border-b border-slate-300 py-5 md:grid-cols-[.4fr_.6fr]">
+            <p className="text-[13px] font-semibold uppercase tracking-[0.12em] text-slate-500">Technology footprint</p>
+            <p className="text-[15px] leading-7 text-slate-800">{project.technical.technologies.join(' · ')}</p>
           </div>
-
-          <div className="space-y-3">
-            {project.technical.highlights.map((highlight) => (
-              <div key={highlight} className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-indigo-600" />
-                <p className="text-sm leading-7 text-slate-600">{highlight}</p>
-              </div>
-            ))}
-          </div>
+          {project.technical.highlights.map((highlight, index) => (
+            <div key={highlight} className="grid gap-4 border-b border-slate-300 py-5 md:grid-cols-[72px_1fr]">
+              <span className="font-mono text-[13px] text-slate-500">{String(index + 1).padStart(2, '0')}</span>
+              <p className="text-[15px] leading-7 text-slate-700">{highlight}</p>
+            </div>
+          ))}
         </div>
 
-        <div className="mt-8 rounded-[24px] border border-indigo-100 bg-indigo-50/60 p-6 sm:flex sm:items-center sm:justify-between sm:gap-8">
+        <div className="mt-7 grid gap-5 border-y border-indigo-300 bg-[#F4F1EA] px-5 py-5 md:grid-cols-[1fr_auto] md:items-center">
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-indigo-600">Technical proof</p>
-            <h3 className="mt-2 text-xl font-semibold text-slate-950">Inspect the implementation rather than taking the page at face value.</h3>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">Architecture, data notes, results guidance, limitations, example outputs and the main execution path are documented in Portfolio_SC_Analytics.</p>
+            <p className="text-[13px] font-semibold uppercase tracking-[0.13em] text-indigo-700">Technical proof</p>
+            <p className="mt-2 text-[15px] leading-7 text-slate-700">
+              Architecture, data notes, results guidance, limitations, example outputs and execution paths are documented in Portfolio_SC_Analytics.
+            </p>
           </div>
           <a
             href={project.proofUrl}
             target="_blank"
             rel="noreferrer"
-            className="mt-5 inline-flex shrink-0 items-center gap-2 rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 sm:mt-0"
+            className="inline-flex items-center gap-2 text-[14px] font-semibold text-slate-950 underline decoration-slate-400 underline-offset-4 hover:decoration-slate-950"
           >
             Open SC-12
             <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>
-      </SectionShell>
+      </EditorialSection>
 
-      <SectionShell id="limitations" tone="paper">
-        <div className="grid gap-10 lg:grid-cols-[.85fr_1.15fr]">
-          <div>
-            <SectionEyebrow>{project.limitations.eyebrow}</SectionEyebrow>
-            <SectionHeading title={project.limitations.title} body={project.limitations.body} />
-          </div>
-
-          <div className="divide-y divide-slate-200 rounded-[24px] border border-slate-200 bg-white px-6">
-            {project.limitations.items.map((item, index) => (
-              <div key={item} className="grid grid-cols-[36px_1fr] gap-3 py-5">
-                <span className="font-mono text-xs text-slate-400">{String(index + 1).padStart(2, '0')}</span>
-                <p className="text-sm leading-6 text-slate-700">{item}</p>
-              </div>
-            ))}
-          </div>
+      <EditorialSection
+        id="limitations"
+        tone="paper"
+        eyebrow={project.limitations.eyebrow}
+        title={project.limitations.title}
+        body={project.limitations.body}
+      >
+        <div className="border-t border-slate-400">
+          {project.limitations.items.map((item, index) => (
+            <div key={item} className="grid grid-cols-[56px_1fr] gap-4 border-b border-slate-300 py-5">
+              <span className="font-mono text-[13px] text-slate-500">{String(index + 1).padStart(2, '0')}</span>
+              <p className="text-[15px] leading-7 text-slate-700">{item}</p>
+            </div>
+          ))}
         </div>
-      </SectionShell>
+      </EditorialSection>
 
-      <section className="border-b border-slate-800 bg-[#0D1B2A] text-white">
-        <div className="mx-auto max-w-7xl px-6 py-20 sm:py-24 lg:px-8">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-indigo-300">{project.takeaway.eyebrow}</p>
-          <div className="mt-6 grid gap-8 lg:grid-cols-[1.2fr_.8fr] lg:items-end">
-            <h2
-              className="max-w-4xl text-4xl leading-[1.08] tracking-[-0.025em] text-white sm:text-5xl"
-              style={{ fontFamily: 'var(--font-playfair)' }}
-            >
+      <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
+        <div className="mx-auto grid max-w-7xl gap-8 px-6 py-16 lg:grid-cols-[.36fr_.64fr] lg:gap-14 lg:px-8 lg:py-20">
+          <div>
+            <SectionEyebrow dark>{project.takeaway.eyebrow}</SectionEyebrow>
+          </div>
+          <div>
+            <h2 className="text-4xl leading-[1.06] tracking-[-0.025em] text-white sm:text-[48px]" style={{ fontFamily: 'var(--font-playfair)' }}>
               {project.takeaway.title}
             </h2>
-            <p className="text-base leading-8 text-slate-300">{project.takeaway.body}</p>
+            <p className="mt-6 max-w-3xl text-[16px] leading-8 text-[#EAF0F6]">{project.takeaway.body}</p>
           </div>
         </div>
       </section>
 
-      <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-20 sm:py-24 lg:px-8">
-          <div className="overflow-hidden rounded-[32px] border border-slate-200 bg-[#FAFAF7] p-7 sm:p-10 lg:p-12">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-indigo-600">{project.cta.eyebrow}</p>
-            <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-              <div>
-                <h2 className="max-w-3xl text-4xl leading-[1.08] text-slate-950 sm:text-5xl" style={{ fontFamily: 'var(--font-playfair)' }}>
-                  {project.cta.title}
-                </h2>
-                <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600">{project.cta.body}</p>
-              </div>
-              <div className="flex flex-wrap gap-3 lg:justify-end">
-                <Link
-                  href={project.cta.primaryHref}
-                  className="inline-flex items-center gap-2 rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
-                >
-                  {project.cta.primaryLabel}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <a
-                  href={project.cta.secondaryHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-slate-400"
-                >
-                  {project.cta.secondaryLabel}
-                  <ArrowUpRight className="h-4 w-4" />
-                </a>
-              </div>
+      <section className="border-b border-slate-300 bg-[#FAFAF7]">
+        <div className="mx-auto grid max-w-7xl gap-8 px-6 py-16 lg:grid-cols-[.36fr_.64fr] lg:gap-14 lg:px-8 lg:py-20">
+          <div>
+            <SectionEyebrow>{project.cta.eyebrow}</SectionEyebrow>
+          </div>
+          <div>
+            <h2 className="max-w-3xl text-4xl leading-[1.06] tracking-[-0.025em] text-slate-950 sm:text-[48px]" style={{ fontFamily: 'var(--font-playfair)' }}>
+              {project.cta.title}
+            </h2>
+            <p className="mt-5 max-w-2xl text-[16px] leading-8 text-slate-600">{project.cta.body}</p>
+            <div className="mt-7 flex flex-wrap gap-5 text-[15px]">
+              <Link
+                href={project.cta.primaryHref}
+                className="inline-flex items-center gap-2 font-semibold text-slate-950 underline decoration-slate-400 underline-offset-4 hover:decoration-slate-950"
+              >
+                {project.cta.primaryLabel}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <a
+                href={project.cta.secondaryHref}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 font-semibold text-slate-500 underline decoration-slate-300 underline-offset-4 hover:text-slate-950 hover:decoration-slate-950"
+              >
+                {project.cta.secondaryLabel}
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
             </div>
           </div>
         </div>
       </section>
+
+      <div className="fixed bottom-4 left-4 right-4 z-40 flex items-center justify-between gap-3 border border-slate-300 bg-[#FAFAF7]/95 px-4 py-3 shadow-[0_8px_24px_rgba(15,23,42,.10)] backdrop-blur sm:hidden">
+        <a href={project.proofUrl} target="_blank" rel="noreferrer" className="text-[13px] font-semibold text-slate-700 underline underline-offset-4">
+          Repository
+        </a>
+        <Link href={project.cta.primaryHref} className="bg-slate-950 px-4 py-2 text-[13px] font-semibold text-white">
+          Contact
+        </Link>
+      </div>
     </main>
   )
 }
