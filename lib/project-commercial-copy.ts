@@ -275,3 +275,22 @@ export const sc12CaseStudyCopy: Record<SiteLanguage, {
     contact: 'Parlar d’un problema similar',
   },
 }
+
+
+export const sc12BusinessOutcomeMetrics: Record<SiteLanguage, Array<{ value: string; label: string; note: string }>> = {
+  en: [
+    { value: '€2.0M', label: 'Illustrative inventory', note: 'Illustrative operating base.' },
+    { value: '5%', label: 'Illustrative reduction', note: 'Assumed reduction in excess inventory.' },
+    { value: '€100k', label: 'Working capital released', note: '€2.0M × 5%; illustrative arithmetic.' },
+  ],
+  es: [
+    { value: '€2,0M', label: 'Inventario ilustrativo', note: 'Base operativa utilizada en el escenario.' },
+    { value: '5%', label: 'Reducción ilustrativa', note: 'Reducción asumida del exceso de inventario.' },
+    { value: '€100k', label: 'Capital liberado', note: '€2,0M × 5%; aritmética ilustrativa.' },
+  ],
+  ca: [
+    { value: '€2,0M', label: 'Inventari il·lustratiu', note: 'Base operativa utilitzada a l’escenari.' },
+    { value: '5%', label: 'Reducció il·lustrativa', note: 'Reducció assumida de l’excés d’inventari.' },
+    { value: '€100k', label: 'Capital alliberat', note: '€2,0M × 5%; aritmètica il·lustrativa.' },
+  ],
+}
