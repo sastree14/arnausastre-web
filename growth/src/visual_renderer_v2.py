@@ -425,12 +425,19 @@ def _render_chart(chart_type: str, rect: dict[str, Any], labels: list[str], seri
 def _safe_dataviz_rect(language: str, layout_cfg: dict[str, Any]) -> dict[str, Any]:
     rect = dict(layout_cfg.get("chart") or {"x":80,"y":600,"width":920,"height":430})
     context_top = _num(layout_cfg.get("context_top"), 430)
-    # A/B Gold Standards have a long editorial/context block. Keep a minimum
-    # separation even when vector-export anchors overlap in the raw audit.
-    minimum_y = context_top + (112 if language in {"A","B"} else 90)
-    if _num(rect.get("y")) < minimum_y:
-        rect["y"] = minimum_y
-    max_bottom = 1028
+
+    # Preserve the audited Gold Standard chart anchors. A/B use a deliberately
+    # larger editorial gap after context; C/D already encode their safe spacing
+    # directly in the audited chart coordinates.
+    minimum_gap = {"A": 84.0, "B": 112.0}.get(language)
+    if minimum_gap is not None:
+        minimum_y = context_top + minimum_gap
+        if _num(rect.get("y")) < minimum_y:
+            rect["y"] = minimum_y
+
+    takeaway = layout_cfg.get("takeaway") or {}
+    takeaway_y = _num(takeaway.get("y"), 1210)
+    max_bottom = takeaway_y - 12.0
     if _num(rect.get("y")) + _num(rect.get("height")) > max_bottom:
         rect["height"] = max(240, max_bottom - _num(rect.get("y")))
     return rect
