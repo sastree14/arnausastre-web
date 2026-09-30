@@ -562,3 +562,31 @@ Machine validation contract:
 - `growth/schemas/canonical_content_object.schema.json`
 
 The canonical content object must be created before channel-specific copy, CTA wording or visual rendering decisions are treated as final.
+
+
+## 14. Visual system and presentation engine
+
+The editorial architecture stops before pixel layout. Visual decisions are governed by the dedicated SC-Analytics visual system:
+
+- Human visual specification: `growth/brain/content/visual_system.md`
+- Visual intelligence/runtime architecture: `growth/brain/content/visual_engine.md`
+- Machine-readable design rules: `growth/schemas/visual_system.yml`
+- Visual spec schema: `growth/schemas/visual_spec.schema.json`
+- Presentation package schema: `growth/schemas/presentation_package.schema.json`
+
+The required order is:
+
+```text
+Canonical Content Object
+→ Channel Contract
+→ Visual Format
+→ Presentation Content Package
+→ Visual Planner
+→ Deterministic Renderer
+→ Hard QA
+→ Optional Visual Critic
+```
+
+The visual system may create illustrative conceptual graphics such as overfitting or bias/variance curves without empirical data, but they must remain explicitly illustrative and may never be presented as measured evidence.
+
+The future CRM is an orchestration and approval surface for this engine. It must not duplicate the visual rules or renderer.
