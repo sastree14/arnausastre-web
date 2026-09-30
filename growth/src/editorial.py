@@ -130,6 +130,7 @@ def _editorial_brain(channel: str = "arnau_linkedin") -> str:
         "evidence/evidence_policy.md",
         "content/content_strategy.md",
         "content/editorial_architecture.md",
+        "content/canonical_content_model.md",
         "content/editorial_playbook.md",
         "content/language_strategy.md",
     ]
@@ -142,6 +143,7 @@ def _dynamic_queries(theme_hint: str = "") -> list[str]:
         "company/services.md",
         "commercial/icp.md",
         "content/editorial_architecture.md",
+        "content/canonical_content_model.md",
         "content/editorial_playbook.md",
     ])
     payload = llm.json(
