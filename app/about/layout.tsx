@@ -1,17 +1,17 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'About Us',
+  title: 'Why SC-Analytics',
   description:
-    'SC Analytics helps CEOs, CFOs and senior executives make better, data-driven decisions through rigorous analytical systems — built for real operational environments, not just presentations.',
+    'Why companies work with SC-Analytics: direct communication, quantitative rigor, proportionate solutions and Data & AI capability built around real business decisions.',
   keywords: [
-    'analytics consulting firm',
-    'data analytics consultants',
-    'analytics for executives',
-    'business analytics team',
-    'about SC Analytics',
-    'Arnau Sastre analytics',
-    'analytics consulting background',
+    'SC Analytics',
+    'data AI consulting',
+    'data science consulting Spain',
+    'analytics consulting',
+    'AI consulting',
+    'external data team',
+    'data AI partner',
   ],
 }
 
