@@ -71,6 +71,28 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
     ca: 'Eines utilitzades',
   }[lang]
 
+  const problemPalette = [
+    { bg: '#F7F1E8', border: '#DDCFBD' },
+    { bg: '#F2ECF7', border: '#D7C8E3' },
+    { bg: '#EAF3F8', border: '#C8DCE8' },
+  ]
+
+  const systemPalette = [
+    { bg: '#F7F1E8', border: '#DDCFBD' },
+    { bg: '#F2ECF7', border: '#D7C8E3' },
+    { bg: '#EAF3F8', border: '#C8DCE8' },
+    { bg: '#EDF4EE', border: '#C9D9CD' },
+  ]
+
+  const toolPalette = [
+    { bg: '#F7F1E8', border: '#DDCFBD' },
+    { bg: '#F2ECF7', border: '#D7C8E3' },
+    { bg: '#EAF3F8', border: '#C8DCE8' },
+    { bg: '#EDF4EE', border: '#C9D9CD' },
+    { bg: '#F6EEE9', border: '#DECFC6' },
+    { bg: '#EEF0F7', border: '#CDD2E2' },
+  ]
+
   const items = [
     { id: 'problem', label: c.problemLabel.replace(/^\d+\s*·\s*/, '') },
     { id: 'horizon', label: c.horizonLabel.replace(/^\d+\s*·\s*/, '') },
@@ -162,16 +184,23 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
           <div className="min-w-0">
           <Section id="problem" label={c.problemLabel} title={c.problemTitle} body={c.problemBody} tone="paper">
             <div className="grid gap-3 md:grid-cols-3">
-              {c.problemRows.map((row, index) => (
-                <div key={row.title} className="flex min-h-[190px] flex-col border border-slate-300 bg-[#FAFAF7] p-6">
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="font-mono text-[14px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
-                    <span className="h-px flex-1 bg-slate-200" />
+              {c.problemRows.map((row, index) => {
+                const palette = problemPalette[index % problemPalette.length]
+                return (
+                  <div
+                    key={row.title}
+                    className="flex min-h-[190px] flex-col border p-6"
+                    style={{ backgroundColor: palette.bg, borderColor: palette.border }}
+                  >
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="font-mono text-[14px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
+                      <span className="h-px flex-1" style={{ backgroundColor: palette.border }} />
+                    </div>
+                    <p className="mt-6 text-[22px] font-semibold leading-[1.15] text-[#1D2B44]">{row.title}</p>
+                    <p className="mt-4 text-[16px] leading-7 text-slate-700">{row.body}</p>
                   </div>
-                  <p className="mt-6 text-[22px] font-semibold leading-[1.15] text-[#1D2B44]">{row.title}</p>
-                  <p className="mt-4 text-[16px] leading-7 text-slate-700">{row.body}</p>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </Section>
 
@@ -181,12 +210,19 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
 
           <Section id="system" label={c.systemLabel} title={c.systemTitle} body={c.systemBody} tone="paper">
             <div className="grid gap-3 md:grid-cols-2">
-              {c.systemRows.map((row, index) => (
-                <div key={row} className="grid min-h-[132px] grid-cols-[48px_1fr] gap-4 border border-slate-300 bg-[#FAFAF7] p-5 sm:p-6">
-                  <span className="font-mono text-[14px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
-                  <p className="text-[18px] font-medium leading-8 text-slate-900">{row}</p>
-                </div>
-              ))}
+              {c.systemRows.map((row, index) => {
+                const palette = systemPalette[index % systemPalette.length]
+                return (
+                  <div
+                    key={row}
+                    className="grid min-h-[132px] grid-cols-[48px_1fr] gap-4 border p-5 sm:p-6"
+                    style={{ backgroundColor: palette.bg, borderColor: palette.border }}
+                  >
+                    <span className="font-mono text-[14px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
+                    <p className="text-[18px] font-medium leading-8 text-slate-900">{row}</p>
+                  </div>
+                )
+              })}
             </div>
           </Section>
 
@@ -233,15 +269,19 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
             <div>
               <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{toolsLabel}</p>
               <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                {c.technicalProof.split(' · ').map((technology, index) => (
-                  <div
-                    key={technology}
-                    className="flex min-h-[88px] items-center justify-between border border-slate-300 bg-[#FAFAF7] px-5 py-4"
-                  >
-                    <span className="text-[18px] font-semibold text-[#1D2B44]">{technology}</span>
-                    <span className="font-mono text-[12px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
-                  </div>
-                ))}
+                {c.technicalProof.split(' · ').map((technology, index) => {
+                  const palette = toolPalette[index % toolPalette.length]
+                  return (
+                    <div
+                      key={technology}
+                      className="flex min-h-[88px] items-center justify-between border px-5 py-4"
+                      style={{ backgroundColor: palette.bg, borderColor: palette.border }}
+                    >
+                      <span className="text-[18px] font-semibold text-[#1D2B44]">{technology}</span>
+                      <span className="font-mono text-[12px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           </Section>
