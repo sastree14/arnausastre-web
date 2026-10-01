@@ -10,38 +10,38 @@ export function HorizonDecisionVisual({ data, lang }: { data: HorizonLogic; lang
     ? {
         en: {
           title: 'Evaluation by planning horizon',
-          note: 'Each horizon is evaluated as a separate business decision',
+          note: 'A different business decision at each horizon',
           rule: 'Decision rule',
-          takeaway: 'The objective is not to make every horizon look equally accurate. It is to make the trade-off explicit enough to support a better planning decision.',
+          takeaway: 'Use each horizon to support the planning decision it actually drives.',
           horizons: [
-            { horizon: '1 month', label: 'Near term', note: 'Read the most immediate demand signal separately from longer-range uncertainty.' },
-            { horizon: '3 months', label: 'Short range', note: 'Keep a separate view of forecast error and bias before the planning window expands.' },
-            { horizon: '6 months', label: 'Medium range', note: 'Make degradation visible instead of hiding it inside an aggregate score.' },
-            { horizon: '9 months', label: 'Longer range', note: 'Treat long-horizon usefulness as its own inventory and purchasing question.' },
+            { horizon: '1 month', label: 'Near term', note: 'Immediate demand signal with less accumulated uncertainty.' },
+            { horizon: '3 months', label: 'Short range', note: 'Error and bias before the planning window broadens.' },
+            { horizon: '6 months', label: 'Medium range', note: 'Forecast degradation made visible, not averaged away.' },
+            { horizon: '9 months', label: 'Longer range', note: 'Long-horizon usefulness for purchasing and inventory.' },
           ],
         },
         es: {
           title: 'Evaluación por horizonte de planificación',
-          note: 'Cada horizonte se evalúa como una decisión de negocio distinta',
+          note: 'Una decisión de negocio distinta en cada horizonte',
           rule: 'Regla de decisión',
-          takeaway: 'El objetivo no es que todos los horizontes parezcan igual de precisos, sino hacer explícito el trade-off para tomar una mejor decisión de planificación.',
+          takeaway: 'Usar cada horizonte para apoyar la decisión de planificación que realmente mueve.',
           horizons: [
-            { horizon: '1 mes', label: 'Muy corto plazo', note: 'Leer la señal de demanda más inmediata por separado de la incertidumbre de horizontes más largos.' },
-            { horizon: '3 meses', label: 'Corto plazo', note: 'Mantener una visión independiente del error y el sesgo antes de ampliar la ventana de planificación.' },
-            { horizon: '6 meses', label: 'Medio plazo', note: 'Hacer visible la degradación del forecast en lugar de esconderla dentro de una cifra agregada.' },
-            { horizon: '9 meses', label: 'Largo plazo', note: 'Tratar la utilidad del forecast de largo plazo como una decisión propia de compras e inventario.' },
+            { horizon: '1 mes', label: 'Muy corto plazo', note: 'Señal inmediata de demanda con menor incertidumbre acumulada.' },
+            { horizon: '3 meses', label: 'Corto plazo', note: 'Error y sesgo antes de ampliar la ventana de planificación.' },
+            { horizon: '6 meses', label: 'Medio plazo', note: 'La degradación del forecast queda visible, no escondida en un promedio.' },
+            { horizon: '9 meses', label: 'Largo plazo', note: 'Utilidad real del forecast para compras e inventario.' },
           ],
         },
         ca: {
           title: 'Avaluació per horitzó de planificació',
-          note: 'Cada horitzó s’avalua com una decisió de negoci diferent',
+          note: 'Una decisió de negoci diferent a cada horitzó',
           rule: 'Regla de decisió',
-          takeaway: 'L’objectiu no és que tots els horitzons semblin igual de precisos, sinó fer explícit el trade-off per prendre una millor decisió de planificació.',
+          takeaway: 'Utilitzar cada horitzó per donar suport a la decisió de planificació que realment mou.',
           horizons: [
-            { horizon: '1 mes', label: 'Molt curt termini', note: 'Llegir el senyal de demanda més immediat per separat de la incertesa dels horitzons més llargs.' },
-            { horizon: '3 mesos', label: 'Curt termini', note: 'Mantenir una visió independent de l’error i el biaix abans d’ampliar la finestra de planificació.' },
-            { horizon: '6 mesos', label: 'Mitjà termini', note: 'Fer visible la degradació del forecast en lloc d’amagar-la dins d’una xifra agregada.' },
-            { horizon: '9 mesos', label: 'Llarg termini', note: 'Tractar la utilitat del forecast de llarg termini com una decisió pròpia de compres i inventari.' },
+            { horizon: '1 mes', label: 'Molt curt termini', note: 'Senyal immediat de demanda amb menys incertesa acumulada.' },
+            { horizon: '3 mesos', label: 'Curt termini', note: 'Error i biaix abans d’ampliar la finestra de planificació.' },
+            { horizon: '6 mesos', label: 'Mitjà termini', note: 'La degradació del forecast queda visible, no amagada en una mitjana.' },
+            { horizon: '9 mesos', label: 'Llarg termini', note: 'Utilitat real del forecast per a compres i inventari.' },
           ],
         },
       }[lang]
@@ -55,7 +55,7 @@ export function HorizonDecisionVisual({ data, lang }: { data: HorizonLogic; lang
         <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-700">
           {localized?.title || 'Horizon-level evaluation'}
         </p>
-        <p className="text-[13px] text-slate-500">
+        <p className="text-[14px] font-medium text-slate-600">
           {localized?.note || 'Each planning horizon is evaluated separately'}
         </p>
       </div>
@@ -74,13 +74,13 @@ export function HorizonDecisionVisual({ data, lang }: { data: HorizonLogic; lang
                 {item.label}
               </span>
             </div>
-            <p className="mt-5 text-[15px] leading-7 text-slate-600">{item.note}</p>
+            <p className="mt-5 text-[17px] leading-7 text-slate-700">{item.note}</p>
           </div>
         ))}
       </div>
 
       <div className="border-t border-[#D8DDE3] px-6 py-5">
-        <p className="text-[15px] leading-7 text-slate-700">
+        <p className="text-[17px] leading-8 text-slate-800">
           <span className="font-semibold text-slate-950">{localized?.rule || 'Decision rule'} — </span>
           {localized?.takeaway || data.takeaway}
         </p>
@@ -98,8 +98,8 @@ function ArchitectureStage({
 }) {
   return (
     <div className="grid min-w-0 grid-rows-[auto_1fr]">
-      <div className="mb-3 border-b border-[#5E86A8] pb-3">
-        <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#C2D2E0]">{label}</p>
+      <div className="mb-3 border border-[#5E86A8] bg-[#13283C] px-4 py-3.5">
+        <p className="text-[15px] font-semibold uppercase tracking-[0.14em] text-white">{label}</p>
       </div>
       <div className="grid h-full auto-rows-fr grid-rows-2 gap-3">{children}</div>
     </div>
