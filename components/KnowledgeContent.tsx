@@ -185,7 +185,7 @@ function Filter({
       <select
         value={value || ''}
         onChange={(event) => onChange(event.target.value || null)}
-        className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-slate-400"
+        className="w-full border border-slate-300 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-indigo-500"
       >
         <option value="">{all}</option>
         {options.map((option) => <option key={option} value={option}>{label(option, lang)}</option>)}
@@ -328,7 +328,7 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-12 md:py-16">
-      <div className="rounded-2xl border border-slate-200 bg-white p-5 md:p-6">
+      <div className="border border-slate-300 bg-white p-5 md:p-6">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex-1">
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-indigo-600">{t.filters}</p>
@@ -346,17 +346,17 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-12 text-center">
+        <div className="mt-8 border border-slate-300 bg-white p-12 text-center">
           <p className="font-semibold text-slate-800">{t.empty}</p>
           <p className="mx-auto mt-3 max-w-lg text-sm leading-7 text-slate-500">{t.emptyBody}</p>
         </div>
       ) : (
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <div className="mt-6 grid border-l border-t border-slate-300 md:grid-cols-2">
           {visible.map((item, index) => (
             <Link
               key={item.key}
               href={item.href}
-              className={`group flex min-h-[300px] flex-col rounded-2xl border border-slate-200 bg-white p-7 transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-lg hover:shadow-slate-950/[0.04] ${
+              className={`group flex min-h-[300px] flex-col border-b border-r border-slate-300 bg-white p-7 transition hover:bg-[#FAFAF7] ${
                 index === 0 && visible.length > 2 ? 'md:col-span-2 md:min-h-[260px]' : ''
               }`}
             >
@@ -387,7 +387,7 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
         <div className="mt-8 text-center">
           <button
             onClick={() => setVisibleCount((value) => value + PAGE_SIZE)}
-            className="rounded-lg border border-slate-300 bg-white px-6 py-3 text-sm font-medium text-slate-700 transition hover:border-slate-500"
+            className="border border-slate-400 bg-white px-6 py-3 text-sm font-medium text-slate-700 transition hover:border-slate-700"
           >
             {t.more} · {filtered.length - visibleCount}
           </button>
