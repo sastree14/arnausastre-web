@@ -90,7 +90,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
         <div className="mx-auto max-w-[1500px] px-6 py-10 lg:px-8 lg:py-12">
           <div className="border-b border-slate-400 pb-4">
             <p className="text-[13px] font-semibold uppercase tracking-[0.15em] text-indigo-700">{ui.snapshot}</p>
-            {goldStandard ? <p className="mt-1.5 text-[13px] text-slate-500">{ui.publicImplementation}</p> : null}
+            
           </div>
 
           <div className="grid border-b border-slate-400 lg:grid-cols-3 lg:divide-x lg:divide-slate-300">
