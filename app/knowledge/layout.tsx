@@ -1,17 +1,17 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Analytics Insights',
+  title: 'Knowledge | Data, AI & Decision Systems',
   description:
-    'In-depth articles on demand forecasting, operations research, machine learning and decision systems — written for business leaders and executives who want to understand analytics, not just buy it.',
+    'SC-Analytics analysis on forecasting, optimisation, operations, machine learning, automation, AI and decision systems — written when there is something useful to understand.',
   keywords: [
-    'analytics articles for executives',
     'forecasting insights',
+    'operations research',
     'machine learning for business',
-    'decision systems articles',
-    'business analytics thought leadership',
-    'analytics knowledge base',
-    'supply chain analytics insights',
+    'AI automation',
+    'decision systems',
+    'business analytics',
+    'data AI articles',
   ],
 }
 
