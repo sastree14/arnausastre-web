@@ -13,12 +13,14 @@ function Section({
   label,
   title,
   body,
+  headerAction,
   children,
 }: {
   id: string
   label: string
   title: string
   body?: string
+  headerAction?: React.ReactNode
   tone?: 'white' | 'paper' | 'dark'
   children: React.ReactNode
 }) {
@@ -33,13 +35,18 @@ function Section({
           </div>
 
           <div className="px-6 py-6 lg:px-[clamp(28px,3vw,52px)] lg:py-7">
-            <h2
-              className="max-w-5xl text-[34px] leading-[1.06] tracking-[-0.02em] text-slate-950 sm:text-[40px]"
-              style={{ fontFamily: 'var(--font-playfair)' }}
-            >
-              {title}
-            </h2>
-            {body ? <p className="mt-4 max-w-[68ch] text-[18px] leading-8 text-slate-700">{body}</p> : null}
+            <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+              <div className="min-w-0">
+                <h2
+                  className="max-w-5xl text-[34px] leading-[1.06] tracking-[-0.02em] text-slate-950 sm:text-[40px]"
+                  style={{ fontFamily: 'var(--font-playfair)' }}
+                >
+                  {title}
+                </h2>
+                {body ? <p className="mt-4 max-w-[68ch] text-[18px] leading-8 text-slate-700">{body}</p> : null}
+              </div>
+              {headerAction ? <div className="shrink-0">{headerAction}</div> : null}
+            </div>
           </div>
         </div>
 
@@ -56,6 +63,12 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
     en: 'Reference economics',
     es: 'Economía de referencia',
     ca: 'Economia de referència',
+  }[lang]
+
+  const toolsLabel = {
+    en: 'Tools used',
+    es: 'Herramientas utilizadas',
+    ca: 'Eines utilitzades',
   }[lang]
 
   const items = [
@@ -201,40 +214,58 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
             </div>
           </Section>
 
-          <Section id="technical" label={c.technicalLabel} title={c.technicalTitle} body={c.technicalBody}>
-            <div className="border border-slate-300 bg-[#FAFAF7] p-5">
-              <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-indigo-700">Stack</p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {c.technicalProof.split(' · ').map((technology) => (
-                  <span
-                    key={technology}
-                    className="border border-slate-300 bg-white px-3 py-2 text-[13px] font-semibold text-[#1D2B44]"
-                  >
-                    {technology}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-7 flex flex-wrap gap-4">
-              <a href={project.proofUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 border border-slate-400 bg-white px-5 py-3 text-[14px] font-semibold text-slate-900">
+          <Section
+            id="technical"
+            label={c.technicalLabel}
+            title={c.technicalTitle}
+            body={c.technicalBody}
+            headerAction={
+              <a
+                href={project.proofUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex min-h-[50px] items-center gap-2 bg-slate-950 px-5 py-3 text-[14px] font-semibold text-white transition hover:bg-slate-800"
+              >
                 {c.repository}
                 <ArrowUpRight className="h-4 w-4" />
               </a>
-              <Link href={project.cta.primaryHref} className="inline-flex items-center gap-2 bg-slate-950 px-5 py-3 text-[14px] font-semibold text-white">
-                {c.contact}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+            }
+          >
+            <div>
+              <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{toolsLabel}</p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                {c.technicalProof.split(' · ').map((technology, index) => (
+                  <div
+                    key={technology}
+                    className="flex min-h-[88px] items-center justify-between border border-slate-300 bg-[#FAFAF7] px-5 py-4"
+                  >
+                    <span className="text-[18px] font-semibold text-[#1D2B44]">{technology}</span>
+                    <span className="font-mono text-[12px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </Section>
 
           <section className="py-5 lg:py-6">
-            <div className="border border-[#496C8A] bg-[#0D1B2A] px-6 py-8 text-white lg:px-9 lg:py-9">
-              <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.takeawayLabel}</p>
-              <h2 className="mt-3 max-w-4xl text-[34px] leading-[1.06] text-white sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>
-                {c.takeawayTitle}
-              </h2>
-              <p className="mt-5 max-w-3xl text-[16px] leading-8 text-[#EAF0F6]">{c.takeawayBody}</p>
+            <div className="border border-[#496C8A] bg-[#0D1B2A] px-6 py-8 text-white lg:px-9 lg:py-10">
+              <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+                <div>
+                  <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.takeawayLabel}</p>
+                  <h2 className="mt-3 max-w-4xl text-[34px] leading-[1.06] text-white sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>
+                    {c.takeawayTitle}
+                  </h2>
+                  <p className="mt-5 max-w-3xl text-[17px] leading-8 text-[#EAF0F6]">{c.takeawayBody}</p>
+                </div>
+
+                <Link
+                  href={project.cta.primaryHref}
+                  className="inline-flex min-h-[54px] items-center justify-center gap-3 bg-white px-6 py-3.5 text-[15px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]"
+                >
+                  {c.contact}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
             </div>
           </section>
           </div>
