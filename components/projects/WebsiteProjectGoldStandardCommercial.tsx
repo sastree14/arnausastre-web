@@ -39,7 +39,7 @@ function Section({
             >
               {title}
             </h2>
-            {body ? <p className="mt-4 max-w-[76ch] text-[16px] leading-8 text-slate-600">{body}</p> : null}
+            {body ? <p className="mt-4 max-w-[72ch] text-[16px] leading-8 text-slate-700">{body}</p> : null}
           </div>
         </div>
 
@@ -52,6 +52,11 @@ function Section({
 export default function WebsiteProjectGoldStandardCommercial({ project }: { project: WebsiteProjectGoldStandard }) {
   const { lang } = useSiteLanguage()
   const c = sc12CaseStudyCopy[lang]
+  const referenceEconomicsLabel = {
+    en: 'Reference economics',
+    es: 'Economía de referencia',
+    ca: 'Economia de referència',
+  }[lang]
 
   const items = [
     { id: 'problem', label: c.problemLabel.replace(/^\d+\s*·\s*/, '') },
@@ -88,20 +93,31 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
               </div>
             </div>
 
-            <aside className="border-y border-[#5E86A8] py-5">
-              <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.scenarioLabel}</p>
-              <p className="mt-3 text-[25px] leading-8 text-white" style={{ fontFamily: 'var(--font-playfair)' }}>{c.scenarioHeadline}</p>
+            <aside className="border border-[#496C8A] bg-[#102033] p-6 lg:p-7">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.scenarioLabel}</p>
+                <span className="border border-[#496C8A] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#B9C9D8]">
+                  {referenceEconomicsLabel}
+                </span>
+              </div>
 
-              <div className="mt-6 grid grid-cols-3 divide-x divide-[#5E86A8] border-y border-[#5E86A8]">
+              <p
+                className="mt-4 max-w-2xl text-[27px] leading-[1.14] text-white sm:text-[31px]"
+                style={{ fontFamily: 'var(--font-playfair)' }}
+              >
+                {c.scenarioHeadline}
+              </p>
+
+              <div className="mt-6 grid gap-3 sm:grid-cols-3">
                 {sc12BusinessOutcomeMetrics[lang].map((metric) => (
-                  <div key={metric.label} className="px-4 py-4 first:pl-0 last:pr-0">
-                    <p className="text-[27px] font-semibold leading-none text-white">{metric.value}</p>
-                    <p className="mt-2 text-[12px] uppercase tracking-[0.08em] text-[#A8BACB]">{metric.label}</p>
+                  <div key={metric.label} className="border border-[#5E86A8] bg-[#0D1B2A] px-4 py-4">
+                    <p className="text-[30px] font-semibold leading-none tracking-[-0.02em] text-white">{metric.value}</p>
+                    <p className="mt-3 text-[11px] font-semibold uppercase leading-5 tracking-[0.08em] text-[#DCE6EF]">
+                      {metric.label}
+                    </p>
                   </div>
                 ))}
               </div>
-
-              <p className="mt-5 text-[12px] leading-5 text-[#7F9BB5]">{c.economicsNote}</p>
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <a
@@ -132,12 +148,15 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
 
           <div className="min-w-0">
           <Section id="problem" label={c.problemLabel} title={c.problemTitle} body={c.problemBody} tone="paper">
-            <div className="border-t border-slate-300">
+            <div className="grid gap-3 md:grid-cols-3">
               {c.problemRows.map((row, index) => (
-                <div key={row.title} className="grid gap-3 border-b border-slate-300 py-5 md:grid-cols-[52px_.7fr_1.3fr]">
-                  <span className="font-mono text-[13px] text-slate-500">{String(index + 1).padStart(2, '0')}</span>
-                  <p className="text-[16px] font-semibold text-slate-950">{row.title}</p>
-                  <p className="text-[15px] leading-7 text-slate-600">{row.body}</p>
+                <div key={row.title} className="border border-slate-300 bg-[#FAFAF7] p-5">
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="font-mono text-[12px] text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="h-px flex-1 bg-slate-200" />
+                  </div>
+                  <p className="mt-5 text-[17px] font-semibold text-[#1D2B44]">{row.title}</p>
+                  <p className="mt-2 text-[14px] leading-6 text-slate-700">{row.body}</p>
                 </div>
               ))}
             </div>
@@ -148,11 +167,11 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
           </Section>
 
           <Section id="system" label={c.systemLabel} title={c.systemTitle} body={c.systemBody} tone="paper">
-            <div className="grid border-t border-slate-300 md:grid-cols-2">
+            <div className="grid gap-3 md:grid-cols-2">
               {c.systemRows.map((row, index) => (
-                <div key={row} className={`grid grid-cols-[46px_1fr] gap-4 border-b border-slate-300 py-5 md:pr-7 ${index % 2 === 1 ? 'md:border-l md:pl-7' : ''}`}>
-                  <span className="font-mono text-[13px] text-slate-500">{String(index + 1).padStart(2, '0')}</span>
-                  <p className="text-[15px] leading-7 text-slate-700">{row}</p>
+                <div key={row} className="grid min-h-[126px] grid-cols-[42px_1fr] gap-4 border border-slate-300 bg-[#FAFAF7] p-5">
+                  <span className="font-mono text-[12px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
+                  <p className="text-[15px] font-medium leading-7 text-slate-800">{row}</p>
                 </div>
               ))}
             </div>
@@ -164,35 +183,46 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
 
           <Section id="evidence" label={c.evidenceLabel} title={c.evidenceTitle} body={c.evidenceBody} tone="paper">
             <EvidenceFrameworkVisual data={project.evidence} lang={lang} />
-            <div className="mt-6 overflow-hidden border-y border-slate-300">
-              <div className="grid sm:grid-cols-3 sm:divide-x sm:divide-slate-300">
+            <div className="mt-6">
+              <div className="mb-3 flex items-center justify-between gap-4">
+                <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-indigo-700">{referenceEconomicsLabel}</p>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-3">
                 {sc12BusinessOutcomeMetrics[lang].map((metric) => (
                   <div
                     key={metric.label}
-                    className="flex min-h-[112px] flex-col justify-center border-b border-slate-300 px-5 py-5 last:border-b-0 sm:border-b-0"
+                    className="flex min-h-[112px] flex-col justify-center border border-slate-300 bg-[#FAFAF7] px-5 py-5"
                   >
-                    <p className="text-[28px] font-semibold leading-none tracking-[-0.02em] text-slate-950">{metric.value}</p>
-                    <p className="mt-3 text-[12px] font-semibold uppercase leading-5 tracking-[0.1em] text-slate-500">{metric.label}</p>
+                    <p className="text-[30px] font-semibold leading-none tracking-[-0.02em] text-[#1D2B44]">{metric.value}</p>
+                    <p className="mt-3 text-[12px] font-semibold uppercase leading-5 tracking-[0.1em] text-slate-600">{metric.label}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <p className="mt-4 text-[12px] leading-6 text-slate-500">{c.economicsNote}</p>
           </Section>
 
           <Section id="technical" label={c.technicalLabel} title={c.technicalTitle} body={c.technicalBody}>
-            <div className="border-y border-slate-300 py-5">
-              <p className="text-[13px] font-semibold uppercase tracking-[0.12em] text-slate-500">Stack</p>
-              <p className="mt-3 text-[15px] leading-7 text-slate-800">{c.technicalProof}</p>
+            <div className="border border-slate-300 bg-[#FAFAF7] p-5">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-indigo-700">Stack</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {c.technicalProof.split(' · ').map((technology) => (
+                  <span
+                    key={technology}
+                    className="border border-slate-300 bg-white px-3 py-2 text-[13px] font-semibold text-[#1D2B44]"
+                  >
+                    {technology}
+                  </span>
+                ))}
+              </div>
             </div>
 
-            <div className="mt-6">
-              <p className="text-[13px] font-semibold uppercase tracking-[0.12em] text-slate-500">{c.limitationsLabel}</p>
-              <div className="mt-3 border-t border-slate-300">
+            <div className="mt-5">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-indigo-700">{c.limitationsLabel}</p>
+              <div className="mt-3 grid gap-3 md:grid-cols-3">
                 {c.limitations.map((item, index) => (
-                  <div key={item} className="grid grid-cols-[44px_1fr] gap-3 border-b border-slate-300 py-4">
-                    <span className="font-mono text-[12px] text-slate-400">{String(index + 1).padStart(2, '0')}</span>
-                    <p className="text-[14px] leading-6 text-slate-600">{item}</p>
+                  <div key={item} className="border border-slate-300 bg-white p-5">
+                    <span className="font-mono text-[12px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
+                    <p className="mt-4 text-[14px] leading-6 text-slate-700">{item}</p>
                   </div>
                 ))}
               </div>
