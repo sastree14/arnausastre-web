@@ -7,18 +7,18 @@ const COPY = {
   es: {
     eyebrow: 'POR QUÉ SC-ANALYTICS',
     title: 'Capacidad técnica con criterio de negocio y responsabilidad sobre el resultado.',
-    intro: 'No queremos ser otra consultora que entrega una solución técnicamente correcta y desaparece. Trabajamos para entender qué importa, construir lo necesario y dejar una decisión mejor que antes.',
+    intro: 'Combinamos capacidad técnica, criterio de negocio y una forma de trabajar pensada para generar confianza y resultados.',
     reasonsLabel: 'POR QUÉ CONSTRUIR CON NOSOTROS',
-    reasonsTitle: 'Lo que cambia en la forma de trabajar.',
+    reasonsTitle: 'Por qué trabajar con SC-Analytics.',
     reasons: [
-      ['Comprender antes de construir', 'Primero definimos la decisión, el proceso, las restricciones y la lógica económica. La tecnología viene después.'],
-      ['La solución más adecuada, no la más grande', 'La sofisticación solo se justifica si mejora de verdad el resultado frente a una alternativa más simple.'],
-      ['Comunicación directa', 'Quien entiende el problema participa en la solución. Menos capas, menos traducción y más responsabilidad.'],
-      ['Contexto que se acumula', 'Cada proyecto aumenta el conocimiento del negocio y hace que la siguiente decisión pueda resolverse mejor y más rápido.'],
+      ['Comprender antes de construir', 'Empezamos por la decisión y el negocio. La tecnología viene después.'],
+      ['La solución adecuada', 'Usamos la complejidad que aporta valor, no la que impresiona.'],
+      ['Comunicación directa', 'Menos capas. Más claridad, contexto y responsabilidad.'],
+      ['Contexto que se acumula', 'Cada proyecto hace que la siguiente decisión pueda resolverse mejor y más rápido.'],
     ],
     proofLabel: 'NUESTRO ESTÁNDAR',
     proofTitle: 'Ser rigurosos también significa saber decir que no.',
-    proofBody: 'Si faltan datos, si el retorno esperado no compensa el esfuerzo o si un cambio operativo simple resuelve el problema, lo diremos. La relación a largo plazo vale más que maximizar el alcance de un proyecto.',
+    proofBody: 'Si no vemos un caso razonable, lo diremos. Preferimos una relación útil a un proyecto innecesariamente grande.',
     principles: ['Valor antes que tecnología', 'Rigor cuantitativo', 'Transparencia sobre límites y riesgos', 'Sistemas utilizables, no demos', 'Impacto medible cuando sea posible'],
     modelLabel: 'MODELO DE TRABAJO',
     modelTitle: 'Estructura ligera. Especialización cuando hace falta.',
@@ -26,7 +26,7 @@ const COPY = {
     project: 'Ver casos',
     partner: 'Conocer el modelo partner',
     exploreLabel: 'VERLO EN LA PRÁCTICA',
-    exploreTitle: 'Nuestro criterio se entiende mejor cuando ves lo que hacemos.',
+    exploreTitle: 'Conócenos mejor a través de lo que hacemos.',
     exploreLinks: [['Cómo trabajamos','/services'],['Casos','/projects'],['Conocimiento','/knowledge']],
     ctaTitle: 'Si nuestra forma de pensar encaja con la tuya, empecemos por un problema real.',
     ctaBody: 'La primera conversación sirve para entender si podemos aportar valor y cuál sería el siguiente paso más sensato.',
@@ -35,18 +35,18 @@ const COPY = {
   ca: {
     eyebrow: 'PER QUÈ SC-ANALYTICS',
     title: 'Capacitat tècnica amb criteri de negoci i responsabilitat sobre el resultat.',
-    intro: 'No volem ser una altra consultora que entrega una solució tècnicament correcta i desapareix. Treballem per entendre què importa, construir el necessari i deixar una decisió millor que abans.',
+    intro: 'Combinem capacitat tècnica, criteri de negoci i una manera de treballar pensada per generar confiança i resultats.',
     reasonsLabel: 'PER QUÈ CONSTRUIR AMB NOSALTRES',
-    reasonsTitle: 'Què canvia en la manera de treballar.',
+    reasonsTitle: 'Per què treballar amb SC-Analytics.',
     reasons: [
-      ['Comprendre abans de construir', 'Primer definim la decisió, el procés, les restriccions i la lògica econòmica. La tecnologia ve després.'],
-      ['La solució més adequada, no la més gran', 'La sofisticació només es justifica si millora realment el resultat davant d’una alternativa més simple.'],
-      ['Comunicació directa', 'Qui entén el problema participa en la solució. Menys capes, menys traducció i més responsabilitat.'],
-      ['Context que s’acumula', 'Cada projecte augmenta el coneixement del negoci i fa que la següent decisió es pugui resoldre millor i més ràpid.'],
+      ['Comprendre abans de construir', 'Comencem per la decisió i el negoci. La tecnologia ve després.'],
+      ['La solució adequada', 'Utilitzem la complexitat que aporta valor, no la que impressiona.'],
+      ['Comunicació directa', 'Menys capes. Més claredat, context i responsabilitat.'],
+      ['Context que s’acumula', 'Cada projecte fa que la següent decisió es pugui resoldre millor i més ràpid.'],
     ],
     proofLabel: 'EL NOSTRE ESTÀNDARD',
     proofTitle: 'Ser rigorosos també significa saber dir que no.',
-    proofBody: 'Si falten dades, si el retorn esperat no compensa l’esforç o si un canvi operatiu simple resol el problema, ho direm. La relació a llarg termini val més que maximitzar l’abast d’un projecte.',
+    proofBody: 'Si no veiem un cas raonable, ho direm. Preferim una relació útil a un projecte innecessàriament gran.',
     principles: ['Valor abans que tecnologia', 'Rigor quantitatiu', 'Transparència sobre límits i riscos', 'Sistemes utilitzables, no demos', 'Impacte mesurable quan sigui possible'],
     modelLabel: 'MODEL DE TREBALL',
     modelTitle: 'Estructura lleugera. Especialització quan cal.',
@@ -54,7 +54,7 @@ const COPY = {
     project: 'Veure casos',
     partner: 'Conèixer el model partner',
     exploreLabel: 'VEURE-HO A LA PRÀCTICA',
-    exploreTitle: 'El nostre criteri s’entén millor quan veus què fem.',
+    exploreTitle: 'Coneix-nos millor a través del que fem.',
     exploreLinks: [['Com treballem','/services'],['Casos','/projects'],['Coneixement','/knowledge']],
     ctaTitle: 'Si la nostra manera de pensar encaixa amb la teva, comencem per un problema real.',
     ctaBody: 'La primera conversa serveix per entendre si podem aportar valor i quin seria el següent pas més sensat.',
@@ -63,18 +63,18 @@ const COPY = {
   en: {
     eyebrow: 'WHY SC-ANALYTICS',
     title: 'Technical capability with business judgment and accountability for the outcome.',
-    intro: 'We do not want to be another consultancy that delivers something technically correct and disappears. We work to understand what matters, build what is necessary and leave the client with a better decision than before.',
+    intro: 'We combine technical capability, business judgment and a way of working designed to create trust and results.',
     reasonsLabel: 'WHY BUILD WITH US',
-    reasonsTitle: 'What changes in the way the work is done.',
+    reasonsTitle: 'Why work with SC-Analytics.',
     reasons: [
-      ['Understand before building', 'We first define the decision, process, constraints and economics. Technology comes afterwards.'],
-      ['The right solution, not the biggest one', 'Sophistication is justified only when it genuinely improves the outcome over a simpler alternative.'],
-      ['Direct communication', 'The people who understand the problem participate in the solution. Fewer layers, less translation and more accountability.'],
-      ['Context compounds', 'Every project increases business knowledge and makes the next decision faster and better informed.'],
+      ['Understand before building', 'We start with the decision and the business. Technology comes afterwards.'],
+      ['The right solution', 'We use the complexity that creates value, not the complexity that impresses.'],
+      ['Direct communication', 'Fewer layers. More clarity, context and accountability.'],
+      ['Context compounds', 'Every project makes the next decision faster and better informed.'],
     ],
     proofLabel: 'OUR STANDARD',
     proofTitle: 'Rigor also means knowing when to say no.',
-    proofBody: 'If the data is insufficient, the expected return does not justify the effort or a simple operational change solves the problem, we will say so. A long-term relationship matters more than maximising the scope of one project.',
+    proofBody: 'If we do not see a sensible case, we will say so. We prefer a useful relationship to an unnecessarily large project.',
     principles: ['Value before technology', 'Quantitative rigor', 'Transparency about limits and risks', 'Usable systems, not demos', 'Measurable impact where possible'],
     modelLabel: 'WORKING MODEL',
     modelTitle: 'Lean structure. Specialist depth when required.',
@@ -82,7 +82,7 @@ const COPY = {
     project: 'See case studies',
     partner: 'Explore the partner model',
     exploreLabel: 'SEE IT IN PRACTICE',
-    exploreTitle: 'Our judgment is easier to understand when you see the work.',
+    exploreTitle: 'Get to know us through the work.',
     exploreLinks: [['How we work','/services'],['Case studies','/projects'],['Knowledge','/knowledge']],
     ctaTitle: 'If the way we think fits the way you want to work, start with a real problem.',
     ctaBody: 'The first conversation is enough to understand whether we can create value and what the most sensible next step would be.',
@@ -100,7 +100,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
           <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
           <h1 className="mt-5 max-w-5xl text-[44px] leading-[1.04] tracking-[-0.03em] sm:text-[56px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-          <p className="mt-6 max-w-3xl text-[17px] leading-8 text-[#EAF0F6]">{t.intro}</p>
+          <p className="mt-6 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
         </div>
       </section>
 
@@ -115,8 +115,8 @@ export default function AboutPage() {
             {t.reasons.map(([title, body], index) => (
               <article key={title} className={`min-h-[210px] border-b border-r border-slate-300 p-7 ${index === 0 || index === 3 ? 'bg-[#F4F1EA]' : 'bg-white'}`}>
                 <p className="font-mono text-[11px] text-indigo-700">0{index + 1}</p>
-                <h3 className="mt-4 text-[20px] font-semibold text-slate-950">{title}</h3>
-                <p className="mt-3 max-w-xl text-[14px] leading-7 text-slate-600">{body}</p>
+                <h3 className="mt-4 text-[24px] font-semibold text-slate-950">{title}</h3>
+                <p className="mt-3 max-w-xl text-[17px] leading-7 text-slate-700">{body}</p>
               </article>
             ))}
           </div>
@@ -128,13 +128,13 @@ export default function AboutPage() {
           <div>
             <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.proofLabel}</p>
             <h2 className="mt-4 max-w-xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.proofTitle}</h2>
-            <p className="mt-5 max-w-xl text-[14px] leading-7 text-slate-600">{t.proofBody}</p>
+            <p className="mt-5 max-w-xl text-[17px] leading-7 text-slate-700">{t.proofBody}</p>
           </div>
           <div className="border-y border-slate-400">
             {t.principles.map((item, index) => (
               <div key={item} className="grid grid-cols-[48px_1fr] gap-4 border-b border-slate-300 py-4 last:border-b-0">
                 <span className="font-mono text-[11px] text-indigo-700">0{index + 1}</span>
-                <p className="text-[14px] font-medium text-slate-800">{item}</p>
+                <p className="text-[16px] font-medium text-slate-800">{item}</p>
               </div>
             ))}
           </div>
@@ -150,10 +150,10 @@ export default function AboutPage() {
                 <h2 className="mt-4 text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.modelTitle}</h2>
               </div>
               <div>
-                <p className="max-w-2xl text-[15px] leading-8 text-slate-600">{t.modelBody}</p>
+                <p className="max-w-2xl text-[17px] leading-8 text-slate-700">{t.modelBody}</p>
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Link href="/projects" className="bg-slate-950 px-5 py-3 text-[13px] font-semibold text-white transition hover:bg-slate-800">{t.project}</Link>
-                  <Link href="/partner-analitico" className="border border-slate-400 px-5 py-3 text-[13px] font-semibold text-slate-800 transition hover:border-slate-700">{t.partner}</Link>
+                  <Link href="/projects" className="bg-slate-950 px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-slate-800">{t.project}</Link>
+                  <Link href="/partner-analitico" className="border border-slate-400 px-5 py-3 text-[15px] font-semibold text-slate-800 transition hover:border-slate-700">{t.partner}</Link>
                 </div>
               </div>
             </div>
@@ -168,7 +168,7 @@ export default function AboutPage() {
             <h2 className="text-[30px] leading-[1.08] sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
             <div className="mt-6 grid border-t border-slate-300 md:grid-cols-3 md:divide-x md:divide-slate-300">
               {t.exploreLinks.map(([label, href]) => (
-                <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[13px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
+                <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[15px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
                   {label}<span className="text-indigo-700 transition group-hover:translate-x-1">→</span>
                 </Link>
               ))}
@@ -181,9 +181,9 @@ export default function AboutPage() {
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-10 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="max-w-3xl text-[30px] leading-[1.08] sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
-            <p className="mt-3 max-w-2xl text-[14px] leading-7 text-slate-600">{t.ctaBody}</p>
+            <p className="mt-3 max-w-2xl text-[17px] leading-7 text-slate-700">{t.ctaBody}</p>
           </div>
-          <Link href="/contact?intent=discovery" className="inline-flex shrink-0 bg-slate-950 px-5 py-3 text-[13px] font-semibold text-white transition hover:bg-slate-800">{t.cta}</Link>
+          <Link href="/contact?intent=discovery" className="inline-flex shrink-0 bg-slate-950 px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-slate-800">{t.cta}</Link>
         </div>
       </section>
     </main>
