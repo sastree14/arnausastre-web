@@ -139,6 +139,25 @@ Markers of this register:
 
 ---
 
+## Commercial concision
+
+The website article must feel like expert analysis written for a busy decision-maker, not a white paper.
+
+- Target **700–1,000 words per language** unless the topic genuinely requires more.
+- Prefer **4–6 body sections**. Do not create extra sections to make the article look comprehensive.
+- Each section should normally contain **1–2 paragraphs**. A third paragraph is acceptable only when a concrete scenario or trade-off genuinely needs it.
+- Keep most paragraphs to roughly **50–100 words**. Split or rewrite dense paragraphs rather than stacking multiple ideas inside them.
+- The opening should normally be **under 110 words** and make the central claim immediately.
+- The closing should normally be **under 120 words** and end with a diagnostic, decision rule, or concrete question.
+- Excerpts should normally be **25–40 words**.
+- Delete throat-clearing, repeated framing, obvious transitions, and sentences that merely restate the previous sentence.
+- Prefer one memorable business implication over three weaker supporting explanations.
+- Every paragraph must earn its space by doing at least one of these: sharpen the diagnosis, quantify the consequence, expose a trade-off, explain causality, or improve the reader's next decision.
+
+When two sentences communicate the same idea, keep the stronger one.
+
+---
+
 ## Body sections — format
 
 ### Subtitles
