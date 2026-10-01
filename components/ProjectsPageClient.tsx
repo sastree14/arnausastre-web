@@ -148,7 +148,7 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
                   onClick={() => setActiveFilter(filter)}
                   className={`flex min-h-[66px] items-center justify-center border-b border-r px-4 py-3 text-center text-[13px] font-medium leading-[1.2] transition-colors ${
                     active
-                      ? 'border-slate-950 bg-white font-semibold text-slate-950 shadow-[inset_0_-3px_0_#0f172a]'
+                      ? 'border-slate-300 bg-white font-semibold text-slate-950 shadow-[inset_0_-3px_0_#0f172a]'
                       : 'border-slate-300 bg-[#F4F1EA] text-slate-600 hover:bg-white hover:text-slate-950'
                   }`}
                 >
