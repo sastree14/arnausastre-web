@@ -328,3 +328,46 @@ Dark visual languages such as Architecture C are embedded as bounded editorial a
 ## Horizon terminology
 
 SC-12 public website copy uses 1, 3, 6 and 9 months consistently. Do not mix these planning horizons with days in website or case-study copy.
+
+
+## Fluid desktop layout
+
+Desktop case-study layouts are fluid rather than fixed-width.
+
+Rules:
+- keep the sticky case navigation on the left;
+- use a viewport-relative container that grows with the screen but stops before reading lines become too wide;
+- preferred outer width: `min(94vw, 1700px)`;
+- preferred desktop grid: `clamp(220px, 15vw, 290px) minmax(0, 1fr)`;
+- gaps and section padding may use `clamp()` so the layout grows continuously between laptop and large-monitor widths;
+- on smaller screens, collapse the sidebar into compact horizontal navigation.
+
+The objective is to preserve the integrated left-navigation feeling on laptops while avoiding unused empty space on large desktop monitors.
+
+## Section transition rule
+
+Do not separate every major section with the same full-width horizontal rule used inside tables and evidence modules.
+
+Major sections should be identified by:
+- stronger vertical whitespace;
+- a short dark editorial marker;
+- the numbered section eyebrow;
+- consistent heading hierarchy.
+
+Internal tables and modules may continue to use thin structural rules.
+
+## Case discovery taxonomy
+
+Commercial case filters are secondary navigation. A case may belong to multiple categories simultaneously.
+
+The default index remains a list of commercially named cases. Filters help readers who already recognise a solution family, such as:
+- Forecasting & Planning
+- AI Agents
+- Process Automation
+- Operational Optimisation
+- Risk & Scoring
+- Decision Systems
+- Analytics & Reporting
+- Financial Modelling
+
+Filter controls should be clearly clickable, may wrap to two lines, and must not be compressed into ambiguous inline text.
