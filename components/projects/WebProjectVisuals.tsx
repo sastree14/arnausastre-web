@@ -9,14 +9,14 @@ export function HorizonDecisionVisual({ data }: { data: HorizonLogic }) {
     <div className="border border-[#D8DDE3] bg-[#FAFAF7]">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D8DDE3] px-6 py-4">
         <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-600">Horizon-level evaluation</p>
-        <p className="text-[13px] text-slate-500">Illustrative structure · evaluation remains horizon-specific</p>
+        <p className="text-[13px] text-slate-500">Each planning horizon is evaluated separately</p>
       </div>
 
       <div className="grid divide-y divide-[#D8DDE3] md:grid-cols-4 md:divide-x md:divide-y-0">
         {data.horizons.map((item) => (
           <div key={item.horizon} className="min-h-[188px] px-6 py-6">
             <div className="flex items-baseline justify-between gap-4 border-b border-slate-200 pb-4">
-              <span className="font-mono text-2xl font-semibold text-[#1D2B44]">{item.horizon}</span>
+              <span className="text-[30px] font-normal leading-none tracking-[-0.02em] text-[#1D2B44]" style={{ fontFamily: 'var(--font-playfair)' }}>{item.horizon}</span>
               <span className="text-right text-[13px] font-medium uppercase tracking-[0.1em] text-slate-500">{item.label}</span>
             </div>
             <p className="mt-6 text-[15px] leading-7 text-slate-600">{item.note}</p>
