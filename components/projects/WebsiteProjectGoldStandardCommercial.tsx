@@ -93,7 +93,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
                 ))}
               </div>
 
-              <p className="mt-5 text-[12px] leading-5 text-[#7F9BB5]">{project.businessOutcome.disclaimer}</p>
+              <p className="mt-5 text-[12px] leading-5 text-[#7F9BB5]">{c.economicsNote}</p>
 
               <div className="mt-6 flex flex-wrap gap-4">
                 <a href={project.proofUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-[14px] font-semibold text-white underline decoration-[#5E86A8] underline-offset-4">
@@ -156,7 +156,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
                 </div>
               ))}
             </div>
-            <p className="mt-4 text-[12px] leading-6 text-slate-500">{project.businessOutcome.disclaimer}</p>
+            <p className="mt-4 text-[12px] leading-6 text-slate-500">{c.economicsNote}</p>
           </Section>
 
           <Section id="technical" label={c.technicalLabel} title={c.technicalTitle} body={c.technicalBody}>
