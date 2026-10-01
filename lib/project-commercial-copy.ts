@@ -54,6 +54,7 @@ export const sc12CommercialCopy: Record<SiteLanguage, {
   changed: string
   utility: string
   scenarioHeadline: string
+  economicsNote: string
   scenarioSummary: string
 }> = {
   en: {
@@ -130,6 +131,7 @@ export const sc12CaseStudyCopy: Record<SiteLanguage, {
     thesis: 'The case starts with a concrete operating problem: purchasing needs to decide how much stock to hold without knowing whether forecast quality remains reliable across the planning horizon. We designed the system to turn that uncertainty into a more defensible inventory decision.',
     scenarioLabel: 'Case economics',
     scenarioHeadline: '€2.0M inventory × 5% less excess stock = €100k of working capital released.',
+    economicsNote: 'Reference economics; this figure is not attributed to a specific client.',
     problemLabel: '01 · BUSINESS PROBLEM',
     problemTitle: 'One blended forecast can hide the horizon where the decision actually fails.',
     problemBody: 'Purchasing teams make different decisions for tomorrow, next week and the longer planning horizon. A single average error can conceal the exact point where uncertainty becomes operationally expensive.',
@@ -181,6 +183,7 @@ export const sc12CaseStudyCopy: Record<SiteLanguage, {
     thesis: 'El caso parte de un problema operativo concreto: compras necesita decidir cuánto stock mantener sin saber si la calidad del forecast se sostiene a lo largo del horizonte de planificación. Diseñamos el sistema para convertir esa incertidumbre en una decisión de inventario más defendible.',
     scenarioLabel: 'Economía del caso',
     scenarioHeadline: '€2,0M de inventario × 5% menos exceso de stock = €100k de capital circulante liberado.',
+    economicsNote: 'Modelo económico de referencia; esta cifra no se atribuye a un cliente concreto.',
     problemLabel: '01 · PROBLEMA DE NEGOCIO',
     problemTitle: 'Un forecast agregado puede ocultar el horizonte donde la decisión realmente falla.',
     problemBody: 'Compras toma decisiones distintas para mañana, la próxima semana y horizontes más largos. Un único error medio puede esconder justo el punto donde la incertidumbre se vuelve cara para la operación.',
@@ -232,6 +235,7 @@ export const sc12CaseStudyCopy: Record<SiteLanguage, {
     thesis: 'El cas parteix d’un problema operatiu concret: compres necessita decidir quant estoc mantenir sense saber si la qualitat del forecast es manté al llarg de l’horitzó de planificació. Vam dissenyar el sistema per convertir aquesta incertesa en una decisió d’inventari més defensable.',
     scenarioLabel: 'Economia del cas',
     scenarioHeadline: '€2,0M d’inventari × 5% menys excés d’estoc = €100k de capital circulant alliberat.',
+    economicsNote: 'Model econòmic de referència; aquesta xifra no s’atribueix a un client concret.',
     problemLabel: '01 · PROBLEMA DE NEGOCI',
     problemTitle: 'Un forecast agregat pot ocultar l’horitzó on la decisió realment falla.',
     problemBody: 'Compres pren decisions diferents per demà, la setmana vinent i horitzons més llargs. Un únic error mitjà pot amagar just el punt on la incertesa es torna cara per a l’operació.',
@@ -279,18 +283,18 @@ export const sc12CaseStudyCopy: Record<SiteLanguage, {
 
 export const sc12BusinessOutcomeMetrics: Record<SiteLanguage, Array<{ value: string; label: string; note: string }>> = {
   en: [
-    { value: '€2.0M', label: 'Reference inventory', note: 'Reference operating base.' },
-    { value: '5%', label: 'Reference reduction', note: 'Assumed reduction in excess inventory.' },
+    { value: '€2.0M', label: 'Inventory base', note: 'Reference operating base.' },
+    { value: '5%', label: 'Excess stock reduction', note: 'Assumed reduction in excess inventory.' },
     { value: '€100k', label: 'Working capital released', note: '€2.0M × 5%; reference arithmetic.' },
   ],
   es: [
-    { value: '€2,0M', label: 'Inventario de referencia', note: 'Base operativa de referencia.' },
-    { value: '5%', label: 'Reducción de referencia', note: 'Reducción asumida del exceso de inventario.' },
+    { value: '€2,0M', label: 'Base de inventario', note: 'Base operativa de referencia.' },
+    { value: '5%', label: 'Reducción de exceso', note: 'Reducción asumida del exceso de inventario.' },
     { value: '€100k', label: 'Capital liberado', note: '€2,0M × 5%; cálculo de referencia.' },
   ],
   ca: [
-    { value: '€2,0M', label: 'Inventari de referència', note: 'Base operativa de referència.' },
-    { value: '5%', label: 'Reducció de referència', note: 'Reducció assumida de l’excés d’inventari.' },
+    { value: '€2,0M', label: 'Base d’inventari', note: 'Base operativa de referència.' },
+    { value: '5%', label: 'Reducció d’excés', note: 'Reducció assumida de l’excés d’inventari.' },
     { value: '€100k', label: 'Capital alliberat', note: '€2,0M × 5%; càlcul de referència.' },
   ],
 }
