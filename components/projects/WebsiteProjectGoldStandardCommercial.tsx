@@ -163,13 +163,13 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
           <Section id="problem" label={c.problemLabel} title={c.problemTitle} body={c.problemBody} tone="paper">
             <div className="grid gap-3 md:grid-cols-3">
               {c.problemRows.map((row, index) => (
-                <div key={row.title} className="border border-slate-300 bg-[#FAFAF7] p-5">
+                <div key={row.title} className="flex min-h-[190px] flex-col border border-slate-300 bg-[#FAFAF7] p-6">
                   <div className="flex items-center justify-between gap-4">
-                    <span className="font-mono text-[12px] text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="font-mono text-[14px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
                     <span className="h-px flex-1 bg-slate-200" />
                   </div>
-                  <p className="mt-5 text-[17px] font-semibold text-[#1D2B44]">{row.title}</p>
-                  <p className="mt-2 text-[14px] leading-6 text-slate-700">{row.body}</p>
+                  <p className="mt-6 text-[22px] font-semibold leading-[1.15] text-[#1D2B44]">{row.title}</p>
+                  <p className="mt-4 text-[16px] leading-7 text-slate-700">{row.body}</p>
                 </div>
               ))}
             </div>
@@ -218,7 +218,6 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
             id="technical"
             label={c.technicalLabel}
             title={c.technicalTitle}
-            body={c.technicalBody}
             headerAction={
               <a
                 href={project.proofUrl}
