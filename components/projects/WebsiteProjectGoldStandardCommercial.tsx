@@ -39,7 +39,7 @@ function Section({
             >
               {title}
             </h2>
-            {body ? <p className="mt-4 max-w-[72ch] text-[16px] leading-8 text-slate-700">{body}</p> : null}
+            {body ? <p className="mt-4 max-w-[68ch] text-[18px] leading-8 text-slate-700">{body}</p> : null}
           </div>
         </div>
 
@@ -169,9 +169,9 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
           <Section id="system" label={c.systemLabel} title={c.systemTitle} body={c.systemBody} tone="paper">
             <div className="grid gap-3 md:grid-cols-2">
               {c.systemRows.map((row, index) => (
-                <div key={row} className="grid min-h-[126px] grid-cols-[42px_1fr] gap-4 border border-slate-300 bg-[#FAFAF7] p-5">
-                  <span className="font-mono text-[12px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
-                  <p className="text-[15px] font-medium leading-7 text-slate-800">{row}</p>
+                <div key={row} className="grid min-h-[132px] grid-cols-[48px_1fr] gap-4 border border-slate-300 bg-[#FAFAF7] p-5 sm:p-6">
+                  <span className="font-mono text-[14px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
+                  <p className="text-[18px] font-medium leading-8 text-slate-900">{row}</p>
                 </div>
               ))}
             </div>
@@ -212,18 +212,6 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
                   >
                     {technology}
                   </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-5">
-              <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-indigo-700">{c.limitationsLabel}</p>
-              <div className="mt-3 grid gap-3 md:grid-cols-3">
-                {c.limitations.map((item, index) => (
-                  <div key={item} className="border border-slate-300 bg-white p-5">
-                    <span className="font-mono text-[12px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
-                    <p className="mt-4 text-[14px] leading-6 text-slate-700">{item}</p>
-                  </div>
                 ))}
               </div>
             </div>
