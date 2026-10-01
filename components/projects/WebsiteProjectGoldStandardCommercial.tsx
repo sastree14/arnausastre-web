@@ -163,7 +163,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
           </Section>
 
           <Section id="evidence" label={c.evidenceLabel} title={c.evidenceTitle} body={c.evidenceBody} tone="paper">
-            <EvidenceFrameworkVisual data={project.evidence} />
+            <EvidenceFrameworkVisual data={project.evidence} lang={lang} />
             <div className="mt-6 grid gap-4 border-y border-slate-300 py-5 sm:grid-cols-3">
               {sc12BusinessOutcomeMetrics[lang].map((metric) => (
                 <div key={metric.label}>
