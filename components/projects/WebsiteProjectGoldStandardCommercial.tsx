@@ -23,7 +23,7 @@ function Section({
   children: React.ReactNode
 }) {
   return (
-    <section id={id} className="scroll-mt-24 border-b border-slate-300 bg-transparent">
+    <section id={id} className="scroll-mt-24 border-t-[3px] border-[#1D2B44] bg-transparent">
       <div className="px-6 py-12 lg:px-10 lg:py-14">
         <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">
           {label}
