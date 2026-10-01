@@ -299,7 +299,7 @@ export default function ServicesPage() {
             {t.models.map((model, index) => (
               <article key={model.title} className={`flex min-h-[330px] flex-col border-b border-r border-slate-300 p-6 md:p-7 ${index === 1 ? 'bg-[#0D1B2A] text-white' : 'bg-white text-slate-950'}`}>
                 <h3 className={`text-[30px] leading-tight ${index === 1 ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{model.title}</h3>
-                <p className={`mt-5 text-[19px] font-semibold leading-7 ${index === 1 ? 'text-white' : 'text-slate-850'}`}>{model.hook}</p>
+                <p className={`mt-5 text-[19px] font-semibold leading-7 ${index === 1 ? 'text-white' : 'text-slate-900'}`}>{model.hook}</p>
 
                 <div className={`mt-auto border-t pt-6 ${index === 1 ? 'border-[#496C8A]' : 'border-slate-300'}`}>
                   <Link
