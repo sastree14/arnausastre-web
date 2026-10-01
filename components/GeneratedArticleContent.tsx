@@ -25,6 +25,7 @@ function renderBody(body: string) {
   const lines = body.split('\n')
   const nodes: React.ReactNode[] = []
   let bullets: string[] = []
+  let proseIndex = 0
 
   const flushBullets = () => {
     if (!bullets.length) return
@@ -48,7 +49,18 @@ function renderBody(body: string) {
     else if (line.startsWith('### ')) nodes.push(<h3 key={index} className="mb-3 mt-10 text-[23px] font-semibold leading-snug text-slate-950">{cleanInline(line.slice(4))}</h3>)
     else if (line.startsWith('## ')) nodes.push(<h2 key={index} className="mb-4 mt-12 max-w-[26ch] text-[30px] leading-[1.08] text-slate-950 sm:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{cleanInline(line.slice(3))}</h2>)
     else if (line.startsWith('# ')) nodes.push(<h2 key={index} className="mb-4 mt-12 max-w-[26ch] text-[30px] leading-[1.08] text-slate-950 sm:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{cleanInline(line.slice(2))}</h2>)
-    else nodes.push(<p key={index} className="my-5 text-[17px] leading-8 text-slate-700">{cleanInline(line)}</p>)
+    else {
+      const isLead = proseIndex === 0
+      nodes.push(
+        <p
+          key={index}
+          className={isLead ? 'my-5 text-[20px] leading-9 text-[#1D2B44]' : 'my-5 text-[17px] leading-8 text-slate-700'}
+        >
+          {cleanInline(line)}
+        </p>,
+      )
+      proseIndex += 1
+    }
   })
   flushBullets()
   return nodes
