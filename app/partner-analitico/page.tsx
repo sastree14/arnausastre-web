@@ -200,7 +200,7 @@ export default function AnalyticalPartnerPage() {
             <h2 className="text-[30px] leading-[1.08] sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
             <div className="mt-6 grid border-t border-slate-300 md:grid-cols-3 md:divide-x md:divide-slate-300">
               {t.exploreLinks.map(([label, href]) => (
-                <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[13px] text-[18px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
+                <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[16px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
                   {label}<span className="text-indigo-700 transition group-hover:translate-x-1">→</span>
                 </Link>
               ))}
