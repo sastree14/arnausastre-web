@@ -264,7 +264,7 @@ export default function ContactPage() {
             {submitted ? (
               <div className="mt-8 border border-emerald-300 bg-emerald-50 p-6">
                 <p className="font-semibold text-emerald-900">{t.successTitle}</p>
-                <p className="mt-2 text-[14px] leading-7 text-emerald-800">{t.success}</p>
+                <p className="mt-2 text-[16px] leading-7 text-emerald-800">{t.success}</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="mt-8 space-y-5">
@@ -320,7 +320,7 @@ export default function ContactPage() {
                     {sending ? t.sending : t.send}
                   </button>
                 </div>
-                {error && <p className="text-[13px] text-red-600">{t.error}</p>}
+                {error && <p className="text-[15px] text-red-600">{t.error}</p>}
               </form>
             )}
           </div>
@@ -334,7 +334,7 @@ export default function ContactPage() {
                 href="https://calendly.com/arnau-sastre-sc-analytics"
                 target="_blank"
                 rel="noreferrer"
-                className="mt-6 inline-flex w-full items-center justify-center bg-white px-5 py-3 text-[13px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]"
+                className="mt-6 inline-flex w-full items-center justify-center bg-white px-5 py-3 text-[15px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]"
               >
                 {t.calendly} ↗
               </a>
