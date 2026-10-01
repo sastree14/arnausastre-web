@@ -21,7 +21,7 @@ const UI = {
     empty: 'Nothing published for this combination yet.',
     emptyBody: 'The editorial system is selective. Clear a filter or explore another context.',
     libraryEmpty: 'The knowledge library is being prepared.',
-    libraryEmptyBody: 'We are structuring the first analyses so this area starts with useful material rather than filler. In the meantime, you can explore real cases or see how we work.',
+    libraryEmptyBody: 'We are preparing the first analyses. Until then, explore real cases or see how we work.',
     cases: 'Explore case studies',
     work: 'See how we work',
     contact: 'Talk to us',
@@ -42,7 +42,7 @@ const UI = {
     empty: 'Todavía no hay nada publicado para esta combinación.',
     emptyBody: 'El sistema editorial es selectivo. Limpia un filtro o explora otro contexto.',
     libraryEmpty: 'Estamos preparando la biblioteca de conocimiento.',
-    libraryEmptyBody: 'Estamos estructurando los primeros análisis para que esta sección empiece con contenido útil y no con relleno. Mientras tanto, puedes explorar casos reales o ver cómo trabajamos.',
+    libraryEmptyBody: 'Estamos preparando los primeros análisis. Mientras tanto, explora casos reales o descubre cómo trabajamos.',
     cases: 'Explorar casos',
     work: 'Ver cómo trabajamos',
     contact: 'Hablar con nosotros',
@@ -63,7 +63,7 @@ const UI = {
     empty: 'Encara no hi ha res publicat per a aquesta combinació.',
     emptyBody: 'El sistema editorial és selectiu. Neteja un filtre o explora un altre context.',
     libraryEmpty: 'Estem preparant la biblioteca de coneixement.',
-    libraryEmptyBody: 'Estem estructurant les primeres anàlisis perquè aquesta secció comenci amb contingut útil i no amb farciment. Mentrestant, pots explorar casos reals o veure com treballem.',
+    libraryEmptyBody: 'Estem preparant les primeres anàlisis. Mentrestant, explora casos reals o descobreix com treballem.',
     cases: 'Explorar casos',
     work: 'Veure com treballem',
     contact: 'Parlar amb nosaltres',
@@ -181,11 +181,11 @@ function Filter({
 }) {
   return (
     <label className="min-w-[180px] flex-1">
-      <span className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">{title}</span>
+      <span className="mb-2 block text-[12px] font-semibold uppercase tracking-[0.12em] text-slate-500">{title}</span>
       <select
         value={value || ''}
         onChange={(event) => onChange(event.target.value || null)}
-        className="w-full border border-slate-300 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-indigo-500"
+        className="w-full border border-slate-300 bg-white px-4 py-3 text-[16px] text-slate-700 outline-none transition focus:border-indigo-500"
       >
         <option value="">{all}</option>
         {options.map((option) => <option key={option} value={option}>{label(option, lang)}</option>)}
@@ -312,12 +312,12 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
           <div className="p-7 md:p-10">
             <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">SC-ANALYTICS KNOWLEDGE</p>
             <h2 className="mt-4 max-w-2xl text-[32px] leading-[1.08] text-slate-950 sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.libraryEmpty}</h2>
-            <p className="mt-4 max-w-2xl text-[14px] leading-7 text-slate-600">{t.libraryEmptyBody}</p>
+            <p className="mt-4 max-w-2xl text-[17px] leading-7 text-slate-700">{t.libraryEmptyBody}</p>
           </div>
           <div className="border-t border-slate-300 bg-[#F4F1EA] p-7 lg:border-l lg:border-t-0 md:p-10">
             <div className="grid gap-3">
-              <Link href="/projects" className="flex items-center justify-between border-b border-slate-300 py-3 text-[13px] font-semibold text-slate-900">{t.cases}<span>→</span></Link>
-              <Link href="/services" className="flex items-center justify-between border-b border-slate-300 py-3 text-[13px] font-semibold text-slate-900">{t.work}<span>→</span></Link>
+              <Link href="/projects" className="flex items-center justify-between border-b border-slate-300 py-3 text-[15px] font-semibold text-slate-900">{t.cases}<span>→</span></Link>
+              <Link href="/services" className="flex items-center justify-between border-b border-slate-300 py-3 text-[15px] font-semibold text-slate-900">{t.work}<span>→</span></Link>
               <Link href="/contact?intent=discovery" className="flex items-center justify-between py-3 text-[13px] font-semibold text-indigo-700">{t.contact}<span>→</span></Link>
             </div>
           </div>
@@ -331,7 +331,7 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
       <div className="border border-slate-300 bg-white p-5 md:p-6">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex-1">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-indigo-600">{t.filters}</p>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.filters}</p>
             <div className="mt-4 flex flex-col gap-3 md:flex-row">
               <Filter title={t.industry} options={availableIndustries} value={industry} onChange={(value) => { setIndustry(value); reset() }} lang={lang} all={t.all} />
               <Filter title={t.challenge} options={availableChallenges} value={challenge} onChange={(value) => { setChallenge(value); reset() }} lang={lang} all={t.all} />
@@ -339,8 +339,8 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
             </div>
           </div>
           <div className="flex items-center justify-between gap-5 lg:flex-col lg:items-end">
-            <p className="text-xs text-slate-400">{filtered.length} {filtered.length === 1 ? t.article : t.articles}</p>
-            {hasFilters && <button onClick={clearFilters} className="text-xs font-semibold text-indigo-700 transition hover:text-indigo-900">{t.clear} ×</button>}
+            <p className="text-[13px] text-slate-500">{filtered.length} {filtered.length === 1 ? t.article : t.articles}</p>
+            {hasFilters && <button onClick={clearFilters} className="text-[14px] font-semibold text-indigo-700 transition hover:text-indigo-900">{t.clear} ×</button>}
           </div>
         </div>
       </div>
@@ -348,7 +348,7 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
       {filtered.length === 0 ? (
         <div className="mt-8 border border-slate-300 bg-white p-12 text-center">
           <p className="font-semibold text-slate-800">{t.empty}</p>
-          <p className="mx-auto mt-3 max-w-lg text-sm leading-7 text-slate-500">{t.emptyBody}</p>
+          <p className="mx-auto mt-3 max-w-lg text-[16px] leading-7 text-slate-600">{t.emptyBody}</p>
         </div>
       ) : (
         <div className="mt-6 grid border-l border-t border-slate-300 md:grid-cols-2">
@@ -360,7 +360,7 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
                 index === 0 && visible.length > 2 ? 'md:col-span-2 md:min-h-[260px]' : ''
               }`}
             >
-              <div className="flex flex-wrap items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em]">
+              <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.1em]">
                 <span className="text-indigo-700">{item.industry ? label(item.industry, lang) : t.generated}</span>
                 {item.challenge && <><span className="text-slate-300">·</span><span className="text-slate-400">{label(item.challenge, lang)}</span></>}
                 {item.audience && <><span className="text-slate-300">·</span><span className="text-slate-400">{label(item.audience, lang)}</span></>}
@@ -372,9 +372,9 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
                 {item.title}
               </h2>
 
-              <p className="mt-4 max-w-3xl flex-1 text-sm leading-7 text-slate-600">{item.excerpt}</p>
+              <p className="mt-4 max-w-3xl flex-1 text-[17px] leading-7 text-slate-700">{item.excerpt}</p>
 
-              <div className="mt-7 flex items-center justify-between border-t border-slate-100 pt-4 text-xs">
+              <div className="mt-7 flex items-center justify-between border-t border-slate-100 pt-4 text-[13px]">
                 <span className="text-slate-400">{item.date}{item.date ? ' · ' : ''}{item.readingTime} {t.min}</span>
                 <span className="font-semibold text-indigo-700">{t.read} <span className="inline-block transition group-hover:translate-x-1">→</span></span>
               </div>
@@ -387,7 +387,7 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
         <div className="mt-8 text-center">
           <button
             onClick={() => setVisibleCount((value) => value + PAGE_SIZE)}
-            className="border border-slate-400 bg-white px-6 py-3 text-sm font-medium text-slate-700 transition hover:border-slate-700"
+            className="border border-slate-400 bg-white px-6 py-3 text-[15px] font-medium text-slate-700 transition hover:border-slate-700"
           >
             {t.more} · {filtered.length - visibleCount}
           </button>
