@@ -151,11 +151,11 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
                   type="button"
                   aria-pressed={active}
                   onClick={() => setActiveFilter(filter)}
-                  className={\`inline-flex min-h-[46px] max-w-[190px] items-center justify-center border px-4 py-2.5 text-center text-[13px] font-medium leading-[1.18] transition-colors sm:max-w-[220px] \${
+                  className={`inline-flex min-h-[46px] max-w-[190px] items-center justify-center border px-4 py-2.5 text-center text-[13px] font-medium leading-[1.18] transition-colors sm:max-w-[220px] ${
                     active
                       ? 'border-slate-950 bg-white font-semibold text-slate-950 shadow-[inset_0_-2px_0_#0f172a]'
                       : 'border-slate-300 bg-transparent text-slate-600 hover:border-slate-500 hover:bg-white/75 hover:text-slate-950'
-                  }\`}
+                  }`}
                 >
                   <span className="whitespace-normal">{c.filters[filter]}</span>
                 </button>
@@ -173,7 +173,7 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
             return (
               <Link
                 key={raw.slug}
-                href={\`/projects/\${raw.slug}\`}
+                href={`/projects/${raw.slug}`}
                 className="group grid gap-3 border-b border-slate-300 py-4 transition-colors hover:bg-white/80 sm:grid-cols-[54px_minmax(0,1fr)_110px] sm:items-center sm:gap-5 lg:py-[17px]"
               >
                 <span className="font-mono text-[12px] text-slate-400">{String(index + 1).padStart(2, '0')}</span>
