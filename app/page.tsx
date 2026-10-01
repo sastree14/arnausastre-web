@@ -402,7 +402,7 @@ export default function HomePage() {
           </div>
           <div className="flex flex-col items-start gap-3 md:items-end">
             <Link href="/contact?intent=discovery" className="inline-flex bg-slate-950 px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-slate-800">{t.cta}</Link>
-            <Link href="/projects" className="text-[12px] font-semibold text-indigo-700 hover:text-indigo-900">{t.ctaAlt} →</Link>
+            <Link href="/projects" className="text-[14px] font-semibold text-indigo-700 hover:text-indigo-900">{t.ctaAlt} →</Link>
           </div>
         </div>
       </section>
