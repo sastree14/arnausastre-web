@@ -23,20 +23,27 @@ function Section({
   children: React.ReactNode
 }) {
   return (
-    <section id={id} className="scroll-mt-24 bg-transparent">
-      <div className="px-6 py-14 lg:px-[clamp(28px,3vw,52px)] lg:py-16">
-        <div className="mb-5 h-[3px] w-14 bg-[#1D2B44]" aria-hidden="true" />
-        <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">
-          {label}
-        </p>
-        <h2
-          className="mt-3 max-w-4xl text-[34px] leading-[1.06] tracking-[-0.02em] text-slate-950 sm:text-[40px]"
-          style={{ fontFamily: 'var(--font-playfair)' }}
-        >
-          {title}
-        </h2>
-        {body ? <p className="mt-4 max-w-3xl text-[16px] leading-8 text-slate-600">{body}</p> : null}
-        <div className="mt-8">{children}</div>
+    <section id={id} className="scroll-mt-24 py-5 lg:py-6">
+      <div className="border border-slate-300 bg-white">
+        <div className="grid border-b border-slate-300 lg:grid-cols-[clamp(165px,13vw,210px)_minmax(0,1fr)]">
+          <div className="bg-[#F4F1EA] px-5 py-6 lg:px-6 lg:py-7">
+            <p className="text-[13px] font-semibold uppercase leading-5 tracking-[0.14em] text-indigo-700">
+              {label}
+            </p>
+          </div>
+
+          <div className="px-6 py-6 lg:px-[clamp(28px,3vw,52px)] lg:py-7">
+            <h2
+              className="max-w-5xl text-[34px] leading-[1.06] tracking-[-0.02em] text-slate-950 sm:text-[40px]"
+              style={{ fontFamily: 'var(--font-playfair)' }}
+            >
+              {title}
+            </h2>
+            {body ? <p className="mt-4 max-w-[76ch] text-[16px] leading-8 text-slate-600">{body}</p> : null}
+          </div>
+        </div>
+
+        <div className="px-6 py-7 lg:px-[clamp(28px,3vw,52px)] lg:py-8">{children}</div>
       </div>
     </section>
   )
@@ -58,7 +65,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-        <div className="mx-auto w-[min(94vw,1700px)] pb-12 pt-9 lg:pb-14">
+        <div className="mx-auto w-[calc(100%-32px)] max-w-[1800px] sm:w-[calc(100%-48px)] pb-12 pt-9 lg:pb-14">
           <Link href={`/projects/${project.slug}`} className="inline-flex items-center gap-2 text-[14px] text-[#A8BACB] transition hover:text-white">
             <span aria-hidden="true">←</span>
             {c.back}
@@ -120,7 +127,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
       </section>
 
       <div className="border-b border-slate-300 bg-[#FAFAF7]">
-        <div className="mx-auto w-[min(94vw,1700px)] lg:grid lg:grid-cols-[clamp(220px,15vw,290px)_minmax(0,1fr)] lg:gap-[clamp(28px,3vw,52px)]">
+        <div className="mx-auto w-[calc(100%-32px)] max-w-[1800px] sm:w-[calc(100%-48px)] lg:grid lg:grid-cols-[clamp(230px,16vw,310px)_minmax(0,1fr)] lg:gap-[clamp(24px,2.6vw,48px)]">
           <CaseStudySidebar items={items} repositoryUrl={project.proofUrl} contactHref={project.cta.primaryHref} />
 
           <div className="min-w-0">
@@ -198,7 +205,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
             </div>
           </Section>
 
-          <section className="px-6 py-12 lg:px-10 lg:py-14">
+          <section className="py-5 lg:py-6">
             <div className="border border-[#496C8A] bg-[#0D1B2A] px-6 py-8 text-white lg:px-9 lg:py-9">
               <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.takeawayLabel}</p>
               <h2 className="mt-3 max-w-4xl text-[34px] leading-[1.06] text-white sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>
