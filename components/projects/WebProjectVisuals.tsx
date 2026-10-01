@@ -70,7 +70,7 @@ export function HorizonDecisionVisual({ data, lang }: { data: HorizonLogic; lang
               >
                 {item.horizon}
               </span>
-              <span className="mt-3 block text-[12px] font-semibold uppercase tracking-[0.1em] text-slate-500">
+              <span className="mt-3 block text-[13px] font-semibold uppercase tracking-[0.1em] text-slate-600">
                 {item.label}
               </span>
             </div>
