@@ -196,18 +196,18 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
 
           <Section id="evidence" label={c.evidenceLabel} title={c.evidenceTitle} body={c.evidenceBody} tone="paper">
             <EvidenceFrameworkVisual data={project.evidence} lang={lang} />
-            <div className="mt-6">
-              <div className="mb-3 flex items-center justify-between gap-4">
-                <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-indigo-700">{referenceEconomicsLabel}</p>
+            <div className="mt-5 overflow-hidden border border-[#DCCFBC] bg-[#F7F1E8]">
+              <div className="border-b border-[#DCCFBC] bg-[#EEE4D6] px-6 py-4">
+                <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#66533C]">{referenceEconomicsLabel}</p>
               </div>
-              <div className="grid gap-3 sm:grid-cols-3">
+              <div className="grid divide-y divide-[#DCCFBC] bg-[#FCF9F4] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
                 {sc12BusinessOutcomeMetrics[lang].map((metric) => (
                   <div
                     key={metric.label}
-                    className="flex min-h-[112px] flex-col justify-center border border-slate-300 bg-[#FAFAF7] px-5 py-5"
+                    className="flex min-h-[128px] flex-col justify-center px-5 py-5"
                   >
-                    <p className="text-[30px] font-semibold leading-none tracking-[-0.02em] text-[#1D2B44]">{metric.value}</p>
-                    <p className="mt-3 text-[12px] font-semibold uppercase leading-5 tracking-[0.1em] text-slate-600">{metric.label}</p>
+                    <p className="text-[31px] font-semibold leading-none tracking-[-0.02em] text-[#1D2B44]">{metric.value}</p>
+                    <p className="mt-3 text-[13px] font-semibold uppercase leading-5 tracking-[0.1em] text-slate-600">{metric.label}</p>
                   </div>
                 ))}
               </div>
