@@ -48,10 +48,16 @@ export function HorizonDecisionVisual({ data, lang }: { data: HorizonLogic; lang
     : null
 
   const horizons = localized?.horizons || data.horizons
+  const horizonPalette = [
+    { bg: '#F8F2E9', border: '#DDCFBD' },
+    { bg: '#F2ECF7', border: '#D7C8E3' },
+    { bg: '#EAF3F8', border: '#C8DCE8' },
+    { bg: '#EDF4EE', border: '#C9D9CD' },
+  ]
 
   return (
-    <div className="border border-[#D8DDE3] bg-[#FAFAF7]">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D8DDE3] px-6 py-4">
+    <div className="border border-[#D8DDE3] bg-white">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D8DDE3] bg-[#F6F2EA] px-6 py-4">
         <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-700">
           {localized?.title || 'Horizon-level evaluation'}
         </p>
@@ -60,23 +66,30 @@ export function HorizonDecisionVisual({ data, lang }: { data: HorizonLogic; lang
         </p>
       </div>
 
-      <div className="grid divide-y divide-[#D8DDE3] md:grid-cols-4 md:divide-x md:divide-y-0">
-        {horizons.map((item) => (
-          <div key={item.horizon} className="min-h-[198px] px-6 py-6">
-            <div className="border-b border-slate-200 pb-4">
-              <span
-                className="block text-[29px] font-normal leading-none tracking-[-0.02em] text-[#1D2B44]"
-                style={{ fontFamily: 'var(--font-playfair)' }}
-              >
-                {item.horizon}
-              </span>
-              <span className="mt-3 block text-[13px] font-semibold uppercase tracking-[0.1em] text-slate-600">
-                {item.label}
-              </span>
+      <div className="grid gap-3 p-3 md:grid-cols-4">
+        {horizons.map((item, index) => {
+          const palette = horizonPalette[index % horizonPalette.length]
+          return (
+            <div
+              key={item.horizon}
+              className="min-h-[190px] border px-6 py-6"
+              style={{ backgroundColor: palette.bg, borderColor: palette.border }}
+            >
+              <div className="border-b pb-4" style={{ borderColor: palette.border }}>
+                <span
+                  className="block text-[29px] font-normal leading-none tracking-[-0.02em] text-[#1D2B44]"
+                  style={{ fontFamily: 'var(--font-playfair)' }}
+                >
+                  {item.horizon}
+                </span>
+                <span className="mt-3 block text-[13px] font-semibold uppercase tracking-[0.1em] text-slate-600">
+                  {item.label}
+                </span>
+              </div>
+              <p className="mt-5 text-[17px] leading-7 text-slate-700">{item.note}</p>
             </div>
-            <p className="mt-5 text-[17px] leading-7 text-slate-700">{item.note}</p>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       <div className="border-t border-[#D8DDE3] px-6 py-5">
@@ -99,10 +112,10 @@ function ArchitectureStage({
   children: React.ReactNode
 }) {
   const palette = {
-    blue: { border: '#6F91AF', header: '#1B3D59', body: '#10283E' },
-    violet: { border: '#7A82AF', header: '#29395B', body: '#172A42' },
-    teal: { border: '#6F9A99', header: '#1D4649', body: '#123437' },
-    slate: { border: '#8293A5', header: '#314355', body: '#1D3042' },
+    blue: { border: '#739AB8', header: '#254A66', body: '#132E45' },
+    violet: { border: '#8C8EB8', header: '#454A76', body: '#242D4E' },
+    teal: { border: '#79A6A0', header: '#2D5D59', body: '#183E3C' },
+    slate: { border: '#9B8FA2', header: '#5A4E5F', body: '#3A3340' },
   }[tone]
 
   return (
@@ -110,7 +123,7 @@ function ArchitectureStage({
       <div className="border-b px-5 py-4" style={{ borderColor: palette.border, backgroundColor: palette.header }}>
         <p className="text-[17px] font-semibold uppercase tracking-[0.15em] text-white xl:text-[18px]">{label}</p>
       </div>
-      <div className="grid h-full auto-rows-fr">{children}</div>
+      <div>{children}</div>
     </div>
   )
 }
@@ -125,13 +138,13 @@ function ArchitectureNode({
   detail: string
 }) {
   return (
-    <div className="h-full min-w-0 border-t border-[#496C8A] bg-black/5 first:border-t-0">
+    <div className="min-w-0 border-t border-white/15 bg-black/5 first:border-t-0">
       <div className="flex items-center gap-3 border-b border-white/10 px-5 py-2.5">
-        <span className="font-mono text-[12px] font-semibold text-[#8F91FF]">{String(index).padStart(2, '0')}</span>
+        <span className="font-mono text-[12px] font-semibold text-[#A4A5FF]">{String(index).padStart(2, '0')}</span>
       </div>
-      <div className="min-w-0 px-5 py-5">
+      <div className="min-h-[124px] px-5 py-4">
         <h3 className="break-words text-[16px] font-semibold leading-7 text-[#E4ECF3] xl:text-[17px]">{title}</h3>
-        <p className="mt-2 break-words text-[14px] leading-6 text-[#9FB2C4]">{detail}</p>
+        <p className="mt-1.5 break-words text-[14px] leading-6 text-[#AFC0CF]">{detail}</p>
       </div>
     </div>
   )
@@ -232,7 +245,7 @@ export function ArchitectureSystemVisual({ data, lang }: { data: Architecture; l
       </div>
 
       <div className="min-w-0 px-5 py-7 sm:px-6 lg:px-7 xl:px-8">
-        <div className="grid min-w-0 grid-cols-1 gap-6 md:grid-cols-2 2xl:grid-cols-4 2xl:gap-5">
+        <div className="grid min-w-0 items-start grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-4">
           <ArchitectureStage label={labels?.inputs || 'Inputs'} tone="blue">
             {orders ? <ArchitectureNode index={1} title={orders.title} detail={orders.detail} /> : null}
             {feature ? <ArchitectureNode index={2} title={feature.title} detail={feature.detail} /> : null}
