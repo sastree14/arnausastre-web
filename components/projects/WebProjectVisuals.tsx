@@ -98,8 +98,8 @@ function ArchitectureStage({
 }) {
   return (
     <div className="grid min-w-0 grid-rows-[auto_1fr]">
-      <div className="mb-3 border border-[#5E86A8] bg-[#13283C] px-4 py-3.5">
-        <p className="text-[15px] font-semibold uppercase tracking-[0.14em] text-white">{label}</p>
+      <div className="mb-3 border border-[#7F9BB5] bg-[#18344D] px-5 py-4">
+        <p className="text-[17px] font-semibold uppercase tracking-[0.15em] text-white xl:text-[18px]">{label}</p>
       </div>
       <div className="grid h-full auto-rows-fr grid-rows-2 gap-3">{children}</div>
     </div>
@@ -116,13 +116,13 @@ function ArchitectureNode({
   detail: string
 }) {
   return (
-    <div className="h-full min-w-0 border border-[#5E86A8] bg-[#13283C]">
-      <div className="border-b border-[#496C8A] px-4 py-2.5 text-center">
-        <span className="font-mono text-[13px] font-semibold text-[#8A8DFF]">{String(index).padStart(2, '0')}</span>
+    <div className="h-full min-w-0 border border-[#496C8A] bg-[#102439]">
+      <div className="border-b border-[#3E5F7B] px-4 py-2.5 text-center">
+        <span className="font-mono text-[12px] font-semibold text-[#7A7DFF]">{String(index).padStart(2, '0')}</span>
       </div>
       <div className="min-w-0 px-5 py-5">
-        <h3 className="break-words text-[18px] font-semibold leading-7 text-white xl:text-[19px]">{title}</h3>
-        <p className="mt-2 break-words text-[16px] leading-7 text-[#C2D2E0]">{detail}</p>
+        <h3 className="break-words text-[16px] font-semibold leading-7 text-[#E7EEF5] xl:text-[17px]">{title}</h3>
+        <p className="mt-2 break-words text-[14px] leading-6 text-[#9FB2C4]">{detail}</p>
       </div>
     </div>
   )
