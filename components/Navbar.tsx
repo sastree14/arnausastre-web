@@ -14,10 +14,6 @@ const COPY = {
     work: 'Cómo trabajamos',
     cases: 'Casos',
     knowledge: 'Conocimiento',
-    articles: 'Análisis y artículos',
-    articlesBody: 'Ideas, research y criterio aplicado a decisiones reales.',
-    briefing: 'Briefing',
-    briefingBody: 'Una selección breve de lo que merece atención.',
     partner: 'Partner Data & AI',
     why: 'Por qué SC-Analytics',
     contact: 'Hablar con nosotros',
@@ -27,10 +23,6 @@ const COPY = {
     work: 'Com treballem',
     cases: 'Casos',
     knowledge: 'Coneixement',
-    articles: 'Anàlisi i articles',
-    articlesBody: 'Idees, recerca i criteri aplicat a decisions reals.',
-    briefing: 'Briefing',
-    briefingBody: 'Una selecció breu del que mereix atenció.',
     partner: 'Partner Data & AI',
     why: 'Per què SC-Analytics',
     contact: 'Parlar amb nosaltres',
@@ -40,53 +32,11 @@ const COPY = {
     work: 'How we work',
     cases: 'Case studies',
     knowledge: 'Knowledge',
-    articles: 'Analysis & articles',
-    articlesBody: 'Research, ideas and judgment applied to real business decisions.',
-    briefing: 'Briefing',
-    briefingBody: 'A concise selection of what is actually worth following.',
     partner: 'Data & AI Partner',
     why: 'Why SC-Analytics',
     contact: 'Talk to us',
   },
 } as const
-
-function DesktopDropdown({
-  label,
-  active,
-  children,
-}: {
-  label: string
-  active: boolean
-  children: React.ReactNode
-}) {
-  return (
-    <div className="group relative">
-      <button
-        type="button"
-        className={`flex items-center gap-1.5 px-2.5 py-2 text-[13px] font-medium transition ${
-          active ? 'text-slate-950' : 'text-slate-600 hover:text-slate-950'
-        }`}
-      >
-        {label}
-        <span className="text-[9px] text-slate-400 transition group-hover:rotate-180">⌄</span>
-      </button>
-      <div className="invisible absolute left-0 top-full z-50 w-[340px] pt-3 opacity-0 transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-        <div className="border border-slate-200 bg-white p-2 shadow-xl shadow-slate-950/10">
-          {children}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function DropdownLink({ href, title, body }: { href: string; title: string; body: string }) {
-  return (
-    <Link href={href} className="block px-4 py-3 transition hover:bg-[#FAFAF7]">
-      <p className="text-sm font-semibold text-slate-950">{title}</p>
-      <p className="mt-1 text-xs leading-5 text-slate-500">{body}</p>
-    </Link>
-  )
-}
 
 export default function Navbar() {
   const pathname = usePathname()
@@ -104,7 +54,15 @@ export default function Navbar() {
   }
 
   const active = (href: string) => href === '/' ? pathname === '/' : pathname.startsWith(href)
-  const knowledgeActive = pathname.startsWith('/knowledge') || pathname.startsWith('/briefing')
+
+  const nav = [
+    ['/', t.home],
+    ['/services', t.work],
+    ['/projects', t.cases],
+    ['/knowledge', t.knowledge],
+    ['/partner-analitico', t.partner],
+    ['/about', t.why],
+  ] as const
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/90 bg-white/95 backdrop-blur">
@@ -114,17 +72,18 @@ export default function Navbar() {
         </Link>
 
         <nav className="hidden items-center xl:flex">
-          <Link href="/" className={`px-2.5 py-2 text-[13px] font-medium transition ${active('/') ? 'text-slate-950' : 'text-slate-600 hover:text-slate-950'}`}>{t.home}</Link>
-          <Link href="/services" className={`px-2.5 py-2 text-[13px] font-medium transition ${active('/services') ? 'text-slate-950' : 'text-slate-600 hover:text-slate-950'}`}>{t.work}</Link>
-          <Link href="/projects" className={`px-2.5 py-2 text-[13px] font-medium transition ${active('/projects') || active('/case-studies') ? 'text-slate-950' : 'text-slate-600 hover:text-slate-950'}`}>{t.cases}</Link>
-
-          <DesktopDropdown label={t.knowledge} active={knowledgeActive}>
-            <DropdownLink href="/knowledge" title={t.articles} body={t.articlesBody} />
-            <DropdownLink href="/briefing" title={t.briefing} body={t.briefingBody} />
-          </DesktopDropdown>
-
-          <Link href="/partner-analitico" className={`px-2.5 py-2 text-[13px] font-medium transition ${active('/partner-analitico') ? 'text-slate-950' : 'text-slate-600 hover:text-slate-950'}`}>{t.partner}</Link>
-          <Link href="/about" className={`px-2.5 py-2 text-[13px] font-medium transition ${active('/about') ? 'text-slate-950' : 'text-slate-600 hover:text-slate-950'}`}>{t.why}</Link>
+          {nav.map(([href, label]) => (
+            <Link
+              key={href}
+              href={href}
+              className={`relative px-2.5 py-2 text-[13px] font-medium transition ${
+                active(href) ? 'text-slate-950' : 'text-slate-600 hover:text-slate-950'
+              }`}
+            >
+              {label}
+              {active(href) && <span className="absolute inset-x-2.5 -bottom-[13px] h-px bg-slate-950" />}
+            </Link>
+          ))}
         </nav>
 
         <div className="hidden items-center gap-2.5 xl:flex">
@@ -161,21 +120,20 @@ export default function Navbar() {
 
       {open && (
         <div className="border-t border-slate-200 bg-white px-5 py-4 xl:hidden">
-          <nav className="grid gap-1">
-            {[
-              ['/', t.home],
-              ['/services', t.work],
-              ['/projects', t.cases],
-              ['/knowledge', t.knowledge],
-              ['/partner-analitico', t.partner],
-              ['/about', t.why],
-            ].map(([href, label]) => (
-              <Link key={href} href={href} onClick={() => setOpen(false)} className="border-b border-slate-100 px-2 py-3 text-sm font-medium text-slate-800 last:border-b-0">
-                {label}
+          <nav className="grid">
+            {nav.map(([href, label]) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-between border-b border-slate-100 px-2 py-3 text-sm font-medium text-slate-800"
+              >
+                {label}<span className="text-slate-300">→</span>
               </Link>
             ))}
-            <Link href="/briefing" onClick={() => setOpen(false)} className="px-2 py-3 text-sm text-slate-500">{t.briefing}</Link>
-            <Link href="/contact" onClick={() => setOpen(false)} className="mt-2 bg-slate-950 px-3 py-3 text-center text-sm font-semibold text-white">{t.contact}</Link>
+            <Link href="/contact" onClick={() => setOpen(false)} className="mt-3 bg-slate-950 px-3 py-3 text-center text-sm font-semibold text-white">
+              {t.contact}
+            </Link>
           </nav>
 
           <div className="mt-4 flex gap-2 border-t border-slate-100 pt-4">
