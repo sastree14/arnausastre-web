@@ -28,7 +28,11 @@ function renderBody(body: string) {
 
   const flushBullets = () => {
     if (!bullets.length) return
-    nodes.push(<ul key={`ul-${nodes.length}`} className="my-6 list-disc space-y-2 pl-6 text-slate-700">{bullets.map((item, index) => <li key={`${item}-${index}`} className="leading-7">{cleanInline(item)}</li>)}</ul>)
+    nodes.push(
+      <ul key={`ul-${nodes.length}`} className="my-6 space-y-3 border-l border-slate-300 pl-5 text-slate-700">
+        {bullets.map((item, index) => <li key={`${item}-${index}`} className="text-[15px] leading-7">{cleanInline(item)}</li>)}
+      </ul>,
+    )
     bullets = []
   }
 
@@ -40,33 +44,48 @@ function renderBody(body: string) {
     }
     flushBullets()
     if (!line) return
-    if (line.startsWith('### ')) nodes.push(<h3 key={index} className="mb-3 mt-9 text-xl font-semibold leading-snug text-slate-950">{cleanInline(line.slice(4))}</h3>)
-    else if (line.startsWith('## ')) nodes.push(<h2 key={index} className="mb-4 mt-11 text-2xl font-semibold leading-snug text-slate-950">{cleanInline(line.slice(3))}</h2>)
-    else if (line.startsWith('# ')) nodes.push(<h2 key={index} className="mb-4 mt-11 text-2xl font-semibold leading-snug text-slate-950">{cleanInline(line.slice(2))}</h2>)
-    else nodes.push(<p key={index} className="my-5 text-base leading-8 text-slate-700">{cleanInline(line)}</p>)
+    if (line.startsWith('### ')) nodes.push(<h3 key={index} className="mb-3 mt-9 text-[20px] font-semibold leading-snug text-slate-950">{cleanInline(line.slice(4))}</h3>)
+    else if (line.startsWith('## ')) nodes.push(<h2 key={index} className="mb-4 mt-11 text-[25px] leading-snug text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{cleanInline(line.slice(3))}</h2>)
+    else if (line.startsWith('# ')) nodes.push(<h2 key={index} className="mb-4 mt-11 text-[25px] leading-snug text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{cleanInline(line.slice(2))}</h2>)
+    else nodes.push(<p key={index} className="my-5 text-[15px] leading-8 text-slate-700">{cleanInline(line)}</p>)
   })
   flushBullets()
   return nodes
 }
 
-const CTA_COPY = {
+const COPY = {
   es: {
-    eyebrow: '¿Te ocurre algo parecido?',
-    text: 'Si este problema también existe en tu empresa, podemos revisar el proceso, los datos disponibles y el impacto potencial antes de hablar de una solución.',
+    back: 'Conocimiento',
+    editorial: 'Editorial SC-Analytics',
+    explore: 'Sigue explorando',
+    cases: 'Casos',
+    work: 'Cómo trabajamos',
+    contact: 'Hablar con nosotros',
+    ctaEyebrow: '¿TE OCURRE ALGO PARECIDO?',
+    ctaText: 'Si este problema también existe en tu empresa, podemos revisar el proceso, los datos disponibles y el impacto potencial antes de hablar de una solución.',
     primary: 'Cuéntanos el problema',
-    secondary: 'Ver cómo trabajamos',
   },
   ca: {
-    eyebrow: 'Et passa una cosa semblant?',
-    text: 'Si aquest problema també existeix a la teva empresa, podem revisar el procés, les dades disponibles i l’impacte potencial abans de parlar d’una solució.',
+    back: 'Coneixement',
+    editorial: 'Editorial SC-Analytics',
+    explore: 'Continua explorant',
+    cases: 'Casos',
+    work: 'Com treballem',
+    contact: 'Parlar amb nosaltres',
+    ctaEyebrow: 'ET PASSA UNA COSA SEMBLANT?',
+    ctaText: 'Si aquest problema també existeix a la teva empresa, podem revisar el procés, les dades disponibles i l’impacte potencial abans de parlar d’una solució.',
     primary: 'Explica’ns el problema',
-    secondary: 'Veure com treballem',
   },
   en: {
-    eyebrow: 'Facing something similar?',
-    text: 'If this problem also exists in your business, we can review the process, available data and potential impact before discussing a solution.',
+    back: 'Knowledge',
+    editorial: 'SC-Analytics editorial',
+    explore: 'Keep exploring',
+    cases: 'Case studies',
+    work: 'How we work',
+    contact: 'Talk to us',
+    ctaEyebrow: 'FACING SOMETHING SIMILAR?',
+    ctaText: 'If this problem also exists in your business, we can review the process, available data and potential impact before discussing a solution.',
     primary: 'Tell us about the problem',
-    secondary: 'See how we work',
   },
 } as const
 
@@ -76,21 +95,31 @@ export default function GeneratedArticleContent({ variants, forcedLanguage }: Pr
   const article = selectVariant(variants, activeLanguage)
   if (!article) return null
 
+  const t = COPY[activeLanguage]
   const hasVisual = Boolean(article.visual_path?.startsWith('supabase://'))
-  const cta = CTA_COPY[(article.language as keyof typeof CTA_COPY) || 'es'] || CTA_COPY.es
 
   return (
-    <main className="bg-white text-slate-950">
-      <article className="mx-auto max-w-4xl px-6 py-20 md:px-8 md:py-24">
-        <Link href="/knowledge" className="text-sm font-medium text-indigo-600 hover:text-indigo-800">← {activeLanguage==='es'?'Conocimiento':activeLanguage==='ca'?'Coneixement':'Knowledge'}</Link>
-        <div className="mt-8 flex flex-wrap gap-2 text-xs text-slate-500">
-          {article.content_family && <span className="rounded-full border border-slate-200 px-3 py-1">{article.content_family}</span>}
-          {article.language && <span className="rounded-full border border-slate-200 px-3 py-1 uppercase">{article.language}</span>}
-          <span className="rounded-full border border-slate-200 px-3 py-1">SC-Analytics</span>
+    <main className="bg-[#FAFAF7] text-slate-950">
+      <section className="border-b border-slate-300 bg-white">
+        <div className="mx-auto max-w-6xl px-6 pb-12 pt-10 md:pb-14 md:pt-12">
+          <Link href="/knowledge" className="text-[13px] font-medium text-slate-500 transition hover:text-slate-950">← {t.back}</Link>
+
+          <div className="mt-8 flex flex-wrap gap-x-4 gap-y-2 border-b border-slate-200 pb-4 font-mono text-[10px] uppercase tracking-[0.1em] text-slate-400">
+            {article.content_family && <span>{article.content_family}</span>}
+            {article.industry && <span>· {article.industry}</span>}
+            {article.language && <span>· {article.language}</span>}
+            <span>· {t.editorial}</span>
+          </div>
+
+          <h1 className="mt-6 max-w-4xl text-[42px] leading-[1.04] tracking-[-0.025em] sm:text-[54px]" style={{ fontFamily: 'var(--font-playfair)' }}>
+            {cleanInline(article.title)}
+          </h1>
         </div>
-        <h1 className="mt-6 max-w-3xl text-4xl leading-tight md:text-5xl" style={{ fontFamily: 'var(--font-playfair)' }}>{cleanInline(article.title)}</h1>
+      </section>
+
+      <article className="mx-auto max-w-6xl px-6 py-10 md:py-12">
         {hasVisual && (
-          <figure className="mt-10 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
+          <figure className="border border-slate-300 bg-white">
             <img
               src={`/api/knowledge/visual?content_id=${encodeURIComponent(article.content_id)}`}
               alt={cleanInline(article.title)}
@@ -98,19 +127,32 @@ export default function GeneratedArticleContent({ variants, forcedLanguage }: Pr
             />
           </figure>
         )}
-        <div className="mx-auto mt-10 max-w-3xl border-t border-slate-200 pt-8">{renderBody(article.body)}</div>
 
-        <section className="mx-auto mt-14 max-w-3xl rounded-2xl border border-slate-200 bg-slate-50 p-6 md:p-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-indigo-600">{cta.eyebrow}</p>
-          <p className="mt-3 max-w-2xl text-base leading-7 text-slate-700">{cta.text}</p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <Link href="/contact" className="rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800">{cta.primary}</Link>
-            <Link href="/services" className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-400">{cta.secondary}</Link>
-          </div>
+        <div className={`mx-auto max-w-3xl ${hasVisual ? 'mt-10' : ''} border-t border-slate-300 pt-7`}>
+          {renderBody(article.body)}
+        </div>
+
+        <section className="mx-auto mt-12 max-w-3xl border-y border-slate-300 bg-[#F4F1EA] px-6 py-7">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.ctaEyebrow}</p>
+          <p className="mt-3 max-w-2xl text-[15px] leading-7 text-slate-700">{t.ctaText}</p>
+          <Link href="/contact?intent=problem" className="mt-5 inline-flex bg-slate-950 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-slate-800">
+            {t.primary} →
+          </Link>
         </section>
-
-        <div className="mx-auto mt-12 max-w-3xl border-t border-slate-200 pt-6 text-sm text-slate-500">Published by SC-Analytics · understand before building.</div>
       </article>
+
+      <section className="border-y border-slate-300 bg-white">
+        <div className="mx-auto grid max-w-6xl gap-7 px-6 py-10 lg:grid-cols-[190px_1fr] lg:gap-10">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.explore}</p>
+          <div className="grid border-t border-slate-300 md:grid-cols-3 md:divide-x md:divide-slate-300">
+            {[[t.cases,'/projects'],[t.work,'/services'],[t.contact,'/contact?intent=discovery']].map(([label, href]) => (
+              <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[13px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
+                {label}<span className="text-indigo-700 transition group-hover:translate-x-1">→</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
     </main>
   )
 }
