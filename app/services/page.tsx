@@ -293,9 +293,9 @@ export default function ServicesPage() {
               <article key={model.title} className={`flex min-h-[355px] flex-col border-b border-r border-slate-300 p-6 md:p-7 ${index === 1 ? 'bg-[#0D1B2A] text-white' : 'bg-white text-slate-950'}`}>
                 <h3 className={`text-[30px] leading-tight ${index === 1 ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{model.title}</h3>
                 <p className={`mt-4 text-[18px] font-semibold leading-7 ${index === 1 ? 'text-white' : 'text-slate-800'}`}>{model.hook}</p>
-                <p className={`mt-3 flex-1 text-[14px] leading-7 ${index === 1 ? 'text-[#A8BACB]' : 'text-slate-600'}`}>{model.body}</p>
-                <Link href={model.primaryHref} className={`mt-6 inline-flex w-fit px-4 py-2.5 text-[14px] font-semibold ${index === 1 ? 'bg-white text-[#0D1B2A]' : 'bg-slate-950 text-white'}`}>{model.primary} →</Link>
-                <Link href={model.secondaryHref} className={`mt-4 text-[14px] font-semibold ${index === 1 ? 'text-[#EAF0F6]' : 'text-indigo-700'}`}>{model.secondary} →</Link>
+                <p className={`mt-3 flex-1 text-[17px] leading-7 ${index === 1 ? 'text-[#D5E1EB]' : 'text-slate-700'}`}>{model.body}</p>
+                <Link href={model.primaryHref} className={`mt-6 inline-flex w-fit px-4 py-2.5 text-[15px] font-semibold ${index === 1 ? 'bg-white text-[#0D1B2A]' : 'bg-slate-950 text-white'}`}>{model.primary} →</Link>
+                <Link href={model.secondaryHref} className={`mt-4 text-[15px] font-semibold ${index === 1 ? 'text-[#EAF0F6]' : 'text-indigo-700'}`}>{model.secondary} →</Link>
               </article>
             ))}
           </div>
@@ -314,7 +314,7 @@ export default function ServicesPage() {
               <Link key={href} href={href} className="group flex min-h-[220px] flex-col items-center justify-center border-b border-r border-slate-300 p-6 text-center transition hover:bg-[#FAFAF7]">
                 <h3 className="text-[23px] font-semibold text-slate-950">{title}</h3>
                 <p className="mt-3 max-w-[260px] text-[16px] leading-7 text-slate-700">{body}</p>
-                <p className="mt-5 text-[14px] font-semibold text-indigo-700">{cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
+                <p className="mt-5 text-[15px] font-semibold text-indigo-700">{cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
               </Link>
             ))}
           </div>
