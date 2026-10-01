@@ -110,15 +110,15 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
             ← {t.back}
           </Link>
 
-          <div className="mt-8 flex flex-wrap gap-x-4 gap-y-2 border-b border-slate-200 pb-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+          <div className="mt-8 flex flex-wrap gap-x-4 gap-y-2 border-b border-slate-200 pb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
             {tags.map((tag) => <span key={tag}>{tag}</span>)}
           </div>
 
-          <h1 className="mt-6 max-w-4xl text-[42px] leading-[1.04] tracking-[-0.025em] sm:text-[54px]" style={{ fontFamily: 'var(--font-playfair)' }}>
+          <h1 className="mt-6 max-w-4xl text-[46px] leading-[1.02] tracking-[-0.03em] sm:text-[58px] lg:text-[62px]" style={{ fontFamily: 'var(--font-playfair)' }}>
             {title}
           </h1>
 
-          <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.08em] text-slate-400">
+          <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[12px] uppercase tracking-[0.08em] text-slate-500">
             <span>{article.date}</span>
             <span>·</span>
             <span>{article.readingTime} {t.min}</span>
@@ -133,8 +133,8 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
             {segments.map((segment, segmentIndex) => {
               if (segment.type === 'intro') {
                 return (
-                  <div key={segmentIndex} className="border-b border-slate-300 bg-[#F4F1EA] px-6 py-7 md:px-8">
-                    <div className="space-y-5">
+                  <div key={segmentIndex} className="border-b border-slate-300 bg-[#F4F1EA] px-6 py-8 md:px-8 md:py-9">
+                    <div className="max-w-[72ch] space-y-5">
                       {segment.paras.map((para, i) => (
                         <p key={i} className="text-[19px] leading-9 text-slate-800">{renderInline(para)}</p>
                       ))}
@@ -146,12 +146,12 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
               const sectionNumber = segments.slice(0, segmentIndex + 1).filter((item) => item.type === 'section').length
               const num = String(sectionNumber).padStart(2, '0')
               return (
-                <section key={segmentIndex} id={`section-${sectionNumber}`} className="border-b border-slate-300 bg-white px-6 py-8 md:px-8 md:py-9">
-                  <div className="grid gap-4 md:grid-cols-[56px_1fr]">
-                    <span className="font-mono text-[12px] text-indigo-700">{num}</span>
+                <section key={segmentIndex} id={`section-${sectionNumber}`} className="border-b border-slate-300 bg-white px-6 py-9 md:px-8 md:py-10">
+                  <div className="grid gap-5 md:grid-cols-[62px_1fr]">
+                    <span className="font-mono text-[13px] font-semibold text-indigo-700">{num}</span>
                     <div>
                       <h2 className="text-[29px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{segment.heading}</h2>
-                      <div className="mt-6 space-y-5">
+                      <div className="mt-6 max-w-[72ch] space-y-5">
                         {segment.paras.map((para, i) => renderPara(para, i))}
                       </div>
                     </div>
@@ -163,7 +163,7 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
 
           {headings.length > 0 && (
             <aside className="sticky top-24 hidden self-start lg:block">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">{t.toc}</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">{t.toc}</p>
               <nav className="mt-4 border-l border-slate-300">
                 {headings.map((heading, index) => (
                   <a
@@ -183,7 +183,7 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
 
       <section className="border-y border-slate-300 bg-white">
         <div className="mx-auto grid max-w-6xl gap-7 px-6 py-10 lg:grid-cols-[190px_1fr] lg:gap-10">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.explore}</p>
+          <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.explore}</p>
           <div className="grid border-t border-slate-300 md:grid-cols-3 md:divide-x md:divide-slate-300">
             {[[t.cases,'/projects'],[t.work,'/services'],[t.contact,'/contact?intent=discovery']].map(([label, href]) => (
               <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[15px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
