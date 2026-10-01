@@ -243,7 +243,7 @@ export default function ContactPage() {
                 >
                   <div className="flex items-start justify-between gap-4">
                     <p className={`font-mono text-[11px] ${active ? 'text-[#7A7DFF]' : 'text-indigo-700'}`}>0{index + 1}</p>
-                    <span className={`text-[12px] font-semibold ${active ? 'text-[#A8BACB]' : 'text-slate-300'}`}>{active ? 'SELECTED' : '→'}</span>
+                    <span className={`text-[12px] font-semibold ${active ? 'text-[#A8BACB]' : 'text-slate-300'}`}>{active ? '✓' : '→'}</span>
                   </div>
                   <h2 className={`mt-5 text-[19px] font-semibold ${active ? 'text-white' : 'text-slate-950'}`}>{title}</h2>
                   <p className={`mt-3 text-[13px] leading-6 ${active ? 'text-[#A8BACB]' : 'text-slate-600'}`}>{body}</p>
