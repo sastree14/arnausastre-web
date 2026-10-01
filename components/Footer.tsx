@@ -47,10 +47,10 @@ export default function Footer() {
         <div className="grid gap-7 lg:grid-cols-[.8fr_1.2fr_auto] lg:items-center">
           <div>
             <Image src="/brand/logo-horizontal-transparent.png" alt="SC-Analytics" width={344} height={224} className="h-9 w-auto" />
-            <p className="mt-3 max-w-sm text-[14px] leading-6 text-[#9CB0C2]">{t.statement}</p>
+            <p className="mt-3 max-w-sm text-[15px] leading-6 text-[#A8BACB]">{t.statement}</p>
           </div>
 
-          <nav className="flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-[#A8BACB]">
+          <nav className="flex flex-wrap gap-x-5 gap-y-2 text-[14px] text-[#A8BACB]">
             <Link href="/services" className="transition hover:text-white">{t.work}</Link>
             <Link href="/projects" className="transition hover:text-white">{t.cases}</Link>
             <Link href="/knowledge" className="transition hover:text-white">{t.knowledge}</Link>
