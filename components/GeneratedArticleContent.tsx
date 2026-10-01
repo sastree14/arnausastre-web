@@ -29,7 +29,7 @@ function renderBody(body: string) {
   const flushBullets = () => {
     if (!bullets.length) return
     nodes.push(
-      <ul key={`ul-${nodes.length}`} className="my-6 space-y-3 border-l border-slate-300 pl-5 text-slate-700">
+      <ul key={`ul-${nodes.length}`} className="my-7 space-y-3 border-l-2 border-indigo-200 pl-5 text-slate-700">
         {bullets.map((item, index) => <li key={`${item}-${index}`} className="text-[17px] leading-8">{cleanInline(item)}</li>)}
       </ul>,
     )
@@ -44,9 +44,10 @@ function renderBody(body: string) {
     }
     flushBullets()
     if (!line) return
-    if (line.startsWith('### ')) nodes.push(<h3 key={index} className="mb-3 mt-9 text-[23px] font-semibold leading-snug text-slate-950">{cleanInline(line.slice(4))}</h3>)
-    else if (line.startsWith('## ')) nodes.push(<h2 key={index} className="mb-4 mt-11 text-[29px] leading-snug text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{cleanInline(line.slice(3))}</h2>)
-    else if (line.startsWith('# ')) nodes.push(<h2 key={index} className="mb-4 mt-11 text-[29px] leading-snug text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{cleanInline(line.slice(2))}</h2>)
+    if (/^\*\*[^*]+\*\*$/.test(line)) nodes.push(<h2 key={index} className="mb-4 mt-12 max-w-[26ch] text-[30px] leading-[1.08] text-slate-950 sm:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{cleanInline(line)}</h2>)
+    else if (line.startsWith('### ')) nodes.push(<h3 key={index} className="mb-3 mt-10 text-[23px] font-semibold leading-snug text-slate-950">{cleanInline(line.slice(4))}</h3>)
+    else if (line.startsWith('## ')) nodes.push(<h2 key={index} className="mb-4 mt-12 max-w-[26ch] text-[30px] leading-[1.08] text-slate-950 sm:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{cleanInline(line.slice(3))}</h2>)
+    else if (line.startsWith('# ')) nodes.push(<h2 key={index} className="mb-4 mt-12 max-w-[26ch] text-[30px] leading-[1.08] text-slate-950 sm:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{cleanInline(line.slice(2))}</h2>)
     else nodes.push(<p key={index} className="my-5 text-[17px] leading-8 text-slate-700">{cleanInline(line)}</p>)
   })
   flushBullets()
@@ -104,14 +105,14 @@ export default function GeneratedArticleContent({ variants, forcedLanguage }: Pr
         <div className="mx-auto max-w-6xl px-6 pb-12 pt-10 md:pb-14 md:pt-12">
           <Link href="/knowledge" className="text-[15px] font-medium text-slate-500 transition hover:text-slate-950">← {t.back}</Link>
 
-          <div className="mt-8 flex flex-wrap gap-x-4 gap-y-2 border-b border-slate-200 pb-4 font-mono text-[10px] uppercase tracking-[0.1em] text-slate-400">
+          <div className="mt-8 flex flex-wrap gap-x-4 gap-y-2 border-b border-slate-200 pb-4 font-mono text-[11px] uppercase tracking-[0.1em] text-slate-500">
             {article.content_family && <span>{article.content_family}</span>}
             {article.industry && <span>· {article.industry}</span>}
             {article.language && <span>· {article.language}</span>}
             <span>· {t.editorial}</span>
           </div>
 
-          <h1 className="mt-6 max-w-4xl text-[42px] leading-[1.04] tracking-[-0.025em] sm:text-[54px]" style={{ fontFamily: 'var(--font-playfair)' }}>
+          <h1 className="mt-6 max-w-4xl text-[46px] leading-[1.02] tracking-[-0.03em] sm:text-[58px] lg:text-[62px]" style={{ fontFamily: 'var(--font-playfair)' }}>
             {cleanInline(article.title)}
           </h1>
         </div>
@@ -128,14 +129,14 @@ export default function GeneratedArticleContent({ variants, forcedLanguage }: Pr
           </figure>
         )}
 
-        <div className={`mx-auto max-w-3xl ${hasVisual ? 'mt-10' : ''} border-t border-slate-300 pt-7`}>
+        <div className={`mx-auto max-w-[760px] ${hasVisual ? 'mt-10' : ''} border-t border-slate-300 pt-8`}>
           {renderBody(article.body)}
         </div>
 
-        <section className="mx-auto mt-12 max-w-3xl border-y border-slate-300 bg-[#F4F1EA] px-6 py-7">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.ctaEyebrow}</p>
+        <section className="mx-auto mt-12 max-w-[760px] border border-slate-300 bg-[#F4F1EA] px-6 py-7 md:px-7">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.ctaEyebrow}</p>
           <p className="mt-3 max-w-2xl text-[17px] leading-8 text-slate-700">{t.ctaText}</p>
-          <Link href="/contact?intent=problem" className="mt-5 inline-flex bg-slate-950 px-4 py-2.5 text-[15px] font-semibold text-white transition hover:bg-slate-800">
+          <Link href="/contact?intent=problem" className="mt-5 inline-flex bg-slate-950 px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-slate-800">
             {t.primary} →
           </Link>
         </section>
