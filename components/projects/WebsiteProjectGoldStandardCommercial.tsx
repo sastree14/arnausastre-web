@@ -65,7 +65,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-        <div className="mx-auto w-[calc(100%-32px)] max-w-[1800px] sm:w-[calc(100%-48px)] pb-12 pt-9 lg:pb-14">
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] pb-12 pt-9 lg:pb-14">
           <Link href={`/projects/${project.slug}`} className="inline-flex items-center gap-2 text-[14px] text-[#A8BACB] transition hover:text-white">
             <span aria-hidden="true">←</span>
             {c.back}
@@ -127,7 +127,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
       </section>
 
       <div className="border-b border-slate-300 bg-[#FAFAF7]">
-        <div className="mx-auto w-[calc(100%-32px)] max-w-[1800px] sm:w-[calc(100%-48px)] lg:grid lg:grid-cols-[clamp(230px,16vw,310px)_minmax(0,1fr)] lg:gap-[clamp(24px,2.6vw,48px)]">
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] lg:grid lg:grid-cols-[clamp(230px,16vw,310px)_minmax(0,1fr)] lg:gap-[clamp(24px,2.6vw,48px)]">
           <CaseStudySidebar items={items} repositoryUrl={project.proofUrl} contactHref={project.cta.primaryHref} />
 
           <div className="min-w-0">
@@ -159,7 +159,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
           </Section>
 
           <Section id="architecture" label={c.architectureLabel} title={c.architectureTitle} body={c.architectureBody} tone="dark">
-            <ArchitectureSystemVisual data={project.architecture} />
+            <ArchitectureSystemVisual data={project.architecture} lang={lang} />
           </Section>
 
           <Section id="evidence" label={c.evidenceLabel} title={c.evidenceTitle} body={c.evidenceBody} tone="paper">
