@@ -40,7 +40,7 @@ function renderPara(para: string, i: number) {
   if (para.startsWith('- ')) {
     const items = para.split('\n').filter((line) => line.startsWith('- '))
     return (
-      <ul key={i} className="space-y-3 border-l border-slate-300 pl-5">
+      <ul key={i} className="space-y-3 border-l-2 border-indigo-200 pl-5">
         {items.map((item, j) => (
           <li key={j} className="text-[17px] leading-8 text-slate-700">
             {renderInline(item.slice(2))}
@@ -136,7 +136,7 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
                   <div key={segmentIndex} className="border-b border-slate-300 bg-[#F4F1EA] px-6 py-8 md:px-8 md:py-9">
                     <div className="max-w-[72ch] space-y-5">
                       {segment.paras.map((para, i) => (
-                        <p key={i} className="text-[19px] leading-9 text-slate-800">{renderInline(para)}</p>
+                        <p key={i} className="text-[20px] leading-9 text-[#1D2B44]">{renderInline(para)}</p>
                       ))}
                     </div>
                   </div>
@@ -150,7 +150,7 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
                   <div className="grid gap-5 md:grid-cols-[62px_1fr]">
                     <span className="font-mono text-[13px] font-semibold text-indigo-700">{num}</span>
                     <div>
-                      <h2 className="text-[29px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{segment.heading}</h2>
+                      <h2 className="max-w-[26ch] text-[31px] leading-[1.08] text-slate-950 sm:text-[35px]" style={{ fontFamily: 'var(--font-playfair)' }}>{segment.heading}</h2>
                       <div className="mt-6 max-w-[72ch] space-y-5">
                         {segment.paras.map((para, i) => renderPara(para, i))}
                       </div>
@@ -171,7 +171,7 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
                     href={`#section-${index + 1}`}
                     className="grid grid-cols-[30px_1fr] gap-2 border-b border-slate-200 py-3 pl-4 text-[13px] leading-6 text-slate-600 transition hover:text-indigo-700"
                   >
-                    <span className="font-mono text-slate-300">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="font-mono text-slate-400">{String(index + 1).padStart(2, '0')}</span>
                     <span>{heading}</span>
                   </a>
                 ))}
