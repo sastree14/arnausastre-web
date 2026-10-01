@@ -110,7 +110,7 @@ function ArchitectureStage({
       <div className="border-b px-5 py-4" style={{ borderColor: palette.border, backgroundColor: palette.header }}>
         <p className="text-[17px] font-semibold uppercase tracking-[0.15em] text-white xl:text-[18px]">{label}</p>
       </div>
-      <div className="grid h-full auto-rows-fr grid-rows-2">{children}</div>
+      <div className="grid h-full auto-rows-fr">{children}</div>
     </div>
   )
 }
@@ -348,7 +348,7 @@ export function EvidenceFrameworkVisual({ data, lang }: { data: Evidence; lang?:
           {label}
         </p>
         <p className="mt-3 text-[30px] font-semibold leading-none tracking-[-0.02em] text-[#1D2B44]">{metric.value}</p>
-        <p className="mt-auto pt-4 text-[13px] leading-5 text-slate-650">{note}</p>
+        <p className="mt-auto pt-4 text-[13px] leading-5 text-slate-600">{note}</p>
       </div>
     )
   }
