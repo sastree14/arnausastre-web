@@ -54,6 +54,20 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
         }[lang]
       : raw.confidentiality
 
+  const evidenceHeadline =
+    isSc12
+      ? {
+          en: 'Technical proof you can inspect',
+          es: 'Prueba técnica que puedes inspeccionar',
+          ca: 'Prova tècnica que pots inspeccionar',
+        }[lang]
+      : ui.evidence
+
+  const evidenceSummary =
+    isSc12
+      ? commercial?.proofStatement || sourceNote
+      : sourceNote
+
   const genericProblem =
     raw.sections.find((section) => ['Problem', 'Context'].includes(section.title))?.body ||
     project.description
@@ -113,7 +127,6 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
           label={ui.scenario}
           headline={commercial.scenarioHeadline}
           summary={commercial.scenarioSummary}
-          note={ui.scenarioNote}
           lang={lang}
         />
       ) : null}
@@ -181,16 +194,28 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
         </div>
       </section>
 
-      <section className="bg-[#F4F1EA]">
-        <div className="mx-auto grid w-[calc(100%_-_32px)] max-w-[1800px] gap-5 py-6 sm:w-[calc(100%_-_48px)] lg:grid-cols-[180px_1fr_auto] lg:items-center">
-          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{ui.evidence}</p>
-          <p className="max-w-3xl text-[13px] leading-6 text-slate-600">{sourceNote}</p>
-          {proofUrl ? (
-            <a href={proofUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-[14px] font-semibold text-slate-900 underline decoration-slate-400 underline-offset-4">
-              {ui.repository}
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
-          ) : null}
+      <section className="border-y border-slate-300 bg-[#F4F1EA]">
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] py-5 sm:w-[calc(100%_-_48px)] lg:py-6">
+          <div className="grid gap-4 lg:grid-cols-[190px_minmax(0,1fr)_auto] lg:items-center">
+            <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{ui.evidence}</p>
+
+            <div className="border border-slate-300 bg-white px-5 py-4">
+              <p className="text-[14px] font-semibold text-slate-950">{evidenceHeadline}</p>
+              <p className="mt-1.5 max-w-3xl text-[14px] leading-6 text-slate-700">{evidenceSummary}</p>
+            </div>
+
+            {proofUrl ? (
+              <a
+                href={proofUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex min-h-[50px] items-center justify-center gap-2 border border-slate-900 bg-slate-950 px-5 py-3 text-[14px] font-semibold text-white transition hover:bg-slate-800"
+              >
+                {ui.repository}
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            ) : null}
+          </div>
         </div>
       </section>
     </main>
