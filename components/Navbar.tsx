@@ -16,7 +16,7 @@ const COPY = {
     knowledge: 'Conocimiento',
     partner: 'Partner Data & AI',
     why: 'Por qué SC-Analytics',
-    contact: 'Hablar con nosotros',
+    contact: 'Contacta con nosotros',
   },
   ca: {
     home: 'Inici',
@@ -25,7 +25,7 @@ const COPY = {
     knowledge: 'Coneixement',
     partner: 'Partner Data & AI',
     why: 'Per què SC-Analytics',
-    contact: 'Parlar amb nosaltres',
+    contact: 'Contacta amb nosaltres',
   },
   en: {
     home: 'Home',
@@ -34,7 +34,7 @@ const COPY = {
     knowledge: 'Knowledge',
     partner: 'Data & AI Partner',
     why: 'Why SC-Analytics',
-    contact: 'Talk to us',
+    contact: 'Contact us',
   },
 } as const
 
