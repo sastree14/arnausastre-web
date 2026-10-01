@@ -97,11 +97,11 @@ function ArchitectureStage({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-w-0">
+    <div className="grid min-w-0 grid-rows-[auto_1fr]">
       <div className="mb-3 border-b border-[#5E86A8] pb-3">
         <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#A8BACB]">{label}</p>
       </div>
-      <div className="space-y-3">{children}</div>
+      <div className="grid h-full auto-rows-fr grid-rows-2 gap-3">{children}</div>
     </div>
   )
 }
@@ -116,7 +116,7 @@ function ArchitectureNode({
   detail: string
 }) {
   return (
-    <div className="min-w-0 border border-[#5E86A8] bg-[#13283C]">
+    <div className="h-full min-w-0 border border-[#5E86A8] bg-[#13283C]">
       <div className="border-b border-[#496C8A] px-4 py-2.5 text-center">
         <span className="font-mono text-[12px] text-[#7A7DFF]">{String(index).padStart(2, '0')}</span>
       </div>
