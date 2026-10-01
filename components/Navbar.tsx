@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { useLanguage } from '@/components/LanguageProvider'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
@@ -40,7 +40,6 @@ const COPY = {
 
 export default function Navbar() {
   const pathname = usePathname()
-  const router = useRouter()
   const [open, setOpen] = useState(false)
   const { lang, setLang } = useSiteLanguage()
   const { setLang: setLegacyLang } = useLanguage()
@@ -49,8 +48,6 @@ export default function Navbar() {
   const chooseLanguage = (next: SiteLanguage) => {
     setLang(next)
     setLegacyLang(next === 'ca' ? 'es' : next)
-    const localizedArticle = pathname.match(/^\/knowledge\/([^/]+)\/(en|es|ca)$/)
-    if (localizedArticle) router.replace('/knowledge/' + localizedArticle[1] + '/' + next)
   }
 
   const active = (href: string) => href === '/' ? pathname === '/' : pathname.startsWith(href)
