@@ -25,6 +25,9 @@ const COPY = {
     modelBody: 'SC-Analytics está diseñada para mantenerse cerca del cliente y activar la especialidad necesaria según el problema. Podemos entrar en un proyecto concreto o mantener continuidad como partner Data & AI.',
     project: 'Ver casos',
     partner: 'Conocer el modelo partner',
+    exploreLabel: 'VERLO EN LA PRÁCTICA',
+    exploreTitle: 'Nuestro criterio se entiende mejor cuando ves lo que hacemos.',
+    exploreLinks: [['Cómo trabajamos','/services'],['Casos','/projects'],['Conocimiento','/knowledge']],
     ctaTitle: 'Si nuestra forma de pensar encaja con la tuya, empecemos por un problema real.',
     ctaBody: 'La primera conversación sirve para entender si podemos aportar valor y cuál sería el siguiente paso más sensato.',
     cta: 'Hablar con SC-Analytics',
@@ -50,6 +53,9 @@ const COPY = {
     modelBody: 'SC-Analytics està dissenyada per mantenir-se a prop del client i activar l’especialitat necessària segons el problema. Podem entrar en un projecte concret o mantenir continuïtat com a partner Data & AI.',
     project: 'Veure casos',
     partner: 'Conèixer el model partner',
+    exploreLabel: 'VEURE-HO A LA PRÀCTICA',
+    exploreTitle: 'El nostre criteri s’entén millor quan veus què fem.',
+    exploreLinks: [['Com treballem','/services'],['Casos','/projects'],['Coneixement','/knowledge']],
     ctaTitle: 'Si la nostra manera de pensar encaixa amb la teva, comencem per un problema real.',
     ctaBody: 'La primera conversa serveix per entendre si podem aportar valor i quin seria el següent pas més sensat.',
     cta: 'Parlar amb SC-Analytics',
@@ -75,6 +81,9 @@ const COPY = {
     modelBody: 'SC-Analytics is designed to stay close to the client and activate the right specialism for the problem. We can enter for one defined project or maintain continuity as a Data & AI partner.',
     project: 'See case studies',
     partner: 'Explore the partner model',
+    exploreLabel: 'SEE IT IN PRACTICE',
+    exploreTitle: 'Our judgment is easier to understand when you see the work.',
+    exploreLinks: [['How we work','/services'],['Case studies','/projects'],['Knowledge','/knowledge']],
     ctaTitle: 'If the way we think fits the way you want to work, start with a real problem.',
     ctaBody: 'The first conversation is enough to understand whether we can create value and what the most sensible next step would be.',
     cta: 'Talk to SC-Analytics',
@@ -145,7 +154,23 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="border-t border-slate-200 bg-indigo-50">
+      <section className="border-t border-slate-200 bg-white">
+        <div className="mx-auto grid max-w-7xl gap-7 px-6 py-12 lg:grid-cols-[190px_1fr] lg:gap-10">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.exploreLabel}</p>
+          <div>
+            <h2 className="text-[30px] leading-[1.08] sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
+            <div className="mt-6 grid border-t border-slate-300 md:grid-cols-3 md:divide-x md:divide-slate-300">
+              {t.exploreLinks.map(([label, href]) => (
+                <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[13px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
+                  {label}<span className="text-indigo-700 transition group-hover:translate-x-1">→</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-slate-200 bg-[#F4F1EA]">
         <div className="mx-auto flex max-w-7xl flex-col gap-7 px-6 py-12 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="max-w-3xl text-3xl md:text-4xl" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
