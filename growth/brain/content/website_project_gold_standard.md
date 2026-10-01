@@ -360,14 +360,44 @@ Internal tables and modules may continue to use thin structural rules.
 
 Commercial case filters are secondary navigation. A case may belong to multiple categories simultaneously.
 
-The default index remains a list of commercially named cases. Filters help readers who already recognise a solution family, such as:
-- Forecasting & Planning
-- AI Agents
-- Process Automation
-- Operational Optimisation
-- Risk & Scoring
-- Decision Systems
-- Analytics & Reporting
-- Financial Modelling
+The default index remains a list of commercially named cases. Filters use broad business-capability language rather than narrow technical labels. A case may appear in multiple areas.
 
-Filter controls should be clearly clickable, may wrap to two lines, and must not be compressed into ambiguous inline text.
+Approved public capability areas:
+- Forecasting & Planning
+- AI & Automation
+- Operations & Optimisation
+- Risk & Decision
+- Finance & Modelling
+- Analytics & Reporting
+- Business Systems
+
+Filter controls are framed editorial tiles, clearly clickable, and may wrap to two lines. Do not compress them into ambiguous inline text.
+
+
+## Framed section rule
+
+Major case-study sections should read as complete editorial modules rather than unfinished horizontal-rule fragments.
+
+Use:
+- a full square-corner border around the section;
+- a distinct section header band;
+- the numbered eyebrow in a restrained paper-toned left cell;
+- title and explanatory copy in the main header cell;
+- internal content inside the same closed frame;
+- vertical whitespace between framed sections.
+
+Thin horizontal rules remain appropriate inside tables, rows and evidence structures, but should not be the only cue that one major section has ended and another has begun.
+
+## Responsive architecture rule
+
+Architecture and process visuals must adapt structurally to viewport width.
+
+- Mobile: one stage per row.
+- Tablet / laptop: two stages per row.
+- Large desktop: four stages per row.
+- Individual nodes remain width-safe with wrapping text.
+- Do not force a four-column process diagram at laptop widths.
+- Connectors are optional; preserving hierarchy and legibility takes priority over decorative arrows.
+- Integration boundaries collapse to one column until enough width exists for three columns.
+
+This breakpoint-aware restructuring is deterministic and part of the visual contract.
