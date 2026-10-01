@@ -38,13 +38,13 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-slate-300">
-        <div className="mx-auto max-w-[1500px] px-6 pb-10 pt-9 lg:px-8 lg:pb-12 lg:pt-10">
+        <div className="mx-auto w-[min(94vw,1700px)] pb-10 pt-9 lg:px-8 lg:pb-12 lg:pt-10">
           <Link href="/projects" className="inline-flex items-center gap-2 text-[14px] text-slate-500 transition hover:text-slate-950">
             <span aria-hidden="true">←</span>
             {ui.back}
           </Link>
 
-          <div className="mt-9 grid gap-10 lg:grid-cols-[1.08fr_.92fr] lg:items-end">
+          <div className="mt-9 grid gap-[clamp(32px,4vw,72px)] lg:grid-cols-[minmax(0,1.08fr)_minmax(420px,.92fr)] lg:items-end">
             <div>
               <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-slate-500">
                 <span className="text-indigo-700">{project.industry}</span>
@@ -87,7 +87,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
       ) : null}
 
       <section className="border-b border-slate-300 bg-white">
-        <div className="mx-auto max-w-[1500px] px-6 py-10 lg:px-8 lg:py-12">
+        <div className="mx-auto w-[min(94vw,1700px)] py-10 lg:px-8 lg:py-12">
           <div className="border-b border-slate-400 pb-4">
             <p className="text-[13px] font-semibold uppercase tracking-[0.15em] text-indigo-700">{ui.snapshot}</p>
             
@@ -120,7 +120,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
           <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-3">
             <Link
               href={`/projects/${project.slug}/case-study`}
-              className="inline-flex items-center gap-2 bg-slate-950 px-5 py-3 text-[14px] font-semibold text-white transition hover:bg-slate-800"
+              className="inline-flex min-h-[50px] items-center gap-2 bg-slate-950 px-5 py-3 text-[14px] font-semibold text-white transition hover:bg-slate-800"
             >
               {ui.caseStudy}
               <ArrowRight className="h-4 w-4" />
@@ -131,7 +131,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
                 href={proofUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 border border-slate-400 bg-white px-5 py-3 text-[14px] font-semibold text-slate-800 transition hover:border-slate-700"
+                className="inline-flex min-h-[50px] items-center gap-2 border border-slate-500 bg-white px-5 py-3 text-[14px] font-semibold text-slate-900 transition hover:border-slate-800"
               >
                 {ui.repository}
                 <ArrowUpRight className="h-4 w-4" />
@@ -140,7 +140,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
 
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-1 py-3 text-[14px] font-semibold text-slate-700 underline decoration-slate-400 underline-offset-4 transition hover:text-slate-950 hover:decoration-slate-950"
+              className="inline-flex min-h-[50px] items-center gap-2 border border-transparent px-4 py-3 text-[14px] font-semibold text-slate-700 underline decoration-slate-400 underline-offset-4 transition hover:border-slate-300 hover:bg-[#FAFAF7] hover:text-slate-950 hover:decoration-slate-950"
             >
               {ui.contact}
               <ArrowRight className="h-4 w-4" />
