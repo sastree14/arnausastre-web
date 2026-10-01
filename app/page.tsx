@@ -13,32 +13,32 @@ const COPY = {
     note: 'Datos · Matemáticas · Inteligencia artificial · Automatización',
 
     snapshotLabel: 'QUÉ HACEMOS',
-    snapshotTitle: 'Convertimos problemas de negocio en sistemas que ayudan a decidir mejor.',
+    snapshotTitle: 'Convertimos necesidades de negocio en sistemas que ayudan a decidir mejor.',
     snapshotRows: [
-      ['Comprender', 'Qué está pasando y qué decisión realmente importa.'],
-      ['Diseñar', 'Qué enfoque aporta valor sin añadir complejidad innecesaria.'],
-      ['Construir', 'Modelos, automatizaciones y sistemas utilizables en operaciones reales.'],
-      ['Mejorar', 'Medir impacto, aprender y evolucionar solo donde tiene sentido.'],
+      ['Comprender', 'Entendemos qué quieres mejorar y qué decisión está detrás.'],
+      ['Diseñar', 'Definimos el enfoque que puede generar más valor con sentido.'],
+      ['Construir', 'Creamos sistemas, modelos y automatizaciones pensados para usarse.'],
+      ['Mejorar', 'Medimos resultados y evolucionamos solo donde aporta valor.'],
     ],
 
     exploreLabel: 'EXPLORA SC-ANALYTICS',
-    exploreTitle: 'Cinco formas de entender si podemos ayudarte.',
-    exploreIntro: 'Mira cómo trabajamos, revisa problemas que ya hemos abordado, aprende con nuestros análisis o descubre si necesitas una capacidad tecnológica externa.',
+    exploreTitle: 'Cinco formas de descubrir cómo podemos ayudarte.',
+    exploreIntro: 'Entra por lo que más se parezca a lo que necesitas hoy: entender cómo trabajamos, revisar casos reales, aprender con nuestros análisis o valorar una relación de largo plazo.',
     routes: [
       {
         number: '01',
         title: 'Cómo trabajamos',
-        hook: '¿Quieres saber cómo pasamos de un problema a una solución que se usa de verdad?',
-        body: 'Nuestro mantra, las capacidades que activamos y las formas de colaborar con nosotros.',
+        hook: '¿Quieres saber cómo pasamos de un problema a una solución que genera impacto en tu empresa?',
+        body: 'Descubre cómo entendemos el contexto, diseñamos el enfoque y construimos soluciones pensadas para usarse de verdad.',
         href: '/services',
-        cta: 'Descubrir nuestro enfoque',
+        cta: 'Ver cómo trabajamos',
         tone: 'paper',
       },
       {
         number: '02',
         title: 'Casos',
-        hook: 'Mira en qué problemas hemos trabajado y cómo tomamos decisiones.',
-        body: 'Contexto, arquitectura, criterio y resultados explicados sin convertirlo en una galería de logos.',
+        hook: 'Mira en qué problemas hemos trabajado y qué decisiones tomamos para resolverlos.',
+        body: 'Casos explicados con contexto, enfoque, arquitectura y resultados para que puedas valorar cómo trabajamos.',
         href: '/projects',
         cta: 'Explorar casos',
         tone: 'dark',
@@ -46,17 +46,17 @@ const COPY = {
       {
         number: '03',
         title: 'Conocimiento',
-        hook: '¿Quieres comprobar cómo pensamos antes de hablar con nosotros?',
+        hook: '¿Quieres ver cómo pensamos antes de hablar con nosotros?',
         body: 'Artículos y análisis sobre forecasting, operaciones, optimización, automatización e inteligencia artificial.',
         href: '/knowledge',
-        cta: 'Aprender con nuestros análisis',
+        cta: 'Leer nuestros análisis',
         tone: 'white',
       },
       {
         number: '04',
         title: 'Partner Data & AI',
         hook: '¿Buscas un proveedor tecnológico y analítico con continuidad?',
-        body: 'Amplía capacidad sin construir todo el equipo dentro y conserva contexto entre proyectos.',
+        body: 'Amplía capacidad sin construir todo el equipo dentro y conserva contexto entre proyectos y decisiones.',
         href: '/partner-analitico',
         cta: 'Explorar las ventajas',
         tone: 'blue',
@@ -64,27 +64,36 @@ const COPY = {
       {
         number: '05',
         title: 'Por qué SC-Analytics',
-        hook: 'Si vas a construir con alguien, también importa cómo piensa y cómo trabaja.',
-        body: 'Criterio, rigor, transparencia y una forma de trabajar orientada a relaciones de largo plazo.',
+        hook: 'Si vas a construir con alguien, también importa cómo piensa, cómo comunica y cómo responde.',
+        body: 'Conoce nuestra forma de trabajar, nuestros principios y el tipo de relación que buscamos construir con cada cliente.',
         href: '/about',
-        cta: 'Entender por qué nosotros',
+        cta: 'Conocer SC-Analytics',
         tone: 'paper',
       },
     ],
 
-    flowLabel: 'DE PROBLEMA A RESULTADO',
-    flowTitle: 'La tecnología ocupa el centro del proceso, no el centro de la conversación.',
-    flow: [
-      ['01', 'Problema', 'Una decisión, proceso o restricción está frenando el negocio.', 'Demanda · riesgo · capacidad · operaciones'],
-      ['02', 'Sistema', 'Elegimos la capacidad adecuada para mejorar esa situación.', 'Forecasting · optimización · ML · automatización'],
-      ['03', 'Resultado', 'El sistema debe producir una mejora que pueda entenderse y utilizarse.', 'Control · velocidad · precisión · eficiencia'],
+    stayLabel: 'SEGUIR EN CONTACTO',
+    stayTitle: 'Sigue explorando o hablemos cuando tenga sentido.',
+    stayBody: 'Puedes seguir nuestras publicaciones, ver novedades o contarnos directamente qué estás valorando.',
+    stayLinks: [
+      ['LinkedIn', 'https://linkedin.com/in/arnausastre', true],
+      ['Ver artículos', '/knowledge', false],
+      ['Hablar con nosotros', '/contact', false],
     ],
 
-    ctaKicker: 'PRIMERA CONVERSACIÓN',
-    ctaTitle: '¿Hay algo en tu negocio que debería funcionar mejor?',
-    ctaBody: 'Cuéntanos el contexto. No necesitas llegar con una solución definida y la primera conversación es sin compromiso.',
-    cta: 'Empezar una conversación',
-    ctaAlt: '¿Todavía quieres explorar? Mira nuestros casos',
+    flowLabel: 'DE PROBLEMA A IMPACTO',
+    flowTitle: 'Del reto de negocio a una solución que genera impacto.',
+    flow: [
+      ['Problema', 'Entendemos qué quieres mejorar, qué decisión está detrás y qué está limitando el resultado.'],
+      ['Sistema', 'Diseñamos la combinación adecuada de datos, modelos y automatización para resolverlo con sentido.'],
+      ['Impacto', 'Lo llevamos a una solución utilizable, medible y orientada a mejorar cómo opera tu empresa.'],
+    ],
+
+    ctaKicker: 'SIN COMPROMISO',
+    ctaTitle: 'Cuéntanos sobre tu empresa y vemos si podemos ayudarte.',
+    ctaBody: 'Explícanos qué quieres mejorar, qué oportunidad estás valorando o qué te preocupa. Te diremos con claridad si vemos una forma razonable de aportar valor.',
+    cta: 'Cuéntanos tu caso',
+    ctaAlt: '¿Prefieres seguir explorando? Mira nuestros casos',
   },
 
   ca: {
@@ -96,32 +105,32 @@ const COPY = {
     note: 'Dades · Matemàtiques · Intel·ligència artificial · Automatització',
 
     snapshotLabel: 'QUÈ FEM',
-    snapshotTitle: 'Convertim problemes de negoci en sistemes que ajuden a decidir millor.',
+    snapshotTitle: 'Convertim necessitats de negoci en sistemes que ajuden a decidir millor.',
     snapshotRows: [
-      ['Comprendre', 'Què està passant i quina decisió realment importa.'],
-      ['Dissenyar', 'Quin enfocament aporta valor sense afegir complexitat innecessària.'],
-      ['Construir', 'Models, automatitzacions i sistemes utilitzables en operacions reals.'],
-      ['Millorar', 'Mesurar impacte, aprendre i evolucionar només on té sentit.'],
+      ['Comprendre', 'Entenem què vols millorar i quina decisió hi ha al darrere.'],
+      ['Dissenyar', 'Definim l’enfocament que pot generar més valor amb sentit.'],
+      ['Construir', 'Creem sistemes, models i automatitzacions pensats per utilitzar-se.'],
+      ['Millorar', 'Mesurem resultats i evolucionem només on aporta valor.'],
     ],
 
     exploreLabel: 'EXPLORA SC-ANALYTICS',
-    exploreTitle: 'Cinc maneres d’entendre si et podem ajudar.',
-    exploreIntro: 'Mira com treballem, revisa problemes que ja hem abordat, aprèn amb les nostres anàlisis o descobreix si necessites capacitat tecnològica externa.',
+    exploreTitle: 'Cinc maneres de descobrir com et podem ajudar.',
+    exploreIntro: 'Entra pel que més s’assembli al que necessites avui: entendre com treballem, revisar casos reals, aprendre amb les nostres anàlisis o valorar una relació a llarg termini.',
     routes: [
       {
         number: '01',
         title: 'Com treballem',
-        hook: 'Vols saber com passem d’un problema a una solució que s’utilitza de veritat?',
-        body: 'El nostre mantra, les capacitats que activem i les formes de col·laborar amb nosaltres.',
+        hook: 'Vols saber com passem d’un problema a una solució que genera impacte a la teva empresa?',
+        body: 'Descobreix com entenem el context, dissenyem l’enfocament i construïm solucions pensades per utilitzar-se de veritat.',
         href: '/services',
-        cta: 'Descobrir el nostre enfocament',
+        cta: 'Veure com treballem',
         tone: 'paper',
       },
       {
         number: '02',
         title: 'Casos',
-        hook: 'Mira en quins problemes hem treballat i com prenem decisions.',
-        body: 'Context, arquitectura, criteri i resultats explicats sense convertir-ho en una galeria de logos.',
+        hook: 'Mira en quins problemes hem treballat i quines decisions vam prendre per resoldre’ls.',
+        body: 'Casos explicats amb context, enfocament, arquitectura i resultats perquè puguis valorar com treballem.',
         href: '/projects',
         cta: 'Explorar casos',
         tone: 'dark',
@@ -129,17 +138,17 @@ const COPY = {
       {
         number: '03',
         title: 'Coneixement',
-        hook: 'Vols comprovar com pensem abans de parlar amb nosaltres?',
+        hook: 'Vols veure com pensem abans de parlar amb nosaltres?',
         body: 'Articles i anàlisis sobre forecasting, operacions, optimització, automatització i intel·ligència artificial.',
         href: '/knowledge',
-        cta: 'Aprendre amb les nostres anàlisis',
+        cta: 'Llegir les nostres anàlisis',
         tone: 'white',
       },
       {
         number: '04',
         title: 'Partner Data & AI',
         hook: 'Busques un proveïdor tecnològic i analític amb continuïtat?',
-        body: 'Amplia capacitat sense construir tot l’equip internament i conserva context entre projectes.',
+        body: 'Amplia capacitat sense construir tot l’equip internament i conserva context entre projectes i decisions.',
         href: '/partner-analitico',
         cta: 'Explorar els avantatges',
         tone: 'blue',
@@ -147,27 +156,36 @@ const COPY = {
       {
         number: '05',
         title: 'Per què SC-Analytics',
-        hook: 'Si construiràs amb algú, també importa com pensa i com treballa.',
-        body: 'Criteri, rigor, transparència i una manera de treballar orientada a relacions a llarg termini.',
+        hook: 'Si construiràs amb algú, també importa com pensa, com comunica i com respon.',
+        body: 'Coneix la nostra manera de treballar, els nostres principis i el tipus de relació que volem construir amb cada client.',
         href: '/about',
-        cta: 'Entendre per què nosaltres',
+        cta: 'Conèixer SC-Analytics',
         tone: 'paper',
       },
     ],
 
-    flowLabel: 'DE PROBLEMA A RESULTAT',
-    flowTitle: 'La tecnologia ocupa el centre del procés, no el centre de la conversa.',
-    flow: [
-      ['01', 'Problema', 'Una decisió, procés o restricció està frenant el negoci.', 'Demanda · risc · capacitat · operacions'],
-      ['02', 'Sistema', 'Triem la capacitat adequada per millorar aquesta situació.', 'Forecasting · optimització · ML · automatització'],
-      ['03', 'Resultat', 'El sistema ha de produir una millora que es pugui entendre i utilitzar.', 'Control · velocitat · precisió · eficiència'],
+    stayLabel: 'SEGUIR EN CONTACTE',
+    stayTitle: 'Continua explorant o parlem quan tingui sentit.',
+    stayBody: 'Pots seguir les nostres publicacions, veure novetats o explicar-nos directament què estàs valorant.',
+    stayLinks: [
+      ['LinkedIn', 'https://linkedin.com/in/arnausastre', true],
+      ['Veure articles', '/knowledge', false],
+      ['Parlar amb nosaltres', '/contact', false],
     ],
 
-    ctaKicker: 'PRIMERA CONVERSA',
-    ctaTitle: 'Hi ha alguna cosa al teu negoci que hauria de funcionar millor?',
-    ctaBody: 'Explica’ns el context. No cal arribar amb una solució definida i la primera conversa és sense compromís.',
-    cta: 'Començar una conversa',
-    ctaAlt: 'Encara vols explorar? Mira els nostres casos',
+    flowLabel: 'DE PROBLEMA A IMPACTE',
+    flowTitle: 'Del repte de negoci a una solució que genera impacte.',
+    flow: [
+      ['Problema', 'Entenem què vols millorar, quina decisió hi ha al darrere i què està limitant el resultat.'],
+      ['Sistema', 'Dissenyem la combinació adequada de dades, models i automatització per resoldre-ho amb sentit.'],
+      ['Impacte', 'Ho portem a una solució utilitzable, mesurable i orientada a millorar com opera la teva empresa.'],
+    ],
+
+    ctaKicker: 'SENSE COMPROMÍS',
+    ctaTitle: 'Explica’ns la teva empresa i veiem si et podem ajudar.',
+    ctaBody: 'Explica’ns què vols millorar, quina oportunitat estàs valorant o què et preocupa. Et direm amb claredat si veiem una manera raonable d’aportar valor.',
+    cta: 'Explica’ns el teu cas',
+    ctaAlt: 'Prefereixes seguir explorant? Mira els nostres casos',
   },
 
   en: {
@@ -179,32 +197,32 @@ const COPY = {
     note: 'Data · Mathematics · Artificial intelligence · Automation',
 
     snapshotLabel: 'WHAT WE DO',
-    snapshotTitle: 'We turn business problems into systems that help people make better decisions.',
+    snapshotTitle: 'We turn business needs into systems that help people make better decisions.',
     snapshotRows: [
-      ['Understand', 'What is happening and which decision actually matters.'],
-      ['Design', 'Which approach creates value without unnecessary complexity.'],
-      ['Build', 'Models, automations and systems that work in real operations.'],
-      ['Improve', 'Measure impact, learn and evolve only where it makes sense.'],
+      ['Understand', 'We clarify what should improve and which decision sits behind it.'],
+      ['Design', 'We define the approach most likely to create meaningful value.'],
+      ['Build', 'We create systems, models and automations designed to be used.'],
+      ['Improve', 'We measure outcomes and evolve only where it creates value.'],
     ],
 
     exploreLabel: 'EXPLORE SC-ANALYTICS',
-    exploreTitle: 'Five ways to decide whether we can help.',
-    exploreIntro: 'See how we work, review problems we have tackled, learn from our analysis or explore whether you need an external technology capability.',
+    exploreTitle: 'Five ways to discover how we can help.',
+    exploreIntro: 'Start with what looks most like what you need today: understand how we work, review real cases, learn from our analysis or explore a long-term relationship.',
     routes: [
       {
         number: '01',
         title: 'How we work',
-        hook: 'Want to see how we turn a problem into something people actually use?',
-        body: 'Our mantra, the capabilities we activate and the ways companies work with us.',
+        hook: 'Want to see how we turn a problem into a solution that creates real impact?',
+        body: 'See how we understand context, design the approach and build solutions meant to be used in real operations.',
         href: '/services',
-        cta: 'Explore our approach',
+        cta: 'See how we work',
         tone: 'paper',
       },
       {
         number: '02',
         title: 'Case studies',
-        hook: 'See which problems we have worked on and how decisions were made.',
-        body: 'Context, architecture, judgment and outcomes explained without turning the page into a logo gallery.',
+        hook: 'See which problems we have worked on and the decisions we made to solve them.',
+        body: 'Cases explained with context, approach, architecture and outcomes so you can judge how we work.',
         href: '/projects',
         cta: 'Explore case studies',
         tone: 'dark',
@@ -212,17 +230,17 @@ const COPY = {
       {
         number: '03',
         title: 'Knowledge',
-        hook: 'Want to see how we think before you talk to us?',
+        hook: 'Want to see how we think before talking to us?',
         body: 'Articles and analysis on forecasting, operations, optimisation, automation and artificial intelligence.',
         href: '/knowledge',
-        cta: 'Learn from our analysis',
+        cta: 'Read our analysis',
         tone: 'white',
       },
       {
         number: '04',
         title: 'Data & AI Partner',
         hook: 'Looking for ongoing technology and analytical capability?',
-        body: 'Expand capability without building the whole team in-house and retain context between projects.',
+        body: 'Expand capability without building the whole team in-house and retain context between projects and decisions.',
         href: '/partner-analitico',
         cta: 'Explore the advantages',
         tone: 'blue',
@@ -230,27 +248,36 @@ const COPY = {
       {
         number: '05',
         title: 'Why SC-Analytics',
-        hook: 'If you are going to build with someone, how they think and work matters too.',
-        body: 'Judgment, rigor, transparency and a way of working designed around long-term relationships.',
+        hook: 'If you are going to build with someone, how they think, communicate and respond matters too.',
+        body: 'Learn how we work, the principles behind our decisions and the kind of relationship we aim to build with each client.',
         href: '/about',
-        cta: 'Understand why us',
+        cta: 'Get to know SC-Analytics',
         tone: 'paper',
       },
     ],
 
-    flowLabel: 'FROM PROBLEM TO OUTCOME',
-    flowTitle: 'Technology sits at the centre of the process, not at the centre of the conversation.',
-    flow: [
-      ['01', 'Problem', 'A decision, process or constraint is holding the business back.', 'Demand · risk · capacity · operations'],
-      ['02', 'System', 'We select the right capability to improve that situation.', 'Forecasting · optimisation · ML · automation'],
-      ['03', 'Outcome', 'The system should produce an improvement people can understand and use.', 'Control · speed · precision · efficiency'],
+    stayLabel: 'STAY CONNECTED',
+    stayTitle: 'Keep exploring or talk to us when it makes sense.',
+    stayBody: 'Follow our publications, see what we are working on or tell us directly what you are considering.',
+    stayLinks: [
+      ['LinkedIn', 'https://linkedin.com/in/arnausastre', true],
+      ['Read articles', '/knowledge', false],
+      ['Talk to us', '/contact', false],
     ],
 
-    ctaKicker: 'FIRST CONVERSATION',
-    ctaTitle: 'Is there something in the business that should work better?',
-    ctaBody: 'Tell us the context. You do not need to arrive with a predefined solution and the first conversation is without commitment.',
-    cta: 'Start a conversation',
-    ctaAlt: 'Still exploring? Browse our case studies',
+    flowLabel: 'FROM PROBLEM TO IMPACT',
+    flowTitle: 'From a business challenge to a solution that creates impact.',
+    flow: [
+      ['Problem', 'We understand what should improve, which decision sits behind it and what is limiting the outcome.'],
+      ['System', 'We design the right combination of data, models and automation to solve it sensibly.'],
+      ['Impact', 'We turn it into a usable, measurable solution designed to improve how the business operates.'],
+    ],
+
+    ctaKicker: 'NO COMMITMENT',
+    ctaTitle: 'Tell us about your business and we will see whether we can help.',
+    ctaBody: 'Tell us what you want to improve, which opportunity you are considering or what is getting in the way. We will tell you clearly whether we see a sensible way to create value.',
+    cta: 'Tell us about your case',
+    ctaAlt: 'Prefer to keep exploring? Browse our case studies',
   },
 } as const
 
@@ -282,7 +309,7 @@ export default function HomePage() {
             <p className="mt-5 text-[11px] font-medium uppercase tracking-[0.12em] text-[#7F9BB5]">{t.note}</p>
           </div>
 
-          <aside className="flex h-full flex-col border-y border-[#5E86A8] py-5">
+          <aside className="flex h-full flex-col border-t border-[#5E86A8] pt-5">
             <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{t.snapshotLabel}</p>
             <h2 className="mt-3 max-w-xl text-[28px] leading-[1.12] text-white sm:text-[32px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.snapshotTitle}</h2>
             <div className="mt-5 grid flex-1 grid-rows-4 border-t border-[#496C8A]">
@@ -310,13 +337,13 @@ export default function HomePage() {
 
           <div className="mt-9 grid grid-cols-1 border-l border-t border-slate-300 md:grid-cols-12">
             {t.routes.map((route, index) => {
-              const span = index < 2 ? (index === 0 ? 'md:col-span-5' : 'md:col-span-7') : index === 2 ? 'md:col-span-4' : index === 3 ? 'md:col-span-4' : 'md:col-span-4'
+              const span = index < 2 ? 'md:col-span-6' : 'md:col-span-4'
               const dark = route.tone === 'dark'
               return (
                 <Link
                   key={route.href}
                   href={route.href}
-                  className={`group flex min-h-[238px] flex-col border-b border-r border-slate-300 p-6 transition md:p-7 ${span} ${toneClasses[route.tone as keyof typeof toneClasses]}`}
+                  className={`group flex min-h-[260px] flex-col border-b border-r border-slate-300 p-6 transition md:p-7 ${span} ${toneClasses[route.tone as keyof typeof toneClasses]}`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <span className={`font-mono text-[12px] ${dark ? 'text-[#7A7DFF]' : 'text-indigo-700'}`}>{route.number}</span>
@@ -330,38 +357,48 @@ export default function HomePage() {
               )
             })}
           </div>
-        </div>
-      </section>
 
-      <section className="border-b border-slate-300 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
-          <div className="grid gap-8 lg:grid-cols-[190px_1fr] lg:gap-10">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.flowLabel}</p>
-            <div>
-              <h2 className="max-w-4xl text-[34px] leading-[1.07] tracking-[-0.02em] text-slate-950 sm:text-[42px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.flowTitle}</h2>
-
-              <div className="mt-8 grid border-l border-t border-slate-300 lg:grid-cols-3">
-                {t.flow.map(([number, title, body, meta], index) => (
-                  <div key={title} className={`relative flex min-h-[235px] flex-col border-b border-r border-slate-300 p-6 ${index === 1 ? 'bg-[#F4F1EA]' : 'bg-white'}`}>
-                    {index < 2 && <span className={`absolute -right-[7px] top-8 z-10 hidden h-3 w-3 rotate-45 border-r border-t border-slate-400 lg:block ${index === 1 ? 'bg-[#F4F1EA]' : 'bg-white'}`} />}
-                    <p className="font-mono text-[11px] text-indigo-700">{number}</p>
-                    <h3 className="mt-5 text-[24px] text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
-                    <p className="mt-3 flex-1 text-[14px] leading-7 text-slate-600">{body}</p>
-                    <p className="mt-5 border-t border-slate-200 pt-3 font-mono text-[10px] uppercase leading-5 tracking-[0.08em] text-slate-400">{meta}</p>
-                  </div>
-                ))}
-              </div>
+          <div className="grid border-x border-b border-slate-300 bg-white lg:grid-cols-[1fr_auto] lg:items-center">
+            <div className="px-6 py-5 md:px-7">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.stayLabel}</p>
+              <h3 className="mt-1 text-[19px] font-semibold text-slate-950">{t.stayTitle}</h3>
+              <p className="mt-1 text-[13px] leading-6 text-slate-600">{t.stayBody}</p>
+            </div>
+            <div className="flex flex-wrap border-t border-slate-300 lg:border-l lg:border-t-0">
+              {t.stayLinks.map(([label, href, external]) => (
+                external
+                  ? <a key={href} href={href} target="_blank" rel="noreferrer" className="border-r border-slate-300 px-5 py-5 text-[12px] font-semibold text-slate-800 transition hover:bg-[#FAFAF7]">{label} ↗</a>
+                  : <Link key={href} href={href} className="border-r border-slate-300 px-5 py-5 text-[12px] font-semibold text-slate-800 transition hover:bg-[#FAFAF7]">{label} →</Link>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
+      <section className="border-b border-slate-300 bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
+          <div className="text-center">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.flowLabel}</p>
+            <h2 className="mx-auto mt-3 max-w-4xl text-[34px] leading-[1.07] tracking-[-0.02em] text-slate-950 sm:text-[42px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.flowTitle}</h2>
+          </div>
+
+          <div className="mx-auto mt-8 grid max-w-5xl border-l border-t border-slate-300 lg:grid-cols-3">
+            {t.flow.map(([title, body], index) => (
+              <div key={title} className={`flex min-h-[230px] flex-col items-center justify-center border-b border-r border-slate-300 p-7 text-center ${index === 1 ? 'bg-[#F4F1EA]' : 'bg-white'}`}>
+                <h3 className="text-[29px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
+                <p className="mt-4 max-w-[270px] text-[15px] font-medium leading-7 text-slate-700">{body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="border-b border-slate-300 bg-[#F4F1EA]">
-        <div className="mx-auto grid max-w-7xl gap-6 px-6 py-9 md:grid-cols-[1fr_auto] md:items-center">
+        <div className="mx-auto grid max-w-7xl gap-6 px-6 py-10 md:grid-cols-[1fr_auto] md:items-center">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.ctaKicker}</p>
-            <h2 className="mt-2 text-[28px] leading-tight text-slate-950 sm:text-[32px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
-            <p className="mt-2 max-w-3xl text-[14px] leading-6 text-slate-600">{t.ctaBody}</p>
+            <h2 className="mt-2 max-w-4xl text-[30px] leading-tight text-slate-950 sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
+            <p className="mt-3 max-w-3xl text-[14px] leading-7 text-slate-600">{t.ctaBody}</p>
           </div>
           <div className="flex flex-col items-start gap-3 md:items-end">
             <Link href="/contact?intent=discovery" className="inline-flex bg-slate-950 px-5 py-3 text-[13px] font-semibold text-white transition hover:bg-slate-800">{t.cta}</Link>
