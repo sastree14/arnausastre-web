@@ -350,7 +350,7 @@ export default function HomePage() {
                     <span className={`text-lg transition group-hover:translate-x-1 ${dark ? 'text-[#A8BACB]' : 'text-slate-400'}`}>→</span>
                   </div>
                   <h3 className={`mt-6 text-[31px] leading-tight ${dark ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{route.title}</h3>
-                  <p className={`mt-4 flex-1 text-[19px] font-semibold leading-7 ${dark ? 'text-white' : 'text-slate-850'}`}>{route.hook}</p>
+                  <p className={`mt-4 flex-1 text-[19px] font-semibold leading-7 ${dark ? 'text-white' : 'text-slate-900'}`}>{route.hook}</p>
                   <p className={`mt-7 text-[18px] font-semibold ${dark ? 'text-white' : 'text-indigo-700'}`}>{route.cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
                 </Link>
               )
