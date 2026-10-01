@@ -63,10 +63,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
         }[lang]
       : ui.evidence
 
-  const evidenceSummary =
-    isSc12
-      ? commercial?.proofStatement || sourceNote
-      : sourceNote
+  const evidenceSummary = isSc12 ? null : sourceNote
 
   const genericProblem =
     raw.sections.find((section) => ['Problem', 'Context'].includes(section.title))?.body ||
@@ -199,9 +196,16 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
           <div className="grid gap-4 lg:grid-cols-[190px_minmax(0,1fr)_auto] lg:items-center">
             <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{ui.evidence}</p>
 
-            <div className="border border-slate-300 bg-white px-5 py-4">
-              <p className="text-[14px] font-semibold text-slate-950">{evidenceHeadline}</p>
-              <p className="mt-1.5 max-w-3xl text-[14px] leading-6 text-slate-700">{evidenceSummary}</p>
+            <div className="flex min-h-[76px] items-center border border-slate-300 bg-white px-6 py-4">
+              <p
+                className="text-[24px] leading-[1.08] tracking-[-0.015em] text-[#1D2B44] sm:text-[27px]"
+                style={{ fontFamily: 'var(--font-playfair)' }}
+              >
+                {evidenceHeadline}
+              </p>
+              {evidenceSummary ? (
+                <p className="ml-6 max-w-2xl text-[14px] leading-6 text-slate-700">{evidenceSummary}</p>
+              ) : null}
             </div>
 
             {proofUrl ? (
