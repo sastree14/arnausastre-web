@@ -21,49 +21,139 @@ function cleanInline(value: string) {
     .trim()
 }
 
-function renderBody(body: string) {
-  const lines = body.split('\n')
-  const nodes: React.ReactNode[] = []
+type GeneratedBodyBlock =
+  | { type: 'paragraph'; text: string }
+  | { type: 'list'; items: string[] }
+
+type GeneratedBodySection = {
+  heading?: string
+  level?: 2 | 3
+  blocks: GeneratedBodyBlock[]
+}
+
+function parseGeneratedBody(body: string): GeneratedBodySection[] {
+  const sections: GeneratedBodySection[] = []
+  let current: GeneratedBodySection = { blocks: [] }
   let bullets: string[] = []
-  let proseIndex = 0
 
   const flushBullets = () => {
     if (!bullets.length) return
-    nodes.push(
-      <ul key={`ul-${nodes.length}`} className="my-7 space-y-3 border-l-2 border-indigo-200 pl-5 text-slate-700">
-        {bullets.map((item, index) => <li key={`${item}-${index}`} className="text-[17px] leading-8">{cleanInline(item)}</li>)}
-      </ul>,
-    )
+    current.blocks.push({ type: 'list', items: bullets })
     bullets = []
   }
 
-  lines.forEach((raw, index) => {
+  const flushSection = () => {
+    flushBullets()
+    if (current.heading || current.blocks.length) sections.push(current)
+  }
+
+  for (const raw of body.split('\n')) {
     const line = raw.trim()
+
     if (line.startsWith('- ')) {
       bullets.push(line.slice(2))
-      return
+      continue
     }
+
     flushBullets()
-    if (!line) return
-    if (/^\*\*[^*]+\*\*$/.test(line)) nodes.push(<h2 key={index} className="mb-4 mt-12 max-w-[26ch] text-[30px] leading-[1.08] text-slate-950 sm:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{cleanInline(line)}</h2>)
-    else if (line.startsWith('### ')) nodes.push(<h3 key={index} className="mb-3 mt-10 text-[23px] font-semibold leading-snug text-slate-950">{cleanInline(line.slice(4))}</h3>)
-    else if (line.startsWith('## ')) nodes.push(<h2 key={index} className="mb-4 mt-12 max-w-[26ch] text-[30px] leading-[1.08] text-slate-950 sm:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{cleanInline(line.slice(3))}</h2>)
-    else if (line.startsWith('# ')) nodes.push(<h2 key={index} className="mb-4 mt-12 max-w-[26ch] text-[30px] leading-[1.08] text-slate-950 sm:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{cleanInline(line.slice(2))}</h2>)
-    else {
-      const isLead = proseIndex === 0
-      nodes.push(
-        <p
-          key={index}
-          className={isLead ? 'my-5 text-[20px] leading-9 text-[#1D2B44]' : 'my-5 text-[17px] leading-8 text-slate-700'}
-        >
-          {cleanInline(line)}
-        </p>,
-      )
-      proseIndex += 1
+    if (!line) continue
+
+    let heading: string | null = null
+    let level: 2 | 3 = 2
+
+    if (/^\*\*[^*]+\*\*$/.test(line)) heading = cleanInline(line)
+    else if (line.startsWith('### ')) {
+      heading = cleanInline(line.slice(4))
+      level = 3
+    } else if (line.startsWith('## ')) heading = cleanInline(line.slice(3))
+    else if (line.startsWith('# ')) heading = cleanInline(line.slice(2))
+
+    if (heading) {
+      flushSection()
+      current = { heading, level, blocks: [] }
+      continue
     }
+
+    current.blocks.push({ type: 'paragraph', text: cleanInline(line) })
+  }
+
+  flushSection()
+  return sections
+}
+
+function renderGeneratedBlock(block: GeneratedBodyBlock, key: string, lead = false) {
+  if (block.type === 'list') {
+    return (
+      <ul key={key} className="my-7 space-y-3 border-l-2 border-indigo-200 pl-5 text-slate-700">
+        {block.items.map((item, index) => (
+          <li key={`${key}-${index}`} className="text-[17px] leading-8">{cleanInline(item)}</li>
+        ))}
+      </ul>
+    )
+  }
+
+  return (
+    <p
+      key={key}
+      className={lead ? 'my-5 text-[20px] leading-9 text-[#1D2B44]' : 'my-5 text-[17px] leading-8 text-slate-700'}
+    >
+      {block.text}
+    </p>
+  )
+}
+
+function renderBody(body: string, detailLabel: string) {
+  const sections = parseGeneratedBody(body)
+  let leadUsed = false
+
+  return sections.map((section, sectionIndex) => {
+    if (!section.heading) {
+      return (
+        <div key={`intro-${sectionIndex}`}>
+          {section.blocks.map((block, blockIndex) => {
+            const lead = !leadUsed && block.type === 'paragraph'
+            if (lead) leadUsed = true
+            return renderGeneratedBlock(block, `intro-${sectionIndex}-${blockIndex}`, lead)
+          })}
+        </div>
+      )
+    }
+
+    const firstBlock = section.blocks[0]
+    const remaining = section.blocks.slice(1)
+    const HeadingTag = section.level === 3 ? 'h3' : 'h2'
+    const headingClass =
+      section.level === 3
+        ? 'mb-3 mt-10 text-[23px] font-semibold leading-snug text-slate-950'
+        : 'mb-4 mt-12 max-w-[26ch] text-[30px] leading-[1.08] text-slate-950 sm:text-[34px]'
+
+    return (
+      <section key={`section-${sectionIndex}`}>
+        <HeadingTag
+          className={headingClass}
+          style={section.level === 3 ? undefined : { fontFamily: 'var(--font-playfair)' }}
+        >
+          {section.heading}
+        </HeadingTag>
+
+        {firstBlock ? renderGeneratedBlock(firstBlock, `section-${sectionIndex}-0`) : null}
+
+        {remaining.length ? (
+          <details className="group mt-5 border-t border-slate-200 pt-4">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[13px] font-semibold uppercase tracking-[0.1em] text-indigo-700">
+              <span>{detailLabel}</span>
+              <span className="text-[18px] font-normal transition-transform group-open:rotate-45">+</span>
+            </summary>
+            <div className="mt-2">
+              {remaining.map((block, blockIndex) =>
+                renderGeneratedBlock(block, `section-${sectionIndex}-${blockIndex + 1}`),
+              )}
+            </div>
+          </details>
+        ) : null}
+      </section>
+    )
   })
-  flushBullets()
-  return nodes
 }
 
 const COPY = {
@@ -77,6 +167,7 @@ const COPY = {
     ctaEyebrow: '¿TE OCURRE ALGO PARECIDO?',
     ctaText: 'Si te ocurre algo parecido, cuéntanos el contexto y vemos si podemos ayudarte.',
     primary: 'Cuéntanos el problema',
+    detail: 'Ver detalle',
   },
   ca: {
     back: 'Coneixement',
@@ -88,6 +179,7 @@ const COPY = {
     ctaEyebrow: 'ET PASSA UNA COSA SEMBLANT?',
     ctaText: 'Si et passa alguna cosa semblant, explica’ns el context i veiem si et podem ajudar.',
     primary: 'Explica’ns el problema',
+    detail: 'Veure detall',
   },
   en: {
     back: 'Knowledge',
@@ -99,6 +191,7 @@ const COPY = {
     ctaEyebrow: 'FACING SOMETHING SIMILAR?',
     ctaText: 'If you are facing something similar, tell us the context and we will see whether we can help.',
     primary: 'Tell us about the problem',
+    detail: 'Read detail',
   },
 } as const
 
@@ -142,7 +235,7 @@ export default function GeneratedArticleContent({ variants, forcedLanguage }: Pr
         )}
 
         <div className={`mx-auto max-w-[760px] ${hasVisual ? 'mt-10' : ''} border-t border-slate-300 pt-8`}>
-          {renderBody(article.body)}
+          {renderBody(article.body, t.detail)}
         </div>
 
         <section className="mx-auto mt-12 max-w-[760px] border border-slate-300 bg-[#F4F1EA] px-6 py-7 md:px-7">
