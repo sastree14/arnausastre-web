@@ -7,15 +7,15 @@ const COPY = {
   es: {
     eyebrow: 'PARTNER DATA & AI',
     title: 'Capacidad analítica y tecnológica externa, sin construir todo el equipo dentro.',
-    intro: 'Nos integramos como una capa tecnológica y analítica que aprende tu negocio, conserva contexto y activa la especialidad necesaria cuando aparece una nueva decisión.',
+    intro: 'Nos integramos como capacidad tecnológica y analítica externa, conservando contexto y activando la especialidad que necesitas en cada momento.',
     primary: 'Hablar del modelo partner',
     secondary: 'Ver cómo trabajamos',
     fitLabel: 'PARA QUIÉN',
     fitTitle: 'Tiene sentido cuando necesitas capacidad, no estructura fija.',
     fits: [
-      ['Empresas sin equipo Data & AI completo', 'Necesitas forecasting, optimización, ML, automatización o analytics, pero no compensa contratar cada perfil internamente.'],
-      ['Equipos con analistas o perfiles técnicos', 'Ya tienes capacidad interna, pero aparecen problemas que requieren especialización adicional o más profundidad.'],
-      ['Agencias, consultoras y partners tecnológicos', 'Quieres ampliar lo que puedes ofrecer a tus clientes con una capa especialista que se integra en el delivery sin competir por la relación comercial.'],
+      ['Empresas sin equipo completo', 'Accede a capacidades especializadas sin contratar cada perfil internamente.'],
+      ['Equipos con capacidad interna', 'Añadimos profundidad cuando aparece un problema que exige más especialización.'],
+      ['Agencias y consultoras', 'Amplía tu capacidad técnica sin competir por la relación con tu cliente.'],
     ],
     modelLabel: 'CÓMO FUNCIONA',
     modelTitle: 'Continuidad sin convertirnos en un departamento pesado.',
@@ -34,9 +34,9 @@ const COPY = {
       'Menos coste fijo que replicar todas las capacidades internamente',
     ],
     noteTitle: 'No es body leasing. No es vender horas sin contexto.',
-    noteBody: 'El objetivo es construir una relación donde entendemos el negocio lo suficiente como para entrar mejor, más rápido y con más criterio cada vez que aparece una necesidad nueva.',
+    noteBody: 'Cuanto más contexto compartimos, más rápido y mejor podemos responder a la siguiente necesidad.',
     exploreLabel: 'ANTES DE DECIDIR',
-    exploreTitle: 'Comprueba cómo pensamos y cómo construimos.',
+    exploreTitle: 'Conócenos mejor antes de decidir.',
     exploreLinks: [['Cómo trabajamos','/services'],['Casos','/projects'],['Conocimiento','/knowledge']],
     ctaTitle: '¿Quieres ampliar capacidad sin ampliar estructura?',
     ctaBody: 'Podemos empezar por una necesidad concreta y comprobar si el modelo tiene sentido para vosotros.',
@@ -45,15 +45,15 @@ const COPY = {
   ca: {
     eyebrow: 'PARTNER DATA & AI',
     title: 'Capacitat analítica i tecnològica externa, sense construir tot l’equip internament.',
-    intro: 'Ens integrem com una capa tecnològica i analítica que aprèn el teu negoci, conserva context i activa l’especialitat necessària quan apareix una nova decisió.',
+    intro: 'Ens integrem com a capacitat tecnològica i analítica externa, conservant context i activant l’especialitat que necessites en cada moment.',
     primary: 'Parlar del model partner',
     secondary: 'Veure com treballem',
     fitLabel: 'PER A QUI',
     fitTitle: 'Té sentit quan necessites capacitat, no estructura fixa.',
     fits: [
-      ['Empreses sense equip Data & AI complet', 'Necessites forecasting, optimització, ML, automatització o analytics, però no compensa contractar cada perfil internament.'],
-      ['Equips amb analistes o perfils tècnics', 'Ja tens capacitat interna, però apareixen problemes que requereixen especialització addicional o més profunditat.'],
-      ['Agències, consultores i partners tecnològics', 'Vols ampliar el que pots oferir als teus clients amb una capa especialista que s’integra al delivery sense competir per la relació comercial.'],
+      ['Empreses sense equip complet', 'Accedeix a capacitats especialitzades sense contractar cada perfil internament.'],
+      ['Equips amb capacitat interna', 'Afegim profunditat quan apareix un problema que exigeix més especialització.'],
+      ['Agències i consultores', 'Amplia la teva capacitat tècnica sense competir per la relació amb el client.'],
     ],
     modelLabel: 'COM FUNCIONA',
     modelTitle: 'Continuïtat sense convertir-nos en un departament pesat.',
@@ -72,9 +72,9 @@ const COPY = {
       'Menys cost fix que replicar totes les capacitats internament',
     ],
     noteTitle: 'No és body leasing. No és vendre hores sense context.',
-    noteBody: 'L’objectiu és construir una relació on entenem prou el negoci per entrar millor, més ràpid i amb més criteri cada vegada que apareix una necessitat nova.',
+    noteBody: 'Com més context compartim, més ràpid i millor podem respondre a la següent necessitat.',
     exploreLabel: 'ABANS DE DECIDIR',
-    exploreTitle: 'Comprova com pensem i com construïm.',
+    exploreTitle: 'Coneix-nos millor abans de decidir.',
     exploreLinks: [['Com treballem','/services'],['Casos','/projects'],['Coneixement','/knowledge']],
     ctaTitle: 'Vols ampliar capacitat sense ampliar estructura?',
     ctaBody: 'Podem començar per una necessitat concreta i comprovar si el model té sentit per a vosaltres.',
@@ -83,15 +83,15 @@ const COPY = {
   en: {
     eyebrow: 'DATA & AI PARTNER',
     title: 'External analytical and technology capability, without building the entire team in-house.',
-    intro: 'We integrate as a technology and analytical layer that learns the business, retains context and activates the right specialism when a new decision appears.',
+    intro: 'We integrate as external technology and analytical capability, retaining context and activating the right specialism when needed.',
     primary: 'Discuss the partner model',
     secondary: 'See how we work',
     fitLabel: 'WHO IT IS FOR',
     fitTitle: 'It makes sense when you need capability, not fixed structure.',
     fits: [
-      ['Companies without a full Data & AI team', 'You need forecasting, optimisation, ML, automation or analytics, but hiring every specialism internally does not make economic sense.'],
-      ['Teams with analysts or technical profiles', 'You already have internal capability, but some problems require additional depth or specialist expertise.'],
-      ['Agencies, consultancies and technology partners', 'You want to expand what you can deliver to clients with a specialist layer that integrates into delivery without competing for the commercial relationship.'],
+      ['Companies without a full team', 'Access specialist capability without hiring every profile in-house.'],
+      ['Teams with internal capability', 'Add depth when a problem requires more specialist expertise.'],
+      ['Agencies and consultancies', 'Expand technical delivery without competing for the client relationship.'],
     ],
     modelLabel: 'HOW IT WORKS',
     modelTitle: 'Continuity without becoming a heavy department.',
@@ -110,9 +110,9 @@ const COPY = {
       'Less fixed cost than replicating every capability in-house',
     ],
     noteTitle: 'Not body leasing. Not selling hours without context.',
-    noteBody: 'The objective is to build a relationship where we understand the business well enough to enter better, faster and with more judgment whenever a new need appears.',
+    noteBody: 'The more context we retain, the faster and better we can respond to the next need.',
     exploreLabel: 'BEFORE YOU DECIDE',
-    exploreTitle: 'See how we think and how we build.',
+    exploreTitle: 'Get to know us better before deciding.',
     exploreLinks: [['How we work','/services'],['Case studies','/projects'],['Knowledge','/knowledge']],
     ctaTitle: 'Want more capability without more fixed structure?',
     ctaBody: 'We can start with one concrete need and test whether the model makes sense for you.',
@@ -131,10 +131,10 @@ export default function AnalyticalPartnerPage() {
           <div>
             <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
             <h1 className="mt-5 max-w-5xl text-[44px] leading-[1.04] tracking-[-0.03em] sm:text-[56px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-            <p className="mt-6 max-w-3xl text-[17px] leading-8 text-[#EAF0F6]">{t.intro}</p>
+            <p className="mt-6 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/contact?intent=partner" className="bg-white px-5 py-3 text-[13px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">{t.primary}</Link>
-              <Link href="/services" className="border border-[#7F9BB5] px-5 py-3 text-[13px] font-semibold text-white transition hover:bg-white/5">{t.secondary}</Link>
+              <Link href="/contact?intent=partner" className="bg-white px-5 py-3 text-[15px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">{t.primary}</Link>
+              <Link href="/services" className="border border-[#7F9BB5] px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-white/5">{t.secondary}</Link>
             </div>
           </div>
 
@@ -144,7 +144,7 @@ export default function AnalyticalPartnerPage() {
               {t.value.map((item, index) => (
                 <div key={item} className="flex gap-4 py-4">
                   <span className="font-mono text-[11px] text-[#7F9BB5]">0{index + 1}</span>
-                  <p className="text-[13px] leading-5 text-[#EAF0F6]">{item}</p>
+                  <p className="text-[15px] leading-6 text-[#EAF0F6]">{item}</p>
                 </div>
               ))}
             </div>
@@ -159,8 +159,8 @@ export default function AnalyticalPartnerPage() {
           {t.fits.map(([title, body], index) => (
             <article key={title} className="min-h-[235px] border-b border-r border-slate-300 p-6 md:p-7">
               <p className="text-xs font-semibold text-indigo-600">0{index + 1}</p>
-              <h3 className="mt-4 text-[20px] font-semibold">{title}</h3>
-              <p className="mt-4 text-[14px] leading-7 text-slate-600">{body}</p>
+              <h3 className="mt-4 text-[24px] font-semibold">{title}</h3>
+              <p className="mt-4 text-[17px] leading-7 text-slate-700">{body}</p>
             </article>
           ))}
         </div>
@@ -177,8 +177,8 @@ export default function AnalyticalPartnerPage() {
               {t.model.map(([number, title, body]) => (
                 <article key={number} className="grid gap-3 py-5 md:grid-cols-[64px_200px_1fr]">
                   <span className="text-xs font-semibold text-indigo-600">{number}</span>
-                  <h3 className="font-semibold text-slate-900">{title}</h3>
-                  <p className="text-[14px] leading-7 text-slate-600">{body}</p>
+                  <h3 className="text-[18px] font-semibold text-slate-900">{title}</h3>
+                  <p className="text-[17px] leading-7 text-slate-700">{body}</p>
                 </article>
               ))}
             </div>
@@ -187,7 +187,7 @@ export default function AnalyticalPartnerPage() {
           <div className="mt-10 border-y border-slate-300 bg-[#F4F1EA] p-7 md:flex md:items-center md:justify-between md:gap-10">
             <div>
               <h3 className="text-[26px] leading-tight" style={{ fontFamily: 'var(--font-playfair)' }}>{t.noteTitle}</h3>
-              <p className="mt-3 max-w-3xl text-[14px] leading-7 text-slate-600">{t.noteBody}</p>
+              <p className="mt-3 max-w-3xl text-[17px] leading-7 text-slate-700">{t.noteBody}</p>
             </div>
           </div>
         </div>
@@ -200,7 +200,7 @@ export default function AnalyticalPartnerPage() {
             <h2 className="text-[30px] leading-[1.08] sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
             <div className="mt-6 grid border-t border-slate-300 md:grid-cols-3 md:divide-x md:divide-slate-300">
               {t.exploreLinks.map(([label, href]) => (
-                <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[13px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
+                <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[13px] text-[18px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
                   {label}<span className="text-indigo-700 transition group-hover:translate-x-1">→</span>
                 </Link>
               ))}
@@ -213,9 +213,9 @@ export default function AnalyticalPartnerPage() {
         <div className="mx-auto flex max-w-7xl flex-col gap-7 px-6 py-10 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
-            <p className="mt-3 max-w-2xl text-[14px] leading-7 text-slate-600">{t.ctaBody}</p>
+            <p className="mt-3 max-w-2xl text-[17px] leading-7 text-slate-700">{t.ctaBody}</p>
           </div>
-          <Link href="/contact?intent=partner" className="inline-flex shrink-0 bg-slate-950 px-5 py-3 text-[13px] font-semibold text-white transition hover:bg-slate-800">{t.cta}</Link>
+          <Link href="/contact?intent=partner" className="inline-flex shrink-0 bg-slate-950 px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-slate-800">{t.cta}</Link>
         </div>
       </section>
     </main>
