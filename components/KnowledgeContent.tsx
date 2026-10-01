@@ -238,7 +238,7 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
   const items = useMemo(() => {
     const staticItems = articles.map((article) => ({
       key: `static:${article.slug}`,
-      href: `/knowledge/${article.slug}/${lang}`,
+      href: `/knowledge/${article.slug}`,
       title: contentLanguage === 'en' ? article.titleEn : contentLanguage === 'ca' ? (article.titleCa || article.titleEs) : article.titleEs,
       excerpt: contentLanguage === 'en' ? article.excerptEn : contentLanguage === 'ca' ? (article.excerptCa || article.excerptEs) : article.excerptEs,
       industry: article.industry,
@@ -257,7 +257,7 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
       const locale = lang === 'ca' ? 'ca-ES' : lang === 'es' ? 'es-ES' : 'en-GB'
       return item ? {
         key: `generated:${key}`,
-        href: `/knowledge/${key}/${lang}`,
+        href: `/knowledge/${key}`,
         title: item.title,
         excerpt: compactExcerpt(item.body),
         industry: item.industry || '',
