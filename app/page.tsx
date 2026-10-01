@@ -7,9 +7,9 @@ const COPY = {
   es: {
     eyebrow: 'SC-ANALYTICS · CONSULTORÍA CUANTITATIVA Y TECNOLÓGICA',
     title: 'Mejores decisiones. Mejores resultados empresariales.',
-    intro: 'Ayudamos a empresas a entender mejor su negocio, planificar con más precisión, optimizar operaciones y automatizar procesos cuando los datos pueden marcar una diferencia real.',
-    primary: 'Hablar con nosotros',
-    secondary: 'Conocer cómo trabajamos',
+    intro: 'Ayudamos a empresas a planificar mejor, optimizar operaciones y automatizar decisiones cuando los datos pueden generar impacto real.',
+    primary: 'Contacta con nosotros',
+    secondary: 'Conoce cómo trabajamos',
     note: 'Datos · Matemáticas · Inteligencia artificial · Automatización',
 
     snapshotLabel: 'QUÉ HACEMOS',
@@ -29,7 +29,7 @@ const COPY = {
         number: '01',
         title: 'Cómo trabajamos',
         hook: '¿Quieres saber cómo pasamos de un problema a una solución que genera impacto en tu empresa?',
-        body: 'Descubre cómo entendemos el contexto, diseñamos el enfoque y construimos soluciones pensadas para usarse de verdad.',
+        body: 'Entender bien. Diseñar con criterio. Construir para generar impacto.',
         href: '/services',
         cta: 'Ver cómo trabajamos',
         tone: 'paper',
@@ -38,7 +38,7 @@ const COPY = {
         number: '02',
         title: 'Casos',
         hook: 'Mira en qué problemas hemos trabajado y qué decisiones tomamos para resolverlos.',
-        body: 'Casos explicados con contexto, enfoque, arquitectura y resultados para que puedas valorar cómo trabajamos.',
+        body: 'Problemas reales, decisiones claras y resultados con contexto.',
         href: '/projects',
         cta: 'Explorar casos',
         tone: 'dark',
@@ -47,7 +47,7 @@ const COPY = {
         number: '03',
         title: 'Conocimiento',
         hook: '¿Quieres ver cómo pensamos antes de hablar con nosotros?',
-        body: 'Artículos y análisis sobre forecasting, operaciones, optimización, automatización e inteligencia artificial.',
+        body: 'Ideas y análisis sobre decisiones, operaciones, datos e inteligencia artificial.',
         href: '/knowledge',
         cta: 'Leer nuestros análisis',
         tone: 'white',
@@ -56,7 +56,7 @@ const COPY = {
         number: '04',
         title: 'Partner analítico y tecnológico',
         hook: '¿Buscas un proveedor tecnológico y analítico con continuidad?',
-        body: 'Amplía capacidad sin construir todo el equipo dentro y conserva contexto entre proyectos y decisiones.',
+        body: 'Capacidad especialista sin ampliar estructura interna.',
         href: '/partner-analitico',
         cta: 'Explorar las ventajas',
         tone: 'blue',
@@ -65,7 +65,7 @@ const COPY = {
         number: '05',
         title: 'Por qué SC-Analytics',
         hook: 'Si vas a construir con alguien, también importa cómo piensa, cómo comunica y cómo responde.',
-        body: 'Conoce nuestra forma de trabajar, nuestros principios y el tipo de relación que buscamos construir con cada cliente.',
+        body: 'Rigor, claridad y una relación pensada para durar.',
         href: '/about',
         cta: 'Conocer SC-Analytics',
         tone: 'paper',
@@ -99,9 +99,9 @@ const COPY = {
   ca: {
     eyebrow: 'SC-ANALYTICS · CONSULTORIA QUANTITATIVA I TECNOLÒGICA',
     title: 'Millors decisions. Millors resultats empresarials.',
-    intro: 'Ajudem empreses a entendre millor el seu negoci, planificar amb més precisió, optimitzar operacions i automatitzar processos quan les dades poden marcar una diferència real.',
-    primary: 'Parlar amb nosaltres',
-    secondary: 'Conèixer com treballem',
+    intro: 'Ajudem empreses a planificar millor, optimitzar operacions i automatitzar decisions quan les dades poden generar impacte real.',
+    primary: 'Contacta amb nosaltres',
+    secondary: 'Coneix com treballem',
     note: 'Dades · Matemàtiques · Intel·ligència artificial · Automatització',
 
     snapshotLabel: 'QUÈ FEM',
@@ -121,7 +121,7 @@ const COPY = {
         number: '01',
         title: 'Com treballem',
         hook: 'Vols saber com passem d’un problema a una solució que genera impacte a la teva empresa?',
-        body: 'Descobreix com entenem el context, dissenyem l’enfocament i construïm solucions pensades per utilitzar-se de veritat.',
+        body: 'Entendre bé. Dissenyar amb criteri. Construir per generar impacte.',
         href: '/services',
         cta: 'Veure com treballem',
         tone: 'paper',
@@ -130,7 +130,7 @@ const COPY = {
         number: '02',
         title: 'Casos',
         hook: 'Mira en quins problemes hem treballat i quines decisions vam prendre per resoldre’ls.',
-        body: 'Casos explicats amb context, enfocament, arquitectura i resultats perquè puguis valorar com treballem.',
+        body: 'Problemes reals, decisions clares i resultats amb context.',
         href: '/projects',
         cta: 'Explorar casos',
         tone: 'dark',
@@ -139,7 +139,7 @@ const COPY = {
         number: '03',
         title: 'Coneixement',
         hook: 'Vols veure com pensem abans de parlar amb nosaltres?',
-        body: 'Articles i anàlisis sobre forecasting, operacions, optimització, automatització i intel·ligència artificial.',
+        body: 'Idees i anàlisis sobre decisions, operacions, dades i intel·ligència artificial.',
         href: '/knowledge',
         cta: 'Llegir les nostres anàlisis',
         tone: 'white',
@@ -148,7 +148,7 @@ const COPY = {
         number: '04',
         title: 'Partner analític i tecnològic',
         hook: 'Busques un proveïdor tecnològic i analític amb continuïtat?',
-        body: 'Amplia capacitat sense construir tot l’equip internament i conserva context entre projectes i decisions.',
+        body: 'Capacitat especialista sense ampliar estructura interna.',
         href: '/partner-analitico',
         cta: 'Explorar els avantatges',
         tone: 'blue',
@@ -157,7 +157,7 @@ const COPY = {
         number: '05',
         title: 'Per què SC-Analytics',
         hook: 'Si construiràs amb algú, també importa com pensa, com comunica i com respon.',
-        body: 'Coneix la nostra manera de treballar, els nostres principis i el tipus de relació que volem construir amb cada client.',
+        body: 'Rigor, claredat i una relació pensada per durar.',
         href: '/about',
         cta: 'Conèixer SC-Analytics',
         tone: 'paper',
@@ -191,8 +191,8 @@ const COPY = {
   en: {
     eyebrow: 'SC-ANALYTICS · QUANTITATIVE & TECHNOLOGY CONSULTING',
     title: 'Better decisions. Better business outcomes.',
-    intro: 'We help companies understand their business better, plan with more precision, improve operations and automate processes when data can create a meaningful advantage.',
-    primary: 'Talk to us',
+    intro: 'We help companies plan better, improve operations and automate decisions when data can create real business impact.',
+    primary: 'Contact us',
     secondary: 'See how we work',
     note: 'Data · Mathematics · Artificial intelligence · Automation',
 
@@ -213,7 +213,7 @@ const COPY = {
         number: '01',
         title: 'How we work',
         hook: 'Want to see how we turn a problem into a solution that creates real impact?',
-        body: 'See how we understand context, design the approach and build solutions meant to be used in real operations.',
+        body: 'Understand well. Design with judgment. Build for impact.',
         href: '/services',
         cta: 'See how we work',
         tone: 'paper',
@@ -222,7 +222,7 @@ const COPY = {
         number: '02',
         title: 'Case studies',
         hook: 'See which problems we have worked on and the decisions we made to solve them.',
-        body: 'Cases explained with context, approach, architecture and outcomes so you can judge how we work.',
+        body: 'Real problems, clear decisions and outcomes with context.',
         href: '/projects',
         cta: 'Explore case studies',
         tone: 'dark',
@@ -231,7 +231,7 @@ const COPY = {
         number: '03',
         title: 'Knowledge',
         hook: 'Want to see how we think before talking to us?',
-        body: 'Articles and analysis on forecasting, operations, optimisation, automation and artificial intelligence.',
+        body: 'Ideas and analysis on decisions, operations, data and artificial intelligence.',
         href: '/knowledge',
         cta: 'Read our analysis',
         tone: 'white',
@@ -240,7 +240,7 @@ const COPY = {
         number: '04',
         title: 'Analytics & technology partner',
         hook: 'Looking for ongoing technology and analytical capability?',
-        body: 'Expand capability without building the whole team in-house and retain context between projects and decisions.',
+        body: 'Specialist capability without expanding internal structure.',
         href: '/partner-analitico',
         cta: 'Explore the advantages',
         tone: 'blue',
@@ -249,7 +249,7 @@ const COPY = {
         number: '05',
         title: 'Why SC-Analytics',
         hook: 'If you are going to build with someone, how they think, communicate and respond matters too.',
-        body: 'Learn how we work, the principles behind our decisions and the kind of relationship we aim to build with each client.',
+        body: 'Rigor, clarity and a relationship designed to last.',
         href: '/about',
         cta: 'Get to know SC-Analytics',
         tone: 'paper',
@@ -301,10 +301,10 @@ export default function HomePage() {
             <h1 className="mt-5 max-w-4xl text-[46px] leading-[1.02] tracking-[-0.03em] text-white sm:text-[58px] lg:text-[68px]" style={{ fontFamily: 'var(--font-playfair)' }}>
               {t.title}
             </h1>
-            <p className="mt-6 max-w-3xl text-[17px] leading-8 text-[#EAF0F6]">{t.intro}</p>
+            <p className="mt-6 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/contact?intent=discovery" className="bg-white px-5 py-3 text-[14px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">{t.primary}</Link>
-              <Link href="/services" className="border border-[#7F9BB5] px-5 py-3 text-[14px] font-semibold text-white transition hover:bg-white/5">{t.secondary}</Link>
+              <Link href="/contact?intent=discovery" className="bg-white px-5 py-3 text-[15px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">{t.primary}</Link>
+              <Link href="/services" className="border border-[#7F9BB5] px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-white/5">{t.secondary}</Link>
             </div>
             <p className="mt-5 text-[11px] font-medium uppercase tracking-[0.12em] text-[#7F9BB5]">{t.note}</p>
           </div>
@@ -316,8 +316,8 @@ export default function HomePage() {
               {t.snapshotRows.map(([title, body], index) => (
                 <div key={title} className="grid min-h-[74px] grid-cols-[34px_105px_1fr] items-center gap-3 border-b border-[#496C8A] py-3.5">
                   <span className="font-mono text-[11px] text-[#7F9BB5]">0{index + 1}</span>
-                  <p className="text-[13px] font-semibold text-white">{title}</p>
-                  <p className="text-[13px] leading-5 text-[#A8BACB]">{body}</p>
+                  <p className="text-[15px] font-semibold text-white">{title}</p>
+                  <p className="text-[15px] leading-6 text-[#D5E1EB]">{body}</p>
                 </div>
               ))}
             </div>
@@ -331,7 +331,7 @@ export default function HomePage() {
             <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.exploreLabel}</p>
             <div>
               <h2 className="text-[34px] leading-[1.05] tracking-[-0.02em] text-slate-950 sm:text-[40px] xl:whitespace-nowrap xl:text-[42px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
-              <p className="mt-4 max-w-4xl text-[15px] leading-7 text-slate-600">{t.exploreIntro}</p>
+              <p className="mt-4 max-w-4xl text-[17px] leading-7 text-slate-700">{t.exploreIntro}</p>
             </div>
           </div>
 
@@ -349,10 +349,10 @@ export default function HomePage() {
                     <span className={`font-mono text-[12px] ${dark ? 'text-[#7A7DFF]' : 'text-indigo-700'}`}>{route.number}</span>
                     <span className={`text-lg transition group-hover:translate-x-1 ${dark ? 'text-[#A8BACB]' : 'text-slate-400'}`}>→</span>
                   </div>
-                  <h3 className={`mt-6 text-[27px] leading-tight ${dark ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{route.title}</h3>
-                  <p className={`mt-3 text-[15px] font-semibold leading-6 ${dark ? 'text-white' : 'text-slate-800'}`}>{route.hook}</p>
-                  <p className={`mt-3 max-w-xl flex-1 text-[13px] leading-6 ${dark ? 'text-[#A8BACB]' : 'text-slate-600'}`}>{route.body}</p>
-                  <p className={`mt-5 text-[13px] font-semibold ${dark ? 'text-white' : 'text-indigo-700'}`}>{route.cta}</p>
+                  <h3 className={`mt-6 text-[30px] leading-tight ${dark ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{route.title}</h3>
+                  <p className={`mt-3 text-[18px] font-semibold leading-7 ${dark ? 'text-white' : 'text-slate-800'}`}>{route.hook}</p>
+                  <p className={`mt-3 max-w-xl flex-1 text-[16px] leading-7 ${dark ? 'text-[#A8BACB]' : 'text-slate-600'}`}>{route.body}</p>
+                  <p className={`mt-5 text-[15px] font-semibold ${dark ? 'text-white' : 'text-indigo-700'}`}>{route.cta}</p>
                 </Link>
               )
             })}
@@ -361,14 +361,14 @@ export default function HomePage() {
           <div className="grid border-x border-b border-slate-300 bg-white lg:grid-cols-[1fr_auto] lg:items-center">
             <div className="px-6 py-5 md:px-7">
               <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.stayLabel}</p>
-              <h3 className="mt-1 text-[19px] font-semibold text-slate-950">{t.stayTitle}</h3>
-              <p className="mt-1 text-[13px] leading-6 text-slate-600">{t.stayBody}</p>
+              <h3 className="mt-1 text-[22px] font-semibold text-slate-950">{t.stayTitle}</h3>
+              <p className="mt-1 text-[16px] leading-7 text-slate-600">{t.stayBody}</p>
             </div>
             <div className="flex flex-wrap border-t border-slate-300 lg:border-l lg:border-t-0">
               {t.stayLinks.map(([label, href, external]) => (
                 external
-                  ? <a key={href} href={href} target="_blank" rel="noreferrer" className="border-r border-slate-300 px-5 py-5 text-[12px] font-semibold text-slate-800 transition hover:bg-[#FAFAF7]">{label} ↗</a>
-                  : <Link key={href} href={href} className="border-r border-slate-300 px-5 py-5 text-[12px] font-semibold text-slate-800 transition hover:bg-[#FAFAF7]">{label} →</Link>
+                  ? <a key={href} href={href} target="_blank" rel="noreferrer" className="border-r border-slate-300 px-5 py-5 text-[14px] font-semibold text-slate-800 transition hover:bg-[#FAFAF7]">{label} ↗</a>
+                  : <Link key={href} href={href} className="border-r border-slate-300 px-5 py-5 text-[14px] font-semibold text-slate-800 transition hover:bg-[#FAFAF7]">{label} →</Link>
               ))}
             </div>
           </div>
@@ -385,8 +385,8 @@ export default function HomePage() {
           <div className="mx-auto mt-8 grid max-w-5xl border-l border-t border-slate-300 lg:grid-cols-3">
             {t.flow.map(([title, body], index) => (
               <div key={title} className={`flex min-h-[230px] flex-col items-center justify-center border-b border-r border-slate-300 p-7 text-center ${index === 1 ? 'bg-[#F4F1EA]' : 'bg-white'}`}>
-                <h3 className="text-[29px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
-                <p className="mt-4 max-w-[270px] text-[15px] font-medium leading-7 text-slate-700">{body}</p>
+                <h3 className="text-[31px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
+                <p className="mt-4 max-w-[270px] text-[17px] font-medium leading-7 text-slate-800">{body}</p>
               </div>
             ))}
           </div>
@@ -398,10 +398,10 @@ export default function HomePage() {
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.ctaKicker}</p>
             <h2 className="mt-2 max-w-4xl text-[30px] leading-tight text-slate-950 sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
-            <p className="mt-3 max-w-3xl text-[14px] leading-7 text-slate-600">{t.ctaBody}</p>
+            <p className="mt-3 max-w-3xl text-[17px] leading-7 text-slate-700">{t.ctaBody}</p>
           </div>
           <div className="flex flex-col items-start gap-3 md:items-end">
-            <Link href="/contact?intent=discovery" className="inline-flex bg-slate-950 px-5 py-3 text-[13px] font-semibold text-white transition hover:bg-slate-800">{t.cta}</Link>
+            <Link href="/contact?intent=discovery" className="inline-flex bg-slate-950 px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-slate-800">{t.cta}</Link>
             <Link href="/projects" className="text-[12px] font-semibold text-indigo-700 hover:text-indigo-900">{t.ctaAlt} →</Link>
           </div>
         </div>
