@@ -89,18 +89,7 @@ export function HorizonDecisionVisual({ data, lang }: { data: HorizonLogic; lang
   )
 }
 
-function Connector() {
-  return (
-    <div className="hidden min-w-8 flex-1 items-center lg:flex" aria-hidden="true">
-      <div className="h-px flex-1 bg-[#5E86A8]" />
-      <svg viewBox="0 0 12 12" className="-ml-px h-3 w-3 shrink-0 text-[#5E86A8]">
-        <path d="M1 1l8 5-8 5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter" />
-      </svg>
-    </div>
-  )
-}
-
-function ArchitectureColumn({
+function ArchitectureStage({
   label,
   children,
 }: {
@@ -108,9 +97,11 @@ function ArchitectureColumn({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-w-0 flex-1">
-      <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.14em] text-[#A8BACB]">{label}</p>
-      {children}
+    <div className="min-w-0">
+      <div className="mb-3 border-b border-[#5E86A8] pb-3">
+        <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#A8BACB]">{label}</p>
+      </div>
+      <div className="space-y-3">{children}</div>
     </div>
   )
 }
@@ -125,72 +116,105 @@ function ArchitectureNode({
   detail: string
 }) {
   return (
-    <div className="border border-[#5E86A8] bg-[#13283C]">
+    <div className="min-w-0 border border-[#5E86A8] bg-[#13283C]">
       <div className="border-b border-[#496C8A] px-4 py-2.5 text-center">
-        <span className="font-mono text-[13px] text-[#7A7DFF]">{String(index).padStart(2, '0')}</span>
+        <span className="font-mono text-[12px] text-[#7A7DFF]">{String(index).padStart(2, '0')}</span>
       </div>
-      <div className="px-5 py-5">
-        <h3 className="text-[16px] font-semibold leading-6 text-[#EAF0F6]">{title}</h3>
-        <p className="mt-2 text-[14px] leading-6 text-[#A8BACB]">{detail}</p>
+      <div className="min-w-0 px-5 py-5">
+        <h3 className="break-words text-[15px] font-semibold leading-6 text-[#EAF0F6] xl:text-[16px]">{title}</h3>
+        <p className="mt-2 break-words text-[14px] leading-6 text-[#A8BACB]">{detail}</p>
       </div>
     </div>
   )
 }
 
-export function ArchitectureSystemVisual({ data }: { data: Architecture }) {
+export function ArchitectureSystemVisual({ data, lang }: { data: Architecture; lang?: SiteLanguage }) {
   const [orders, feature, baseline, ml, backtest, selection, planning] = data.steps
+  const labels = lang
+    ? {
+        en: {
+          title: 'SC-12 · System architecture',
+          flow: 'Data → modelling → evaluation → planning',
+          inputs: 'Inputs',
+          models: 'Models',
+          evaluation: 'Evaluation',
+          decision: 'Decision output',
+          integrations: 'Integration boundaries',
+          provenance: 'Public portfolio implementation',
+        },
+        es: {
+          title: 'SC-12 · Arquitectura del sistema',
+          flow: 'Datos → modelización → evaluación → planificación',
+          inputs: 'Entradas',
+          models: 'Modelos',
+          evaluation: 'Evaluación',
+          decision: 'Salida de decisión',
+          integrations: 'Capas de integración',
+          provenance: 'Implementación pública de portfolio',
+        },
+        ca: {
+          title: 'SC-12 · Arquitectura del sistema',
+          flow: 'Dades → modelització → avaluació → planificació',
+          inputs: 'Entrades',
+          models: 'Models',
+          evaluation: 'Avaluació',
+          decision: 'Sortida de decisió',
+          integrations: 'Capes d’integració',
+          provenance: 'Implementació pública de portfolio',
+        },
+      }[lang]
+    : null
 
   return (
-    <div className="border border-[#5E86A8] bg-[#0D1B2A] text-white">
-      <div className="grid gap-2 border-b border-[#5E86A8] px-6 py-5 md:grid-cols-[1fr_auto] md:items-end">
+    <div className="min-w-0 border border-[#5E86A8] bg-[#0D1B2A] text-white">
+      <div className="grid gap-3 border-b border-[#5E86A8] px-5 py-5 sm:px-6 md:grid-cols-[1fr_auto] md:items-end">
         <div>
-          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">SC-12 · System architecture</p>
-          <p className="mt-2 text-[15px] leading-6 text-[#A8BACB]">Data → modelling → evaluation → planning</p>
+          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">
+            {labels?.title || 'SC-12 · System architecture'}
+          </p>
+          <p className="mt-2 text-[15px] leading-6 text-[#A8BACB]">
+            {labels?.flow || 'Data → modelling → evaluation → planning'}
+          </p>
         </div>
-        <p className="text-[13px] text-[#A8BACB]">Public portfolio implementation</p>
+        <p className="text-[12px] leading-5 text-[#7F9BB5]">
+          {labels?.provenance || 'Public portfolio implementation'}
+        </p>
       </div>
 
-      <div className="px-6 py-7 lg:px-8 lg:py-8">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-4">
-          <ArchitectureColumn label="Inputs">
-            <div className="space-y-3">
-              {orders ? <ArchitectureNode index={1} title={orders.title} detail={orders.detail} /> : null}
-              {feature ? <ArchitectureNode index={2} title={feature.title} detail={feature.detail} /> : null}
-            </div>
-          </ArchitectureColumn>
+      <div className="min-w-0 px-5 py-7 sm:px-6 lg:px-7 xl:px-8">
+        <div className="grid min-w-0 grid-cols-1 gap-6 md:grid-cols-2 2xl:grid-cols-4 2xl:gap-5">
+          <ArchitectureStage label={labels?.inputs || 'Inputs'}>
+            {orders ? <ArchitectureNode index={1} title={orders.title} detail={orders.detail} /> : null}
+            {feature ? <ArchitectureNode index={2} title={feature.title} detail={feature.detail} /> : null}
+          </ArchitectureStage>
 
-          <Connector />
+          <ArchitectureStage label={labels?.models || 'Models'}>
+            {baseline ? <ArchitectureNode index={3} title={baseline.title} detail={baseline.detail} /> : null}
+            {ml ? <ArchitectureNode index={4} title={ml.title} detail={ml.detail} /> : null}
+          </ArchitectureStage>
 
-          <ArchitectureColumn label="Models">
-            <div className="space-y-3">
-              {baseline ? <ArchitectureNode index={3} title={baseline.title} detail={baseline.detail} /> : null}
-              {ml ? <ArchitectureNode index={4} title={ml.title} detail={ml.detail} /> : null}
-            </div>
-          </ArchitectureColumn>
+          <ArchitectureStage label={labels?.evaluation || 'Evaluation'}>
+            {backtest ? <ArchitectureNode index={5} title={backtest.title} detail={backtest.detail} /> : null}
+            {selection ? <ArchitectureNode index={6} title={selection.title} detail={selection.detail} /> : null}
+          </ArchitectureStage>
 
-          <Connector />
-
-          <ArchitectureColumn label="Evaluation">
-            <div className="space-y-3">
-              {backtest ? <ArchitectureNode index={5} title={backtest.title} detail={backtest.detail} /> : null}
-              {selection ? <ArchitectureNode index={6} title={selection.title} detail={selection.detail} /> : null}
-            </div>
-          </ArchitectureColumn>
-
-          <Connector />
-
-          <ArchitectureColumn label="Decision output">
+          <ArchitectureStage label={labels?.decision || 'Decision output'}>
             {planning ? <ArchitectureNode index={7} title={planning.title} detail={planning.detail} /> : null}
-          </ArchitectureColumn>
+          </ArchitectureStage>
         </div>
 
         <div className="mt-8 border-t border-[#5E86A8] pt-5">
-          <p className="mb-4 text-[13px] font-semibold uppercase tracking-[0.14em] text-[#A8BACB]">Integration boundaries</p>
-          <div className="grid border-y border-[#5E86A8] md:grid-cols-3 md:divide-x md:divide-[#5E86A8]">
+          <p className="mb-4 text-[13px] font-semibold uppercase tracking-[0.14em] text-[#A8BACB]">
+            {labels?.integrations || 'Integration boundaries'}
+          </p>
+          <div className="grid border border-[#5E86A8] lg:grid-cols-3 lg:divide-x lg:divide-[#5E86A8]">
             {data.integrations.map((integration) => (
-              <div key={integration.title} className="border-b border-[#5E86A8] px-5 py-5 last:border-b-0 md:border-b-0">
-                <h4 className="text-[15px] font-semibold text-[#EAF0F6]">{integration.title}</h4>
-                <p className="mt-2 text-[14px] leading-6 text-[#A8BACB]">{integration.detail}</p>
+              <div
+                key={integration.title}
+                className="min-w-0 border-b border-[#5E86A8] px-5 py-5 last:border-b-0 lg:border-b-0"
+              >
+                <h4 className="break-words text-[15px] font-semibold text-[#EAF0F6]">{integration.title}</h4>
+                <p className="mt-2 break-words text-[14px] leading-6 text-[#A8BACB]">{integration.detail}</p>
               </div>
             ))}
           </div>
