@@ -16,6 +16,7 @@ type CaseFilter =
   | 'risk'
   | 'decision'
   | 'analytics'
+  | 'finance'
 
 const projectFilters: Record<string, CaseFilter[]> = {
   'ai-accounting-agents': ['ai', 'automation'],
@@ -24,8 +25,8 @@ const projectFilters: Record<string, CaseFilter[]> = {
   'business-operating-crm': ['automation', 'decision'],
   'ecommerce-demand-forecasting': ['forecasting', 'decision'],
   'erp-operations-control': ['automation', 'optimisation', 'decision'],
-  'investment-analytics-platform': ['analytics', 'decision'],
-  'quantitative-trading-framework': ['forecasting', 'risk', 'decision'],
+  'investment-analytics-platform': ['analytics', 'decision', 'finance'],
+  'quantitative-trading-framework': ['forecasting', 'risk', 'decision', 'finance'],
   'reinforcement-learning-decision-system': ['optimisation', 'decision'],
   'r-shiny-decision-app': ['analytics', 'decision'],
 }
@@ -39,13 +40,14 @@ const copy = {
     empty: 'No hay casos publicados en esta categoría.',
     filters: {
       all: 'Todos',
-      forecasting: 'Predicción',
-      ai: 'IA y agentes',
-      automation: 'Automatización',
-      optimisation: 'Optimización',
-      risk: 'Riesgo',
+      forecasting: 'Forecasting y planificación',
+      ai: 'Agentes de IA',
+      automation: 'Automatización de procesos',
+      optimisation: 'Optimización operativa',
+      risk: 'Riesgo y scoring',
       decision: 'Sistemas de decisión',
-      analytics: 'Apps analíticas',
+      analytics: 'Analytics y reporting',
+      finance: 'Modelización financiera',
     },
   },
   ca: {
@@ -56,13 +58,14 @@ const copy = {
     empty: 'No hi ha casos publicats en aquesta categoria.',
     filters: {
       all: 'Tots',
-      forecasting: 'Predicció',
-      ai: 'IA i agents',
-      automation: 'Automatització',
-      optimisation: 'Optimització',
-      risk: 'Risc',
+      forecasting: 'Forecasting i planificació',
+      ai: 'Agents d’IA',
+      automation: 'Automatització de processos',
+      optimisation: 'Optimització operativa',
+      risk: 'Risc i scoring',
       decision: 'Sistemes de decisió',
-      analytics: 'Apps analítiques',
+      analytics: 'Analytics i reporting',
+      finance: 'Modelització financera',
     },
   },
   en: {
@@ -73,13 +76,14 @@ const copy = {
     empty: 'No published cases in this category.',
     filters: {
       all: 'All',
-      forecasting: 'Forecasting',
-      ai: 'AI & agents',
-      automation: 'Automation',
-      optimisation: 'Optimisation',
-      risk: 'Risk',
+      forecasting: 'Forecasting & planning',
+      ai: 'AI agents',
+      automation: 'Process automation',
+      optimisation: 'Operational optimisation',
+      risk: 'Risk & scoring',
       decision: 'Decision systems',
-      analytics: 'Analytics apps',
+      analytics: 'Analytics & reporting',
+      finance: 'Financial modelling',
     },
   },
 } as const
@@ -93,6 +97,7 @@ const filterOrder: CaseFilter[] = [
   'risk',
   'decision',
   'analytics',
+  'finance',
 ]
 
 export default function ProjectsPageClient({ projects }: { projects: Project[] }) {
@@ -134,9 +139,9 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
         </div>
       </section>
 
-      <section className="border-b border-slate-300 bg-white">
+      <section className="border-b border-slate-300 bg-[#F4F1EA]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex min-w-0 items-center gap-6 overflow-x-auto py-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex min-w-0 items-center gap-2 overflow-x-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <span className="shrink-0 text-[12px] font-semibold uppercase tracking-[0.14em] text-slate-400">{c.filterLabel}</span>
             {filterOrder.map((filter) => {
               const active = activeFilter === filter
@@ -147,8 +152,8 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
                   onClick={() => setActiveFilter(filter)}
                   className={`relative shrink-0 py-1 text-[14px] transition-colors after:absolute after:-bottom-[15px] after:left-0 after:h-px after:w-full after:origin-left after:bg-slate-950 after:transition-transform ${
                     active
-                      ? 'font-semibold text-slate-950 after:scale-x-100'
-                      : 'font-medium text-slate-500 after:scale-x-0 hover:text-slate-950'
+                      ? 'border-slate-950 bg-white font-semibold text-slate-950'
+                      : 'border-transparent bg-transparent font-medium text-slate-600 hover:border-slate-300 hover:bg-white/70 hover:text-slate-950'
                   }`}
                 >
                   {c.filters[filter]}
