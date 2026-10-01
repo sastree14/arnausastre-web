@@ -227,6 +227,25 @@ export function ArchitectureSystemVisual({ data, lang }: { data: Architecture; l
   const steps = localizedArchitecture?.steps || data.steps
   const integrations = localizedArchitecture?.integrations || data.integrations
   const [orders, feature, baseline, ml, backtest, selection, planning] = steps
+  const decisionCompanion = lang
+    ? {
+        en: {
+          title: 'Inventory scenario',
+          detail: 'Translates the forecast into coverage, service-level and working-capital implications.',
+        },
+        es: {
+          title: 'Escenario de inventario',
+          detail: 'Traduce el forecast a cobertura, nivel de servicio e impacto sobre capital circulante.',
+        },
+        ca: {
+          title: 'Escenari d’inventari',
+          detail: 'Tradueix el forecast a cobertura, nivell de servei i impacte sobre capital circulant.',
+        },
+      }[lang]
+    : {
+        title: 'Inventory scenario',
+        detail: 'Translate forecast output into inventory coverage and service implications.',
+      }
 
   return (
     <div className="min-w-0 border border-[#5E86A8] bg-[#0D1B2A] text-white">
@@ -263,6 +282,7 @@ export function ArchitectureSystemVisual({ data, lang }: { data: Architecture; l
 
           <ArchitectureStage label={labels?.decision || 'Decision output'} tone="slate">
             {planning ? <ArchitectureNode index={7} title={planning.title} detail={planning.detail} /> : null}
+            <ArchitectureNode index={8} title={decisionCompanion.title} detail={decisionCompanion.detail} />
           </ArchitectureStage>
         </div>
 
