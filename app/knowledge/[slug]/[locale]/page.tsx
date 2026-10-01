@@ -43,7 +43,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
   }
 
   const variants=await getPublicGeneratedArticleVariants(slug)
-  const article=variants.find(item=>item.language===locale)
+  const article=variants.find(item=>item.language===locale)||variants.find(item=>item.language==='es')||variants.find(item=>item.language==='en')||variants[0]
   if(!article)return{}
   const title=clean(article.title),description=summary(article.body)
   const available=Object.fromEntries(
@@ -85,7 +85,7 @@ export default async function LocalizedArticle({params}:Props){
   }
 
   const variants=await getPublicGeneratedArticleVariants(slug)
-  const article=variants.find(item=>item.language===locale)
+  const article=variants.find(item=>item.language===locale)||variants.find(item=>item.language==='es')||variants.find(item=>item.language==='en')||variants[0]
   if(!article)notFound()
   const schema={
     '@context':'https://schema.org',
