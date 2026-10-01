@@ -6,7 +6,7 @@ import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 const COPY = {
   es: {
     eyebrow: 'PARTNER DATA & AI',
-    title: 'Tu capacidad externa de Data & AI, sin construir todo el equipo dentro.',
+    title: 'Capacidad analítica y tecnológica externa, sin construir todo el equipo dentro.',
     intro: 'Nos integramos como una capa tecnológica y analítica que aprende tu negocio, conserva contexto y activa la especialidad necesaria cuando aparece una nueva decisión.',
     primary: 'Hablar del modelo partner',
     secondary: 'Ver cómo trabajamos',
@@ -41,7 +41,7 @@ const COPY = {
   },
   ca: {
     eyebrow: 'PARTNER DATA & AI',
-    title: 'La teva capacitat externa de Data & AI, sense construir tot l’equip internament.',
+    title: 'Capacitat analítica i tecnològica externa, sense construir tot l’equip internament.',
     intro: 'Ens integrem com una capa tecnològica i analítica que aprèn el teu negoci, conserva context i activa l’especialitat necessària quan apareix una nova decisió.',
     primary: 'Parlar del model partner',
     secondary: 'Veure com treballem',
@@ -76,7 +76,7 @@ const COPY = {
   },
   en: {
     eyebrow: 'DATA & AI PARTNER',
-    title: 'Your external Data & AI capability, without building the entire team in-house.',
+    title: 'External analytical and technology capability, without building the entire team in-house.',
     intro: 'We integrate as a technology and analytical layer that learns the business, retains context and activates the right specialism when a new decision appears.',
     primary: 'Discuss the partner model',
     secondary: 'See how we work',
