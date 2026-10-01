@@ -23,8 +23,9 @@ function Section({
   children: React.ReactNode
 }) {
   return (
-    <section id={id} className="scroll-mt-24 border-t-[3px] border-[#1D2B44] bg-transparent">
-      <div className="px-6 py-12 lg:px-10 lg:py-14">
+    <section id={id} className="scroll-mt-24 bg-transparent">
+      <div className="px-6 py-14 lg:px-[clamp(28px,3vw,52px)] lg:py-16">
+        <div className="mb-5 h-[3px] w-14 bg-[#1D2B44]" aria-hidden="true" />
         <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">
           {label}
         </p>
@@ -57,13 +58,13 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-        <div className="mx-auto max-w-[1500px] px-6 pb-12 pt-9 lg:px-8 lg:pb-14">
+        <div className="mx-auto w-[min(94vw,1700px)] pb-12 pt-9 lg:pb-14">
           <Link href={`/projects/${project.slug}`} className="inline-flex items-center gap-2 text-[14px] text-[#A8BACB] transition hover:text-white">
             <span aria-hidden="true">←</span>
             {c.back}
           </Link>
 
-          <div className="mt-9 grid gap-10 lg:grid-cols-[1.05fr_.95fr]">
+          <div className="mt-9 grid gap-[clamp(36px,4vw,72px)] lg:grid-cols-[minmax(0,1.08fr)_minmax(440px,.92fr)]">
             <div>
               <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.eyebrow}</p>
               <h1
@@ -111,7 +112,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
       </section>
 
       <div className="border-b border-slate-300 bg-[#FAFAF7]">
-        <div className="mx-auto max-w-[1500px] lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:px-8">
+        <div className="mx-auto w-[min(94vw,1700px)] lg:grid lg:grid-cols-[clamp(220px,15vw,290px)_minmax(0,1fr)] lg:gap-[clamp(28px,3vw,52px)]">
           <CaseStudySidebar items={items} repositoryUrl={project.proofUrl} contactHref={project.cta.primaryHref} />
 
           <div className="min-w-0">
@@ -190,7 +191,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
           </Section>
 
           <section className="px-6 py-12 lg:px-10 lg:py-14">
-            <div className="border border-[#496C8A] bg-[#0D1B2A] px-6 py-7 text-white lg:px-8 lg:py-8">
+            <div className="border border-[#496C8A] bg-[#0D1B2A] px-6 py-8 text-white lg:px-9 lg:py-9">
               <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.takeawayLabel}</p>
               <h2 className="mt-3 max-w-4xl text-[34px] leading-[1.06] text-white sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>
                 {c.takeawayTitle}
