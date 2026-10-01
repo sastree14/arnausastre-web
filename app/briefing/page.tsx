@@ -8,7 +8,7 @@ const COPY = {
     eyebrow: 'SC-ANALYTICS BRIEFING',
     status: 'EN PREPARACIÓN',
     title: 'Un briefing breve para seguir solo lo que merece atención.',
-    intro: 'Estamos definiendo el formato y el lugar exacto que ocupará dentro del sistema editorial de SC-Analytics. No queremos lanzar otra newsletter genérica: tiene que complementar los artículos y aportar una razón real para volver.',
+    intro: 'Estamos preparando un formato breve para seguir ideas, señales y análisis que realmente merezcan atención.',
     promiseLabel: 'QUÉ QUEREMOS QUE SEA',
     promise: [
       ['Señales útiles', 'Cambios en empresas, sectores y operaciones que pueden afectar una decisión.'],
@@ -20,13 +20,13 @@ const COPY = {
     knowledge: 'Ir a conocimiento',
     cases: 'Ver casos',
     work: 'Cómo trabajamos',
-    contact: 'Hablar con nosotros',
+    contact: 'Contacta con nosotros',
   },
   ca: {
     eyebrow: 'SC-ANALYTICS BRIEFING',
     status: 'EN PREPARACIÓ',
     title: 'Un briefing breu per seguir només allò que mereix atenció.',
-    intro: 'Estem definint el format i el lloc exacte que ocuparà dins del sistema editorial de SC-Analytics. No volem llançar una altra newsletter genèrica: ha de complementar els articles i aportar una raó real per tornar.',
+    intro: 'Estem preparant un format breu per seguir idees, senyals i anàlisis que realment mereixin atenció.',
     promiseLabel: 'QUÈ VOLEM QUE SIGUI',
     promise: [
       ['Senyals útils', 'Canvis en empreses, sectors i operacions que poden afectar una decisió.'],
@@ -38,13 +38,13 @@ const COPY = {
     knowledge: 'Anar a coneixement',
     cases: 'Veure casos',
     work: 'Com treballem',
-    contact: 'Parlar amb nosaltres',
+    contact: 'Contacta amb nosaltres',
   },
   en: {
     eyebrow: 'SC-ANALYTICS BRIEFING',
     status: 'IN PREPARATION',
     title: 'A concise briefing for following only what deserves attention.',
-    intro: 'We are defining the format and the exact role it should play inside the SC-Analytics editorial system. We do not want to launch another generic newsletter: it should complement the articles and give people a real reason to return.',
+    intro: 'We are preparing a concise format for following ideas, signals and analysis that genuinely deserve attention.',
     promiseLabel: 'WHAT WE WANT IT TO BE',
     promise: [
       ['Useful signals', 'Changes in companies, sectors and operations that can affect a decision.'],
@@ -56,7 +56,7 @@ const COPY = {
     knowledge: 'Go to knowledge',
     cases: 'See case studies',
     work: 'How we work',
-    contact: 'Talk to us',
+    contact: 'Contact us',
   },
 } as const
 
@@ -73,7 +73,7 @@ export default function BriefingPage() {
             <span className="border border-[#5E86A8] px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-[#A8BACB]">{t.status}</span>
           </div>
           <h1 className="mt-5 max-w-5xl text-[44px] leading-[1.04] tracking-[-0.03em] sm:text-[56px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-          <p className="mt-6 max-w-4xl text-[17px] leading-8 text-[#EAF0F6]">{t.intro}</p>
+          <p className="mt-6 max-w-4xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
         </div>
       </section>
 
@@ -85,8 +85,8 @@ export default function BriefingPage() {
               {t.promise.map(([title, body], index) => (
                 <article key={title} className="min-h-[210px] border-b border-r border-slate-300 p-6">
                   <p className="font-mono text-[11px] text-indigo-700">0{index + 1}</p>
-                  <h2 className="mt-4 text-[22px] leading-tight" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h2>
-                  <p className="mt-3 text-[14px] leading-7 text-slate-600">{body}</p>
+                  <h2 className="mt-4 text-[25px] leading-tight" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h2>
+                  <p className="mt-3 text-[17px] leading-7 text-slate-700">{body}</p>
                 </article>
               ))}
             </div>
@@ -106,7 +106,7 @@ export default function BriefingPage() {
                 [t.work, '/services'],
                 [t.contact, '/contact?intent=discovery'],
               ].map(([label, href]) => (
-                <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[13px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
+                <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[15px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
                   {label}
                   <span className="text-indigo-700 transition group-hover:translate-x-1">→</span>
                 </Link>
