@@ -129,7 +129,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
       ) : null}
 
       <section className="border-b border-slate-300 bg-white">
-        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] py-10 lg:py-12">
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] pb-7 pt-10 lg:pb-8 lg:pt-12">
           <div className="border-b border-slate-400 pb-4">
             <p className="text-[13px] font-semibold uppercase tracking-[0.15em] text-indigo-700">{ui.snapshot}</p>
             
@@ -159,35 +159,6 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
             </div>
           ) : null}
 
-          <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-3">
-            <Link
-              href={`/projects/${project.slug}/case-study`}
-              className="inline-flex min-h-[50px] items-center gap-2 bg-slate-950 px-5 py-3 text-[14px] font-semibold text-white transition hover:bg-slate-800"
-            >
-              {ui.caseStudy}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-
-            {proofUrl ? (
-              <a
-                href={proofUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex min-h-[50px] items-center gap-2 border border-slate-500 bg-white px-5 py-3 text-[14px] font-semibold text-slate-900 transition hover:border-slate-800"
-              >
-                {ui.repository}
-                <ArrowUpRight className="h-4 w-4" />
-              </a>
-            ) : null}
-
-            <Link
-              href="/contact"
-              className="inline-flex min-h-[50px] items-center gap-2 border border-transparent px-4 py-3 text-[14px] font-semibold text-slate-700 underline decoration-slate-400 underline-offset-4 transition hover:border-slate-300 hover:bg-[#FAFAF7] hover:text-slate-950 hover:decoration-slate-950"
-            >
-              {ui.contact}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
         </div>
       </section>
 
@@ -195,12 +166,12 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
         <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] py-7 sm:w-[calc(100%_-_48px)] lg:py-9">
           {isSc12 ? (
             <div>
-              <p className="text-center text-[12px] font-semibold uppercase tracking-[0.16em] text-indigo-700">{ui.evidence}</p>
+              <p className="text-center text-[14px] font-semibold uppercase tracking-[0.17em] text-indigo-700">{ui.evidence}</p>
 
               <div className="mt-5 grid gap-3 lg:grid-cols-3">
                 <Link
                   href={`/projects/${project.slug}/case-study`}
-                  className="group flex min-h-[166px] flex-col justify-between border border-[#D6D0C5] bg-[#F4F1EA] p-6 transition hover:border-[#AFA89C] hover:bg-[#EEE9DF]"
+                  className="group flex min-h-[166px] flex-col justify-between border border-[#D6C6E3] bg-[#F1EAF6] p-6 transition hover:border-[#B9A3CC] hover:bg-[#E9DFF1]"
                 >
                   <div className="flex items-start gap-4">
                     <p className="pt-1 font-mono text-[13px] font-semibold text-indigo-700">01</p>
@@ -217,7 +188,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
                     href={proofUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="group flex min-h-[166px] flex-col justify-between border border-[#C8D7E4] bg-[#EEF3F7] p-6 transition hover:border-[#93ACC0] hover:bg-[#E5EDF3]"
+                    className="group flex min-h-[166px] flex-col justify-between border border-[#BCD5E5] bg-[#E4F0F7] p-6 transition hover:border-[#8FB6CD] hover:bg-[#D9EAF4]"
                   >
                     <div className="flex items-start gap-4">
                       <p className="pt-1 font-mono text-[13px] font-semibold text-indigo-700">02</p>
