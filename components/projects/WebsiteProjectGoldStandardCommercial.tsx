@@ -132,7 +132,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
 
           <div className="min-w-0">
           <Section id="problem" label={c.problemLabel} title={c.problemTitle} body={c.problemBody} tone="paper">
-            <div className="border-t border-slate-500">
+            <div className="border-t border-slate-300">
               {c.problemRows.map((row, index) => (
                 <div key={row.title} className="grid gap-3 border-b border-slate-300 py-5 md:grid-cols-[52px_.7fr_1.3fr]">
                   <span className="font-mono text-[13px] text-slate-500">{String(index + 1).padStart(2, '0')}</span>
@@ -148,7 +148,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
           </Section>
 
           <Section id="system" label={c.systemLabel} title={c.systemTitle} body={c.systemBody} tone="paper">
-            <div className="grid border-t border-slate-500 md:grid-cols-2">
+            <div className="grid border-t border-slate-300 md:grid-cols-2">
               {c.systemRows.map((row, index) => (
                 <div key={row} className={`grid grid-cols-[46px_1fr] gap-4 border-b border-slate-300 py-5 md:pr-7 ${index % 2 === 1 ? 'md:border-l md:pl-7' : ''}`}>
                   <span className="font-mono text-[13px] text-slate-500">{String(index + 1).padStart(2, '0')}</span>
@@ -164,7 +164,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
 
           <Section id="evidence" label={c.evidenceLabel} title={c.evidenceTitle} body={c.evidenceBody} tone="paper">
             <EvidenceFrameworkVisual data={project.evidence} />
-            <div className="mt-6 grid gap-4 border-y border-slate-400 py-5 sm:grid-cols-3">
+            <div className="mt-6 grid gap-4 border-y border-slate-300 py-5 sm:grid-cols-3">
               {sc12BusinessOutcomeMetrics[lang].map((metric) => (
                 <div key={metric.label}>
                   <p className="text-[26px] font-semibold text-slate-950">{metric.value}</p>
@@ -176,7 +176,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
           </Section>
 
           <Section id="technical" label={c.technicalLabel} title={c.technicalTitle} body={c.technicalBody}>
-            <div className="border-y border-slate-400 py-5">
+            <div className="border-y border-slate-300 py-5">
               <p className="text-[13px] font-semibold uppercase tracking-[0.12em] text-slate-500">Stack</p>
               <p className="mt-3 text-[15px] leading-7 text-slate-800">{c.technicalProof}</p>
             </div>
