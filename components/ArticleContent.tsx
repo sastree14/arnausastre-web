@@ -69,6 +69,7 @@ const COPY = {
     cases: 'Case studies',
     work: 'How we work',
     contact: 'Contact us',
+    detail: 'Read detail',
   },
   es: {
     back: 'Conocimiento',
@@ -79,6 +80,7 @@ const COPY = {
     cases: 'Casos',
     work: 'Cómo trabajamos',
     contact: 'Contacta con nosotros',
+    detail: 'Ver detalle',
   },
   ca: {
     back: 'Coneixement',
@@ -89,6 +91,7 @@ const COPY = {
     cases: 'Casos',
     work: 'Com treballem',
     contact: 'Contacta amb nosaltres',
+    detail: 'Veure detall',
   },
 } as const
 
@@ -151,8 +154,22 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
                     <span className="font-mono text-[13px] font-semibold text-indigo-700">{num}</span>
                     <div>
                       <h2 className="max-w-[26ch] text-[31px] leading-[1.08] text-slate-950 sm:text-[35px]" style={{ fontFamily: 'var(--font-playfair)' }}>{segment.heading}</h2>
-                      <div className="mt-6 max-w-[72ch] space-y-5">
-                        {segment.paras.map((para, i) => renderPara(para, i))}
+                      <div className="mt-6 max-w-[72ch]">
+                        <div className="space-y-5">
+                          {segment.paras.slice(0, 1).map((para, i) => renderPara(para, i))}
+                        </div>
+
+                        {segment.paras.length > 1 ? (
+                          <details className="group mt-5 border-t border-slate-200 pt-4">
+                            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[13px] font-semibold uppercase tracking-[0.1em] text-indigo-700">
+                              <span>{t.detail}</span>
+                              <span className="text-[18px] font-normal transition-transform group-open:rotate-45">+</span>
+                            </summary>
+                            <div className="mt-5 space-y-5">
+                              {segment.paras.slice(1).map((para, i) => renderPara(para, i + 1))}
+                            </div>
+                          </details>
+                        ) : null}
                       </div>
                     </div>
                   </div>
