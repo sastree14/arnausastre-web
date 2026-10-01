@@ -222,11 +222,11 @@ export const SC12_WEBSITE_GOLD_STANDARD: WebsiteProjectGoldStandard = {
     body:
       'The public project exposes the metrics required to inspect model behaviour without presenting the example as a production client KPI.',
     metrics: [
-      { label: 'WAPE', value: 'Absolute error', note: 'Scale-aware forecast error by horizon.' },
-      { label: 'MAE', value: 'Error magnitude', note: 'Direct view of average absolute deviation.' },
-      { label: 'Forecast bias', value: 'Direction', note: 'Shows systematic over- or under-forecasting.' },
-      { label: 'Service level', value: 'Decision KPI', note: 'Connects forecasting to inventory performance.' },
-      { label: 'Inventory coverage', value: 'Decision KPI', note: 'Makes the planning consequence visible.' },
+      { label: 'WAPE', value: '6.45%', note: 'Public backtest forecast error.' },
+      { label: 'MAE', value: '7.39', note: 'Average absolute error in public example units.' },
+      { label: 'Forecast bias', value: '-6.45%', note: 'Negative bias in the public backtest.' },
+      { label: 'Planning horizons', value: '4', note: '1, 3, 6 and 9 months.' },
+      { label: 'Backtest observations', value: '6', note: 'Deterministic public validation observations.' },
     ],
     note:
       'The repository contains representative public inputs and outputs. These values are implementation evidence, not claims of organisation-wide client impact.',
@@ -240,8 +240,7 @@ export const SC12_WEBSITE_GOLD_STANDARD: WebsiteProjectGoldStandard = {
       'Python',
       'Pandas',
       'Statsmodels',
-      'XGBoost',
-      'LightGBM',
+      'Machine Learning',
       'Plotly',
       'FastAPI',
       'PostgreSQL',
