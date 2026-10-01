@@ -91,17 +91,26 @@ export function HorizonDecisionVisual({ data, lang }: { data: HorizonLogic; lang
 
 function ArchitectureStage({
   label,
+  tone,
   children,
 }: {
   label: string
+  tone: 'blue' | 'violet' | 'teal' | 'slate'
   children: React.ReactNode
 }) {
+  const palette = {
+    blue: { border: '#6F91AF', header: '#1B3D59', body: '#10283E' },
+    violet: { border: '#7A82AF', header: '#29395B', body: '#172A42' },
+    teal: { border: '#6F9A99', header: '#1D4649', body: '#123437' },
+    slate: { border: '#8293A5', header: '#314355', body: '#1D3042' },
+  }[tone]
+
   return (
-    <div className="grid min-w-0 grid-rows-[auto_1fr]">
-      <div className="mb-3 border border-[#7F9BB5] bg-[#18344D] px-5 py-4">
+    <div className="min-w-0 overflow-hidden border" style={{ borderColor: palette.border, backgroundColor: palette.body }}>
+      <div className="border-b px-5 py-4" style={{ borderColor: palette.border, backgroundColor: palette.header }}>
         <p className="text-[17px] font-semibold uppercase tracking-[0.15em] text-white xl:text-[18px]">{label}</p>
       </div>
-      <div className="grid h-full auto-rows-fr grid-rows-2 gap-3">{children}</div>
+      <div className="grid h-full auto-rows-fr grid-rows-2">{children}</div>
     </div>
   )
 }
@@ -116,12 +125,12 @@ function ArchitectureNode({
   detail: string
 }) {
   return (
-    <div className="h-full min-w-0 border border-[#496C8A] bg-[#102439]">
-      <div className="border-b border-[#3E5F7B] px-4 py-2.5 text-center">
-        <span className="font-mono text-[12px] font-semibold text-[#7A7DFF]">{String(index).padStart(2, '0')}</span>
+    <div className="h-full min-w-0 border-t border-[#496C8A] bg-black/5 first:border-t-0">
+      <div className="flex items-center gap-3 border-b border-white/10 px-5 py-2.5">
+        <span className="font-mono text-[12px] font-semibold text-[#8F91FF]">{String(index).padStart(2, '0')}</span>
       </div>
       <div className="min-w-0 px-5 py-5">
-        <h3 className="break-words text-[16px] font-semibold leading-7 text-[#E7EEF5] xl:text-[17px]">{title}</h3>
+        <h3 className="break-words text-[16px] font-semibold leading-7 text-[#E4ECF3] xl:text-[17px]">{title}</h3>
         <p className="mt-2 break-words text-[14px] leading-6 text-[#9FB2C4]">{detail}</p>
       </div>
     </div>
@@ -224,22 +233,22 @@ export function ArchitectureSystemVisual({ data, lang }: { data: Architecture; l
 
       <div className="min-w-0 px-5 py-7 sm:px-6 lg:px-7 xl:px-8">
         <div className="grid min-w-0 grid-cols-1 gap-6 md:grid-cols-2 2xl:grid-cols-4 2xl:gap-5">
-          <ArchitectureStage label={labels?.inputs || 'Inputs'}>
+          <ArchitectureStage label={labels?.inputs || 'Inputs'} tone="blue">
             {orders ? <ArchitectureNode index={1} title={orders.title} detail={orders.detail} /> : null}
             {feature ? <ArchitectureNode index={2} title={feature.title} detail={feature.detail} /> : null}
           </ArchitectureStage>
 
-          <ArchitectureStage label={labels?.models || 'Models'}>
+          <ArchitectureStage label={labels?.models || 'Models'} tone="violet">
             {baseline ? <ArchitectureNode index={3} title={baseline.title} detail={baseline.detail} /> : null}
             {ml ? <ArchitectureNode index={4} title={ml.title} detail={ml.detail} /> : null}
           </ArchitectureStage>
 
-          <ArchitectureStage label={labels?.evaluation || 'Evaluation'}>
+          <ArchitectureStage label={labels?.evaluation || 'Evaluation'} tone="teal">
             {backtest ? <ArchitectureNode index={5} title={backtest.title} detail={backtest.detail} /> : null}
             {selection ? <ArchitectureNode index={6} title={selection.title} detail={selection.detail} /> : null}
           </ArchitectureStage>
 
-          <ArchitectureStage label={labels?.decision || 'Decision output'}>
+          <ArchitectureStage label={labels?.decision || 'Decision output'} tone="slate">
             {planning ? <ArchitectureNode index={7} title={planning.title} detail={planning.detail} /> : null}
           </ArchitectureStage>
         </div>
@@ -325,40 +334,48 @@ export function EvidenceFrameworkVisual({ data, lang }: { data: Evidence; lang?:
       }[lang]
     : null
 
+  const evaluationMetrics = data.metrics.slice(0, 3)
+  const validationMetrics = data.metrics.slice(3, 5)
+
+  const renderMetric = (metric: Evidence['metrics'][number]) => {
+    const metricKey = metric.label as keyof typeof localized.notes
+    const label = localized?.labels[metricKey] || metric.label
+    const note = localized?.notes[metricKey] || metric.note
+
+    return (
+      <div key={metric.label} className="flex min-h-[170px] flex-col px-5 py-5">
+        <p className="min-h-[30px] text-[12px] font-semibold uppercase leading-[1.25] tracking-[0.1em] text-indigo-700">
+          {label}
+        </p>
+        <p className="mt-3 text-[30px] font-semibold leading-none tracking-[-0.02em] text-[#1D2B44]">{metric.value}</p>
+        <p className="mt-auto pt-4 text-[13px] leading-5 text-slate-650">{note}</p>
+      </div>
+    )
+  }
+
   return (
-    <div className="overflow-hidden border border-[#D8DDE3] bg-white">
-      <div className="grid border-b border-[#D8DDE3] md:grid-cols-[3fr_2fr]">
-        <div className="border-b border-[#D8DDE3] px-6 py-4 md:border-b-0 md:border-r">
-          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-700">
+    <div className="grid gap-4 lg:grid-cols-[3fr_2fr]">
+      <section className="overflow-hidden border border-[#D8CBE5] bg-[#F4EFF8]">
+        <div className="border-b border-[#D8CBE5] bg-[#ECE3F3] px-6 py-4">
+          <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#40385F]">
             {localized?.left || 'Forecast evaluation'}
           </p>
         </div>
-        <div className="px-6 py-4">
-          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-700">
+        <div className="grid divide-y divide-[#D8CBE5] bg-[#FBF9FC] md:grid-cols-3 md:divide-x md:divide-y-0">
+          {evaluationMetrics.map(renderMetric)}
+        </div>
+      </section>
+
+      <section className="overflow-hidden border border-[#C6DCE8] bg-[#EAF3F8]">
+        <div className="border-b border-[#C6DCE8] bg-[#DDECF4] px-6 py-4">
+          <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#31536B]">
             {localized?.right || 'Validation coverage'}
           </p>
         </div>
-      </div>
-
-      <div className="grid md:grid-cols-5 md:divide-x md:divide-[#D8DDE3]">
-        {data.metrics.map((metric) => {
-          const metricKey = metric.label as keyof typeof localized.notes
-          const label = localized?.labels[metricKey] || metric.label
-          const note = localized?.notes[metricKey] || metric.note
-          return (
-            <div
-              key={metric.label}
-              className="flex min-h-[176px] flex-col border-b border-[#D8DDE3] px-5 py-5 last:border-b-0 md:border-b-0"
-            >
-              <p className="min-h-[30px] text-[12px] font-semibold uppercase leading-[1.25] tracking-[0.1em] text-indigo-700">
-                {label}
-              </p>
-              <p className="mt-3 text-[30px] font-semibold leading-none tracking-[-0.02em] text-[#1D2B44]">{metric.value}</p>
-              <p className="mt-auto pt-4 text-[12px] leading-5 text-slate-600">{note}</p>
-            </div>
-          )
-        })}
-      </div>
+        <div className="grid divide-y divide-[#C6DCE8] bg-[#F7FBFD] md:grid-cols-2 md:divide-x md:divide-y-0">
+          {validationMetrics.map(renderMetric)}
+        </div>
+      </section>
     </div>
   )
 }
