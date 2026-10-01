@@ -230,6 +230,13 @@ export function EvidenceFrameworkVisual({ data, lang }: { data: Evidence; lang?:
         en: {
           left: 'Forecast evaluation',
           right: 'Validation coverage',
+          labels: {
+            WAPE: 'WAPE',
+            MAE: 'MAE',
+            'Forecast bias': 'Forecast bias',
+            'Planning horizons': 'Planning horizons',
+            'Backtest observations': 'Backtest observations',
+          },
           notes: {
             WAPE: 'Weighted percentage error',
             MAE: 'Mean absolute error',
@@ -241,6 +248,13 @@ export function EvidenceFrameworkVisual({ data, lang }: { data: Evidence; lang?:
         es: {
           left: 'Evaluación del forecast',
           right: 'Cobertura de validación',
+          labels: {
+            WAPE: 'WAPE',
+            MAE: 'MAE',
+            'Forecast bias': 'Sesgo del forecast',
+            'Planning horizons': 'Horizontes de planificación',
+            'Backtest observations': 'Observaciones de backtest',
+          },
           notes: {
             WAPE: 'Error porcentual ponderado',
             MAE: 'Error absoluto medio',
@@ -252,6 +266,13 @@ export function EvidenceFrameworkVisual({ data, lang }: { data: Evidence; lang?:
         ca: {
           left: 'Avaluació del forecast',
           right: 'Cobertura de validació',
+          labels: {
+            WAPE: 'WAPE',
+            MAE: 'MAE',
+            'Forecast bias': 'Biaix del forecast',
+            'Planning horizons': 'Horitzons de planificació',
+            'Backtest observations': 'Observacions de backtest',
+          },
           notes: {
             WAPE: 'Error percentual ponderat',
             MAE: 'Error absolut mitjà',
@@ -264,7 +285,7 @@ export function EvidenceFrameworkVisual({ data, lang }: { data: Evidence; lang?:
     : null
 
   return (
-    <div className="border border-[#D8DDE3] bg-white">
+    <div className="overflow-hidden border border-[#D8DDE3] bg-white">
       <div className="grid border-b border-[#D8DDE3] md:grid-cols-[3fr_2fr]">
         <div className="border-b border-[#D8DDE3] px-6 py-4 md:border-b-0 md:border-r">
           <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-600">
@@ -280,12 +301,19 @@ export function EvidenceFrameworkVisual({ data, lang }: { data: Evidence; lang?:
 
       <div className="grid md:grid-cols-5 md:divide-x md:divide-[#D8DDE3]">
         {data.metrics.map((metric) => {
-          const note = localized?.notes[metric.label as keyof typeof localized.notes] || metric.note
+          const metricKey = metric.label as keyof typeof localized.notes
+          const label = localized?.labels[metricKey] || metric.label
+          const note = localized?.notes[metricKey] || metric.note
           return (
-            <div key={metric.label} className="border-b border-[#D8DDE3] px-5 py-6 last:border-b-0 md:border-b-0">
-              <p className="text-[12px] font-semibold uppercase tracking-[0.1em] text-slate-500">{metric.label}</p>
-              <p className="mt-4 text-[30px] font-semibold leading-none tracking-[-0.02em] text-[#1D2B44]">{metric.value}</p>
-              <p className="mt-3 text-[12px] leading-5 text-slate-500">{note}</p>
+            <div
+              key={metric.label}
+              className="flex min-h-[176px] flex-col border-b border-[#D8DDE3] px-5 py-5 last:border-b-0 md:border-b-0"
+            >
+              <p className="min-h-[30px] text-[12px] font-semibold uppercase leading-[1.25] tracking-[0.1em] text-slate-500">
+                {label}
+              </p>
+              <p className="mt-3 text-[30px] font-semibold leading-none tracking-[-0.02em] text-[#1D2B44]">{metric.value}</p>
+              <p className="mt-auto pt-4 text-[12px] leading-5 text-slate-500">{note}</p>
             </div>
           )
         })}
