@@ -38,7 +38,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-slate-300">
-        <div className="mx-auto w-[min(94vw,1700px)] pb-10 pt-9 lg:px-8 lg:pb-12 lg:pt-10">
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] pb-10 pt-9 lg:pb-12 lg:pt-10">
           <Link href="/projects" className="inline-flex items-center gap-2 text-[14px] text-slate-500 transition hover:text-slate-950">
             <span aria-hidden="true">←</span>
             {ui.back}
@@ -87,7 +87,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
       ) : null}
 
       <section className="border-b border-slate-300 bg-white">
-        <div className="mx-auto w-[min(94vw,1700px)] py-10 lg:px-8 lg:py-12">
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] py-10 lg:py-12">
           <div className="border-b border-slate-400 pb-4">
             <p className="text-[13px] font-semibold uppercase tracking-[0.15em] text-indigo-700">{ui.snapshot}</p>
             
@@ -150,7 +150,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
       </section>
 
       <section className="bg-[#F4F1EA]">
-        <div className="mx-auto grid max-w-[1500px] gap-5 px-6 py-6 lg:grid-cols-[180px_1fr_auto] lg:items-center lg:px-8">
+        <div className="mx-auto grid max-w-[1800px] gap-5 py-6 lg:grid-cols-[180px_1fr_auto] lg:items-center">
           <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{ui.evidence}</p>
           <p className="max-w-3xl text-[13px] leading-6 text-slate-600">{goldStandard?.sourceNote || raw.confidentiality}</p>
           {proofUrl ? (
