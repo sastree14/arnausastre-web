@@ -164,13 +164,18 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
 
           <Section id="evidence" label={c.evidenceLabel} title={c.evidenceTitle} body={c.evidenceBody} tone="paper">
             <EvidenceFrameworkVisual data={project.evidence} lang={lang} />
-            <div className="mt-6 grid gap-4 border-y border-slate-300 py-5 sm:grid-cols-3">
-              {sc12BusinessOutcomeMetrics[lang].map((metric) => (
-                <div key={metric.label}>
-                  <p className="text-[26px] font-semibold text-slate-950">{metric.value}</p>
-                  <p className="mt-1 text-[13px] font-semibold uppercase tracking-[0.1em] text-slate-500">{metric.label}</p>
-                </div>
-              ))}
+            <div className="mt-6 overflow-hidden border-y border-slate-300">
+              <div className="grid sm:grid-cols-3 sm:divide-x sm:divide-slate-300">
+                {sc12BusinessOutcomeMetrics[lang].map((metric) => (
+                  <div
+                    key={metric.label}
+                    className="flex min-h-[112px] flex-col justify-center border-b border-slate-300 px-5 py-5 last:border-b-0 sm:border-b-0"
+                  >
+                    <p className="text-[28px] font-semibold leading-none tracking-[-0.02em] text-slate-950">{metric.value}</p>
+                    <p className="mt-3 text-[12px] font-semibold uppercase leading-5 tracking-[0.1em] text-slate-500">{metric.label}</p>
+                  </div>
+                ))}
+              </div>
             </div>
             <p className="mt-4 text-[12px] leading-6 text-slate-500">{c.economicsNote}</p>
           </Section>
