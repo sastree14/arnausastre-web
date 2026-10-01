@@ -45,7 +45,7 @@ const COPY = {
       },
       {
         title: 'Partner analítico y tecnológico',
-        hook: '¿Necesitas capacidad recurrente sin construir todo el equipo dentro?',
+        hook: '¿Necesitas capacidad recurrente sin construir todo un equipo interno?',
         body: 'Conservamos contexto y activamos la especialidad necesaria cuando aparece una nueva necesidad.',
         primary: 'Explorar el modelo partner',
         primaryHref: '/partner-analitico',
@@ -66,15 +66,16 @@ const COPY = {
     exploreLabel: '¿QUIERES SEGUIR EXPLORANDO?',
     exploreTitle: 'Conócenos mejor antes de dar el siguiente paso.',
     exploreLinks: [
-      ['Casos', 'Mira problemas reales y cómo los hemos abordado de principio a fin.', '/projects', 'Explorar casos'],
-      ['Conocimiento', 'Lee artículos y análisis para ver cómo pensamos y dónde aportamos valor.', '/knowledge', 'Leer artículos'],
-      ['Por qué SC-Analytics', 'Entiende nuestra forma de trabajar y el tipo de relación que queremos construir.', '/about', 'Conocernos mejor'],
+      ['Casos de Éxito', '', '/projects', 'Explorar casos'],
+      ['Conocimiento empresarial', '', '/knowledge', 'Leer artículos'],
+      ['Por qué trabajar con SC-Analytics', '', '/about', 'Conocernos mejor'],
     ],
 
     finalLabel: 'SIN COMPROMISO',
-    finalTitle: 'Cuéntanos qué quieres mejorar. Te diremos si podemos aportar valor.',
+    finalTitle: 'Cuéntanos qué quieres mejorar y te diremos cómo podemos ayudarte.',
     finalBody: 'Explícanos qué quieres mejorar. Si vemos una forma razonable de ayudarte, te diremos cuál sería el siguiente paso.',
     finalCta: 'Cuéntanos tu caso',
+    finalAlt: '¿Prefieres seguir explorando? Mira nuestros casos',
   },
 
   ca: {
@@ -118,7 +119,7 @@ const COPY = {
       },
       {
         title: 'Partner analític i tecnològic',
-        hook: 'Necessites capacitat recurrent sense construir tot l’equip internament?',
+        hook: 'Necessites capacitat recurrent sense construir tot un equip intern?',
         body: 'Conservem context i activem l’especialitat necessària quan apareix una nova necessitat.',
         primary: 'Explorar el model partner',
         primaryHref: '/partner-analitico',
@@ -139,15 +140,16 @@ const COPY = {
     exploreLabel: 'VOLS SEGUIR EXPLORANT?',
     exploreTitle: 'Coneix-nos millor abans de fer el següent pas.',
     exploreLinks: [
-      ['Casos', 'Mira problemes reals i com els hem abordat de principi a fi.', '/projects', 'Explorar casos'],
-      ['Coneixement', 'Llegeix articles i anàlisis per veure com pensem i on aportem valor.', '/knowledge', 'Llegir articles'],
-      ['Per què SC-Analytics', 'Entén la nostra manera de treballar i el tipus de relació que volem construir.', '/about', 'Conèixer-nos millor'],
+      ['Casos d’èxit', '', '/projects', 'Explorar casos'],
+      ['Coneixement empresarial', '', '/knowledge', 'Llegir articles'],
+      ['Per què treballar amb SC-Analytics', '', '/about', 'Conèixer-nos millor'],
     ],
 
     finalLabel: 'SENSE COMPROMÍS',
-    finalTitle: 'Explica’ns què vols millorar. Et direm si podem aportar valor.',
+    finalTitle: 'Explica’ns què vols millorar i et direm com et podem ajudar.',
     finalBody: 'Explica’ns què vols millorar. Si veiem una forma raonable d’ajudar-te, et direm quin seria el següent pas.',
     finalCta: 'Explica’ns el teu cas',
+    finalAlt: 'Prefereixes seguir explorant? Mira els nostres casos',
   },
 
   en: {
@@ -191,7 +193,7 @@ const COPY = {
       },
       {
         title: 'Analytical & technology partner',
-        hook: 'Need recurring capability without building the entire team in-house?',
+        hook: 'Need recurring capability without building an entire internal team?',
         body: 'We retain context and activate the right specialism when a new need appears.',
         primary: 'Explore the partner model',
         primaryHref: '/partner-analitico',
@@ -212,15 +214,16 @@ const COPY = {
     exploreLabel: 'WANT TO KEEP EXPLORING?',
     exploreTitle: 'Get to know us better before taking the next step.',
     exploreLinks: [
-      ['Case studies', 'See real problems and how we approached them from beginning to end.', '/projects', 'Explore cases'],
-      ['Knowledge', 'Read articles and analysis to see how we think and where we create value.', '/knowledge', 'Read articles'],
-      ['Why SC-Analytics', 'Understand how we work and the kind of relationship we aim to build.', '/about', 'Get to know us'],
+      ['Success stories', '', '/projects', 'Explore cases'],
+      ['Business knowledge', '', '/knowledge', 'Read articles'],
+      ['Why work with SC-Analytics', '', '/about', 'Get to know us'],
     ],
 
     finalLabel: 'NO COMMITMENT',
-    finalTitle: 'Tell us what you want to improve. We will tell you whether we can create value.',
+    finalTitle: 'Tell us what you want to improve and we will show you how we can help.',
     finalBody: 'Tell us what you want to improve. If we see a sensible way to help, we will tell you the next step.',
     finalCta: 'Tell us about your case',
+    finalAlt: 'Prefer to keep exploring? Browse our case studies',
   },
 } as const
 
@@ -271,10 +274,14 @@ export default function ServicesPage() {
           </div>
 
           <div className="mt-8 grid border-l border-t border-slate-300 md:grid-cols-2 lg:grid-cols-3">
-            {t.capabilities.map(([title, body], index) => (
-              <article key={title} className={`flex min-h-[190px] flex-col justify-center border-b border-r border-slate-300 p-7 ${index === 1 || index === 3 || index === 5 ? 'bg-[#FAFAF7]' : 'bg-white'}`}>
-                <h3 className="text-[24px] font-semibold leading-7 text-slate-950">{title}</h3>
-                <p className="mt-3 max-w-sm text-[17px] leading-7 text-slate-700">{body}</p>
+            {t.capabilities.map(([title], index) => (
+              <article
+                key={title}
+                className={`flex min-h-[175px] items-center border-b border-r border-slate-300 p-7 md:p-8 ${
+                  index % 2 === 0 ? 'bg-[#F4F1EA]' : 'bg-[#EDF2F6]'
+                }`}
+              >
+                <h3 className="max-w-xs text-[26px] font-semibold leading-8 text-slate-950">{title}</h3>
               </article>
             ))}
           </div>
@@ -290,12 +297,28 @@ export default function ServicesPage() {
 
           <div className="mt-8 grid border-l border-t border-slate-300 lg:grid-cols-3">
             {t.models.map((model, index) => (
-              <article key={model.title} className={`flex min-h-[355px] flex-col border-b border-r border-slate-300 p-6 md:p-7 ${index === 1 ? 'bg-[#0D1B2A] text-white' : 'bg-white text-slate-950'}`}>
+              <article key={model.title} className={`flex min-h-[330px] flex-col border-b border-r border-slate-300 p-6 md:p-7 ${index === 1 ? 'bg-[#0D1B2A] text-white' : 'bg-white text-slate-950'}`}>
                 <h3 className={`text-[30px] leading-tight ${index === 1 ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{model.title}</h3>
-                <p className={`mt-4 text-[18px] font-semibold leading-7 ${index === 1 ? 'text-white' : 'text-slate-800'}`}>{model.hook}</p>
-                <p className={`mt-3 flex-1 text-[17px] leading-7 ${index === 1 ? 'text-[#D5E1EB]' : 'text-slate-700'}`}>{model.body}</p>
-                <Link href={model.primaryHref} className={`mt-6 inline-flex w-fit px-4 py-2.5 text-[15px] font-semibold ${index === 1 ? 'bg-white text-[#0D1B2A]' : 'bg-slate-950 text-white'}`}>{model.primary} →</Link>
-                <Link href={model.secondaryHref} className={`mt-4 text-[15px] font-semibold ${index === 1 ? 'text-[#EAF0F6]' : 'text-indigo-700'}`}>{model.secondary} →</Link>
+                <p className={`mt-5 text-[19px] font-semibold leading-7 ${index === 1 ? 'text-white' : 'text-slate-850'}`}>{model.hook}</p>
+
+                <div className={`mt-auto border-t pt-6 ${index === 1 ? 'border-[#496C8A]' : 'border-slate-300'}`}>
+                  <Link
+                    href={model.primaryHref}
+                    className={`flex w-full items-center justify-between px-4 py-3.5 text-[16px] font-semibold ${
+                      index === 1 ? 'bg-white text-[#0D1B2A]' : 'bg-slate-950 text-white'
+                    }`}
+                  >
+                    <span>{model.primary}</span><span>→</span>
+                  </Link>
+                  <Link
+                    href={model.secondaryHref}
+                    className={`mt-4 flex w-full items-center justify-between text-[16px] font-semibold ${
+                      index === 1 ? 'text-[#EAF0F6]' : 'text-indigo-700'
+                    }`}
+                  >
+                    <span>{model.secondary}</span><span>→</span>
+                  </Link>
+                </div>
               </article>
             ))}
           </div>
@@ -310,11 +333,10 @@ export default function ServicesPage() {
           </div>
 
           <div className="mx-auto mt-7 grid max-w-5xl border-l border-t border-slate-300 md:grid-cols-3">
-            {t.exploreLinks.map(([title, body, href, cta]) => (
-              <Link key={href} href={href} className="group flex min-h-[220px] flex-col items-center justify-center border-b border-r border-slate-300 p-6 text-center transition hover:bg-[#FAFAF7]">
-                <h3 className="text-[23px] font-semibold text-slate-950">{title}</h3>
-                <p className="mt-3 max-w-[260px] text-[16px] leading-7 text-slate-700">{body}</p>
-                <p className="mt-5 text-[15px] font-semibold text-indigo-700">{cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
+            {t.exploreLinks.map(([title, , href, cta]) => (
+              <Link key={href} href={href} className="group flex min-h-[205px] flex-col items-center justify-center border-b border-r border-slate-300 p-7 text-center transition hover:bg-[#FAFAF7]">
+                <h3 className="max-w-[260px] text-[27px] font-semibold leading-8 text-slate-950">{title}</h3>
+                <p className="mt-7 text-[17px] font-semibold text-indigo-700">{cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
               </Link>
             ))}
           </div>
@@ -322,13 +344,18 @@ export default function ServicesPage() {
       </section>
 
       <section className="border-b border-slate-300 bg-[#F4F1EA]">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-6 py-10 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.finalLabel}</p>
-            <h2 className="mt-2 max-w-4xl text-[30px] leading-tight text-slate-950 sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.finalTitle}</h2>
-            <p className="mt-3 max-w-3xl text-[17px] leading-7 text-slate-700">{t.finalBody}</p>
+        <div className="mx-auto max-w-7xl px-6 py-10 md:py-12">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.finalLabel}</p>
+          <h2 className="mt-3 text-[34px] font-medium leading-tight text-slate-950 sm:text-[40px] xl:whitespace-nowrap" style={{ fontFamily: 'var(--font-playfair)' }}>{t.finalTitle}</h2>
+
+          <div className="mt-7 flex flex-col gap-4 border-t border-slate-300 pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <Link href="/projects" className="text-[16px] font-semibold text-indigo-700 transition hover:text-indigo-900">
+              {t.finalAlt} →
+            </Link>
+            <Link href="/contact?intent=discovery" className="inline-flex bg-slate-950 px-6 py-3.5 text-[16px] font-semibold text-white transition hover:bg-slate-800">
+              {t.finalCta} →
+            </Link>
           </div>
-          <Link href="/contact?intent=discovery" className="inline-flex shrink-0 bg-slate-950 px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-slate-800">{t.finalCta}</Link>
         </div>
       </section>
     </main>
