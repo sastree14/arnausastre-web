@@ -52,7 +52,7 @@ export function HorizonDecisionVisual({ data, lang }: { data: HorizonLogic; lang
   return (
     <div className="border border-[#D8DDE3] bg-[#FAFAF7]">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D8DDE3] px-6 py-4">
-        <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-600">
+        <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-700">
           {localized?.title || 'Horizon-level evaluation'}
         </p>
         <p className="text-[13px] text-slate-500">
@@ -288,12 +288,12 @@ export function EvidenceFrameworkVisual({ data, lang }: { data: Evidence; lang?:
     <div className="overflow-hidden border border-[#D8DDE3] bg-white">
       <div className="grid border-b border-[#D8DDE3] md:grid-cols-[3fr_2fr]">
         <div className="border-b border-[#D8DDE3] px-6 py-4 md:border-b-0 md:border-r">
-          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-600">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-700">
             {localized?.left || 'Forecast evaluation'}
           </p>
         </div>
         <div className="px-6 py-4">
-          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-600">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-700">
             {localized?.right || 'Validation coverage'}
           </p>
         </div>
@@ -309,11 +309,11 @@ export function EvidenceFrameworkVisual({ data, lang }: { data: Evidence; lang?:
               key={metric.label}
               className="flex min-h-[176px] flex-col border-b border-[#D8DDE3] px-5 py-5 last:border-b-0 md:border-b-0"
             >
-              <p className="min-h-[30px] text-[12px] font-semibold uppercase leading-[1.25] tracking-[0.1em] text-slate-500">
+              <p className="min-h-[30px] text-[12px] font-semibold uppercase leading-[1.25] tracking-[0.1em] text-indigo-700">
                 {label}
               </p>
               <p className="mt-3 text-[30px] font-semibold leading-none tracking-[-0.02em] text-[#1D2B44]">{metric.value}</p>
-              <p className="mt-auto pt-4 text-[12px] leading-5 text-slate-500">{note}</p>
+              <p className="mt-auto pt-4 text-[12px] leading-5 text-slate-600">{note}</p>
             </div>
           )
         })}
