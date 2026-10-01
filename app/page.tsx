@@ -54,7 +54,7 @@ const COPY = {
       },
       {
         number: '04',
-        title: 'Partner Data & AI',
+        title: 'Partner analítico y tecnológico',
         hook: '¿Buscas un proveedor tecnológico y analítico con continuidad?',
         body: 'Amplía capacidad sin construir todo el equipo dentro y conserva contexto entre proyectos y decisiones.',
         href: '/partner-analitico',
@@ -146,7 +146,7 @@ const COPY = {
       },
       {
         number: '04',
-        title: 'Partner Data & AI',
+        title: 'Partner analític i tecnològic',
         hook: 'Busques un proveïdor tecnològic i analític amb continuïtat?',
         body: 'Amplia capacitat sense construir tot l’equip internament i conserva context entre projectes i decisions.',
         href: '/partner-analitico',
@@ -238,7 +238,7 @@ const COPY = {
       },
       {
         number: '04',
-        title: 'Data & AI Partner',
+        title: 'Analytics & technology partner',
         hook: 'Looking for ongoing technology and analytical capability?',
         body: 'Expand capability without building the whole team in-house and retain context between projects and decisions.',
         href: '/partner-analitico',
