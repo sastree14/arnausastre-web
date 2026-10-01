@@ -163,8 +163,8 @@ export const sc12CaseStudyCopy: Record<SiteLanguage, {
     evidenceTitle: 'Measure the forecast. Translate the decision into business economics.',
     evidenceBody: 'Measure error and bias first. Then translate forecast quality into stock, service and working-capital decisions.',
     technicalLabel: '06 · TECHNICAL PROOF',
-    technicalTitle: 'Enough technical depth to verify the work — without making the case study a code review.',
-    technicalBody: 'The public repository exposes the implementation, validation and limitations so the work can be inspected rather than simply claimed.',
+    technicalTitle: 'Review the structure, models and code behind this project.',
+    technicalBody: 'Open the repository to inspect how the forecasting system is organised, validated and implemented.',
     technicalProof: 'Python · Statsmodels · Machine Learning · FastAPI · PostgreSQL · Prefect',
     limitationsLabel: 'Boundaries',
     limitations: [
@@ -215,8 +215,8 @@ export const sc12CaseStudyCopy: Record<SiteLanguage, {
     evidenceTitle: 'Medir el forecast y traducir la decisión a economía de negocio.',
     evidenceBody: 'Primero medimos error y sesgo. Después traducimos la calidad del forecast a decisiones de stock, servicio y capital circulante.',
     technicalLabel: '06 · PRUEBA TÉCNICA',
-    technicalTitle: 'Profundidad suficiente para verificar el trabajo, sin convertir el caso en una revisión de código.',
-    technicalBody: 'El repositorio público expone implementación, validación y límites para que el trabajo pueda inspeccionarse, no simplemente afirmarse.',
+    technicalTitle: 'Revisa la estructura, los modelos y el código detrás de este proyecto.',
+    technicalBody: 'Abre el repositorio para ver cómo está organizado, validado e implementado el sistema de forecasting.',
     technicalProof: 'Python · Statsmodels · Machine Learning · FastAPI · PostgreSQL · Prefect',
     limitationsLabel: 'Límites',
     limitations: [
@@ -267,8 +267,8 @@ export const sc12CaseStudyCopy: Record<SiteLanguage, {
     evidenceTitle: 'Mesurar el forecast i traduir la decisió a economia de negoci.',
     evidenceBody: 'Primer mesurem error i biaix. Després traduïm la qualitat del forecast a decisions d’estoc, servei i capital circulant.',
     technicalLabel: '06 · PROVA TÈCNICA',
-    technicalTitle: 'Profunditat suficient per verificar la feina, sense convertir el cas en una revisió de codi.',
-    technicalBody: 'El repositori públic exposa implementació, validació i límits perquè la feina es pugui inspeccionar, no simplement afirmar.',
+    technicalTitle: 'Revisa l’estructura, els models i el codi darrere d’aquest projecte.',
+    technicalBody: 'Obre el repositori per veure com està organitzat, validat i implementat el sistema de forecasting.',
     technicalProof: 'Python · Statsmodels · Machine Learning · FastAPI · PostgreSQL · Prefect',
     limitationsLabel: 'Límits',
     limitations: [
