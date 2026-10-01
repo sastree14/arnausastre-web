@@ -1,116 +1,231 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
 const COPY = {
   es: {
     eyebrow: 'CÓMO TRABAJAMOS',
-    title: 'Del problema de negocio a un sistema que se utiliza de verdad.',
-    intro: 'No empezamos por una herramienta. Definimos qué debería mejorar, qué decisión importa, qué restricciones existen y qué solución merece la pena construir.',
-    cta: 'Hablar de un problema',
-    processLabel: 'PROCESO',
-    processTitle: 'Cuatro pasos. Una lógica: comprender antes de construir.',
+    title: 'Comprender antes de construir.',
+    intro: 'Nuestra forma de trabajar parte de una idea sencilla: una buena solución empieza entendiendo qué decisión importa, por qué importa y qué complejidad merece realmente el problema.',
+    primary: 'Hablar de un problema',
+    secondary: 'Ver casos reales',
+
+    mantraLabel: 'NUESTRO MANTRA',
+    mantraTitle: 'Cuatro pasos que utilizamos como criterio de trabajo.',
+    mantraIntro: 'No es una metodología decorativa. Es la forma de evitar empezar por una herramienta, construir demasiado o perder de vista el impacto.',
     steps: [
-      ['01', 'Entender', 'Objetivo, decisión, usuarios, restricciones, datos y economía del problema.'],
-      ['02', 'Diseñar', 'Alternativas, alcance, arquitectura y criterio de éxito antes de desarrollar.'],
-      ['03', 'Construir', 'Un sistema usable, integrado y validado en el contexto real de trabajo.'],
-      ['04', 'Medir', 'Impacto, limitaciones y siguientes mejoras solo cuando la evidencia las justifica.'],
+      ['01', 'Comprender', 'Negocio, decisión, usuarios, datos, restricciones y economía del problema.', 'Antes de hablar de tecnología, entendemos qué debería cambiar.'],
+      ['02', 'Diseñar', 'Alternativas, alcance, arquitectura y criterio de éxito.', 'Elegimos la solución más simple que pueda resolver el problema con rigor.'],
+      ['03', 'Construir', 'Desarrollo, validación, integración y documentación.', 'Construimos algo utilizable en operaciones reales, no una demo aislada.'],
+      ['04', 'Mejorar', 'Impacto, límites, seguimiento y siguientes decisiones.', 'Evolucionamos solo cuando la evidencia justifica añadir más complejidad.'],
     ],
-    capabilitiesLabel: 'QUÉ PODEMOS ACTIVAR',
-    capabilitiesTitle: 'La capacidad cambia según el problema.',
-    capabilitiesIntro: 'Selecciona una línea para ver cuándo suele tener sentido y qué podemos construir alrededor de ella.',
+
+    capabilitiesLabel: 'CAPACIDAD SEGÚN EL PROBLEMA',
+    capabilitiesTitle: 'Distintas decisiones requieren herramientas distintas.',
+    capabilitiesIntro: 'Forecasting, optimización, machine learning o automatización no son productos cerrados. Son capacidades que activamos cuando encajan con el problema.',
     capabilities: [
-      ['Forecasting & planning', 'Cuando necesitas anticipar demanda, ventas, carga, caja o capacidad y convertir esa previsión en una decisión.', ['Demand forecasting', 'Financial forecasting', 'Inventory planning', 'Scenario planning']],
-      ['Optimización & OR', 'Cuando existe una decisión de asignación con restricciones, costes y múltiples alternativas posibles.', ['Routing', 'Scheduling', 'Facility location', 'Capacity allocation']],
-      ['Machine learning', 'Cuando una predicción o clasificación cambia una acción y el coste del error puede medirse.', ['Risk scoring', 'Propensity', 'Anomaly detection', 'Predictive systems']],
-      ['Inteligencia artificial y automatización', 'Cuando un proceso requiere contexto, repetición y coordinación entre datos, reglas, documentos o personas.', ['AI agents', 'Document workflows', 'Operational copilots', 'Approvals']],
-      ['Analytics & BI', 'Cuando el problema es saber qué está pasando, por qué y qué debería hacerse después.', ['KPI systems', 'Management reporting', 'Decision dashboards', 'What-if analysis']],
-      ['Simulation & modelling', 'Cuando conviene probar escenarios y trade-offs antes de cambiar una operación real.', ['Simulation', 'Queueing', 'Markov models', 'Scenario modelling']],
+      ['Forecasting & planning', 'Anticipar demanda, ventas, caja, inventario o capacidad.', 'Previsión → planificación'],
+      ['Optimización', 'Asignar recursos, rutas, horarios, capacidad o presupuesto bajo restricciones.', 'Restricciones → decisión'],
+      ['Machine learning', 'Predecir, clasificar o priorizar cuando el coste del error puede medirse.', 'Señales → acción'],
+      ['Inteligencia artificial y automatización', 'Reducir trabajo manual y coordinar procesos con contexto, reglas y aprobación humana.', 'Proceso → automatización'],
+      ['Analytics & BI', 'Entender qué está pasando, por qué y qué debería ocurrir después.', 'Datos → criterio'],
+      ['Simulación y modelización', 'Probar escenarios y trade-offs antes de cambiar una operación real.', 'Escenario → decisión'],
     ],
-    modelsLabel: 'FORMAS DE TRABAJAR',
-    modelsTitle: 'La relación también se adapta al problema.',
+    noBuild: 'Y si una solución operativa más sencilla resuelve el problema, si los datos no sostienen el caso o si el retorno no compensa la complejidad, también forma parte de nuestro trabajo decirlo.',
+
+    modelsLabel: 'FORMAS DE COLABORAR',
+    modelsTitle: 'Entra por el punto que más se parezca a tu situación.',
     models: [
-      ['Proyecto definido', 'Un objetivo, un alcance y un resultado concreto. Ideal cuando existe un problema claro que resolver.', 'Ver casos', '/projects'],
-      ['Partner analítico externo', 'Capacidad recurrente para empresas que quieren continuidad sin construir todas las especialidades internamente.', 'Ver modelo partner', '/partner-analitico'],
-      ['Discovery / diagnóstico', 'Cuando todavía no sabes qué solución necesitas. Empezamos identificando dónde existe valor y qué no merece la pena construir.', 'Reservar discovery', '/contact?intent=discovery'],
+      {
+        title: 'Proyecto individualizado',
+        hook: '¿Tienes un problema concreto que quieres resolver?',
+        body: 'Definimos alcance, resultado esperado y una solución proporcional al problema. Sin convertir un proyecto claro en una relación más grande de lo necesario.',
+        primary: 'Cuéntanoslo sin compromiso',
+        primaryHref: '/contact?intent=problem',
+        secondary: '¿No estás seguro? Mira nuestros casos',
+        secondaryHref: '/projects',
+      },
+      {
+        title: 'Partner analítico y tecnológico',
+        hook: '¿Necesitas capacidad recurrente sin construir todo el equipo dentro?',
+        body: 'Conservamos contexto entre proyectos y activamos la especialidad necesaria cuando aparece una nueva necesidad.',
+        primary: 'Explorar el modelo partner',
+        primaryHref: '/partner-analitico',
+        secondary: 'Comprueba cómo pensamos en nuestros artículos',
+        secondaryHref: '/knowledge',
+      },
+      {
+        title: 'Discovery',
+        hook: '¿Sabes que algo podría mejorar, pero todavía no sabes qué construir?',
+        body: 'Empezamos entendiendo la oportunidad, las restricciones y si existe un caso razonable antes de proponer tecnología.',
+        primary: 'Reservar una primera conversación',
+        primaryHref: '/contact?intent=discovery',
+        secondary: 'Ver por qué trabajamos así',
+        secondaryHref: '/about',
+      },
     ],
-    noBuild: 'Si una solución más simple resuelve el problema, si los datos no sostienen el caso o si el retorno no compensa la complejidad, la recomendación correcta puede ser no construir.',
+
+    evidenceLabel: '¿QUIERES SEGUIR EXPLORANDO?',
+    evidenceTitle: 'Antes de contactar también puedes comprobar nuestro criterio.',
+    evidenceLinks: [
+      ['Casos', 'Ve problemas reales, decisiones y resultados con contexto.', '/projects', 'Explorar casos'],
+      ['Conocimiento', 'Lee análisis que muestran cómo pensamos antes de construir.', '/knowledge', 'Leer artículos'],
+      ['Por qué SC-Analytics', 'Entiende los principios detrás de nuestra forma de trabajar.', '/about', 'Conocernos mejor'],
+    ],
+
     finalTitle: 'Trae el problema. La tecnología viene después.',
-    finalBody: 'Una primera conversación sirve para entender si existe una oportunidad real y cuál sería el siguiente paso proporcional.',
+    finalBody: 'La primera conversación sirve para entender si existe una oportunidad real. Si no la hay, también es una respuesta útil.',
     finalCta: 'Empezar una conversación',
   },
+
   ca: {
     eyebrow: 'COM TREBALLEM',
-    title: 'Del problema de negoci a un sistema que s’utilitza de veritat.',
-    intro: 'No comencem per una eina. Definim què hauria de millorar, quina decisió importa, quines restriccions existeixen i quina solució val la pena construir.',
-    cta: 'Parlar d’un problema',
-    processLabel: 'PROCÉS',
-    processTitle: 'Quatre passos. Una lògica: comprendre abans de construir.',
+    title: 'Comprendre abans de construir.',
+    intro: 'La nostra manera de treballar parteix d’una idea senzilla: una bona solució comença entenent quina decisió importa, per què importa i quina complexitat mereix realment el problema.',
+    primary: 'Parlar d’un problema',
+    secondary: 'Veure casos reals',
+
+    mantraLabel: 'EL NOSTRE MANTRA',
+    mantraTitle: 'Quatre passos que utilitzem com a criteri de treball.',
+    mantraIntro: 'No és una metodologia decorativa. És la manera d’evitar començar per una eina, construir massa o perdre de vista l’impacte.',
     steps: [
-      ['01', 'Entendre', 'Objectiu, decisió, usuaris, restriccions, dades i economia del problema.'],
-      ['02', 'Dissenyar', 'Alternatives, abast, arquitectura i criteri d’èxit abans de desenvolupar.'],
-      ['03', 'Construir', 'Un sistema usable, integrat i validat en el context real de treball.'],
-      ['04', 'Mesurar', 'Impacte, limitacions i següents millores només quan l’evidència les justifica.'],
+      ['01', 'Comprendre', 'Negoci, decisió, usuaris, dades, restriccions i economia del problema.', 'Abans de parlar de tecnologia, entenem què hauria de canviar.'],
+      ['02', 'Dissenyar', 'Alternatives, abast, arquitectura i criteri d’èxit.', 'Triem la solució més simple que pugui resoldre el problema amb rigor.'],
+      ['03', 'Construir', 'Desenvolupament, validació, integració i documentació.', 'Construïm alguna cosa utilitzable en operacions reals, no una demo aïllada.'],
+      ['04', 'Millorar', 'Impacte, límits, seguiment i següents decisions.', 'Evolucionem només quan l’evidència justifica afegir més complexitat.'],
     ],
-    capabilitiesLabel: 'QUÈ PODEM ACTIVAR',
-    capabilitiesTitle: 'La capacitat canvia segons el problema.',
-    capabilitiesIntro: 'Selecciona una línia per veure quan sol tenir sentit i què podem construir al seu voltant.',
+
+    capabilitiesLabel: 'CAPACITAT SEGONS EL PROBLEMA',
+    capabilitiesTitle: 'Decisions diferents requereixen eines diferents.',
+    capabilitiesIntro: 'Forecasting, optimització, machine learning o automatització no són productes tancats. Són capacitats que activem quan encaixen amb el problema.',
     capabilities: [
-      ['Forecasting & planning', 'Quan cal anticipar demanda, vendes, càrrega, caixa o capacitat i convertir la previsió en una decisió.', ['Demand forecasting', 'Financial forecasting', 'Inventory planning', 'Scenario planning']],
-      ['Optimització & OR', 'Quan existeix una decisió d’assignació amb restriccions, costos i múltiples alternatives possibles.', ['Routing', 'Scheduling', 'Facility location', 'Capacity allocation']],
-      ['Machine learning', 'Quan una predicció o classificació canvia una acció i el cost de l’error es pot mesurar.', ['Risk scoring', 'Propensity', 'Anomaly detection', 'Predictive systems']],
-      ['Intel·ligència artificial i automatització', 'Quan un procés requereix context, repetició i coordinació entre dades, regles, documents o persones.', ['AI agents', 'Document workflows', 'Operational copilots', 'Approvals']],
-      ['Analytics & BI', 'Quan el problema és saber què passa, per què i què s’hauria de fer després.', ['KPI systems', 'Management reporting', 'Decision dashboards', 'What-if analysis']],
-      ['Simulation & modelling', 'Quan convé provar escenaris i trade-offs abans de canviar una operació real.', ['Simulation', 'Queueing', 'Markov models', 'Scenario modelling']],
+      ['Forecasting & planning', 'Anticipar demanda, vendes, caixa, inventari o capacitat.', 'Previsió → planificació'],
+      ['Optimització', 'Assignar recursos, rutes, horaris, capacitat o pressupost sota restriccions.', 'Restriccions → decisió'],
+      ['Machine learning', 'Predir, classificar o prioritzar quan el cost de l’error es pot mesurar.', 'Senyals → acció'],
+      ['Intel·ligència artificial i automatització', 'Reduir feina manual i coordinar processos amb context, regles i aprovació humana.', 'Procés → automatització'],
+      ['Analytics & BI', 'Entendre què passa, per què i què hauria de passar després.', 'Dades → criteri'],
+      ['Simulació i modelització', 'Provar escenaris i trade-offs abans de canviar una operació real.', 'Escenari → decisió'],
     ],
-    modelsLabel: 'FORMES DE TREBALLAR',
-    modelsTitle: 'La relació també s’adapta al problema.',
+    noBuild: 'I si una solució operativa més senzilla resol el problema, si les dades no sostenen el cas o si el retorn no compensa la complexitat, també forma part de la nostra feina dir-ho.',
+
+    modelsLabel: 'FORMES DE COL·LABORAR',
+    modelsTitle: 'Entra pel punt que més s’assembli a la teva situació.',
     models: [
-      ['Projecte definit', 'Un objectiu, un abast i un resultat concret. Ideal quan existeix un problema clar per resoldre.', 'Veure casos', '/projects'],
-      ['Partner analític extern', 'Capacitat recurrent per a empreses que volen continuïtat sense construir totes les especialitats internament.', 'Veure model partner', '/partner-analitico'],
-      ['Discovery / diagnòstic', 'Quan encara no saps quina solució necessites. Comencem identificant on existeix valor i què no val la pena construir.', 'Reservar discovery', '/contact?intent=discovery'],
+      {
+        title: 'Projecte individualitzat',
+        hook: 'Tens un problema concret que vols resoldre?',
+        body: 'Definim abast, resultat esperat i una solució proporcional al problema. Sense convertir un projecte clar en una relació més gran del necessari.',
+        primary: 'Explica’ns-ho sense compromís',
+        primaryHref: '/contact?intent=problem',
+        secondary: 'No ho tens clar? Mira els nostres casos',
+        secondaryHref: '/projects',
+      },
+      {
+        title: 'Partner analític i tecnològic',
+        hook: 'Necessites capacitat recurrent sense construir tot l’equip internament?',
+        body: 'Conservem context entre projectes i activem l’especialitat necessària quan apareix una nova necessitat.',
+        primary: 'Explorar el model partner',
+        primaryHref: '/partner-analitico',
+        secondary: 'Comprova com pensem als nostres articles',
+        secondaryHref: '/knowledge',
+      },
+      {
+        title: 'Discovery',
+        hook: 'Saps que alguna cosa podria millorar, però encara no saps què construir?',
+        body: 'Comencem entenent l’oportunitat, les restriccions i si existeix un cas raonable abans de proposar tecnologia.',
+        primary: 'Reservar una primera conversa',
+        primaryHref: '/contact?intent=discovery',
+        secondary: 'Veure per què treballem així',
+        secondaryHref: '/about',
+      },
     ],
-    noBuild: 'Si una solució més simple resol el problema, si les dades no sostenen el cas o si el retorn no compensa la complexitat, la recomanació correcta pot ser no construir.',
+
+    evidenceLabel: 'VOLS SEGUIR EXPLORANT?',
+    evidenceTitle: 'Abans de contactar també pots comprovar el nostre criteri.',
+    evidenceLinks: [
+      ['Casos', 'Veu problemes reals, decisions i resultats amb context.', '/projects', 'Explorar casos'],
+      ['Coneixement', 'Llegeix anàlisis que mostren com pensem abans de construir.', '/knowledge', 'Llegir articles'],
+      ['Per què SC-Analytics', 'Entén els principis darrere la nostra manera de treballar.', '/about', 'Conèixer-nos millor'],
+    ],
+
     finalTitle: 'Porta el problema. La tecnologia ve després.',
-    finalBody: 'Una primera conversa serveix per entendre si existeix una oportunitat real i quin seria el següent pas proporcional.',
+    finalBody: 'La primera conversa serveix per entendre si existeix una oportunitat real. Si no n’hi ha, també és una resposta útil.',
     finalCta: 'Començar una conversa',
   },
+
   en: {
     eyebrow: 'HOW WE WORK',
-    title: 'From a business problem to a system people actually use.',
-    intro: 'We do not start with a tool. We define what should improve, which decision matters, what constraints exist and which solution is worth building.',
-    cta: 'Discuss a problem',
-    processLabel: 'PROCESS',
-    processTitle: 'Four steps. One principle: understand before building.',
+    title: 'Understand before building.',
+    intro: 'Our way of working starts with a simple idea: a good solution begins by understanding which decision matters, why it matters and how much complexity the problem actually deserves.',
+    primary: 'Discuss a problem',
+    secondary: 'See real cases',
+
+    mantraLabel: 'OUR MANTRA',
+    mantraTitle: 'Four steps we use as a working standard.',
+    mantraIntro: 'This is not a decorative methodology. It is how we avoid starting with a tool, overbuilding or losing sight of the outcome.',
     steps: [
-      ['01', 'Understand', 'Objective, decision, users, constraints, data and the economics of the problem.'],
-      ['02', 'Design', 'Alternatives, scope, architecture and success criteria before development begins.'],
-      ['03', 'Build', 'A usable, integrated system validated in the real operating context.'],
-      ['04', 'Measure', 'Impact, limitations and further improvements only where the evidence supports them.'],
+      ['01', 'Understand', 'Business, decision, users, data, constraints and economics.', 'Before discussing technology, we understand what should change.'],
+      ['02', 'Design', 'Alternatives, scope, architecture and success criteria.', 'We choose the simplest solution that can solve the problem rigorously.'],
+      ['03', 'Build', 'Development, validation, integration and documentation.', 'We build something usable in real operations, not an isolated demo.'],
+      ['04', 'Improve', 'Impact, limitations, monitoring and next decisions.', 'We evolve only when evidence justifies adding complexity.'],
     ],
-    capabilitiesLabel: 'WHAT WE CAN ACTIVATE',
-    capabilitiesTitle: 'The capability changes with the problem.',
-    capabilitiesIntro: 'Select a line to see when it tends to make sense and what can be built around it.',
+
+    capabilitiesLabel: 'CAPABILITY AROUND THE PROBLEM',
+    capabilitiesTitle: 'Different decisions require different tools.',
+    capabilitiesIntro: 'Forecasting, optimisation, machine learning or automation are not closed products. They are capabilities we activate when they fit the problem.',
     capabilities: [
-      ['Forecasting & planning', 'When you need to anticipate demand, sales, workload, cash or capacity and turn that forecast into a decision.', ['Demand forecasting', 'Financial forecasting', 'Inventory planning', 'Scenario planning']],
-      ['Optimisation & OR', 'When an allocation decision involves constraints, costs and multiple possible alternatives.', ['Routing', 'Scheduling', 'Facility location', 'Capacity allocation']],
-      ['Machine learning', 'When a prediction or classification changes an action and the cost of error can be measured.', ['Risk scoring', 'Propensity', 'Anomaly detection', 'Predictive systems']],
-      ['Artificial intelligence & automation', 'When a process requires context, repetition and coordination between data, rules, documents or people.', ['AI agents', 'Document workflows', 'Operational copilots', 'Approvals']],
-      ['Analytics & BI', 'When the problem is understanding what is happening, why and what should happen next.', ['KPI systems', 'Management reporting', 'Decision dashboards', 'What-if analysis']],
-      ['Simulation & modelling', 'When scenarios and trade-offs should be tested before changing the real operation.', ['Simulation', 'Queueing', 'Markov models', 'Scenario modelling']],
+      ['Forecasting & planning', 'Anticipate demand, sales, cash, inventory or capacity.', 'Forecast → planning'],
+      ['Optimisation', 'Allocate resources, routes, schedules, capacity or budget under constraints.', 'Constraints → decision'],
+      ['Machine learning', 'Predict, classify or prioritise when the cost of error can be measured.', 'Signals → action'],
+      ['Artificial intelligence & automation', 'Reduce manual work and coordinate processes with context, rules and human approval.', 'Process → automation'],
+      ['Analytics & BI', 'Understand what is happening, why and what should happen next.', 'Data → judgment'],
+      ['Simulation & modelling', 'Test scenarios and trade-offs before changing a real operation.', 'Scenario → decision'],
     ],
+    noBuild: 'And if a simpler operational change solves the problem, the data does not support the case or the expected return does not justify the complexity, saying so is part of the work too.',
+
     modelsLabel: 'WAYS TO WORK TOGETHER',
-    modelsTitle: 'The engagement adapts to the problem too.',
+    modelsTitle: 'Enter through the option that looks most like your situation.',
     models: [
-      ['Defined project', 'One objective, one scope and a concrete outcome. Best when there is a clear problem to solve.', 'See case studies', '/projects'],
-      ['External analytical partner', 'Ongoing capability for companies that want continuity without building every specialism in-house.', 'Explore partner model', '/partner-analitico'],
-      ['Discovery / diagnostic', 'When the solution is not yet clear. We start by identifying where value exists and what should not be built.', 'Book discovery', '/contact?intent=discovery'],
+      {
+        title: 'Defined project',
+        hook: 'Do you have a concrete problem you want to solve?',
+        body: 'We define scope, expected outcome and a proportionate solution without turning a clear project into a larger relationship than necessary.',
+        primary: 'Tell us without commitment',
+        primaryHref: '/contact?intent=problem',
+        secondary: 'Not sure yet? Browse our cases',
+        secondaryHref: '/projects',
+      },
+      {
+        title: 'Analytical & technology partner',
+        hook: 'Need recurring capability without building the entire team in-house?',
+        body: 'We retain context between projects and activate the right specialism when a new need appears.',
+        primary: 'Explore the partner model',
+        primaryHref: '/partner-analitico',
+        secondary: 'See how we think in our articles',
+        secondaryHref: '/knowledge',
+      },
+      {
+        title: 'Discovery',
+        hook: 'Know something could improve, but not yet sure what to build?',
+        body: 'We start by understanding the opportunity, constraints and whether there is a reasonable case before proposing technology.',
+        primary: 'Book a first conversation',
+        primaryHref: '/contact?intent=discovery',
+        secondary: 'See why we work this way',
+        secondaryHref: '/about',
+      },
     ],
-    noBuild: 'If a simpler change solves the problem, the data does not support the case or the expected return does not justify the complexity, the correct recommendation may be not to build.',
+
+    evidenceLabel: 'WANT TO KEEP EXPLORING?',
+    evidenceTitle: 'Before contacting us, you can also test our judgment.',
+    evidenceLinks: [
+      ['Case studies', 'See real problems, decisions and outcomes with context.', '/projects', 'Explore cases'],
+      ['Knowledge', 'Read analysis that shows how we think before building.', '/knowledge', 'Read articles'],
+      ['Why SC-Analytics', 'Understand the principles behind our way of working.', '/about', 'Get to know us'],
+    ],
+
     finalTitle: 'Bring the problem. Technology comes later.',
-    finalBody: 'A first conversation is enough to understand whether a real opportunity exists and what a proportionate next step would look like.',
+    finalBody: 'The first conversation is about understanding whether a real opportunity exists. If it does not, that is useful information too.',
     finalCta: 'Start a conversation',
   },
 } as const
@@ -118,99 +233,120 @@ const COPY = {
 export default function ServicesPage() {
   const { lang } = useSiteLanguage()
   const t = COPY[lang]
-  const [selected, setSelected] = useState(0)
-  const capability = t.capabilities[selected]
 
   return (
     <main className="bg-white text-slate-950">
-      <section className="border-b border-slate-800 bg-slate-950 text-white">
+      <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-16 md:py-20 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-4xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-300">{t.eyebrow}</p>
-            <h1 className="mt-5 text-5xl leading-[1.05] md:text-6xl" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">{t.intro}</p>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
+            <h1 className="mt-5 text-[46px] leading-[1.03] tracking-[-0.03em] sm:text-[58px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
+            <p className="mt-6 max-w-3xl text-[17px] leading-8 text-[#EAF0F6]">{t.intro}</p>
           </div>
-          <Link href="/contact?intent=discovery" className="inline-flex shrink-0 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-100">{t.cta}</Link>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/contact?intent=problem" className="bg-white px-5 py-3 text-[13px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">{t.primary}</Link>
+            <Link href="/projects" className="border border-[#7F9BB5] px-5 py-3 text-[13px] font-semibold text-white transition hover:bg-white/5">{t.secondary}</Link>
+          </div>
         </div>
       </section>
 
-      <section className="border-b border-slate-200">
+      <section className="border-b border-slate-300 bg-[#FAFAF7]">
         <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-600">{t.processLabel}</p>
-          <h2 className="mt-4 max-w-3xl text-3xl md:text-4xl" style={{ fontFamily: 'var(--font-playfair)' }}>{t.processTitle}</h2>
-          <div className="mt-8 grid gap-px overflow-hidden rounded-xl border border-slate-200 bg-slate-200 md:grid-cols-4">
-            {t.steps.map(([number, title, body]) => (
-              <article key={number} className="bg-white p-6">
-                <p className="text-xs font-semibold text-indigo-600">{number}</p>
-                <h3 className="mt-4 text-lg font-semibold">{title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600">{body}</p>
+          <div className="grid gap-7 lg:grid-cols-[190px_1fr] lg:gap-10">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.mantraLabel}</p>
+            <div>
+              <h2 className="max-w-4xl text-[36px] leading-[1.06] tracking-[-0.02em] sm:text-[44px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.mantraTitle}</h2>
+              <p className="mt-4 max-w-3xl text-[15px] leading-7 text-slate-600">{t.mantraIntro}</p>
+            </div>
+          </div>
+
+          <div className="mt-9 border-y border-slate-400">
+            {t.steps.map(([number, title, body, statement], index) => (
+              <article key={number} className="grid gap-4 border-b border-slate-300 py-6 last:border-b-0 md:grid-cols-[72px_170px_1fr_1fr] md:items-start">
+                <span className="font-mono text-[12px] text-indigo-700">{number}</span>
+                <h3 className="text-[24px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
+                <p className="text-[14px] leading-7 text-slate-600">{body}</p>
+                <p className={`border-l-2 pl-4 text-[14px] font-medium leading-7 ${index === 0 ? 'border-indigo-600 text-slate-950' : 'border-slate-300 text-slate-700'}`}>{statement}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-slate-50">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-          <div className="max-w-3xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-600">{t.capabilitiesLabel}</p>
-            <h2 className="mt-4 text-3xl md:text-4xl" style={{ fontFamily: 'var(--font-playfair)' }}>{t.capabilitiesTitle}</h2>
-            <p className="mt-4 text-sm leading-7 text-slate-600">{t.capabilitiesIntro}</p>
+      <section className="border-b border-slate-300 bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
+          <div className="grid gap-7 lg:grid-cols-[190px_1fr] lg:gap-10">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.capabilitiesLabel}</p>
+            <div>
+              <h2 className="max-w-4xl text-[34px] leading-[1.06] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.capabilitiesTitle}</h2>
+              <p className="mt-4 max-w-3xl text-[15px] leading-7 text-slate-600">{t.capabilitiesIntro}</p>
+            </div>
           </div>
 
-          <div className="mt-8 grid overflow-hidden rounded-2xl border border-slate-200 bg-white lg:grid-cols-[.4fr_.6fr]">
-            <div className="border-b border-slate-200 p-3 lg:border-b-0 lg:border-r">
-              {t.capabilities.map(([title], index) => (
-                <button
-                  key={title}
-                  type="button"
-                  onClick={() => setSelected(index)}
-                  className={`flex w-full items-center justify-between rounded-lg px-4 py-3 text-left text-sm transition ${
-                    selected === index ? 'bg-slate-950 font-semibold text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
-                  }`}
-                >
-                  <span>{title}</span>
-                  <span className={selected === index ? 'text-indigo-300' : 'text-slate-300'}>→</span>
-                </button>
-              ))}
-            </div>
-            <div className="min-h-[330px] p-7 md:p-10">
-              <p className="text-xs font-semibold text-indigo-600">0{selected + 1}</p>
-              <h3 className="mt-4 text-3xl md:text-4xl" style={{ fontFamily: 'var(--font-playfair)' }}>{capability[0]}</h3>
-              <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600">{capability[1]}</p>
-              <div className="mt-7 flex flex-wrap gap-2">
-                {capability[2].map((item) => <span key={item} className="rounded-md border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs text-slate-600">{item}</span>)}
+          <div className="mt-8 grid border-l border-t border-slate-300 md:grid-cols-2 lg:grid-cols-3">
+            {t.capabilities.map(([title, body, meta], index) => (
+              <article key={title} className={`min-h-[205px] border-b border-r border-slate-300 p-6 ${index % 2 === 0 ? 'bg-[#FAFAF7]' : 'bg-white'}`}>
+                <p className="font-mono text-[11px] text-indigo-700">0{index + 1}</p>
+                <h3 className="mt-4 text-[20px] font-semibold leading-6 text-slate-950">{title}</h3>
+                <p className="mt-3 text-[14px] leading-7 text-slate-600">{body}</p>
+                <p className="mt-5 border-t border-slate-200 pt-3 font-mono text-[10px] uppercase tracking-[0.08em] text-slate-400">{meta}</p>
+              </article>
+            ))}
+          </div>
+
+          <p className="mt-6 max-w-5xl border-l-2 border-indigo-600 pl-5 text-[14px] leading-7 text-slate-600">{t.noBuild}</p>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-300 bg-[#F4F1EA]">
+        <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
+          <div className="grid gap-7 lg:grid-cols-[190px_1fr] lg:gap-10">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.modelsLabel}</p>
+            <h2 className="max-w-4xl text-[34px] leading-[1.06] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.modelsTitle}</h2>
+          </div>
+
+          <div className="mt-8 grid border-l border-t border-slate-300 lg:grid-cols-3">
+            {t.models.map((model, index) => (
+              <article key={model.title} className={`flex min-h-[365px] flex-col border-b border-r border-slate-300 p-6 md:p-7 ${index === 1 ? 'bg-[#0D1B2A] text-white' : 'bg-white text-slate-950'}`}>
+                <p className={`font-mono text-[11px] ${index === 1 ? 'text-[#7A7DFF]' : 'text-indigo-700'}`}>0{index + 1}</p>
+                <h3 className={`mt-5 text-[27px] leading-tight ${index === 1 ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{model.title}</h3>
+                <p className={`mt-4 text-[15px] font-semibold leading-6 ${index === 1 ? 'text-white' : 'text-slate-800'}`}>{model.hook}</p>
+                <p className={`mt-3 flex-1 text-[14px] leading-7 ${index === 1 ? 'text-[#A8BACB]' : 'text-slate-600'}`}>{model.body}</p>
+                <Link href={model.primaryHref} className={`mt-6 inline-flex w-fit px-4 py-2.5 text-[12px] font-semibold ${index === 1 ? 'bg-white text-[#0D1B2A]' : 'bg-slate-950 text-white'}`}>{model.primary} →</Link>
+                <Link href={model.secondaryHref} className={`mt-4 text-[12px] font-semibold ${index === 1 ? 'text-[#EAF0F6]' : 'text-indigo-700'}`}>{model.secondary} →</Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-300 bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-12 md:py-14">
+          <div className="grid gap-7 lg:grid-cols-[190px_1fr] lg:gap-10">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.evidenceLabel}</p>
+            <div>
+              <h2 className="max-w-3xl text-[30px] leading-[1.08] sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.evidenceTitle}</h2>
+              <div className="mt-7 grid border-t border-slate-300 md:grid-cols-3 md:divide-x md:divide-slate-300">
+                {t.evidenceLinks.map(([title, body, href, cta]) => (
+                  <Link key={href} href={href} className="group border-b border-slate-300 px-0 py-5 md:px-6 md:first:pl-0 md:last:pr-0">
+                    <h3 className="text-[18px] font-semibold text-slate-950">{title}</h3>
+                    <p className="mt-2 text-[13px] leading-6 text-slate-600">{body}</p>
+                    <p className="mt-4 text-[12px] font-semibold text-indigo-700">{cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
-
-          <p className="mt-5 max-w-4xl border-l-2 border-indigo-500 pl-5 text-sm leading-7 text-slate-500">{t.noBuild}</p>
         </div>
       </section>
 
-      <section className="border-y border-slate-200 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-600">{t.modelsLabel}</p>
-          <h2 className="mt-4 text-3xl md:text-4xl" style={{ fontFamily: 'var(--font-playfair)' }}>{t.modelsTitle}</h2>
-          <div className="mt-8 grid gap-4 lg:grid-cols-3">
-            {t.models.map(([title, body, button, href]) => (
-              <article key={title} className="flex min-h-[260px] flex-col rounded-2xl border border-slate-200 p-7">
-                <h3 className="text-2xl" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
-                <p className="mt-4 flex-1 text-sm leading-7 text-slate-600">{body}</p>
-                <Link href={href} className="mt-6 text-sm font-semibold text-indigo-700 hover:text-indigo-900">{button} →</Link>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-slate-950 text-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-7 px-6 py-12 md:flex-row md:items-center md:justify-between">
+      <section className="border-b border-slate-300 bg-[#F4F1EA]">
+        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-6 py-9 md:flex-row md:items-center md:justify-between">
           <div>
-            <h2 className="text-3xl md:text-4xl" style={{ fontFamily: 'var(--font-playfair)' }}>{t.finalTitle}</h2>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">{t.finalBody}</p>
+            <h2 className="text-[28px] leading-tight text-slate-950 sm:text-[32px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.finalTitle}</h2>
+            <p className="mt-2 max-w-2xl text-[14px] leading-6 text-slate-600">{t.finalBody}</p>
           </div>
-          <Link href="/contact?intent=discovery" className="inline-flex shrink-0 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-100">{t.finalCta}</Link>
+          <Link href="/contact?intent=discovery" className="inline-flex shrink-0 bg-slate-950 px-5 py-3 text-[13px] font-semibold text-white transition hover:bg-slate-800">{t.finalCta}</Link>
         </div>
       </section>
     </main>
