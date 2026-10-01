@@ -42,14 +42,14 @@ function renderPara(para: string, i: number) {
     return (
       <ul key={i} className="space-y-3 border-l border-slate-300 pl-5">
         {items.map((item, j) => (
-          <li key={j} className="text-[15px] leading-7 text-slate-600">
+          <li key={j} className="text-[17px] leading-8 text-slate-700">
             {renderInline(item.slice(2))}
           </li>
         ))}
       </ul>
     )
   }
-  return <p key={i} className="text-[15px] leading-8 text-slate-600">{renderInline(para)}</p>
+  return <p key={i} className="text-[17px] leading-8 text-slate-700">{renderInline(para)}</p>
 }
 
 function extractHeadings(body: string): string[] {
@@ -68,7 +68,7 @@ const COPY = {
     explore: 'Keep exploring',
     cases: 'Case studies',
     work: 'How we work',
-    contact: 'Talk to us',
+    contact: 'Contact us',
   },
   es: {
     back: 'Conocimiento',
@@ -78,7 +78,7 @@ const COPY = {
     explore: 'Sigue explorando',
     cases: 'Casos',
     work: 'Cómo trabajamos',
-    contact: 'Hablar con nosotros',
+    contact: 'Contacta con nosotros',
   },
   ca: {
     back: 'Coneixement',
@@ -88,7 +88,7 @@ const COPY = {
     explore: 'Continua explorant',
     cases: 'Casos',
     work: 'Com treballem',
-    contact: 'Parlar amb nosaltres',
+    contact: 'Contacta amb nosaltres',
   },
 } as const
 
@@ -106,7 +106,7 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-slate-300 bg-white">
         <div className="mx-auto max-w-6xl px-6 pb-12 pt-10 md:pb-14 md:pt-12">
-          <Link href="/knowledge" className="inline-flex items-center gap-2 text-[13px] font-medium text-slate-500 transition hover:text-slate-950">
+          <Link href="/knowledge" className="inline-flex items-center gap-2 text-[15px] font-medium text-slate-500 transition hover:text-slate-950">
             ← {t.back}
           </Link>
 
@@ -136,7 +136,7 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
                   <div key={segmentIndex} className="border-b border-slate-300 bg-[#F4F1EA] px-6 py-7 md:px-8">
                     <div className="space-y-5">
                       {segment.paras.map((para, i) => (
-                        <p key={i} className="text-[17px] leading-9 text-slate-700">{renderInline(para)}</p>
+                        <p key={i} className="text-[19px] leading-9 text-slate-800">{renderInline(para)}</p>
                       ))}
                     </div>
                   </div>
@@ -150,7 +150,7 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
                   <div className="grid gap-4 md:grid-cols-[56px_1fr]">
                     <span className="font-mono text-[12px] text-indigo-700">{num}</span>
                     <div>
-                      <h2 className="text-[25px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{segment.heading}</h2>
+                      <h2 className="text-[29px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{segment.heading}</h2>
                       <div className="mt-6 space-y-5">
                         {segment.paras.map((para, i) => renderPara(para, i))}
                       </div>
@@ -169,7 +169,7 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
                   <a
                     key={heading}
                     href={`#section-${index + 1}`}
-                    className="grid grid-cols-[30px_1fr] gap-2 border-b border-slate-200 py-3 pl-4 text-[12px] leading-5 text-slate-500 transition hover:text-indigo-700"
+                    className="grid grid-cols-[30px_1fr] gap-2 border-b border-slate-200 py-3 pl-4 text-[13px] leading-6 text-slate-600 transition hover:text-indigo-700"
                   >
                     <span className="font-mono text-slate-300">{String(index + 1).padStart(2, '0')}</span>
                     <span>{heading}</span>
@@ -186,7 +186,7 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
           <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.explore}</p>
           <div className="grid border-t border-slate-300 md:grid-cols-3 md:divide-x md:divide-slate-300">
             {[[t.cases,'/projects'],[t.work,'/services'],[t.contact,'/contact?intent=discovery']].map(([label, href]) => (
-              <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[13px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
+              <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[15px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
                 {label}<span className="text-indigo-700 transition group-hover:translate-x-1">→</span>
               </Link>
             ))}
