@@ -16,7 +16,7 @@ export default function BusinessScenarioStrip({
 }) {
   return (
     <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-      <div className="mx-auto w-[min(94vw,1700px)] py-8">
+      <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] py-8 sm:w-[calc(100%_-_48px)]">
         <div className="grid gap-[clamp(28px,4vw,64px)] lg:grid-cols-[minmax(0,.78fr)_minmax(520px,1.22fr)] lg:items-end">
           <div>
             <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{label}</p>
