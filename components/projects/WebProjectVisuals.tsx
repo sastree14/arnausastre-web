@@ -1,33 +1,88 @@
 import type { WebsiteProjectGoldStandard } from '@/lib/website-project-gold-standard'
+import type { SiteLanguage } from '@/lib/public-copy'
 
 type HorizonLogic = WebsiteProjectGoldStandard['horizonLogic']
 type Architecture = WebsiteProjectGoldStandard['architecture']
 type Evidence = WebsiteProjectGoldStandard['evidence']
 
-export function HorizonDecisionVisual({ data }: { data: HorizonLogic }) {
+export function HorizonDecisionVisual({ data, lang }: { data: HorizonLogic; lang?: SiteLanguage }) {
+  const localized = lang
+    ? {
+        en: {
+          title: 'Evaluation by planning horizon',
+          note: 'Each horizon is evaluated as a separate business decision',
+          rule: 'Decision rule',
+          takeaway: 'The objective is not to make every horizon look equally accurate. It is to make the trade-off explicit enough to support a better planning decision.',
+          horizons: [
+            { horizon: '1 month', label: 'Near term', note: 'Read the most immediate demand signal separately from longer-range uncertainty.' },
+            { horizon: '3 months', label: 'Short range', note: 'Keep a separate view of forecast error and bias before the planning window expands.' },
+            { horizon: '6 months', label: 'Medium range', note: 'Make degradation visible instead of hiding it inside an aggregate score.' },
+            { horizon: '9 months', label: 'Longer range', note: 'Treat long-horizon usefulness as its own inventory and purchasing question.' },
+          ],
+        },
+        es: {
+          title: 'Evaluación por horizonte de planificación',
+          note: 'Cada horizonte se evalúa como una decisión de negocio distinta',
+          rule: 'Regla de decisión',
+          takeaway: 'El objetivo no es que todos los horizontes parezcan igual de precisos, sino hacer explícito el trade-off para tomar una mejor decisión de planificación.',
+          horizons: [
+            { horizon: '1 mes', label: 'Muy corto plazo', note: 'Leer la señal de demanda más inmediata por separado de la incertidumbre de horizontes más largos.' },
+            { horizon: '3 meses', label: 'Corto plazo', note: 'Mantener una visión independiente del error y el sesgo antes de ampliar la ventana de planificación.' },
+            { horizon: '6 meses', label: 'Medio plazo', note: 'Hacer visible la degradación del forecast en lugar de esconderla dentro de una cifra agregada.' },
+            { horizon: '9 meses', label: 'Largo plazo', note: 'Tratar la utilidad del forecast de largo plazo como una decisión propia de compras e inventario.' },
+          ],
+        },
+        ca: {
+          title: 'Avaluació per horitzó de planificació',
+          note: 'Cada horitzó s’avalua com una decisió de negoci diferent',
+          rule: 'Regla de decisió',
+          takeaway: 'L’objectiu no és que tots els horitzons semblin igual de precisos, sinó fer explícit el trade-off per prendre una millor decisió de planificació.',
+          horizons: [
+            { horizon: '1 mes', label: 'Molt curt termini', note: 'Llegir el senyal de demanda més immediat per separat de la incertesa dels horitzons més llargs.' },
+            { horizon: '3 mesos', label: 'Curt termini', note: 'Mantenir una visió independent de l’error i el biaix abans d’ampliar la finestra de planificació.' },
+            { horizon: '6 mesos', label: 'Mitjà termini', note: 'Fer visible la degradació del forecast en lloc d’amagar-la dins d’una xifra agregada.' },
+            { horizon: '9 mesos', label: 'Llarg termini', note: 'Tractar la utilitat del forecast de llarg termini com una decisió pròpia de compres i inventari.' },
+          ],
+        },
+      }[lang]
+    : null
+
+  const horizons = localized?.horizons || data.horizons
+
   return (
     <div className="border border-[#D8DDE3] bg-[#FAFAF7]">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D8DDE3] px-6 py-4">
-        <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-600">Horizon-level evaluation</p>
-        <p className="text-[13px] text-slate-500">Each planning horizon is evaluated separately</p>
+        <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-600">
+          {localized?.title || 'Horizon-level evaluation'}
+        </p>
+        <p className="text-[13px] text-slate-500">
+          {localized?.note || 'Each planning horizon is evaluated separately'}
+        </p>
       </div>
 
       <div className="grid divide-y divide-[#D8DDE3] md:grid-cols-4 md:divide-x md:divide-y-0">
-        {data.horizons.map((item) => (
-          <div key={item.horizon} className="min-h-[188px] px-6 py-6">
-            <div className="flex items-baseline justify-between gap-4 border-b border-slate-200 pb-4">
-              <span className="text-[30px] font-normal leading-none tracking-[-0.02em] text-[#1D2B44]" style={{ fontFamily: 'var(--font-playfair)' }}>{item.horizon}</span>
-              <span className="text-right text-[13px] font-medium uppercase tracking-[0.1em] text-slate-500">{item.label}</span>
+        {horizons.map((item) => (
+          <div key={item.horizon} className="min-h-[198px] px-6 py-6">
+            <div className="border-b border-slate-200 pb-4">
+              <span
+                className="block text-[29px] font-normal leading-none tracking-[-0.02em] text-[#1D2B44]"
+                style={{ fontFamily: 'var(--font-playfair)' }}
+              >
+                {item.horizon}
+              </span>
+              <span className="mt-3 block text-[12px] font-semibold uppercase tracking-[0.1em] text-slate-500">
+                {item.label}
+              </span>
             </div>
-            <p className="mt-6 text-[15px] leading-7 text-slate-600">{item.note}</p>
+            <p className="mt-5 text-[15px] leading-7 text-slate-600">{item.note}</p>
           </div>
         ))}
       </div>
 
       <div className="border-t border-[#D8DDE3] px-6 py-5">
         <p className="text-[15px] leading-7 text-slate-700">
-          <span className="font-semibold text-slate-950">Decision rule — </span>
-          {data.takeaway}
+          <span className="font-semibold text-slate-950">{localized?.rule || 'Decision rule'} — </span>
+          {localized?.takeaway || data.takeaway}
         </p>
       </div>
     </div>
