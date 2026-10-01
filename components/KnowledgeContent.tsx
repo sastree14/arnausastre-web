@@ -20,6 +20,11 @@ const UI = {
     min: 'min read',
     empty: 'Nothing published for this combination yet.',
     emptyBody: 'The editorial system is selective. Clear a filter or explore another context.',
+    libraryEmpty: 'The knowledge library is being prepared.',
+    libraryEmptyBody: 'We are structuring the first analyses so this area starts with useful material rather than filler. In the meantime, you can explore real cases or see how we work.',
+    cases: 'Explore case studies',
+    work: 'See how we work',
+    contact: 'Talk to us',
     more: 'Load more',
     generated: 'SC-Analytics editorial',
   },
@@ -36,6 +41,11 @@ const UI = {
     min: 'min de lectura',
     empty: 'Todavía no hay nada publicado para esta combinación.',
     emptyBody: 'El sistema editorial es selectivo. Limpia un filtro o explora otro contexto.',
+    libraryEmpty: 'Estamos preparando la biblioteca de conocimiento.',
+    libraryEmptyBody: 'Estamos estructurando los primeros análisis para que esta sección empiece con contenido útil y no con relleno. Mientras tanto, puedes explorar casos reales o ver cómo trabajamos.',
+    cases: 'Explorar casos',
+    work: 'Ver cómo trabajamos',
+    contact: 'Hablar con nosotros',
     more: 'Cargar más',
     generated: 'Editorial SC-Analytics',
   },
@@ -52,6 +62,11 @@ const UI = {
     min: 'min de lectura',
     empty: 'Encara no hi ha res publicat per a aquesta combinació.',
     emptyBody: 'El sistema editorial és selectiu. Neteja un filtre o explora un altre context.',
+    libraryEmpty: 'Estem preparant la biblioteca de coneixement.',
+    libraryEmptyBody: 'Estem estructurant les primeres anàlisis perquè aquesta secció comenci amb contingut útil i no amb farciment. Mentrestant, pots explorar casos reals o veure com treballem.',
+    cases: 'Explorar casos',
+    work: 'Veure com treballem',
+    contact: 'Parlar amb nosaltres',
     more: 'Carregar més',
     generated: 'Editorial SC-Analytics',
   },
@@ -288,6 +303,27 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
     setChallenge(null)
     setAudience(null)
     reset()
+  }
+
+  if (items.length === 0) {
+    return (
+      <section className="mx-auto max-w-7xl px-6 py-12 md:py-16">
+        <div className="grid border border-slate-300 bg-white lg:grid-cols-[1.15fr_.85fr]">
+          <div className="p-7 md:p-10">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">SC-ANALYTICS KNOWLEDGE</p>
+            <h2 className="mt-4 max-w-2xl text-[32px] leading-[1.08] text-slate-950 sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.libraryEmpty}</h2>
+            <p className="mt-4 max-w-2xl text-[14px] leading-7 text-slate-600">{t.libraryEmptyBody}</p>
+          </div>
+          <div className="border-t border-slate-300 bg-[#F4F1EA] p-7 lg:border-l lg:border-t-0 md:p-10">
+            <div className="grid gap-3">
+              <Link href="/projects" className="flex items-center justify-between border-b border-slate-300 py-3 text-[13px] font-semibold text-slate-900">{t.cases}<span>→</span></Link>
+              <Link href="/services" className="flex items-center justify-between border-b border-slate-300 py-3 text-[13px] font-semibold text-slate-900">{t.work}<span>→</span></Link>
+              <Link href="/contact?intent=discovery" className="flex items-center justify-between py-3 text-[13px] font-semibold text-indigo-700">{t.contact}<span>→</span></Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
   }
 
   return (
