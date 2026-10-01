@@ -7,12 +7,12 @@ const COPY = {
   es: {
     eyebrow: 'CÓMO TRABAJAMOS',
     title: 'Comprender antes de construir.',
-    intro: 'Una buena solución empieza entendiendo qué quieres mejorar, qué decisión importa y qué impacto tendría resolverlo bien.',
+    intro: 'Entendemos qué quieres mejorar, diseñamos el enfoque adecuado y construimos una solución pensada para generar impacto.',
     primary: 'Háblanos de tu problema',
     secondary: 'Ver casos reales',
 
     processLabel: 'CÓMO LO HACEMOS',
-    processTitle: 'Cuatro pasos para convertir una necesidad en una solución que genere impacto.',
+    processTitle: 'Cuatro pasos. Una forma clara de generar impacto.',
     steps: [
       ['01', 'Comprender', 'Entendemos tu negocio, la decisión, las restricciones y qué debería cambiar.'],
       ['02', 'Diseñar', 'Definimos el enfoque, el alcance y la forma más razonable de generar valor.'],
@@ -21,7 +21,7 @@ const COPY = {
     ],
 
     capabilitiesLabel: 'EN QUÉ NOS ESPECIALIZAMOS',
-    capabilitiesTitle: 'Capacidades para convertir datos y tecnología en mejores decisiones.',
+    capabilitiesTitle: 'Donde concentramos nuestra capacidad.',
     capabilities: [
       ['Forecasting & planning', 'Previsión y planificación para decidir con más anticipación.'],
       ['Optimización', 'Modelos para asignar mejor recursos, rutas, capacidad o presupuesto.'],
@@ -73,19 +73,19 @@ const COPY = {
 
     finalLabel: 'SIN COMPROMISO',
     finalTitle: 'Cuéntanos qué quieres mejorar. Te diremos si podemos aportar valor.',
-    finalBody: 'Explícanos tu contexto y lo que estás valorando. Si vemos una forma razonable de ayudarte, te proponemos el siguiente paso; si no, también te lo diremos con claridad.',
+    finalBody: 'Explícanos qué quieres mejorar. Si vemos una forma razonable de ayudarte, te diremos cuál sería el siguiente paso.',
     finalCta: 'Cuéntanos tu caso',
   },
 
   ca: {
     eyebrow: 'COM TREBALLEM',
     title: 'Comprendre abans de construir.',
-    intro: 'Una bona solució comença entenent què vols millorar, quina decisió importa i quin impacte tindria resoldre-ho bé.',
+    intro: 'Entenem què vols millorar, dissenyem l’enfocament adequat i construïm una solució pensada per generar impacte.',
     primary: 'Parla’ns del teu problema',
     secondary: 'Veure casos reals',
 
     processLabel: 'COM HO FEM',
-    processTitle: 'Quatre passos per convertir una necessitat en una solució que generi impacte.',
+    processTitle: 'Quatre passos. Una forma clara de generar impacte.',
     steps: [
       ['01', 'Comprendre', 'Entenem el teu negoci, la decisió, les restriccions i què hauria de canviar.'],
       ['02', 'Dissenyar', 'Definim l’enfocament, l’abast i la forma més raonable de generar valor.'],
@@ -94,7 +94,7 @@ const COPY = {
     ],
 
     capabilitiesLabel: 'EN QUÈ ENS ESPECIALITZEM',
-    capabilitiesTitle: 'Capacitats per convertir dades i tecnologia en millors decisions.',
+    capabilitiesTitle: 'On concentrem la nostra capacitat.',
     capabilities: [
       ['Forecasting & planning', 'Previsió i planificació per decidir amb més anticipació.'],
       ['Optimització', 'Models per assignar millor recursos, rutes, capacitat o pressupost.'],
@@ -146,19 +146,19 @@ const COPY = {
 
     finalLabel: 'SENSE COMPROMÍS',
     finalTitle: 'Explica’ns què vols millorar. Et direm si podem aportar valor.',
-    finalBody: 'Explica’ns el teu context i què estàs valorant. Si veiem una forma raonable d’ajudar-te, et proposem el següent pas; si no, també t’ho direm amb claredat.',
+    finalBody: 'Explica’ns què vols millorar. Si veiem una forma raonable d’ajudar-te, et direm quin seria el següent pas.',
     finalCta: 'Explica’ns el teu cas',
   },
 
   en: {
     eyebrow: 'HOW WE WORK',
     title: 'Understand before building.',
-    intro: 'A good solution starts by understanding what should improve, which decision matters and what impact solving it well could create.',
+    intro: 'We understand what should improve, design the right approach and build a solution meant to create impact.',
     primary: 'Tell us about your problem',
     secondary: 'See real cases',
 
     processLabel: 'HOW WE DO IT',
-    processTitle: 'Four steps to turn a business need into a solution that creates impact.',
+    processTitle: 'Four steps. One clear way to create impact.',
     steps: [
       ['01', 'Understand', 'We understand the business, the decision, the constraints and what should change.'],
       ['02', 'Design', 'We define the approach, scope and most sensible way to create value.'],
@@ -167,7 +167,7 @@ const COPY = {
     ],
 
     capabilitiesLabel: 'WHAT WE SPECIALISE IN',
-    capabilitiesTitle: 'Capabilities that turn data and technology into better decisions.',
+    capabilitiesTitle: 'Where we concentrate our capability.',
     capabilities: [
       ['Forecasting & planning', 'Forecasting and planning for earlier, better-informed decisions.'],
       ['Optimisation', 'Models for allocating resources, routes, capacity or budget more effectively.'],
@@ -219,7 +219,7 @@ const COPY = {
 
     finalLabel: 'NO COMMITMENT',
     finalTitle: 'Tell us what you want to improve. We will tell you whether we can create value.',
-    finalBody: 'Tell us the context and what you are considering. If we see a sensible way to help, we will propose the next step; if not, we will tell you clearly.',
+    finalBody: 'Tell us what you want to improve. If we see a sensible way to help, we will tell you the next step.',
     finalCta: 'Tell us about your case',
   },
 } as const
@@ -233,13 +233,13 @@ export default function ServicesPage() {
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-16 md:py-20 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-4xl">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
             <h1 className="mt-5 text-[46px] leading-[1.03] tracking-[-0.03em] sm:text-[58px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-            <p className="mt-6 max-w-3xl text-[17px] leading-8 text-[#EAF0F6]">{t.intro}</p>
+            <p className="mt-6 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link href="/contact?intent=problem" className="bg-white px-5 py-3 text-[13px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">{t.primary}</Link>
-            <Link href="/projects" className="border border-[#7F9BB5] px-5 py-3 text-[13px] font-semibold text-white transition hover:bg-white/5">{t.secondary}</Link>
+            <Link href="/contact?intent=problem" className="bg-white px-5 py-3 text-[15px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">{t.primary}</Link>
+            <Link href="/projects" className="border border-[#7F9BB5] px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-white/5">{t.secondary}</Link>
           </div>
         </div>
       </section>
@@ -247,7 +247,7 @@ export default function ServicesPage() {
       <section className="border-b border-slate-300 bg-[#FAFAF7]">
         <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
           <div className="text-center">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.processLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.processLabel}</p>
             <h2 className="mx-auto mt-3 max-w-4xl text-[36px] leading-[1.06] tracking-[-0.02em] sm:text-[44px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.processTitle}</h2>
           </div>
 
@@ -255,8 +255,8 @@ export default function ServicesPage() {
             {t.steps.map(([number, title, body], index) => (
               <article key={number} className={`flex min-h-[245px] flex-col border-b border-r border-slate-300 p-6 text-center ${index % 2 === 0 ? 'bg-white' : 'bg-[#F4F1EA]'}`}>
                 <p className="font-mono text-[11px] text-indigo-700">{number}</p>
-                <h3 className="mt-7 text-[27px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
-                <p className="mx-auto mt-4 max-w-[250px] text-[14px] font-medium leading-7 text-slate-700">{body}</p>
+                <h3 className="mt-7 text-[30px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
+                <p className="mx-auto mt-4 max-w-[250px] text-[17px] font-medium leading-7 text-slate-800">{body}</p>
               </article>
             ))}
           </div>
@@ -266,15 +266,15 @@ export default function ServicesPage() {
       <section className="border-b border-slate-300 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
           <div className="grid gap-7 lg:grid-cols-[190px_1fr] lg:gap-10">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.capabilitiesLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.capabilitiesLabel}</p>
             <h2 className="max-w-4xl text-[34px] leading-[1.06] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.capabilitiesTitle}</h2>
           </div>
 
           <div className="mt-8 grid border-l border-t border-slate-300 md:grid-cols-2 lg:grid-cols-3">
             {t.capabilities.map(([title, body], index) => (
               <article key={title} className={`flex min-h-[190px] flex-col justify-center border-b border-r border-slate-300 p-7 ${index === 1 || index === 3 || index === 5 ? 'bg-[#FAFAF7]' : 'bg-white'}`}>
-                <h3 className="text-[21px] font-semibold leading-7 text-slate-950">{title}</h3>
-                <p className="mt-3 max-w-sm text-[14px] leading-7 text-slate-600">{body}</p>
+                <h3 className="text-[24px] font-semibold leading-7 text-slate-950">{title}</h3>
+                <p className="mt-3 max-w-sm text-[17px] leading-7 text-slate-700">{body}</p>
               </article>
             ))}
           </div>
@@ -284,18 +284,18 @@ export default function ServicesPage() {
       <section className="border-b border-slate-300 bg-[#F4F1EA]">
         <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
           <div className="grid gap-7 lg:grid-cols-[190px_1fr] lg:gap-10">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.modelsLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.modelsLabel}</p>
             <h2 className="max-w-4xl text-[34px] leading-[1.06] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.modelsTitle}</h2>
           </div>
 
           <div className="mt-8 grid border-l border-t border-slate-300 lg:grid-cols-3">
             {t.models.map((model, index) => (
               <article key={model.title} className={`flex min-h-[355px] flex-col border-b border-r border-slate-300 p-6 md:p-7 ${index === 1 ? 'bg-[#0D1B2A] text-white' : 'bg-white text-slate-950'}`}>
-                <h3 className={`text-[27px] leading-tight ${index === 1 ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{model.title}</h3>
-                <p className={`mt-4 text-[15px] font-semibold leading-6 ${index === 1 ? 'text-white' : 'text-slate-800'}`}>{model.hook}</p>
+                <h3 className={`text-[30px] leading-tight ${index === 1 ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{model.title}</h3>
+                <p className={`mt-4 text-[18px] font-semibold leading-7 ${index === 1 ? 'text-white' : 'text-slate-800'}`}>{model.hook}</p>
                 <p className={`mt-3 flex-1 text-[14px] leading-7 ${index === 1 ? 'text-[#A8BACB]' : 'text-slate-600'}`}>{model.body}</p>
-                <Link href={model.primaryHref} className={`mt-6 inline-flex w-fit px-4 py-2.5 text-[12px] font-semibold ${index === 1 ? 'bg-white text-[#0D1B2A]' : 'bg-slate-950 text-white'}`}>{model.primary} →</Link>
-                <Link href={model.secondaryHref} className={`mt-4 text-[12px] font-semibold ${index === 1 ? 'text-[#EAF0F6]' : 'text-indigo-700'}`}>{model.secondary} →</Link>
+                <Link href={model.primaryHref} className={`mt-6 inline-flex w-fit px-4 py-2.5 text-[14px] font-semibold ${index === 1 ? 'bg-white text-[#0D1B2A]' : 'bg-slate-950 text-white'}`}>{model.primary} →</Link>
+                <Link href={model.secondaryHref} className={`mt-4 text-[14px] font-semibold ${index === 1 ? 'text-[#EAF0F6]' : 'text-indigo-700'}`}>{model.secondary} →</Link>
               </article>
             ))}
           </div>
@@ -305,16 +305,16 @@ export default function ServicesPage() {
       <section className="border-b border-slate-300 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-12 md:py-14">
           <div className="text-center">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.exploreLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.exploreLabel}</p>
             <h2 className="mx-auto mt-3 max-w-3xl text-[32px] leading-[1.08] sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
           </div>
 
           <div className="mx-auto mt-7 grid max-w-5xl border-l border-t border-slate-300 md:grid-cols-3">
             {t.exploreLinks.map(([title, body, href, cta]) => (
               <Link key={href} href={href} className="group flex min-h-[220px] flex-col items-center justify-center border-b border-r border-slate-300 p-6 text-center transition hover:bg-[#FAFAF7]">
-                <h3 className="text-[20px] font-semibold text-slate-950">{title}</h3>
-                <p className="mt-3 max-w-[260px] text-[13px] leading-6 text-slate-600">{body}</p>
-                <p className="mt-5 text-[12px] font-semibold text-indigo-700">{cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
+                <h3 className="text-[23px] font-semibold text-slate-950">{title}</h3>
+                <p className="mt-3 max-w-[260px] text-[16px] leading-7 text-slate-700">{body}</p>
+                <p className="mt-5 text-[14px] font-semibold text-indigo-700">{cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
               </Link>
             ))}
           </div>
@@ -326,9 +326,9 @@ export default function ServicesPage() {
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.finalLabel}</p>
             <h2 className="mt-2 max-w-4xl text-[30px] leading-tight text-slate-950 sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.finalTitle}</h2>
-            <p className="mt-3 max-w-3xl text-[14px] leading-7 text-slate-600">{t.finalBody}</p>
+            <p className="mt-3 max-w-3xl text-[17px] leading-7 text-slate-700">{t.finalBody}</p>
           </div>
-          <Link href="/contact?intent=discovery" className="inline-flex shrink-0 bg-slate-950 px-5 py-3 text-[13px] font-semibold text-white transition hover:bg-slate-800">{t.finalCta}</Link>
+          <Link href="/contact?intent=discovery" className="inline-flex shrink-0 bg-slate-950 px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-slate-800">{t.finalCta}</Link>
         </div>
       </section>
     </main>
