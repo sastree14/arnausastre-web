@@ -99,7 +99,7 @@ function ArchitectureStage({
   return (
     <div className="grid min-w-0 grid-rows-[auto_1fr]">
       <div className="mb-3 border-b border-[#5E86A8] pb-3">
-        <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#A8BACB]">{label}</p>
+        <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#C2D2E0]">{label}</p>
       </div>
       <div className="grid h-full auto-rows-fr grid-rows-2 gap-3">{children}</div>
     </div>
@@ -118,18 +118,17 @@ function ArchitectureNode({
   return (
     <div className="h-full min-w-0 border border-[#5E86A8] bg-[#13283C]">
       <div className="border-b border-[#496C8A] px-4 py-2.5 text-center">
-        <span className="font-mono text-[12px] text-[#7A7DFF]">{String(index).padStart(2, '0')}</span>
+        <span className="font-mono text-[13px] font-semibold text-[#8A8DFF]">{String(index).padStart(2, '0')}</span>
       </div>
       <div className="min-w-0 px-5 py-5">
-        <h3 className="break-words text-[15px] font-semibold leading-6 text-[#EAF0F6] xl:text-[16px]">{title}</h3>
-        <p className="mt-2 break-words text-[14px] leading-6 text-[#A8BACB]">{detail}</p>
+        <h3 className="break-words text-[18px] font-semibold leading-7 text-white xl:text-[19px]">{title}</h3>
+        <p className="mt-2 break-words text-[16px] leading-7 text-[#C2D2E0]">{detail}</p>
       </div>
     </div>
   )
 }
 
 export function ArchitectureSystemVisual({ data, lang }: { data: Architecture; lang?: SiteLanguage }) {
-  const [orders, feature, baseline, ml, backtest, selection, planning] = data.steps
   const labels = lang
     ? {
         en: {
@@ -165,6 +164,48 @@ export function ArchitectureSystemVisual({ data, lang }: { data: Architecture; l
       }[lang]
     : null
 
+  const localizedArchitecture = lang
+    ? {
+        en: null,
+        es: {
+          steps: [
+            { title: 'Pedidos + inventario', detail: 'Histórico operativo de pedidos, inventario y atributos de producto.' },
+            { title: 'Ingeniería de variables', detail: 'Prepara señales para modelado y contexto específico por horizonte.' },
+            { title: 'Modelos de referencia', detail: 'Mantienen una referencia sencilla para comparar cada alternativa.' },
+            { title: 'Candidatos de ML', detail: 'XGBoost y LightGBM se evalúan junto a enfoques estadísticos.' },
+            { title: 'Backtesting por horizonte', detail: 'Mide el rendimiento por separado a 1, 3, 6 y 9 meses.' },
+            { title: 'Selección del forecast', detail: 'Prioriza comportamiento fuera de muestra y simplicidad operativa.' },
+            { title: 'Salida de planificación', detail: 'Expone forecasts, intervalos e indicadores para la decisión.' },
+          ],
+          integrations: [
+            { title: 'PostgreSQL', detail: 'Fuente histórica para pedidos, inventario y atributos de producto.' },
+            { title: 'FastAPI', detail: 'Capa de servicio para solicitudes de forecast y escenarios.' },
+            { title: 'Almacenamiento de objetos', detail: 'Backtests, artefactos entrenados y resultados del modelo.' },
+          ],
+        },
+        ca: {
+          steps: [
+            { title: 'Comandes + inventari', detail: 'Històric operatiu de comandes, inventari i atributs de producte.' },
+            { title: 'Enginyeria de variables', detail: 'Prepara senyals per al modelatge i context específic per horitzó.' },
+            { title: 'Models de referència', detail: 'Mantenen una referència senzilla per comparar cada alternativa.' },
+            { title: 'Candidats de ML', detail: 'XGBoost i LightGBM s’avaluen juntament amb enfocaments estadístics.' },
+            { title: 'Backtesting per horitzó', detail: 'Mesura el rendiment per separat a 1, 3, 6 i 9 mesos.' },
+            { title: 'Selecció del forecast', detail: 'Prioritza comportament fora de mostra i simplicitat operativa.' },
+            { title: 'Sortida de planificació', detail: 'Exposa forecasts, intervals i indicadors per a la decisió.' },
+          ],
+          integrations: [
+            { title: 'PostgreSQL', detail: 'Font històrica per a comandes, inventari i atributs de producte.' },
+            { title: 'FastAPI', detail: 'Capa de servei per a peticions de forecast i escenaris.' },
+            { title: 'Emmagatzematge d’objectes', detail: 'Backtests, artefactes entrenats i resultats del model.' },
+          ],
+        },
+      }[lang]
+    : null
+
+  const steps = localizedArchitecture?.steps || data.steps
+  const integrations = localizedArchitecture?.integrations || data.integrations
+  const [orders, feature, baseline, ml, backtest, selection, planning] = steps
+
   return (
     <div className="min-w-0 border border-[#5E86A8] bg-[#0D1B2A] text-white">
       <div className="grid gap-3 border-b border-[#5E86A8] px-5 py-5 sm:px-6 md:grid-cols-[1fr_auto] md:items-end">
@@ -172,11 +213,11 @@ export function ArchitectureSystemVisual({ data, lang }: { data: Architecture; l
           <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">
             {labels?.title || 'SC-12 · System architecture'}
           </p>
-          <p className="mt-2 text-[15px] leading-6 text-[#A8BACB]">
+          <p className="mt-2 text-[16px] leading-7 text-[#C2D2E0]">
             {labels?.flow || 'Data → modelling → evaluation → planning'}
           </p>
         </div>
-        <p className="text-[12px] leading-5 text-[#7F9BB5]">
+        <p className="text-[13px] leading-6 text-[#9DB3C7]">
           {labels?.provenance || 'Public portfolio implementation'}
         </p>
       </div>
@@ -204,17 +245,17 @@ export function ArchitectureSystemVisual({ data, lang }: { data: Architecture; l
         </div>
 
         <div className="mt-8 border-t border-[#5E86A8] pt-5">
-          <p className="mb-4 text-[13px] font-semibold uppercase tracking-[0.14em] text-[#A8BACB]">
+          <p className="mb-4 text-[14px] font-semibold uppercase tracking-[0.14em] text-[#C2D2E0]">
             {labels?.integrations || 'Integration boundaries'}
           </p>
           <div className="grid border border-[#5E86A8] lg:grid-cols-3 lg:divide-x lg:divide-[#5E86A8]">
-            {data.integrations.map((integration) => (
+            {integrations.map((integration) => (
               <div
                 key={integration.title}
                 className="min-w-0 border-b border-[#5E86A8] px-5 py-5 last:border-b-0 lg:border-b-0"
               >
-                <h4 className="break-words text-[15px] font-semibold text-[#EAF0F6]">{integration.title}</h4>
-                <p className="mt-2 break-words text-[14px] leading-6 text-[#A8BACB]">{integration.detail}</p>
+                <h4 className="break-words text-[17px] font-semibold leading-7 text-white">{integration.title}</h4>
+                <p className="mt-2 break-words text-[15px] leading-7 text-[#C2D2E0]">{integration.detail}</p>
               </div>
             ))}
           </div>
