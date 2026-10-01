@@ -90,7 +90,7 @@ const COPY = {
     ],
 
     ctaKicker: 'SIN COMPROMISO',
-    ctaTitle: 'Cuéntanos sobre tu empresa y vemos si podemos ayudarte.',
+    ctaTitle: 'Cuéntanos sobre tu empresa y vemos cómo podemos ayudarte.',
     ctaBody: 'Explícanos qué quieres mejorar, qué oportunidad estás valorando o qué te preocupa. Te diremos con claridad si vemos una forma razonable de aportar valor.',
     cta: 'Cuéntanos tu caso',
     ctaAlt: '¿Prefieres seguir explorando? Mira nuestros casos',
@@ -182,7 +182,7 @@ const COPY = {
     ],
 
     ctaKicker: 'SENSE COMPROMÍS',
-    ctaTitle: 'Explica’ns la teva empresa i veiem si et podem ajudar.',
+    ctaTitle: 'Explica’ns la teva empresa i veiem com et podem ajudar.',
     ctaBody: 'Explica’ns què vols millorar, quina oportunitat estàs valorant o què et preocupa. Et direm amb claredat si veiem una manera raonable d’aportar valor.',
     cta: 'Explica’ns el teu cas',
     ctaAlt: 'Prefereixes seguir explorant? Mira els nostres casos',
@@ -274,7 +274,7 @@ const COPY = {
     ],
 
     ctaKicker: 'NO COMMITMENT',
-    ctaTitle: 'Tell us about your business and we will see whether we can help.',
+    ctaTitle: 'Tell us about your business and let’s see how we can help.',
     ctaBody: 'Tell us what you want to improve, which opportunity you are considering or what is getting in the way. We will tell you clearly whether we see a sensible way to create value.',
     cta: 'Tell us about your case',
     ctaAlt: 'Prefer to keep exploring? Browse our case studies',
@@ -346,13 +346,12 @@ export default function HomePage() {
                   className={`group flex min-h-[260px] flex-col border-b border-r border-slate-300 p-6 transition md:p-7 ${span} ${toneClasses[route.tone as keyof typeof toneClasses]}`}
                 >
                   <div className="flex items-start justify-between gap-4">
-                    <span className={`font-mono text-[12px] ${dark ? 'text-[#7A7DFF]' : 'text-indigo-700'}`}>{route.number}</span>
+                    <span className={`font-mono text-[15px] font-semibold ${dark ? 'text-[#8E91FF]' : 'text-indigo-700'}`}>{route.number}</span>
                     <span className={`text-lg transition group-hover:translate-x-1 ${dark ? 'text-[#A8BACB]' : 'text-slate-400'}`}>→</span>
                   </div>
-                  <h3 className={`mt-6 text-[30px] leading-tight ${dark ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{route.title}</h3>
-                  <p className={`mt-3 text-[18px] font-semibold leading-7 ${dark ? 'text-white' : 'text-slate-800'}`}>{route.hook}</p>
-                  <p className={`mt-3 max-w-xl flex-1 text-[16px] leading-7 ${dark ? 'text-[#A8BACB]' : 'text-slate-600'}`}>{route.body}</p>
-                  <p className={`mt-5 text-[15px] font-semibold ${dark ? 'text-white' : 'text-indigo-700'}`}>{route.cta}</p>
+                  <h3 className={`mt-6 text-[31px] leading-tight ${dark ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{route.title}</h3>
+                  <p className={`mt-4 flex-1 text-[19px] font-semibold leading-7 ${dark ? 'text-white' : 'text-slate-850'}`}>{route.hook}</p>
+                  <p className={`mt-7 text-[18px] font-semibold ${dark ? 'text-white' : 'text-indigo-700'}`}>{route.cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
                 </Link>
               )
             })}
@@ -394,15 +393,17 @@ export default function HomePage() {
       </section>
 
       <section className="border-b border-slate-300 bg-[#F4F1EA]">
-        <div className="mx-auto grid max-w-7xl gap-6 px-6 py-10 md:grid-cols-[1fr_auto] md:items-center">
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.ctaKicker}</p>
-            <h2 className="mt-2 max-w-4xl text-[30px] leading-tight text-slate-950 sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
-            <p className="mt-3 max-w-3xl text-[17px] leading-7 text-slate-700">{t.ctaBody}</p>
-          </div>
-          <div className="flex flex-col items-start gap-3 md:items-end">
-            <Link href="/contact?intent=discovery" className="inline-flex bg-slate-950 px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-slate-800">{t.cta}</Link>
-            <Link href="/projects" className="text-[14px] font-semibold text-indigo-700 hover:text-indigo-900">{t.ctaAlt} →</Link>
+        <div className="mx-auto max-w-7xl px-6 py-10 md:py-12">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.ctaKicker}</p>
+          <h2 className="mt-3 text-[34px] font-medium leading-tight text-slate-950 sm:text-[40px] xl:whitespace-nowrap" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
+
+          <div className="mt-7 flex flex-col gap-4 border-t border-slate-300 pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <Link href="/projects" className="text-[16px] font-semibold text-indigo-700 transition hover:text-indigo-900">
+              {t.ctaAlt} →
+            </Link>
+            <Link href="/contact?intent=discovery" className="inline-flex bg-slate-950 px-6 py-3.5 text-[16px] font-semibold text-white transition hover:bg-slate-800">
+              {t.cta} →
+            </Link>
           </div>
         </div>
       </section>
