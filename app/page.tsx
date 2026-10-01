@@ -14,9 +14,9 @@ const COPY = {
     micro: 'Discovery inicial · 30 min · sin compromiso',
     visualLabel: 'DECISION SYSTEM',
     visual: [
-      ['01 · PROBLEMA', 'Demanda incierta, capacidad limitada, procesos manuales o decisiones con demasiado margen de error.'],
-      ['02 · SISTEMA', 'Forecasting, optimización, ML, automatización, agentes IA o analytics — solo cuando encajan.'],
-      ['03 · RESULTADO', 'Más control, menos fricción y mejores decisiones con impacto medible.'],
+      ['PROBLEMA', 'Una decisión que hoy funciona peor de lo que debería.', 'Demanda · capacidad · riesgo · procesos'],
+      ['SISTEMA', 'La capacidad adecuada para mejorar esa decisión.', 'Forecasting · Optimización · ML · IA'],
+      ['RESULTADO', 'Una operación más controlable, eficiente y medible.', 'Planificación · velocidad · margen · visibilidad'],
     ],
     outcomesLabel: 'DÓNDE CREAMOS VALOR',
     outcomesTitle: 'Tres formas de mejorar un negocio con capacidad analítica.',
@@ -85,9 +85,9 @@ const COPY = {
     micro: 'Discovery inicial · 30 min · sense compromís',
     visualLabel: 'DECISION SYSTEM',
     visual: [
-      ['01 · PROBLEMA', 'Demanda incerta, capacitat limitada, processos manuals o decisions amb massa marge d’error.'],
-      ['02 · SISTEMA', 'Forecasting, optimització, ML, automatització, agents IA o analytics — només quan encaixen.'],
-      ['03 · RESULTAT', 'Més control, menys fricció i millors decisions amb impacte mesurable.'],
+      ['PROBLEMA', 'Una decisió que avui funciona pitjor del que hauria.', 'Demanda · capacitat · risc · processos'],
+      ['SISTEMA', 'La capacitat adequada per millorar aquesta decisió.', 'Forecasting · Optimització · ML · IA'],
+      ['RESULTAT', 'Una operació més controlable, eficient i mesurable.', 'Planificació · velocitat · marge · visibilitat'],
     ],
     outcomesLabel: 'ON CREAM VALOR',
     outcomesTitle: 'Tres maneres de millorar un negoci amb capacitat analítica.',
@@ -131,9 +131,9 @@ const COPY = {
     micro: 'Initial discovery · 30 min · no commitment',
     visualLabel: 'DECISION SYSTEM',
     visual: [
-      ['01 · PROBLEM', 'Uncertain demand, constrained capacity, manual processes or decisions with too much room for error.'],
-      ['02 · SYSTEM', 'Forecasting, optimisation, ML, automation, AI agents or analytics — only when they fit.'],
-      ['03 · OUTCOME', 'More control, less friction and better decisions with measurable impact.'],
+      ['PROBLEM', 'A decision that works worse today than it should.', 'Demand · capacity · risk · processes'],
+      ['SYSTEM', 'The right capability to improve that decision.', 'Forecasting · Optimisation · ML · AI'],
+      ['OUTCOME', 'A more controllable, efficient and measurable operation.', 'Planning · speed · margin · visibility'],
     ],
     outcomesLabel: 'WHERE WE CREATE VALUE',
     outcomesTitle: 'Three ways analytical capability can improve a business.',
@@ -191,18 +191,47 @@ export default function HomePage() {
             <p className="mt-4 text-xs text-slate-500">{t.micro}</p>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-5 md:p-6">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.035] p-5 md:p-6">
+            <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full border border-indigo-400/10" />
+            <div className="pointer-events-none absolute -right-6 -top-6 h-28 w-28 rounded-full border border-white/5" />
+
+            <div className="relative flex items-center justify-between border-b border-white/10 pb-4">
               <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-indigo-300">{t.visualLabel}</p>
-              <span className="h-2 w-2 rounded-full bg-indigo-400" />
+              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-slate-600">SC / 01</p>
             </div>
-            <div className="divide-y divide-white/10">
-              {t.visual.map(([label, body], index) => (
-                <div key={label} className="grid gap-3 py-5 sm:grid-cols-[120px_1fr]">
-                  <p className={`text-[10px] font-semibold uppercase tracking-[0.16em] ${index === 2 ? 'text-indigo-300' : 'text-slate-500'}`}>{label}</p>
-                  <p className={`text-sm leading-6 ${index === 2 ? 'text-white' : 'text-slate-300'}`}>{body}</p>
-                </div>
-              ))}
+
+            <div className="relative mt-5">
+              <div className="absolute bottom-8 left-[17px] top-8 w-px bg-gradient-to-b from-slate-700 via-indigo-500/60 to-indigo-300/30" />
+              <div className="space-y-3">
+                {t.visual.map(([label, title, meta], index) => (
+                  <div key={label} className="relative grid grid-cols-[36px_1fr] gap-4">
+                    <div className={`relative z-10 mt-4 flex h-9 w-9 items-center justify-center rounded-full border text-[10px] font-semibold ${
+                      index === 1
+                        ? 'border-indigo-400/60 bg-indigo-400/15 text-indigo-200'
+                        : index === 2
+                          ? 'border-white/30 bg-white text-slate-950'
+                          : 'border-slate-700 bg-slate-950 text-slate-500'
+                    }`}>
+                      0{index + 1}
+                    </div>
+
+                    <div className={`rounded-xl border p-4 transition ${
+                      index === 1
+                        ? 'border-indigo-400/25 bg-indigo-400/[0.07]'
+                        : index === 2
+                          ? 'border-white/15 bg-white/[0.06]'
+                          : 'border-white/[0.07] bg-black/10'
+                    }`}>
+                      <div className="flex items-center justify-between gap-3">
+                        <p className={`text-[10px] font-semibold uppercase tracking-[0.18em] ${index === 2 ? 'text-indigo-200' : index === 1 ? 'text-indigo-300' : 'text-slate-500'}`}>{label}</p>
+                        {index < 2 && <span className="text-xs text-slate-700">↓</span>}
+                      </div>
+                      <p className={`mt-2 text-sm font-medium leading-6 ${index === 2 ? 'text-white' : 'text-slate-200'}`}>{title}</p>
+                      <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.1em] text-slate-500">{meta}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
