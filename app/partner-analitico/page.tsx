@@ -126,25 +126,25 @@ export default function AnalyticalPartnerPage() {
 
   return (
     <main className="bg-white text-slate-950">
-      <section className="border-b border-slate-800 bg-slate-950 text-white">
+      <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:py-20 lg:grid-cols-[1.1fr_.9fr] lg:items-end">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-300">{t.eyebrow}</p>
-            <h1 className="mt-5 max-w-5xl text-5xl leading-[1.04] md:text-6xl" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">{t.intro}</p>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
+            <h1 className="mt-5 max-w-5xl text-[44px] leading-[1.04] tracking-[-0.03em] sm:text-[56px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
+            <p className="mt-6 max-w-3xl text-[17px] leading-8 text-[#EAF0F6]">{t.intro}</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/contact?intent=partner" className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-100">{t.primary}</Link>
-              <Link href="/services" className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-white transition hover:border-slate-500">{t.secondary}</Link>
+              <Link href="/contact?intent=partner" className="bg-white px-5 py-3 text-[13px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">{t.primary}</Link>
+              <Link href="/services" className="border border-[#7F9BB5] px-5 py-3 text-[13px] font-semibold text-white transition hover:bg-white/5">{t.secondary}</Link>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-indigo-300">{t.valueLabel}</p>
-            <div className="mt-3 divide-y divide-white/10">
+          <div className="border-y border-[#5E86A8] py-5">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{t.valueLabel}</p>
+            <div className="mt-3 divide-y divide-[#496C8A] border-t border-[#496C8A]">
               {t.value.map((item, index) => (
                 <div key={item} className="flex gap-4 py-4">
-                  <span className="text-xs font-semibold text-slate-500">0{index + 1}</span>
-                  <p className="text-sm leading-6 text-slate-200">{item}</p>
+                  <span className="font-mono text-[11px] text-[#7F9BB5]">0{index + 1}</span>
+                  <p className="text-[13px] leading-5 text-[#EAF0F6]">{item}</p>
                 </div>
               ))}
             </div>
@@ -152,42 +152,42 @@ export default function AnalyticalPartnerPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-600">{t.fitLabel}</p>
-        <h2 className="mt-4 max-w-3xl text-3xl md:text-4xl" style={{ fontFamily: 'var(--font-playfair)' }}>{t.fitTitle}</h2>
-        <div className="mt-8 grid gap-4 lg:grid-cols-3">
+      <section className="border-b border-slate-300 bg-white"><div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
+        <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.fitLabel}</p>
+        <h2 className="mt-4 max-w-3xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.fitTitle}</h2>
+        <div className="mt-8 grid border-l border-t border-slate-300 lg:grid-cols-3">
           {t.fits.map(([title, body], index) => (
-            <article key={title} className="rounded-2xl border border-slate-200 p-7">
+            <article key={title} className="min-h-[235px] border-b border-r border-slate-300 p-6 md:p-7">
               <p className="text-xs font-semibold text-indigo-600">0{index + 1}</p>
-              <h3 className="mt-4 text-xl font-semibold">{title}</h3>
-              <p className="mt-4 text-sm leading-7 text-slate-600">{body}</p>
+              <h3 className="mt-4 text-[20px] font-semibold">{title}</h3>
+              <p className="mt-4 text-[14px] leading-7 text-slate-600">{body}</p>
             </article>
           ))}
         </div>
-      </section>
+      </div></section>
 
-      <section className="border-y border-slate-200 bg-slate-50">
+      <section className="border-b border-slate-300 bg-[#FAFAF7]">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
           <div className="grid gap-10 lg:grid-cols-[.72fr_1.28fr]">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-600">{t.modelLabel}</p>
-              <h2 className="mt-4 text-3xl md:text-4xl" style={{ fontFamily: 'var(--font-playfair)' }}>{t.modelTitle}</h2>
+              <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.modelLabel}</p>
+              <h2 className="mt-4 text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.modelTitle}</h2>
             </div>
             <div className="divide-y divide-slate-200 border-y border-slate-200">
               {t.model.map(([number, title, body]) => (
                 <article key={number} className="grid gap-3 py-5 md:grid-cols-[64px_200px_1fr]">
                   <span className="text-xs font-semibold text-indigo-600">{number}</span>
                   <h3 className="font-semibold text-slate-900">{title}</h3>
-                  <p className="text-sm leading-7 text-slate-600">{body}</p>
+                  <p className="text-[14px] leading-7 text-slate-600">{body}</p>
                 </article>
               ))}
             </div>
           </div>
 
-          <div className="mt-10 rounded-2xl border border-indigo-100 bg-indigo-50 p-7 md:flex md:items-center md:justify-between md:gap-10">
+          <div className="mt-10 border-y border-slate-300 bg-[#F4F1EA] p-7 md:flex md:items-center md:justify-between md:gap-10">
             <div>
-              <h3 className="text-2xl" style={{ fontFamily: 'var(--font-playfair)' }}>{t.noteTitle}</h3>
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">{t.noteBody}</p>
+              <h3 className="text-[26px] leading-tight" style={{ fontFamily: 'var(--font-playfair)' }}>{t.noteTitle}</h3>
+              <p className="mt-3 max-w-3xl text-[14px] leading-7 text-slate-600">{t.noteBody}</p>
             </div>
           </div>
         </div>
@@ -209,13 +209,13 @@ export default function AnalyticalPartnerPage() {
         </div>
       </section>
 
-      <section className="bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-7 px-6 py-12 md:flex-row md:items-center md:justify-between">
+      <section className="border-b border-slate-300 bg-[#F4F1EA]">
+        <div className="mx-auto flex max-w-7xl flex-col gap-7 px-6 py-10 md:flex-row md:items-center md:justify-between">
           <div>
-            <h2 className="text-3xl md:text-4xl" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">{t.ctaBody}</p>
+            <h2 className="text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
+            <p className="mt-3 max-w-2xl text-[14px] leading-7 text-slate-600">{t.ctaBody}</p>
           </div>
-          <Link href="/contact?intent=partner" className="inline-flex shrink-0 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">{t.cta}</Link>
+          <Link href="/contact?intent=partner" className="inline-flex shrink-0 bg-slate-950 px-5 py-3 text-[13px] font-semibold text-white transition hover:bg-slate-800">{t.cta}</Link>
         </div>
       </section>
     </main>
