@@ -101,7 +101,6 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
   const tags = lang === 'en' ? article.tagsEn : lang === 'ca' ? (article.tagsCa || article.tagsEs) : article.tagsEs
   const segments = parseBody(body)
   const headings = extractHeadings(body)
-  let sectionCount = 0
 
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
@@ -144,10 +143,10 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
                 )
               }
 
-              sectionCount += 1
-              const num = String(sectionCount).padStart(2, '0')
+              const sectionNumber = segments.slice(0, segmentIndex + 1).filter((item) => item.type === 'section').length
+              const num = String(sectionNumber).padStart(2, '0')
               return (
-                <section key={segmentIndex} id={`section-${sectionCount}`} className="border-b border-slate-300 bg-white px-6 py-8 md:px-8 md:py-9">
+                <section key={segmentIndex} id={`section-${sectionNumber}`} className="border-b border-slate-300 bg-white px-6 py-8 md:px-8 md:py-9">
                   <div className="grid gap-4 md:grid-cols-[56px_1fr]">
                     <span className="font-mono text-[12px] text-indigo-700">{num}</span>
                     <div>
