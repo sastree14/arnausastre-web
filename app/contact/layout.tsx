@@ -1,17 +1,17 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Talk to Us',
+  title: 'Start a Conversation',
   description:
-    'Schedule a free 30-minute consultation with SC Analytics. We help CEOs, CFOs and business leaders make better decisions through analytics and data strategy. No commitment required.',
+    'Talk to SC-Analytics about a business problem, a Data & AI opportunity or an ongoing partner model. Start with the decision that should improve, not with a pre-selected technology.',
   keywords: [
+    'data AI consultation',
+    'data science consultation',
+    'AI consulting Spain',
     'analytics consultation',
-    'schedule analytics call',
-    'free analytics consultation',
-    'talk to analytics consultant',
-    'book analytics meeting',
-    'data strategy consultation',
-    'contact analytics consulting',
+    'data AI partner',
+    'business analytics consulting',
+    'SC Analytics contact',
   ],
 }
 
