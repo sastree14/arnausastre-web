@@ -210,7 +210,7 @@ function compactExcerpt(body: string) {
     .replace(/[*_`]/g, '')
     .replace(/\s+/g, ' ')
     .trim()
-    .slice(0, 280)
+    .slice(0, 190)
 }
 
 type Props = { articles: Article[]; generated?: PublicGeneratedArticle[] }
@@ -356,23 +356,23 @@ export default function KnowledgeContent({ articles, generated = [] }: Props) {
             <Link
               key={item.key}
               href={item.href}
-              className={`group flex min-h-[300px] flex-col border-b border-r border-slate-300 bg-white p-7 transition hover:bg-[#FAFAF7] ${
-                index === 0 && visible.length > 2 ? 'md:col-span-2 md:min-h-[260px]' : ''
+              className={`group flex min-h-[270px] flex-col border-b border-r border-slate-300 bg-white p-7 transition hover:bg-[#FAFAF7] ${
+                index === 0 && visible.length > 2 ? 'md:col-span-2 md:min-h-[235px]' : ''
               }`}
             >
               <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.1em]">
                 <span className="text-indigo-700">{item.industry ? label(item.industry, lang) : t.generated}</span>
-                {item.challenge && <><span className="text-slate-300">·</span><span className="text-slate-400">{label(item.challenge, lang)}</span></>}
-                {item.audience && <><span className="text-slate-300">·</span><span className="text-slate-400">{label(item.audience, lang)}</span></>}
+                {item.challenge && <><span className="text-slate-300">·</span><span className="text-slate-500">{label(item.challenge, lang)}</span></>}
+                {item.audience && <><span className="text-slate-300">·</span><span className="text-slate-500">{label(item.audience, lang)}</span></>}
               </div>
 
               <h2 className={`mt-5 max-w-4xl leading-tight text-slate-950 transition group-hover:text-indigo-800 ${
-                index === 0 && visible.length > 2 ? 'text-3xl md:text-4xl' : 'text-2xl'
+                index === 0 && visible.length > 2 ? 'text-[34px] md:text-[42px]' : 'text-[28px] md:text-[30px]'
               }`} style={{ fontFamily: 'var(--font-playfair)' }}>
                 {item.title}
               </h2>
 
-              <p className="mt-4 max-w-3xl flex-1 text-[17px] leading-7 text-slate-700">{item.excerpt}</p>
+              <p className="mt-4 max-w-3xl flex-1 line-clamp-2 text-[16px] leading-7 text-slate-700">{item.excerpt}</p>
 
               <div className="mt-7 flex items-center justify-between border-t border-slate-100 pt-4 text-[13px]">
                 <span className="text-slate-400">{item.date}{item.date ? ' · ' : ''}{item.readingTime} {t.min}</span>
