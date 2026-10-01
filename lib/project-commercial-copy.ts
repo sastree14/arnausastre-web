@@ -54,7 +54,6 @@ export const sc12CommercialCopy: Record<SiteLanguage, {
   changed: string
   utility: string
   scenarioHeadline: string
-  economicsNote: string
   scenarioSummary: string
 }> = {
   en: {
@@ -93,6 +92,7 @@ export const sc12CaseStudyCopy: Record<SiteLanguage, {
   thesis: string
   scenarioLabel: string
   scenarioHeadline: string
+  economicsNote: string
   problemLabel: string
   problemTitle: string
   problemBody: string
