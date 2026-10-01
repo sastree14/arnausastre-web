@@ -73,7 +73,7 @@ export default function Navbar() {
             <Link
               key={href}
               href={href}
-              className={`relative px-2.5 py-2 text-[13px] font-medium transition ${
+              className={`relative px-2.5 py-2 text-[14px] font-medium transition ${
                 active(href) ? 'text-slate-950' : 'text-slate-600 hover:text-slate-950'
               }`}
             >
@@ -98,7 +98,7 @@ export default function Navbar() {
               </button>
             ))}
           </div>
-          <Link href="/contact" className="bg-slate-950 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-slate-800">
+          <Link href="/contact" className="bg-slate-950 px-4 py-2.5 text-[14px] font-semibold text-white transition hover:bg-slate-800">
             {t.contact}
           </Link>
         </div>
@@ -123,12 +123,12 @@ export default function Navbar() {
                 key={href}
                 href={href}
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-between border-b border-slate-100 px-2 py-3 text-sm font-medium text-slate-800"
+                className="flex items-center justify-between border-b border-slate-100 px-2 py-3 text-[15px] font-medium text-slate-800"
               >
                 {label}<span className="text-slate-300">→</span>
               </Link>
             ))}
-            <Link href="/contact" onClick={() => setOpen(false)} className="mt-3 bg-slate-950 px-3 py-3 text-center text-sm font-semibold text-white">
+            <Link href="/contact" onClick={() => setOpen(false)} className="mt-3 bg-slate-950 px-3 py-3 text-center text-[15px] font-semibold text-white">
               {t.contact}
             </Link>
           </nav>
