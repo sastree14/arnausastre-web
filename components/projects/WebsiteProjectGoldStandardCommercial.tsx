@@ -96,12 +96,20 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
 
               <p className="mt-5 text-[12px] leading-5 text-[#7F9BB5]">{c.economicsNote}</p>
 
-              <div className="mt-6 flex flex-wrap gap-4">
-                <a href={project.proofUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-[14px] font-semibold text-white underline decoration-[#5E86A8] underline-offset-4">
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a
+                  href={project.proofUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex min-h-[48px] items-center gap-2 border border-[#A8BACB] bg-transparent px-4 py-3 text-[14px] font-semibold text-white transition hover:bg-white/5"
+                >
                   {c.repository}
                   <ArrowUpRight className="h-4 w-4" />
                 </a>
-                <Link href={project.cta.primaryHref} className="inline-flex items-center gap-2 text-[14px] font-semibold text-[#A8BACB] underline decoration-[#496C8A] underline-offset-4 hover:text-white">
+                <Link
+                  href={project.cta.primaryHref}
+                  className="inline-flex min-h-[48px] items-center gap-2 bg-white px-4 py-3 text-[14px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]"
+                >
                   {c.contact}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -129,7 +137,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
           </Section>
 
           <Section id="horizon" label={c.horizonLabel} title={c.horizonTitle} body={c.horizonBody}>
-            <HorizonDecisionVisual data={project.horizonLogic} />
+            <HorizonDecisionVisual data={project.horizonLogic} lang={lang} />
           </Section>
 
           <Section id="system" label={c.systemLabel} title={c.systemTitle} body={c.systemBody} tone="paper">
