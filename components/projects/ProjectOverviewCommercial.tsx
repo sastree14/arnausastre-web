@@ -57,9 +57,9 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
   const evidenceHeadline =
     isSc12
       ? {
-          en: 'Technical proof you can inspect',
-          es: 'Prueba técnica que puedes inspeccionar',
-          ca: 'Prova tècnica que pots inspeccionar',
+          en: 'Explore this case in our technical portfolio.',
+          es: 'Explora este caso en nuestro portfolio técnico.',
+          ca: 'Explora aquest cas al nostre portfolio tècnic.',
         }[lang]
       : ui.evidence
 
@@ -192,34 +192,57 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
       </section>
 
       <section className="border-y border-slate-300 bg-[#F4F1EA]">
-        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] py-5 sm:w-[calc(100%_-_48px)] lg:py-6">
-          <div className="grid gap-4 lg:grid-cols-[190px_minmax(0,1fr)_auto] lg:items-center">
-            <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{ui.evidence}</p>
-
-            <div className="flex min-h-[76px] items-center border border-slate-300 bg-white px-6 py-4">
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] py-7 sm:w-[calc(100%_-_48px)] lg:py-8">
+          {isSc12 ? (
+            <div className="border border-slate-300 bg-white px-6 py-7 text-center sm:px-8 lg:px-10 lg:py-8">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-indigo-700">{ui.evidence}</p>
               <p
-                className="text-[24px] leading-[1.08] tracking-[-0.015em] text-[#1D2B44] sm:text-[27px]"
+                className="mx-auto mt-3 max-w-3xl text-[29px] leading-[1.08] tracking-[-0.02em] text-[#1D2B44] sm:text-[34px]"
                 style={{ fontFamily: 'var(--font-playfair)' }}
               >
                 {evidenceHeadline}
               </p>
-              {evidenceSummary ? (
-                <p className="ml-6 max-w-2xl text-[14px] leading-6 text-slate-700">{evidenceSummary}</p>
+              {proofUrl ? (
+                <a
+                  href={proofUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-5 inline-flex min-h-[52px] items-center justify-center gap-2 bg-slate-950 px-6 py-3 text-[14px] font-semibold text-white transition hover:bg-slate-800"
+                >
+                  {ui.repository}
+                  <ArrowUpRight className="h-4 w-4" />
+                </a>
               ) : null}
             </div>
+          ) : (
+            <div className="grid gap-4 lg:grid-cols-[190px_minmax(0,1fr)_auto] lg:items-center">
+              <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{ui.evidence}</p>
 
-            {proofUrl ? (
-              <a
-                href={proofUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex min-h-[50px] items-center justify-center gap-2 border border-slate-900 bg-slate-950 px-5 py-3 text-[14px] font-semibold text-white transition hover:bg-slate-800"
-              >
-                {ui.repository}
-                <ArrowUpRight className="h-4 w-4" />
-              </a>
-            ) : null}
-          </div>
+              <div className="flex min-h-[76px] items-center border border-slate-300 bg-white px-6 py-4">
+                <p
+                  className="text-[24px] leading-[1.08] tracking-[-0.015em] text-[#1D2B44] sm:text-[27px]"
+                  style={{ fontFamily: 'var(--font-playfair)' }}
+                >
+                  {evidenceHeadline}
+                </p>
+                {evidenceSummary ? (
+                  <p className="ml-6 max-w-2xl text-[14px] leading-6 text-slate-700">{evidenceSummary}</p>
+                ) : null}
+              </div>
+
+              {proofUrl ? (
+                <a
+                  href={proofUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex min-h-[50px] items-center justify-center gap-2 border border-slate-900 bg-slate-950 px-5 py-3 text-[14px] font-semibold text-white transition hover:bg-slate-800"
+                >
+                  {ui.repository}
+                  <ArrowUpRight className="h-4 w-4" />
+                </a>
+              ) : null}
+            </div>
+          )}
         </div>
       </section>
     </main>
