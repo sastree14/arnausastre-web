@@ -12,7 +12,7 @@ const COPY = {
     knowledge: 'Conocimiento',
     partner: 'Partner Data & AI',
     why: 'Por qué SC-Analytics',
-    contact: 'Hablar con nosotros',
+    contact: 'Contacta con nosotros',
     rights: '© 2026 SC-Analytics. Todos los derechos reservados.',
   },
   ca: {
@@ -22,7 +22,7 @@ const COPY = {
     knowledge: 'Coneixement',
     partner: 'Partner Data & AI',
     why: 'Per què SC-Analytics',
-    contact: 'Parlar amb nosaltres',
+    contact: 'Contacta amb nosaltres',
     rights: '© 2026 SC-Analytics. Tots els drets reservats.',
   },
   en: {
@@ -32,7 +32,7 @@ const COPY = {
     knowledge: 'Knowledge',
     partner: 'Data & AI Partner',
     why: 'Why SC-Analytics',
-    contact: 'Talk to us',
+    contact: 'Contact us',
     rights: '© 2026 SC-Analytics. All rights reserved.',
   },
 } as const
@@ -47,10 +47,10 @@ export default function Footer() {
         <div className="grid gap-7 lg:grid-cols-[.8fr_1.2fr_auto] lg:items-center">
           <div>
             <Image src="/brand/logo-horizontal-transparent.png" alt="SC-Analytics" width={344} height={224} className="h-9 w-auto" />
-            <p className="mt-3 max-w-sm text-[12px] leading-5 text-[#7F9BB5]">{t.statement}</p>
+            <p className="mt-3 max-w-sm text-[14px] leading-6 text-[#9CB0C2]">{t.statement}</p>
           </div>
 
-          <nav className="flex flex-wrap gap-x-5 gap-y-2 text-[12px] text-[#A8BACB]">
+          <nav className="flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-[#A8BACB]">
             <Link href="/services" className="transition hover:text-white">{t.work}</Link>
             <Link href="/projects" className="transition hover:text-white">{t.cases}</Link>
             <Link href="/knowledge" className="transition hover:text-white">{t.knowledge}</Link>
@@ -58,12 +58,12 @@ export default function Footer() {
             <Link href="/about" className="transition hover:text-white">{t.why}</Link>
           </nav>
 
-          <Link href="/contact" className="inline-flex justify-center border border-[#A8BACB] px-4 py-2.5 text-[12px] font-semibold text-white transition hover:bg-white/5">
+          <Link href="/contact" className="inline-flex justify-center border border-[#A8BACB] px-4 py-2.5 text-[14px] font-semibold text-white transition hover:bg-white/5">
             {t.contact} →
           </Link>
         </div>
 
-        <div className="mt-7 flex flex-col gap-2 border-t border-[#496C8A] pt-4 text-[11px] text-[#607C96] sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-7 flex flex-col gap-2 border-t border-[#496C8A] pt-4 text-[12px] text-[#718AA1] sm:flex-row sm:items-center sm:justify-between">
           <p>{t.rights}</p>
           <a href="https://linkedin.com/in/arnausastre" target="_blank" rel="noreferrer" className="transition hover:text-[#A8BACB]">LinkedIn ↗</a>
         </div>
