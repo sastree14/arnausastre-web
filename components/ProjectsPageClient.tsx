@@ -113,7 +113,7 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-slate-300">
-        <div className="mx-auto w-[calc(100%-32px)] max-w-[1800px] sm:w-[calc(100%-48px)] pb-9 pt-11 lg:pb-10 lg:pt-12">
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] pb-9 pt-11 lg:pb-10 lg:pt-12">
           <div className="grid gap-6 lg:grid-cols-[clamp(150px,11vw,190px)_minmax(0,1fr)] lg:items-end">
             <div>
               <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-indigo-700">{t.label}</p>
@@ -135,7 +135,7 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
       </section>
 
       <section className="border-b border-slate-300 bg-[#F4F1EA]">
-        <div className="mx-auto w-[calc(100%-32px)] max-w-[1800px] py-5 sm:w-[calc(100%-48px)]">
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] py-5 sm:w-[calc(100%_-_48px)]">
           <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.14em] text-slate-500">{c.filterLabel}</p>
           <div className="grid grid-cols-2 border-l border-t border-slate-300 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-8">
             {filterOrder.map((filter) => {
@@ -160,7 +160,7 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
         </div>
       </section>
 
-      <section className="mx-auto w-[calc(100%-32px)] max-w-[1800px] sm:w-[calc(100%-48px)] py-5 lg:py-6">
+      <section className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] py-5 lg:py-6">
         <div className="border-t border-slate-400">
           {filteredProjects.map(({ project: raw, index }) => {
             const caseTitle = projectCaseIndexTitle(raw, lang)
