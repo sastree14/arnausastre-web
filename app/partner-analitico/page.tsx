@@ -35,6 +35,9 @@ const COPY = {
     ],
     noteTitle: 'No es body leasing. No es vender horas sin contexto.',
     noteBody: 'El objetivo es construir una relación donde entendemos el negocio lo suficiente como para entrar mejor, más rápido y con más criterio cada vez que aparece una necesidad nueva.',
+    exploreLabel: 'ANTES DE DECIDIR',
+    exploreTitle: 'Comprueba cómo pensamos y cómo construimos.',
+    exploreLinks: [['Cómo trabajamos','/services'],['Casos','/projects'],['Conocimiento','/knowledge']],
     ctaTitle: '¿Quieres ampliar capacidad sin ampliar estructura?',
     ctaBody: 'Podemos empezar por una necesidad concreta y comprobar si el modelo tiene sentido para vosotros.',
     cta: 'Hablar con SC-Analytics',
@@ -70,6 +73,9 @@ const COPY = {
     ],
     noteTitle: 'No és body leasing. No és vendre hores sense context.',
     noteBody: 'L’objectiu és construir una relació on entenem prou el negoci per entrar millor, més ràpid i amb més criteri cada vegada que apareix una necessitat nova.',
+    exploreLabel: 'ABANS DE DECIDIR',
+    exploreTitle: 'Comprova com pensem i com construïm.',
+    exploreLinks: [['Com treballem','/services'],['Casos','/projects'],['Coneixement','/knowledge']],
     ctaTitle: 'Vols ampliar capacitat sense ampliar estructura?',
     ctaBody: 'Podem començar per una necessitat concreta i comprovar si el model té sentit per a vosaltres.',
     cta: 'Parlar amb SC-Analytics',
@@ -105,6 +111,9 @@ const COPY = {
     ],
     noteTitle: 'Not body leasing. Not selling hours without context.',
     noteBody: 'The objective is to build a relationship where we understand the business well enough to enter better, faster and with more judgment whenever a new need appears.',
+    exploreLabel: 'BEFORE YOU DECIDE',
+    exploreTitle: 'See how we think and how we build.',
+    exploreLinks: [['How we work','/services'],['Case studies','/projects'],['Knowledge','/knowledge']],
     ctaTitle: 'Want more capability without more fixed structure?',
     ctaBody: 'We can start with one concrete need and test whether the model makes sense for you.',
     cta: 'Talk to SC-Analytics',
@@ -179,6 +188,22 @@ export default function AnalyticalPartnerPage() {
             <div>
               <h3 className="text-2xl" style={{ fontFamily: 'var(--font-playfair)' }}>{t.noteTitle}</h3>
               <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">{t.noteBody}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto grid max-w-7xl gap-7 px-6 py-12 lg:grid-cols-[190px_1fr] lg:gap-10">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.exploreLabel}</p>
+          <div>
+            <h2 className="text-[30px] leading-[1.08] sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
+            <div className="mt-6 grid border-t border-slate-300 md:grid-cols-3 md:divide-x md:divide-slate-300">
+              {t.exploreLinks.map(([label, href]) => (
+                <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[13px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
+                  {label}<span className="text-indigo-700 transition group-hover:translate-x-1">→</span>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
