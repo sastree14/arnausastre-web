@@ -62,7 +62,7 @@ export default function Navbar() {
   ] as const
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200/90 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-50 bg-white/95 shadow-[0_1px_0_rgba(15,23,42,0.08)] backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:px-6">
         <Link href="/" className="flex shrink-0 items-center" aria-label="SC-Analytics home">
           <Image src="/brand/logo-horizontal.png" alt="SC-Analytics" width={344} height={224} className="h-9 w-auto" priority />
