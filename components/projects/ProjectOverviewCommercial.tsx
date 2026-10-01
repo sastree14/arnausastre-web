@@ -21,6 +21,38 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
   const isSc12 = project.slug === 'ecommerce-demand-forecasting'
   const commercial = isSc12 ? sc12CommercialCopy[lang] : null
   const proofUrl = goldStandard?.proofUrl
+  const heroFacts =
+    isSc12 && goldStandard
+      ? {
+          en: [
+            { label: 'Planning horizons', value: '1 · 3 · 6 · 9 months' },
+            { label: 'Decision', value: 'Purchasing · Inventory' },
+            { label: 'Trade-off', value: 'Service · Stock · Cash' },
+            { label: 'Measured through', value: 'WAPE · Bias · Coverage' },
+          ],
+          es: [
+            { label: 'Horizontes de planificación', value: '1 · 3 · 6 · 9 meses' },
+            { label: 'Decisión', value: 'Compras · Inventario' },
+            { label: 'Equilibrio', value: 'Servicio · Stock · Caja' },
+            { label: 'Medido mediante', value: 'WAPE · Sesgo · Cobertura' },
+          ],
+          ca: [
+            { label: 'Horitzons de planificació', value: '1 · 3 · 6 · 9 mesos' },
+            { label: 'Decisió', value: 'Compres · Inventari' },
+            { label: 'Equilibri', value: 'Servei · Estoc · Caixa' },
+            { label: 'Mesurat mitjançant', value: 'WAPE · Biaix · Cobertura' },
+          ],
+        }[lang]
+      : goldStandard?.heroFacts || []
+
+  const sourceNote =
+    isSc12
+      ? {
+          en: 'SC-12 is a public portfolio implementation. It is presented as capability and implementation proof, not as a named client case or a claim of measured organisation-wide impact.',
+          es: 'SC-12 es una implementación pública de portfolio. Se presenta como evidencia de capacidad e implementación, no como un caso de cliente identificado ni como una afirmación de impacto medido a escala de toda una organización.',
+          ca: 'SC-12 és una implementació pública de portfolio. Es presenta com a evidència de capacitat i implementació, no com un cas de client identificat ni com una afirmació d’impacte mesurat a escala de tota una organització.',
+        }[lang]
+      : raw.confidentiality
 
   const genericProblem =
     raw.sections.find((section) => ['Problem', 'Context'].includes(section.title))?.body ||
@@ -108,7 +140,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
 
           {goldStandard ? (
             <div className="grid border-b border-slate-300 sm:grid-cols-2 lg:grid-cols-4">
-              {goldStandard.heroFacts.map((fact) => (
+              {heroFacts.map((fact) => (
                 <div key={fact.label} className="border-b border-slate-200 py-4 sm:px-5 sm:first:pl-0 lg:border-b-0 lg:border-r lg:last:border-r-0">
                   <p className="text-[13px] text-slate-500">{fact.label}</p>
                   <p className="mt-1.5 text-[15px] font-semibold leading-6 text-slate-950">{fact.value}</p>
@@ -150,9 +182,9 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
       </section>
 
       <section className="bg-[#F4F1EA]">
-        <div className="mx-auto grid max-w-[1800px] gap-5 py-6 lg:grid-cols-[180px_1fr_auto] lg:items-center">
+        <div className="mx-auto grid w-[calc(100%_-_32px)] max-w-[1800px] gap-5 py-6 sm:w-[calc(100%_-_48px)] lg:grid-cols-[180px_1fr_auto] lg:items-center">
           <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{ui.evidence}</p>
-          <p className="max-w-3xl text-[13px] leading-6 text-slate-600">{goldStandard?.sourceNote || raw.confidentiality}</p>
+          <p className="max-w-3xl text-[13px] leading-6 text-slate-600">{sourceNote}</p>
           {proofUrl ? (
             <a href={proofUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-[14px] font-semibold text-slate-900 underline decoration-slate-400 underline-offset-4">
               {ui.repository}
