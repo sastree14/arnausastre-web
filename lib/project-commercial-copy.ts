@@ -176,7 +176,7 @@ export const sc12CaseStudyCopy: Record<SiteLanguage, {
     takeawayTitle: 'Forecasting creates value when it changes a purchasing or inventory decision.',
     takeawayBody: 'Understand the decision first. Measure what matters. Add complexity only when it improves stock, service or cash.',
     repository: 'Open technical repository',
-    contact: 'Discuss a similar problem',
+    contact: 'Tell us about a similar problem',
   },
   es: {
     back: 'Resumen del proyecto',
@@ -228,7 +228,7 @@ export const sc12CaseStudyCopy: Record<SiteLanguage, {
     takeawayTitle: 'El forecasting crea valor cuando cambia una decisión de compra o inventario.',
     takeawayBody: 'Comprender la decisión primero. Medir lo que importa. Añadir complejidad solo cuando mejora stock, servicio o caja.',
     repository: 'Abrir repositorio técnico',
-    contact: 'Hablar de un problema similar',
+    contact: 'Háblanos de un problema similar',
   },
   ca: {
     back: 'Resum del projecte',
@@ -280,7 +280,7 @@ export const sc12CaseStudyCopy: Record<SiteLanguage, {
     takeawayTitle: 'El forecasting crea valor quan canvia una decisió de compra o inventari.',
     takeawayBody: 'Comprendre la decisió primer. Mesurar el que importa. Afegir complexitat només quan millora estoc, servei o caixa.',
     repository: 'Obrir repositori tècnic',
-    contact: 'Parlar d’un problema similar',
+    contact: 'Parla’ns d’un problema similar',
   },
 }
 
