@@ -200,16 +200,16 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
               <div className="mt-5 grid gap-3 lg:grid-cols-3">
                 <Link
                   href={`/projects/${project.slug}/case-study`}
-                  className="group flex min-h-[148px] flex-col justify-between border border-slate-300 bg-white p-6 transition hover:border-slate-500 hover:bg-[#FAFAF7]"
+                  className="group flex min-h-[166px] flex-col justify-between border border-[#D6D0C5] bg-[#F4F1EA] p-6 transition hover:border-[#AFA89C] hover:bg-[#EEE9DF]"
                 >
-                  <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-indigo-700">01</p>
-                  <div className="mt-6 flex items-end justify-between gap-5">
-                    <p className="max-w-[22ch] text-[24px] leading-[1.08] text-[#1D2B44]" style={{ fontFamily: 'var(--font-playfair)' }}>
+                  <div className="flex items-start gap-4">
+                    <p className="pt-1 font-mono text-[13px] font-semibold text-indigo-700">01</p>
+                    <p className="max-w-[20ch] text-[24px] leading-[1.08] text-[#1D2B44]" style={{ fontFamily: 'var(--font-playfair)' }}>
                       {lang === 'es' ? '¿Quieres saber más de este caso?' : lang === 'ca' ? 'Vols saber més d’aquest cas?' : 'Want to know more about this case?'}
                     </p>
-                    <ArrowRight className="h-5 w-5 shrink-0 text-indigo-700 transition group-hover:translate-x-1" />
+                    <ArrowRight className="ml-auto mt-1 h-5 w-5 shrink-0 text-indigo-700 transition group-hover:translate-x-1" />
                   </div>
-                  <p className="mt-4 text-[14px] font-semibold text-slate-900">{ui.caseStudy}</p>
+                  <p className="mt-6 text-[16px] font-semibold text-[#1D2B44]">{ui.caseStudy}</p>
                 </Link>
 
                 {proofUrl ? (
@@ -217,31 +217,31 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
                     href={proofUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="group flex min-h-[148px] flex-col justify-between border border-slate-300 bg-white p-6 transition hover:border-slate-500 hover:bg-[#FAFAF7]"
+                    className="group flex min-h-[166px] flex-col justify-between border border-[#C8D7E4] bg-[#EEF3F7] p-6 transition hover:border-[#93ACC0] hover:bg-[#E5EDF3]"
                   >
-                    <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-indigo-700">02</p>
-                    <div className="mt-6 flex items-end justify-between gap-5">
-                      <p className="max-w-[22ch] text-[24px] leading-[1.08] text-[#1D2B44]" style={{ fontFamily: 'var(--font-playfair)' }}>
+                    <div className="flex items-start gap-4">
+                      <p className="pt-1 font-mono text-[13px] font-semibold text-indigo-700">02</p>
+                      <p className="max-w-[20ch] text-[24px] leading-[1.08] text-[#1D2B44]" style={{ fontFamily: 'var(--font-playfair)' }}>
                         {lang === 'es' ? '¿Quieres ver el desarrollo técnico?' : lang === 'ca' ? 'Vols veure el desenvolupament tècnic?' : 'Want to inspect the technical build?'}
                       </p>
-                      <ArrowUpRight className="h-5 w-5 shrink-0 text-indigo-700 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                      <ArrowUpRight className="ml-auto mt-1 h-5 w-5 shrink-0 text-indigo-700 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                     </div>
-                    <p className="mt-4 text-[14px] font-semibold text-slate-900">{ui.repository}</p>
+                    <p className="mt-6 text-[16px] font-semibold text-[#1D2B44]">{ui.repository}</p>
                   </a>
                 ) : null}
 
                 <Link
                   href="/contact"
-                  className="group flex min-h-[148px] flex-col justify-between border border-[#0D1B2A] bg-[#0D1B2A] p-6 text-white transition hover:bg-[#13283C]"
+                  className="group flex min-h-[166px] flex-col justify-between border border-[#0D1B2A] bg-[#0D1B2A] p-6 text-white transition hover:bg-[#13283C]"
                 >
-                  <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#7A7DFF]">03</p>
-                  <div className="mt-6 flex items-end justify-between gap-5">
-                    <p className="max-w-[22ch] text-[24px] leading-[1.08] text-white" style={{ fontFamily: 'var(--font-playfair)' }}>
+                  <div className="flex items-start gap-4">
+                    <p className="pt-1 font-mono text-[13px] font-semibold text-[#7A7DFF]">03</p>
+                    <p className="max-w-[20ch] text-[24px] leading-[1.08] text-white" style={{ fontFamily: 'var(--font-playfair)' }}>
                       {lang === 'es' ? '¿Quieres hablarnos de un problema similar?' : lang === 'ca' ? 'Vols parlar-nos d’un problema similar?' : 'Want to discuss a similar problem?'}
                     </p>
-                    <ArrowRight className="h-5 w-5 shrink-0 text-white transition group-hover:translate-x-1" />
+                    <ArrowRight className="ml-auto mt-1 h-5 w-5 shrink-0 text-white transition group-hover:translate-x-1" />
                   </div>
-                  <p className="mt-4 text-[14px] font-semibold text-white">{ui.contact}</p>
+                  <p className="mt-6 text-[16px] font-semibold text-white">{ui.contact}</p>
                 </Link>
               </div>
             </div>
