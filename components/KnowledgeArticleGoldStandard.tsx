@@ -99,7 +99,8 @@ const COPY = {
     introTitle: 'Contexto y tesis',
     sectionTitles: ['Datos en tiempo real', 'Visibilidad vs. control', 'Límites del reporting', 'Optimización: trade-offs'],
     businessLabel: 'QUÉ SIGNIFICA PARA TU EMPRESA',
-    businessTitle: 'Si ves mejor el inventario pero sigues decidiendo igual, has mejorado la visibilidad, no el control.',
+    businessTitle: 'Más visibilidad solo crea control cuando cambia la decisión.',
+    businessSteps: ['Más visibilidad', 'Mismas reglas de decisión', 'Mismo nivel de control'],
     nextLabel: 'SIGUE DESDE AQUÍ',
     nextTitle: 'Del análisis a la aplicación.',
     cards: [
@@ -121,7 +122,8 @@ const COPY = {
     introTitle: 'Context i tesi',
     sectionTitles: ['Dades en temps real', 'Visibilitat vs. control', 'Límits del reporting', 'Optimització: trade-offs'],
     businessLabel: 'QUÈ SIGNIFICA PER A LA TEVA EMPRESA',
-    businessTitle: 'Si veus millor l’inventari però continues decidint igual, has millorat la visibilitat, no el control.',
+    businessTitle: 'Més visibilitat només crea control quan canvia la decisió.',
+    businessSteps: ['Més visibilitat', 'Mateixes regles de decisió', 'Mateix nivell de control'],
     nextLabel: 'CONTINUA DES D’AQUÍ',
     nextTitle: 'De l’anàlisi a l’aplicació.',
     cards: [
@@ -143,7 +145,8 @@ const COPY = {
     introTitle: 'Context & thesis',
     sectionTitles: ['Real-time data', 'Visibility vs. control', 'Reporting limits', 'Optimisation trade-offs'],
     businessLabel: 'WHAT THIS MEANS FOR YOUR BUSINESS',
-    businessTitle: 'If you can see inventory better but still make the same decisions, you improved visibility, not control.',
+    businessTitle: 'More visibility creates control only when the decision changes.',
+    businessSteps: ['More visibility', 'Same decision rules', 'Same level of control'],
     nextLabel: 'CONTINUE FROM HERE',
     nextTitle: 'From analysis to application.',
     cards: [
@@ -245,7 +248,7 @@ export default function KnowledgeArticleGoldStandard({ article }: { article: Art
                   <div key={segmentIndex} id="article-context" className="scroll-mt-28 border-b border-slate-300 bg-white px-6 py-8 md:px-8 md:py-9">
                     <div className="space-y-6">
                       {segment.paragraphs.map((paragraph, index) => (
-                        <p key={index} className="hyphens-auto text-justify text-[18px] leading-9 text-[#1D2B44]">{renderInline(paragraph)}</p>
+                        <p key={index} className="hyphens-auto text-justify text-[19px] leading-9 text-[#1D2B44]">{renderInline(paragraph)}</p>
                       ))}
                     </div>
                   </div>
@@ -258,19 +261,17 @@ export default function KnowledgeArticleGoldStandard({ article }: { article: Art
               const displayHeading = t.sectionTitles[sectionNumber - 1] || segment.heading
 
               return (
-                <section key={`${segment.heading}-${segmentIndex}`} id={`section-${sectionNumber}`} className="scroll-mt-28 border-b border-slate-300 bg-white px-6 py-9 md:px-8 md:py-10">
-                  <div className="grid gap-5 md:grid-cols-[52px_1fr]">
-                    <span className="font-mono text-[13px] font-semibold text-indigo-700">{String(sectionNumber).padStart(2, '0')}</span>
-                    <div>
-                      <h2 className="max-w-[24ch] text-[29px] leading-[1.08] text-slate-950 sm:text-[33px]" style={{ fontFamily: 'var(--font-playfair)' }}>
-                        {displayHeading}
-                      </h2>
-                      <div className="mt-6 space-y-6">
-                        {segment.paragraphs.map((paragraph, index) => (
-                          <p key={index} className="hyphens-auto text-justify text-[17px] leading-8 text-slate-700">{renderInline(paragraph)}</p>
-                        ))}
-                      </div>
-                    </div>
+                <section key={`${segment.heading}-${segmentIndex}`} id={`section-${sectionNumber}`} className="relative scroll-mt-28 border-b border-slate-300 bg-white px-6 py-9 md:px-8 md:py-10">
+                  <span className="absolute left-2 top-10 font-mono text-[13px] font-semibold text-indigo-700 md:-left-9">
+                    {String(sectionNumber).padStart(2, '0')}
+                  </span>
+                  <h2 className="max-w-[24ch] text-[29px] leading-[1.08] text-slate-950 sm:text-[33px]" style={{ fontFamily: 'var(--font-playfair)' }}>
+                    {displayHeading}
+                  </h2>
+                  <div className="mt-6 space-y-6">
+                    {segment.paragraphs.map((paragraph, index) => (
+                      <p key={index} className="hyphens-auto text-justify text-[18px] leading-9 text-slate-700">{renderInline(paragraph)}</p>
+                    ))}
                   </div>
                 </section>
               )
@@ -280,10 +281,25 @@ export default function KnowledgeArticleGoldStandard({ article }: { article: Art
       </section>
 
       <section className="border-y border-slate-300 bg-[#F4F1EA]">
-        <div className="mx-auto grid w-[calc(100%_-_32px)] max-w-[1380px] gap-7 py-10 sm:w-[calc(100%_-_48px)] lg:grid-cols-[190px_minmax(0,1fr)] lg:gap-10">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.15em] text-indigo-700">{t.businessLabel}</p>
-          <div>
-            <h2 className="max-w-5xl text-[32px] leading-[1.08] text-slate-950 sm:text-[39px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.businessTitle}</h2>
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1380px] py-10 sm:w-[calc(100%_-_48px)] lg:py-12">
+          <div className="text-center">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.15em] text-indigo-700">{t.businessLabel}</p>
+            <h2 className="mx-auto mt-3 max-w-5xl text-[32px] leading-[1.08] text-slate-950 sm:text-[39px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.businessTitle}</h2>
+          </div>
+
+          <div className="mx-auto mt-7 grid max-w-[1180px] items-stretch gap-3 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:gap-4">
+            {t.businessSteps.map((step, index) => (
+              <div key={step} className="contents">
+                <div className={`flex min-h-[130px] items-center justify-center border border-slate-300 px-6 py-5 text-center ${index === 1 ? 'bg-[#EDF2F6]' : 'bg-white'}`}>
+                  <p className="text-[22px] font-semibold leading-7 text-[#1D2B44]">{step}</p>
+                </div>
+                {index < t.businessSteps.length - 1 ? (
+                  <div className="hidden items-center justify-center lg:flex">
+                    <ArrowRight className="h-5 w-5 text-indigo-700" />
+                  </div>
+                ) : null}
+              </div>
+            ))}
           </div>
         </div>
       </section>
