@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-041",
+  "sequence": 41,
+  "arc_id": "ARC-11",
+  "slug": "route-optimization-starts-with-constraints-not-maps",
+  "scheduled_at": "2027-01-15T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Optimization & OR",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "point_of_view_contrarian",
+  "angle": "vehicle routing constraints",
+  "primary_keyword": "vehicle routing constraints",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-042",
+    "KB-043",
+    "KB-044"
+  ],
+  "variants": {
+    "es": {
+      "title": "La optimización de rutas empieza por las restricciones",
+      "excerpt": "Un mapa no define el problema. Ventanas horarias, capacidad, skills, descansos, prioridades y reglas operativas son lo que convierte routing en una decisión real.",
+      "quick": [
+        "Distancia no es el único objetivo",
+        "Las restricciones definen la ruta",
+        "Optimizar significa gestionar trade-offs"
+      ],
+      "section_titles": [
+        "El mapa es solo una capa",
+        "Las restricciones crean el problema",
+        "El objetivo también importa",
+        "Modelar antes de optimizar"
+      ],
+      "business_title": "La ruta óptima depende menos de dibujar el camino más corto que de representar correctamente lo que la operación puede y debe hacer.",
+      "business_steps": [
+        "Restricciones reales",
+        "Objetivo económico",
+        "Ruta ejecutable"
+      ],
+      "body": "Cuando se habla de route optimization, la conversación suele empezar con mapas, kilómetros y tiempos de viaje. Es natural porque la ruta es visible. Pero **el problema difícil rara vez es encontrar el camino más corto entre dos puntos; es construir un conjunto de rutas que respete todas las restricciones del negocio al mismo tiempo**.\n\nCapacidad de vehículo, ventanas horarias, descansos, skills, prioridades, recogidas, entregas, incompatibilidades y horas máximas convierten un problema geográfico en un problema de decisión. **El mapa aporta distancias; las restricciones definen qué soluciones son realmente posibles.**\n\n**El mapa es solo una capa**\nLa distancia entre clientes es una entrada importante, pero no suficiente. Dos paradas cercanas pueden no poder servirse en la misma ruta si sus ventanas horarias chocan o si requieren vehículos distintos.\n\nEl tiempo tampoco es solo conducción. Puede haber carga, descarga, espera, aparcamiento, check-in o servicio en cliente. **Una matriz de tiempos perfecta no compensa un modelo que ignora el tiempo que realmente consume la operación.**\n\nTambién existen reglas que no aparecen en GIS: clientes prioritarios, zonas restringidas, turnos, límites contractuales o preferencias operativas. Si no se codifican, el optimizador produce rutas matemáticamente válidas y operacionalmente absurdas.\n\n**Las restricciones crean el problema**\nEl Vehicle Routing Problem tiene muchas variantes precisamente porque las restricciones cambian el problema. Capacity VRP, time windows, pickup and delivery, heterogeneous fleet y multi-depot son ejemplos de cómo la realidad modifica la estructura.\n\nLa primera tarea no debería ser elegir solver. **Debería ser construir un inventario de restricciones duras y blandas.** Las duras nunca pueden romperse; las blandas pueden violarse pagando una penalización.\n\nEsta distinción es crítica. Si una preferencia se trata como restricción absoluta, el modelo puede quedarse sin soluciones. Si una norma legal se trata como preferencia, puede producir rutas imposibles.\n\n**El objetivo también importa**\nMinimizar kilómetros es solo una opción. Puede interesar minimizar tiempo, coste de vehículos, horas extra, retrasos, emisiones o una combinación.\n\nLos objetivos pueden competir. Reducir un vehículo puede aumentar kilómetros; cumplir todas las ventanas puede exigir más capacidad; equilibrar cargas puede empeorar distancia total. **Optimizar significa elegir qué trade-off merece la pena, no descubrir una respuesta universal.**\n\nPor eso los pesos del objetivo deben tener significado económico. Penalizar diez minutos de retraso con un número arbitrario puede cambiar rutas de forma importante. Conviene relacionar penalizaciones con coste o prioridad empresarial.\n\n**Modelar antes de optimizar**\nUn buen proyecto de routing empieza observando cómo se planifica hoy. Qué decisiones toma el dispatcher, qué excepciones aparecen y qué reglas vive en su cabeza pero no en el sistema.\n\nDespués se construye un modelo de datos: pedidos, localizaciones, tiempos de servicio, flota, capacidades, ventanas y restricciones. **La calidad de la solución queda limitada por la calidad con la que representamos la operación.**\n\nAntes de buscar el óptimo conviene validar factibilidad. ¿Puede el modelo reproducir una jornada histórica sin violar reglas? ¿Explica por qué ciertas paradas deben ir separadas? Esta fase detecta errores de modelado antes de atribuirlos al solver.\n\nTambién hay que definir qué se hará con infeasibilidad. En la realidad puede haber días donde no existe solución perfecta. El sistema necesita saber qué restricción blanda relajar, qué pedido posponer o cuándo pedir capacidad adicional.\n\nEl resultado debería ser ejecutable y explicable. Un planner debe poder entender por qué una parada se asignó a un vehículo y qué cambió respecto a la alternativa manual.\n\nLa optimización aporta más valor cuando la complejidad de restricciones supera lo que una persona puede balancear consistentemente. **La ruta no empieza en el mapa: empieza en la definición rigurosa de lo que significa una ruta válida y valiosa para ese negocio.**",
+      "seo_title": "Optimización de rutas: empieza por restricciones",
+      "seo_description": "Por qué un modelo VRP debe empezar por ventanas, capacidad, flota, tiempos de servicio, prioridades y trade-offs antes que por el mapa.",
+      "seo_keywords": [
+        "vehicle routing constraints",
+        "optimización rutas",
+        "VRP constraints",
+        "route optimization"
+      ],
+      "tags": [
+        "Optimization",
+        "VRP",
+        "Routing"
+      ]
+    },
+    "en": {
+      "title": "Route optimization starts with constraints, not maps",
+      "excerpt": "A map does not define the problem. Time windows, capacity, skills, breaks, priorities and operating rules turn routing into a real decision.",
+      "quick": [
+        "Distance is not the only objective",
+        "Constraints define the route",
+        "Optimization means managing trade-offs"
+      ],
+      "section_titles": [
+        "The map is only one layer",
+        "Constraints create the problem",
+        "The objective matters too",
+        "Model before optimizing"
+      ],
+      "business_title": "The optimal route depends less on drawing the shortest path than on representing what operations can and should actually do.",
+      "business_steps": [
+        "Real constraints",
+        "Economic objective",
+        "Executable route"
+      ],
+      "body": "Route optimization conversations often begin with maps, kilometres and travel time. That is natural because routes are visible. But **the difficult problem is rarely finding the shortest path between two points; it is building a set of routes that satisfies the operating constraints at the same time**.\n\nVehicle capacity, time windows, breaks, skills, priorities, pickups, deliveries, incompatibilities and shift limits turn a geographic problem into a decision problem. **The map provides distances; constraints define which solutions are actually possible.**\n\n**The map is only one layer**\nDistance between customers matters, but it is not enough. Two nearby stops may be impossible on the same route if their time windows conflict or if they require different vehicle capabilities.\n\nTime is not only driving either. Loading, unloading, waiting, parking, check-in and on-site service can all matter. **A perfect travel-time matrix cannot rescue a model that ignores the time operations really consume.**\n\nThere are also rules that do not appear in GIS: priority customers, restricted zones, shifts, contractual requirements and operating preferences. If those rules are missing, the optimizer produces mathematically valid and operationally absurd routes.\n\n**Constraints create the problem**\nVehicle Routing Problems have many variants precisely because constraints change the structure: capacity, time windows, pickup and delivery, heterogeneous fleets and multi-depot operations are common examples.\n\nThe first task should not be choosing a solver. **It should be building an inventory of hard and soft constraints.** Hard constraints can never be violated; soft constraints can be violated at a defined penalty.\n\nThat distinction is critical. Treat a preference as absolute and the model may become infeasible. Treat a legal rule as optional and the solution may be impossible to execute.\n\n**The objective matters too**\nMinimizing kilometres is only one possible objective. The business may care about time, vehicle count, overtime, lateness, emissions or a combination.\n\nObjectives conflict. Removing one vehicle may increase distance; satisfying every time window may require more capacity; balancing workload can worsen total travel. **Optimization means choosing which trade-off is worth making, not discovering one universal answer.**\n\nObjective weights should therefore have business meaning. Penalizing ten minutes of lateness with an arbitrary number can materially change routes. Penalties are stronger when linked to economic cost or explicit priority.\n\n**Model before optimizing**\nA routing project should begin by observing how planning works today. Which decisions does the dispatcher make? Which exceptions appear? Which rules live in people’s heads rather than in systems?\n\nThen build the data model: orders, locations, service times, fleet, capacities, windows and constraints. **Solution quality is bounded by how accurately the model represents the operating process.**\n\nBefore chasing optimality, validate feasibility. Can the model reproduce a historical day without breaking known rules? Does it explain why certain stops cannot be combined? This step catches modeling errors before they are blamed on the solver.\n\nThe system also needs a response to infeasibility. Some days genuinely have no perfect solution. It should know which soft rule can be relaxed, which job can be postponed or when extra capacity is required.\n\nOutput should remain executable and explainable. A planner needs to understand why a stop moved to another vehicle and what changed relative to the manual alternative.\n\nOptimization creates the most value when the interaction of constraints becomes too complex for a person to balance consistently. **The route does not begin on the map; it begins with a rigorous definition of what a valid and valuable route means for the business.**",
+      "seo_title": "Route Optimization Starts with Constraints",
+      "seo_description": "Why VRP models should begin with time windows, capacity, fleet rules, service times, priorities and trade-offs before the map.",
+      "seo_keywords": [
+        "vehicle routing constraints",
+        "route optimization",
+        "VRP constraints",
+        "vehicle routing problem"
+      ],
+      "tags": [
+        "Optimization",
+        "VRP",
+        "Routing"
+      ]
+    },
+    "ca": {
+      "title": "L’optimització de rutes comença per les restriccions",
+      "excerpt": "Un mapa no defineix el problema. Finestres horàries, capacitat, skills, descansos, prioritats i regles operatives converteixen routing en una decisió real.",
+      "quick": [
+        "Distància no és l’únic objectiu",
+        "Les restriccions defineixen la ruta",
+        "Optimitzar és gestionar trade-offs"
+      ],
+      "section_titles": [
+        "El mapa és només una capa",
+        "Les restriccions creen el problema",
+        "L’objectiu també importa",
+        "Modelar abans d’optimitzar"
+      ],
+      "business_title": "La ruta òptima depèn menys de dibuixar el camí més curt que de representar què pot i ha de fer realment l’operació.",
+      "business_steps": [
+        "Restriccions reals",
+        "Objectiu econòmic",
+        "Ruta executable"
+      ],
+      "body": "Quan es parla de route optimization, la conversa acostuma a començar amb mapes, quilòmetres i temps de viatge. És natural perquè la ruta és visible. Però **el problema difícil rarament és trobar el camí més curt entre dos punts; és construir un conjunt de rutes que respecti totes les restriccions del negoci alhora**.\n\nCapacitat de vehicle, finestres horàries, descansos, skills, prioritats, recollides, entregues, incompatibilitats i límits de torn converteixen un problema geogràfic en un problema de decisió. **El mapa aporta distàncies; les restriccions defineixen quines solucions són realment possibles.**\n\n**El mapa és només una capa**\nLa distància entre clients importa, però no és suficient. Dues parades properes poden no poder anar a la mateixa ruta si les finestres xoquen o necessiten vehicles diferents.\n\nEl temps tampoc és només conducció. Càrrega, descàrrega, espera, aparcament, check-in o servei al client poden ser rellevants. **Una matriu de temps perfecta no compensa un model que ignora el temps que realment consumeix l’operació.**\n\nTambé hi ha regles que no apareixen al GIS: clients prioritaris, zones restringides, torns, requisits contractuals o preferències. Si no es codifiquen, l’optimitzador produeix rutes matemàticament vàlides i operacionalment absurdes.\n\n**Les restriccions creen el problema**\nEl Vehicle Routing Problem té moltes variants precisament perquè les restriccions canvien l’estructura: capacitat, time windows, pickup and delivery, flota heterogènia o multi-depot.\n\nLa primera tasca no hauria de ser triar solver. **Hauria de ser construir un inventari de restriccions dures i toves.** Les dures no es poden violar; les toves es poden trencar amb una penalització definida.\n\nAquesta distinció és crítica. Si una preferència es tracta com absoluta, el model pot quedar infeasible. Si una norma legal es tracta com opcional, la ruta pot ser impossible d’executar.\n\n**L’objectiu també importa**\nMinimitzar quilòmetres és només una opció. El negoci pot voler minimitzar temps, nombre de vehicles, hores extra, retards, emissions o una combinació.\n\nEls objectius competeixen. Treure un vehicle pot augmentar distància; complir totes les finestres pot exigir més capacitat; equilibrar càrrega pot empitjorar viatge total. **Optimitzar significa decidir quin trade-off val la pena, no descobrir una resposta universal.**\n\nPer això els pesos de l’objectiu han de tenir significat empresarial. Penalitzar deu minuts de retard amb un número arbitrari pot canviar molt les rutes. És millor relacionar penalitzacions amb cost o prioritat.\n\n**Modelar abans d’optimitzar**\nUn projecte de routing ha de començar observant com es planifica avui. Quines decisions pren el dispatcher? Quines excepcions apareixen? Quines regles viuen al cap de les persones i no al sistema?\n\nDesprés es construeix el model de dades: ordres, localitzacions, temps de servei, flota, capacitats, finestres i restriccions. **La qualitat de la solució queda limitada per com de bé representem l’operació.**\n\nAbans de buscar l’òptim convé validar factibilitat. Pot el model reproduir una jornada històrica sense trencar regles? Explica per què algunes parades han d’anar separades? Això detecta errors de modelatge abans de culpar el solver.\n\nTambé cal definir què fer amb infeasibilitat. Hi ha dies on no existeix solució perfecta. El sistema ha de saber quina regla tova relaxar, quin servei ajornar o quan demanar capacitat extra.\n\nL’output ha de ser executable i explicable. Un planner ha d’entendre per què una parada canvia de vehicle i què millora respecte a l’alternativa manual.\n\nL’optimització aporta més valor quan la interacció de restriccions supera el que una persona pot balancejar consistentment. **La ruta no comença al mapa: comença definint amb rigor què significa una ruta vàlida i valuosa per al negoci.**",
+      "seo_title": "Optimització de rutes: comença per restriccions",
+      "seo_description": "Per què un model VRP ha de començar per finestres, capacitat, flota, temps de servei, prioritats i trade-offs abans que pel mapa.",
+      "seo_keywords": [
+        "vehicle routing constraints",
+        "optimització rutes",
+        "VRP constraints",
+        "route optimization"
+      ],
+      "tags": [
+        "Optimization",
+        "VRP",
+        "Routing"
+      ]
+    }
+  }
+}
