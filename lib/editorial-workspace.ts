@@ -53,3 +53,29 @@ export async function getWorkspaceEditorialTasks(): Promise<GrowthTask[]> {
     limit: '100',
   }, { cacheSeconds: 0 })
 }
+
+
+export function collapseWebsiteArticleFamilies(items: GrowthContentItem[]): GrowthContentItem[] {
+  const result: GrowthContentItem[] = []
+  const articleFamilies = new Map<string, GrowthContentItem[]>()
+
+  for (const item of items) {
+    if (item.content_type === 'article' && item.channel === 'website' && item.brief_id) {
+      const key = item.brief_id
+      articleFamilies.set(key, [...(articleFamilies.get(key) || []), item])
+    } else {
+      result.push(item)
+    }
+  }
+
+  for (const family of articleFamilies.values()) {
+    const representative =
+      family.find((item) => item.language === 'es')
+      || family.find((item) => item.language === 'en')
+      || family.find((item) => item.language === 'ca')
+      || family[0]
+    if (representative) result.push(representative)
+  }
+
+  return result.sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')))
+}
