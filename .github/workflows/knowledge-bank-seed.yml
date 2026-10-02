@@ -1,0 +1,62 @@
+name: SC-Analytics Knowledge Bank — Seed Scheduler
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'staged = load approved content without dates; scheduled = activate publication dates'
+        required: true
+        default: 'staged'
+        type: choice
+        options:
+          - staged
+          - scheduled
+      limit:
+        description: '0 = all 200 families; useful for controlled tests'
+        required: false
+        default: '0'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: growth/requirements.txt
+      - run: pip install -r growth/requirements.txt
+
+      - name: Verify complete article bank
+        run: |
+          python scripts/content_engine/build_knowledge_bank.py \
+            --catalog content/editorial/knowledge_bank_v1.json \
+            --output content/article-bank \
+            --validate-only
+
+      - name: Dry-run scheduler seed
+        run: |
+          python scripts/content_engine/seed_knowledge_bank.py \
+            --bank content/article-bank \
+            --expected 200 \
+            --dry-run
+
+      - name: Seed approved Knowledge content
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          STATE_PROVIDER: supabase
+        run: |
+          python scripts/content_engine/seed_knowledge_bank.py \
+            --bank content/article-bank \
+            --mode "${{ inputs.mode }}" \
+            --limit "${{ inputs.limit }}" \
+            --expected 200
