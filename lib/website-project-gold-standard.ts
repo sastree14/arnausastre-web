@@ -1,3 +1,5 @@
+import { getPortfolioCasePresentation, getPortfolioCaseProfile } from '@/lib/portfolio-case-registry'
+
 export type WebsiteProjectEvidenceMode = 'public_portfolio_implementation' | 'client_case'
 
 export type WebsiteProjectMetric = {
@@ -300,6 +302,99 @@ export const SC12_WEBSITE_GOLD_STANDARD: WebsiteProjectGoldStandard = {
     'SC-12 is a public portfolio implementation. It is presented as capability and implementation proof, not as a named client case or a claim of measured organisation-wide impact.',
 }
 
+function buildPortfolioGoldStandard(slug: string): WebsiteProjectGoldStandard | undefined {
+  if (slug === SC12_WEBSITE_GOLD_STANDARD.slug) return SC12_WEBSITE_GOLD_STANDARD
+
+  const profile = getPortfolioCaseProfile(slug)
+  if (!profile) return undefined
+  const presentation = getPortfolioCasePresentation(profile.id, 'en')
+  if (!presentation) return undefined
+
+  return {
+    slug: profile.slug,
+    projectId: profile.id,
+    evidenceMode: 'public_portfolio_implementation',
+    eyebrow: `PUBLIC PORTFOLIO IMPLEMENTATION · ${profile.id}`,
+    title: presentation.title,
+    description: presentation.summary,
+    thesis: presentation.case.thesis,
+    industry: presentation.industry,
+    capabilities: profile.technologies.slice(0, 4),
+    challenge: presentation.challenge,
+    audience: ['Business decision-makers', 'Operations', 'Data & AI'],
+    proofUrl: `https://github.com/sastree14/Portfolio_SC_Analytics/tree/main/projects/${profile.repoSlug}`,
+    proofLabel: presentation.case.repository,
+    heroFacts: presentation.heroFacts,
+    businessProblem: {
+      eyebrow: presentation.case.problemLabel,
+      title: presentation.case.problemTitle,
+      body: [presentation.case.problemBody],
+      consequences: presentation.case.problemRows,
+    },
+    horizonLogic: presentation.case.logicVisual,
+    solution: {
+      eyebrow: presentation.case.systemLabel,
+      title: presentation.case.systemTitle,
+      body: presentation.case.systemBody,
+      bullets: presentation.case.systemRows,
+    },
+    architecture: presentation.case.architecture,
+    decisions: {
+      eyebrow: 'DECISION LOGIC',
+      title: presentation.case.logicTitle,
+      body: presentation.case.logicBody,
+      items: presentation.case.problemRows,
+    },
+    evidence: {
+      eyebrow: presentation.case.evidenceGroupLabels[0],
+      title: presentation.case.evidenceGroupLabels[1],
+      body: presentation.case.evidenceBody,
+      metrics: presentation.case.evidence,
+      note: presentation.proofStatement,
+    },
+    technical: {
+      eyebrow: presentation.case.technicalLabel,
+      title: presentation.case.technicalTitle,
+      body: presentation.proofStatement,
+      technologies: profile.technologies,
+      highlights: presentation.case.systemRows,
+    },
+    limitations: {
+      eyebrow: 'BOUNDARIES',
+      title: 'Public implementation boundaries',
+      body: 'Public examples demonstrate the decision structure and technical implementation without presenting illustrative values as measured client impact.',
+      items: [
+        'Reference metrics are public-example values unless explicitly documented as measured.',
+        'Production integrations, credentials and operating constraints remain environment-specific.',
+        'The technical repository is capability evidence, not a claim of a named client engagement.',
+      ],
+    },
+    takeaway: {
+      eyebrow: presentation.case.takeawayLabel,
+      title: presentation.case.takeawayTitle,
+      body: presentation.case.takeawayBody,
+    },
+    cta: {
+      eyebrow: 'NEXT STEP',
+      title: presentation.case.takeawayTitle,
+      body: presentation.case.takeawayBody,
+      primaryLabel: presentation.case.contact,
+      primaryHref: '/contact',
+      secondaryLabel: presentation.case.repository,
+      secondaryHref: `https://github.com/sastree14/Portfolio_SC_Analytics/tree/main/projects/${profile.repoSlug}`,
+    },
+    businessOutcome: {
+      mode: 'illustrative_scenario',
+      label: presentation.case.referenceEconomics,
+      headline: presentation.scenarioHeadline,
+      summary: presentation.scenarioSummary,
+      metrics: presentation.businessMetrics,
+      disclaimer: presentation.scenarioSummary,
+    },
+    sourceNote: `${profile.id} is a public portfolio implementation. Reference economics are illustrative and technical evidence is inspectable in the repository.`,
+  }
+}
+
 export function getWebsiteProjectGoldStandard(slug: string) {
-  return slug === SC12_WEBSITE_GOLD_STANDARD.slug ? SC12_WEBSITE_GOLD_STANDARD : undefined
+  return buildPortfolioGoldStandard(slug)
 }
