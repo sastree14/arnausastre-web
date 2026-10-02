@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-052",
+  "sequence": 52,
+  "arc_id": "ARC-13",
+  "slug": "a-framework-for-allocating-scarce-capacity",
+  "scheduled_at": "2027-02-11T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Optimization & OR",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "framework_playbook",
+  "angle": "resource allocation framework",
+  "primary_keyword": "resource allocation framework",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-049",
+    "KB-050",
+    "KB-051"
+  ],
+  "variants": {
+    "es": {
+      "title": "Un framework para asignar capacidad escasa",
+      "excerpt": "El proceso correcto conecta demanda de recursos, valor, restricciones, escenarios y revisión para convertir prioridades en una cartera ejecutable.",
+      "quick": [
+        "Define el recurso escaso",
+        "Valora cada opción",
+        "Revisa cuando cambian los supuestos"
+      ],
+      "section_titles": [
+        "Define la unidad de decisión",
+        "Construye valor y consumo",
+        "Añade restricciones y escenarios",
+        "Convierte la asignación en un proceso"
+      ],
+      "business_title": "Asignar capacidad escasa bien exige comparar valor y consumo bajo una misma política y revisar la decisión cuando cambian los supuestos.",
+      "business_steps": [
+        "Opciones",
+        "Restricciones",
+        "Cartera revisable"
+      ],
+      "body": "Cuando varias iniciativas compiten por un recurso limitado, repartir “un poco para todos” suele parecer neutral. En realidad, puede dispersar capacidad hasta el punto de impedir que ninguna iniciativa alcance impacto suficiente. **Un buen framework de resource allocation obliga a comparar opciones, consumo y consecuencias de forma explícita.**\n\nLa lógica puede resumirse en cuatro capas: definir la unidad de decisión, estimar valor y recursos, incorporar restricciones y diseñar una cadencia de revisión. **La asignación no es un evento anual; es un proceso de compromiso bajo escasez.**\n\n**Define la unidad de decisión**\nEl primer paso es decidir qué estamos asignando y entre qué opciones. Puede ser presupuesto entre proyectos, horas de un equipo entre clientes, capacidad productiva entre productos o inversión entre mercados.\n\nCada opción debe tener una unidad clara. Mezclar iniciativas con niveles de granularidad muy distintos puede distorsionar la comparación. **Un proyecto de doce meses no debería competir como si fuese equivalente a una tarea de una semana sin ajustar su consumo y valor.**\n\nTambién hay que definir horizonte. Una asignación trimestral y una anual pueden producir decisiones diferentes porque cambia qué recursos están comprometidos y qué información estará disponible.\n\n**Construye valor y consumo**\nCada opción necesita una estimación de valor y una estimación de recursos. El valor puede ser margen, retorno, riesgo reducido, clientes servidos o un score compuesto.\n\nEl consumo puede incluir dinero, horas, skills, capacidad de máquina, slots o cualquier restricción relevante. **Una iniciativa atractiva pero muy intensiva en un recurso escaso puede tener menos valor marginal que varias opciones más pequeñas.**\n\nLas estimaciones deben incluir incertidumbre. Un proyecto con gran upside y alta variabilidad no es equivalente a otro con retorno menor pero estable.\n\nTambién conviene separar valor incremental de valor ya comprometido. Financiar una iniciativa que habría ocurrido igualmente puede aportar menos que desbloquear una alternativa nueva.\n\n**Añade restricciones y escenarios**\nDespués entran las reglas: presupuesto total, capacidad por periodo, dependencias, mínimos estratégicos, límites de riesgo o cobertura geográfica.\n\nLas restricciones deben tener owner y justificación. **Cuando una restricción no puede explicarse, existe riesgo de que sea una costumbre histórica convertida en límite matemático.**\n\nLos escenarios permiten probar robustez. ¿Qué ocurre si el presupuesto cae un 10 %? ¿Si un skill crítico desaparece? ¿Si una iniciativa rinde menos de lo esperado?\n\nTambién es útil identificar restricciones vinculantes. Si el presupuesto no es el verdadero cuello de botella y lo es un equipo especializado, aumentar dinero no resolverá el problema.\n\n**Convierte la asignación en un proceso**\nLa salida no debería ser solo una cartera. Debe incluir qué recursos quedan saturados, qué opciones quedaron fuera, qué supuestos son críticos y cuándo debe revisarse.\n\nLa cadencia puede ser mensual, trimestral o ligada a eventos. **La revisión debe ocurrir cuando cambia información material, no cada vez que aparece una pequeña variación.**\n\nTambién conviene reservar una parte de capacidad para incertidumbre. Asignar el 100 % desde el primer día elimina flexibilidad para urgencias, oportunidades o cambios de escenario.\n\nLos overrides necesitan trazabilidad. Si management fuerza la entrada de una iniciativa, debe quedar claro qué opción sale o qué recurso adicional se necesita. Así se evita que las excepciones parezcan gratuitas.\n\nLa sensibilidad es una herramienta poderosa. Mostrar cuánto valor adicional desbloquea una unidad más de presupuesto o una persona con una skill concreta puede orientar contrataciones e inversiones.\n\nLa implementación puede empezar con un modelo simple. No hace falta una formulación sofisticada si la principal mejora es hacer explícitas decisiones que hoy se toman de forma informal.\n\nEl framework debe revisarse contra resultados reales. ¿Los proyectos financiados generaron el valor esperado? ¿Las estimaciones de esfuerzo fueron correctas? ¿Qué restricciones se violaron o cambiaron?\n\nCon ese feedback, el modelo deja de ser una foto de prioridades y se convierte en un sistema de aprendizaje. **La asignación madura no busca una cartera perfecta una vez; busca un proceso repetible que coloque recursos escasos donde generan mayor valor bajo las condiciones reales de la empresa.**",
+      "seo_title": "Framework de asignación de recursos escasos",
+      "seo_description": "Un framework para asignar presupuesto, personas o capacidad combinando valor, consumo, restricciones, escenarios, sensibilidad y revisión.",
+      "seo_keywords": [
+        "resource allocation framework",
+        "capacity allocation",
+        "asignación recursos",
+        "portfolio optimization"
+      ],
+      "tags": [
+        "Optimization",
+        "Resource Allocation",
+        "Framework"
+      ]
+    },
+    "en": {
+      "title": "A framework for allocating scarce capacity",
+      "excerpt": "A strong process connects resource demand, value, constraints, scenarios and review so priorities become an executable portfolio.",
+      "quick": [
+        "Define the scarce resource",
+        "Value each option",
+        "Review when assumptions change"
+      ],
+      "section_titles": [
+        "Define the decision unit",
+        "Build value and consumption",
+        "Add constraints and scenarios",
+        "Turn allocation into a process"
+      ],
+      "business_title": "Strong allocation compares value and resource consumption under one policy and revisits the decision when assumptions change.",
+      "business_steps": [
+        "Options",
+        "Constraints",
+        "Reviewable portfolio"
+      ],
+      "body": "When several initiatives compete for a limited resource, spreading capacity “a little everywhere” can look neutral. In practice, it can dilute resources until no initiative receives enough to create impact. **A strong resource-allocation framework forces options, consumption and consequences into one explicit comparison.**\n\nThe logic can be organized into four layers: define the decision unit, estimate value and resource use, add constraints and create a review cadence. **Allocation is not an annual event; it is a recurring commitment process under scarcity.**\n\n**Define the decision unit**\nThe first step is to define what is being allocated and among which alternatives. It may be budget across projects, team hours across customers, production capacity across products or investment across markets.\n\nEach option needs a clear unit. Mixing initiatives at very different levels of granularity can distort the comparison. **A twelve-month program should not compete as though it were equivalent to a one-week task without adjusting for value and resource use.**\n\nThe horizon also needs definition. A quarterly allocation and an annual allocation can produce different outcomes because commitments and available information differ.\n\n**Build value and consumption**\nEach option needs an estimate of value and an estimate of resource use. Value may be margin, return, risk reduction, customers served or a composite score.\n\nConsumption may include budget, hours, skills, machine capacity, service slots or any relevant constraint. **An attractive initiative that consumes a critical resource heavily may create less marginal value than several smaller alternatives together.**\n\nUncertainty should be represented as well. A high-upside, high-variance project is not equivalent to a lower-return but stable one.\n\nIt is also useful to distinguish incremental value from value that would occur anyway. Funding an initiative that was already likely to happen may create less incremental impact than unlocking a genuinely constrained option.\n\n**Add constraints and scenarios**\nNext come the rules: total budget, capacity by period, dependencies, strategic minimums, risk limits or geographic coverage.\n\nConstraints should have an owner and rationale. **When a constraint cannot be explained, it may be a historical habit that has been converted into mathematics.**\n\nScenarios help test robustness. What happens if budget falls by 10%? If a critical skill becomes unavailable? If one initiative underperforms?\n\nBinding constraints are particularly informative. If budget is not the real bottleneck and specialized capacity is, adding money will not solve the allocation problem.\n\n**Turn allocation into a process**\nThe output should include more than the selected portfolio. It should show which resources are saturated, which alternatives were excluded, which assumptions matter and when the decision should be reviewed.\n\nThe cadence may be monthly, quarterly or event-driven. **Review should happen when material information changes, not every time a small fluctuation appears.**\n\nSome capacity should often remain uncommitted. Allocating 100% on day one removes flexibility for emergencies, opportunities and scenario changes.\n\nOverrides need traceability. If management forces one initiative into the portfolio, the system should show which alternative leaves or which extra resource is required. This prevents exceptions from appearing free.\n\nSensitivity analysis is powerful. Showing how much value an additional unit of budget or one scarce skill would unlock can inform hiring and investment.\n\nImplementation can start simply. A sophisticated model is unnecessary if the main gain comes from making formerly informal decisions explicit.\n\nThe framework should be reviewed against actual outcomes. Did funded projects create expected value? Were effort estimates accurate? Which constraints changed or were violated?\n\nWith feedback, the model becomes more than a snapshot of priorities. **Mature allocation does not search for one perfect portfolio; it builds a repeatable process for placing scarce resources where they create the greatest value under real operating conditions.**",
+      "seo_title": "A Resource Allocation Framework",
+      "seo_description": "A practical framework for allocating budget, people or capacity using value, resource consumption, constraints, scenarios and review.",
+      "seo_keywords": [
+        "resource allocation framework",
+        "capacity allocation",
+        "portfolio optimization",
+        "resource planning"
+      ],
+      "tags": [
+        "Optimization",
+        "Resource Allocation",
+        "Framework"
+      ]
+    },
+    "ca": {
+      "title": "Un framework per assignar capacitat escassa",
+      "excerpt": "El procés correcte connecta demanda de recursos, valor, restriccions, escenaris i revisió per convertir prioritats en una cartera executable.",
+      "quick": [
+        "Defineix el recurs escàs",
+        "Valora cada opció",
+        "Revisa quan canvien els supòsits"
+      ],
+      "section_titles": [
+        "Defineix la unitat de decisió",
+        "Construeix valor i consum",
+        "Afegeix restriccions i escenaris",
+        "Converteix l’assignació en un procés"
+      ],
+      "business_title": "Assignar capacitat escassa bé exigeix comparar valor i consum sota una mateixa política i revisar la decisió quan canvien els supòsits.",
+      "business_steps": [
+        "Opcions",
+        "Restriccions",
+        "Cartera revisable"
+      ],
+      "body": "Quan diverses iniciatives competeixen per un recurs limitat, repartir “una mica per a tothom” pot semblar neutral. En realitat, pot dispersar capacitat fins al punt que cap iniciativa rep prou recursos per crear impacte. **Un bon framework de resource allocation obliga a comparar opcions, consum i conseqüències de manera explícita.**\n\nLa lògica es pot ordenar en quatre capes: definir la unitat de decisió, estimar valor i recursos, incorporar restriccions i crear una cadència de revisió. **L’assignació no és un esdeveniment anual; és un procés recurrent de compromís sota escassetat.**\n\n**Defineix la unitat de decisió**\nEl primer pas és decidir què assignem i entre quines alternatives. Pot ser pressupost entre projectes, hores d’un equip entre clients, capacitat productiva entre productes o inversió entre mercats.\n\nCada opció necessita una unitat clara. Barrejar iniciatives amb granularitats molt diferents pot distorsionar la comparació. **Un programa de dotze mesos no hauria de competir com si fos equivalent a una tasca d’una setmana sense ajustar valor i consum.**\n\nTambé cal definir l’horitzó. Una assignació trimestral i una anual poden donar decisions diferents perquè els compromisos i la informació disponible canvien.\n\n**Construeix valor i consum**\nCada opció necessita una estimació de valor i una de recursos. El valor pot ser marge, retorn, risc reduït, clients servits o un score compost.\n\nEl consum pot incloure pressupost, hores, skills, capacitat de màquina, slots o qualsevol restricció rellevant. **Una iniciativa atractiva però molt intensiva en un recurs escàs pot aportar menys valor marginal que diverses opcions petites juntes.**\n\nTambé cal representar incertesa. Un projecte amb gran upside i molta variància no és equivalent a un altre amb menys retorn però més estabilitat.\n\nConvé separar valor incremental de valor que hauria aparegut igualment. Finançar una iniciativa ja gairebé garantida pot aportar menys impacte incremental que desbloquejar-ne una de realment restringida.\n\n**Afegeix restriccions i escenaris**\nDesprés entren les regles: pressupost total, capacitat per període, dependències, mínims estratègics, límits de risc o cobertura geogràfica.\n\nLes restriccions han de tenir owner i justificació. **Quan una restricció no es pot explicar, pot ser una rutina històrica convertida en matemàtica.**\n\nEls escenaris permeten provar robustesa. Què passa si el pressupost cau un 10 %? Si desapareix una skill crítica? Si una iniciativa rendeix menys del previst?\n\nLes restriccions vinculants donen informació especialment útil. Si el coll d’ampolla real és un equip especialitzat i no el pressupost, afegir diners no resol el problema.\n\n**Converteix l’assignació en un procés**\nL’output ha d’incloure més que la cartera seleccionada. Ha de mostrar quins recursos estan saturats, quines alternatives han quedat fora, quins supòsits són crítics i quan s’ha de revisar.\n\nLa cadència pot ser mensual, trimestral o basada en esdeveniments. **La revisió ha de passar quan canvia informació material, no cada vegada que apareix una petita variació.**\n\nSovint convé reservar part de la capacitat. Assignar el 100 % el primer dia elimina flexibilitat per urgències, oportunitats o canvis d’escenari.\n\nEls overrides necessiten traçabilitat. Si management força una iniciativa, ha de quedar clar quina opció surt o quin recurs addicional cal. Això evita que les excepcions semblin gratuïtes.\n\nLa sensibilitat és potent. Mostrar quant valor desbloqueja una unitat més de pressupost o una skill escassa pot orientar contractacions i inversions.\n\nLa implementació pot començar simple. No cal un model sofisticat si la principal millora és fer explícites decisions que avui són informals.\n\nEl framework s’ha de contrastar amb resultats. Els projectes finançats van crear el valor esperat? Les estimacions d’esforç eren bones? Quines restriccions van canviar?\n\nAmb feedback, el model deixa de ser una fotografia de prioritats. **L’assignació madura no busca una cartera perfecta una vegada; construeix un procés repetible que posa recursos escassos on generen més valor sota condicions reals.**",
+      "seo_title": "Framework d’assignació de recursos escassos",
+      "seo_description": "Un framework per assignar pressupost, persones o capacitat combinant valor, consum, restriccions, escenaris, sensibilitat i revisió.",
+      "seo_keywords": [
+        "resource allocation framework",
+        "capacity allocation",
+        "assignació recursos",
+        "portfolio optimization"
+      ],
+      "tags": [
+        "Optimization",
+        "Resource Allocation",
+        "Framework"
+      ]
+    }
+  }
+}
