@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-006",
+  "sequence": 6,
+  "arc_id": "ARC-02",
+  "slug": "why-wape-can-hide-the-wrong-forecasting-problem",
+  "scheduled_at": "2026-10-19T09:00:00+02:00",
+  "knowledge_area": "planning",
+  "cluster": "Forecasting & Planning",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "failure_modes_mistakes",
+  "angle": "wape limitations",
+  "primary_keyword": "wape limitations",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-005",
+    "KB-007",
+    "KB-008"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué WAPE puede ocultar el problema equivocado",
+      "excerpt": "WAPE es útil para resumir error agregado, pero puede esconder sesgos, SKUs críticos y problemas de granularidad que sí cambian la decisión.",
+      "quick": [
+        "El volumen domina WAPE",
+        "El sesgo puede quedar oculto",
+        "El agregado no siempre decide"
+      ],
+      "section_titles": [
+        "Lo que WAPE hace bien",
+        "Dónde empieza a esconder información",
+        "El sesgo importa",
+        "Cómo usar WAPE sin engañarse"
+      ],
+      "business_title": "WAPE sirve para resumir una cartera, no para sustituir el diagnóstico de la decisión.",
+      "business_steps": [
+        "Error agregado",
+        "Segmentos ocultos",
+        "Diagnóstico operativo"
+      ],
+      "body": "WAPE es una de las métricas más utilizadas en forecasting porque ofrece algo muy atractivo: una lectura porcentual sencilla del error absoluto respecto al volumen real. Esa simplicidad es útil. El problema aparece cuando **una métrica agregada se convierte en una explicación completa del sistema**.\n\nUn WAPE bajo puede convivir con errores serios en productos críticos, ubicaciones concretas o periodos donde la operación tiene menos margen de reacción. También puede ocultar sesgos persistentes porque suma magnitudes absolutas. **El indicador responde cuánto error total existe, no necesariamente dónde está ni en qué dirección ocurre.**\n\n**Lo que WAPE hace bien**\nWAPE calcula el error absoluto total y lo divide por la demanda real total. Eso lo hace intuitivo para carteras grandes y evita algunos problemas de métricas porcentuales calculadas observación a observación. Cuando se quiere saber si, en conjunto, la desviación representa una parte pequeña o grande del volumen, puede ser una buena referencia.\n\nTambién facilita seguir una tendencia temporal. Si la misma cartera pasa de un WAPE alto a otro claramente inferior bajo condiciones comparables, existe una mejora estadística real. **Como métrica de resumen, WAPE es compacta, interpretable y útil para governance.**\n\nEl error empieza cuando se utiliza como criterio único. Una cifra agregada no puede describir por sí sola la distribución de errores, el sesgo, la criticidad de cada referencia ni el coste de la decisión.\n\n**Dónde empieza a esconder información**\nEl denominador de WAPE es el volumen real total. Esto hace que los elementos de gran volumen tengan mucho peso en el resultado. Un SKU que vende miles de unidades puede mejorar lo suficiente para compensar varios SKUs pequeños que empeoran.\n\nEso puede ser perfectamente aceptable si el negocio también decide de forma agregada. Pero si compras, reposición o nivel de servicio se gestionan por SKU y almacén, **la granularidad de WAPE puede no coincidir con la granularidad de la decisión**.\n\nLa criticidad tampoco aparece. Un producto de bajo volumen puede ser estratégico, tener un margen alto o detener una operación si falta. Su error pesa poco en WAPE aunque su coste sea elevado. El indicador está ponderando volumen, no importancia empresarial.\n\n**El sesgo importa**\nWAPE utiliza error absoluto, de modo que una sobrepredicción y una subpredicción de igual tamaño contribuyen lo mismo. Sin embargo, una política de inventario no los vive igual. Un sesgo sistemático por debajo puede generar roturas; uno por encima puede acumular stock.\n\nPor eso **un WAPE estable puede esconder un forecast sistemáticamente sesgado**. Dos modelos con la misma cifra agregada pueden necesitar respuestas operativas diferentes si uno se desvía sobre todo en una dirección.\n\nConviene mirar al menos una métrica de bias junto a WAPE. También es útil revisar error por horizonte, porque una desviación a largo plazo puede ser tolerable mientras la misma desviación cerca del punto de pedido es costosa. El cuándo y el signo del error aportan información que WAPE elimina.\n\n**Cómo usar WAPE sin engañarse**\nWAPE funciona mejor como una capa dentro de un conjunto pequeño de métricas. Puede ocupar el papel de resumen ejecutivo, mientras el diagnóstico se apoya en bias, error por segmento, error por horizonte y una medida de impacto económico.\n\nLa segmentación debe seguir la decisión. **No hace falta medir todo por todo; hace falta cortar el dato donde cambian las consecuencias del error.** Criticidad, lead time, margen, volatilidad o canal suelen ser dimensiones más útiles que una segmentación arbitraria.\n\nTambién conviene definir umbrales distintos. Esperar el mismo WAPE en una referencia estable de gran volumen y en una serie intermitente puede llevar a objetivos poco realistas. La métrica debe interpretarse dentro del comportamiento esperado del segmento.\n\nLa conclusión no es que WAPE sea mala. Es que **una buena métrica de resumen puede ser una mala herramienta de diagnóstico si se utiliza sola**. El objetivo de forecasting no es reducir una cifra global; es mejorar decisiones donde el error tiene consecuencias concretas.",
+      "seo_title": "Limitaciones de WAPE en forecasting",
+      "seo_description": "WAPE resume bien el error agregado, pero puede ocultar sesgo, SKUs críticos, granularidad y costes distintos de sobrepredecir o subpredecir.",
+      "seo_keywords": [
+        "wape limitations",
+        "limitaciones WAPE",
+        "forecast bias",
+        "métricas forecasting"
+      ],
+      "tags": [
+        "Forecasting",
+        "WAPE",
+        "Metrics"
+      ]
+    },
+    "en": {
+      "title": "Why WAPE can hide the wrong forecasting problem",
+      "excerpt": "WAPE is useful for summarizing aggregate error, but it can hide bias, critical SKUs and granularity problems that change the decision.",
+      "quick": [
+        "Volume dominates WAPE",
+        "Bias can stay hidden",
+        "The aggregate may not match the decision"
+      ],
+      "section_titles": [
+        "What WAPE does well",
+        "Where information disappears",
+        "Bias matters",
+        "How to use WAPE safely"
+      ],
+      "business_title": "WAPE is a useful portfolio summary, not a substitute for decision-level diagnosis.",
+      "business_steps": [
+        "Aggregate error",
+        "Hidden segments",
+        "Operating diagnosis"
+      ],
+      "body": "WAPE is popular in forecasting because it offers an attractive property: a simple percentage view of total absolute error relative to actual volume. That simplicity is valuable. The problem begins when **an aggregate metric is treated as a complete explanation of the forecasting system**.\n\nA low WAPE can coexist with serious errors in critical products, particular locations or periods where operations have little room to react. It can also hide persistent bias because the numerator uses absolute errors. **The metric answers how much total error exists, not necessarily where it sits or which direction it takes.**\n\n**What WAPE does well**\nWAPE divides total absolute error by total actual demand. That makes it intuitive for large portfolios and avoids some of the instability created by percentage errors calculated observation by observation. When the question is whether total error is small or large relative to total volume, WAPE is a useful reference.\n\nIt is also practical for tracking changes over time. If the same portfolio moves from a high WAPE to a materially lower one under comparable conditions, that represents a real statistical improvement. **As a summary metric, WAPE is compact, interpretable and useful for governance.**\n\nThe problem comes when it becomes the only criterion. One number cannot describe the error distribution, bias, business criticality or the downstream cost of being wrong.\n\n**Where information disappears**\nThe denominator of WAPE is total actual volume. High-volume items therefore dominate the result. A product selling thousands of units can improve enough to offset deterioration across several low-volume products.\n\nThat may be perfectly acceptable if the business also makes decisions at portfolio level. But if procurement, replenishment or service targets operate by SKU and warehouse, **the granularity of WAPE does not match the granularity of the decision**.\n\nCriticality is invisible as well. A low-volume product may be strategic, high margin or capable of stopping production when unavailable. Its error contributes very little to WAPE even though the business cost can be high. The metric weights volume, not economic importance.\n\n**Bias matters**\nWAPE uses absolute error, so an over-forecast and an under-forecast of equal size contribute the same amount. An inventory policy does not necessarily experience them in the same way. Persistent under-forecasting may create stockouts; persistent over-forecasting may create excess inventory.\n\nThis means **a stable WAPE can hide a systematically biased forecast**. Two models with the same aggregate score may require very different operational responses if their errors lean in opposite directions.\n\nAt minimum, a bias measure should sit next to WAPE. Horizon-level analysis also helps because a long-range miss may still be correctable while the same miss close to an order cutoff can be expensive. Timing and direction contain information that WAPE deliberately removes.\n\n**How to use WAPE safely**\nWAPE works best as one layer in a small metric stack. It can provide the executive summary while diagnosis relies on bias, segment-level error, horizon-level error and an economic impact measure.\n\nSegmentation should follow the decision. **There is no need to slice every dimension; the useful cuts are the ones where error consequences change.** Criticality, lead time, margin, volatility and channel are often more informative than arbitrary reporting categories.\n\nThresholds should also differ. Expecting the same WAPE from a stable high-volume item and an intermittent series can produce unrealistic targets. Metrics need to be interpreted within the behaviour of the segment.\n\nThe conclusion is not that WAPE is a poor metric. It is that **a good summary metric can become a poor diagnostic tool when used alone**. Forecasting should not optimize a global percentage for its own sake; it should improve the decisions where errors carry real consequences.",
+      "seo_title": "WAPE Limitations in Forecasting",
+      "seo_description": "WAPE summarizes aggregate error well but can hide bias, critical SKUs, decision granularity and asymmetric business costs.",
+      "seo_keywords": [
+        "wape limitations",
+        "forecast WAPE",
+        "forecast bias",
+        "forecast metrics"
+      ],
+      "tags": [
+        "Forecasting",
+        "WAPE",
+        "Metrics"
+      ]
+    },
+    "ca": {
+      "title": "Per què WAPE pot ocultar el problema equivocat",
+      "excerpt": "WAPE és útil per resumir error agregat, però pot amagar biaix, SKUs crítics i problemes de granularitat que sí canvien la decisió.",
+      "quick": [
+        "El volum domina WAPE",
+        "El biaix pot quedar ocult",
+        "L’agregat pot no coincidir amb la decisió"
+      ],
+      "section_titles": [
+        "Què fa bé WAPE",
+        "On desapareix informació",
+        "El biaix importa",
+        "Com usar WAPE amb criteri"
+      ],
+      "business_title": "WAPE és un bon resum de cartera, no un substitut del diagnòstic de la decisió.",
+      "business_steps": [
+        "Error agregat",
+        "Segments ocults",
+        "Diagnòstic operatiu"
+      ],
+      "body": "WAPE és molt utilitzada en forecasting perquè ofereix una propietat atractiva: una lectura percentual senzilla de l’error absolut total respecte al volum real. Aquesta simplicitat és útil. El problema comença quan **una mètrica agregada es tracta com una explicació completa del sistema de forecasting**.\n\nUn WAPE baix pot conviure amb errors seriosos en productes crítics, ubicacions concretes o períodes on operacions té poc marge de reacció. També pot ocultar un biaix persistent perquè suma errors absoluts. **L’indicador respon quant error total hi ha, però no necessàriament on és ni en quina direcció.**\n\n**Què fa bé WAPE**\nWAPE divideix l’error absolut total per la demanda real total. Això la fa intuïtiva en carteres grans i evita alguns problemes de mètriques percentuals calculades observació per observació. Quan volem saber si l’error total és petit o gran respecte al volum, és una referència útil.\n\nTambé facilita seguir l’evolució temporal. Si la mateixa cartera passa d’un WAPE alt a un de clarament inferior sota condicions comparables, hi ha una millora estadística real. **Com a mètrica de resum, WAPE és compacta, interpretable i útil per governance.**\n\nEl problema apareix quan es converteix en l’únic criteri. Una sola xifra no descriu distribució d’errors, biaix, criticitat empresarial ni cost de la decisió.\n\n**On desapareix informació**\nEl denominador de WAPE és el volum real total. Els elements de gran volum dominen, per tant, el resultat. Un producte que ven milers d’unitats pot millorar prou per compensar diversos productes petits que empitjoren.\n\nAixò pot ser acceptable si el negoci també decideix de manera agregada. Però si compres, reposició o nivell de servei es gestionen per SKU i magatzem, **la granularitat de WAPE no coincideix amb la granularitat de la decisió**.\n\nLa criticitat tampoc hi apareix. Un producte de poc volum pot ser estratègic, tenir un marge alt o aturar una operació si falta. El seu error pesa poc en WAPE tot i tenir un cost elevat. La mètrica pondera volum, no importància econòmica.\n\n**El biaix importa**\nWAPE utilitza error absolut, de manera que una sobrepredicció i una subpredicció iguals pesen el mateix. Una política d’inventari no necessàriament les viu igual. Un biaix persistent per sota pot generar ruptures; un biaix per sobre pot acumular excés d’estoc.\n\nAixò significa que **un WAPE estable pot ocultar un forecast sistemàticament esbiaixat**. Dos models amb la mateixa xifra poden necessitar respostes operatives diferents si els errors tenen direccions oposades.\n\nCom a mínim, convé mirar una mètrica de bias al costat de WAPE. També és útil revisar error per horitzó, perquè una desviació llunyana pot ser corregible mentre la mateixa desviació prop del punt de comanda és cara.\n\n**Com usar WAPE amb criteri**\nWAPE funciona millor com una capa d’un conjunt petit de mètriques. Pot ser el resum executiu, mentre el diagnòstic es recolza en bias, error per segment, error per horitzó i una mesura d’impacte econòmic.\n\nLa segmentació ha de seguir la decisió. **No cal tallar totes les dimensions; cal tallar allà on canvien les conseqüències de l’error.** Criticitat, lead time, marge, volatilitat o canal solen ser dimensions útils.\n\nTambé convé definir llindars diferents. Esperar el mateix WAPE en una referència estable de gran volum i en una sèrie intermitent pot generar objectius poc realistes.\n\nLa conclusió no és que WAPE sigui una mala mètrica. És que **una bona mètrica de resum pot ser una mala eina de diagnòstic si s’utilitza sola**. L’objectiu de forecasting no és reduir una xifra global, sinó millorar les decisions on l’error té conseqüències concretes.",
+      "seo_title": "Limitacions de WAPE en forecasting",
+      "seo_description": "WAPE resumeix bé l’error agregat, però pot ocultar biaix, SKUs crítics, granularitat i costos diferents segons la direcció de l’error.",
+      "seo_keywords": [
+        "wape limitations",
+        "limitacions WAPE",
+        "forecast bias",
+        "mètriques forecasting"
+      ],
+      "tags": [
+        "Forecasting",
+        "WAPE",
+        "Metrics"
+      ]
+    }
+  }
+}
