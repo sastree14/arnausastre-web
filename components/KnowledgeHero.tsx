@@ -6,26 +6,28 @@ import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 const COPY = {
   es: {
     label: 'CONOCIMIENTO',
-    title: 'Ideas para entender mejor antes de decidir.',
-    sub: 'Análisis claros sobre decisiones, operaciones y datos. Menos ruido, más criterio para saber qué merece la pena cambiar.',
-    cases: 'Ver casos',
-    work: 'Cómo trabajamos',
+    title: 'Ideas que conectan datos, tecnología y decisiones de negocio.',
+    sub: 'Análisis directos sobre lo que funciona, lo que falla y qué merece la pena hacer diferente.',
+    primary: 'Leer análisis destacado',
+    secondary: 'Ver casos de éxito',
   },
   ca: {
     label: 'CONEIXEMENT',
-    title: 'Idees per entendre millor abans de decidir.',
-    sub: 'Anàlisis clares sobre decisions, operacions i dades. Menys soroll, més criteri per saber què val la pena canviar.',
-    cases: 'Veure casos',
-    work: 'Com treballem',
+    title: 'Idees que connecten dades, tecnologia i decisions de negoci.',
+    sub: 'Anàlisis directes sobre què funciona, què falla i què val la pena fer diferent.',
+    primary: 'Llegir anàlisi destacada',
+    secondary: 'Veure casos d’èxit',
   },
   en: {
     label: 'KNOWLEDGE',
-    title: 'Ideas to understand better before deciding.',
-    sub: 'Clear analysis on decisions, operations and data. Less noise, more judgement about what is actually worth changing.',
-    cases: 'See case studies',
-    work: 'How we work',
+    title: 'Ideas connecting data, technology and business decisions.',
+    sub: 'Direct analysis on what works, what fails and what is worth doing differently.',
+    primary: 'Read featured analysis',
+    secondary: 'See success stories',
   },
 } as const
+
+const FEATURED = '/knowledge/why-inventory-visibility-is-not-inventory-control-and-what-that-costs'
 
 export default function KnowledgeHero() {
   const { lang } = useSiteLanguage()
@@ -33,15 +35,22 @@ export default function KnowledgeHero() {
 
   return (
     <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-      <div className="mx-auto grid max-w-7xl gap-8 px-6 py-16 md:py-20 lg:grid-cols-[1fr_auto] lg:items-end">
-        <div className="max-w-4xl">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.label}</p>
-          <h1 className="mt-5 text-[46px] leading-[1.02] tracking-[-0.03em] sm:text-[58px] lg:text-[62px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-          <p className="mt-6 max-w-2xl text-[18px] leading-8 text-[#EAF0F6]">{t.sub}</p>
+      <div className="mx-auto grid w-[calc(100%_-_32px)] max-w-[1800px] gap-9 py-14 sm:w-[calc(100%_-_48px)] md:py-16 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+        <div className="max-w-5xl">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.label}</p>
+          <h1 className="mt-5 max-w-5xl text-[44px] leading-[1.02] tracking-[-0.03em] sm:text-[54px] lg:text-[62px]" style={{ fontFamily: 'var(--font-playfair)' }}>
+            {t.title}
+          </h1>
+          <p className="mt-5 max-w-3xl text-[18px] leading-8 text-[#EAF0F6]">{t.sub}</p>
         </div>
+
         <div className="flex flex-wrap gap-3">
-          <Link href="/projects" className="bg-white px-5 py-3 text-[15px] font-semibold text-[#0D1B2A]">{t.cases}</Link>
-          <Link href="/services" className="border border-[#7F9BB5] px-5 py-3 text-[15px] font-semibold text-white">{t.work}</Link>
+          <Link href={FEATURED} className="bg-white px-5 py-3.5 text-[15px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">
+            {t.primary} →
+          </Link>
+          <Link href="/projects" className="border border-[#7F9BB5] px-5 py-3.5 text-[15px] font-semibold text-white transition hover:bg-white/5">
+            {t.secondary}
+          </Link>
         </div>
       </div>
     </section>
