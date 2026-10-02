@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-069",
+  "sequence": 69,
+  "arc_id": "ARC-18",
+  "slug": "xgboost-vs-logistic-regression-accuracy-is-not-the-only-criterion",
+  "scheduled_at": "2027-03-26T09:00:00+01:00",
+  "knowledge_area": "risk_decision",
+  "cluster": "Machine Learning",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "compare",
+  "angle": "xgboost vs logistic regression",
+  "primary_keyword": "xgboost vs logistic regression",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-070",
+    "KB-071",
+    "KB-072"
+  ],
+  "variants": {
+    "es": {
+      "title": "XGBoost vs regresión logística: no todo es accuracy",
+      "excerpt": "XGBoost puede capturar relaciones complejas; la regresión logística ofrece simplicidad, estabilidad y explicación directa. El criterio correcto depende de la decisión.",
+      "quick": [
+        "XGBoost busca lift",
+        "Logística aporta legibilidad",
+        "El contexto decide el coste de complejidad"
+      ],
+      "section_titles": [
+        "Qué aporta regresión logística",
+        "Qué aporta XGBoost",
+        "Dónde aparece el verdadero trade-off",
+        "Cómo comparar los dos modelos"
+      ],
+      "business_title": "La elección correcta equilibra lift predictivo con explicabilidad, estabilidad, latencia y coste de ownership según la decisión.",
+      "business_steps": [
+        "Baseline interpretable",
+        "Lift incremental",
+        "Coste total de modelo"
+      ],
+      "body": "Comparar XGBoost con regresión logística como si la pregunta fuese únicamente “qué modelo tiene mejor accuracy” reduce demasiado la decisión. **Los dos métodos representan niveles distintos de complejidad, flexibilidad y explicabilidad**, y el modelo correcto depende de cuánto valor aporta cada ventaja en el contexto real.\n\nXGBoost suele capturar no linealidades e interacciones con más facilidad. La regresión logística impone una estructura más simple y legible. **La comparación importante no es sofisticado frente a básico, sino lift incremental frente al coste adicional de entender, validar y mantener el modelo.**\n\n**Qué aporta regresión logística**\nLa regresión logística ofrece una relación relativamente directa entre features y log-odds del outcome. Con variables bien diseñadas, regularización y transformaciones adecuadas puede ser un baseline sorprendentemente competitivo.\n\nSu estructura facilita explicar dirección y magnitud de asociaciones, revisar multicolinealidad y detectar comportamientos incoherentes. **La simplicidad reduce superficie de fallo y acelera governance.**\n\nTambién es rápida de entrenar y servir. Esto importa cuando scoring debe hacerse a gran escala o con latencia baja.\n\nOtra ventaja es la estabilidad. Un modelo lineal puede reaccionar menos a pequeñas variaciones del dataset que un ensemble muy flexible.\n\nEso no significa que sea automáticamente interpretable. Features transformadas, interacciones manuales o variables correlacionadas pueden complicar la lectura. Pero el camino de explicación sigue siendo más directo.\n\n**Qué aporta XGBoost**\nGradient boosting puede modelar relaciones no lineales, interacciones y thresholds sin diseñarlos manualmente.\n\nEsto es especialmente útil cuando existen muchas variables con efectos complejos y suficiente volumen de datos. **El modelo puede encontrar estructura que una especificación lineal dejaría fuera.**\n\nTambién gestiona bien datasets tabulares y suele ofrecer performance competitiva con un trabajo de feature engineering razonable.\n\nEl coste está en la complejidad. La predicción depende de muchos árboles y splits, lo que dificulta una explicación global tan directa como los coeficientes de una regresión.\n\nHerramientas como SHAP pueden aportar explicaciones locales y globales, pero añaden otra capa que también necesita validación.\n\nXGBoost puede además ser más sensible a tuning, drift de features y comportamiento fuera de la distribución entrenada.\n\n**Dónde aparece el verdadero trade-off**\nSi XGBoost mejora AUC de 0,75 a 0,86 y esa mejora reduce pérdidas de forma material, el lift puede justificar complejidad.\n\nSi mejora de 0,842 a 0,848 y la política de decisión apenas cambia, **la organización puede estar pagando mucho por una mejora que no llega al negocio.**\n\nEl valor de interpretabilidad depende del contexto. En una herramienta interna de recomendación, una explicación aproximada puede ser suficiente. En crédito, fraude, pricing sensible o decisiones reguladas, la capacidad de justificar y auditar puede ser una restricción real.\n\nTambién importa el equipo. Un modelo complejo requiere monitorización, skills y procesos de mantenimiento adecuados.\n\nLa latencia y coste de infraestructura pueden influir si hay millones de predicciones o necesidad de scoring online.\n\n**Cómo comparar los dos modelos**\nLa comparación debería empezar por un mismo split y una misma definición de target, evitando leakage.\n\nDespués se evalúan discriminación, calibration, PR AUC si hay imbalance, performance en top-k, estabilidad temporal y por segmentos.\n\n**El siguiente paso es traducir esas diferencias a la política de decisión.** ¿Cuántos casos adicionales correctos captura XGBoost? ¿Cuántas pérdidas evita? ¿Cuántas acciones cambian?\n\nTambién hay que comparar explicabilidad. No de forma abstracta, sino preguntando quién necesita entender el modelo y para qué: usuario final, compliance, auditoría, data science o dirección.\n\nLa robustez debe probarse con drift y out-of-time validation. Un lift espectacular en random split puede desaparecer al avanzar en el tiempo.\n\nConviene revisar calibration. La regresión logística puede estar bien calibrada de forma natural en algunos problemas; boosting puede requerir calibración posterior.\n\nTambién se debe medir mantenimiento: frecuencia de retraining, features necesarias, tiempos de scoring, complejidad de pipeline y dependencia de librerías.\n\nUn champion-challenger ayuda. La logística puede mantenerse como baseline vivo y XGBoost debe seguir demostrando que compensa.\n\nPuede existir además una solución híbrida. Utilizar XGBoost para ranking y una capa de reglas o un modelo interpretable para determinadas decisiones.\n\nEn otros casos, distillation o monotonic constraints pueden reducir parte del coste de complejidad.\n\nLa decisión tampoco tiene que ser permanente. Si cambian requisitos regulatorios, datos o economics, el modelo elegido puede cambiar.\n\nLo importante es evitar dos errores simétricos: elegir logística solo porque es fácil de explicar o XGBoost solo porque suele rendir mejor. **La elección madura compara cuánto valor compra el lift adicional y cuánto cuesta la complejidad necesaria para conseguirlo.**",
+      "seo_title": "XGBoost vs regresión logística",
+      "seo_description": "Comparación entre XGBoost y regresión logística según lift predictivo, explicabilidad, estabilidad, calibration, latencia y coste de mantenimiento.",
+      "seo_keywords": [
+        "xgboost vs logistic regression",
+        "logistic regression XGBoost",
+        "interpretable ML",
+        "tabular machine learning"
+      ],
+      "tags": [
+        "Machine Learning",
+        "XGBoost",
+        "Logistic Regression"
+      ]
+    },
+    "en": {
+      "title": "XGBoost vs logistic regression: accuracy is not the only criterion",
+      "excerpt": "XGBoost can capture complex relationships; logistic regression offers simplicity, stability and direct explanation. The right choice depends on the decision.",
+      "quick": [
+        "XGBoost seeks lift",
+        "Logistic regression provides legibility",
+        "Context determines complexity cost"
+      ],
+      "section_titles": [
+        "What logistic regression offers",
+        "What XGBoost offers",
+        "Where the real trade-off appears",
+        "How to compare the two models"
+      ],
+      "business_title": "The right choice balances predictive lift with explainability, stability, latency and ownership cost for the actual decision.",
+      "business_steps": [
+        "Interpretable baseline",
+        "Incremental lift",
+        "Total model cost"
+      ],
+      "body": "Comparing XGBoost with logistic regression as though the only question were “which model has higher accuracy?” makes the decision too narrow. **The two methods represent different levels of flexibility, complexity and explainability**, and the right model depends on how valuable each advantage is in the real operating context.\n\nXGBoost can capture nonlinear effects and interactions more naturally. Logistic regression imposes a simpler and more legible structure. **The important comparison is not advanced versus basic, but incremental lift versus the additional cost of understanding, validating and maintaining the model.**\n\n**What logistic regression offers**\nLogistic regression provides a relatively direct relationship between features and the log-odds of the outcome. With strong feature design, regularization and appropriate transformations, it can be a surprisingly competitive baseline.\n\nIts structure makes it easier to inspect coefficient direction, review multicollinearity and detect implausible behaviour. **Simplicity reduces failure surface and makes governance faster.**\n\nTraining and scoring are also cheap. That matters when the system needs millions of predictions or strict latency.\n\nStability can be another advantage. A linear model may react less dramatically to small data changes than a highly flexible ensemble.\n\nThat does not mean logistic regression is automatically interpretable. Transformed variables, manual interactions and correlated features can still make explanation difficult. But the path from input to prediction remains comparatively direct.\n\n**What XGBoost offers**\nGradient boosting can represent nonlinear relationships, interactions and threshold effects without manually specifying all of them.\n\nThat is valuable when many variables have complex effects and there is enough data to learn them. **The model can discover structure that a linear specification would miss.**\n\nXGBoost performs strongly on many tabular problems and often needs less handcrafted interaction engineering.\n\nThe price is complexity. A prediction emerges from many trees and splits, making global explanation less direct than coefficient inspection.\n\nTools such as SHAP can provide local and global explanations, but they add another layer that also needs correct interpretation and validation.\n\nBoosting can also be more sensitive to tuning, feature drift and behaviour outside the training distribution.\n\n**Where the real trade-off appears**\nIf XGBoost improves AUC from 0.75 to 0.86 and that lift materially reduces losses, complexity may be easy to justify.\n\nIf it moves from 0.842 to 0.848 while the decision policy barely changes, **the organization may be paying a large ownership cost for lift that never reaches operations.**\n\nThe value of interpretability is context-dependent. For an internal recommender, approximate explanations may be enough. In credit, fraud, sensitive pricing or regulated decisions, the ability to challenge and audit the model can be a hard constraint.\n\nTeam capability matters too. A complex model requires monitoring, skills and maintenance processes that can support it.\n\nLatency and infrastructure cost may also matter in very high-volume or online scoring systems.\n\n**How to compare the two models**\nStart from the same target definition and validation design, with careful leakage control.\n\nThen compare discrimination, calibration, PR AUC when classes are imbalanced, top-k performance, temporal stability and segment behaviour.\n\n**The next step is to translate model differences into decision differences.** How many additional valuable cases does XGBoost identify? How much loss is avoided? How many actions actually change?\n\nExplainability should be compared concretely rather than abstractly. Who needs to understand the model and for what purpose: end user, compliance, audit, data science or management?\n\nRobustness should be tested out of time and under drift. A large gain on a random split can disappear when the model moves forward in time.\n\nCalibration matters too. Logistic regression may be naturally well calibrated in some settings; boosting may need post-hoc calibration.\n\nOwnership cost should include retraining frequency, feature pipelines, scoring latency, libraries, monitoring and specialist dependency.\n\nA champion-challenger design is useful. Logistic regression can remain a live baseline that XGBoost must continue to beat materially.\n\nHybrid solutions can also work. XGBoost may provide ranking while hard business rules or an interpretable layer governs selected decisions.\n\nMonotonic constraints, feature restrictions or model distillation can reduce part of the complexity cost when appropriate.\n\nThe choice does not need to be permanent. Regulatory requirements, data quality and economics can change.\n\nThe mature approach avoids two symmetric mistakes: choosing logistic regression only because it is easy to explain or choosing XGBoost only because it can be more predictive. **The right model is the one whose incremental lift is worth the complexity required to own it safely.**",
+      "seo_title": "XGBoost vs Logistic Regression",
+      "seo_description": "XGBoost and logistic regression compared across predictive lift, explainability, stability, calibration, latency and model ownership cost.",
+      "seo_keywords": [
+        "xgboost vs logistic regression",
+        "logistic regression XGBoost",
+        "interpretable ML",
+        "tabular machine learning"
+      ],
+      "tags": [
+        "Machine Learning",
+        "XGBoost",
+        "Logistic Regression"
+      ]
+    },
+    "ca": {
+      "title": "XGBoost vs regressió logística: no tot és accuracy",
+      "excerpt": "XGBoost pot capturar relacions complexes; la regressió logística aporta simplicitat, estabilitat i explicació directa. El criteri correcte depèn de la decisió.",
+      "quick": [
+        "XGBoost busca lift",
+        "La logística aporta llegibilitat",
+        "El context decideix el cost de complexitat"
+      ],
+      "section_titles": [
+        "Què aporta regressió logística",
+        "Què aporta XGBoost",
+        "On apareix el trade-off real",
+        "Com comparar els dos models"
+      ],
+      "business_title": "La tria correcta equilibra lift predictiu amb explicabilitat, estabilitat, latència i cost d’ownership segons la decisió.",
+      "business_steps": [
+        "Baseline interpretable",
+        "Lift incremental",
+        "Cost total de model"
+      ],
+      "body": "Comparar XGBoost amb regressió logística com si la pregunta fos només “quin model té millor accuracy” redueix massa la decisió. **Els dos mètodes representen nivells diferents de flexibilitat, complexitat i explicabilitat**, i el model correcte depèn de quant valor aporta cada avantatge en el context real.\n\nXGBoost pot capturar no linealitats i interaccions amb més facilitat. La regressió logística imposa una estructura més simple i llegible. **La comparació important no és avançat davant bàsic, sinó lift incremental davant el cost addicional d’entendre, validar i mantenir el model.**\n\n**Què aporta regressió logística**\nLa regressió logística ofereix una relació relativament directa entre features i log-odds de l’outcome. Amb bones variables, regularització i transformacions adequades pot ser un baseline sorprenentment competitiu.\n\nLa seva estructura facilita revisar direcció dels coeficients, multicollinearity i comportaments incoherents. **La simplicitat redueix superfície de fallada i accelera governance.**\n\nTambé és barata d’entrenar i servir. Això importa quan calen milions de prediccions o latència estricta.\n\nL’estabilitat pot ser un altre avantatge. Un model lineal pot reaccionar menys a petites variacions de dades que un ensemble flexible.\n\nAixò no significa que sigui automàticament interpretable. Variables transformades, interaccions manuals o features correlacionades poden complicar la lectura. Però el camí d’explicació és comparativament directe.\n\n**Què aporta XGBoost**\nGradient boosting pot representar relacions no lineals, interaccions i thresholds sense especificar-los manualment.\n\nAixò és útil quan moltes variables tenen efectes complexos i hi ha prou dades. **El model pot descobrir estructura que una especificació lineal deixaria fora.**\n\nXGBoost sol funcionar molt bé en problemes tabulars i redueix part del feature engineering manual d’interaccions.\n\nEl preu és complexitat. La predicció depèn de molts arbres i splits, fent l’explicació global menys directa.\n\nEines com SHAP aporten explicacions locals i globals, però afegeixen una altra capa que també s’ha d’interpretar i validar correctament.\n\nBoosting també pot ser més sensible a tuning, feature drift i comportament fora de la distribució d’entrenament.\n\n**On apareix el trade-off real**\nSi XGBoost millora AUC de 0,75 a 0,86 i això redueix pèrdues de manera material, la complexitat pot justificar-se fàcilment.\n\nSi passa de 0,842 a 0,848 i la política gairebé no canvia, **l’organització pot estar pagant molt ownership per un lift que no arriba a l’operació.**\n\nEl valor de la interpretabilitat depèn del context. En un recommender intern, explicacions aproximades poden ser suficients. En crèdit, frau, pricing sensible o decisions regulades, poder justificar i auditar pot ser una restricció dura.\n\nTambé importa la capacitat de l’equip. Un model complex necessita monitorització, skills i processos de manteniment adequats.\n\nLa latència i el cost d’infraestructura poden influir en scoring massiu o online.\n\n**Com comparar els dos models**\nLa comparació ha de començar amb el mateix target i el mateix disseny de validació, evitant leakage.\n\nDesprés comparem discriminació, calibration, PR AUC si hi ha imbalance, top-k, estabilitat temporal i comportament per segments.\n\n**El següent pas és traduir diferències de model a diferències de decisió.** Quants casos valuosos addicionals captura XGBoost? Quanta pèrdua evita? Quantes accions canvien?\n\nL’explicabilitat també s’ha de comparar concretament. Qui ha d’entendre el model i per a què: usuari, compliance, auditoria, data science o direcció?\n\nLa robustesa s’ha de provar out-of-time i sota drift. Un gran guany en random split pot desaparèixer avançant en el temps.\n\nLa calibració també importa. La regressió logística pot estar ben calibrada de manera natural en alguns problemes; boosting pot necessitar calibració posterior.\n\nEl cost d’ownership inclou retraining, feature pipelines, latència, llibreries, monitorització i dependència de perfils especialitzats.\n\nUn champion-challenger és útil. La logística pot mantenir-se com baseline viu que XGBoost ha de continuar superant de manera material.\n\nTambé poden existir solucions híbrides. XGBoost pot generar ranking mentre regles dures o una capa interpretable governen determinades decisions.\n\nMonotonic constraints, restriccions de features o distillation poden reduir part del cost de complexitat.\n\nLa tria tampoc ha de ser permanent. Requisits regulatoris, dades i economics poden canviar.\n\nL’enfocament madur evita dos errors simètrics: escollir logística només perquè és fàcil d’explicar o XGBoost només perquè pot predir millor. **El model correcte és aquell on el lift incremental compensa la complexitat necessària per operar-lo de manera segura.**",
+      "seo_title": "XGBoost vs regressió logística",
+      "seo_description": "Comparació entre XGBoost i regressió logística segons lift predictiu, explicabilitat, estabilitat, calibració, latència i cost de manteniment.",
+      "seo_keywords": [
+        "xgboost vs logistic regression",
+        "logistic regression XGBoost",
+        "interpretable ML",
+        "tabular machine learning"
+      ],
+      "tags": [
+        "Machine Learning",
+        "XGBoost",
+        "Logistic Regression"
+      ]
+    }
+  }
+}
