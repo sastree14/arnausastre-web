@@ -8,7 +8,7 @@ const COPY = {
   es: {
     statement: 'Consultoría de datos, matemáticas e inteligencia artificial aplicada a decisiones de negocio.',
     work: 'Cómo trabajamos',
-    cases: 'Casos',
+    cases: 'Casos de éxito',
     knowledge: 'Conocimiento',
     partner: 'Partner Data & AI',
     why: 'Por qué SC-Analytics',
@@ -18,7 +18,7 @@ const COPY = {
   ca: {
     statement: 'Consultoria de dades, matemàtiques i intel·ligència artificial aplicada a decisions de negoci.',
     work: 'Com treballem',
-    cases: 'Casos',
+    cases: 'Casos d’èxit',
     knowledge: 'Coneixement',
     partner: 'Partner Data & AI',
     why: 'Per què SC-Analytics',
@@ -28,7 +28,7 @@ const COPY = {
   en: {
     statement: 'Data, mathematics and artificial intelligence consulting applied to business decisions.',
     work: 'How we work',
-    cases: 'Case studies',
+    cases: 'Success stories',
     knowledge: 'Knowledge',
     partner: 'Data & AI Partner',
     why: 'Why SC-Analytics',
