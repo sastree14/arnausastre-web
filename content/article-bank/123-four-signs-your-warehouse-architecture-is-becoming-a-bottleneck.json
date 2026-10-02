@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-123",
+  "sequence": 123,
+  "arc_id": "ARC-31",
+  "slug": "four-signs-your-warehouse-architecture-is-becoming-a-bottleneck",
+  "scheduled_at": "2027-08-02T09:00:00+02:00",
+  "knowledge_area": "business_systems",
+  "cluster": "Data Engineering & Architecture",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "diagnose",
+  "angle": "data warehouse bottlenecks",
+  "primary_keyword": "data warehouse bottlenecks",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-121",
+    "KB-122",
+    "KB-124"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cuatro señales de que tu warehouse se ha convertido en cuello de botella",
+      "excerpt": "Un warehouse deja de ser suficiente cuando la variedad de workloads, datos y equipos empieza a forzar demasiadas excepciones, copias y procesos paralelos.",
+      "quick": [
+        "Más copias suelen indicar fricción",
+        "Workloads distintos necesitan arquitecturas distintas",
+        "La complejidad debe justificarse con uso real"
+      ],
+      "section_titles": [
+        "La arquitectura empieza a duplicarse",
+        "Los workloads compiten entre sí",
+        "Los datos ya no caben bien en el modelo",
+        "El equipo mantiene demasiadas excepciones"
+      ],
+      "business_title": "El warehouse se convierte en cuello de botella cuando limita la velocidad de análisis, fuerza arquitecturas paralelas y hace que cada nuevo caso de uso cueste desproporcionadamente más.",
+      "business_steps": [
+        "Fricción",
+        "Duplicación",
+        "Replanteamiento"
+      ],
+      "body": "Un data warehouse puede resolver durante años casi todas las necesidades analíticas de una empresa. Es estable, gobernable y especialmente fuerte para reporting, BI y métricas estructuradas. El problema aparece cuando **la arquitectura empieza a adaptarse al límite del warehouse en lugar de adaptarse a las necesidades del negocio**.\n\nEso no significa que haya que migrar inmediatamente a un lakehouse. Muchas veces el problema está en modelado, ownership o procesos. Pero existen señales que indican que la arquitectura actual empieza a generar fricción estructural. **La clave es distinguir un problema de ejecución de un problema de arquitectura.**\n\n**La arquitectura empieza a duplicarse**\nLa primera señal es la proliferación de copias.\n\nUn equipo necesita trabajar con datos semiestructurados y crea un storage paralelo. Otro necesita entrenar modelos y exporta datasets a notebooks o buckets. Otro mantiene snapshots fuera porque ciertas consultas son demasiado costosas.\n\nAl principio cada excepción parece razonable. Con el tiempo, **el mismo dato termina viviendo en demasiados lugares con definiciones y tiempos de actualización diferentes**.\n\nEso genera reconciliaciones, pipelines duplicadas y debates sobre cuál es la fuente correcta.\n\nTambién aparecen movimientos innecesarios de datos. Extractar del warehouse para procesar fuera y volver a cargar resultados puede aumentar latencia, coste y superficie de fallo.\n\nLa duplicación no siempre es mala; puede ser necesaria por performance o aislamiento. El problema es cuando se vuelve el mecanismo habitual para resolver nuevos casos de uso.\n\n**Los workloads compiten entre sí**\nLa segunda señal es que analytics, data science, transformations y reporting empiezan a competir por los mismos recursos.\n\nUna consulta exploratoria pesada puede afectar dashboards críticos. Un proceso de feature engineering puede consumir compute que estaba dimensionado para BI.\n\n**Cuando workloads muy distintos comparten una misma capa sin suficiente aislamiento, la arquitectura empieza a imponer prioridades técnicas sobre prioridades de negocio.**\n\nAlgunos warehouses modernos ofrecen separación de compute, escalado y workload management suficientemente buenos para resolverlo.\n\nPero si cada nuevo caso obliga a crear ventanas, limitar usuarios o mover procesamiento a otra plataforma, conviene revisar el diseño.\n\nTambién importa la frecuencia. Una arquitectura optimizada para batch nocturno puede sufrir cuando aparecen ingestiones continuas, scoring más frecuente o necesidades cercanas a real time.\n\nNo se trata de perseguir menor latencia por moda. Se trata de comprobar si la latencia actual impide una decisión concreta.\n\n**Los datos ya no caben bien en el modelo**\nLa tercera señal es que el tipo de datos cambia.\n\nUn warehouse tradicional funciona especialmente bien con tablas estructuradas y esquemas relativamente claros. Pero una empresa puede empezar a necesitar logs, eventos, documentos, imágenes, audio, JSON complejo o grandes volúmenes históricos.\n\nForzar todos esos datos a estructuras relacionales antes de almacenarlos puede añadir trabajo y reducir flexibilidad. **Cuando el coste de adaptar los datos al warehouse supera el valor de hacerlo, la arquitectura merece revisión.**\n\nTambién puede ocurrir que data science necesite acceso a datos más granulares que los modelos analíticos preparados para reporting.\n\nGuardar solo agregados o transformaciones finales puede limitar experimentación futura.\n\nPero conservar raw data sin governance tampoco resuelve nada. El valor de una arquitectura más flexible depende de poder catalogar, descubrir y controlar esa información.\n\nLa pregunta no es si podemos almacenar cualquier formato, sino si existe un caso de uso que realmente necesita esa flexibilidad.\n\n**El equipo mantiene demasiadas excepciones**\nLa cuarta señal es humana: demasiados procesos especiales.\n\nUn pipeline para un equipo, otro para una región, exports manuales para data science, accesos temporales, scripts de reconciliación y documentación que explica excepciones en lugar de patrones.\n\n**Cuando cada nuevo caso de uso necesita una arquitectura distinta, el coste marginal de analytics empieza a crecer demasiado.**\n\nEso puede indicar que falta una capa más flexible, pero también puede indicar que la plataforma actual está mal gobernada.\n\nAntes de migrar, conviene medir qué parte del trabajo se dedica a mover datos, adaptar formatos, resolver contention y mantener duplicaciones.\n\nSi ese coste es pequeño, cambiar arquitectura puede ser innecesario.\n\nSi crece cada trimestre, aparece un argumento más fuerte para separar storage y compute, incorporar formatos abiertos o adoptar patrones lakehouse.\n\nTambién hay que considerar skills. Una arquitectura técnicamente más flexible puede empeorar productividad si el equipo no tiene experiencia operándola.\n\nGovernance es otro criterio. Si cambiar de arquitectura reduce control sobre calidad, permisos o linaje, la mejora puede ser aparente.\n\nLa transición tampoco tiene que ser total. Puede existir un warehouse para BI y una capa adicional para workloads específicos.\n\nLa mejor decisión puede ser híbrida durante años.\n\nConviene también revisar economics. Un lakehouse puede reducir ciertos costes de storage y ampliar tipos de workload, pero añadir tooling, observability y complejidad de plataforma.\n\nPor eso la migración debe justificarse por casos concretos: menos duplicación, menor time-to-data, mejor soporte a ML, más aislamiento o más flexibilidad de formatos.\n\n**El warehouse se convierte en cuello de botella cuando obliga al negocio a crear demasiadas excepciones para seguir avanzando.** No cuando aparece una tecnología más moderna, sino cuando la arquitectura existente empieza a encarecer cada nueva necesidad analítica de forma sistemática.",
+      "seo_title": "Cuellos de botella en un data warehouse: 4 señales",
+      "seo_description": "Cuatro señales de que un data warehouse empieza a limitar analytics: duplicación, contention, nuevos formatos y demasiadas excepciones operativas.",
+      "seo_keywords": [
+        "data warehouse bottlenecks",
+        "data warehouse architecture",
+        "warehouse limitations",
+        "lakehouse migration"
+      ],
+      "tags": [
+        "Data Warehouse",
+        "Lakehouse",
+        "Data Architecture"
+      ]
+    },
+    "en": {
+      "title": "Four signs your warehouse architecture is becoming a bottleneck",
+      "excerpt": "A warehouse becomes limiting when workload diversity, data types and team needs start forcing too many exceptions, copies and parallel processes.",
+      "quick": [
+        "More copies often signal friction",
+        "Different workloads need different treatment",
+        "Complexity needs real justification"
+      ],
+      "section_titles": [
+        "The architecture starts duplicating itself",
+        "Workloads begin to compete",
+        "Data no longer fits the model cleanly",
+        "The team maintains too many exceptions"
+      ],
+      "business_title": "A warehouse becomes a bottleneck when it slows analytical delivery, forces parallel architectures and makes each new use case disproportionately more expensive.",
+      "business_steps": [
+        "Friction",
+        "Duplication",
+        "Redesign"
+      ],
+      "body": "A data warehouse can support most analytical needs for years. It is stable, governable and particularly strong for reporting, BI and structured metrics. The problem begins when **the architecture starts adapting to the limits of the warehouse instead of adapting to business needs**.\n\nThat does not mean the company should immediately move to a lakehouse. Many problems come from modeling, ownership or operating process. But some signals indicate that the current architecture is creating structural friction. **The important distinction is between an execution problem and an architecture problem.**\n\n**The architecture starts duplicating itself**\nThe first signal is the spread of copies.\n\nOne team needs semi-structured data and creates parallel storage. Another needs model training and exports datasets into notebooks or object storage. Another keeps snapshots elsewhere because certain queries are too expensive.\n\nEach exception looks reasonable in isolation. Over time, **the same data begins to live in too many places with different definitions and refresh times**.\n\nThat creates reconciliation work, duplicated pipelines and arguments about which source is correct.\n\nUnnecessary data movement also appears. Extracting from the warehouse, processing elsewhere and loading results back can increase latency, cost and failure surface.\n\nDuplication is not always bad; performance and isolation can justify it. The warning sign is when duplication becomes the default solution for new use cases.\n\n**Workloads begin to compete**\nThe second signal is competition between analytics, data science, transformations and reporting for the same resources.\n\nA heavy exploratory query can affect critical dashboards. Feature engineering can consume compute originally sized for BI.\n\n**When very different workloads share one layer without enough isolation, architecture begins imposing technical priorities on business priorities.**\n\nModern warehouses can solve much of this through compute separation, scaling and workload management.\n\nBut if every new workload requires execution windows, user restrictions or migration to another platform, the design deserves review.\n\nFrequency matters too. An architecture optimized for nightly batch can become uncomfortable as continuous ingestion, more frequent scoring or near-real-time needs appear.\n\nThe objective is not lower latency for its own sake. The question is whether current latency blocks a real decision.\n\n**Data no longer fits the model cleanly**\nThe third signal is changing data shape.\n\nTraditional warehouses are strongest with structured tables and relatively clear schemas. A growing company may increasingly need logs, events, documents, images, audio, complex JSON or large volumes of historical raw data.\n\nForcing every format into relational structures before storage can add work and reduce flexibility. **When adapting data to the warehouse costs more than the value of that transformation, the architecture deserves reconsideration.**\n\nData science may also need more granular information than the curated analytical models used for reporting.\n\nKeeping only aggregates and final transformations can constrain future experimentation.\n\nBut retaining raw data without governance is not an answer either. Flexible storage creates value only when the organization can catalog, discover and control the data.\n\nThe question is not whether the platform can store every format. It is whether a real use case benefits from that flexibility.\n\n**The team maintains too many exceptions**\nThe fourth signal is organizational: too many special processes.\n\nOne pipeline for one team, another for one region, manual exports for data science, temporary access patterns, reconciliation scripts and documentation describing exceptions rather than standards.\n\n**When every new use case needs its own architecture, the marginal cost of analytics is growing too quickly.**\n\nThat may indicate the need for a more flexible platform, but it can also indicate weak governance of the current one.\n\nBefore migrating, measure how much effort goes into moving data, adapting formats, resolving contention and maintaining duplicated copies.\n\nIf that cost is small, changing architecture may be unnecessary.\n\nIf it grows quarter after quarter, there is a stronger case for separating storage and compute, adopting open formats or adding lakehouse patterns.\n\nTeam capability must also be considered. A technically flexible architecture can reduce productivity if the team cannot operate it confidently.\n\nGovernance is another criterion. If architectural change weakens quality, access control or lineage, the improvement may be illusory.\n\nMigration does not need to be total. A warehouse can remain the BI layer while additional infrastructure supports specialized workloads.\n\nHybrid architecture can be the best answer for years.\n\nEconomics should also be reviewed. A lakehouse may reduce some storage costs and support more workloads, while adding tooling, observability and platform complexity.\n\nThe migration should therefore be tied to concrete outcomes: less duplication, lower time-to-data, better ML support, stronger workload isolation or greater format flexibility.\n\n**A warehouse becomes a bottleneck when the business must keep inventing exceptions in order to move forward.** Not when a newer technology appears, but when the existing architecture systematically increases the cost of every new analytical requirement.",
+      "seo_title": "Four Signs of Data Warehouse Bottlenecks",
+      "seo_description": "Four signs a data warehouse is limiting analytics through duplication, workload contention, new data formats and growing operational exceptions.",
+      "seo_keywords": [
+        "data warehouse bottlenecks",
+        "data warehouse architecture",
+        "warehouse limitations",
+        "lakehouse migration"
+      ],
+      "tags": [
+        "Data Warehouse",
+        "Lakehouse",
+        "Data Architecture"
+      ]
+    },
+    "ca": {
+      "title": "Quatre senyals que el teu warehouse s’ha convertit en coll d’ampolla",
+      "excerpt": "Un warehouse deixa de ser suficient quan la varietat de workloads, dades i equips força massa excepcions, còpies i processos paral·lels.",
+      "quick": [
+        "Més còpies solen indicar fricció",
+        "Workloads diferents necessiten tractament diferent",
+        "La complexitat necessita justificació real"
+      ],
+      "section_titles": [
+        "L’arquitectura comença a duplicar-se",
+        "Els workloads competeixen entre ells",
+        "Les dades ja no encaixen bé al model",
+        "L’equip manté massa excepcions"
+      ],
+      "business_title": "El warehouse es converteix en coll d’ampolla quan limita la velocitat analítica, força arquitectures paral·leles i encareix desproporcionadament cada nou cas d’ús.",
+      "business_steps": [
+        "Fricció",
+        "Duplicació",
+        "Redisseny"
+      ],
+      "body": "Un data warehouse pot resoldre durant anys gairebé totes les necessitats analítiques d’una empresa. És estable, governable i especialment fort per reporting, BI i mètriques estructurades. El problema apareix quan **l’arquitectura comença a adaptar-se als límits del warehouse en lloc d’adaptar-se a les necessitats del negoci**.\n\nAixò no significa que calgui migrar immediatament a un lakehouse. Molts problemes venen de modelatge, ownership o processos. Però hi ha senyals que indiquen que l’arquitectura actual crea fricció estructural. **La clau és distingir un problema d’execució d’un problema d’arquitectura.**\n\n**L’arquitectura comença a duplicar-se**\nEl primer senyal és la proliferació de còpies.\n\nUn equip necessita dades semiestructurades i crea storage paral·lel. Un altre necessita entrenar models i exporta datasets a notebooks o object storage. Un altre manté snapshots fora perquè certes queries són massa cares.\n\nCada excepció sembla raonable de manera aïllada. Amb el temps, **la mateixa dada acaba vivint en massa llocs amb definicions i temps d’actualització diferents**.\n\nAixò genera reconciliacions, pipelines duplicades i discussions sobre quina font és correcta.\n\nTambé apareixen moviments innecessaris de dades. Extreure del warehouse, processar fora i tornar a carregar resultats pot augmentar latència, cost i superfície de fallada.\n\nLa duplicació no sempre és dolenta; performance i aïllament poden justificar-la. El problema és quan es converteix en la solució habitual per qualsevol nou cas.\n\n**Els workloads competeixen entre ells**\nEl segon senyal és que analytics, data science, transformations i reporting competeixen pels mateixos recursos.\n\nUna query exploratòria pesada pot afectar dashboards crítics. Feature engineering pot consumir compute dimensionat originalment per BI.\n\n**Quan workloads molt diferents comparteixen una mateixa capa sense prou aïllament, l’arquitectura imposa prioritats tècniques sobre prioritats de negoci.**\n\nWarehouses moderns poden resoldre gran part d’això amb separació de compute, escalat i workload management.\n\nPerò si cada nou workload obliga a crear finestres, limitar usuaris o moure processing a una altra plataforma, convé revisar el disseny.\n\nLa freqüència també importa. Una arquitectura optimitzada per batch nocturn pot patir quan apareixen ingestes contínues, scoring més freqüent o necessitats properes a real time.\n\nNo es tracta de perseguir menys latència per moda. Cal comprovar si la latència actual impedeix una decisió concreta.\n\n**Les dades ja no encaixen bé al model**\nEl tercer senyal és que canvia el tipus de dades.\n\nUn warehouse tradicional funciona especialment bé amb taules estructurades i schemas clars. Però una empresa pot començar a necessitar logs, events, documents, imatges, àudio, JSON complex o grans volums d’històric raw.\n\nForçar tots aquests formats a estructures relacionals abans d’emmagatzemar pot afegir feina i reduir flexibilitat. **Quan el cost d’adaptar les dades al warehouse supera el valor de fer-ho, l’arquitectura mereix revisió.**\n\nData science també pot necessitar dades més granulars que els models analítics preparats per reporting.\n\nGuardar només agregats o transformacions finals pot limitar experimentació futura.\n\nPerò conservar raw data sense governance tampoc resol res. L’storage flexible aporta valor només si podem catalogar, descobrir i controlar aquesta informació.\n\nLa pregunta no és si podem guardar qualsevol format, sinó si existeix un cas d’ús que necessita aquesta flexibilitat.\n\n**L’equip manté massa excepcions**\nEl quart senyal és humà: massa processos especials.\n\nUna pipeline per un equip, una altra per una regió, exports manuals per data science, accessos temporals, scripts de reconciliació i documentació que explica excepcions en lloc de patrons.\n\n**Quan cada nou cas d’ús necessita la seva pròpia arquitectura, el cost marginal d’analytics creix massa ràpid.**\n\nAixò pot indicar que falta una plataforma més flexible, però també que la plataforma actual està mal governada.\n\nAbans de migrar, convé mesurar quanta feina es dedica a moure dades, adaptar formats, resoldre contention i mantenir duplicacions.\n\nSi aquest cost és petit, canviar arquitectura pot ser innecessari.\n\nSi creix trimestre rere trimestre, apareix un argument més fort per separar storage i compute, incorporar formats oberts o adoptar patrons lakehouse.\n\nTambé cal considerar skills. Una arquitectura tècnicament més flexible pot empitjorar productivitat si l’equip no sap operar-la amb confiança.\n\nGovernance és un altre criteri. Si el canvi redueix control sobre qualitat, permisos o lineage, la millora pot ser aparent.\n\nLa transició tampoc ha de ser total. El warehouse pot continuar com a capa de BI i una infraestructura addicional suportar workloads especialitzats.\n\nUna arquitectura híbrida pot ser la millor resposta durant anys.\n\nTambé convé revisar economics. Un lakehouse pot reduir alguns costos de storage i suportar més workloads, però afegeix tooling, observability i complexitat de plataforma.\n\nLa migració s’ha de justificar per outcomes concrets: menys duplicació, menor time-to-data, millor suport a ML, més aïllament o més flexibilitat de formats.\n\n**El warehouse es converteix en coll d’ampolla quan el negoci ha d’inventar massa excepcions per poder avançar.** No quan apareix una tecnologia més moderna, sinó quan l’arquitectura existent encareix sistemàticament cada nova necessitat analítica.",
+      "seo_title": "Colls d’ampolla en un data warehouse: 4 senyals",
+      "seo_description": "Quatre senyals que un data warehouse limita analytics: duplicació, contention, nous formats i massa excepcions operatives.",
+      "seo_keywords": [
+        "data warehouse bottlenecks",
+        "data warehouse architecture",
+        "warehouse limitations",
+        "lakehouse migration"
+      ],
+      "tags": [
+        "Data Warehouse",
+        "Lakehouse",
+        "Data Architecture"
+      ]
+    }
+  }
+}
