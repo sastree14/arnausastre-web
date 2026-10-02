@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-023",
+  "sequence": 23,
+  "arc_id": "ARC-06",
+  "slug": "service-level-vs-working-capital",
+  "scheduled_at": "2026-12-01T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Inventory & Supply Chain",
+  "editorial_pillar": "industries_use_cases",
+  "content_family": "compare",
+  "angle": "service level vs inventory cost",
+  "primary_keyword": "service level vs inventory cost",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-021",
+    "KB-022",
+    "KB-024"
+  ],
+  "variants": {
+    "es": {
+      "title": "Nivel de servicio vs capital inmovilizado",
+      "excerpt": "Más servicio suele exigir más inventario, pero el trade-off no es lineal. La política correcta depende de margen, criticidad, lead time y coste de ruptura.",
+      "quick": [
+        "Más servicio cuesta capital",
+        "El trade-off no es lineal",
+        "No todos los SKUs merecen el mismo target"
+      ],
+      "section_titles": [
+        "La frontera servicio-capital",
+        "Por qué el 99 % no es gratis",
+        "Segmentar cambia la economía",
+        "Elegir un punto operativo"
+      ],
+      "business_title": "El objetivo no es maximizar servicio ni minimizar stock, sino elegir la combinación que crea más valor.",
+      "business_steps": [
+        "Nivel de servicio",
+        "Capital requerido",
+        "Valor económico"
+      ],
+      "body": "Inventario y nivel de servicio están conectados por una relación incómoda: proteger más demanda suele requerir más stock. Pero esa relación no es lineal ni idéntica para todos los productos. **Pasar de un servicio razonable a uno casi perfecto puede exigir mucho más capital para evitar muy pocas roturas adicionales.**\n\nPor eso “subir el nivel de servicio” no debería tratarse como una mejora gratuita. Cada punto adicional tiene un coste, y cada ruptura evitada tiene un valor distinto. **La decisión correcta aparece cuando ambos lados del trade-off se expresan en términos económicos.**\n\n**La frontera servicio-capital**\nA medida que aumentamos safety stock, la probabilidad de ruptura suele disminuir. Al principio, una pequeña cantidad de buffer puede eliminar muchos fallos. Más adelante, cada unidad adicional protege eventos cada vez menos frecuentes.\n\nEsto crea una frontera con rendimientos decrecientes. **El coste marginal de mejorar servicio aumenta a medida que nos acercamos a niveles extremos.** La forma exacta depende de variabilidad, lead time y política de reposición.\n\nLa empresa debería conocer esa curva. Sin ella, un target como 98 % o 99 % puede convertirse en una cifra política sin relación visible con el capital requerido.\n\n**Por qué el 99 % no es gratis**\nUn nivel de servicio alto puede ser correcto para un componente crítico o un producto con fuerte coste de ruptura. Pero aplicarlo por defecto a todo el portfolio suele sobredimensionar inventario.\n\nAdemás, el último punto porcentual puede ser especialmente caro cuando la demanda tiene colas o el lead time es incierto. **Proteger eventos raros implica financiar stock que la mayor parte del tiempo no se utiliza.**\n\nEso no significa que deba recortarse. Significa que la organización tiene que saber qué coste está pagando por esa protección y qué pérdida evita.\n\n**Segmentar cambia la economía**\nNo todos los SKUs tienen el mismo margen, criticidad, sustituibilidad o riesgo de obsolescencia. Un producto A de alto impacto puede justificar un target elevado. Un C item barato de ruptura y caro de mantener puede necesitar otro.\n\nSegmentar por ABC es un comienzo, pero puede ser insuficiente. **La clasificación debería incluir economics y comportamiento de demanda, no solo volumen o valor anual.** Lead time, variabilidad y coste de stockout alteran el punto óptimo.\n\nTambién puede haber objetivos distintos por canal o cliente. Un contrato premium puede exigir una disponibilidad superior a la del canal general.\n\n**Elegir un punto operativo**\nUna forma práctica es simular varios niveles de servicio y medir para cada uno inventario medio, roturas, urgencias y coste total. Esto transforma una discusión abstracta en una curva de decisión.\n\nEl punto elegido no tiene que ser matemáticamente perfecto. **Debe ser defendible, estable y coherente con la estrategia comercial.** También puede incluir límites mínimos para productos críticos y targets más flexibles para el resto.\n\nLa política debe revisarse cuando cambian margen, lead time, forecast accuracy o coste de capital. Un nivel de servicio óptimo hoy puede dejar de serlo si financiar inventario se encarece o si el proveedor mejora.\n\nConviene evitar un error habitual: reducir stock y celebrar working capital sin medir el deterioro de servicio. El movimiento contrario también ocurre: mejorar disponibilidad acumulando stock que apenas genera valor.\n\nUna buena política reporta ambos lados simultáneamente. **Servicio sin capital es una promesa incompleta; capital sin servicio es una eficiencia potencialmente falsa.** La decisión está en encontrar la frontera donde el último euro de inventario todavía compra suficiente resiliencia.",
+      "seo_title": "Nivel de servicio vs capital inmovilizado",
+      "seo_description": "Cómo equilibrar nivel de servicio, safety stock y working capital según criticidad, margen, lead time y coste de ruptura.",
+      "seo_keywords": [
+        "service level vs inventory cost",
+        "nivel de servicio inventario",
+        "working capital inventory",
+        "safety stock"
+      ],
+      "tags": [
+        "Inventory",
+        "Service Level",
+        "Working Capital"
+      ]
+    },
+    "en": {
+      "title": "Service level vs working capital",
+      "excerpt": "Higher service usually requires more inventory, but the trade-off is not linear. The right policy depends on margin, criticality, lead time and shortage cost.",
+      "quick": [
+        "More service consumes capital",
+        "The trade-off is nonlinear",
+        "Not every SKU needs the same target"
+      ],
+      "section_titles": [
+        "The service-capital frontier",
+        "Why 99% is not free",
+        "Segmentation changes the economics",
+        "Choose an operating point"
+      ],
+      "business_title": "The objective is not to maximize service or minimize stock, but to choose the combination that creates the most value.",
+      "business_steps": [
+        "Service level",
+        "Capital required",
+        "Economic value"
+      ],
+      "body": "Inventory and service level are linked by an uncomfortable relationship: protecting more demand usually requires more stock. But that relationship is neither linear nor identical across products. **Moving from reasonable service to near-perfect service can require much more capital to prevent only a small number of additional stockouts.**\n\nThat is why “improving service level” should not be treated as a free improvement. Every additional point has a cost, and every avoided shortage has a different value. **The right decision appears when both sides of the trade-off are expressed economically.**\n\n**The service-capital frontier**\nAs safety stock increases, shortage probability usually falls. Early increments of buffer may eliminate many failures. Later increments protect progressively rarer events.\n\nThis creates a frontier with diminishing returns. **The marginal cost of higher service tends to increase as the target approaches extreme levels.** The exact shape depends on demand variability, lead time and replenishment policy.\n\nThe business should understand that curve. Without it, a target such as 98% or 99% can become a political number with no visible connection to the capital required.\n\n**Why 99% is not free**\nVery high service can be appropriate for a critical component or a product with expensive shortages. Applying it by default across the portfolio usually overstates inventory requirements.\n\nThe final percentage points can be especially expensive when demand has heavy tails or lead time is uncertain. **Protecting rare events means financing stock that sits unused most of the time.**\n\nThat does not mean the protection is wrong. It means the organization should know what it is paying and which loss it is avoiding.\n\n**Segmentation changes the economics**\nSKUs differ in margin, criticality, substitutability and obsolescence risk. A high-impact A item may justify an elevated target. A product with cheap shortages and expensive holding can rationally operate with less protection.\n\nABC segmentation is a start, but often incomplete. **Classification should include economics and demand behaviour, not only annual volume or value.** Lead time, variability and shortage cost all change the optimal point.\n\nTargets can also differ by channel or customer. A premium contract may require higher availability than the general market.\n\n**Choose an operating point**\nA practical approach is to simulate several service targets and measure average inventory, stockouts, emergency actions and total cost for each one. The abstract debate becomes a decision curve.\n\nThe chosen point does not have to be mathematically perfect. **It should be defensible, stable and aligned with commercial strategy.** Critical items can have minimum floors while the rest use more flexible targets.\n\nPolicy should be revisited when margin, lead time, forecast accuracy or cost of capital changes. The right service target today may become inefficient if inventory financing becomes more expensive or supplier reliability improves.\n\nA common mistake is to reduce stock and celebrate working-capital improvement without measuring service deterioration. The opposite also happens: availability improves only because the company accumulates inventory that creates little value.\n\nA mature policy reports both sides together. **Service without capital is an incomplete promise; capital without service can be false efficiency.** The decision lies on the frontier where the next unit of inventory still buys enough resilience to justify its cost.",
+      "seo_title": "Service Level vs Working Capital",
+      "seo_description": "How to balance service level, safety stock and working capital using criticality, margin, lead time and shortage economics.",
+      "seo_keywords": [
+        "service level vs inventory cost",
+        "inventory working capital",
+        "safety stock service level",
+        "inventory cost"
+      ],
+      "tags": [
+        "Inventory",
+        "Service Level",
+        "Working Capital"
+      ]
+    },
+    "ca": {
+      "title": "Nivell de servei vs capital immobilitzat",
+      "excerpt": "Més servei sol exigir més inventari, però el trade-off no és lineal. La política correcta depèn de marge, criticitat, lead time i cost de ruptura.",
+      "quick": [
+        "Més servei consumeix capital",
+        "El trade-off no és lineal",
+        "No tots els SKUs necessiten el mateix target"
+      ],
+      "section_titles": [
+        "La frontera servei-capital",
+        "Per què el 99 % no és gratis",
+        "Segmentar canvia l’economia",
+        "Triar un punt operatiu"
+      ],
+      "business_title": "L’objectiu no és maximitzar servei ni minimitzar estoc, sinó triar la combinació que crea més valor.",
+      "business_steps": [
+        "Nivell de servei",
+        "Capital requerit",
+        "Valor econòmic"
+      ],
+      "body": "Inventari i nivell de servei estan connectats per una relació incòmoda: protegir més demanda sol requerir més estoc. Però la relació no és lineal ni igual per a tots els productes. **Passar d’un servei raonable a un servei gairebé perfecte pot exigir molt més capital per evitar molt poques ruptures addicionals.**\n\nPer això “pujar el nivell de servei” no s’hauria de tractar com una millora gratuïta. Cada punt addicional té un cost i cada ruptura evitada té un valor diferent. **La decisió correcta apareix quan tots dos costats del trade-off s’expressen econòmicament.**\n\n**La frontera servei-capital**\nQuan augmenta safety stock, la probabilitat de ruptura acostuma a baixar. Al principi, una quantitat petita de buffer pot eliminar moltes fallades. Més endavant, cada unitat addicional protegeix esdeveniments menys freqüents.\n\nAixò crea una frontera amb rendiments decreixents. **El cost marginal de millorar servei augmenta a mesura que ens acostem a nivells extrems.** La forma depèn de variabilitat, lead time i política de reposició.\n\nL’empresa hauria de conèixer aquesta corba. Sense ella, un target com 98 % o 99 % es converteix en una xifra política sense relació visible amb el capital requerit.\n\n**Per què el 99 % no és gratis**\nUn servei molt alt pot ser correcte per a un component crític o un producte amb cost de ruptura elevat. Aplicar-lo per defecte a tota la cartera sol sobredimensionar inventari.\n\nEls últims punts percentuals poden ser especialment cars quan la demanda té cues o el lead time és incert. **Protegir esdeveniments rars significa finançar estoc que la major part del temps no s’utilitza.**\n\nAixò no vol dir que la protecció sigui incorrecta. Vol dir que l’organització ha de saber què paga i quina pèrdua evita.\n\n**Segmentar canvia l’economia**\nEls SKUs tenen marge, criticitat, substituïbilitat i risc d’obsolescència diferents. Un article A d’alt impacte pot justificar un target elevat. Un producte amb ruptura barata i holding car pot operar racionalment amb menys protecció.\n\nABC és un començament, però pot ser insuficient. **La classificació ha d’incloure economics i comportament de demanda, no només volum o valor anual.** Lead time, variabilitat i cost de ruptura canvien el punt òptim.\n\nEls targets també poden variar per canal o client. Un contracte premium pot exigir més disponibilitat que el canal general.\n\n**Triar un punt operatiu**\nUna manera pràctica és simular diversos nivells de servei i mesurar inventari mitjà, ruptures, urgències i cost total per cadascun. La discussió es converteix en una corba de decisió.\n\nEl punt triat no ha de ser matemàticament perfecte. **Ha de ser defensable, estable i coherent amb l’estratègia comercial.** Productes crítics poden tenir floors mínims i la resta targets més flexibles.\n\nLa política s’ha de revisar quan canvien marge, lead time, forecast accuracy o cost de capital. Un target adequat avui pot deixar de ser-ho si finançar inventari s’encareix o el proveïdor millora.\n\nUn error habitual és reduir estoc i celebrar working capital sense mesurar deteriorament de servei. També passa el contrari: millorar disponibilitat acumulant estoc de poc valor.\n\nUna política madura reporta tots dos costats. **Servei sense capital és una promesa incompleta; capital sense servei pot ser una falsa eficiència.** La decisió és trobar la frontera on l’últim euro d’inventari encara compra prou resiliència.",
+      "seo_title": "Nivell de servei vs capital immobilitzat",
+      "seo_description": "Com equilibrar nivell de servei, safety stock i working capital segons criticitat, marge, lead time i cost de ruptura.",
+      "seo_keywords": [
+        "service level vs inventory cost",
+        "nivell servei inventari",
+        "working capital inventory",
+        "safety stock"
+      ],
+      "tags": [
+        "Inventory",
+        "Service Level",
+        "Working Capital"
+      ]
+    }
+  }
+}
