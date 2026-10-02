@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-044",
+  "sequence": 44,
+  "arc_id": "ARC-11",
+  "slug": "when-a-vrp-model-is-worth-building",
+  "scheduled_at": "2027-01-22T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Optimization & OR",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "decision_guide",
+  "angle": "when to use vehicle routing optimization",
+  "primary_keyword": "when to use vehicle routing optimization",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-041",
+    "KB-042",
+    "KB-043"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cuándo merece la pena construir un modelo VRP",
+      "excerpt": "Un VRP compensa cuando volumen, restricciones, variabilidad y frecuencia crean una complejidad que ya no se puede gestionar de forma consistente a mano.",
+      "quick": [
+        "La escala importa",
+        "Las restricciones multiplican complejidad",
+        "El valor debe superar el coste de sistema"
+      ],
+      "section_titles": [
+        "Busca complejidad real",
+        "Estima el valor potencial",
+        "Comprueba si los datos están listos",
+        "Empieza con una prueba operativa"
+      ],
+      "business_title": "Un VRP merece la pena cuando reduce un problema operativo recurrente que ya tiene coste visible y suficiente estructura para modelarse.",
+      "business_steps": [
+        "Complejidad recurrente",
+        "Valor potencial",
+        "Prueba operativa"
+      ],
+      "body": "No toda operación con vehículos necesita un modelo de Vehicle Routing Problem. A veces una regla simple, zonas fijas o planificación manual funcionan suficientemente bien. **El VRP empieza a tener sentido cuando la complejidad de decisiones supera lo que el proceso actual puede gestionar de forma consistente.**\n\nLa señal no es solo el número de paradas. Importan frecuencia, restricciones, coste de error y cantidad de alternativas. **Cincuenta paradas simples pueden ser más fáciles que veinte con time windows, skills, recogidas y flota heterogénea.**\n\n**Busca complejidad real**\nEl primer criterio es la combinación de restricciones. Capacity, ventanas horarias, múltiples depósitos, vehículos distintos, descansos, prioridades, pickups y reglas de servicio incrementan el espacio de decisión.\n\nTambién importa la frecuencia. Resolver una ruta compleja una vez al mes puede no justificar infraestructura. Resolverla todos los días, varias veces al día, cambia la economía. **La repetición convierte minutos de mejora en un valor acumulado relevante.**\n\nOtra señal es la dependencia de personas concretas. Si solo un dispatcher sabe construir buenas rutas y cuesta transferir ese conocimiento, formalizar parte de la lógica puede reducir riesgo operativo.\n\n**Estima el valor potencial**\nAntes de construir, conviene cuantificar el baseline: kilómetros, horas, vehículos, overtime, retrasos, coste de planificación y pedidos no servidos.\n\nDespués se identifica qué parte es razonablemente mejorable. **No hace falta prometer el óptimo teórico; basta con demostrar que existe una brecha económicamente material frente al proceso actual.**\n\nEl valor también puede aparecer en estabilidad. Una solución 3 % más barata pero mucho más consistente entre planners puede ser valiosa porque mejora previsibilidad y governance.\n\nLa simulación ayuda a poner magnitud. Si reducir un vehículo en determinados días o bajar kilómetros un porcentaje pequeño genera ahorro recurrente, el proyecto puede financiarse rápidamente.\n\n**Comprueba si los datos están listos**\nUn VRP necesita más que direcciones. Requiere pedidos, capacidades, tiempos de servicio, flota, ventanas, restricciones y una matriz de viaje razonable.\n\nSi faltan estos elementos, puede ser necesario un proyecto previo de datos. **Optimizar datos incorrectos produce una respuesta precisa para un problema mal descrito.**\n\nTambién hay que revisar estabilidad de las reglas. Si la operación todavía cambia completamente cada semana, construir una lógica compleja puede ser prematuro. Primero conviene entender el proceso.\n\nLa calidad del histórico ayuda a validar. Poder reproducir jornadas anteriores permite estimar ahorro y detectar restricciones que no estaban documentadas.\n\n**Empieza con una prueba operativa**\nEl primer deployment no necesita automatizar todo. Puede ejecutarse en paralelo con planificación manual durante varias semanas y comparar coste, factibilidad y aceptación.\n\nLos planners deberían revisar las propuestas y registrar overrides. **Si las correcciones son recurrentes por la misma causa, el modelo necesita aprender esa regla antes de escalar.**\n\nTambién conviene probar días difíciles, no solo jornadas normales. Picos, ausencia de vehículos, pedidos tardíos o ventanas estrechas revelan si el sistema es robusto.\n\nLa decisión de continuar debe considerar ahorro, tiempo de planificación, estabilidad, adopción y coste de mantenimiento. Un modelo que ahorra poco y exige intervención constante puede no justificar su complejidad.\n\nEl umbral cambia según la empresa. Operaciones con cientos de servicios diarios suelen tener más upside, pero una operación menor con restricciones caras también puede justificarlo.\n\nEl mejor indicador es que el problema ya tenga un coste visible: más vehículos de los necesarios, overtime, kilometraje excesivo, retrasos o muchas horas de planificación. **Cuando la complejidad es recurrente, medible y suficientemente estructurada, un VRP deja de ser una demostración técnica y se convierte en una herramienta de decisión con retorno.**",
+      "seo_title": "Cuándo merece la pena un modelo VRP",
+      "seo_description": "Cómo decidir si route optimization justifica un VRP según escala, restricciones, frecuencia, calidad de datos, coste actual y valor potencial.",
+      "seo_keywords": [
+        "when to use vehicle routing optimization",
+        "VRP model",
+        "route optimization ROI",
+        "vehicle routing problem"
+      ],
+      "tags": [
+        "Optimization",
+        "VRP",
+        "Decision Guide"
+      ]
+    },
+    "en": {
+      "title": "When a VRP model is worth building",
+      "excerpt": "A VRP becomes valuable when volume, constraints, variability and frequency create complexity that manual planning can no longer handle consistently.",
+      "quick": [
+        "Scale matters",
+        "Constraints multiply complexity",
+        "Value must exceed system cost"
+      ],
+      "section_titles": [
+        "Look for real complexity",
+        "Estimate potential value",
+        "Check whether data is ready",
+        "Start with an operating pilot"
+      ],
+      "business_title": "A VRP is worth building when it improves a recurring operating problem with visible cost and enough structure to model.",
+      "business_steps": [
+        "Recurring complexity",
+        "Potential value",
+        "Operating pilot"
+      ],
+      "body": "Not every vehicle operation needs a Vehicle Routing Problem model. Simple rules, fixed zones or manual planning can be perfectly adequate. **A VRP starts to make sense when decision complexity exceeds what the current process can manage consistently.**\n\nThe signal is not only the number of stops. Frequency, constraints, error cost and number of alternatives matter. **Fifty simple stops can be easier than twenty with time windows, skills, pickups and a heterogeneous fleet.**\n\n**Look for real complexity**\nThe first criterion is the interaction of constraints. Capacity, time windows, multiple depots, vehicle types, breaks, priorities, pickups and service rules expand the decision space.\n\nFrequency matters too. Solving one complex routing problem each month may not justify infrastructure. Solving it every day, perhaps several times per day, changes the economics. **Repetition turns small improvements into material accumulated value.**\n\nAnother signal is dependency on specific people. If only one dispatcher can build strong plans and that knowledge is hard to transfer, formalizing part of the logic can reduce operating risk.\n\n**Estimate potential value**\nBefore building, measure the baseline: kilometres, hours, vehicles, overtime, delays, planning effort and unserved jobs.\n\nThen estimate which portion is realistically improvable. **The business does not need a promise of theoretical optimality; it needs evidence of a material economic gap versus the current process.**\n\nValue can also come from consistency. A solution that is only 3% cheaper but much more stable across planners may improve predictability and governance.\n\nSimulation helps size the opportunity. If removing one vehicle on selected days or reducing mileage modestly creates recurring savings, the project can pay back quickly.\n\n**Check whether data is ready**\nA VRP needs more than addresses. It requires orders, capacities, service times, fleet data, time windows, constraints and a reasonable travel matrix.\n\nIf those elements are missing, a data project may need to come first. **Optimizing incorrect data produces a precise answer to the wrong operating problem.**\n\nRule stability should also be reviewed. If the process is changing fundamentally every week, complex optimization may be premature. The operating model should be understood first.\n\nHistorical data helps validation. Reproducing prior days makes it possible to estimate savings and uncover undocumented constraints.\n\n**Start with an operating pilot**\nThe first deployment does not need to automate everything. Run the optimizer in parallel with manual planning for several weeks and compare cost, feasibility and acceptance.\n\nPlanners should review recommendations and record overrides. **If the same correction appears repeatedly, the model should learn that rule before scaling.**\n\nDifficult days should be included, not only normal ones. Peaks, missing vehicles, late orders and narrow windows reveal whether the system is robust.\n\nThe go-forward decision should consider savings, planning time, stability, adoption and maintenance cost. A model that saves little but requires constant intervention may not justify its complexity.\n\nThe threshold varies by operation. Hundreds of daily jobs often create more upside, but a smaller operation with expensive constraints can still justify optimization.\n\nThe strongest signal is that the problem already has a visible cost: too many vehicles, overtime, excessive mileage, delays or large planning effort. **When complexity is recurring, measurable and structured enough to model, a VRP stops being a technical demonstration and becomes a decision system with economic return.**",
+      "seo_title": "When a VRP Model Is Worth Building",
+      "seo_description": "How to decide whether route optimization justifies a VRP based on scale, constraints, frequency, data readiness, current cost and potential value.",
+      "seo_keywords": [
+        "when to use vehicle routing optimization",
+        "VRP model",
+        "route optimization ROI",
+        "vehicle routing problem"
+      ],
+      "tags": [
+        "Optimization",
+        "VRP",
+        "Decision Guide"
+      ]
+    },
+    "ca": {
+      "title": "Quan val la pena construir un model VRP",
+      "excerpt": "Un VRP compensa quan volum, restriccions, variabilitat i freqüència creen una complexitat que ja no es pot gestionar de manera consistent a mà.",
+      "quick": [
+        "L’escala importa",
+        "Les restriccions multipliquen complexitat",
+        "El valor ha de superar el cost del sistema"
+      ],
+      "section_titles": [
+        "Busca complexitat real",
+        "Estima el valor potencial",
+        "Comprova si les dades estan preparades",
+        "Comença amb una prova operativa"
+      ],
+      "business_title": "Un VRP val la pena quan millora un problema operatiu recurrent amb cost visible i prou estructura per modelar-lo.",
+      "business_steps": [
+        "Complexitat recurrent",
+        "Valor potencial",
+        "Prova operativa"
+      ],
+      "body": "No tota operació amb vehicles necessita un model de Vehicle Routing Problem. Regles simples, zones fixes o planificació manual poden funcionar prou bé. **El VRP comença a tenir sentit quan la complexitat de decisió supera el que el procés actual pot gestionar de manera consistent.**\n\nEl senyal no és només el nombre de parades. Importen freqüència, restriccions, cost de l’error i nombre d’alternatives. **Cinquanta parades simples poden ser més fàcils que vint amb time windows, skills, recollides i flota heterogènia.**\n\n**Busca complexitat real**\nEl primer criteri és la combinació de restriccions. Capacity, finestres, múltiples dipòsits, vehicles diferents, descansos, prioritats, pickups i regles de servei amplien l’espai de decisió.\n\nTambé importa la freqüència. Resoldre una ruta complexa un cop al mes pot no justificar infraestructura. Fer-ho cada dia, diverses vegades, canvia l’economia. **La repetició converteix petites millores en valor acumulat rellevant.**\n\nUn altre senyal és la dependència de persones concretes. Si només un dispatcher sap construir bones rutes i costa transferir aquest coneixement, formalitzar part de la lògica redueix risc operatiu.\n\n**Estima el valor potencial**\nAbans de construir, convé mesurar el baseline: quilòmetres, hores, vehicles, overtime, retards, esforç de planificació i serveis no coberts.\n\nDesprés s’estima quina part és raonablement millorable. **No cal prometre l’òptim teòric; cal demostrar que existeix una bretxa econòmicament material respecte al procés actual.**\n\nEl valor també pot aparèixer en consistència. Una solució només 3 % més barata però molt més estable entre planners pot millorar previsibilitat i governance.\n\nLa simulació ajuda a dimensionar. Si treure un vehicle en alguns dies o reduir una mica els quilòmetres genera estalvi recurrent, el projecte es pot pagar ràpid.\n\n**Comprova si les dades estan preparades**\nUn VRP necessita més que adreces. Requereix ordres, capacitats, temps de servei, flota, finestres, restriccions i una matriu de viatge raonable.\n\nSi falten aquests elements, pot caldre primer un projecte de dades. **Optimitzar dades incorrectes produeix una resposta precisa per a un problema mal descrit.**\n\nTambé cal revisar l’estabilitat de les regles. Si l’operació canvia completament cada setmana, una lògica complexa pot ser prematura. Primer convé entendre el procés.\n\nL’històric ajuda a validar. Reproduir jornades anteriors permet estimar estalvi i descobrir restriccions no documentades.\n\n**Comença amb una prova operativa**\nEl primer deployment no ha d’automatitzar-ho tot. Es pot executar en paral·lel amb planificació manual durant diverses setmanes i comparar cost, factibilitat i acceptació.\n\nEls planners han de revisar propostes i registrar overrides. **Si la mateixa correcció apareix repetidament, el model ha d’aprendre aquella regla abans d’escalar.**\n\nTambé cal provar dies difícils, no només normals. Pics, absència de vehicles, comandes tardanes i finestres estretes revelen robustesa.\n\nLa decisió de continuar ha de considerar estalvi, temps de planificació, estabilitat, adopció i cost de manteniment. Un model que estalvia poc i exigeix intervenció constant pot no justificar la complexitat.\n\nEl llindar varia segons empresa. Centenars de serveis diaris solen donar més upside, però una operació petita amb restriccions cares també pot justificar-lo.\n\nEl millor indicador és que el problema ja tingui cost visible: massa vehicles, overtime, quilometratge, retards o moltes hores de planning. **Quan la complexitat és recurrent, mesurable i prou estructurada, un VRP deixa de ser una demostració tècnica i es converteix en una eina de decisió amb retorn.**",
+      "seo_title": "Quan val la pena un model VRP",
+      "seo_description": "Com decidir si route optimization justifica un VRP segons escala, restriccions, freqüència, qualitat de dades, cost actual i valor potencial.",
+      "seo_keywords": [
+        "when to use vehicle routing optimization",
+        "VRP model",
+        "route optimization ROI",
+        "vehicle routing problem"
+      ],
+      "tags": [
+        "Optimization",
+        "VRP",
+        "Decision Guide"
+      ]
+    }
+  }
+}
