@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-030",
+  "sequence": 30,
+  "arc_id": "ARC-08",
+  "slug": "otif-vs-lead-time-variability",
+  "scheduled_at": "2026-12-18T09:00:00+01:00",
+  "knowledge_area": "risk_decision",
+  "cluster": "Inventory & Supply Chain",
+  "editorial_pillar": "industries_use_cases",
+  "content_family": "compare",
+  "angle": "supplier performance metrics",
+  "primary_keyword": "OTIF vs lead time variability",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-029",
+    "KB-031",
+    "KB-032"
+  ],
+  "variants": {
+    "es": {
+      "title": "OTIF vs variabilidad del lead time",
+      "excerpt": "OTIF resume cumplimiento; la variabilidad explica cuánta incertidumbre debe absorber la operación. Ambas métricas responden preguntas distintas.",
+      "quick": [
+        "OTIF mide cumplimiento",
+        "Variabilidad mide previsibilidad",
+        "La política necesita ambas"
+      ],
+      "section_titles": [
+        "Qué captura OTIF",
+        "Qué captura la variabilidad",
+        "Por qué pueden contar historias distintas",
+        "Cómo combinarlas"
+      ],
+      "business_title": "OTIF explica si el proveedor cumple; la variabilidad explica cuánto buffer necesitamos para vivir con él.",
+      "business_steps": [
+        "Cumplimiento",
+        "Previsibilidad",
+        "Política de protección"
+      ],
+      "body": "OTIF y variabilidad de lead time suelen aparecer juntas en scorecards de proveedores, pero no responden la misma pregunta. **OTIF mide cumplimiento respecto a una promesa; la variabilidad mide cuán predecible es el proceso de entrega.** Un proveedor puede salir bien en una y mal en la otra.\n\nEsta diferencia importa porque la operación necesita algo más que saber si el proveedor “cumple”. Necesita saber cuánto riesgo existe alrededor de la fecha prevista para dimensionar stock, capacidad y excepciones. **Cumplimiento y previsibilidad son dimensiones relacionadas, pero no equivalentes.**\n\n**Qué captura OTIF**\nOTIF —On Time In Full— resume si una entrega llegó a tiempo y completa según una definición acordada. Es útil porque conecta directamente con una promesa de servicio y puede agregarse por proveedor, ruta o familia.\n\nEl primer reto es definir “on time”. Puede significar fecha solicitada, fecha confirmada o una ventana de tolerancia. Cambiar esa definición altera el resultado. **Un OTIF solo es comparable cuando la regla de medición es estable y compartida.**\n\nTambién conviene separar fallos de tiempo y cantidad. Un pedido puede llegar completo pero tarde, o puntual pero incompleto. Ambos rompen OTIF y pueden requerir acciones distintas.\n\n**Qué captura la variabilidad**\nLa variabilidad de lead time observa cuánto se dispersan los tiempos reales de entrega alrededor de un valor central. Puede medirse con desviación, percentiles, rango intercuartílico o distribuciones empíricas.\n\nEsta dimensión es clave para planning. **Cuanto menos predecible es el lead time, más protección necesita la política de inventario para mantener el mismo servicio.** Incluso si el promedio no cambia, una mayor dispersión puede incrementar safety stock.\n\nLos percentiles altos son especialmente útiles para entender colas. Un P95 de treinta días con una media de diez revela episodios extremos que la media no muestra.\n\n**Por qué pueden contar historias distintas**\nUn proveedor puede tener OTIF alto porque la ventana de cumplimiento es amplia, pero seguir mostrando una gran dispersión dentro de esa ventana. Para procurement parece fiable; para inventario puede seguir siendo costoso.\n\nTambién puede ocurrir lo contrario. Un proveedor muy estable puede quedar ligeramente fuera de una fecha contractual rígida y mostrar OTIF mediocre. **La métrica contractual puede penalizar un sesgo pequeño que, operacionalmente, es fácil de planificar.**\n\nPor eso una sola clasificación puede ser engañosa. El equipo necesita saber si el problema es frecuencia de incumplimiento, severidad del retraso, dispersión o un sesgo sistemático.\n\n**Cómo combinarlas**\nUna vista útil puede mostrar OTIF como métrica de promesa y variabilidad como métrica de previsibilidad. Después se añade severidad: cuánto tarde llegan los fallos y con qué frecuencia aparecen extremos.\n\nLa combinación permite construir políticas distintas. OTIF bajo con baja variabilidad puede sugerir renegociar promesa o corregir un sesgo. OTIF alto con alta variabilidad puede justificar más buffer o una revisión del contrato. **La misma cifra agregada no debería activar siempre la misma respuesta.**\n\nTambién conviene segmentar por producto y ruta. Un proveedor puede ser estable en una planta y variable en otra. La agregación total puede ocultar el nodo donde realmente nace el riesgo.\n\nLa tendencia es importante. Si OTIF permanece estable pero los percentiles de lead time empeoran, la operación está absorbiendo más incertidumbre sin que el score principal lo muestre.\n\nFinalmente, las métricas deben conectarse a decisiones. Procurement puede utilizar OTIF para gestión contractual; planning puede utilizar variabilidad para safety stock; sourcing puede combinar ambas con dependencia y coste.\n\nEl objetivo no es elegir “la mejor” métrica. **OTIF responde si la promesa se cumplió; la variabilidad responde cuánta sorpresa debemos esperar.** Un sistema de proveedores serio necesita las dos preguntas porque una protege el contrato y la otra protege la operación.",
+      "seo_title": "OTIF vs variabilidad del lead time",
+      "seo_description": "Diferencias entre OTIF y lead-time variability y cómo combinarlas para evaluar cumplimiento, previsibilidad, safety stock y riesgo de proveedor.",
+      "seo_keywords": [
+        "OTIF vs lead time variability",
+        "OTIF proveedores",
+        "lead time variability",
+        "supplier metrics"
+      ],
+      "tags": [
+        "Supply Chain",
+        "OTIF",
+        "Lead Time"
+      ]
+    },
+    "en": {
+      "title": "OTIF vs lead-time variability",
+      "excerpt": "OTIF summarizes fulfilment; lead-time variability shows how much uncertainty operations must absorb. The metrics answer different questions.",
+      "quick": [
+        "OTIF measures fulfilment",
+        "Variability measures predictability",
+        "Policy needs both"
+      ],
+      "section_titles": [
+        "What OTIF captures",
+        "What variability captures",
+        "Why they can tell different stories",
+        "How to combine them"
+      ],
+      "business_title": "OTIF explains whether the supplier meets the promise; variability explains how much buffer is needed to live with the process.",
+      "business_steps": [
+        "Fulfilment",
+        "Predictability",
+        "Protection policy"
+      ],
+      "body": "OTIF and lead-time variability often appear together in supplier scorecards, but they do not answer the same question. **OTIF measures fulfilment against a promise; variability measures how predictable the delivery process is.** A supplier can perform well on one and poorly on the other.\n\nThat distinction matters because operations needs more than a binary view of whether the supplier “delivered”. It needs to understand uncertainty around the expected date to size inventory, capacity and exceptions. **Fulfilment and predictability are related dimensions, but they are not interchangeable.**\n\n**What OTIF captures**\nOTIF —On Time In Full— summarizes whether an order arrived on time and complete according to an agreed definition. It is useful because it connects directly to a service promise and can be aggregated by supplier, route or product family.\n\nThe first challenge is defining “on time”. It may refer to requested date, confirmed date or an accepted tolerance window. Changing that rule changes the result. **OTIF is comparable only when its measurement definition is stable and shared.**\n\nTiming and quantity failures should also be separated. An order may arrive complete but late, or on time but incomplete. Both fail OTIF while requiring different corrective actions.\n\n**What variability captures**\nLead-time variability measures how widely actual delivery times spread around a central value. It can be described with standard deviation, percentiles, interquartile range or empirical distributions.\n\nThis dimension is crucial for planning. **The less predictable lead time becomes, the more protection inventory policy needs to maintain the same service.** Even when the average stays flat, higher dispersion can increase safety-stock requirements.\n\nHigh percentiles are particularly useful for understanding tails. A P95 of thirty days beside a ten-day average reveals extreme episodes that the mean does not show.\n\n**Why they can tell different stories**\nA supplier can show high OTIF because the accepted delivery window is wide and still have substantial variation within that window. Procurement may see strong compliance while inventory continues to carry cost.\n\nThe reverse can happen too. A very stable supplier may land slightly outside a rigid contractual date and produce mediocre OTIF. **The contractual metric may penalize a small systematic offset that operations can plan around easily.**\n\nA single ranking is therefore weak diagnosis. The team needs to know whether the issue is failure frequency, delay severity, dispersion or systematic bias.\n\n**How to combine them**\nA useful view can keep OTIF as the promise metric and variability as the predictability metric, then add severity: how late failures are and how frequently extreme cases occur.\n\nThe combination supports different policies. Low OTIF with low variability may suggest renegotiating the promise or correcting a consistent offset. High OTIF with high variability may justify more buffer or a contract review. **The same headline score should not automatically trigger the same response.**\n\nSegmentation by product and route helps as well. A supplier may be stable into one plant and volatile into another. The global average can hide the node where risk is created.\n\nTrend matters too. If OTIF stays stable while lead-time percentiles deteriorate, operations is absorbing more uncertainty without the headline score showing it.\n\nFinally, metrics should connect to decisions. Procurement may use OTIF for contractual management; planning can use variability for safety stock; sourcing can combine both with dependency and cost.\n\nThe objective is not to choose the “best” metric. **OTIF answers whether the promise was met; variability answers how much surprise should be expected.** A serious supplier system needs both because one protects the contract and the other protects operations.",
+      "seo_title": "OTIF vs Lead-Time Variability",
+      "seo_description": "OTIF and lead-time variability compared across fulfilment, predictability, safety stock and supplier risk management.",
+      "seo_keywords": [
+        "OTIF vs lead time variability",
+        "OTIF supplier",
+        "lead time variability",
+        "supplier metrics"
+      ],
+      "tags": [
+        "Supply Chain",
+        "OTIF",
+        "Lead Time"
+      ]
+    },
+    "ca": {
+      "title": "OTIF vs variabilitat del lead time",
+      "excerpt": "OTIF resumeix compliment; la variabilitat explica quanta incertesa ha d’absorbir l’operació. Totes dues mètriques responen preguntes diferents.",
+      "quick": [
+        "OTIF mesura compliment",
+        "Variabilitat mesura predictibilitat",
+        "La política necessita totes dues"
+      ],
+      "section_titles": [
+        "Què captura OTIF",
+        "Què captura la variabilitat",
+        "Per què poden explicar històries diferents",
+        "Com combinar-les"
+      ],
+      "business_title": "OTIF explica si el proveïdor compleix la promesa; la variabilitat explica quant buffer necessitem per conviure amb el procés.",
+      "business_steps": [
+        "Compliment",
+        "Predictibilitat",
+        "Política de protecció"
+      ],
+      "body": "OTIF i variabilitat de lead time apareixen sovint juntes en scorecards de proveïdors, però no responen la mateixa pregunta. **OTIF mesura compliment respecte a una promesa; la variabilitat mesura fins a quin punt el procés d’entrega és predictible.** Un proveïdor pot sortir bé en una i malament en l’altra.\n\nLa diferència importa perquè operacions necessita més que saber si el proveïdor “compleix”. Necessita entendre la incertesa al voltant de la data prevista per dimensionar inventari, capacitat i excepcions. **Compliment i predictibilitat estan relacionats, però no són equivalents.**\n\n**Què captura OTIF**\nOTIF —On Time In Full— resumeix si una entrega arriba a temps i completa segons una definició acordada. És útil perquè connecta directament amb una promesa de servei i es pot agregar per proveïdor, ruta o família.\n\nEl primer repte és definir “on time”. Pot significar data sol·licitada, data confirmada o una finestra de tolerància. Canviar aquesta definició canvia el resultat. **OTIF només és comparable quan la regla de mesura és estable i compartida.**\n\nTambé convé separar fallades de temps i quantitat. Una ordre pot arribar completa però tard, o puntual però incompleta. Totes dues fallen OTIF però necessiten accions diferents.\n\n**Què captura la variabilitat**\nLa variabilitat de lead time mesura quant es dispersen els temps reals d’entrega al voltant d’un valor central. Es pot descriure amb desviació, percentils, rang interquartílic o distribucions empíriques.\n\nAquesta dimensió és clau per planning. **Com menys predictible és el lead time, més protecció necessita la política d’inventari per mantenir el mateix servei.** Encara que la mitjana no canviï, més dispersió pot augmentar safety stock.\n\nEls percentils alts són especialment útils per entendre cues. Un P95 de trenta dies amb una mitjana de deu revela episodis extrems que la mitjana no mostra.\n\n**Per què poden explicar històries diferents**\nUn proveïdor pot tenir OTIF alt perquè la finestra acceptada és ampla i continuar mostrant molta variació dins d’aquesta finestra. Procurement pot veure bon compliment mentre inventari continua assumint cost.\n\nTambé pot passar el contrari. Un proveïdor molt estable pot quedar lleugerament fora d’una data contractual rígida i mostrar OTIF mediocre. **La mètrica contractual pot penalitzar un petit desplaçament sistemàtic que operacions pot planificar fàcilment.**\n\nPer això un únic rànquing és un diagnòstic feble. Cal saber si el problema és freqüència d’incompliment, severitat, dispersió o biaix sistemàtic.\n\n**Com combinar-les**\nUna vista útil pot mantenir OTIF com a mètrica de promesa i variabilitat com a mètrica de predictibilitat, i afegir severitat: quant tard arriben els fallos i amb quina freqüència hi ha extrems.\n\nLa combinació permet polítiques diferents. OTIF baix amb poca variabilitat pot suggerir renegociar la promesa o corregir un biaix. OTIF alt amb molta variabilitat pot justificar més buffer o revisar contracte. **El mateix score agregat no hauria d’activar sempre la mateixa resposta.**\n\nTambé convé segmentar per producte i ruta. Un proveïdor pot ser estable en una planta i variable en una altra. La mitjana global pot amagar el node on neix el risc.\n\nLa tendència importa. Si OTIF continua estable però empitjoren els percentils de lead time, l’operació absorbeix més incertesa sense que el score principal ho mostri.\n\nFinalment, les mètriques han de connectar-se a decisions. Procurement pot utilitzar OTIF per gestió contractual; planning, variabilitat per safety stock; sourcing, totes dues amb dependència i cost.\n\nL’objectiu no és triar “la millor” mètrica. **OTIF respon si la promesa s’ha complert; la variabilitat respon quanta sorpresa hem d’esperar.** Un sistema seriós necessita totes dues perquè una protegeix el contracte i l’altra l’operació.",
+      "seo_title": "OTIF vs variabilitat del lead time",
+      "seo_description": "Diferències entre OTIF i lead-time variability i com combinar-les per avaluar compliment, predictibilitat, safety stock i risc.",
+      "seo_keywords": [
+        "OTIF vs lead time variability",
+        "OTIF proveïdors",
+        "lead time variability",
+        "supplier metrics"
+      ],
+      "tags": [
+        "Supply Chain",
+        "OTIF",
+        "Lead Time"
+      ]
+    }
+  }
+}
