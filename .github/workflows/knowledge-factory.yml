@@ -13,14 +13,6 @@ on:
         required: false
         default: '6'
         type: string
-  push:
-    branches:
-      - feat/web-project-gold-standard-sc12
-    paths:
-      - 'content/editorial/knowledge_bank_v1.json'
-      - 'scripts/content_engine/build_knowledge_bank.py'
-      - '.github/workflows/knowledge-factory.yml'
-
 permissions:
   contents: write
 
@@ -30,7 +22,6 @@ concurrency:
 
 jobs:
   materialize:
-    if: ${{ github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, '[knowledge-factory]') }}
     runs-on: ubuntu-latest
     timeout-minutes: 240
     env:
@@ -74,7 +65,7 @@ jobs:
             --max "$MAX"
 
       - name: Validate complete bank when building all
-        if: ${{ github.event_name == 'push' || github.event.inputs.max_articles == '0' || github.event.inputs.max_articles == '' }}
+        if: ${{ github.event.inputs.max_articles == '0' || github.event.inputs.max_articles == '' }}
         run: |
           python scripts/content_engine/build_knowledge_bank.py \
             --catalog content/editorial/knowledge_bank_v1.json \
