@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-119",
+  "sequence": 119,
+  "arc_id": "ARC-30",
+  "slug": "where-decision-processes-actually-lose-time",
+  "scheduled_at": "2027-07-23T09:00:00+02:00",
+  "knowledge_area": "analytics",
+  "cluster": "Analytics & Decision Intelligence",
+  "editorial_pillar": "consulting_decision_insights",
+  "content_family": "diagnose",
+  "angle": "decision process bottlenecks",
+  "primary_keyword": "decision process bottlenecks",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-117",
+    "KB-118",
+    "KB-120"
+  ],
+  "variants": {
+    "es": {
+      "title": "Dónde se pierde realmente el tiempo al decidir",
+      "excerpt": "El retraso suele acumularse entre detección, interpretación, aprobación y ejecución. Medir cada etapa permite atacar el cuello de botella real.",
+      "quick": [
+        "El dato rara vez es todo el problema",
+        "Las esperas se acumulan",
+        "El cuello de botella debe medirse"
+      ],
+      "section_titles": [
+        "El retraso empieza antes de la reunión",
+        "La interpretación consume más tiempo del visible",
+        "Las aprobaciones pueden dominar el ciclo",
+        "La ejecución también forma parte de decidir"
+      ],
+      "business_title": "Los procesos de decisión pierden tiempo en transiciones, esperas y validaciones invisibles; medirlas permite reducir latencia sin degradar criterio.",
+      "business_steps": [
+        "Detectar",
+        "Desbloquear",
+        "Ejecutar"
+      ],
+      "body": "Cuando una decisión tarda demasiado, la explicación habitual suele ser “faltan datos” o “el dashboard llega tarde”. A veces es cierto. Pero en muchos procesos, **la mayor parte del tiempo se pierde después de que la señal ya existe**.\n\nUna alerta puede estar disponible a las nueve y no revisarse hasta las doce. Puede revisarse en diez minutos y esperar aprobación dos días. Puede aprobarse y quedar otra jornada pendiente de ejecución. **El tiempo de decisión se acumula en esperas pequeñas que nadie mide como parte del mismo proceso.**\n\n**El retraso empieza antes de la reunión**\nMuchas decisiones dependen de calendarios implícitos.\n\nUn informe se genera diariamente, pero el equipo solo lo revisa en la reunión semanal. Un forecast cambia el lunes, pero compras actualiza órdenes el jueves. Una excepción aparece en un dashboard, pero no existe una notificación al owner.\n\nEn estos casos, el dato no llega tarde; **la cadencia de revisión introduce la latencia**.\n\nEl primer diagnóstico debe comparar frecuencia de señal con frecuencia de atención.\n\nSi existe una oportunidad de actuar antes, conviene mover la señal hacia el usuario en lugar de esperar a que el usuario visite el dashboard.\n\nException-based reporting, alertas y work queues pueden reducir este tiempo.\n\nPero no todo necesita notificación inmediata. La severidad debe definir la cadencia adecuada.\n\n**La interpretación consume más tiempo del visible**\nDespués de detectar una señal, alguien necesita entenderla.\n\nLa persona abre varios sistemas, busca histórico, compara periodos, consulta un compañero o reconstruye cómo se calculó la métrica.\n\n**La interpretación manual suele ser una capa de trabajo invisible entre “ver el dato” y “estar listo para decidir”.**\n\nLa falta de contexto es una causa frecuente.\n\nUna alerta que dice “margen -8 %” obliga a investigar. Una alerta con producto, región, referencia, causa probable y variación frente a presupuesto reduce búsqueda.\n\nTambién influye la confianza.\n\nSi los usuarios no confían en la cifra, cada decisión empieza con una reconciliación.\n\nDefiniciones semánticas comunes, lineage y estado de calidad pueden eliminar parte de esta espera.\n\nLas herramientas de IA pueden ayudar a resumir contexto, pero no corrigen una base de datos poco fiable.\n\n**Las aprobaciones pueden dominar el ciclo**\nMuchas organizaciones añaden aprobaciones para reducir riesgo.\n\nAlgunas son necesarias. Otras sobreviven porque el proceso siempre se hizo así.\n\nUna decisión puede estar técnicamente lista y pasar horas o días esperando que alguien abra un correo.\n\n**Una aprobación es valiosa solo si el control que aporta compensa la latencia que introduce.**\n\nConviene clasificar decisiones por riesgo.\n\nAcciones reversibles y de bajo impacto pueden tener límites de autonomía mayores.\n\nCasos sensibles pueden mantener doble aprobación.\n\nTambién puede utilizarse approval by exception: solo escalar cuando se supera un umbral o aparece una condición inusual.\n\nLos límites monetarios, reglas de policy y permisos pueden codificarse.\n\nEsto reduce trabajo de aprobación sin eliminar control.\n\nEl SLA de aprobación debería medirse igual que cualquier otro paso.\n\n**La ejecución también forma parte de decidir**\nUna decisión no genera valor cuando se aprueba, sino cuando se ejecuta.\n\nDespués de decidir, puede ser necesario actualizar un ERP, enviar un mensaje, modificar una orden, llamar a un cliente o cambiar un parámetro.\n\nSi esos pasos son manuales, la latency continúa.\n\n**La última milla puede consumir tanto tiempo como el análisis.**\n\nIntegrar la acción dentro del sistema reduce esa distancia.\n\nUn usuario puede aprobar una recomendación y ejecutar desde el mismo lugar.\n\nLas tareas repetibles pueden automatizarse después de aprobación.\n\nTambién conviene medir fallos de ejecución: acciones que se decidieron pero nunca se completaron.\n\nEl análisis completo debería registrar timestamps por etapa: evento, dato disponible, señal detectada, revisión iniciada, decisión tomada, aprobación final y ejecución.\n\nDespués podemos construir un funnel de tiempo.\n\nLa mediana muestra el caso típico; p90 y p95 muestran dónde se atascan casos difíciles.\n\nTambién conviene separar tiempo activo de espera.\n\nCinco minutos de trabajo repartidos durante tres días indican que el problema no es capacidad analítica, sino handoffs.\n\nLos handoffs entre equipos suelen ser costosos porque requieren contexto nuevo.\n\nReducir número de transiciones puede ser más valioso que acelerar cada tarea.\n\nEl ownership end-to-end también ayuda. Si nadie responde por el ciclo completo, cada equipo optimiza su parte.\n\nLa priorización importa. Una cola única sin severidad puede retrasar decisiones críticas detrás de casos menores.\n\nLos sistemas deberían poder ordenar por impacto, urgencia y confidence.\n\nTambién hay que revisar reuniones recurrentes. Algunas existen únicamente para mover información que podría circular automáticamente.\n\nEliminar una reunión no siempre acelera si falta un mecanismo alternativo de decisión.\n\nEl objetivo es diseñar una ruta clara desde señal hasta acción.\n\nLa mejora puede modelarse económicamente: cuánto valor adicional obtenemos reduciendo una hora, un día o una semana.\n\nEsto permite priorizar cuellos de botella.\n\nNo todas las etapas deben ser instantáneas. El tiempo de reflexión es útil cuando mejora calidad.\n\nLa diferencia clave es entre deliberación y espera.\n\n**Los procesos de decisión pierden tiempo principalmente en esperas, reconciliaciones, handoffs y aprobaciones, no únicamente en obtener el dato.** Hacer visible cada etapa permite reducir latency donde no aporta criterio y conservarla donde realmente protege la calidad de la decisión.",
+      "seo_title": "Dónde se pierde tiempo en los procesos de decisión",
+      "seo_description": "Cómo detectar cuellos de botella entre señal, interpretación, aprobación y ejecución para reducir decision latency sin perder control.",
+      "seo_keywords": [
+        "decision process bottlenecks",
+        "decision latency",
+        "decision workflow",
+        "decision intelligence"
+      ],
+      "tags": [
+        "Analytics",
+        "Decision Process",
+        "Decision Latency"
+      ]
+    },
+    "en": {
+      "title": "Where decision processes actually lose time",
+      "excerpt": "Delay often accumulates across detection, interpretation, approval and execution. Measuring each stage reveals the real bottleneck.",
+      "quick": [
+        "Data is rarely the whole problem",
+        "Waiting compounds",
+        "The bottleneck must be measured"
+      ],
+      "section_titles": [
+        "Delay starts before the meeting",
+        "Interpretation consumes more time than it appears",
+        "Approvals can dominate the cycle",
+        "Execution is part of the decision too"
+      ],
+      "business_title": "Decision processes lose time in invisible transitions, waiting and validation; measuring them reduces latency without weakening judgment.",
+      "business_steps": [
+        "Detect",
+        "Unblock",
+        "Execute"
+      ],
+      "body": "When a decision takes too long, the common explanation is often “the data is late” or “the dashboard is not ready”. Sometimes that is true. But in many processes, **most of the delay happens after the signal already exists**.\n\nAn alert can be available at nine and remain unseen until noon. It can be reviewed in ten minutes and wait two days for approval. It can be approved and then wait another day for execution. **Decision time accumulates through small waits that nobody measures as one process.**\n\n**Delay starts before the meeting**\nMany decisions depend on implicit calendars.\n\nA report is generated daily, but the team reviews it only in a weekly meeting. A forecast changes Monday, but purchasing updates orders Thursday. An exception appears on a dashboard, but no owner is notified.\n\nIn these cases data is not late; **the review cadence creates the latency**.\n\nThe first diagnosis should compare signal frequency with attention frequency.\n\nIf earlier action has value, the signal should move toward the user rather than waiting for the user to visit the dashboard.\n\nException-based reporting, alerts and work queues can reduce this delay.\n\nNot every signal deserves immediate notification, however. Severity should determine cadence.\n\n**Interpretation consumes more time than it appears**\nAfter detecting a signal, someone needs to understand it.\n\nThe person opens several systems, searches history, compares periods, asks a colleague or reconstructs how the metric was calculated.\n\n**Manual interpretation is often an invisible layer of work between seeing the data and being ready to decide.**\n\nMissing context is a common cause.\n\nAn alert saying “margin -8%” requires investigation. An alert with product, region, reference, likely cause and variance from budget reduces search.\n\nTrust also matters.\n\nIf users do not trust the number, every decision begins with reconciliation.\n\nShared semantic definitions, lineage and data-quality status can remove part of that delay.\n\nAI can help summarize context, but it does not fix an unreliable data foundation.\n\n**Approvals can dominate the cycle**\nOrganizations add approvals to control risk.\n\nSome are necessary. Others remain because the process has always worked that way.\n\nA decision can be technically ready and spend hours or days waiting for someone to open an email.\n\n**An approval is valuable only when the control it provides justifies the latency it introduces.**\n\nDecisions should be classified by risk.\n\nLow-impact, reversible actions can operate with broader autonomy.\n\nSensitive cases can retain dual approval.\n\nApproval by exception is another option: escalate only when a threshold or unusual condition appears.\n\nMonetary limits, policy rules and permissions can be encoded.\n\nThat reduces approval work without eliminating control.\n\nApproval SLA should be measured like any other process stage.\n\n**Execution is part of the decision too**\nA decision creates no value when it is approved; value appears when it is executed.\n\nExecution may require updating ERP, sending a message, changing an order, calling a customer or changing a parameter.\n\nIf those steps are manual, latency continues.\n\n**The last mile can consume as much time as the analysis.**\n\nEmbedding action in the same system reduces that distance.\n\nA user can approve a recommendation and execute directly from the interface.\n\nRepeatable actions can be automated after approval.\n\nExecution failures should also be measured: decisions that were made but never completed.\n\nThe full analysis should capture timestamps for event, data availability, signal detection, review start, decision, final approval and execution.\n\nThat creates a time funnel.\n\nMedian shows the typical case; p90 and p95 reveal where difficult cases become stuck.\n\nActive work should be separated from waiting time.\n\nFive minutes of work spread across three days shows that the issue is handoffs rather than analytical capacity.\n\nHandoffs across teams are expensive because context must be rebuilt.\n\nReducing transitions can create more value than accelerating each local task.\n\nEnd-to-end ownership helps too. Without one owner for the full cycle, every team optimizes its own stage.\n\nPrioritization matters. One queue without severity can delay critical decisions behind minor cases.\n\nSystems should be able to rank by impact, urgency and confidence.\n\nRecurring meetings should also be challenged. Some exist only to move information that could circulate automatically.\n\nRemoving a meeting does not help unless an alternative decision mechanism exists.\n\nThe objective is a clear route from signal to action.\n\nImprovement can be modeled economically: what additional value appears by reducing one hour, one day or one week?\n\nThat helps prioritize bottlenecks.\n\nNot every stage should become instant. Deliberation is useful when it improves quality.\n\nThe key distinction is between deliberation and waiting.\n\n**Decision processes lose most time in waiting, reconciliation, handoffs and approvals rather than simply obtaining data.** Making each stage visible allows the organization to remove latency that adds no judgment while preserving the time that genuinely protects decision quality.",
+      "seo_title": "Where Decision Processes Lose Time",
+      "seo_description": "How to find bottlenecks between signal, interpretation, approval and execution to reduce decision latency without weakening control.",
+      "seo_keywords": [
+        "decision process bottlenecks",
+        "decision latency",
+        "decision workflow",
+        "decision intelligence"
+      ],
+      "tags": [
+        "Analytics",
+        "Decision Process",
+        "Decision Latency"
+      ]
+    },
+    "ca": {
+      "title": "On es perd realment el temps a l’hora de decidir",
+      "excerpt": "El retard sovint s’acumula entre detecció, interpretació, aprovació i execució. Mesurar cada etapa revela el coll d’ampolla real.",
+      "quick": [
+        "La dada rarament és tot el problema",
+        "Les esperes s’acumulen",
+        "El coll d’ampolla s’ha de mesurar"
+      ],
+      "section_titles": [
+        "El retard comença abans de la reunió",
+        "La interpretació consumeix més temps del visible",
+        "Les aprovacions poden dominar el cicle",
+        "L’execució també forma part de decidir"
+      ],
+      "business_title": "Els processos de decisió perden temps en transicions, esperes i validacions invisibles; mesurar-les permet reduir latència sense debilitar criteri.",
+      "business_steps": [
+        "Detectar",
+        "Desbloquejar",
+        "Executar"
+      ],
+      "body": "Quan una decisió tarda massa, l’explicació habitual sovint és “falten dades” o “el dashboard arriba tard”. De vegades és cert. Però en molts processos, **la major part del temps es perd després que la senyal ja existeix**.\n\nUna alerta pot estar disponible a les nou i no revisar-se fins a les dotze. Pot revisar-se en deu minuts i esperar aprovació dos dies. Pot aprovar-se i quedar una altra jornada pendent d’execució. **El temps de decisió s’acumula en petites esperes que ningú mesura com un únic procés.**\n\n**El retard comença abans de la reunió**\nMoltes decisions depenen de calendaris implícits.\n\nUn informe es genera diàriament, però l’equip només el revisa a la reunió setmanal. Un forecast canvia dilluns, però compres actualitza ordres dijous. Una excepció apareix al dashboard, però no hi ha notificació a l’owner.\n\nEn aquests casos la dada no arriba tard; **la cadència de revisió introdueix la latència**.\n\nEl primer diagnòstic ha de comparar freqüència de senyal amb freqüència d’atenció.\n\nSi actuar abans té valor, convé moure la senyal cap a l’usuari en lloc d’esperar que visiti el dashboard.\n\nException-based reporting, alertes i work queues poden reduir aquest temps.\n\nPerò no tota senyal necessita notificació immediata. La severitat ha de definir la cadència.\n\n**La interpretació consumeix més temps del visible**\nDesprés de detectar una senyal, algú necessita entendre-la.\n\nLa persona obre diversos sistemes, busca històric, compara períodes, consulta un company o reconstrueix com es calcula la mètrica.\n\n**La interpretació manual sovint és una capa invisible entre veure la dada i estar preparat per decidir.**\n\nLa falta de context és una causa freqüent.\n\nUna alerta que diu “marge -8 %” obliga a investigar. Una alerta amb producte, regió, referència, causa probable i variació contra pressupost redueix cerca.\n\nLa confiança també influeix.\n\nSi els usuaris no confien en la xifra, cada decisió comença amb reconciliació.\n\nDefinicions semàntiques comunes, lineage i estat de qualitat poden eliminar part d’aquesta espera.\n\nLa IA pot ajudar a resumir context, però no arregla una base de dades poc fiable.\n\n**Les aprovacions poden dominar el cicle**\nLes organitzacions afegeixen aprovacions per reduir risc.\n\nAlgunes són necessàries. Altres sobreviuen perquè el procés sempre s’ha fet així.\n\nUna decisió pot estar tècnicament preparada i passar hores o dies esperant que algú obri un email.\n\n**Una aprovació és valuosa només si el control que aporta compensa la latència que introdueix.**\n\nConvé classificar decisions per risc.\n\nAccions reversibles i de baix impacte poden tenir més autonomia.\n\nCasos sensibles poden mantenir doble aprovació.\n\nTambé es pot utilitzar approval by exception: escalar només quan se supera un threshold o apareix una condició inusual.\n\nLímits monetaris, regles de policy i permisos es poden codificar.\n\nAixò redueix feina d’aprovació sense eliminar control.\n\nL’SLA d’aprovació s’ha de mesurar com qualsevol altre pas.\n\n**L’execució també forma part de decidir**\nUna decisió no crea valor quan s’aprova, sinó quan s’executa.\n\nDesprés de decidir, pot caldre actualitzar ERP, enviar un missatge, modificar una ordre, trucar un client o canviar un paràmetre.\n\nSi aquests passos són manuals, la latency continua.\n\n**L’última milla pot consumir tant temps com l’anàlisi.**\n\nIntegrar l’acció dins del sistema redueix aquesta distància.\n\nUn usuari pot aprovar una recomanació i executar des del mateix lloc.\n\nLes accions repetibles es poden automatitzar després de l’aprovació.\n\nTambé convé mesurar fallades d’execució: decisions preses que mai es completen.\n\nL’anàlisi complet hauria de registrar timestamps per etapa: event, dada disponible, senyal detectada, revisió iniciada, decisió, aprovació final i execució.\n\nDesprés podem construir un funnel de temps.\n\nLa mediana mostra el cas típic; p90 i p95 mostren on s’encallen casos difícils.\n\nTambé convé separar temps actiu de temps d’espera.\n\nCinc minuts de feina repartits durant tres dies indiquen que el problema són handoffs i no capacitat analítica.\n\nEls handoffs entre equips són cars perquè obliguen a reconstruir context.\n\nReduir transicions pot aportar més valor que accelerar cada tasca local.\n\nL’ownership end-to-end també ajuda. Si ningú respon pel cicle complet, cada equip optimitza la seva part.\n\nLa priorització importa. Una cua única sense severitat pot retardar decisions crítiques darrere de casos menors.\n\nEls sistemes haurien de poder ordenar per impacte, urgència i confidence.\n\nTambé s’han de revisar reunions recurrents. Algunes existeixen només per moure informació que podria circular automàticament.\n\nEliminar una reunió no ajuda si falta un mecanisme alternatiu de decisió.\n\nL’objectiu és una ruta clara de senyal a acció.\n\nLa millora es pot modelar econòmicament: quant valor addicional obtenim reduint una hora, un dia o una setmana?\n\nAixò ajuda a prioritzar colls d’ampolla.\n\nNo totes les etapes han de ser instantànies. La deliberació és útil quan millora qualitat.\n\nLa diferència clau és entre deliberació i espera.\n\n**Els processos de decisió perden principalment temps en esperes, reconciliacions, handoffs i aprovacions, no només en obtenir la dada.** Fer visible cada etapa permet reduir latency on no aporta criteri i conservar-la on realment protegeix la qualitat de la decisió.",
+      "seo_title": "On es perd temps als processos de decisió",
+      "seo_description": "Com detectar colls d’ampolla entre senyal, interpretació, aprovació i execució per reduir decision latency sense perdre control.",
+      "seo_keywords": [
+        "decision process bottlenecks",
+        "decision latency",
+        "decision workflow",
+        "decision intelligence"
+      ],
+      "tags": [
+        "Analytics",
+        "Decision Process",
+        "Decision Latency"
+      ]
+    }
+  }
+}
