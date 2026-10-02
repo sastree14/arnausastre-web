@@ -1036,6 +1036,8 @@ function evidenceFor(profile: PortfolioCaseProfile, lang: SiteLanguage): Metric[
         { label: lang === 'es' ? 'Rutas de salida' : lang === 'ca' ? 'Rutes de sortida' : 'Output routes', value: '4', note },
       ]
   }
+
+  return []
 }
 
 function businessMetricsFor(profile: PortfolioCaseProfile, lang: SiteLanguage): { headline: string; summary: string; metrics: Metric[] } {
@@ -1185,6 +1187,12 @@ function businessMetricsFor(profile: PortfolioCaseProfile, lang: SiteLanguage): 
         summary: note,
         metrics: [{ value: '8 h/d', label: labels.ref, note }, { value: '20%', label: labels.change, note }, { value: '1.6 h/d', label: labels.value, note }],
       }
+  }
+
+  return {
+    headline: note,
+    summary: note,
+    metrics: [],
   }
 }
 
