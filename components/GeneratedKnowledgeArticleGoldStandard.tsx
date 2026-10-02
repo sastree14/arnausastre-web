@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
@@ -201,7 +201,7 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
   const [activeSection, setActiveSection] = useState('article-context')
 
   const meta = article ? metaFor(article) : {}
-  const segments = useMemo(() => parseBody(article?.body || ''), [article?.body])
+  const segments = parseBody(article?.body || '')
   const headings = segments.filter((segment): segment is Extract<Segment, { type: 'section' }> => segment.type === 'section')
 
   if (!article) return null
