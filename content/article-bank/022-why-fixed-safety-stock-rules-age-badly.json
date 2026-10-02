@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-022",
+  "sequence": 22,
+  "arc_id": "ARC-06",
+  "slug": "why-fixed-safety-stock-rules-age-badly",
+  "scheduled_at": "2026-11-28T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Inventory & Supply Chain",
+  "editorial_pillar": "industries_use_cases",
+  "content_family": "failure_modes_mistakes",
+  "angle": "fixed safety stock",
+  "primary_keyword": "fixed safety stock",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-021",
+    "KB-023",
+    "KB-024"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué las reglas fijas de stock envejecen mal",
+      "excerpt": "Un buffer definido una vez deja de representar el riesgo cuando cambian forecast, lead time, mix o nivel de servicio. El inventario necesita políticas adaptativas.",
+      "quick": [
+        "El riesgo cambia",
+        "El buffer fijo no aprende",
+        "Recalibrar evita stock inútil"
+      ],
+      "section_titles": [
+        "El problema no es la regla simple",
+        "Qué cambia con el tiempo",
+        "Cómo detectar una política obsoleta",
+        "Actualizar sin volverlo inestable"
+      ],
+      "business_title": "Una regla de inventario puede seguir funcionando técnicamente mucho después de dejar de representar el riesgo real.",
+      "business_steps": [
+        "Regla histórica",
+        "Entorno cambia",
+        "Buffer desalineado"
+      ],
+      "body": "Las reglas fijas de inventario tienen una ventaja enorme: son fáciles de entender y ejecutar. “Dos semanas de stock”, “20 % de seguridad” o “reorder point de 500” permiten operar sin recalcular cada día. El problema no es la simplicidad. **El problema es asumir que una regla diseñada bajo unas condiciones seguirá siendo correcta cuando esas condiciones cambien.**\n\nDemanda, error de forecast, lead time, coste de capital, disponibilidad de sustitutos y objetivos de servicio evolucionan. Una política fija no lo hace. **El buffer puede pasar de prudente a excesivo o de suficiente a peligroso sin que la regla muestre ninguna señal visible.**\n\n**El problema no es la regla simple**\nUna regla simple puede ser perfectamente adecuada cuando el proceso es estable y el coste de complejidad supera el beneficio de una política más sofisticada. No todo SKU necesita optimización dinámica.\n\nLa debilidad aparece cuando la regla contiene supuestos implícitos. Dos semanas de stock suponen una relación entre demanda, lead time y riesgo. Si el lead time era siete días cuando se creó la política y pasa a veintiuno, **la misma regla deja de cubrir la misma exposición**.\n\nLo mismo ocurre con una política basada en porcentaje. Si la demanda se vuelve más estable, el buffer puede quedar sobredimensionado; si aumenta volatilidad, puede quedarse corto.\n\n**Qué cambia con el tiempo**\nLa demanda puede cambiar de nivel, patrón o mix. Un producto estable puede volverse promocional; otro puede entrar en fase de declive. El forecast también cambia: un modelo mejor puede reducir incertidumbre y permitir menos buffer.\n\nLos proveedores evolucionan. Pueden mejorar puntualidad, cambiar ruta logística, introducir mínimos de compra o sufrir mayor variabilidad. **El safety stock debería reaccionar al riesgo durante lead time, no a una fotografía antigua del proveedor.**\n\nTambién cambian economics. Un aumento del coste de capital hace más caro mantener inventario. Una caída de margen reduce cuánto estamos dispuestos a pagar por determinado nivel de servicio. Una regla estática ignora esa nueva frontera.\n\n**Cómo detectar una política obsoleta**\nUna señal es el desacoplamiento entre inventario y servicio. Si stock sube pero las roturas no mejoran, quizá el buffer está en el lugar equivocado. Si servicio cae mientras inventario parece estable, la exposición puede haber aumentado.\n\nOtra señal es el crecimiento de excepciones. **Cuando planners empiezan a corregir repetidamente la regla, el proceso real ya no coincide con la política formal.** Los overrides son evidencia de que el modelo operativo necesita revisión.\n\nTambién conviene mirar exceso y falta por segmento. Una media global puede esconder que productos estables acumulan stock mientras referencias volátiles continúan rompiendo.\n\n**Actualizar sin volverlo inestable**\nUna política adaptativa no significa recalcular todo con cada nueva observación. Eso puede provocar nerviosismo y cambios innecesarios. La actualización debe tener cadencia, límites y criterios.\n\nUna opción es revisar parámetros mensualmente o cuando determinados drivers crucen umbrales: cambio de lead time, deterioro de forecast, nueva criticidad o modificación de servicio. **La política cambia cuando cambia el riesgo, no simplemente porque llegó un nuevo dato.**\n\nTambién pueden aplicarse floors y caps para evitar saltos extremos. En productos con pocos datos, conviene combinar estimación estadística con reglas prudentes.\n\nEl backtesting debe comparar la política fija con la adaptativa bajo varios periodos, no solo uno. Si la nueva lógica reduce coste total y mantiene servicio de forma consistente, la complejidad está justificada.\n\nLa lección no es eliminar reglas simples. Es darles fecha de revisión y hacer visibles sus supuestos. **Una política fija envejece mal cuando el negocio olvida por qué se creó.** Mantener inventario bajo control exige recalibrar la regla cuando cambia el entorno que pretendía proteger.",
+      "seo_title": "Por qué el safety stock fijo envejece",
+      "seo_description": "Cómo detectar reglas de stock obsoletas cuando cambian demanda, forecast, lead time, coste de capital o nivel de servicio.",
+      "seo_keywords": [
+        "fixed safety stock",
+        "reglas stock seguridad",
+        "safety stock policy",
+        "inventory policy"
+      ],
+      "tags": [
+        "Inventory",
+        "Safety Stock",
+        "Policy"
+      ]
+    },
+    "en": {
+      "title": "Why fixed safety stock rules age badly",
+      "excerpt": "A buffer defined once stops representing risk when forecast error, lead time, mix or service targets change. Inventory needs adaptive policies.",
+      "quick": [
+        "Risk changes",
+        "A fixed buffer does not learn",
+        "Recalibration prevents wasted stock"
+      ],
+      "section_titles": [
+        "Simple rules are not the problem",
+        "What changes over time",
+        "How to detect an obsolete policy",
+        "Update without creating instability"
+      ],
+      "business_title": "An inventory rule can keep working mechanically long after it stops representing the real risk.",
+      "business_steps": [
+        "Historical rule",
+        "Environment changes",
+        "Misaligned buffer"
+      ],
+      "body": "Fixed inventory rules have a major advantage: they are easy to understand and execute. “Two weeks of stock”, “20% safety” or “reorder point 500” allows a team to operate without recalculating every day. Simplicity is not the problem. **The problem is assuming that a rule designed under one set of conditions remains correct when those conditions change.**\n\nDemand, forecast error, lead time, cost of capital, substitute availability and service objectives all evolve. A fixed policy does not. **The buffer can move from prudent to excessive, or from sufficient to dangerous, without the rule itself showing any visible warning.**\n\n**Simple rules are not the problem**\nA simple rule can be entirely appropriate when the process is stable and the cost of complexity is higher than the benefit of a more sophisticated policy. Not every SKU needs dynamic optimization.\n\nThe weakness appears when assumptions remain implicit. Two weeks of stock embeds a relationship between demand, lead time and risk. If lead time was seven days when the rule was created and later becomes twenty-one days, **the same rule no longer protects the same exposure**.\n\nThe same applies to percentage-based buffers. When demand becomes more stable, the buffer may become excessive; when volatility increases, it may become inadequate.\n\n**What changes over time**\nDemand can change in level, pattern or mix. A stable item may become heavily promoted; another may enter decline. Forecasting can improve as well: lower uncertainty can support smaller buffers.\n\nSuppliers evolve. Delivery reliability can improve, routes can change, minimum order quantities can be introduced or variability can increase. **Safety stock should respond to risk during lead time, not to an old snapshot of supplier performance.**\n\nEconomics changes too. Higher capital cost makes inventory more expensive. Lower margin can reduce how much the business is willing to pay for a service target. A static rule ignores that new trade-off.\n\n**How to detect an obsolete policy**\nOne signal is a decoupling between inventory and service. If stock rises while stockouts do not improve, the buffer may be in the wrong place. If service deteriorates while inventory looks stable, exposure may have increased.\n\nAnother signal is exception growth. **When planners repeatedly override the rule, the real operating process has already diverged from the formal policy.** Those overrides are evidence that the system deserves review.\n\nSegment-level analysis also matters. A global average can hide stable items accumulating excess while volatile products continue to stock out.\n\n**Update without creating instability**\nAn adaptive policy does not mean recalculating everything after every new observation. That can create nervousness and unnecessary movement. Updates need cadence, limits and criteria.\n\nOne approach is to review parameters monthly or when specific drivers cross thresholds: lead-time change, forecast deterioration, new criticality or a different service target. **The policy changes when risk changes, not simply because another data point arrived.**\n\nFloors and caps can prevent extreme jumps. For sparse products, statistical estimates can be combined with prudent business rules.\n\nBacktesting should compare fixed and adaptive policies across several periods, not one convenient window. If the adaptive logic consistently lowers total cost while protecting service, the additional complexity is justified.\n\nThe lesson is not to eliminate simple rules. It is to give them review dates and make their assumptions visible. **A fixed policy ages badly when the organization forgets why it was created.** Keeping inventory under control requires recalibrating the rule when the environment it was designed to protect changes.",
+      "seo_title": "Why Fixed Safety Stock Rules Age Badly",
+      "seo_description": "How fixed inventory rules become obsolete as demand, forecast error, lead time, capital cost and service objectives change.",
+      "seo_keywords": [
+        "fixed safety stock",
+        "safety stock rules",
+        "inventory policy",
+        "adaptive safety stock"
+      ],
+      "tags": [
+        "Inventory",
+        "Safety Stock",
+        "Policy"
+      ]
+    },
+    "ca": {
+      "title": "Per què les regles fixes d’estoc envelleixen malament",
+      "excerpt": "Un buffer definit una vegada deixa de representar el risc quan canvien forecast, lead time, mix o servei. L’inventari necessita polítiques adaptatives.",
+      "quick": [
+        "El risc canvia",
+        "Un buffer fix no aprèn",
+        "Recalibrar evita estoc inútil"
+      ],
+      "section_titles": [
+        "La regla simple no és el problema",
+        "Què canvia amb el temps",
+        "Com detectar una política obsoleta",
+        "Actualitzar sense inestabilitat"
+      ],
+      "business_title": "Una regla d’inventari pot continuar funcionant mecànicament molt després de deixar de representar el risc real.",
+      "business_steps": [
+        "Regla històrica",
+        "L’entorn canvia",
+        "Buffer desalineat"
+      ],
+      "body": "Les regles fixes d’inventari tenen un gran avantatge: són fàcils d’entendre i executar. “Dues setmanes d’estoc”, “20 % de seguretat” o “reorder point de 500” permeten operar sense recalcular cada dia. La simplicitat no és el problema. **El problema és assumir que una regla dissenyada sota unes condicions continua sent correcta quan aquestes condicions canvien.**\n\nDemanda, error de forecast, lead time, cost de capital, disponibilitat de substituts i objectius de servei evolucionen. Una política fixa no. **El buffer pot passar de prudent a excessiu o de suficient a perillós sense que la regla mostri cap alerta visible.**\n\n**La regla simple no és el problema**\nUna regla simple pot ser adequada quan el procés és estable i el cost de complexitat supera el benefici d’una política sofisticada. No tot SKU necessita optimització dinàmica.\n\nLa debilitat apareix quan els supòsits són implícits. Dues setmanes d’estoc assumeixen una relació entre demanda, lead time i risc. Si el lead time era set dies quan es va crear la política i passa a vint-i-un dies, **la mateixa regla deixa de cobrir la mateixa exposició**.\n\nEl mateix passa amb buffers percentuals. Si la demanda es torna més estable, poden sobrar; si augmenta volatilitat, poden quedar curts.\n\n**Què canvia amb el temps**\nLa demanda pot canviar de nivell, patró o mix. Un producte estable pot esdevenir promocional; un altre pot entrar en declivi. El forecast també pot millorar i reduir incertesa.\n\nEls proveïdors evolucionen. Poden millorar puntualitat, canviar ruta, introduir mínims o augmentar variabilitat. **Safety stock ha de reaccionar al risc durant lead time, no a una fotografia antiga del proveïdor.**\n\nTambé canvien economics. Un cost de capital més alt fa més car l’inventari. Una baixada de marge pot reduir quant estem disposats a pagar per un nivell de servei.\n\n**Com detectar una política obsoleta**\nUn senyal és el desacoblament entre inventari i servei. Si l’estoc puja però les ruptures no milloren, potser el buffer és al lloc equivocat. Si el servei cau mentre l’inventari sembla estable, l’exposició pot haver augmentat.\n\nUn altre senyal és el creixement d’excepcions. **Quan planners corregeixen repetidament la regla, el procés real ja s’ha separat de la política formal.** Els overrides indiquen que cal revisar-la.\n\nTambé convé mirar excés i falta per segment. Una mitjana global pot amagar productes estables acumulant stock i productes volàtils continuant amb ruptures.\n\n**Actualitzar sense inestabilitat**\nUna política adaptativa no significa recalcular-ho tot amb cada observació. Això pot provocar nerviosisme. Les actualitzacions necessiten cadència, límits i criteris.\n\nEs poden revisar paràmetres mensualment o quan alguns drivers creuin llindars: canvi de lead time, deteriorament de forecast, nova criticitat o canvi de servei. **La política canvia quan canvia el risc, no simplement perquè arriba una dada nova.**\n\nFloors i caps poden evitar salts extrems. En productes amb poques dades, es poden combinar estimacions estadístiques amb regles prudents.\n\nEl backtesting ha de comparar política fixa i adaptativa en diversos períodes. Si la nova lògica redueix cost total i manté servei de forma consistent, la complexitat es justifica.\n\nLa lliçó no és eliminar regles simples. És donar-los data de revisió i fer visibles els supòsits. **Una política fixa envelleix malament quan l’organització oblida per què es va crear.** Mantenir inventari sota control exigeix recalibrar quan canvia l’entorn que pretenia protegir.",
+      "seo_title": "Per què el safety stock fix envelleix",
+      "seo_description": "Com detectar regles d’estoc obsoletes quan canvien demanda, forecast, lead time, cost de capital o nivell de servei.",
+      "seo_keywords": [
+        "fixed safety stock",
+        "regles stock seguretat",
+        "safety stock policy",
+        "inventory policy"
+      ],
+      "tags": [
+        "Inventory",
+        "Safety Stock",
+        "Policy"
+      ]
+    }
+  }
+}
