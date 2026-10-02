@@ -40,7 +40,7 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
   try{
     const[pages,articles]=await Promise.all([
       queryGrowthTable<SeoPage>('seo_pages',{tenant_id:'eq.sc-analytics',status:'eq.published',limit:'200'},{cacheSeconds:300}),
-      queryGrowthTable<Article>('content_items',{content_type:'eq.article',status:'eq.published',order:'published_at.desc',limit:'200'},{cacheSeconds:300}),
+      queryGrowthTable<Article>('content_items',{content_type:'eq.article',status:'eq.published',order:'published_at.desc',limit:'1000'},{cacheSeconds:300}),
     ])
     const dynamicRoutes:MetadataRoute.Sitemap=[
       ...pages.map(row=>({url:`${base}/services/${row.slug}`,lastModified:row.updated_at?new Date(row.updated_at):new Date(),changeFrequency:'monthly' as const,priority:0.85})),
