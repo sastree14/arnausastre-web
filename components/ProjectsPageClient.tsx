@@ -6,6 +6,7 @@ import { ArrowRight } from 'lucide-react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import { projectCaseIndexTitle, projectUi } from '@/lib/project-public-copy'
 import type { Project } from '@/lib/projects'
+import { getPortfolioCaseProfile } from '@/lib/portfolio-case-registry'
 
 type CaseFilter =
   | 'all'
@@ -17,28 +18,45 @@ type CaseFilter =
   | 'analytics'
   | 'business_systems'
 
-const projectFilters: Record<string, CaseFilter[]> = {
-  'ai-accounting-agents': ['ai_automation', 'finance', 'business_systems'],
-  'ai-knowledge-workflow': ['ai_automation', 'business_systems'],
-  'banking-risk-decision-system': ['risk_decision', 'finance', 'analytics'],
-  'business-operating-crm': ['business_systems', 'ai_automation', 'analytics'],
-  'ecommerce-demand-forecasting': ['planning', 'operations', 'analytics'],
-  'erp-operations-control': ['business_systems', 'operations', 'analytics'],
-  'investment-analytics-platform': ['finance', 'analytics', 'risk_decision'],
-  'quantitative-trading-framework': ['finance', 'analytics', 'risk_decision'],
-  'reinforcement-learning-decision-system': ['operations', 'risk_decision', 'analytics'],
-  'r-shiny-decision-app': ['analytics', 'business_systems'],
+function filtersForProject(slug: string): CaseFilter[] {
+  const profile = getPortfolioCaseProfile(slug)
+  if (!profile) return []
+
+  switch (profile.archetype) {
+    case 'agent':
+      return ['ai_automation', 'business_systems', 'analytics']
+    case 'data':
+      return ['analytics', 'business_systems', 'operations']
+    case 'forecast':
+      return ['planning', 'operations', 'analytics']
+    case 'bi':
+      return ['analytics', 'business_systems']
+    case 'customer':
+      return ['analytics', 'risk_decision']
+    case 'risk':
+      return ['risk_decision', 'finance', 'analytics']
+    case 'optimization':
+      return ['operations', 'planning', 'analytics']
+    case 'finance':
+      return ['finance', 'risk_decision', 'analytics']
+    case 'quant':
+      return ['finance', 'risk_decision', 'analytics']
+    case 'specialized':
+      return ['business_systems', 'analytics', 'finance']
+    case 'vision':
+      return ['ai_automation', 'operations', 'analytics']
+  }
 }
 
 const copy = {
   es: {
-    count: 'casos disponibles',
-    instruction: 'Explora nuestros casos por el tipo de reto empresarial que quieres resolver.',
-    view: 'Abrir caso',
+    count: 'casos de éxito disponibles',
+    instruction: 'Explora nuestros casos de éxito por el tipo de reto empresarial que quieres resolver.',
+    view: 'Abrir caso de éxito',
     filterLabel: 'Áreas de trabajo',
-    empty: 'No hay casos publicados en esta categoría.',
+    empty: 'No hay casos de éxito publicados en esta categoría.',
     filters: {
-      all: 'Todos los casos',
+      all: 'Todos los casos de éxito',
       planning: 'Predicción y planificación',
       ai_automation: 'IA y automatización',
       operations: 'Operaciones y optimización',
@@ -49,13 +67,13 @@ const copy = {
     },
   },
   ca: {
-    count: 'casos disponibles',
-    instruction: 'Explora els nostres casos pel tipus de repte empresarial que vols resoldre.',
-    view: 'Obrir cas',
+    count: 'casos d’èxit disponibles',
+    instruction: 'Explora els nostres casos d’èxit pel tipus de repte empresarial que vols resoldre.',
+    view: 'Obrir cas d’èxit',
     filterLabel: 'Àrees de treball',
-    empty: 'No hi ha casos publicats en aquesta categoria.',
+    empty: 'No hi ha casos d’èxit publicats en aquesta categoria.',
     filters: {
-      all: 'Tots els casos',
+      all: 'Tots els casos d’èxit',
       planning: 'Predicció i planificació',
       ai_automation: 'IA i automatització',
       operations: 'Operacions i optimització',
@@ -66,13 +84,13 @@ const copy = {
     },
   },
   en: {
-    count: 'available cases',
-    instruction: 'Explore our cases by the kind of business challenge you want to solve.',
-    view: 'Open case',
+    count: 'available success stories',
+    instruction: 'Explore our success stories by the kind of business challenge you want to solve.',
+    view: 'Open success story',
     filterLabel: 'Areas of work',
-    empty: 'No published cases in this category.',
+    empty: 'No published success stories in this category.',
     filters: {
-      all: 'All cases',
+      all: 'All success stories',
       planning: 'Forecasting & planning',
       ai_automation: 'AI & automation',
       operations: 'Operations & optimisation',
@@ -106,7 +124,7 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
       .map((project, index) => ({ project, index }))
       .filter(({ project }) => {
         if (activeFilter === 'all') return true
-        return (projectFilters[project.slug] || []).includes(activeFilter)
+        return filtersForProject(project.slug).includes(activeFilter)
       })
   }, [projects, activeFilter])
 
