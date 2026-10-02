@@ -85,12 +85,8 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
   ]
 
   const toolPalette = [
-    { bg: '#F7F1E8', border: '#DDCFBD' },
-    { bg: '#F2ECF7', border: '#D7C8E3' },
-    { bg: '#EAF3F8', border: '#C8DCE8' },
-    { bg: '#EDF4EE', border: '#C9D9CD' },
-    { bg: '#F6EEE9', border: '#DECFC6' },
-    { bg: '#EEF0F7', border: '#CDD2E2' },
+    { bg: '#F3EDF8', border: '#D3C4E0' },
+    { bg: '#E8F1F7', border: '#BDD3E2' },
   ]
 
   const items = [
@@ -270,14 +266,15 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
               <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{toolsLabel}</p>
               <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                 {c.technicalProof.split(' · ').map((technology, index) => {
-                  const palette = toolPalette[index % toolPalette.length]
+                  const diagonalGroup = [0, 2, 4].includes(index) ? 0 : 1
+                  const palette = toolPalette[diagonalGroup]
                   return (
                     <div
                       key={technology}
-                      className="flex min-h-[88px] items-center justify-between border px-5 py-4"
+                      className="flex min-h-[96px] items-center justify-between border px-6 py-5"
                       style={{ backgroundColor: palette.bg, borderColor: palette.border }}
                     >
-                      <span className="text-[18px] font-semibold text-[#1D2B44]">{technology}</span>
+                      <span className="text-[19px] font-semibold text-[#1D2B44]">{technology}</span>
                       <span className="font-mono text-[12px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
                     </div>
                   )
