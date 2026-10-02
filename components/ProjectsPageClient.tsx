@@ -46,6 +46,8 @@ function filtersForProject(slug: string): CaseFilter[] {
     case 'vision':
       return ['ai_automation', 'operations', 'analytics']
   }
+
+  return []
 }
 
 const copy = {
