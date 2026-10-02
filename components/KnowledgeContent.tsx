@@ -184,7 +184,10 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
 
   useEffect(() => {
     const requested = new URLSearchParams(window.location.search).get('area') as KnowledgeArea | null
-    if (requested && FILTER_ORDER.includes(requested)) setActiveFilter(requested)
+    if (!requested || !FILTER_ORDER.includes(requested)) return
+
+    const timer = window.setTimeout(() => setActiveFilter(requested), 0)
+    return () => window.clearTimeout(timer)
   }, [])
 
   const generatedGroups = useMemo(() => {
