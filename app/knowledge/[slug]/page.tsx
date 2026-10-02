@@ -3,7 +3,8 @@ import { notFound } from 'next/navigation'
 import { getArticleBySlug } from '@/lib/content'
 import { getPublicGeneratedArticleVariants } from '@/lib/public-growth'
 import ArticleContent from '@/components/ArticleContent'
-import GeneratedArticleContent from '@/components/GeneratedArticleContent'\nimport KnowledgeArticleGoldStandard from '@/components/KnowledgeArticleGoldStandard'
+import GeneratedArticleContent from '@/components/GeneratedArticleContent'
+import KnowledgeArticleGoldStandard from '@/components/KnowledgeArticleGoldStandard'
 
 type Props = { params: Promise<{ slug: string }> }
 
