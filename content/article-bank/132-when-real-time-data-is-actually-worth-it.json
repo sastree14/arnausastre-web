@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-132",
+  "sequence": 132,
+  "arc_id": "ARC-33",
+  "slug": "when-real-time-data-is-actually-worth-it",
+  "scheduled_at": "2027-08-24T09:00:00+02:00",
+  "knowledge_area": "business_systems",
+  "cluster": "Data Engineering & Architecture",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "decision_guide",
+  "angle": "when to use real time data",
+  "primary_keyword": "when to use real time data",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-129",
+    "KB-130",
+    "KB-131"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cuándo merece la pena trabajar en tiempo real",
+      "excerpt": "Real time merece inversión cuando una acción pierde valor rápidamente, existe capacidad para responder y la arquitectura puede operar con la fiabilidad requerida.",
+      "quick": [
+        "Mide el coste del retraso",
+        "Comprueba que alguien puede actuar",
+        "Empieza por el SLA mínimo suficiente"
+      ],
+      "section_titles": [
+        "Cuantifica cuánto cuesta llegar tarde",
+        "Comprueba que la acción puede ocurrir a tiempo",
+        "Diseña el nivel mínimo de latencia",
+        "Valida economics y resiliencia antes de escalar"
+      ],
+      "business_title": "Real time está justificado cuando la reducción de latencia cambia outcomes de negocio y compensa el coste adicional de ingeniería, operación y fiabilidad.",
+      "business_steps": [
+        "Coste de retraso",
+        "Capacidad de acción",
+        "SLA rentable"
+      ],
+      "body": "Trabajar en tiempo real tiene sentido cuando la velocidad cambia una decisión. Esa frase parece obvia, pero muchas arquitecturas se diseñan sin cuantificarla. **Antes de introducir streaming, conviene demostrar que existe una relación material entre retraso y pérdida de valor.**\n\nEl criterio no es si podemos procesar datos en segundos. Hoy casi siempre podemos. El criterio es si hacerlo mejora el outcome suficiente para pagar la complejidad adicional. **Real time merece la pena cuando el tiempo es parte de la economía de la decisión.**\n\n**Cuantifica cuánto cuesta llegar tarde**\nEmpieza por construir una curva de coste de latencia.\n\n¿Qué ocurre si reaccionamos en un segundo, un minuto, diez minutos, una hora o al día siguiente?\n\nEn fraude, la pérdida puede crecer casi inmediatamente. En personalización, la oportunidad desaparece cuando termina la sesión. En operaciones, una alerta puede seguir siendo útil durante varios minutos.\n\n**La latencia correcta aparece cuando entendemos cómo cae el valor con el tiempo.**\n\nNo hace falta una función matemática perfecta. Rangos aproximados ya permiten distinguir casos críticos de casos donde la urgencia es aparente.\n\nTambién conviene separar valor de información y valor de acción. Saber antes no sirve si no podemos intervenir antes.\n\nLa comparación debe incluir frecuencia. Un beneficio pequeño por evento puede justificar real time si ocurre millones de veces.\n\n**Comprueba que la acción puede ocurrir a tiempo**\nLa segunda condición es capacidad de respuesta.\n\nSi el sistema detecta una incidencia en dos segundos pero necesita aprobación humana que tarda veinte minutos, la pipeline no es el principal cuello de botella.\n\n**Real time solo crea valor cuando la cadena completa puede reaccionar dentro de la ventana útil.**\n\nEsto puede exigir automatización.\n\nUna recomendación de fraude puede bloquear automáticamente una operación; una recomendación comercial puede cambiar contenido en sesión.\n\nEn otros casos, un equipo humano necesita triage y priorización.\n\nEntonces quizá la inversión más valiosa sea ordenar mejor las alertas y no reducir latencia técnica.\n\nTambién debemos considerar capacidad máxima. Una arquitectura que produce miles de señales frescas puede saturar operaciones.\n\nEl diseño necesita controlar volumen, prioridad y escalado.\n\n**Diseña el nivel mínimo de latencia**\nUna vez sabemos la ventana útil, no diseñamos para cero latencia. Diseñamos para estar cómodamente dentro del SLA.\n\nSi la decisión tolera cinco minutos, una actualización cada minuto ofrece margen sin necesidad de milisegundos.\n\n**El mejor diseño compra la latencia mínima necesaria, no la mínima técnicamente posible.**\n\nMicro-batch puede resolver muchos casos.\n\nChange data capture puede ofrecer frescura suficiente sin construir una arquitectura de eventos completa.\n\nStreaming continuo merece más sentido cuando el proceso realmente necesita reacción inmediata y continua.\n\nTambién puede utilizarse solo para una parte del workflow.\n\nPor ejemplo, capturar eventos en tiempo real y consolidar analytics en ventanas.\n\nLa arquitectura debe ser proporcional a la criticidad del caso.\n\n**Valida economics y resiliencia antes de escalar**\nLa inversión real incluye mucho más que infraestructura.\n\nHay ingeniería de plataforma, schemas, observability, alertas, on-call, replay, testing y gestión de incidentes.\n\n**El business case debe comparar valor incremental con total cost of ownership.**\n\nTambién debe incluir el coste de fallar.\n\nSi un sistema real time participa en una decisión crítica, la disponibilidad requerida puede ser alta.\n\nEso aumenta redundancia, disaster recovery y capacidad de fallback.\n\nConviene diseñar qué ocurre cuando la pipeline no está disponible.\n\nUn sistema puede utilizar el último estado válido, un modelo simplificado o una ruta batch temporal.\n\nLa degradación controlada evita que real time se convierta en un single point of failure.\n\nTambién debemos decidir qué consistencia necesitamos.\n\nEventual consistency puede ser suficiente para recomendaciones y dashboards; pagos o controles de riesgo pueden exigir garantías mayores.\n\nLa semántica de eventos debe estar definida. Schemas, claves, timestamps y reglas de deduplicación necesitan contratos.\n\nEl replay es importante para corregir fallos y reconstruir estado.\n\nLa observability debe monitorizar no solo infraestructura, sino impacto: decisiones tomadas, acciones disparadas y outcomes.\n\nTambién conviene medir business lag en producción.\n\nSi la pipeline mejora y business lag no cae, el problema está en otra capa.\n\nEl rollout puede empezar con un segmento o caso de uso.\n\nEsto permite medir beneficio antes de extender streaming a toda la empresa.\n\nUna arquitectura híbrida suele ser más eficiente que una estrategia “real time everywhere”.\n\nLos datos maestros, reporting financiero o modelos de planificación pueden seguir en batch.\n\nLos eventos operativos críticos pueden tener una ruta de menor latencia.\n\nLa separación reduce coste y hace más clara la criticidad.\n\nTambién conviene revisar el requisito periódicamente. Una decisión que hoy necesita minutos puede cambiar por automatización, regulación o proceso.\n\nA la inversa, algo diseñado en tiempo real puede descubrir que batch era suficiente.\n\nLa arquitectura debe poder simplificarse.\n\nFinalmente, el éxito no debe medirse por throughput o milliseconds aislados. Debe medirse por pérdida evitada, tiempo de respuesta, conversión, downtime o cualquier outcome que justificó la inversión.\n\n**Real time merece la pena cuando el negocio puede explicar qué pierde por esperar, puede actuar antes gracias a la información y puede operar la solución con fiabilidad.** Si falta una de esas tres condiciones, reducir latencia puede ser una mejora técnica sin retorno empresarial.",
+      "seo_title": "Cuándo usar datos en tiempo real",
+      "seo_description": "Guía para decidir cuándo real time merece la pena según coste de retraso, capacidad de acción, SLA, resiliencia y total cost of ownership.",
+      "seo_keywords": [
+        "when to use real time data",
+        "real time data architecture",
+        "real time business case",
+        "data latency"
+      ],
+      "tags": [
+        "Real Time Data",
+        "Streaming",
+        "Decision Guide"
+      ]
+    },
+    "en": {
+      "title": "When real-time data is actually worth it",
+      "excerpt": "Real time is worth the investment when an action loses value quickly, there is capacity to respond and the architecture can meet the required reliability.",
+      "quick": [
+        "Measure delay cost",
+        "Confirm someone can act",
+        "Start from the minimum sufficient SLA"
+      ],
+      "section_titles": [
+        "Quantify what arriving late costs",
+        "Confirm the action can happen in time",
+        "Design the minimum latency level",
+        "Validate economics and resilience before scaling"
+      ],
+      "business_title": "Real time is justified when latency reduction changes business outcomes enough to exceed the additional engineering, operations and reliability cost.",
+      "business_steps": [
+        "Delay cost",
+        "Action capacity",
+        "Economic SLA"
+      ],
+      "body": "Real-time processing makes sense when speed changes a decision. That sounds obvious, yet many architectures are designed without quantifying it. **Before introducing streaming, the organization should demonstrate a material relationship between delay and lost value.**\n\nThe criterion is not whether data can be processed within seconds. Today that is usually possible. The criterion is whether doing so improves outcomes enough to pay for additional complexity. **Real time is worthwhile when time is part of the economics of the decision.**\n\n**Quantify what arriving late costs**\nStart by building a latency-cost curve.\n\nWhat happens if the company reacts in one second, one minute, ten minutes, one hour or the next day?\n\nIn fraud, loss may grow almost immediately. In personalization, the opportunity disappears when the session ends. In operations, an alert may remain useful for several minutes.\n\n**The correct latency appears when the decline in value over time is understood.**\n\nA perfect mathematical function is not required. Approximate ranges are enough to distinguish critical cases from cases where urgency is mostly assumed.\n\nInformation value should also be separated from action value. Knowing earlier does not help when the business cannot intervene earlier.\n\nFrequency belongs in the calculation too. A small benefit per event can justify real time when millions of events occur.\n\n**Confirm the action can happen in time**\nThe second condition is response capacity.\n\nIf a system detects an incident in two seconds but human approval takes twenty minutes, the pipeline is not the primary bottleneck.\n\n**Real time creates value only when the full chain can react within the useful window.**\n\nThat may require automation.\n\nA fraud recommendation can block a transaction automatically; a commercial signal can change content during a session.\n\nIn other situations, a human team handles triage and prioritization.\n\nThen the better investment may be stronger ranking rather than lower technical latency.\n\nMaximum capacity should also be considered. A system producing thousands of fresh signals can overwhelm operations.\n\nThe design needs volume control, priority and escalation.\n\n**Design the minimum latency level**\nOnce the useful window is known, the target should not be zero latency. It should sit comfortably inside the required SLA.\n\nIf the decision tolerates five minutes, one-minute updates may provide enough margin without millisecond engineering.\n\n**The strongest design buys the minimum latency required, not the minimum technically possible.**\n\nMicro-batching can solve many use cases.\n\nChange data capture can provide sufficient freshness without a full event-driven architecture.\n\nContinuous streaming becomes more relevant when action truly needs immediate, ongoing response.\n\nIt can also be limited to one part of the workflow.\n\nFor example, capture events continuously while consolidating analytics in windows.\n\nArchitecture should be proportional to use-case criticality.\n\n**Validate economics and resilience before scaling**\nThe real investment includes much more than infrastructure.\n\nPlatform engineering, schemas, observability, alerting, on-call, replay, testing and incident management all carry cost.\n\n**The business case should compare incremental value with total cost of ownership.**\n\nFailure cost matters too.\n\nWhen a real-time system participates in a critical decision, required availability can be high.\n\nThat raises redundancy, disaster recovery and fallback requirements.\n\nThe design should define what happens when the pipeline is unavailable.\n\nThe system may use the last valid state, a simplified model or a temporary batch path.\n\nControlled degradation prevents real time from becoming a single point of failure.\n\nConsistency requirements also need definition.\n\nEventual consistency may be sufficient for recommendations and dashboards; payments or risk controls may demand stronger guarantees.\n\nEvent semantics should be explicit. Schemas, keys, timestamps and deduplication rules need contracts.\n\nReplay capability matters for correcting failures and rebuilding state.\n\nObservability should monitor not only infrastructure but impact: decisions made, actions triggered and outcomes.\n\nBusiness lag should be tracked in production as well.\n\nIf pipeline latency falls but business lag does not, another layer is the bottleneck.\n\nRollout can begin with one segment or use case.\n\nThat allows benefit to be measured before extending streaming throughout the company.\n\nHybrid architecture is often more efficient than “real time everywhere”.\n\nMaster data, financial reporting and planning models can remain batch.\n\nCritical operational events can use a lower-latency path.\n\nThis separation lowers cost and clarifies criticality.\n\nThe requirement should also be revisited periodically. A decision that needs minutes today may change through automation, regulation or process redesign.\n\nConversely, something built as real time may reveal that batch was sufficient.\n\nArchitecture should be able to simplify.\n\nSuccess should ultimately not be measured through throughput or milliseconds alone. It should be measured through avoided loss, response time, conversion, downtime or whatever outcome justified the investment.\n\n**Real time is worthwhile when the business can explain what it loses by waiting, can act earlier because of the information and can operate the solution reliably.** If one of those conditions is missing, lower latency may remain a technical improvement without business return.",
+      "seo_title": "When to Use Real-Time Data",
+      "seo_description": "A guide to deciding when real time is worthwhile based on delay cost, response capacity, SLA, resilience and total cost of ownership.",
+      "seo_keywords": [
+        "when to use real time data",
+        "real time data architecture",
+        "real time business case",
+        "data latency"
+      ],
+      "tags": [
+        "Real Time Data",
+        "Streaming",
+        "Decision Guide"
+      ]
+    },
+    "ca": {
+      "title": "Quan val la pena treballar en temps real",
+      "excerpt": "Real time mereix inversió quan una acció perd valor ràpidament, existeix capacitat per respondre i l’arquitectura pot operar amb la fiabilitat requerida.",
+      "quick": [
+        "Mesura el cost del retard",
+        "Comprova que algú pot actuar",
+        "Comença per l’SLA mínim suficient"
+      ],
+      "section_titles": [
+        "Quantifica quant costa arribar tard",
+        "Comprova que l’acció pot passar a temps",
+        "Dissenya el nivell mínim de latència",
+        "Valida economics i resiliència abans d’escalar"
+      ],
+      "business_title": "Real time està justificat quan reduir latència canvia outcomes de negoci prou per superar el cost addicional d’enginyeria, operació i fiabilitat.",
+      "business_steps": [
+        "Cost del retard",
+        "Capacitat d’acció",
+        "SLA rendible"
+      ],
+      "body": "Treballar en temps real té sentit quan la velocitat canvia una decisió. Aquesta frase sembla òbvia, però moltes arquitectures es dissenyen sense quantificar-la. **Abans d’introduir streaming, convé demostrar que existeix una relació material entre retard i pèrdua de valor.**\n\nEl criteri no és si podem processar dades en segons. Avui gairebé sempre podem. El criteri és si fer-ho millora l’outcome prou per pagar la complexitat addicional. **Real time val la pena quan el temps forma part dels economics de la decisió.**\n\n**Quantifica quant costa arribar tard**\nComença construint una corba de cost de latència.\n\nQuè passa si reaccionem en un segon, un minut, deu minuts, una hora o l’endemà?\n\nEn frau, la pèrdua pot créixer gairebé immediatament. En personalització, l’oportunitat desapareix quan acaba la sessió. En operacions, una alerta pot continuar sent útil durant diversos minuts.\n\n**La latència correcta apareix quan entenem com cau el valor amb el temps.**\n\nNo cal una funció matemàtica perfecta. Rangs aproximats ja permeten distingir casos crítics de casos on la urgència és aparent.\n\nTambé convé separar valor d’informació i valor d’acció. Saber abans no serveix si no podem intervenir abans.\n\nLa freqüència també entra al càlcul. Un benefici petit per event pot justificar real time si passa milions de vegades.\n\n**Comprova que l’acció pot passar a temps**\nLa segona condició és capacitat de resposta.\n\nSi el sistema detecta una incidència en dos segons però necessita aprovació humana que tarda vint minuts, la pipeline no és el principal coll d’ampolla.\n\n**Real time només crea valor quan tota la cadena pot reaccionar dins de la finestra útil.**\n\nAixò pot exigir automatització.\n\nUna recomanació de frau pot bloquejar automàticament una operació; una senyal comercial pot canviar contingut durant una sessió.\n\nEn altres casos, un equip humà necessita triage i priorització.\n\nLlavors potser la inversió més valuosa és ordenar millor les alertes i no reduir latència tècnica.\n\nTambé hem de considerar capacitat màxima. Una arquitectura que produeix milers de senyals fresques pot saturar operacions.\n\nEl disseny necessita controlar volum, prioritat i escalat.\n\n**Dissenya el nivell mínim de latència**\nQuan coneixem la finestra útil, no dissenyem per zero latència. Dissenyem per quedar còmodament dins de l’SLA.\n\nSi la decisió tolera cinc minuts, actualitzacions cada minut ofereixen marge sense necessitat de mil·lisegons.\n\n**El millor disseny compra la latència mínima necessària, no la mínima tècnicament possible.**\n\nMicro-batch pot resoldre molts casos.\n\nChange data capture pot donar prou frescor sense construir una arquitectura completa d’events.\n\nStreaming continu té més sentit quan el procés necessita reacció immediata i continuada.\n\nTambé pot utilitzar-se només en una part del workflow.\n\nPer exemple, capturar events en temps real i consolidar analytics per finestres.\n\nL’arquitectura ha de ser proporcional a la criticitat del cas.\n\n**Valida economics i resiliència abans d’escalar**\nLa inversió real inclou molt més que infraestructura.\n\nHi ha enginyeria de plataforma, schemas, observability, alertes, on-call, replay, testing i gestió d’incidents.\n\n**El business case ha de comparar valor incremental amb total cost of ownership.**\n\nTambé ha d’incloure el cost de fallar.\n\nSi un sistema real time participa en una decisió crítica, la disponibilitat requerida pot ser alta.\n\nAixò augmenta redundància, disaster recovery i necessitat de fallback.\n\nConvé dissenyar què passa quan la pipeline no està disponible.\n\nEl sistema pot utilitzar l’últim estat vàlid, un model simplificat o una ruta batch temporal.\n\nLa degradació controlada evita que real time es converteixi en single point of failure.\n\nTambé hem de decidir quina consistència necessitem.\n\nEventual consistency pot ser suficient per recomanacions i dashboards; pagaments o controls de risc poden exigir garanties majors.\n\nLa semàntica d’events ha d’estar definida. Schemas, claus, timestamps i regles de deduplicació necessiten contractes.\n\nReplay és important per corregir fallades i reconstruir estat.\n\nL’observability ha de monitoritzar no només infraestructura, sinó impacte: decisions preses, accions disparades i outcomes.\n\nTambé convé mesurar business lag en producció.\n\nSi la pipeline millora i business lag no baixa, el coll d’ampolla és en una altra capa.\n\nEl rollout pot començar amb un segment o cas d’ús.\n\nAixò permet mesurar benefici abans d’estendre streaming a tota l’empresa.\n\nUna arquitectura híbrida sol ser més eficient que “real time everywhere”.\n\nDades mestres, reporting financer o models de planificació poden continuar en batch.\n\nEvents operatius crítics poden tenir una ruta de menor latència.\n\nLa separació redueix cost i fa més clara la criticitat.\n\nTambé convé revisar el requisit periòdicament. Una decisió que avui necessita minuts pot canviar per automatització, regulació o procés.\n\nA l’inrevés, alguna cosa dissenyada en temps real pot descobrir que batch era suficient.\n\nL’arquitectura ha de poder simplificar-se.\n\nFinalment, l’èxit no s’ha de mesurar per throughput o mil·lisegons aïllats. S’ha de mesurar per pèrdua evitada, temps de resposta, conversió, downtime o l’outcome que justificava la inversió.\n\n**Real time val la pena quan el negoci pot explicar què perd per esperar, pot actuar abans gràcies a la informació i pot operar la solució amb fiabilitat.** Si falta una d’aquestes tres condicions, reduir latència pot ser una millora tècnica sense retorn empresarial.",
+      "seo_title": "Quan utilitzar dades en temps real",
+      "seo_description": "Guia per decidir quan real time val la pena segons cost de retard, capacitat d’acció, SLA, resiliència i total cost of ownership.",
+      "seo_keywords": [
+        "when to use real time data",
+        "real time data architecture",
+        "real time business case",
+        "data latency"
+      ],
+      "tags": [
+        "Real Time Data",
+        "Streaming",
+        "Decision Guide"
+      ]
+    }
+  }
+}
