@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-017",
+  "sequence": 17,
+  "arc_id": "ARC-05",
+  "slug": "one-forecast-is-often-too-little-information",
+  "scheduled_at": "2026-11-16T09:00:00+01:00",
+  "knowledge_area": "planning",
+  "cluster": "Forecasting & Planning",
+  "editorial_pillar": "consulting_decision_insights",
+  "content_family": "point_of_view_contrarian",
+  "angle": "point forecast limitations",
+  "primary_keyword": "point forecast limitations",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-018",
+    "KB-019",
+    "KB-020"
+  ],
+  "variants": {
+    "es": {
+      "title": "Un solo forecast suele dar demasiada poca información",
+      "excerpt": "Un punto esperado oculta rango, asimetría y escenarios extremos. Para muchas decisiones, saber cuánto puede desviarse el futuro importa más que el número central.",
+      "quick": [
+        "El punto no muestra riesgo",
+        "El rango cambia la decisión",
+        "La incertidumbre tiene forma"
+      ],
+      "section_titles": [
+        "Lo que un punto oculta",
+        "El rango cambia la política",
+        "No toda incertidumbre es igual",
+        "Cuándo un punto sí basta"
+      ],
+      "business_title": "Una previsión central es útil, pero muchas decisiones necesitan saber cuánto puede salir mal y en qué dirección.",
+      "business_steps": [
+        "Forecast central",
+        "Rango de resultados",
+        "Decisión robusta"
+      ],
+      "body": "Un forecast puntual es cómodo. Resume el futuro en una cifra, facilita presupuestos y permite comparar rápidamente real contra previsto. Pero esa comodidad puede esconder información importante. **Dos forecasts con el mismo valor esperado pueden representar riesgos completamente distintos** si uno tiene un rango estrecho y otro una distribución muy incierta.\n\nPara decisiones reversibles y de bajo coste, el punto puede ser suficiente. Para compras grandes, capacidad, inventario, caja o contratación, la incertidumbre alrededor del punto puede cambiar la acción. **El número central describe expectativa; el rango describe exposición.**\n\n**Lo que un punto oculta**\nImaginemos dos productos con una demanda esperada de 1.000 unidades. En el primero, la mayoría de resultados históricos comparables cae entre 950 y 1.050. En el segundo, son frecuentes valores entre 600 y 1.400. El forecast puntual es idéntico, pero la política razonable de inventario no debería serlo.\n\nEl punto tampoco muestra asimetría. Puede existir una distribución donde el riesgo principal esté en una caída fuerte, otra donde el riesgo sea un pico de demanda o una con colas en ambos lados. **El mismo promedio puede esconder perfiles de riesgo muy diferentes.**\n\nEsta pérdida de información es especialmente relevante cuando el coste de equivocarse no es simétrico. Si quedarse corto es mucho más caro que pasarse, el percentil alto puede importar más que la media.\n\n**El rango cambia la política**\nUna decisión robusta necesita saber qué parte de la incertidumbre quiere cubrir. En inventario, eso puede traducirse en un nivel de servicio. En capacidad, en una reserva adicional. En caja, en un colchón de liquidez.\n\nPor eso intervalos predictivos y cuantiles pueden ser más accionables que un único punto. **No sustituyen la decisión; permiten hacer explícito el nivel de riesgo que la decisión acepta.**\n\nTambién ayudan a separar forecast de política. El modelo puede decir “hay un 80 % de probabilidad de caer dentro de este rango”. La empresa decide si quiere planificar para el centro, para un percentil alto o para un escenario adverso.\n\n**No toda incertidumbre es igual**\nParte de la incertidumbre viene de variabilidad inherente: incluso con un modelo perfecto, el resultado concreto puede fluctuar. Otra parte viene de desconocimiento del modelo, datos limitados o cambios de régimen. **La respuesta empresarial puede ser distinta según el origen del riesgo.**\n\nUna variabilidad estable puede gestionarse con buffers calibrados. Una ruptura estructural puede requerir escenarios y revisiones frecuentes. Una promoción todavía no confirmada puede representarse como ramas condicionales en lugar de un intervalo continuo.\n\nTambién importa la correlación. Si varios productos fallan al mismo tiempo por una causa común, sumar intervalos independientes puede subestimar riesgo a nivel de cartera. El sistema debe pensar en incertidumbre de decisión, no solo en incertidumbre de serie.\n\n**Cuándo un punto sí basta**\nNo todas las decisiones necesitan probabilidades sofisticadas. Si el proceso es estable, el coste de error bajo, la acción fácilmente reversible y existe margen para corregir pronto, un punto con reglas simples puede ser suficiente.\n\nLa clave es evitar complejidad sin valor. **Mostrar una distribución completa no mejora la decisión si nadie sabe qué hacer con ella.** La representación debe corresponder al riesgo que realmente se gestiona.\n\nUna buena práctica es empezar preguntando qué haríamos distinto si el rango fuese amplio o estrecho. Si la respuesta es “nada”, probablemente el punto basta. Si cambiaríamos stock, capacidad, presupuesto o timing, entonces el rango contiene información operativa.\n\nTambién conviene revisar calibración. Un intervalo del 90 % debería cubrir aproximadamente la proporción esperada de resultados en condiciones comparables. Sin calibración, el rango puede transmitir una falsa sensación de control.\n\nEl mensaje final no es abandonar el point forecast. Es reconocer su función. **El punto resume expectativa; la incertidumbre explica cuánto debemos confiar en esa expectativa para comprometer recursos.** En decisiones importantes, una sola cifra suele ser demasiado poca información.",
+      "seo_title": "Limitaciones del point forecast",
+      "seo_description": "Por qué un forecast puntual puede ocultar rango, asimetría y riesgo, y cuándo intervalos, cuantiles o escenarios mejoran la decisión.",
+      "seo_keywords": [
+        "point forecast limitations",
+        "intervalos forecasting",
+        "forecast uncertainty",
+        "probabilistic forecasting"
+      ],
+      "tags": [
+        "Forecasting",
+        "Uncertainty",
+        "Decision Making"
+      ]
+    },
+    "en": {
+      "title": "One forecast is often too little information",
+      "excerpt": "A single expected value hides range, asymmetry and tail scenarios. For many decisions, how far the future can move matters more than the central number.",
+      "quick": [
+        "A point does not show risk",
+        "The range changes policy",
+        "Uncertainty has shape"
+      ],
+      "section_titles": [
+        "What a point hides",
+        "The range changes policy",
+        "Not all uncertainty is equal",
+        "When a point is enough"
+      ],
+      "business_title": "A central forecast is useful, but many decisions need to know how far outcomes can move and in which direction.",
+      "business_steps": [
+        "Central forecast",
+        "Outcome range",
+        "Robust decision"
+      ],
+      "body": "A point forecast is convenient. It compresses the future into one number, makes budgeting straightforward and simplifies actual-versus-forecast comparisons. That convenience can hide important information. **Two forecasts with the same expected value can represent completely different risks** when one has a narrow range and the other is highly uncertain.\n\nFor reversible, low-cost decisions, the point may be enough. For large purchases, capacity, inventory, cash or hiring, uncertainty around the point can change the action. **The central number describes expectation; the range describes exposure.**\n\n**What a point hides**\nImagine two products with expected demand of 1,000 units. For the first, most comparable outcomes fall between 950 and 1,050. For the second, values between 600 and 1,400 are common. The point forecast is identical, but the sensible inventory policy should not be.\n\nThe point also hides asymmetry. One distribution may carry most risk on the downside, another may have a strong upside tail, and another may have heavy tails in both directions. **The same mean can conceal very different risk profiles.**\n\nThis loss of information matters particularly when error cost is asymmetric. If being short is much more expensive than being long, an upper quantile may matter more for the decision than the average.\n\n**The range changes policy**\nA robust decision needs to state how much uncertainty it intends to protect against. In inventory, that may become a service target. In capacity, it may become reserved headroom. In cash, it may become a liquidity buffer.\n\nPrediction intervals and quantiles can therefore be more actionable than a single point. **They do not make the decision; they make the accepted level of risk explicit.**\n\nThey also help separate forecasting from policy. The model can say that a range contains a defined share of plausible outcomes. The business then decides whether to plan around the centre, an upper quantile or an adverse scenario.\n\n**Not all uncertainty is equal**\nSome uncertainty comes from inherent variability: even a perfect model cannot know the exact realized outcome. Another part comes from model uncertainty, limited data or a changing regime. **The operating response can differ depending on the source of uncertainty.**\n\nStable variability can be managed with calibrated buffers. A structural break may require scenarios and frequent review. A promotion that has not yet been approved may be better represented as conditional branches rather than a continuous interval.\n\nCorrelation matters too. If several products miss together because of a shared driver, adding independent intervals can underestimate portfolio risk. The system should think in terms of decision uncertainty, not only series-level uncertainty.\n\n**When a point is enough**\nNot every decision needs sophisticated probability distributions. If the process is stable, error is cheap, the action is easily reversible and correction can happen quickly, a point estimate plus simple rules may be sufficient.\n\nThe aim is to avoid complexity without value. **A full probability distribution does not improve a decision if nobody knows how to use it.** Representation should match the risk actually being managed.\n\nA practical test is to ask what the business would do differently if the range were wide rather than narrow. If the answer is “nothing”, a point forecast may be enough. If inventory, capacity, budget or timing would change, the range contains operational information.\n\nCalibration should also be checked. A 90% interval should cover roughly the expected proportion of outcomes under comparable conditions. Without calibration, ranges can create false confidence.\n\nThe message is not to abandon point forecasts. It is to understand their role. **The point summarizes expectation; uncertainty explains how much confidence the business should place in that expectation before committing resources.** For consequential decisions, one number is often too little information.",
+      "seo_title": "Point Forecast Limitations and Risk",
+      "seo_description": "Why point forecasts can hide range, asymmetry and tail risk, and when intervals, quantiles or scenarios improve business decisions.",
+      "seo_keywords": [
+        "point forecast limitations",
+        "forecast uncertainty",
+        "prediction intervals",
+        "probabilistic forecasting"
+      ],
+      "tags": [
+        "Forecasting",
+        "Uncertainty",
+        "Decision Making"
+      ]
+    },
+    "ca": {
+      "title": "Un sol forecast sol donar massa poca informació",
+      "excerpt": "Un punt esperat amaga rang, asimetria i escenaris extrems. En moltes decisions, saber quant es pot desviar el futur importa més que el centre.",
+      "quick": [
+        "El punt no mostra risc",
+        "El rang canvia la política",
+        "La incertesa té forma"
+      ],
+      "section_titles": [
+        "Què amaga un punt",
+        "El rang canvia la política",
+        "No tota incertesa és igual",
+        "Quan un punt és suficient"
+      ],
+      "business_title": "Un forecast central és útil, però moltes decisions necessiten saber quant es pot desviar el resultat i en quina direcció.",
+      "business_steps": [
+        "Forecast central",
+        "Rang de resultats",
+        "Decisió robusta"
+      ],
+      "body": "Un forecast puntual és còmode. Resumeix el futur en una xifra, facilita pressupostos i simplifica comparacions entre real i previst. Però aquesta comoditat pot amagar informació important. **Dos forecasts amb el mateix valor esperat poden representar riscos completament diferents** si un té un rang estret i l’altre molta incertesa.\n\nPer decisions reversibles i de baix cost, el punt pot ser suficient. Per compres grans, capacitat, inventari, caixa o contractació, la incertesa al voltant del punt pot canviar l’acció. **El número central descriu expectativa; el rang descriu exposició.**\n\n**Què amaga un punt**\nImaginem dos productes amb demanda esperada de 1.000 unitats. En el primer, la majoria de resultats comparables cauen entre 950 i 1.050. En el segon, són habituals valors entre 600 i 1.400. El point forecast és idèntic, però la política d’inventari raonable no hauria de ser-ho.\n\nEl punt també amaga asimetria. Una distribució pot tenir risc principal a la baixa, una altra una cua alta i una altra cues en tots dos costats. **La mateixa mitjana pot amagar perfils de risc molt diferents.**\n\nAquesta pèrdua d’informació importa especialment quan el cost d’error és asimètric. Si quedar curt és molt més car que passar-se, un percentil alt pot ser més rellevant que la mitjana.\n\n**El rang canvia la política**\nUna decisió robusta ha de dir quanta incertesa vol cobrir. En inventari pot convertir-se en nivell de servei. En capacitat, en reserva. En caixa, en coixí de liquiditat.\n\nPer això intervals predictius i quantils poden ser més accionables que un únic punt. **No prenen la decisió; fan explícit el nivell de risc que la decisió accepta.**\n\nTambé ajuden a separar forecast i política. El model pot indicar que un rang conté una proporció determinada de resultats plausibles. L’empresa decideix si planifica pel centre, per un percentil alt o per un escenari advers.\n\n**No tota incertesa és igual**\nPart de la incertesa ve de variabilitat inherent: ni un model perfecte coneix el resultat exacte. Una altra part ve de desconeixement del model, poques dades o canvi de règim. **La resposta empresarial pot ser diferent segons l’origen del risc.**\n\nUna variabilitat estable es pot gestionar amb buffers calibrats. Una ruptura estructural pot requerir escenaris i revisió freqüent. Una promoció no confirmada pot representar-se millor amb branques condicionals que amb un interval continu.\n\nLa correlació també importa. Si diversos productes fallen alhora per una causa comuna, sumar intervals independents pot subestimar risc de cartera. Cal pensar en incertesa de decisió, no només de sèrie.\n\n**Quan un punt és suficient**\nNo totes les decisions necessiten distribucions sofisticades. Si el procés és estable, l’error costa poc, l’acció és reversible i es pot corregir aviat, un punt amb regles simples pot ser suficient.\n\nL’objectiu és evitar complexitat sense valor. **Mostrar una distribució completa no millora la decisió si ningú sap què fer-ne.** La representació ha de correspondre al risc que realment es gestiona.\n\nUna prova pràctica és preguntar què faríem diferent si el rang fos ampli o estret. Si la resposta és “res”, el punt pot bastar. Si canviaríem estoc, capacitat, pressupost o timing, el rang conté informació operativa.\n\nTambé cal revisar calibratge. Un interval del 90 % hauria de cobrir aproximadament la proporció esperada de resultats en condicions comparables. Sense calibratge, els rangs poden crear falsa confiança.\n\nEl missatge final no és abandonar el point forecast. És entendre la seva funció. **El punt resumeix expectativa; la incertesa explica quanta confiança hem de posar en aquesta expectativa abans de comprometre recursos.** En decisions importants, una sola xifra sol ser massa poca informació.",
+      "seo_title": "Limitacions del point forecast",
+      "seo_description": "Per què un forecast puntual pot amagar rang, asimetria i risc, i quan intervals, quantils o escenaris milloren la decisió.",
+      "seo_keywords": [
+        "point forecast limitations",
+        "forecast uncertainty",
+        "intervals forecasting",
+        "probabilistic forecasting"
+      ],
+      "tags": [
+        "Forecasting",
+        "Uncertainty",
+        "Decision Making"
+      ]
+    }
+  }
+}
