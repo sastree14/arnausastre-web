@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-102",
+  "sequence": 102,
+  "arc_id": "ARC-26",
+  "slug": "reporting-vs-decision-intelligence",
+  "scheduled_at": "2027-06-10T09:00:00+02:00",
+  "knowledge_area": "analytics",
+  "cluster": "Analytics & Decision Intelligence",
+  "editorial_pillar": "consulting_decision_insights",
+  "content_family": "compare",
+  "angle": "reporting vs decision intelligence",
+  "primary_keyword": "reporting vs decision intelligence",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-101",
+    "KB-103",
+    "KB-104"
+  ],
+  "variants": {
+    "es": {
+      "title": "Reporting vs decision intelligence",
+      "excerpt": "Reporting explica qué ha ocurrido; decision intelligence conecta datos, reglas, modelos y restricciones para decidir qué hacer después.",
+      "quick": [
+        "Reporting describe",
+        "Decision intelligence recomienda",
+        "El valor está en la acción"
+      ],
+      "section_titles": [
+        "Qué resuelve reporting",
+        "Qué añade decision intelligence",
+        "Dónde cambia la arquitectura",
+        "Cómo elegir el nivel adecuado"
+      ],
+      "business_title": "Reporting organiza la información; decision intelligence estructura la siguiente decisión y reduce la distancia entre insight y acción.",
+      "business_steps": [
+        "Visibilidad",
+        "Alternativas",
+        "Acción"
+      ],
+      "body": "Reporting y decision intelligence comparten datos, métricas e incluso interfaces, pero persiguen objetivos distintos. **Reporting organiza y explica información; decision intelligence intenta convertir esa información en una decisión mejor.**\n\nLa diferencia importa porque muchas empresas creen haber digitalizado una decisión cuando en realidad solo han digitalizado su observación. Un informe puede decir qué ocurrió ayer, qué unidad está desviándose o dónde cae el margen. **Eso mejora visibilidad, pero todavía deja al usuario la parte más difícil: interpretar, comparar alternativas y decidir.**\n\n**Qué resuelve reporting**\nReporting responde preguntas descriptivas: cuánto vendimos, qué margen obtuvimos, qué costes subieron, cuántos tickets siguen abiertos o qué previsión tenemos frente al presupuesto.\n\nSu función es crear una versión compartida de la realidad.\n\nEso reduce discusiones sobre datos y permite detectar anomalías. **Cuando el problema principal es que la empresa no sabe qué está ocurriendo, reporting puede ser exactamente la solución correcta.**\n\nTambién sirve para cumplimiento, seguimiento periódico y comunicación ejecutiva.\n\nLa arquitectura suele concentrarse en pipelines, modelado de datos, semántica de métricas y visualización.\n\nEl usuario sigue siendo responsable de interpretar y actuar.\n\nEsa separación puede ser perfectamente razonable cuando las decisiones son poco frecuentes, altamente estratégicas o difíciles de formalizar.\n\n**Qué añade decision intelligence**\nDecision intelligence empieza donde reporting termina.\n\nAdemás de mostrar una señal, incorpora reglas, modelos, constraints, simulaciones o una recomendación.\n\n**La pregunta deja de ser “qué pasó” y pasa a ser “qué opciones tenemos y cuál parece mejor bajo estas condiciones”.**\n\nEn pricing, puede simular impacto de cambios de precio sobre margen y demanda.\n\nEn inventario, puede sugerir cuánto reponer considerando forecast, lead time y coste.\n\nEn ventas, puede priorizar oportunidades según probabilidad, margen y capacidad disponible.\n\nEn operaciones, puede recomendar secuencia de tareas bajo restricciones.\n\nNo requiere necesariamente machine learning. Puede combinar business rules, optimización, estadística y simulación.\n\nLo importante es que exista una lógica explícita que conecte información con acción.\n\n**Dónde cambia la arquitectura**\nUn sistema de reporting necesita datos correctos y definiciones estables.\n\nUn sistema de decisión necesita además representar la decisión. **Eso implica variables controlables, restricciones, función objetivo y consecuencias.**\n\nTambién necesita feedback. Si recomendamos una acción, debemos registrar si se ejecutó y qué resultado produjo.\n\nEse loop permite evaluar la política y mejorarla.\n\nLa integración con sistemas operativos también cobra más importancia. Un dashboard puede vivir separado; una decisión útil suele necesitar escribir en CRM, ERP, planificación o workflow.\n\nLa latencia puede cambiar. Un reporte mensual tolera batch; una decisión de fraude puede requerir milisegundos.\n\nLa trazabilidad también aumenta. Hay que saber qué datos, modelo o regla generó la recomendación.\n\nY aparece uncertainty. Una decisión inteligente debería mostrar escenarios o confianza, no únicamente un número.\n\n**Cómo elegir el nivel adecuado**\nNo todas las decisiones necesitan una plataforma de decision intelligence.\n\nSi el problema es simplemente que las métricas están dispersas, consolidar reporting puede generar gran valor con menor coste.\n\nSi los usuarios ya ven claramente el problema pero toman decisiones inconsistentes o lentas, quizá falta una capa de decisión.\n\n**Una señal fuerte es que el trabajo real ocurre después del dashboard: exportar, calcular, comparar y decidir manualmente.**\n\nOtra señal es la repetición. Cuanto más frecuente es una decisión, más valor puede aportar formalizarla.\n\nEl coste de error también importa. Una decisión de alto impacto justifica más soporte y trazabilidad.\n\nLa variabilidad entre usuarios es otro indicador. Si dos personas con la misma información eligen acciones opuestas, conviene revisar si existe una policy explícita.\n\nTambién debemos distinguir recomendación de automatización. Decision intelligence puede quedarse en “recomendar” y preservar aprobación humana.\n\nLa madurez puede avanzar por etapas: reporting, diagnóstico, simulación, recomendación y automatización parcial.\n\nCada etapa debe justificar su coste mediante impacto.\n\nLas métricas también cambian. Reporting puede medirse por adopción y calidad de datos; decision intelligence debe medirse por decisiones, outcomes y valor económico.\n\nEl diseño debe partir de una decisión concreta. “Queremos IA en el dashboard” es una mala definición.\n\nMejor preguntar: qué decisión se repite, qué información necesita, qué restricciones existen y qué resultado queremos mejorar.\n\nTambién conviene mantener separadas señales y políticas. Una métrica puede informar varias decisiones y una policy puede utilizar varias métricas.\n\nLa gobernanza debe aumentar con el impacto. Una recomendación para priorizar leads no necesita los mismos controles que una decisión de crédito.\n\nLa arquitectura final puede combinar reporting y decision intelligence en una misma interfaz.\n\nEl reporting aporta contexto; la recomendación aporta dirección; la acción cierra el loop.\n\n**Reporting es suficiente cuando ver mejor permite decidir suficientemente bien. Decision intelligence empieza a ser necesaria cuando la empresa ya ve el problema, pero sigue sin decidir de forma consistente, rápida o económicamente óptima.**",
+      "seo_title": "Reporting vs decision intelligence",
+      "seo_description": "Diferencias entre reporting y decision intelligence y cómo decidir cuándo una empresa necesita pasar de visibilidad a recomendación y acción.",
+      "seo_keywords": [
+        "reporting vs decision intelligence",
+        "decision intelligence",
+        "business reporting",
+        "decision support"
+      ],
+      "tags": [
+        "Analytics",
+        "Decision Intelligence",
+        "Reporting"
+      ]
+    },
+    "en": {
+      "title": "Reporting vs decision intelligence",
+      "excerpt": "Reporting explains what happened; decision intelligence connects data, rules, models and constraints to decide what should happen next.",
+      "quick": [
+        "Reporting describes",
+        "Decision intelligence recommends",
+        "Value sits in action"
+      ],
+      "section_titles": [
+        "What reporting solves",
+        "What decision intelligence adds",
+        "Where the architecture changes",
+        "How to choose the right level"
+      ],
+      "business_title": "Reporting organizes information; decision intelligence structures the next decision and shortens the distance from insight to action.",
+      "business_steps": [
+        "Visibility",
+        "Alternatives",
+        "Action"
+      ],
+      "body": "Reporting and decision intelligence can share data, metrics and even interfaces, but they pursue different objectives. **Reporting organizes and explains information; decision intelligence tries to turn that information into a better decision.**\n\nThe distinction matters because many companies believe they have digitized a decision when they have only digitized observation. A report can show what happened yesterday, which unit is drifting or where margin is falling. **That improves visibility, but still leaves the hardest work to the user: interpretation, option comparison and choice.**\n\n**What reporting solves**\nReporting answers descriptive questions: how much was sold, which margin was achieved, which costs rose, how many tickets remain open or how forecast compares with budget.\n\nIts role is to create a shared version of reality.\n\nThat reduces disputes over data and makes anomalies visible. **When the core problem is that the organization does not know what is happening, reporting can be exactly the right solution.**\n\nIt also supports compliance, periodic tracking and executive communication.\n\nArchitecture usually focuses on pipelines, data models, metric semantics and visualization.\n\nThe user remains responsible for interpretation and action.\n\nThat separation can be perfectly appropriate for infrequent, strategic or difficult-to-formalize decisions.\n\n**What decision intelligence adds**\nDecision intelligence begins where reporting ends.\n\nBeyond showing a signal, it adds rules, models, constraints, simulations or a recommendation.\n\n**The question changes from “what happened?” to “what options do we have and which seems best under these conditions?”.**\n\nIn pricing, it can simulate the impact of price changes on margin and demand.\n\nIn inventory, it can suggest replenishment quantities using forecast, lead time and cost.\n\nIn sales, it can rank opportunities by probability, margin and available capacity.\n\nIn operations, it can recommend task sequencing under constraints.\n\nMachine learning is not required. Business rules, optimization, statistics and simulation may all be used.\n\nThe important element is an explicit logic that connects information to action.\n\n**Where the architecture changes**\nA reporting system needs correct data and stable definitions.\n\nA decision system must also represent the decision itself. **That means controllable variables, constraints, an objective and consequences.**\n\nIt also needs feedback. If the system recommends an action, the organization should record whether it was executed and what happened afterward.\n\nThat loop allows the policy to be evaluated and improved.\n\nIntegration with operating systems becomes more important too. A dashboard can remain separate; a useful decision often needs to write back to CRM, ERP, planning or workflow systems.\n\nLatency can change. Monthly reporting can run in batch; fraud decisions may require milliseconds.\n\nTraceability becomes more important as well. The organization needs to know which data, model or rule produced the recommendation.\n\nUncertainty enters too. A strong decision system should show scenarios or confidence rather than only one number.\n\n**How to choose the right level**\nNot every decision needs a decision-intelligence platform.\n\nIf the problem is simply scattered metrics, consolidated reporting can create substantial value at lower cost.\n\nIf users already see the issue clearly but decisions remain inconsistent or slow, a decision layer may be missing.\n\n**A strong signal is that the real work starts after the dashboard: exporting, calculating, comparing and deciding manually.**\n\nRepetition matters. The more frequently a decision occurs, the more value there is in formalizing it.\n\nError cost matters too. High-impact decisions justify more support and traceability.\n\nVariation between users is another clue. If two people with the same information choose opposite actions, it is worth checking whether an explicit policy exists.\n\nRecommendation should also be separated from automation. Decision intelligence can recommend while preserving human approval.\n\nMaturity can progress gradually: reporting, diagnosis, simulation, recommendation and partial automation.\n\nEach stage should justify its cost through measurable impact.\n\nMetrics change as well. Reporting can be measured through adoption and data quality; decision intelligence should be measured through decisions, outcomes and economic value.\n\nDesign should begin with one concrete decision. “We want AI in the dashboard” is not a useful requirement.\n\nA better starting point is: which decision repeats, which information it needs, which constraints apply and which outcome should improve?\n\nSignals and policies should remain conceptually separate. One metric can inform several decisions, and one policy can use several metrics.\n\nGovernance should increase with impact. Lead prioritization does not require the same controls as credit approval.\n\nThe final architecture may combine reporting and decision intelligence in one interface.\n\nReporting provides context; recommendation provides direction; action closes the loop.\n\n**Reporting is sufficient when better visibility already enables sufficiently good decisions. Decision intelligence becomes useful when the business can see the problem but still cannot decide consistently, quickly or economically well.**",
+      "seo_title": "Reporting vs Decision Intelligence",
+      "seo_description": "How reporting differs from decision intelligence and when businesses should move from visibility toward recommendation, simulation and action.",
+      "seo_keywords": [
+        "reporting vs decision intelligence",
+        "decision intelligence",
+        "business reporting",
+        "decision support"
+      ],
+      "tags": [
+        "Analytics",
+        "Decision Intelligence",
+        "Reporting"
+      ]
+    },
+    "ca": {
+      "title": "Reporting vs decision intelligence",
+      "excerpt": "Reporting explica què ha passat; decision intelligence connecta dades, regles, models i restriccions per decidir què fer després.",
+      "quick": [
+        "Reporting descriu",
+        "Decision intelligence recomana",
+        "El valor és a l’acció"
+      ],
+      "section_titles": [
+        "Què resol reporting",
+        "Què afegeix decision intelligence",
+        "On canvia l’arquitectura",
+        "Com triar el nivell adequat"
+      ],
+      "business_title": "Reporting organitza informació; decision intelligence estructura la següent decisió i redueix la distància entre insight i acció.",
+      "business_steps": [
+        "Visibilitat",
+        "Alternatives",
+        "Acció"
+      ],
+      "body": "Reporting i decision intelligence poden compartir dades, mètriques i fins i tot interfícies, però persegueixen objectius diferents. **Reporting organitza i explica informació; decision intelligence intenta convertir aquella informació en una decisió millor.**\n\nLa diferència importa perquè moltes empreses creuen haver digitalitzat una decisió quan només han digitalitzat l’observació. Un informe pot mostrar què va passar ahir, quina unitat es desvia o on cau el marge. **Això millora visibilitat, però deixa a l’usuari la part més difícil: interpretar, comparar alternatives i decidir.**\n\n**Què resol reporting**\nReporting respon preguntes descriptives: quant hem venut, quin marge hem obtingut, quins costos han pujat, quants tickets continuen oberts o com compara forecast amb pressupost.\n\nLa seva funció és crear una versió compartida de la realitat.\n\nAixò redueix discussions sobre dades i permet detectar anomalies. **Quan el problema principal és que l’organització no sap què està passant, reporting pot ser exactament la solució correcta.**\n\nTambé serveix per compliance, seguiment periòdic i comunicació executiva.\n\nL’arquitectura sol concentrar-se en pipelines, modelatge de dades, semàntica de mètriques i visualització.\n\nL’usuari continua sent responsable d’interpretar i actuar.\n\nAquesta separació pot ser perfecta per decisions poc freqüents, estratègiques o difícils de formalitzar.\n\n**Què afegeix decision intelligence**\nDecision intelligence comença on reporting acaba.\n\nA més de mostrar una senyal, incorpora regles, models, constraints, simulacions o recomanacions.\n\n**La pregunta deixa de ser “què ha passat?” i passa a ser “quines opcions tenim i quina sembla millor sota aquestes condicions?”.**\n\nEn pricing, pot simular l’impacte de canvis de preu sobre marge i demanda.\n\nEn inventari, pot suggerir reposició segons forecast, lead time i cost.\n\nEn vendes, pot prioritzar oportunitats per probabilitat, marge i capacitat.\n\nEn operacions, pot recomanar seqüència de tasques sota restriccions.\n\nNo necessita necessàriament machine learning. Regles, optimització, estadística i simulació poden ser suficients.\n\nL’important és una lògica explícita que connecti informació amb acció.\n\n**On canvia l’arquitectura**\nUn sistema de reporting necessita dades correctes i definicions estables.\n\nUn sistema de decisió ha de representar també la decisió. **Això implica variables controlables, restriccions, funció objectiu i conseqüències.**\n\nTambé necessita feedback. Si recomanem una acció, s’ha de registrar si s’executa i quin resultat produeix.\n\nAquest loop permet avaluar i millorar la policy.\n\nLa integració amb sistemes operatius també és més important. Un dashboard pot viure separat; una decisió útil sovint necessita escriure en CRM, ERP, planning o workflow.\n\nLa latència pot canviar. Reporting mensual tolera batch; frau pot necessitar mil·lisegons.\n\nLa traçabilitat també augmenta. Cal saber quines dades, model o regla han generat la recomanació.\n\nTambé entra la incertesa. Un bon sistema ha de mostrar escenaris o confiança, no només un número.\n\n**Com triar el nivell adequat**\nNo tota decisió necessita una plataforma de decision intelligence.\n\nSi el problema és que les mètriques estan disperses, consolidar reporting pot generar molt valor amb menys cost.\n\nSi els usuaris ja veuen el problema però decideixen de manera inconsistent o lenta, pot faltar una capa de decisió.\n\n**Una senyal forta és que la feina real comença després del dashboard: exportar, calcular, comparar i decidir manualment.**\n\nLa repetició importa. Com més freqüent és una decisió, més valor té formalitzar-la.\n\nEl cost de l’error també pesa. Decisions d’alt impacte justifiquen més suport i traçabilitat.\n\nLa variabilitat entre usuaris és un altre indicador. Si dues persones amb les mateixes dades trien accions oposades, pot faltar una policy explícita.\n\nTambé cal separar recomanació d’automatització. Decision intelligence pot recomanar i mantenir aprovació humana.\n\nLa maduresa pot avançar gradualment: reporting, diagnòstic, simulació, recomanació i automatització parcial.\n\nCada etapa ha de justificar el cost amb impacte.\n\nLes mètriques també canvien. Reporting es pot mesurar per adopció i qualitat de dades; decision intelligence per decisions, outcomes i valor econòmic.\n\nEl disseny ha de començar per una decisió concreta. “Volem IA al dashboard” és una mala definició.\n\nMillor preguntar quina decisió es repeteix, quina informació necessita, quines restriccions hi ha i quin outcome volem millorar.\n\nTambé convé separar senyals de policies. Una mètrica pot informar diverses decisions i una policy pot utilitzar diverses mètriques.\n\nGovernance ha d’augmentar amb l’impacte. Prioritzar leads no necessita els mateixos controls que aprovar crèdit.\n\nL’arquitectura final pot combinar reporting i decision intelligence en una mateixa interfície.\n\nReporting aporta context; la recomanació aporta direcció; l’acció tanca el loop.\n\n**Reporting és suficient quan veure millor ja permet decidir prou bé. Decision intelligence és útil quan l’empresa veu el problema però encara no decideix de manera consistent, ràpida o econòmicament òptima.**",
+      "seo_title": "Reporting vs decision intelligence",
+      "seo_description": "Diferències entre reporting i decision intelligence i quan convé passar de visibilitat cap a recomanació, simulació i acció.",
+      "seo_keywords": [
+        "reporting vs decision intelligence",
+        "decision intelligence",
+        "business reporting",
+        "decision support"
+      ],
+      "tags": [
+        "Analytics",
+        "Decision Intelligence",
+        "Reporting"
+      ]
+    }
+  }
+}
