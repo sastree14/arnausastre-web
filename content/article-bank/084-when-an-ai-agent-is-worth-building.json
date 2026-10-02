@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-084",
+  "sequence": 84,
+  "arc_id": "ARC-21",
+  "slug": "when-an-ai-agent-is-worth-building",
+  "scheduled_at": "2027-05-02T09:00:00+02:00",
+  "knowledge_area": "ai_automation",
+  "cluster": "AI & Automation",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "decision_guide",
+  "angle": "when to build ai agent",
+  "primary_keyword": "when to build ai agent",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-081",
+    "KB-082",
+    "KB-083"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cuándo merece la pena construir un agente de IA",
+      "excerpt": "Un agente merece inversión cuando existe interpretación repetitiva, decisiones acotadas, suficiente volumen y una forma clara de medir valor y riesgo.",
+      "quick": [
+        "Debe existir incertidumbre útil",
+        "La autonomía tiene que estar acotada",
+        "El impacto debe superar el coste"
+      ],
+      "section_titles": [
+        "Comprueba que existe un problema agentic",
+        "Define herramientas y límites",
+        "Valida valor antes de autonomía",
+        "Diseña producción y ownership"
+      ],
+      "business_title": "Un agente merece construirse cuando convierte interpretación repetitiva en decisiones útiles dentro de límites que la empresa puede controlar y medir.",
+      "business_steps": [
+        "Caso agentic",
+        "Perímetro seguro",
+        "Valor demostrado"
+      ],
+      "body": "Construir un AI agent puede ser técnicamente sencillo y empresarialmente innecesario. Hoy es posible conectar un modelo a herramientas, memoria y datos internos con relativamente poco código. **La dificultad real no es conseguir que el agente haga algo; es demostrar que hace una tarea suficientemente valiosa, repetible y controlable como para justificar su autonomía.**\n\nUn buen candidato combina incertidumbre de interpretación, volumen, acciones acotadas y economics claros. **Si la tarea puede resolverse mejor con reglas o si nadie puede definir qué significa éxito, todavía no existe un caso sólido para un agente.**\n\n**Comprueba que existe un problema agentic**\nLa primera condición es que el workflow contenga decisiones contextuales que no sean fáciles de codificar exhaustivamente.\n\nPuede necesitar leer comunicaciones, comparar documentos, buscar información, decidir qué fuente utilizar o adaptar una secuencia según el resultado anterior.\n\n**La necesidad de interpretación debe ser recurrente, no una excepción anecdótica.**\n\nTambién debe existir un objetivo concreto: resolver un ticket, preparar una propuesta, investigar una incidencia, completar un expediente o coordinar acciones entre sistemas.\n\nEl espacio de acción tiene que ser razonablemente acotado. Un agente que “haga lo que sea necesario” es mucho más difícil de validar que uno con seis tools y un objetivo bien definido.\n\nEl volumen importa. Automatizar una tarea de cinco minutos ejecutada dos veces al mes puede no recuperar la inversión.\n\n**Define herramientas y límites**\nAntes de pensar en autonomía, define qué puede leer, qué puede escribir y qué nunca puede hacer.\n\nCada tool debería tener un contrato explícito: schema, permisos, validaciones, límites y comportamiento ante error. **La seguridad se diseña en las tools, no solo en el prompt.**\n\nConviene separar acciones reversibles de irreversibles. Buscar información o crear un borrador tiene riesgo bajo; enviar dinero, borrar datos o publicar externamente exige más control.\n\nLos límites pueden ser monetarios, temporales, por rol, por número de acciones o por nivel de confianza.\n\nTambién hay que definir fuentes autorizadas. Un agente que consulta información empresarial no debería mezclar documentos internos con fuentes no verificadas sin una política clara.\n\nEl escalado humano forma parte del diseño. El agente necesita saber cuándo detenerse y pedir revisión.\n\n**Valida valor antes de autonomía**\nEl primer rollout debería medir capacidad real sin conceder demasiado poder.\n\nShadow mode permite comparar qué habría hecho el agente con la decisión humana. Assisted mode permite que recomiende y una persona apruebe.\n\n**Los overrides son datos de producto: muestran dónde falta contexto, dónde la policy no está clara o dónde el reasoning falla.**\n\nLa evaluación debe incluir task success, correction rate, tiempo ahorrado, coste por caso, latencia y fallos de tool use.\n\nTambién conviene comparar contra un baseline no-agentic. Puede ser una búsqueda con RAG, una automatización con reglas o un copiloto sin autonomía.\n\nSi el agente solo mejora marginalmente ese baseline, quizá la arquitectura no compensa.\n\nLa calidad debe medirse en escenarios reales, incluidos edge cases y inputs ambiguos.\n\n**Diseña producción y ownership**\nUn agente en producción necesita observabilidad completa: prompt, contexto, tool calls, argumentos, respuesta, retries, coste y outcome.\n\nTambién necesita versionado. Cambiar modelo, prompt o descripción de una tool puede modificar comportamiento.\n\n**El agente es un sistema vivo y debe gestionarse como producto operativo, no como una demo conectada a un LLM.**\n\nLos fallbacks son obligatorios. Si falla el modelo, una tool o una fuente, el workflow debe degradarse de forma segura.\n\nEl sistema debería limitar loops, coste máximo y número de tool calls.\n\nLa evaluación continua puede utilizar suites de casos representativos y regresión semántica después de cambios.\n\nTambién conviene monitorizar concentración de errores. Un 95 % de éxito global puede esconder fallos graves en una clase crítica.\n\nEl ownership debe estar repartido con claridad: quién mantiene datos, prompts, tools, policy y métricas de negocio.\n\nLa seguridad necesita revisar prompt injection, exfiltración, permisos y datos sensibles.\n\nEl coste debe incluir infraestructura y supervisión humana. Un agente que cuesta poco en tokens puede ser caro si genera muchas excepciones.\n\nLa autonomía puede incrementarse por etapas. Primero lectura, después borradores, luego acciones reversibles y finalmente acciones más sensibles si existe evidencia suficiente.\n\nTambién debe existir una regla de retirada. Si el workflow cambia o una alternativa determinista se vuelve suficiente, simplificar debería ser posible.\n\nLa calidad de experiencia importa. Un agente que tarda dos minutos en una tarea que una persona resuelve en treinta segundos no aporta valor aunque “funcione”.\n\nFinalmente, el business case debe poder expresarse de forma sencilla: volumen de casos, minutos ahorrados, calidad mejorada, riesgo controlado y coste total.\n\n**Un AI agent merece construirse cuando existe suficiente incertidumbre para necesitar interpretación, suficiente estructura para limitar su libertad y suficiente volumen para que el valor se repita.** Esa combinación convierte autonomía en capacidad empresarial y no en complejidad tecnológica.",
+      "seo_title": "Cuándo construir un agente de IA",
+      "seo_description": "Cómo decidir si un AI agent merece inversión según incertidumbre, volumen, límites, seguridad, evaluación, autonomía y valor operativo.",
+      "seo_keywords": [
+        "when to build ai agent",
+        "AI agent business case",
+        "agentic AI decision",
+        "AI agent implementation"
+      ],
+      "tags": [
+        "AI Agents",
+        "Decision Guide",
+        "AI Strategy"
+      ]
+    },
+    "en": {
+      "title": "When an AI agent is worth building",
+      "excerpt": "An agent is worth the investment when repeated interpretation, bounded decisions, sufficient volume and measurable value and risk all exist.",
+      "quick": [
+        "Useful uncertainty must exist",
+        "Autonomy must be bounded",
+        "Impact must exceed cost"
+      ],
+      "section_titles": [
+        "Confirm there is an agentic problem",
+        "Define tools and boundaries",
+        "Validate value before autonomy",
+        "Design production and ownership"
+      ],
+      "business_title": "An agent is worth building when it turns repeated interpretation into useful decisions inside boundaries the organization can control and measure.",
+      "business_steps": [
+        "Agentic use case",
+        "Safe perimeter",
+        "Demonstrated value"
+      ],
+      "body": "Building an AI agent can be technically easy and commercially unnecessary. It is now possible to connect a model to tools, memory and internal data with relatively little code. **The real difficulty is not making the agent do something; it is proving that the task is valuable, repeatable and controllable enough to justify autonomy.**\n\nA strong candidate combines interpretation uncertainty, sufficient volume, bounded actions and clear economics. **If rules can solve the task better or nobody can define success, there is not yet a strong case for an agent.**\n\n**Confirm there is an agentic problem**\nThe first condition is that the workflow contains contextual decisions that are difficult to encode exhaustively.\n\nIt may need to read communications, compare documents, search information, decide which source to use or adapt its sequence after each result.\n\n**The interpretation requirement should be recurring rather than an occasional exception.**\n\nThere also needs to be a concrete objective: resolve a ticket, prepare a proposal, investigate an incident, complete a case or coordinate actions across systems.\n\nThe action space should be reasonably bounded. An agent that can “do whatever is needed” is much harder to validate than one with six tools and a clearly defined goal.\n\nVolume matters as well. Automating a five-minute task performed twice per month may never repay the investment.\n\n**Define tools and boundaries**\nBefore autonomy, define what the agent can read, what it can write and what it must never do.\n\nEvery tool should expose an explicit contract: schema, permissions, validation, limits and failure behaviour. **Security should be designed into the tools, not only into the prompt.**\n\nSeparate reversible from irreversible actions. Searching or drafting is low risk; moving money, deleting data or publishing externally needs much stronger control.\n\nLimits can be monetary, temporal, role-based, action-count based or confidence-based.\n\nTrusted sources should be explicit too. An agent using internal business information should not mix it with unverified external sources without a clear policy.\n\nHuman escalation is part of the design. The agent needs conditions under which it stops and asks for review.\n\n**Validate value before autonomy**\nThe first rollout should measure capability without granting too much power.\n\nShadow mode compares what the agent would have done with the human decision. Assisted mode lets the agent recommend while a person approves.\n\n**Overrides are product data: they reveal missing context, unclear policy and reasoning failures.**\n\nEvaluation should include task success, correction rate, time saved, cost per case, latency and tool-use failures.\n\nThe agent should also be compared with a non-agentic baseline: retrieval, deterministic automation or a copilot without autonomy.\n\nIf the agent only marginally improves that baseline, the architecture may not be worthwhile.\n\nEvaluation needs real scenarios, including edge cases and ambiguous inputs.\n\n**Design production and ownership**\nA production agent needs full observability: prompt, context, tool calls, arguments, response, retries, cost and final outcome.\n\nIt also needs versioning. Changing the model, prompt or tool description can change behaviour.\n\n**An agent is a living operating system and should be managed as a product, not as an LLM demo.**\n\nFallbacks are mandatory. If the model, a tool or a source fails, the workflow should degrade safely.\n\nThe system should limit loops, maximum spend and tool-call count.\n\nContinuous evaluation can use representative scenario suites and semantic regression tests after changes.\n\nError concentration should also be monitored. A 95% global success rate can hide severe failure in one critical task class.\n\nOwnership needs to be explicit: who maintains data, prompts, tools, policy and business metrics.\n\nSecurity review should cover prompt injection, data exfiltration, permissions and sensitive information.\n\nCost includes infrastructure and human supervision. An agent may be cheap in tokens and expensive because exceptions require constant review.\n\nAutonomy can expand in stages: reading first, then drafting, then reversible actions and only later more sensitive actions when evidence supports it.\n\nThere should also be an exit rule. If the workflow changes or deterministic automation becomes sufficient, simplification should remain possible.\n\nUser experience matters. An agent that takes two minutes to complete a task a person finishes in thirty seconds creates little value even if technically successful.\n\nThe business case should ultimately fit into a simple statement: case volume, time saved, quality improvement, controlled risk and total cost.\n\n**An AI agent is worth building when there is enough uncertainty to require interpretation, enough structure to bound its freedom and enough volume for value to repeat.** That combination turns autonomy into business capability rather than technological complexity.",
+      "seo_title": "When to Build an AI Agent",
+      "seo_description": "How to decide whether an AI agent is worth building based on uncertainty, volume, boundaries, security, evaluation, autonomy and operating value.",
+      "seo_keywords": [
+        "when to build ai agent",
+        "AI agent business case",
+        "agentic AI decision",
+        "AI agent implementation"
+      ],
+      "tags": [
+        "AI Agents",
+        "Decision Guide",
+        "AI Strategy"
+      ]
+    },
+    "ca": {
+      "title": "Quan val la pena construir un agent d’IA",
+      "excerpt": "Un agent mereix inversió quan existeix interpretació repetitiva, decisions acotades, prou volum i una manera clara de mesurar valor i risc.",
+      "quick": [
+        "Ha d’existir incertesa útil",
+        "L’autonomia ha d’estar acotada",
+        "L’impacte ha de superar el cost"
+      ],
+      "section_titles": [
+        "Comprova que existeix un problema agentic",
+        "Defineix tools i límits",
+        "Valida valor abans d’autonomia",
+        "Dissenya producció i ownership"
+      ],
+      "business_title": "Un agent mereix construir-se quan converteix interpretació repetitiva en decisions útils dins de límits que l’organització pot controlar i mesurar.",
+      "business_steps": [
+        "Cas agentic",
+        "Perímetre segur",
+        "Valor demostrat"
+      ],
+      "body": "Construir un AI agent pot ser tècnicament fàcil i empresarialment innecessari. Avui és possible connectar un model a tools, memòria i dades internes amb relativament poc codi. **La dificultat real no és aconseguir que l’agent faci alguna cosa; és demostrar que la tasca és prou valuosa, repetible i controlable per justificar autonomia.**\n\nUn bon candidat combina incertesa d’interpretació, volum suficient, accions acotades i economics clars. **Si les regles resolen millor la tasca o ningú pot definir què significa èxit, encara no existeix un cas sòlid per un agent.**\n\n**Comprova que existeix un problema agentic**\nLa primera condició és que el workflow contingui decisions contextuals difícils de codificar exhaustivament.\n\nPot necessitar llegir comunicacions, comparar documents, buscar informació, decidir quina font utilitzar o adaptar la seqüència després de cada resultat.\n\n**La necessitat d’interpretació ha de ser recurrent i no una excepció anecdòtica.**\n\nTambé ha d’existir un objectiu concret: resoldre un ticket, preparar una proposta, investigar una incidència, completar un expedient o coordinar accions entre sistemes.\n\nL’espai d’acció ha d’estar raonablement acotat. Un agent que pot “fer el que calgui” és molt més difícil de validar que un amb sis tools i un objectiu clar.\n\nEl volum importa. Automatitzar una tasca de cinc minuts executada dues vegades al mes pot no recuperar la inversió.\n\n**Defineix tools i límits**\nAbans de pensar en autonomia, defineix què pot llegir, què pot escriure i què no pot fer mai.\n\nCada tool hauria de tenir un contracte explícit: schema, permisos, validacions, límits i comportament davant error. **La seguretat es dissenya a les tools, no només al prompt.**\n\nConvé separar accions reversibles d’irreversibles. Buscar informació o crear un draft té risc baix; moure diners, esborrar dades o publicar externament exigeix més control.\n\nEls límits poden ser monetaris, temporals, per rol, nombre d’accions o nivell de confiança.\n\nTambé cal definir fonts autoritzades. Un agent amb informació interna no hauria de barrejar-la amb fonts no verificades sense policy clara.\n\nL’escalat humà forma part del disseny. L’agent necessita saber quan aturar-se i demanar revisió.\n\n**Valida valor abans d’autonomia**\nEl primer rollout hauria de mesurar capacitat real sense donar massa poder.\n\nShadow mode permet comparar què hauria fet l’agent amb la decisió humana. Assisted mode permet recomanar mentre una persona aprova.\n\n**Els overrides són dades de producte: mostren on falta context, on la policy no està clara o on falla el reasoning.**\n\nL’avaluació ha d’incloure task success, correction rate, temps estalviat, cost per cas, latència i errors de tool use.\n\nTambé convé comparar contra un baseline no-agentic: retrieval, automatització determinista o un copilot sense autonomia.\n\nSi l’agent només millora marginalment aquest baseline, potser l’arquitectura no compensa.\n\nLa qualitat s’ha de mesurar amb escenaris reals, edge cases i inputs ambigus.\n\n**Dissenya producció i ownership**\nUn agent en producció necessita observabilitat completa: prompt, context, tool calls, arguments, resposta, retries, cost i outcome.\n\nTambé necessita versionat. Canviar model, prompt o descripció d’una tool pot modificar comportament.\n\n**Un agent és un sistema viu i s’ha de gestionar com un producte operatiu, no com una demo amb LLM.**\n\nEls fallbacks són obligatoris. Si falla el model, una tool o una font, el workflow ha de degradar-se de manera segura.\n\nEl sistema ha de limitar loops, cost màxim i nombre de tool calls.\n\nL’avaluació contínua pot utilitzar suites d’escenaris representatius i regressió semàntica després de canvis.\n\nTambé cal monitoritzar concentració d’errors. Un 95 % d’èxit global pot amagar fallades greus en una classe crítica.\n\nL’ownership ha d’estar clar: qui manté dades, prompts, tools, policy i mètriques de negoci.\n\nLa seguretat necessita revisar prompt injection, exfiltració, permisos i dades sensibles.\n\nEl cost inclou infraestructura i supervisió humana. Un agent pot ser barat en tokens i car si genera moltes excepcions.\n\nL’autonomia es pot ampliar per etapes: lectura, drafts, accions reversibles i finalment accions més sensibles si hi ha evidència.\n\nTambé ha d’existir una regla de retirada. Si el workflow canvia o una alternativa determinista passa a ser suficient, simplificar ha de ser possible.\n\nL’experiència d’usuari importa. Un agent que tarda dos minuts en una tasca que una persona fa en trenta segons aporta poc valor encara que “funcioni”.\n\nEl business case final ha de poder resumir-se: volum de casos, temps estalviat, qualitat millorada, risc controlat i cost total.\n\n**Un AI agent mereix construir-se quan existeix prou incertesa per necessitar interpretació, prou estructura per limitar la seva llibertat i prou volum perquè el valor es repeteixi.** Aquesta combinació converteix autonomia en capacitat empresarial i no en complexitat tecnològica.",
+      "seo_title": "Quan construir un agent d’IA",
+      "seo_description": "Com decidir si un AI agent mereix inversió segons incertesa, volum, límits, seguretat, avaluació, autonomia i valor operatiu.",
+      "seo_keywords": [
+        "when to build ai agent",
+        "AI agent business case",
+        "agentic AI decision",
+        "AI agent implementation"
+      ],
+      "tags": [
+        "AI Agents",
+        "Decision Guide",
+        "AI Strategy"
+      ]
+    }
+  }
+}
