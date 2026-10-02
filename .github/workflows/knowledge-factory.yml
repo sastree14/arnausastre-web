@@ -33,6 +33,8 @@ jobs:
     if: ${{ github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, '[knowledge-factory]') }}
     runs-on: ubuntu-latest
     timeout-minutes: 240
+    env:
+      PYTHONPATH: ${{ github.workspace }}
 
     steps:
       - uses: actions/checkout@v4
@@ -89,4 +91,5 @@ jobs:
           git config user.email "knowledge-factory@users.noreply.github.com"
           git add content/article-bank
           git commit -m "[knowledge-factory] materialize 200 publish-ready Knowledge articles"
+          git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin "HEAD:$GITHUB_REF_NAME"
