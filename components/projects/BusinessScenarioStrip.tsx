@@ -1,16 +1,13 @@
-import type { SiteLanguage } from '@/lib/public-copy'
-import { sc12BusinessOutcomeMetrics } from '@/lib/project-commercial-copy'
-
 export default function BusinessScenarioStrip({
   label,
   headline,
   summary,
-  lang,
+  metrics,
 }: {
   label: string
   headline: string
   summary: string
-  lang: SiteLanguage
+  metrics: Array<{ value: string; label: string; note?: string }>
 }) {
   return (
     <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
@@ -28,7 +25,7 @@ export default function BusinessScenarioStrip({
           </div>
 
           <div className="grid gap-3 sm:grid-cols-3">
-            {sc12BusinessOutcomeMetrics[lang].map((metric) => (
+            {metrics.map((metric) => (
               <div
                 key={metric.label}
                 className="flex min-h-[142px] flex-col justify-center border border-[#5E86A8] bg-[#102033] px-5 py-5"
