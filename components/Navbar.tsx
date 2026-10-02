@@ -12,7 +12,7 @@ const COPY = {
   es: {
     home: 'Inicio',
     work: 'Cómo trabajamos',
-    cases: 'Casos',
+    cases: 'Casos de éxito',
     knowledge: 'Conocimiento',
     partner: 'Partner Data & AI',
     why: 'Por qué SC-Analytics',
@@ -21,7 +21,7 @@ const COPY = {
   ca: {
     home: 'Inici',
     work: 'Com treballem',
-    cases: 'Casos',
+    cases: 'Casos d’èxit',
     knowledge: 'Coneixement',
     partner: 'Partner Data & AI',
     why: 'Per què SC-Analytics',
@@ -30,7 +30,7 @@ const COPY = {
   en: {
     home: 'Home',
     work: 'How we work',
-    cases: 'Case studies',
+    cases: 'Success stories',
     knowledge: 'Knowledge',
     partner: 'Data & AI Partner',
     why: 'Why SC-Analytics',
