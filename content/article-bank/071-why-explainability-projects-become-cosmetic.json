@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-071",
+  "sequence": 71,
+  "arc_id": "ARC-18",
+  "slug": "why-explainability-projects-become-cosmetic",
+  "scheduled_at": "2027-03-31T09:00:00+02:00",
+  "knowledge_area": "risk_decision",
+  "cluster": "Machine Learning",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "failure_modes_mistakes",
+  "angle": "explainable ai limitations",
+  "primary_keyword": "explainable ai limitations",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-069",
+    "KB-070",
+    "KB-072"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué la explicabilidad puede acabar siendo cosmética",
+      "excerpt": "Añadir SHAP o feature importance no garantiza comprensión. La explicación aporta valor solo si responde preguntas reales de usuarios, governance y decisión.",
+      "quick": [
+        "Una gráfica no es una explicación",
+        "La audiencia define la necesidad",
+        "Explicar debe cambiar una acción"
+      ],
+      "section_titles": [
+        "Mostrar importancia no basta",
+        "La explicación puede contar una historia equivocada",
+        "La audiencia cambia la respuesta",
+        "Valida la explicación como parte del producto"
+      ],
+      "business_title": "La explicabilidad deja de ser cosmética cuando ayuda a entender, desafiar o ejecutar una decisión de forma más segura.",
+      "business_steps": [
+        "Pregunta real",
+        "Explicación útil",
+        "Decisión mejor"
+      ],
+      "body": "Es relativamente fácil añadir una capa de explainability a un modelo: feature importance, SHAP values, partial dependence o razones principales por predicción. Lo difícil es demostrar que esa capa responde a una necesidad real. **Una visualización técnicamente correcta puede ser completamente cosmética si nadie sabe qué decisión tomar con ella.**\n\nEl riesgo aparece cuando “tener explicabilidad” se convierte en un checkbox de proyecto. Se genera un dashboard, se muestran colores y contribuciones y se asume que el modelo ya es comprensible. **Explicar no significa producir más información; significa reducir incertidumbre relevante para quien debe usar, revisar o auditar la decisión.**\n\n**Mostrar importancia no basta**\nFeature importance responde qué variables utiliza el modelo de forma agregada, pero no necesariamente por qué una decisión concreta cambió.\n\nUna variable puede ser importante porque interactúa con otras, porque aparece en muchos splits o porque actúa como proxy. **Importancia no equivale a causalidad, legitimidad ni recomendación de acción.**\n\nSHAP ofrece una descomposición local potente, pero también puede interpretarse mal. Una contribución positiva indica cómo cambia el output respecto a una referencia, no que la feature “causó” el resultado.\n\nAdemás, variables correlacionadas pueden repartirse importancia de maneras distintas según método y configuración.\n\nLa explicación necesita contexto: baseline, definición del output, rango habitual y relación con la política.\n\n**La explicación puede contar una historia equivocada**\nLas personas buscan narrativas. Si mostramos las tres features con mayor contribución, es fácil convertirlas en una explicación causal aunque el modelo solo describa asociación.\n\nEsto puede llevar a acciones incorrectas. **Una explicación útil debe distinguir claramente entre “el modelo utilizó esta señal” y “cambiar esta señal cambiará el outcome real”.**\n\nTambién hay riesgo de estabilidad. Dos modelos casi equivalentes pueden asignar importancias distintas, y pequeñas perturbaciones de inputs pueden cambiar la explicación local.\n\nSi la explicación no es estable, un usuario puede recibir historias diferentes para casos casi idénticos.\n\nLos métodos post-hoc además aproximan el comportamiento del modelo bajo ciertos supuestos. No son una ventana perfecta al mecanismo interno.\n\n**La audiencia cambia la respuesta**\nUn data scientist quiere diagnosticar leakage, drift o dependencia excesiva de una feature. Un analista quiere saber por qué revisar un caso. Compliance quiere saber si el proceso puede justificarse y auditarse.\n\nUna misma gráfica no sirve para todos. **La explicación debe diseñarse desde la pregunta del usuario y no desde la herramienta disponible.**\n\nPara un usuario operativo puede bastar una razón en lenguaje claro: “riesgo elevado por combinación de atraso reciente y aumento de utilización”.\n\nPara auditoría puede necesitarse versión del modelo, features utilizadas, threshold, historial de cambios y evidencia de validación.\n\nPara management puede ser más útil una explicación global: qué drivers están moviendo el portfolio y cómo cambia el riesgo por segmento.\n\n**Valida la explicación como parte del producto**\nLa explainability debería probarse como cualquier componente de producto. ¿Los usuarios entienden correctamente lo que significa? ¿Reduce tiempo de revisión? ¿Mejora decisiones? ¿Disminuye overrides erróneos?\n\nUna prueba de comprensión puede revelar que una visualización sofisticada genera más confianza de la que merece. **La explicación debe aumentar comprensión, no solo sensación de comprensión.**\n\nTambién hay que documentar límites. Si SHAP no implica causalidad, el producto debería evitar lenguaje que sugiera “si cambias X, el resultado mejorará”.\n\nLa estabilidad puede medirse. Casos similares deberían producir explicaciones razonablemente coherentes si el comportamiento del modelo también lo es.\n\nLos explanations pueden monitorizarse por drift. Si una feature empieza a dominar de repente, puede ser una señal de cambio de datos o leakage.\n\nConviene separar explanation layer de decision policy. Una explicación no debería alterar automáticamente el threshold o la acción sin una regla explícita.\n\nTambién puede ser útil permitir drill-down. Una explicación simple para la mayoría y detalle técnico cuando un usuario necesita investigar.\n\nLa trazabilidad importa. Registrar qué explicación se mostró y qué decisión tomó el usuario permite evaluar si realmente aporta valor.\n\nEl lenguaje debe adaptarse. “Feature contribution” puede ser correcto para data science y confuso para operaciones.\n\nLa explicación tampoco debe convertirse en justificación retroactiva. Si el modelo produce una decisión problemática, una historia elegante no la hace correcta.\n\nEn algunos casos la mejor solución es un modelo más interpretable en lugar de una capa post-hoc cada vez más compleja.\n\nFinalmente, explainability debe competir contra otras formas de reducir riesgo: mejores datos, restricciones de modelo, revisión humana o simplificación.\n\n**La explicabilidad es útil cuando permite entender, cuestionar o actuar mejor.** Si solo añade gráficos después de que la decisión ya está tomada y nadie cambia su comportamiento, se ha convertido en decoración técnica alrededor de un modelo opaco.",
+      "seo_title": "Limitaciones de Explainable AI",
+      "seo_description": "Por qué SHAP, feature importance y otras técnicas pueden volverse cosméticas si no responden preguntas reales de usuarios, governance y decisión.",
+      "seo_keywords": [
+        "explainable ai limitations",
+        "SHAP limitations",
+        "model explainability",
+        "XAI"
+      ],
+      "tags": [
+        "Machine Learning",
+        "Explainability",
+        "XAI"
+      ]
+    },
+    "en": {
+      "title": "Why explainability projects become cosmetic",
+      "excerpt": "Adding SHAP or feature importance does not guarantee understanding. Explanation creates value only when it answers real user, governance and decision questions.",
+      "quick": [
+        "A chart is not an explanation",
+        "Audience defines the need",
+        "Explanation should change an action"
+      ],
+      "section_titles": [
+        "Showing importance is not enough",
+        "Explanation can tell the wrong story",
+        "The audience changes the answer",
+        "Validate explanation as part of the product"
+      ],
+      "business_title": "Explainability stops being cosmetic when it helps people understand, challenge or execute a decision more safely.",
+      "business_steps": [
+        "Real question",
+        "Useful explanation",
+        "Better decision"
+      ],
+      "body": "It is relatively easy to add an explainability layer to a model: feature importance, SHAP values, partial dependence or top reasons for individual predictions. The difficult part is proving that the layer answers a real need. **A technically correct visualization can still be cosmetic when nobody knows what decision to make with it.**\n\nThe risk appears when “having explainability” becomes a project checkbox. A dashboard is created, colours and contributions are displayed and the model is assumed to be understandable. **Explanation is not about producing more information; it is about reducing uncertainty relevant to the person using, reviewing or auditing the decision.**\n\n**Showing importance is not enough**\nFeature importance describes which variables the model uses globally, but it does not necessarily explain why one specific decision changed.\n\nA variable can be important because it interacts with others, appears in many tree splits or acts as a proxy. **Importance is not the same as causality, legitimacy or a recommended intervention.**\n\nSHAP provides a powerful local decomposition, but it can also be misread. A positive contribution describes how the model output moves relative to a reference; it does not prove that the feature caused the real-world outcome.\n\nCorrelated variables can also distribute importance differently depending on method and configuration.\n\nExplanation therefore needs context: reference point, output definition, normal range and connection to policy.\n\n**Explanation can tell the wrong story**\nPeople naturally search for narratives. Showing the three largest feature contributions makes it easy to turn them into a causal story even when the model is only describing associations.\n\nThat can drive incorrect actions. **A useful explanation must distinguish “the model used this signal” from “changing this signal will change the real outcome.”**\n\nStability is another risk. Two nearly equivalent models can assign importance differently, and small input changes can alter local explanations.\n\nIf explanations are unstable, similar cases can receive very different stories.\n\nPost-hoc methods also approximate model behaviour under assumptions. They are not perfect windows into the internal mechanism.\n\n**The audience changes the answer**\nA data scientist may want to diagnose leakage, drift or excessive dependency on one feature. An analyst wants to know why a case deserves review. Compliance wants to know whether the process can be justified and audited.\n\nOne visualization cannot serve all of them. **Explanation should be designed from the user’s question rather than from the tool that happens to be available.**\n\nFor an operator, a clear reason such as “risk elevated by recent delinquency and rising utilization” may be enough.\n\nAudit may require model version, features used, threshold, change history and validation evidence.\n\nManagement may need a global view: which drivers are moving the portfolio and how risk differs across segments.\n\n**Validate explanation as part of the product**\nExplainability should be tested like any other product component. Do users interpret it correctly? Does it reduce review time? Improve decisions? Reduce harmful overrides?\n\nComprehension testing can reveal that sophisticated visuals create more confidence than understanding. **Explanation should increase understanding, not merely the feeling of understanding.**\n\nLimitations should be explicit. If SHAP does not imply causality, product language should avoid suggesting that changing a feature will improve the real outcome.\n\nStability can be measured. Similar cases should receive reasonably consistent explanations when model behaviour is similar.\n\nExplanation drift can be monitored as well. If one feature suddenly dominates, it may indicate data change, proxy behaviour or leakage.\n\nThe explanation layer should remain separate from decision policy. An explanation should not automatically alter threshold or action without an explicit rule.\n\nProgressive disclosure can help: a simple explanation for most users with technical drill-down when deeper investigation is needed.\n\nTraceability matters. Logging which explanation was shown and what decision followed allows the organization to evaluate whether explanation creates value.\n\nLanguage should fit the audience. “Feature contribution” may be accurate for data science and confusing for operations.\n\nExplainability should not become retrospective justification. A polished story does not make a problematic decision correct.\n\nSometimes the better answer is a more interpretable model rather than an increasingly elaborate post-hoc layer.\n\nExplainability also competes with other ways to reduce risk: better data, model constraints, human review or simplification.\n\n**Explainability is useful when it helps people understand, challenge or act better.** If it only adds charts after the decision is already made and changes nobody’s behaviour, it has become technical decoration around an opaque model.",
+      "seo_title": "Explainable AI Limitations",
+      "seo_description": "Why SHAP, feature importance and other XAI techniques can become cosmetic when they do not answer real user, governance and decision questions.",
+      "seo_keywords": [
+        "explainable ai limitations",
+        "SHAP limitations",
+        "model explainability",
+        "XAI"
+      ],
+      "tags": [
+        "Machine Learning",
+        "Explainability",
+        "XAI"
+      ]
+    },
+    "ca": {
+      "title": "Per què l’explicabilitat pot acabar sent cosmètica",
+      "excerpt": "Afegir SHAP o feature importance no garanteix comprensió. L’explicació aporta valor només si respon preguntes reals d’usuaris, governance i decisió.",
+      "quick": [
+        "Una gràfica no és una explicació",
+        "L’audiència defineix la necessitat",
+        "Explicar ha de canviar una acció"
+      ],
+      "section_titles": [
+        "Mostrar importància no basta",
+        "L’explicació pot explicar una història equivocada",
+        "L’audiència canvia la resposta",
+        "Valida l’explicació com a part del producte"
+      ],
+      "business_title": "L’explicabilitat deixa de ser cosmètica quan ajuda a entendre, desafiar o executar una decisió de manera més segura.",
+      "business_steps": [
+        "Pregunta real",
+        "Explicació útil",
+        "Decisió millor"
+      ],
+      "body": "És relativament fàcil afegir una capa d’explainability a un model: feature importance, SHAP values, partial dependence o raons principals per predicció. El difícil és demostrar que aquesta capa respon una necessitat real. **Una visualització tècnicament correcta pot ser completament cosmètica si ningú sap quina decisió prendre amb ella.**\n\nEl risc apareix quan “tenir explicabilitat” es converteix en un checkbox del projecte. Es crea un dashboard, es mostren colors i contribucions i s’assumeix que el model ja és comprensible. **Explicar no significa produir més informació; significa reduir incertesa rellevant per a qui utilitza, revisa o audita la decisió.**\n\n**Mostrar importància no basta**\nFeature importance respon quines variables utilitza el model globalment, però no necessàriament per què una decisió concreta ha canviat.\n\nUna variable pot ser important perquè interactua amb altres, perquè apareix en molts splits o perquè actua com proxy. **Importància no equival a causalitat, legitimitat ni recomanació d’acció.**\n\nSHAP ofereix una descomposició local potent, però també es pot interpretar malament. Una contribució positiva indica com es mou l’output respecte a una referència, no que la feature hagi causat el resultat real.\n\nVariables correlacionades també poden repartir importància de manera diferent segons mètode i configuració.\n\nL’explicació necessita context: baseline, definició de l’output, rang habitual i connexió amb la policy.\n\n**L’explicació pot explicar una història equivocada**\nLes persones busquen narratives. Si mostrem les tres features amb més contribució, és fàcil convertir-les en una història causal encara que el model només descrigui associacions.\n\nAixò pot portar a accions incorrectes. **Una explicació útil ha de distingir “el model ha utilitzat aquesta senyal” de “canviar aquesta senyal canviarà l’outcome real”.**\n\nTambé existeix risc d’estabilitat. Dos models gairebé equivalents poden assignar importàncies diferents i petites variacions dels inputs poden canviar l’explicació local.\n\nSi l’explicació no és estable, casos similars poden rebre històries molt diferents.\n\nEls mètodes post-hoc també aproximen el comportament del model sota supòsits. No són una finestra perfecta al mecanisme intern.\n\n**L’audiència canvia la resposta**\nUn data scientist pot voler diagnosticar leakage, drift o dependència excessiva d’una feature. Un analista vol saber per què revisar un cas. Compliance vol saber si el procés es pot justificar i auditar.\n\nUna mateixa gràfica no serveix per a tothom. **L’explicació s’ha de dissenyar des de la pregunta de l’usuari i no des de l’eina disponible.**\n\nPer un usuari operatiu pot bastar una raó clara: “risc elevat per retard recent i augment d’utilització”.\n\nAuditoria pot necessitar versió del model, features utilitzades, threshold, historial de canvis i evidència de validació.\n\nManagement pot necessitar una explicació global: quins drivers estan movent el portfolio i com canvia el risc per segment.\n\n**Valida l’explicació com a part del producte**\nL’explainability s’hauria de provar com qualsevol component de producte. Els usuaris entenen correctament què significa? Redueix temps de revisió? Millora decisions? Disminueix overrides perjudicials?\n\nUna prova de comprensió pot revelar que una visualització sofisticada genera més confiança que comprensió. **L’explicació ha d’augmentar comprensió, no només sensació de comprensió.**\n\nTambé cal documentar límits. Si SHAP no implica causalitat, el llenguatge del producte ha d’evitar suggerir que canviar una feature millorarà l’outcome.\n\nL’estabilitat es pot mesurar. Casos similars haurien de produir explicacions raonablement coherents si el model també es comporta de manera similar.\n\nEls explanations també es poden monitoritzar per drift. Si una feature comença a dominar de cop, pot ser senyal de canvi de dades, proxy o leakage.\n\nConvé separar explanation layer de decision policy. Una explicació no hauria de canviar automàticament threshold o acció sense una regla explícita.\n\nEl drill-down progressiu pot ajudar: explicació simple per la majoria i detall tècnic quan cal investigar.\n\nLa traçabilitat importa. Registrar quina explicació es mostra i quina decisió segueix permet avaluar si crea valor.\n\nEl llenguatge s’ha d’adaptar. “Feature contribution” pot ser correcte per data science i confús per operacions.\n\nL’explicabilitat tampoc ha de convertir-se en justificació retroactiva. Una història elegant no fa correcta una decisió problemàtica.\n\nEn alguns casos és millor un model més interpretable que una capa post-hoc cada vegada més complexa.\n\nFinalment, explainability competeix amb altres maneres de reduir risc: millors dades, constraints, revisió humana o simplificació.\n\n**L’explicabilitat és útil quan permet entendre, qüestionar o actuar millor.** Si només afegeix gràfiques després de la decisió i no canvia cap comportament, s’ha convertit en decoració tècnica al voltant d’un model opac.",
+      "seo_title": "Limitacions d’Explainable AI",
+      "seo_description": "Per què SHAP, feature importance i altres tècniques XAI poden tornar-se cosmètiques si no responen preguntes reals d’usuaris i governance.",
+      "seo_keywords": [
+        "explainable ai limitations",
+        "SHAP limitations",
+        "model explainability",
+        "XAI"
+      ],
+      "tags": [
+        "Machine Learning",
+        "Explainability",
+        "XAI"
+      ]
+    }
+  }
+}
