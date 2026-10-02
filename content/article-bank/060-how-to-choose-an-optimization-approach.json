@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-060",
+  "sequence": 60,
+  "arc_id": "ARC-15",
+  "slug": "how-to-choose-an-optimization-approach",
+  "scheduled_at": "2027-03-03T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Optimization & OR",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "decision_guide",
+  "angle": "optimization solver selection",
+  "primary_keyword": "optimization solver selection",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-057",
+    "KB-058",
+    "KB-059"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cómo elegir un enfoque de optimización",
+      "excerpt": "La selección depende de tamaño, latencia, necesidad de garantías, estabilidad del problema, mantenimiento y coste de una mala decisión.",
+      "quick": [
+        "Empieza por la decisión",
+        "Define calidad suficiente",
+        "Elige el método después"
+      ],
+      "section_titles": [
+        "Define el contexto operativo",
+        "Clasifica la dificultad del problema",
+        "Elige la estrategia de resolución",
+        "Valida con producción en mente"
+      ],
+      "business_title": "Elegir solver es una consecuencia de entender la decisión, el tiempo disponible y el coste real de una solución imperfecta.",
+      "business_steps": [
+        "Contexto",
+        "Método",
+        "Validación"
+      ],
+      "body": "Elegir un enfoque de optimización debería ser una de las últimas decisiones del diseño, no la primera. Antes de pensar en MILP, CP-SAT, heurísticas o metaheurísticas, **hay que entender qué decisión se toma, con qué frecuencia, cuánto tiempo existe para resolverla y qué coste tiene equivocarse**.\n\nLa herramienta adecuada cambia según el contexto. Una planificación mensual y una decisión en tiempo real pueden representar la misma lógica de negocio y necesitar arquitecturas completamente distintas. **El método debe adaptarse a la operación, no la operación al método.**\n\n**Define el contexto operativo**\nEl primer paso es describir la decisión: horizonte, frecuencia, número de entidades, restricciones y deadline.\n\nTambién hay que saber quién utilizará el resultado. Un equipo de planificación puede tolerar varios minutos y revisar alternativas; un sistema autónomo puede necesitar respuesta en segundos.\n\nLa reversibilidad importa. **Cuanto más difícil sea corregir una mala decisión, más valor tienen garantías, escenarios y análisis de sensibilidad.**\n\nTambién conviene definir la calidad mínima útil. No todo problema necesita un óptimo probado; algunos necesitan simplemente mejorar de forma consistente respecto al baseline.\n\n**Clasifica la dificultad del problema**\nHay que observar tamaño y estructura. Variables continuas y lineales suelen ser más fáciles que grandes combinaciones binarias o restricciones altamente no lineales.\n\nLa cantidad de escenarios también cambia complejidad. Un problema determinista puede ser manejable y su versión robusta o estocástica mucho más costosa.\n\n**El crecimiento de la instancia importa tanto como su tamaño actual.** Un enfoque que funciona con 500 decisiones y colapsa con 5.000 puede ser incorrecto si el negocio crecerá pronto.\n\nTambién hay que valorar calidad de datos. Un solver sofisticado no compensa inputs muy inciertos.\n\n**Elige la estrategia de resolución**\nSi el problema es estructurado, la latencia permite resolver y las garantías importan, MILP o programación por restricciones pueden ser buenos candidatos.\n\nSi las instancias son grandes, el tiempo es estricto o existe estructura específica explotable, heurísticas pueden aportar más valor.\n\nLos enfoques híbridos son frecuentes. **Una heurística puede generar una warm start y un solver exacto mejorarla o certificar su gap.**\n\nTambién puede diseñarse una estrategia adaptive: exacta para instancias pequeñas, heurística para grandes y fallback simple en caso de fallo.\n\nEl software concreto viene después. Solvers comerciales, open source o desarrollos propios deben compararse en el problema real y no solo por benchmarks genéricos.\n\n**Valida con producción en mente**\nLa validación debe incluir calidad de solución, tiempo, estabilidad, factibilidad, consumo de recursos y mantenibilidad.\n\nHay que probar instancias normales y difíciles. **Un enfoque que funciona muy bien en media y falla en los días críticos puede ser peor que otro algo menos brillante pero robusto.**\n\nTambién conviene medir sensibilidad a cambios pequeños. Soluciones demasiado inestables pueden generar fricción.\n\nLos fallbacks deben probarse como parte del sistema. Si el solver supera el timeout o faltan datos, ¿qué decisión se ejecuta?\n\nLa explicabilidad importa. Un usuario necesita saber qué restricciones son vinculantes, por qué una opción quedó fuera o cuánto cuesta forzar un cambio.\n\nEl mantenimiento debe entrar en el business case. Reglas, costes y volúmenes evolucionarán. Una solución difícil de modificar puede perder valor rápidamente.\n\nLa observabilidad en producción también es esencial: solve time, optimality gap, infeasibilidad, fallbacks, overrides y outcomes reales.\n\nConviene mantener un baseline simple activo para detectar regresiones. Si el sistema sofisticado deja de mejorar ese baseline, existe una señal clara de revisión.\n\nTambién se puede ejecutar periódicamente una solución más fuerte offline para comprobar si la estrategia rápida sigue cerca del mejor resultado posible.\n\nLa elección no tiene que ser permanente. **El enfoque de optimización debe evolucionar cuando cambian escala, latencia, infraestructura o economía de la decisión.**\n\nLa regla final es simple: primero definimos qué significa una buena decisión y cuánto tiempo tenemos para producirla. **Después elegimos el método más sencillo capaz de alcanzar esa calidad con suficiente robustez.**",
+      "seo_title": "Cómo elegir un enfoque de optimización",
+      "seo_description": "Guía para elegir solver, MILP, heurísticas o enfoques híbridos según tamaño, latencia, calidad requerida, robustez y mantenimiento.",
+      "seo_keywords": [
+        "optimization solver selection",
+        "choose optimization method",
+        "MILP heuristics",
+        "optimization approach"
+      ],
+      "tags": [
+        "Optimization",
+        "Solver Selection",
+        "Decision Guide"
+      ]
+    },
+    "en": {
+      "title": "How to choose an optimization approach",
+      "excerpt": "Solver selection depends on size, latency, guarantee requirements, problem stability, maintenance and the business cost of a poor solution.",
+      "quick": [
+        "Start from the decision",
+        "Define sufficient quality",
+        "Choose the method afterward"
+      ],
+      "section_titles": [
+        "Define the operating context",
+        "Classify problem difficulty",
+        "Choose the solution strategy",
+        "Validate with production in mind"
+      ],
+      "business_title": "Solver choice is a consequence of understanding the decision, available time and real cost of an imperfect answer.",
+      "business_steps": [
+        "Context",
+        "Method",
+        "Validation"
+      ],
+      "body": "Choosing an optimization approach should be one of the later design decisions, not the first. Before thinking about MILP, CP-SAT, heuristics or metaheuristics, **the team needs to understand what decision is being made, how often, how much time is available and what a poor answer actually costs**.\n\nThe appropriate method changes with context. A monthly planning problem and a real-time operating decision can represent similar business logic and still require very different architectures. **The method should fit the operation rather than forcing the operation to fit the method.**\n\n**Define the operating context**\nBegin with the decision: horizon, frequency, number of entities, constraints and deadline.\n\nIt also matters who consumes the result. A planning team may tolerate several minutes and inspect alternatives; an autonomous system may require a response in seconds.\n\nReversibility matters too. **The harder a poor decision is to undo, the more valuable guarantees, scenarios and sensitivity analysis become.**\n\nDefine minimum useful quality as well. Not every problem needs a proven optimum; some only need consistent improvement over a strong baseline.\n\n**Classify problem difficulty**\nLook at size and structure. Continuous linear decisions are often easier than large binary combinations or highly nonlinear constraints.\n\nScenario count changes complexity too. A deterministic model may be tractable while robust or stochastic variants become significantly harder.\n\n**Instance growth matters as much as current size.** An approach that works at 500 decisions and collapses at 5,000 may be wrong if the business is expected to scale.\n\nData quality should also influence the choice. Sophisticated solving adds little when inputs are highly uncertain.\n\n**Choose the solution strategy**\nIf the problem is structured, latency allows sufficient solve time and guarantees matter, MILP or constraint programming can be strong candidates.\n\nIf instances are large, deadlines are strict or domain structure can be exploited, heuristics may create more value.\n\nHybrid designs are common. **A heuristic can generate a warm start while an exact solver improves it or certifies a gap.**\n\nThe system can also adapt: exact methods for small instances, heuristics for large ones and a simple fallback when the main pipeline fails.\n\nSoftware selection comes later. Commercial solvers, open-source tools and custom methods should be compared on the real problem rather than on generic benchmarks alone.\n\n**Validate with production in mind**\nValidation should cover solution quality, runtime, stability, feasibility, compute use and maintainability.\n\nNormal and difficult instances both matter. **An approach that performs brilliantly on average but fails on critical days can be worse than one that is slightly weaker but robust.**\n\nSensitivity to small input changes should be measured. Excessive instability can create operating friction.\n\nFallbacks should be tested as part of the product. When the solver times out or data is incomplete, which decision gets executed?\n\nExplainability matters too. Users need to understand binding constraints, why an option was excluded and the cost of forcing an alternative.\n\nMaintenance belongs in the business case because rules, costs and volumes will evolve. A method that is difficult to modify can lose value quickly.\n\nProduction observability is essential: solve time, optimality gap, infeasibility, fallbacks, overrides and realized outcomes.\n\nA simple baseline should remain available to detect regressions. If the sophisticated system stops outperforming it, review is needed.\n\nA stronger offline method can also run periodically to check whether the fast production strategy remains close to the best achievable solution.\n\nThe choice does not need to be permanent. **Optimization strategy should evolve as scale, latency, infrastructure and decision economics change.**\n\nThe final rule is straightforward: first define what a good decision means and how quickly it must be produced. **Then choose the simplest method capable of reaching that quality reliably.**",
+      "seo_title": "How to Choose an Optimization Approach",
+      "seo_description": "A guide to choosing MILP, heuristics, solvers or hybrid optimization methods based on size, latency, quality, robustness and maintenance.",
+      "seo_keywords": [
+        "optimization solver selection",
+        "choose optimization method",
+        "MILP heuristics",
+        "optimization approach"
+      ],
+      "tags": [
+        "Optimization",
+        "Solver Selection",
+        "Decision Guide"
+      ]
+    },
+    "ca": {
+      "title": "Com triar un enfocament d’optimització",
+      "excerpt": "La selecció depèn de mida, latència, necessitat de garanties, estabilitat del problema, manteniment i cost d’una mala decisió.",
+      "quick": [
+        "Comença per la decisió",
+        "Defineix qualitat suficient",
+        "Tria el mètode després"
+      ],
+      "section_titles": [
+        "Defineix el context operatiu",
+        "Classifica la dificultat del problema",
+        "Tria l’estratègia de resolució",
+        "Valida pensant en producció"
+      ],
+      "business_title": "Triar solver és una conseqüència d’entendre la decisió, el temps disponible i el cost real d’una resposta imperfecta.",
+      "business_steps": [
+        "Context",
+        "Mètode",
+        "Validació"
+      ],
+      "body": "Triar un enfocament d’optimització hauria de ser una de les últimes decisions del disseny, no la primera. Abans de pensar en MILP, CP-SAT, heurístiques o metaheurístiques, **cal entendre quina decisió es pren, amb quina freqüència, quant temps hi ha disponible i quin cost té una mala resposta**.\n\nEl mètode adequat canvia amb el context. Una planificació mensual i una decisió en temps real poden representar lògiques similars i necessitar arquitectures diferents. **El mètode s’ha d’adaptar a l’operació, no l’operació al mètode.**\n\n**Defineix el context operatiu**\nEl primer pas és descriure la decisió: horitzó, freqüència, nombre d’entitats, restriccions i deadline.\n\nTambé importa qui utilitzarà el resultat. Un equip de planning pot esperar minuts i revisar alternatives; un sistema autònom pot necessitar segons.\n\nLa reversibilitat és important. **Com més difícil és corregir una mala decisió, més valor tenen garanties, escenaris i sensibilitat.**\n\nTambé convé definir la qualitat mínima útil. No tot problema necessita un òptim provat; alguns només necessiten millorar de manera consistent un baseline.\n\n**Classifica la dificultat del problema**\nCal observar mida i estructura. Variables contínues lineals solen ser més fàcils que grans combinacions binàries o restriccions molt no lineals.\n\nLa quantitat d’escenaris també canvia la complexitat. Un model determinista pot ser tractable i la versió robusta o estocàstica molt més costosa.\n\n**El creixement de la instància importa tant com la mida actual.** Un enfocament que funciona amb 500 decisions i col·lapsa amb 5.000 pot ser incorrecte si el negoci creixerà.\n\nLa qualitat de dades també ha d’influir. Un solver sofisticat aporta poc si els inputs són molt incerts.\n\n**Tria l’estratègia de resolució**\nSi el problema és estructurat, la latència ho permet i les garanties importen, MILP o constraint programming poden ser bons candidats.\n\nSi les instàncies són grans, el deadline és estricte o hi ha estructura específica explotable, les heurístiques poden aportar més valor.\n\nEls dissenys híbrids són freqüents. **Una heurística pot generar una warm start mentre un solver exacte la millora o certifica el gap.**\n\nEl sistema també pot adaptar-se: exacte per instàncies petites, heurística per grans i fallback simple quan falla la pipeline.\n\nEl software concret ve després. Solvers comercials, open source o desenvolupaments propis s’han de comparar amb el problema real i no només amb benchmarks genèrics.\n\n**Valida pensant en producció**\nLa validació ha d’incloure qualitat, runtime, estabilitat, factibilitat, consum de recursos i mantenibilitat.\n\nCal provar instàncies normals i difícils. **Un enfocament brillant de mitjana però que falla en dies crítics pot ser pitjor que un altre una mica menys bo però robust.**\n\nTambé s’ha de mesurar sensibilitat a petits canvis. Massa inestabilitat crea fricció operativa.\n\nEls fallbacks s’han de provar com a part del producte. Si el solver supera el timeout o falten dades, quina decisió s’executa?\n\nL’explicabilitat importa. Els usuaris han d’entendre restriccions vinculants, per què una opció queda fora i el cost de forçar una alternativa.\n\nEl manteniment forma part del business case perquè regles, costos i volums evolucionaran. Un mètode difícil de modificar pot perdre valor ràpidament.\n\nL’observabilitat en producció és essencial: solve time, optimality gap, infeasibilitat, fallbacks, overrides i outcomes reals.\n\nConvé mantenir un baseline simple per detectar regressions. Si el sistema sofisticat deixa de superar-lo, cal revisar.\n\nTambé es pot executar periòdicament un mètode més fort offline per comprovar si l’estratègia ràpida continua a prop del millor resultat possible.\n\nLa tria no ha de ser permanent. **L’estratègia d’optimització ha d’evolucionar quan canvien escala, latència, infraestructura o economia de la decisió.**\n\nLa regla final és simple: primer definim què significa una bona decisió i quant temps tenim per produir-la. **Després triem el mètode més senzill capaç d’assolir aquesta qualitat amb prou robustesa.**",
+      "seo_title": "Com triar un enfocament d’optimització",
+      "seo_description": "Guia per triar MILP, heurístiques, solvers o enfocaments híbrids segons mida, latència, qualitat, robustesa i manteniment.",
+      "seo_keywords": [
+        "optimization solver selection",
+        "choose optimization method",
+        "MILP heuristics",
+        "optimization approach"
+      ],
+      "tags": [
+        "Optimization",
+        "Solver Selection",
+        "Decision Guide"
+      ]
+    }
+  }
+}
