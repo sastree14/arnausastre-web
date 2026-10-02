@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-047",
+  "sequence": 47,
+  "arc_id": "ARC-12",
+  "slug": "why-optimized-schedules-are-still-rejected",
+  "scheduled_at": "2027-01-30T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Optimization & OR",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "failure_modes_mistakes",
+  "angle": "scheduling adoption",
+  "primary_keyword": "scheduling adoption",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-045",
+    "KB-046",
+    "KB-048"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué un horario optimizado puede seguir siendo rechazado",
+      "excerpt": "Un horario puede ser matemáticamente mejor y fracasar en adopción si rompe expectativas, ignora preferencias, cambia demasiado o nadie entiende por qué.",
+      "quick": [
+        "Óptimo ≠ aceptado",
+        "La estabilidad también importa",
+        "La explicación reduce rechazo"
+      ],
+      "section_titles": [
+        "La solución puede ser correcta y aun así fallar",
+        "El coste del cambio importa",
+        "Las preferencias son parte del sistema",
+        "Diseñar adopción desde el principio"
+      ],
+      "business_title": "Un horario genera valor cuando mejora la operación sin crear una fricción humana mayor que el beneficio que promete.",
+      "business_steps": [
+        "Solución optimizada",
+        "Fricción de adopción",
+        "Horario sostenible"
+      ],
+      "body": "Un modelo puede reducir overtime, mejorar cobertura y equilibrar turnos y, aun así, encontrarse con rechazo por parte de managers o empleados. **Una solución matemáticamente mejor no es automáticamente una solución operativamente aceptable.**\n\nScheduling afecta directamente a personas, rutinas y expectativas. Cambiar un turno no es equivalente a mover una caja en un almacén. **La adopción forma parte del problema de optimización porque el coste de una solución incluye también la fricción que genera.**\n\n**La solución puede ser correcta y aun así fallar**\nUn modelo puede optimizar una función objetivo que nadie reconocía como prioridad real. Por ejemplo, reducir coste laboral puede incrementar cambios de turno, romper equipos habituales o concentrar fines de semana en ciertas personas.\n\nDesde el solver, la solución mejora. Desde la operación, aparece una pérdida de estabilidad. **Si la función objetivo no representa lo que el equipo considera una buena solución, el modelo estará optimizando el problema equivocado.**\n\nTambién puede existir una brecha de lenguaje. El sistema habla de penalizaciones y restricciones; el manager piensa en cobertura, fairness y personas concretas. Sin traducción, el resultado parece arbitrario.\n\n**El coste del cambio importa**\nDos horarios pueden tener costes operativos similares y niveles de estabilidad muy distintos. Cambiar a una persona de turno puede generar coordinación, transporte, conciliación o insatisfacción.\n\nPor eso conviene penalizar cambios respecto al horario anterior cuando no aportan suficiente valor. **La estabilidad es una variable operativa, no una preferencia estética.**\n\nTambién importa el timing. Una modificación con tres semanas de antelación puede ser razonable; la misma modificación la noche anterior tiene otro coste humano y reputacional.\n\nLos modelos deberían reflejar ese coste creciente de cambio tardío, especialmente en entornos donde las personas organizan su vida alrededor del calendario.\n\n**Las preferencias son parte del sistema**\nPreferencias no significa que cada empleado elija siempre su horario. Significa reconocer que algunas asignaciones tienen diferente coste social.\n\nSolicitudes de descanso, patrones de turnos, reparto de noches, fines de semana y continuidad pueden modelarse como restricciones blandas. **Ignorarlas no elimina el coste; simplemente lo desplaza fuera de la función objetivo.**\n\nLa equidad también necesita una definición explícita. Puede medirse como distribución de fines de semana, noches, horas extra o desviación respecto a una carga objetivo.\n\nNo existe una única métrica de fairness. Lo importante es que la política esté acordada y sea visible, evitando que el algoritmo parezca favorecer a personas de forma incomprensible.\n\n**Diseñar adopción desde el principio**\nLa adopción mejora cuando los usuarios pueden entender por qué una asignación existe. Mostrar qué restricciones se cumplen, qué alternativas se descartaron y qué coste tendría un cambio ayuda a construir confianza.\n\nTambién conviene permitir overrides. **Un sistema útil no obliga a aceptar ciegamente; permite intervenir y aprende de los motivos de intervención.**\n\nLos overrides deberían clasificarse: información no registrada, preferencia humana, error de datos, regla nueva o desacuerdo con la política. Esta trazabilidad permite distinguir un problema del modelo de una decisión excepcional.\n\nEl rollout puede comenzar con recomendación, después aprobación y finalmente automatización parcial. Así se mide aceptación antes de retirar capacidad de decisión.\n\nTambién hace falta involucrar a managers y usuarios en la definición de restricciones. Si las reglas se construyen únicamente desde dirección o desde el equipo técnico, es fácil olvidar condiciones que determinan la viabilidad real.\n\nLa monitorización debería incluir no solo coste y cobertura, sino cambios manuales, quejas, estabilidad y cumplimiento de preferencias relevantes.\n\nUna buena señal es que el número de overrides descienda con el tiempo sin deteriorar resultados. Significa que el modelo está capturando mejor el proceso y que la organización confía más en él.\n\nEl objetivo final no es conseguir que nadie cuestione el horario. Es conseguir que los desacuerdos sean explícitos y útiles. **Un horario optimizado se convierte en una buena solución cuando la operación puede ejecutarlo, entenderlo y sostenerlo sin rehacerlo manualmente cada semana.**",
+      "seo_title": "Por qué se rechazan horarios optimizados",
+      "seo_description": "Por qué un horario matemáticamente mejor puede fallar por estabilidad, preferencias, fairness, explicabilidad, overrides y adopción operativa.",
+      "seo_keywords": [
+        "scheduling adoption",
+        "optimized schedule rejection",
+        "workforce scheduling adoption",
+        "employee scheduling"
+      ],
+      "tags": [
+        "Optimization",
+        "Scheduling",
+        "Adoption"
+      ]
+    },
+    "en": {
+      "title": "Why optimized schedules are still rejected",
+      "excerpt": "A schedule can be mathematically better and still fail when it breaks expectations, ignores preferences, changes too much or nobody understands why.",
+      "quick": [
+        "Optimal ≠ accepted",
+        "Stability matters too",
+        "Explanation reduces rejection"
+      ],
+      "section_titles": [
+        "The solution can be right and still fail",
+        "Change has a cost",
+        "Preferences are part of the system",
+        "Design adoption from the start"
+      ],
+      "business_title": "A schedule creates value when it improves operations without creating more human friction than the benefit it delivers.",
+      "business_steps": [
+        "Optimized solution",
+        "Adoption friction",
+        "Sustainable schedule"
+      ],
+      "body": "A model can reduce overtime, improve coverage and balance shifts and still be rejected by managers or employees. **A mathematically better schedule is not automatically an operationally acceptable schedule.**\n\nScheduling directly affects people, routines and expectations. Moving a shift is not the same as moving inventory between locations. **Adoption belongs inside the optimization problem because the cost of a solution includes the friction it creates.**\n\n**The solution can be right and still fail**\nA model may optimize an objective that people do not recognize as the real priority. Reducing labour cost, for example, can increase shift changes, break familiar teams or concentrate weekends on certain employees.\n\nFrom the solver’s perspective, the solution improves. From operations’ perspective, stability is lost. **If the objective function does not represent what the organization considers a good schedule, the model is optimizing the wrong problem.**\n\nThere can also be a language gap. The system speaks in penalties and constraints while managers think in coverage, fairness and individual situations. Without translation, recommendations feel arbitrary.\n\n**Change has a cost**\nTwo schedules can have similar operating cost and very different stability. Moving an employee between shifts can create coordination, transport, family or satisfaction costs.\n\nThat is why change from the previous schedule can be penalized when it does not create enough value. **Stability is an operating variable, not an aesthetic preference.**\n\nTiming matters too. A change made three weeks in advance can be reasonable; the same change the night before carries a different social and reputational cost.\n\nModels should reflect that increasing cost of late changes, particularly in environments where people organize their lives around published schedules.\n\n**Preferences are part of the system**\nPreferences do not mean every employee always chooses their schedule. They mean some assignments carry different social cost.\n\nTime-off requests, shift patterns, weekend distribution, nights and continuity can be represented as soft constraints. **Ignoring them does not remove the cost; it moves the cost outside the objective function.**\n\nFairness also needs an explicit definition. It may concern distribution of weekends, nights, overtime or deviation from target workload.\n\nThere is no single fairness metric. The important point is that policy is agreed and visible so the algorithm does not appear to favour people unpredictably.\n\n**Design adoption from the start**\nAdoption improves when users can understand why an assignment exists. Showing which constraints are satisfied, which alternatives were rejected and what a change would cost helps build trust.\n\nOverrides should also be possible. **A useful system does not require blind acceptance; it allows intervention and learns from the reasons behind it.**\n\nOverrides can be classified as unrecorded information, human preference, data issue, new rule or policy disagreement. That traceability separates model gaps from genuine exceptions.\n\nRollout can begin with recommendations, move to approval and only later automate selected decisions. This allows acceptance to be measured before control is removed.\n\nManagers and users should participate in constraint design. Rules created only by leadership or technical teams often miss details that determine real feasibility.\n\nMonitoring should include more than cost and coverage: manual changes, complaints, stability and satisfaction of relevant preferences also matter.\n\nA positive signal is that overrides fall over time without worsening outcomes. That suggests the model represents the process better and the organization trusts it more.\n\nThe objective is not to eliminate every disagreement. It is to make disagreement explicit and useful. **An optimized schedule becomes a strong solution when operations can execute it, understand it and sustain it without rebuilding it manually every week.**",
+      "seo_title": "Why Optimized Schedules Are Rejected",
+      "seo_description": "Why mathematically better schedules can fail because of stability, preferences, fairness, explainability, overrides and operational adoption.",
+      "seo_keywords": [
+        "scheduling adoption",
+        "optimized schedule rejection",
+        "workforce scheduling adoption",
+        "employee scheduling"
+      ],
+      "tags": [
+        "Optimization",
+        "Scheduling",
+        "Adoption"
+      ]
+    },
+    "ca": {
+      "title": "Per què un horari optimitzat pot continuar sent rebutjat",
+      "excerpt": "Un horari pot ser matemàticament millor i fracassar si trenca expectatives, ignora preferències, canvia massa o ningú entén per què.",
+      "quick": [
+        "Òptim ≠ acceptat",
+        "L’estabilitat també importa",
+        "L’explicació redueix rebuig"
+      ],
+      "section_titles": [
+        "La solució pot ser correcta i fallar",
+        "El canvi té un cost",
+        "Les preferències formen part del sistema",
+        "Dissenyar adopció des del principi"
+      ],
+      "business_title": "Un horari crea valor quan millora l’operació sense generar una fricció humana superior al benefici que aporta.",
+      "business_steps": [
+        "Solució optimitzada",
+        "Fricció d’adopció",
+        "Horari sostenible"
+      ],
+      "body": "Un model pot reduir overtime, millorar cobertura i equilibrar torns i, tot i així, ser rebutjat per managers o empleats. **Una solució matemàticament millor no és automàticament una solució operacionalment acceptable.**\n\nScheduling afecta directament persones, rutines i expectatives. Moure un torn no és el mateix que moure inventari entre ubicacions. **L’adopció forma part del problema d’optimització perquè el cost d’una solució inclou també la fricció que genera.**\n\n**La solució pot ser correcta i fallar**\nUn model pot optimitzar un objectiu que la gent no reconeix com la prioritat real. Reduir cost laboral, per exemple, pot augmentar canvis de torn, trencar equips habituals o concentrar caps de setmana en certes persones.\n\nDes del solver, la solució millora. Des d’operacions, es perd estabilitat. **Si la funció objectiu no representa el que l’organització considera un bon horari, el model està optimitzant el problema equivocat.**\n\nTambé hi pot haver una bretxa de llenguatge. El sistema parla de penalitzacions i restriccions; el manager pensa en cobertura, fairness i persones concretes. Sense traducció, el resultat sembla arbitrari.\n\n**El canvi té un cost**\nDos horaris poden tenir costos operatius similars i estabilitat molt diferent. Moure una persona de torn pot generar coordinació, transport, conciliació o insatisfacció.\n\nPer això convé penalitzar canvis respecte a l’horari anterior quan no aporten prou valor. **L’estabilitat és una variable operativa, no una preferència estètica.**\n\nEl timing també importa. Un canvi amb tres setmanes d’antelació pot ser raonable; el mateix canvi la nit anterior té un altre cost social i reputacional.\n\nEls models haurien de reflectir aquest cost creixent dels canvis tardans, sobretot quan les persones organitzen la seva vida al voltant del calendari.\n\n**Les preferències formen part del sistema**\nPreferències no significa que cada empleat esculli sempre el seu horari. Significa reconèixer que algunes assignacions tenen un cost social diferent.\n\nSol·licituds de descans, patrons de torn, repartiment de nits, caps de setmana i continuïtat es poden modelar com restriccions toves. **Ignorar-les no elimina el cost; simplement el desplaça fora de la funció objectiu.**\n\nL’equitat també necessita una definició explícita. Pot mesurar-se com repartiment de caps de setmana, nits, overtime o desviació respecte a una càrrega objectiu.\n\nNo existeix una única mètrica de fairness. L’important és que la política estigui acordada i sigui visible, evitant que l’algoritme sembli afavorir persones de manera incomprensible.\n\n**Dissenyar adopció des del principi**\nL’adopció millora quan els usuaris entenen per què existeix una assignació. Mostrar quines restriccions es compleixen, quines alternatives es descarten i quin cost tindria un canvi ajuda a construir confiança.\n\nTambé convé permetre overrides. **Un sistema útil no obliga a acceptar a cegues; permet intervenir i aprèn dels motius de la intervenció.**\n\nEls overrides es poden classificar: informació no registrada, preferència humana, error de dades, regla nova o desacord amb la política. Aquesta traçabilitat separa gaps del model d’excepcions reals.\n\nEl rollout pot començar amb recomanacions, passar a aprovació i finalment automatitzar algunes decisions. Això permet mesurar acceptació abans de retirar control.\n\nManagers i usuaris haurien de participar en la definició de restriccions. Regles creades només des de direcció o des de l’equip tècnic sovint obliden detalls que determinen la viabilitat real.\n\nLa monitorització ha d’incloure més que cost i cobertura: canvis manuals, queixes, estabilitat i compliment de preferències rellevants.\n\nUna bona senyal és que els overrides baixin amb el temps sense empitjorar resultats. Això indica que el model captura millor el procés i l’organització hi confia més.\n\nL’objectiu no és eliminar qualsevol desacord. És fer-lo explícit i útil. **Un horari optimitzat es converteix en una bona solució quan l’operació pot executar-lo, entendre’l i sostenir-lo sense reconstruir-lo manualment cada setmana.**",
+      "seo_title": "Per què es rebutgen horaris optimitzats",
+      "seo_description": "Per què un horari matemàticament millor pot fallar per estabilitat, preferències, fairness, explicabilitat, overrides i adopció.",
+      "seo_keywords": [
+        "scheduling adoption",
+        "optimized schedule rejection",
+        "workforce scheduling adoption",
+        "employee scheduling"
+      ],
+      "tags": [
+        "Optimization",
+        "Scheduling",
+        "Adoption"
+      ]
+    }
+  }
+}
