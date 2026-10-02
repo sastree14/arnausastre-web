@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { getArticleBySlug } from '@/lib/content'
 import { getPublicGeneratedArticleVariants } from '@/lib/public-growth'
 import ArticleContent from '@/components/ArticleContent'
-import GeneratedArticleContent from '@/components/GeneratedArticleContent'
+import GeneratedKnowledgeArticleGoldStandard from '@/components/GeneratedKnowledgeArticleGoldStandard'
 import KnowledgeArticleGoldStandard from '@/components/KnowledgeArticleGoldStandard'
 
 type Props = { params: Promise<{ slug: string }> }
@@ -38,12 +38,14 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
   const generated=await getPublicGeneratedArticleVariants(slug)
   const article=generated.find(item=>item.language==='en')||generated.find(item=>item.language==='es')||generated[0]
   if(!article)return{}
-  const title=clean(article.title)
-  const description=summary(article.body)
+  const articleMeta=(article.critique && typeof article.critique==='object' ? (article.critique as Record<string,unknown>).article_meta : null) as Record<string,unknown>|null
+  const title=clean(String(articleMeta?.seo_title||article.title))
+  const description=summary(String(articleMeta?.seo_description||articleMeta?.excerpt||article.body))
+  const seoKeywords=Array.isArray(articleMeta?.seo_keywords)?articleMeta?.seo_keywords:[article.topic,article.industry,article.challenge]
   return {
     title,
     description,
-    keywords:[article.topic,article.industry,article.challenge].filter(Boolean) as string[],
+    keywords:seoKeywords.filter(Boolean) as string[],
     alternates:{canonical},
     openGraph:{title,description,url:`https://sc-analytics.io${canonical}`,type:'article',publishedTime:article.published_at||undefined},
   }
@@ -80,5 +82,5 @@ export default async function ArticlePage({ params }: Props) {
     publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://sc-analytics.io'},
     mainEntityOfPage:`https://sc-analytics.io/knowledge/${slug}`,
   }
-  return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><GeneratedArticleContent variants={generated} /></>
+  return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><GeneratedKnowledgeArticleGoldStandard variants={generated} /></>
 }
