@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-105",
+  "sequence": 105,
+  "arc_id": "ARC-27",
+  "slug": "every-kpi-creates-an-incentive",
+  "scheduled_at": "2027-06-18T09:00:00+02:00",
+  "knowledge_area": "analytics",
+  "cluster": "Analytics & Decision Intelligence",
+  "editorial_pillar": "consulting_decision_insights",
+  "content_family": "explain_understand",
+  "angle": "kpi incentives",
+  "primary_keyword": "kpi incentives",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-106",
+    "KB-107",
+    "KB-108"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cada KPI crea un incentivo",
+      "excerpt": "Los KPIs no solo miden rendimiento: también dirigen atención y comportamiento. Una métrica mal diseñada puede mejorar el número y empeorar el negocio.",
+      "quick": [
+        "Lo que mides dirige atención",
+        "Los targets cambian comportamiento",
+        "El outcome debe dominar al proxy"
+      ],
+      "section_titles": [
+        "Medir cambia el sistema",
+        "Los proxies pueden separarse del objetivo",
+        "Los KPIs locales pueden dañar el resultado global",
+        "Diseña métricas con comportamiento en mente"
+      ],
+      "business_title": "Un KPI es un mecanismo de comportamiento: si premiamos el número equivocado, el sistema aprenderá a optimizarlo aunque el resultado empresarial empeore.",
+      "business_steps": [
+        "Métrica",
+        "Incentivo",
+        "Outcome"
+      ],
+      "body": "Un KPI parece una herramienta descriptiva: mide algo que ya está ocurriendo. En la práctica, **un KPI también modifica el sistema que intenta observar**. En cuanto una métrica se convierte en objetivo, bonus, ranking o criterio de evaluación, las personas adaptan su comportamiento.\n\nEso no es necesariamente malo. Precisamente buscamos orientar esfuerzo. El problema aparece cuando la métrica es un proxy imperfecto y el equipo aprende a optimizar el número en lugar del resultado. **Cada KPI crea un incentivo, aunque no lo hayamos diseñado explícitamente como tal.**\n\n**Medir cambia el sistema**\nSi un equipo comercial se mide únicamente por número de llamadas, probablemente aumentará las llamadas.\n\nEso puede ser positivo si más actividad genera más oportunidades. Pero también puede producir contactos de baja calidad, llamadas demasiado cortas o duplicación de esfuerzos.\n\nSi soporte se mide por tiempo medio de resolución, puede cerrar tickets más rápido. **La métrica mejora incluso si algunos problemas se resuelven peor o reaparecen después.**\n\nLa reacción no implica mala fe. Las personas responden racionalmente a lo que la organización señala como importante.\n\nPor eso el diseño de KPIs debería anticipar comportamiento, no solo facilidad de cálculo.\n\nTambién conviene observar qué decisiones cambia una métrica. Si nadie actúa de manera diferente cuando sube o baja, quizá no es un KPI sino una estadística informativa.\n\n**Los proxies pueden separarse del objetivo**\nMuchas métricas existen porque el outcome real tarda demasiado en observarse.\n\nNo podemos esperar un año para saber si una campaña creó clientes rentables, así que usamos leads, conversión inicial o CAC como proxies.\n\nEso es útil mientras la relación se mantenga. **El riesgo aparece cuando el proxy mejora y el outcome deja de acompañarlo.**\n\nPor ejemplo, optimizar CTR puede generar mensajes más llamativos sin mejorar ventas.\n\nReducir coste por ticket puede deteriorar satisfacción.\n\nAumentar utilización de una máquina puede aumentar throughput a corto plazo y elevar fallos o mantenimiento.\n\nLos proxies necesitan validación periódica contra el resultado que representan.\n\nTambién pueden necesitar guardrails: una métrica principal junto a límites de calidad, riesgo o sostenibilidad.\n\nUn KPI aislado rara vez captura todo el sistema.\n\n**Los KPIs locales pueden dañar el resultado global**\nUn equipo puede mejorar su métrica y perjudicar a otro.\n\nCompras reduce coste unitario pidiendo lotes enormes; inventario aumenta.\n\nProducción maximiza utilización; mantenimiento pierde ventanas para intervenir.\n\nVentas aumenta contratos; operaciones recibe clientes difíciles de servir.\n\n**La optimización local puede empeorar el objetivo global si las métricas no reflejan las interdependencias.**\n\nEsto es especialmente común cuando cada departamento tiene un scorecard independiente.\n\nLa empresa puede terminar con todos los equipos “en verde” y un resultado global decepcionante.\n\nUna solución es conectar KPIs locales con una métrica de sistema.\n\nOtra es incorporar trade-offs explícitos: margen y crecimiento, velocidad y calidad, utilización y disponibilidad.\n\nNo significa medir todo. Significa evitar que una métrica pueda mejorar de forma sistemática destruyendo otra dimensión esencial.\n\n**Diseña métricas con comportamiento en mente**\nEl primer paso es empezar por el outcome empresarial.\n\n¿Qué resultado queremos mejorar y qué decisiones lo mueven?\n\nDespués identificamos indicadores que sean suficientemente cercanos a esas decisiones y que puedan observarse a tiempo.\n\n**Un buen KPI debe ser accionable sin ser fácilmente optimizable de forma artificial.**\n\nTambién debe tener una definición inequívoca: numerador, denominador, periodo, población y exclusiones.\n\nLos targets necesitan contexto. Un objetivo idéntico para regiones o equipos con condiciones distintas puede crear incentivos perversos.\n\nConviene utilizar bandas cuando existe incertidumbre en lugar de falsos puntos exactos.\n\nLos leading indicators pueden anticipar problemas, mientras los lagging confirman outcomes. Ambos tienen funciones distintas.\n\nLos guardrails ayudan a preservar calidad. Si optimizamos ventas, podemos añadir margen mínimo, churn o devolución como límites.\n\nTambién conviene revisar distribución y no solo promedio. Una media estable puede esconder extremos perjudiciales.\n\nLos KPIs deberían tener owner y cadencia de revisión.\n\nCuando cambia el proceso, la métrica puede dejar de representar lo mismo.\n\nLa organización también debería buscar comportamiento adaptativo: qué hace la gente para mejorar el KPI.\n\nSi aparecen workarounds, manipulación de timing o selección de casos fáciles, el sistema está revelando una debilidad de diseño.\n\nLos incentivos monetarios necesitan especial cuidado porque intensifican la optimización.\n\nA veces es mejor utilizar una combinación de métricas que una única cifra.\n\nPero demasiadas métricas diluyen prioridad. El objetivo sigue siendo claridad.\n\nUna buena estructura puede incluir outcome principal, dos o tres drivers y uno o dos guardrails.\n\nLa causalidad también importa. No deberíamos responsabilizar a un equipo por una métrica que apenas puede influir.\n\nEso genera frustración y comportamiento defensivo.\n\nFinalmente, el KPI debe poder retirarse. Si deja de ayudar a decidir, conservarlo por tradición añade ruido.\n\n**Los KPIs no son espejos neutrales del negocio. Son mecanismos de dirección.** Diseñarlos bien significa entender qué comportamiento inducen, qué proxy representan y cómo evitar que mejorar la métrica termine empeorando el sistema que queríamos optimizar.",
+      "seo_title": "Cada KPI crea un incentivo",
+      "seo_description": "Por qué los KPIs cambian comportamiento, cómo los proxies pueden desviarse del objetivo y cómo diseñar métricas alineadas con outcomes reales.",
+      "seo_keywords": [
+        "kpi incentives",
+        "KPI design",
+        "Goodhart law business",
+        "performance metrics"
+      ],
+      "tags": [
+        "Analytics",
+        "KPIs",
+        "Performance Management"
+      ]
+    },
+    "en": {
+      "title": "Every KPI creates an incentive",
+      "excerpt": "KPIs do not only measure performance; they direct attention and behaviour. A poorly designed metric can improve while the business outcome worsens.",
+      "quick": [
+        "What you measure directs attention",
+        "Targets change behaviour",
+        "The outcome must dominate the proxy"
+      ],
+      "section_titles": [
+        "Measurement changes the system",
+        "Proxies can separate from the objective",
+        "Local KPIs can damage the global outcome",
+        "Design metrics with behaviour in mind"
+      ],
+      "business_title": "A KPI is a behavioural mechanism: if the wrong number is rewarded, the system will learn to optimize it even when the business outcome deteriorates.",
+      "business_steps": [
+        "Metric",
+        "Incentive",
+        "Outcome"
+      ],
+      "body": "A KPI looks descriptive: it measures something already happening. In practice, **a KPI also changes the system it is trying to observe**. Once a metric becomes a target, bonus, ranking or evaluation criterion, people adapt their behaviour.\n\nThat is not necessarily negative. The organization is intentionally directing effort. The problem begins when the metric is an imperfect proxy and teams learn to optimize the number rather than the result. **Every KPI creates an incentive even when it was not designed explicitly as one.**\n\n**Measurement changes the system**\nIf a sales team is measured only by call volume, calls will probably increase.\n\nThat can help when activity drives opportunity, but it can also create low-quality outreach, very short calls or duplicated effort.\n\nIf support is measured through average resolution time, tickets may close faster. **The metric can improve even when some problems are solved worse or reopen later.**\n\nThis behaviour does not require bad intent. People respond rationally to what the organization signals as important.\n\nKPI design should therefore anticipate behavioural response rather than only calculation convenience.\n\nIt is also useful to ask which decisions a metric changes. If nobody acts differently when it moves, it may be informative but not a true key performance indicator.\n\n**Proxies can separate from the objective**\nMany metrics exist because the final outcome arrives too late.\n\nA company cannot wait a year to know whether a campaign created profitable customers, so it uses leads, early conversion or CAC as proxies.\n\nThat works while the relationship remains reliable. **Risk appears when the proxy improves and the real outcome stops following it.**\n\nOptimizing CTR can produce more clickable messages without increasing sales.\n\nReducing cost per ticket can damage satisfaction.\n\nIncreasing machine utilization can lift short-term throughput while increasing failures or maintenance burden.\n\nProxies should therefore be validated periodically against the outcome they represent.\n\nThey may also need guardrails: one primary metric combined with quality, risk or sustainability limits.\n\nA single KPI rarely captures the full system.\n\n**Local KPIs can damage the global outcome**\nOne team can improve its metric while making another team worse.\n\nProcurement lowers unit cost through larger order quantities; inventory rises.\n\nProduction maximizes utilization; maintenance loses intervention windows.\n\nSales increases contracts; operations receives customers that are expensive to serve.\n\n**Local optimization can reduce global performance when metrics ignore system interdependencies.**\n\nThis happens frequently when every department owns an independent scorecard.\n\nThe company can end up with every team “green” while the total business outcome disappoints.\n\nOne solution is to connect local KPIs to a shared system-level metric.\n\nAnother is to make trade-offs explicit: margin and growth, speed and quality, utilization and availability.\n\nThe answer is not to measure everything. It is to prevent one metric from improving systematically by destroying another essential dimension.\n\n**Design metrics with behaviour in mind**\nStart with the business outcome.\n\nWhich result should improve and which decisions move it?\n\nThen identify indicators close enough to those decisions and observable soon enough to be useful.\n\n**A strong KPI should be actionable without being easy to improve artificially.**\n\nDefinitions need precision: numerator, denominator, period, population and exclusions.\n\nTargets need context. Identical targets across regions or teams with different conditions can create distorted incentives.\n\nRanges can be better than false precision when uncertainty is high.\n\nLeading indicators can warn early while lagging indicators confirm final outcomes. They serve different roles.\n\nGuardrails preserve quality. If sales growth is optimized, margin, churn or returns can serve as limits.\n\nDistribution matters too. A stable average can hide harmful extremes.\n\nKPIs need owners and review cadences.\n\nWhen processes change, a metric may stop representing the same thing.\n\nThe organization should also observe adaptive behaviour: what are people doing to improve the KPI?\n\nWorkarounds, timing manipulation and selection of easy cases reveal design weaknesses.\n\nFinancial incentives require extra care because they intensify optimization pressure.\n\nSometimes a balanced set of metrics is stronger than one number.\n\nToo many metrics, however, dilute priority. Clarity still matters.\n\nA useful structure may include one primary outcome, two or three drivers and one or two guardrails.\n\nCausality matters as well. A team should not be held accountable for a metric it can barely influence.\n\nThat creates frustration and defensive behaviour.\n\nFinally, a KPI should be removable. If it no longer supports a decision, keeping it through tradition adds noise.\n\n**KPIs are not neutral mirrors of the business. They are steering mechanisms.** Designing them well means understanding which behaviour they induce, which outcome they proxy and how to prevent metric improvement from damaging the system the metric was meant to improve.",
+      "seo_title": "Every KPI Creates an Incentive",
+      "seo_description": "Why KPIs change behaviour, how proxies diverge from outcomes and how to design performance metrics around real business results.",
+      "seo_keywords": [
+        "kpi incentives",
+        "KPI design",
+        "Goodhart law business",
+        "performance metrics"
+      ],
+      "tags": [
+        "Analytics",
+        "KPIs",
+        "Performance Management"
+      ]
+    },
+    "ca": {
+      "title": "Cada KPI crea un incentiu",
+      "excerpt": "Els KPIs no només mesuren rendiment: dirigeixen atenció i comportament. Una mètrica mal dissenyada pot millorar mentre el negoci empitjora.",
+      "quick": [
+        "El que mesures dirigeix atenció",
+        "Els targets canvien comportament",
+        "L’outcome ha de dominar el proxy"
+      ],
+      "section_titles": [
+        "Mesurar canvia el sistema",
+        "Els proxies poden separar-se de l’objectiu",
+        "Els KPIs locals poden perjudicar el resultat global",
+        "Dissenya mètriques pensant en comportament"
+      ],
+      "business_title": "Un KPI és un mecanisme de comportament: si premiem el número equivocat, el sistema aprendrà a optimitzar-lo encara que el resultat empresarial empitjori.",
+      "business_steps": [
+        "Mètrica",
+        "Incentiu",
+        "Outcome"
+      ],
+      "body": "Un KPI sembla una eina descriptiva: mesura alguna cosa que ja està passant. A la pràctica, **un KPI també modifica el sistema que intenta observar**. Quan una mètrica es converteix en target, bonus, ranking o criteri d’avaluació, les persones adapten el comportament.\n\nAixò no és necessàriament dolent. Justament volem orientar esforç. El problema apareix quan la mètrica és un proxy imperfecte i l’equip aprèn a optimitzar el número en lloc del resultat. **Cada KPI crea un incentiu encara que no l’haguem dissenyat explícitament com a tal.**\n\n**Mesurar canvia el sistema**\nSi un equip comercial es mesura només per nombre de trucades, probablement les trucades augmentaran.\n\nPot ser positiu si més activitat genera oportunitats, però també pot produir contactes de baixa qualitat, trucades massa curtes o esforços duplicats.\n\nSi suport es mesura per temps mitjà de resolució, pot tancar tickets més ràpid. **La mètrica pot millorar encara que alguns problemes es resolguin pitjor o reapareguin.**\n\nAixò no implica mala fe. Les persones responen racionalment al que l’organització assenyala com important.\n\nPer això el disseny de KPIs ha d’anticipar comportament, no només facilitat de càlcul.\n\nTambé convé observar quines decisions canvia una mètrica. Si ningú actua diferent quan puja o baixa, potser és informativa però no un KPI real.\n\n**Els proxies poden separar-se de l’objectiu**\nMoltes mètriques existeixen perquè l’outcome real arriba massa tard.\n\nNo podem esperar un any per saber si una campanya ha creat clients rendibles, així que utilitzem leads, conversió inicial o CAC com a proxies.\n\nAixò funciona mentre la relació es manté. **El risc apareix quan el proxy millora i l’outcome deixa d’acompanyar-lo.**\n\nOptimitzar CTR pot generar missatges més clicables sense millorar vendes.\n\nReduir cost per ticket pot deteriorar satisfacció.\n\nAugmentar utilització d’una màquina pot millorar throughput a curt termini i augmentar fallades o manteniment.\n\nEls proxies s’han de validar periòdicament contra el resultat que representen.\n\nTambé poden necessitar guardrails: una mètrica principal amb límits de qualitat, risc o sostenibilitat.\n\nUn KPI aïllat rarament captura tot el sistema.\n\n**Els KPIs locals poden perjudicar el resultat global**\nUn equip pot millorar la seva mètrica i perjudicar-ne un altre.\n\nCompres redueix cost unitari amb lots més grans; inventari puja.\n\nProducció maximitza utilització; manteniment perd finestres d’intervenció.\n\nVendes augmenta contractes; operacions rep clients cars de servir.\n\n**L’optimització local pot empitjorar el resultat global quan les mètriques ignoren interdependències.**\n\nAixò és freqüent quan cada departament té un scorecard independent.\n\nL’empresa pot acabar amb tots els equips “en verd” i un resultat global decebedor.\n\nUna solució és connectar KPIs locals amb una mètrica de sistema.\n\nUna altra és fer explícits els trade-offs: marge i creixement, velocitat i qualitat, utilització i disponibilitat.\n\nNo significa mesurar-ho tot. Significa evitar que una mètrica pugui millorar sistemàticament destruint una altra dimensió essencial.\n\n**Dissenya mètriques pensant en comportament**\nEl primer pas és començar per l’outcome empresarial.\n\nQuin resultat volem millorar i quines decisions el mouen?\n\nDesprés identifiquem indicadors prou propers a aquestes decisions i observables prou aviat.\n\n**Un bon KPI ha de ser accionable sense ser fàcil de millorar artificialment.**\n\nTambé necessita una definició inequívoca: numerador, denominador, període, població i exclusions.\n\nEls targets necessiten context. Un objectiu idèntic per regions o equips amb condicions diferents pot crear incentius distorsionats.\n\nLes bandes poden ser millors que punts exactes falsament precisos.\n\nEls leading indicators poden anticipar problemes, mentre els lagging confirmen outcomes. Tenen funcions diferents.\n\nEls guardrails ajuden a preservar qualitat. Si optimitzem vendes, marge mínim, churn o devolucions poden actuar com límits.\n\nTambé convé revisar distribució i no només mitjana.\n\nEls KPIs han de tenir owner i cadència de revisió.\n\nQuan canvia el procés, la mètrica pot deixar de representar el mateix.\n\nL’organització també ha d’observar comportament adaptatiu: què fa la gent per millorar el KPI.\n\nWorkarounds, manipulació de timing o selecció de casos fàcils revelen debilitats de disseny.\n\nEls incentius monetaris necessiten especial cura perquè intensifiquen l’optimització.\n\nA vegades és millor un conjunt equilibrat de mètriques que un únic número.\n\nPerò massa mètriques dilueixen prioritat. La claredat continua sent important.\n\nUna estructura útil pot incloure un outcome principal, dos o tres drivers i un o dos guardrails.\n\nLa causalitat també importa. No hauríem de responsabilitzar un equip per una mètrica que gairebé no pot influir.\n\nAixò genera frustració i comportament defensiu.\n\nFinalment, el KPI ha de poder retirar-se. Si deixa d’ajudar a decidir, conservar-lo per tradició afegeix soroll.\n\n**Els KPIs no són miralls neutrals del negoci. Són mecanismes de direcció.** Dissenyar-los bé significa entendre quin comportament indueixen, quin outcome representen i com evitar que millorar la mètrica acabi empitjorant el sistema.",
+      "seo_title": "Cada KPI crea un incentiu",
+      "seo_description": "Per què els KPIs canvien comportament, com els proxies poden desviar-se de l’objectiu i com dissenyar mètriques alineades amb outcomes reals.",
+      "seo_keywords": [
+        "kpi incentives",
+        "KPI design",
+        "Goodhart law business",
+        "performance metrics"
+      ],
+      "tags": [
+        "Analytics",
+        "KPIs",
+        "Performance Management"
+      ]
+    }
+  }
+}
