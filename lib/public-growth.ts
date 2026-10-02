@@ -27,6 +27,7 @@ export interface PublicGeneratedArticle {
   cta_type?: string | null
   cta_url?: string | null
   hashtags?: string[] | null
+  critique?: Record<string, unknown> | null
 }
 
 export function isPublicGeneratedArticleNow(article: PublicGeneratedArticle) {
