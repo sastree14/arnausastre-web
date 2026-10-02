@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-001",
+  "sequence": 1,
+  "arc_id": "ARC-01",
+  "slug": "a-forecast-is-not-a-decision",
+  "scheduled_at": "2026-10-07T09:00:00+02:00",
+  "knowledge_area": "planning",
+  "cluster": "Forecasting & Planning",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "point_of_view_contrarian",
+  "angle": "forecast vs decision",
+  "primary_keyword": "forecast vs decision",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-002",
+    "KB-003",
+    "KB-004"
+  ],
+  "variants": {
+    "es": {
+      "title": "Un forecast no es una decisión",
+      "excerpt": "Una previsión solo crea valor cuando cambia una decisión concreta. El salto importante no está entre un modelo y otro, sino entre predecir y actuar.",
+      "quick": [
+        "Predecir no es decidir",
+        "La métrica depende de la acción",
+        "El valor aparece después del forecast"
+      ],
+      "section_titles": [
+        "La predicción termina demasiado pronto",
+        "La decisión cambia la métrica",
+        "Del número a la política",
+        "Cuándo un forecast sí crea valor"
+      ],
+      "business_title": "El forecast crea valor cuando modifica una decisión mejor que la alternativa actual.",
+      "business_steps": [
+        "Previsión",
+        "Regla de decisión",
+        "Resultado de negocio"
+      ],
+      "body": "Muchas empresas hablan de forecasting como si el objetivo fuese producir un número más preciso. El modelo genera una previsión de demanda, ventas o carga y el proyecto parece terminado. **Pero una previsión no decide cuánto comprar, qué capacidad reservar ni qué riesgo aceptar.** Entre el output del modelo y el resultado económico existe una capa de decisión que suele recibir mucha menos atención.\n\nLa diferencia importa porque dos empresas pueden usar el mismo forecast y obtener resultados opuestos. Una puede convertirlo en una política de inventario coherente; otra puede mantener exactamente las mismas reglas de compra de siempre. **Si la decisión no cambia, mejorar la predicción puede tener muy poco impacto operativo.** El modelo puede ser mejor y el sistema de negocio seguir comportándose igual.\n\n**La predicción termina demasiado pronto**\nUn forecast estima una variable futura bajo unas condiciones y con un nivel de incertidumbre. Eso es útil, pero no contiene por sí mismo una acción. Imaginemos una empresa que espera vender 1.000 unidades el próximo mes. Ese dato no responde cuánto debe comprar hoy, porque todavía faltan el stock disponible, el lead time, el coste de quedarse sin producto, el coste de inmovilizar capital y el nivel de servicio deseado.\n\nPor eso **el forecast es una entrada del sistema de decisión, no el sistema completo**. Cuando se utiliza como si fuese una recomendación directa, aparecen reglas implícitas: comprar siempre la previsión, añadir un porcentaje fijo o reaccionar manualmente cuando el planificador desconfía del modelo. Esas reglas pueden dominar el resultado más que unas décimas de mejora en el error estadístico.\n\nAdemás, la misma previsión puede alimentar decisiones distintas. Ventas puede usarla para objetivos comerciales, operaciones para capacidad y compras para reposición. **Un único número puede ser compartido, pero la lógica de decisión no tiene por qué serlo.** Cada función necesita traducir esa expectativa a sus propias restricciones.\n\n**La decisión cambia la métrica**\nLa precisión relevante depende de lo que ocurre después. Si una subestimación provoca una rotura de stock muy costosa y una sobreestimación solo genera almacenamiento barato, ambos errores no deberían pesar igual. En cambio, si el producto es perecedero, **sobrepredecir puede ser económicamente peor que quedarse ligeramente corto**.\n\nEsto explica por qué una métrica agregada puede esconder un modelo poco útil para la operación. MAE, RMSE o WAPE describen el error desde perspectivas distintas, pero ninguna conoce automáticamente el coste de la decisión. Antes de discutir qué modelo gana, conviene preguntar qué acción alimentará el forecast y cómo se penaliza equivocarse en cada dirección.\n\nTambién importa el horizonte. Un error de diez unidades mañana puede activar una expedición urgente; el mismo error dentro de seis meses puede ser irrelevante porque todavía hay tiempo para ajustar. **La utilidad del forecast depende del momento en que la decisión deja de ser reversible.** Esa fecha es más importante para el diseño del sistema que la etiqueta genérica de corto o largo plazo.\n\n**Del número a la política**\nEl paso intermedio suele ser una política: una regla de reposición, un plan de capacidad, un presupuesto, una priorización comercial o un rango de seguridad. Esa política combina la previsión con restricciones y costes. En un sistema maduro, el output no es simplemente “esperamos 1.000”, sino algo más parecido a “con este rango de demanda y este lead time, la posición recomendada es X”.\n\nAquí también aparece la incertidumbre. **Una decisión necesita conocer cuánto puede desviarse el futuro, no solo cuál es el valor esperado.** En horizontes largos puede ser más útil trabajar con escenarios o intervalos que perseguir una falsa precisión decimal.\n\nLa política debe incluir además qué hacer cuando la información cambia. Si el forecast se actualiza diariamente pero la compra solo puede modificarse una vez por semana, el sistema necesita una cadencia coherente. **Más frecuencia de predicción no significa automáticamente más capacidad de decisión.** Sin esa sincronización se generan alertas que nadie puede ejecutar.\n\n**Cuándo un forecast sí crea valor**\nForecasting merece inversión cuando existe una decisión recurrente, el futuro contiene una señal aprovechable y actuar mejor tiene impacto suficiente. Si nadie puede modificar compras, capacidad, precios o prioridades, un modelo más sofisticado puede acabar siendo solo reporting predictivo.\n\nTampoco toda decisión necesita machine learning. Cuando la demanda es estable, el coste de error es bajo y el proceso cambia poco, una regla sencilla puede ser suficiente. **La sofisticación del modelo debe estar justificada por la economía de la decisión**, no por la disponibilidad de una técnica más avanzada.\n\nEl diagnóstico práctico es sencillo: identifica quién recibe hoy la previsión, qué hace con ella y qué cambiaría si fuese mejor. Si la respuesta termina en una decisión medible, hay un caso real. Si termina en “tener más visibilidad”, todavía falta diseñar la parte que convierte **predicción en acción y acción en resultado**.",
+      "seo_title": "Un forecast no es una decisión | SC-Analytics",
+      "seo_description": "Por qué una previsión solo crea valor cuando cambia compras, inventario, capacidad u otra decisión empresarial concreta.",
+      "seo_keywords": [
+        "forecast vs decision",
+        "forecasting empresarial",
+        "previsión de demanda",
+        "decision intelligence"
+      ],
+      "tags": [
+        "Forecasting",
+        "Planning",
+        "Decision Systems"
+      ]
+    },
+    "en": {
+      "title": "A forecast is not a decision",
+      "excerpt": "A forecast creates value only when it changes a concrete decision. The important jump is not between models, but between predicting and acting.",
+      "quick": [
+        "Prediction is not a decision",
+        "The action changes the metric",
+        "Value appears after the forecast"
+      ],
+      "section_titles": [
+        "Prediction stops too early",
+        "The decision changes the metric",
+        "From number to policy",
+        "When forecasting creates value"
+      ],
+      "business_title": "A forecast creates value when it changes a decision for the better.",
+      "business_steps": [
+        "Forecast",
+        "Decision rule",
+        "Business outcome"
+      ],
+      "body": "Companies often discuss forecasting as if the objective were to produce a more accurate number. A model estimates demand, sales or workload and the project appears complete. **But a forecast does not decide how much to buy, which capacity to reserve or which risk to accept.** Between model output and economic outcome sits a decision layer that usually receives far less attention.\n\nThat distinction matters because two firms can use the same forecast and obtain very different results. One may translate it into a coherent inventory policy; another may keep the same purchasing rules it used before. **If the decision does not change, a better prediction can have surprisingly little operational impact.** The model improves while the business system behaves exactly as before.\n\n**Prediction stops too early**\nA forecast estimates a future variable under assumptions and uncertainty. That is useful, but it is not an action. Imagine a business expecting to sell 1,000 units next month. That figure alone cannot tell the buyer how much to order today because current stock, lead time, stockout cost, working-capital cost and the desired service level still matter.\n\nThe forecast is therefore **an input to the decision system, not the complete decision system**. Treating it as a direct recommendation introduces hidden rules: buy exactly the forecast, add a fixed percentage, or let planners override the number whenever they distrust it. Those rules can drive more of the outcome than a modest improvement in statistical accuracy.\n\nThe same forecast can also support several decisions. Sales may use it for commercial targets, operations for capacity and procurement for replenishment. **A shared number does not imply a shared decision rule.** Each function still has to translate that expectation into its own constraints and economics.\n\n**The decision changes the metric**\nRelevant accuracy depends on what happens next. If under-forecasting causes an expensive stockout while over-forecasting creates only cheap storage, the two errors should not carry the same economic weight. For perishable inventory, the asymmetry may reverse: **over-forecasting can be more expensive than being slightly short**.\n\nThis is why a single aggregate metric can hide a model that is weak for operations. MAE, RMSE and WAPE describe error differently, but none automatically knows the cost of the downstream decision. Before asking which model wins, ask what action the forecast feeds and how mistakes in each direction are paid for.\n\nHorizon also matters. A ten-unit error tomorrow may trigger an emergency shipment; the same error six months from now may be immaterial because there is still time to adapt. **Forecast value depends on when the decision becomes hard to reverse.** That decision deadline is more useful than a generic short-term or long-term label.\n\n**From number to policy**\nThe missing layer is usually a policy: a replenishment rule, capacity plan, budget, commercial priority or safety range. The policy combines the forecast with constraints and economics. A mature system does not stop at “we expect 1,000”; it gets closer to “given this demand range and lead time, the recommended position is X”.\n\nUncertainty matters here as well. **A decision needs to know how wrong the future could be, not only the expected value.** At longer horizons, ranges and scenarios can be more useful than false decimal precision.\n\nThe policy must also define what happens when information changes. If the forecast updates daily but purchase orders can only change weekly, the operating cadence has to reflect that. **More frequent prediction does not automatically create more decision capacity.** Without that alignment, the system generates alerts that nobody can act on.\n\n**When forecasting creates value**\nForecasting is worth investing in when there is a recurring decision, the future contains exploitable signal and acting better creates enough economic value. If nobody can change purchasing, capacity, pricing or priorities, a sophisticated model can become predictive reporting rather than a decision capability.\n\nNot every decision requires machine learning either. Stable demand, low error cost and slow-changing processes may be served well by a simple statistical rule. **Model sophistication should be justified by the economics of the decision**, not by the availability of a more advanced technique.\n\nA practical diagnostic is to identify who receives the forecast today, what they do with it and what would change if it improved. If the answer ends with a measurable decision, there is a real use case. If it ends with “better visibility”, the design is incomplete. The final system must connect **prediction to action and action to outcome**.",
+      "seo_title": "A Forecast Is Not a Decision | SC-Analytics",
+      "seo_description": "Why forecasting creates business value only when it changes inventory, capacity, purchasing or another concrete decision.",
+      "seo_keywords": [
+        "forecast vs decision",
+        "business forecasting",
+        "demand forecasting",
+        "decision intelligence"
+      ],
+      "tags": [
+        "Forecasting",
+        "Planning",
+        "Decision Systems"
+      ]
+    },
+    "ca": {
+      "title": "Un forecast no és una decisió",
+      "excerpt": "Una previsió només crea valor quan canvia una decisió concreta. El salt important no és entre models, sinó entre predir i actuar.",
+      "quick": [
+        "Predir no és decidir",
+        "L’acció canvia la mètrica",
+        "El valor apareix després del forecast"
+      ],
+      "section_titles": [
+        "La predicció acaba massa aviat",
+        "La decisió canvia la mètrica",
+        "Del número a la política",
+        "Quan el forecasting crea valor"
+      ],
+      "business_title": "El forecast crea valor quan millora una decisió concreta.",
+      "business_steps": [
+        "Previsió",
+        "Regla de decisió",
+        "Resultat de negoci"
+      ],
+      "body": "Moltes empreses parlen de forecasting com si l’objectiu fos produir un número més precís. El model estima demanda, vendes o càrrega i el projecte sembla acabat. **Però una previsió no decideix quant comprar, quina capacitat reservar ni quin risc acceptar.** Entre l’output del model i el resultat econòmic hi ha una capa de decisió que sovint rep molta menys atenció.\n\nLa diferència és important perquè dues empreses poden utilitzar el mateix forecast i obtenir resultats oposats. Una pot convertir-lo en una política d’inventari coherent; una altra pot mantenir les mateixes regles de compra de sempre. **Si la decisió no canvia, millorar la predicció pot tenir molt poc impacte operatiu.** El model millora mentre el sistema de negoci es comporta igual.\n\n**La predicció acaba massa aviat**\nUn forecast estima una variable futura sota unes condicions i amb incertesa. És útil, però no és una acció. Imaginem una empresa que espera vendre 1.000 unitats el mes vinent. Aquesta dada no diu quant cal comprar avui perquè encara falten l’estoc disponible, el lead time, el cost de ruptura, el cost de capital i el nivell de servei desitjat.\n\nPer això **el forecast és una entrada del sistema de decisió, no el sistema complet**. Si es tracta com una recomanació directa apareixen regles implícites: comprar exactament la previsió, afegir un percentatge fix o deixar que els planificadors la corregeixin quan no hi confien. Aquestes regles poden pesar més que unes dècimes de millora estadística.\n\nLa mateixa previsió també pot alimentar decisions diferents. Vendes pot utilitzar-la per objectius comercials, operacions per capacitat i compres per reposició. **Compartir un número no implica compartir una regla de decisió.** Cada funció encara ha de traduir aquesta expectativa a les seves restriccions i costos.\n\n**La decisió canvia la mètrica**\nLa precisió rellevant depèn del que passa després. Si quedar curt provoca una ruptura molt cara i passar-se només genera emmagatzematge barat, els dos errors no haurien de pesar igual. En productes peribles pot passar el contrari: **sobrepredir pot ser econòmicament pitjor que quedar-se lleugerament curt**.\n\nAixò explica per què una mètrica agregada pot amagar un model poc útil per a l’operació. MAE, RMSE o WAPE descriuen l’error de maneres diferents, però cap coneix automàticament el cost de la decisió. Abans de preguntar quin model guanya, cal saber quina acció alimenta el forecast.\n\nTambé importa l’horitzó. Un error de deu unitats demà pot activar un enviament urgent; el mateix error d’aquí a sis mesos pot ser irrellevant perquè encara hi ha temps per ajustar. **El valor del forecast depèn del moment en què la decisió deixa de ser fàcilment reversible.** Aquest límit és més útil que una etiqueta genèrica de curt o llarg termini.\n\n**Del número a la política**\nLa capa intermèdia sol ser una política: reposició, capacitat, pressupost, priorització comercial o marge de seguretat. Aquesta política combina previsió, restriccions i costos. Un sistema madur no es queda en “esperem 1.000”, sinó que arriba a una recomanació operativa.\n\nTambé hi entra la incertesa. **Una decisió necessita saber fins a quin punt el futur es pot desviar, no només quin és el valor esperat.** En horitzons llargs, escenaris i intervals poden ser més útils que una falsa precisió decimal.\n\nLa política també ha de definir què passa quan la informació canvia. Si el forecast s’actualitza cada dia però la compra només es pot modificar setmanalment, la cadència del sistema ha de ser coherent. **Més freqüència de predicció no significa automàticament més capacitat de decisió.**\n\n**Quan el forecasting crea valor**\nEl forecasting val la pena quan hi ha una decisió recurrent, el futur conté senyal aprofitable i actuar millor té impacte suficient. Si ningú pot modificar compres, capacitat, preus o prioritats, un model sofisticat pot acabar sent només reporting predictiu.\n\nTampoc tota decisió necessita machine learning. Quan la demanda és estable, el cost de l’error és baix i el procés canvia poc, una regla senzilla pot ser suficient. **La sofisticació del model s’ha de justificar per l’economia de la decisió**, no per la disponibilitat d’una tècnica més avançada.\n\nEl diagnòstic és simple: identifica qui rep avui la previsió, què fa amb ella i què canviaria si fos millor. Si la resposta acaba en una decisió mesurable, hi ha un cas real. Si acaba en “tenir més visibilitat”, encara falta la capa que connecta **predicció amb acció i acció amb resultat**.",
+      "seo_title": "Un forecast no és una decisió | SC-Analytics",
+      "seo_description": "Per què una previsió només crea valor quan canvia inventari, compres, capacitat o una altra decisió concreta.",
+      "seo_keywords": [
+        "forecast vs decisió",
+        "forecasting empresarial",
+        "previsió de demanda",
+        "decision intelligence"
+      ],
+      "tags": [
+        "Forecasting",
+        "Planning",
+        "Decision Systems"
+      ]
+    }
+  }
+}
