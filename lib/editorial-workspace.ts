@@ -31,7 +31,7 @@ export async function getWorkspaceContent(): Promise<GrowthContentItem[]> {
   return queryGrowthTable<GrowthContentItem>('content_items', {
     ...createdAfter(resetAt),
     order: 'created_at.desc',
-    limit: '250',
+    limit: '1000',
   }, { cacheSeconds: 0 })
 }
 
