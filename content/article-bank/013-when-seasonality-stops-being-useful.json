@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-013",
+  "sequence": 13,
+  "arc_id": "ARC-04",
+  "slug": "when-seasonality-stops-being-useful",
+  "scheduled_at": "2026-11-06T09:00:00+01:00",
+  "knowledge_area": "planning",
+  "cluster": "Forecasting & Planning",
+  "editorial_pillar": "industries_use_cases",
+  "content_family": "diagnose",
+  "angle": "seasonality forecasting limitations",
+  "primary_keyword": "seasonality forecasting limitations",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-014",
+    "KB-015",
+    "KB-016"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cuando la estacionalidad deja de ser útil",
+      "excerpt": "La estacionalidad ayuda mientras el proceso que genera la demanda se mantiene estable. Cambios de canal, surtido, precio o comportamiento pueden romperla.",
+      "quick": [
+        "Patrón histórico ≠ ley",
+        "El proceso puede cambiar",
+        "Hay que separar señal de régimen"
+      ],
+      "section_titles": [
+        "Qué significa realmente estacionalidad",
+        "Cómo se rompe un patrón",
+        "Señales de que el régimen cambió",
+        "Qué hacer después"
+      ],
+      "business_title": "La estacionalidad deja de ayudar cuando el negocio ya no genera demanda de la misma manera.",
+      "business_steps": [
+        "Patrón histórico",
+        "Cambio de régimen",
+        "Nueva referencia"
+      ],
+      "body": "La estacionalidad es una de las señales más valiosas en forecasting porque permite reutilizar estructura del pasado. Un negocio puede vender más en determinados meses, recibir más tráfico ciertos días o repetir ciclos asociados al calendario. El problema aparece cuando **un patrón histórico se trata como si fuera una propiedad permanente del negocio**.\n\nLa estacionalidad solo es útil mientras el proceso que genera la demanda mantiene suficiente estabilidad. Un cambio de canal, surtido, precio, capacidad, competencia o comportamiento del cliente puede alterar esa relación. **El calendario puede seguir siendo el mismo mientras el mecanismo económico ya es otro.**\n\n**Qué significa realmente estacionalidad**\nUn patrón estacional no es simplemente que “diciembre vende más”. Significa que una parte de la variación se repite de forma aproximadamente sistemática en posiciones similares del calendario. Esa repetición permite al modelo separar estructura de ruido.\n\nPero conviene distinguir estacionalidad de coincidencia. Un pico ocurrido dos años seguidos puede deberse a una campaña que casualmente se repitió, no a una fuerza estacional estable. **La causa importa porque determina si el patrón puede extrapolarse.**\n\nTambién puede haber varias estacionalidades a la vez: día de semana, semana del año, cierre de mes o ciclo anual. Un modelo debe decidir cuáles son suficientemente estables y cuáles dependen de otras variables.\n\n**Cómo se rompe un patrón**\nLa estacionalidad puede degradarse cuando cambia el proceso comercial. Migrar parte de las ventas de tienda a online, introducir suscripciones, cambiar el catálogo o modificar la política de promociones altera la forma en que el calendario se relaciona con la demanda.\n\nTambién puede producirse un cambio gradual. El pico navideño puede adelantarse, una categoría puede perder importancia o el fin de semana puede dejar de comportarse igual. **Un modelo estacional puede seguir pareciendo razonable visualmente mientras acumula bias sistemático.**\n\nEl riesgo aumenta cuando se utilizan multiplicadores fijos. Aplicar automáticamente “+20 % en diciembre” hereda una relación histórica sin preguntar si el mix de producto, precio o canal sigue siendo comparable.\n\n**Señales de que el régimen cambió**\nUna primera señal es que el error aparece de forma persistente en las mismas zonas del calendario. Si el modelo falla cada vez más en campañas, fines de semana o cierres de mes, puede existir un cambio de régimen y no simplemente ruido.\n\nOtra señal es la pérdida de estabilidad entre años comparables. **Si la forma del patrón cambia más rápido que el nivel general de la serie, la estacionalidad histórica está perdiendo poder predictivo.** También conviene revisar si las variables externas explican mejor esos cambios que el calendario.\n\nLos overrides humanos contienen información. Cuando planners corrigen sistemáticamente un patrón porque conocen cambios de negocio que el modelo no ve, ese comportamiento debería investigarse y, cuando sea posible, convertirse en feature o regla explícita.\n\n**Qué hacer después**\nRomper con una estacionalidad antigua no significa eliminar el calendario. Significa volver a estimar cuánto aporta y bajo qué condiciones. Puede ser necesario ponderar más los años recientes, introducir variables de promociones, separar canales o entrenar modelos por régimen.\n\nTambién se pueden utilizar tests de estabilidad y backtesting rolling. **La pregunta no es si existe estacionalidad, sino si sigue siendo suficientemente estable para apoyar la decisión futura.** Un patrón puede seguir presente y necesitar una amplitud distinta.\n\nEn periodos de transición conviene trabajar con escenarios. Si el negocio está migrando de canal o cambiando portfolio, un único patrón histórico puede dar falsa precisión. Escenarios de adopción o mix permiten representar mejor la incertidumbre.\n\nLa regla práctica es revisar la estacionalidad cuando cambia el negocio que la produce. **El calendario no se rompe; se rompe la relación entre calendario y demanda.** Detectar esa diferencia evita que un modelo siga proyectando fielmente un mundo que ya no existe.",
+      "seo_title": "Cuándo la estacionalidad deja de servir",
+      "seo_description": "Cómo detectar cuándo un patrón estacional pierde valor por cambios de canal, surtido, promociones, comportamiento o régimen de demanda.",
+      "seo_keywords": [
+        "seasonality forecasting limitations",
+        "estacionalidad forecasting",
+        "cambio de régimen demanda",
+        "forecast seasonality"
+      ],
+      "tags": [
+        "Forecasting",
+        "Seasonality",
+        "Structural Breaks"
+      ]
+    },
+    "en": {
+      "title": "When seasonality stops being useful",
+      "excerpt": "Seasonality helps while the demand-generating process remains stable. Channel, assortment, pricing or behaviour changes can break that relationship.",
+      "quick": [
+        "Historical pattern ≠ law",
+        "The process can change",
+        "Separate seasonality from regime"
+      ],
+      "section_titles": [
+        "What seasonality really means",
+        "How a pattern breaks",
+        "Signals of regime change",
+        "What to do next"
+      ],
+      "business_title": "Seasonality stops helping when the business no longer generates demand in the same way.",
+      "business_steps": [
+        "Historical pattern",
+        "Regime change",
+        "New reference"
+      ],
+      "body": "Seasonality is one of the most valuable signals in forecasting because it allows structure from the past to be reused. A business may sell more in certain months, receive more traffic on particular days or repeat cycles linked to the calendar. The problem begins when **a historical pattern is treated as a permanent property of the business**.\n\nSeasonality remains useful only while the process generating demand keeps enough stability. Changes in channel, assortment, price, capacity, competition or customer behaviour can alter that relationship. **The calendar can stay the same while the underlying economic mechanism changes.**\n\n**What seasonality really means**\nA seasonal pattern is not simply the observation that “December sells more”. It means part of the variation repeats approximately systematically at similar calendar positions. That repetition allows a model to separate structure from noise.\n\nSeasonality should also be distinguished from coincidence. A peak that occurs two years in a row may be caused by a campaign repeated at the same time rather than a stable seasonal force. **Causal context matters because it determines whether the pattern can be extrapolated.**\n\nSeveral seasonalities can coexist: day of week, week of year, month-end or annual cycle. The model has to decide which are stable enough to reuse and which depend on other variables.\n\n**How a pattern breaks**\nSeasonality can deteriorate when the commercial process changes. Moving sales from stores to online, adding subscriptions, changing assortment or changing promotion policy can alter how calendar position maps to demand.\n\nThe shift may also be gradual. A holiday peak can move earlier, a category can lose importance or weekends can stop behaving as they once did. **A seasonal model can still look visually plausible while accumulating systematic bias.**\n\nFixed multipliers are especially exposed. Automatically applying “+20% in December” inherits a past relationship without asking whether product mix, price or channel remain comparable.\n\n**Signals of regime change**\nOne signal is persistent error in the same parts of the calendar. If the model increasingly misses around promotions, weekends or month-end, the issue may be regime change rather than random noise.\n\nAnother is weaker stability between comparable years. **If the shape of the pattern changes faster than the overall level of the series, historical seasonality is losing predictive power.** External variables should also be checked to see whether they explain the change better than calendar features.\n\nHuman overrides can contain useful evidence. When planners repeatedly adjust the seasonal pattern because they know about business changes the model cannot see, those adjustments should be investigated and converted into features or explicit rules where possible.\n\n**What to do next**\nBreaking with old seasonality does not mean removing calendar information. It means re-estimating how much value it provides and under which conditions. The system may need to weight recent years more heavily, include promotion variables, split channels or model separate regimes.\n\nRolling backtests and stability tests are useful. **The question is not whether seasonality exists, but whether it remains stable enough to support the future decision.** A seasonal effect can persist while changing in amplitude.\n\nDuring transition periods, scenarios may be more honest than one fixed pattern. If the business is changing channel or portfolio, a single historical seasonal profile can create false precision. Adoption or mix scenarios represent uncertainty more directly.\n\nThe practical rule is to revisit seasonality whenever the business process that creates it changes. **The calendar does not break; the relationship between calendar and demand does.** Recognizing that difference prevents a model from accurately projecting a world that no longer exists.",
+      "seo_title": "When Seasonality Stops Being Useful",
+      "seo_description": "How to detect when seasonal forecasting loses value because of channel, assortment, promotion, behaviour or structural regime changes.",
+      "seo_keywords": [
+        "seasonality forecasting limitations",
+        "forecast seasonality",
+        "demand regime change",
+        "seasonal forecast"
+      ],
+      "tags": [
+        "Forecasting",
+        "Seasonality",
+        "Structural Breaks"
+      ]
+    },
+    "ca": {
+      "title": "Quan l’estacionalitat deixa de ser útil",
+      "excerpt": "L’estacionalitat ajuda mentre el procés que genera demanda es manté estable. Canvis de canal, assortiment, preu o comportament poden trencar-la.",
+      "quick": [
+        "Patró històric ≠ llei",
+        "El procés pot canviar",
+        "Cal separar estacionalitat i règim"
+      ],
+      "section_titles": [
+        "Què significa realment estacionalitat",
+        "Com es trenca un patró",
+        "Senyals de canvi de règim",
+        "Què fer després"
+      ],
+      "business_title": "L’estacionalitat deixa d’ajudar quan el negoci ja no genera demanda de la mateixa manera.",
+      "business_steps": [
+        "Patró històric",
+        "Canvi de règim",
+        "Nova referència"
+      ],
+      "body": "L’estacionalitat és un dels senyals més valuosos en forecasting perquè permet reutilitzar estructura del passat. Un negoci pot vendre més en alguns mesos, rebre més trànsit determinats dies o repetir cicles vinculats al calendari. El problema apareix quan **un patró històric es tracta com si fos una propietat permanent del negoci**.\n\nL’estacionalitat només és útil mentre el procés que genera demanda manté prou estabilitat. Un canvi de canal, assortiment, preu, capacitat, competència o comportament del client pot alterar aquesta relació. **El calendari pot continuar igual mentre el mecanisme econòmic ja és un altre.**\n\n**Què significa realment estacionalitat**\nUn patró estacional no és simplement observar que “desembre ven més”. Significa que una part de la variació es repeteix de manera aproximadament sistemàtica en posicions semblants del calendari. Aquesta repetició permet separar estructura i soroll.\n\nTambé cal distingir estacionalitat de coincidència. Un pic que passa dos anys seguits pot provenir d’una campanya repetida al mateix moment i no d’una força estacional estable. **El context causal importa perquè determina si el patró es pot extrapolar.**\n\nPoden coexistir diverses estacionalitats: dia de setmana, setmana de l’any, tancament de mes o cicle anual. El model ha de decidir quines són prou estables.\n\n**Com es trenca un patró**\nL’estacionalitat es pot degradar quan canvia el procés comercial. Moure vendes de botiga a online, introduir subscripcions, canviar assortiment o modificar promocions altera la relació entre calendari i demanda.\n\nEl canvi també pot ser gradual. Un pic de Nadal es pot avançar, una categoria pot perdre importància o el cap de setmana pot deixar de comportar-se igual. **Un model estacional pot continuar semblant raonable visualment mentre acumula bias sistemàtic.**\n\nEls multiplicadors fixos tenen especialment aquest risc. Aplicar automàticament “+20% al desembre” hereta una relació antiga sense comprovar si mix, preu o canal continuen sent comparables.\n\n**Senyals de canvi de règim**\nUn primer senyal és que l’error apareix persistentment a les mateixes zones del calendari. Si el model falla cada vegada més en campanyes, caps de setmana o finals de mes, pot existir un canvi de règim.\n\nUn altre senyal és la pèrdua d’estabilitat entre anys comparables. **Si la forma del patró canvia més ràpid que el nivell general de la sèrie, l’estacionalitat històrica està perdent poder predictiu.** També convé revisar si variables externes expliquen millor el canvi.\n\nEls overrides humans contenen informació. Quan planners corregeixen sistemàticament el patró perquè coneixen canvis que el model no veu, cal investigar aquestes correccions i convertir-les en features o regles quan sigui possible.\n\n**Què fer després**\nTrencar amb l’estacionalitat antiga no significa eliminar el calendari. Significa reestimar quant aporta i en quines condicions. Pot ser necessari donar més pes als anys recents, introduir promocions, separar canals o modelar règims.\n\nEls rolling backtests i tests d’estabilitat són útils. **La pregunta no és si existeix estacionalitat, sinó si continua sent prou estable per suportar la decisió futura.** Un efecte pot seguir present i canviar d’amplitud.\n\nEn períodes de transició, els escenaris poden ser més honestos que un patró fix. Si el negoci canvia canal o portfolio, un únic perfil històric pot crear falsa precisió.\n\nLa regla pràctica és revisar l’estacionalitat quan canvia el negoci que la produeix. **El calendari no es trenca; es trenca la relació entre calendari i demanda.** Aquesta distinció evita projectar fidelment un món que ja no existeix.",
+      "seo_title": "Quan l’estacionalitat deixa de servir",
+      "seo_description": "Com detectar quan l’estacionalitat perd valor per canvis de canal, assortiment, promocions, comportament o règim de demanda.",
+      "seo_keywords": [
+        "seasonality forecasting limitations",
+        "estacionalitat forecasting",
+        "canvi de règim demanda",
+        "forecast seasonality"
+      ],
+      "tags": [
+        "Forecasting",
+        "Seasonality",
+        "Structural Breaks"
+      ]
+    }
+  }
+}
