@@ -1246,7 +1246,7 @@ export function getPortfolioCasePresentation(projectId: string, lang: SiteLangua
 
   const labels = {
     en: {
-      back: 'Success stories',
+      back: 'Project overview',
       thesis: 'Starting point',
       problem: '01 · BUSINESS PROBLEM',
       logic: '02 · DECISION LOGIC',
@@ -1261,7 +1261,7 @@ export function getPortfolioCasePresentation(projectId: string, lang: SiteLangua
       proof: 'Public implementation, inspectable technical proof and decision-focused validation.',
     },
     es: {
-      back: 'Casos de éxito',
+      back: 'Resumen del proyecto',
       thesis: 'Punto de partida',
       problem: '01 · PROBLEMA DE NEGOCIO',
       logic: '02 · LÓGICA DE DECISIÓN',
@@ -1276,7 +1276,7 @@ export function getPortfolioCasePresentation(projectId: string, lang: SiteLangua
       proof: 'Implementación pública, prueba técnica inspeccionable y validación orientada a la decisión.',
     },
     ca: {
-      back: 'Casos d’èxit',
+      back: 'Resum del projecte',
       thesis: 'Punt de partida',
       problem: '01 · PROBLEMA DE NEGOCI',
       logic: '02 · LÒGICA DE DECISIÓ',
