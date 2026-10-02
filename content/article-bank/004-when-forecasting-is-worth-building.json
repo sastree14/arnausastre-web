@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-004",
+  "sequence": 4,
+  "arc_id": "ARC-01",
+  "slug": "when-forecasting-is-worth-building",
+  "scheduled_at": "2026-10-14T09:00:00+02:00",
+  "knowledge_area": "planning",
+  "cluster": "Forecasting & Planning",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "decision_guide",
+  "angle": "when to use demand forecasting",
+  "primary_keyword": "when to use demand forecasting",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-001",
+    "KB-002",
+    "KB-003"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cuándo merece la pena construir forecasting",
+      "excerpt": "Forecasting compensa cuando existe una decisión repetida, el futuro contiene señal útil y actuar mejor tiene suficiente impacto económico.",
+      "quick": [
+        "No toda incertidumbre es predecible",
+        "La decisión debe poder cambiar",
+        "El valor debe superar la complejidad"
+      ],
+      "section_titles": [
+        "Tres condiciones necesarias",
+        "Señal antes que sofisticación",
+        "Decisión y reversibilidad",
+        "Una prueba antes de escalar"
+      ],
+      "business_title": "Forecasting merece inversión cuando reduce una incertidumbre que realmente cambia una decisión.",
+      "business_steps": [
+        "Señal aprovechable",
+        "Decisión modificable",
+        "Impacto económico"
+      ],
+      "body": "Forecasting no es una capacidad que toda empresa necesite desarrollar al mismo nivel. Hay negocios donde una previsión sencilla genera mucho valor y otros donde un modelo sofisticado apenas cambia la operación. **La pregunta correcta no es si podemos predecir mejor, sino si merece la pena hacerlo para una decisión concreta.**\n\nAntes de invertir en modelos, pipelines y monitorización conviene comprobar tres condiciones. Debe existir una señal aprovechable en los datos, una decisión que pueda modificarse antes de que sea demasiado tarde y un impacto económico suficiente para justificar la complejidad. **Si falta una de las tres, el proyecto puede ser técnicamente interesante y comercialmente débil.**\n\n**Tres condiciones necesarias**\nLa primera condición es que el futuro tenga estructura. Series con estacionalidad, tendencia, patrones de repetición o variables explicativas pueden ofrecer señal. Cuando el fenómeno está dominado por eventos imprevisibles o el proceso cambia constantemente, el techo de precisión puede ser bajo.\n\nLa segunda condición es que alguien pueda actuar. Predecir demanda no aporta demasiado si los pedidos ya están cerrados, la capacidad no puede ajustarse o el inventario no tiene margen de maniobra. **Una predicción útil debe llegar antes del momento en que la decisión se vuelve irreversible.**\n\nLa tercera condición es económica. Una mejora pequeña en precisión puede ser valiosa si cada error es caro y se repite miles de veces. En cambio, un forecast impecable puede no justificar el esfuerzo cuando el volumen de decisiones es bajo o el coste de equivocarse es pequeño.\n\n**Señal antes que sofisticación**\nUno de los errores más frecuentes es empezar por el algoritmo. Se comparan modelos de machine learning, redes neuronales o ensembles antes de saber si existe señal suficiente. **La primera batalla no es entre algoritmos, sino entre señal y ruido.**\n\nUna baseline simple es una herramienta estratégica porque marca cuánto valor añadido queda disponible. Si una media móvil o un modelo estacional básico ya resuelve bien el problema, una arquitectura más compleja debe demostrar una ventaja que compense mantenimiento, explicabilidad y coste de operación.\n\nTambién importa la calidad del dato. Históricos con rupturas, cambios de definición, promociones no registradas o stockouts tratados como demanda real pueden limitar cualquier técnica. **Un modelo avanzado no recupera información que nunca se registró.** Antes de escalar complejidad, conviene separar problemas de modelización de problemas de datos.\n\n**Decisión y reversibilidad**\nEl horizonte del forecast debería venir de la decisión, no al revés. Si compras necesita decidir con seis semanas de antelación, ese horizonte es prioritario. Si staffing se puede ajustar con 48 horas, la necesidad es distinta. **El horizonte útil es el horizonte en el que todavía podemos cambiar algo.**\n\nLa reversibilidad también define cuánto debe importarnos la incertidumbre. Una decisión fácil de corregir puede tolerar un forecast menos preciso. Una compra grande con MOQ, una contratación o una reserva de capacidad son más difíciles de deshacer y requieren más atención a escenarios y rangos.\n\nEsto cambia el diseño del sistema. Puede tener sentido construir varios horizontes, métricas y políticas en lugar de un único forecast “oficial”. **Diferentes decisiones pueden necesitar diferentes versiones de la misma expectativa futura.**\n\n**Una prueba antes de escalar**\nLa forma más sana de evaluar forecasting es empezar por un caso acotado. Se define la decisión, una baseline, la métrica estadística y una métrica económica. Después se simula qué habría ocurrido si el nuevo forecast hubiera alimentado la política real.\n\nEste backtest debe medir algo más que accuracy. Puede estimar stock medio, roturas, expediciones urgentes, capacidad o margen bajo la nueva política. **El objetivo es probar el sistema forecast + decisión, no solo el predictor.**\n\nSi la mejora aparece y es estable, tiene sentido automatizar, ampliar cobertura y añadir monitorización. Si no aparece, el resultado también es valioso: quizá la decisión necesita otra política, los datos no contienen suficiente señal o el problema no justifica forecasting.\n\nEl criterio final es simple. Forecasting merece la pena cuando ayuda a comprometer recursos mejor bajo incertidumbre. **Si la previsión no cambia una decisión, no reduce un coste o no mejora un nivel de servicio relevante, probablemente todavía no existe un caso de negocio sólido.**",
+      "seo_title": "Cuándo merece la pena hacer forecasting",
+      "seo_description": "Guía para decidir si forecasting tiene caso de negocio: señal predecible, decisión modificable, horizonte útil e impacto económico.",
+      "seo_keywords": [
+        "when to use demand forecasting",
+        "cuándo usar forecasting",
+        "caso de negocio forecasting",
+        "previsión de demanda"
+      ],
+      "tags": [
+        "Forecasting",
+        "Business Case",
+        "Planning"
+      ]
+    },
+    "en": {
+      "title": "When forecasting is worth building",
+      "excerpt": "Forecasting pays off when there is a repeated decision, the future contains useful signal and acting better creates enough economic impact.",
+      "quick": [
+        "Not all uncertainty is predictable",
+        "The decision must be changeable",
+        "Value must exceed complexity"
+      ],
+      "section_titles": [
+        "Three necessary conditions",
+        "Signal before sophistication",
+        "Decision and reversibility",
+        "Test before scaling"
+      ],
+      "business_title": "Forecasting deserves investment when it reduces uncertainty that actually changes a decision.",
+      "business_steps": [
+        "Exploitable signal",
+        "Changeable decision",
+        "Economic impact"
+      ],
+      "body": "Forecasting is not a capability every company needs to develop to the same level. In some businesses a simple forecast creates substantial value; in others a sophisticated model barely changes operations. **The right question is not whether prediction can improve, but whether improving it is worth the effort for a specific decision.**\n\nBefore investing in models, pipelines and monitoring, three conditions are worth checking. There must be exploitable signal in the data, a decision that can still change before it is too late and enough economic impact to justify the complexity. **If one of those conditions is missing, the project can be technically interesting and commercially weak.**\n\n**Three necessary conditions**\nThe first condition is structure in the future-generating process. Seasonality, trend, repeated patterns or useful explanatory variables can create signal. When the outcome is dominated by genuinely unpredictable events or the process changes continuously, the achievable accuracy may be limited.\n\nThe second condition is actionability. Predicting demand has little value when purchase orders are already locked, capacity cannot move or inventory policy has no room to respond. **A useful forecast must arrive before the decision becomes difficult to reverse.**\n\nThe third condition is economic. A small improvement can be valuable when each error is expensive and the decision repeats thousands of times. An excellent forecast may not justify the effort when decision volume is low or the cost of being wrong is small.\n\n**Signal before sophistication**\nA common mistake is to start with the algorithm. Teams compare machine-learning models, neural networks or ensembles before knowing how much signal exists. **The first contest is not between algorithms; it is between signal and noise.**\n\nA simple baseline is strategically useful because it establishes how much incremental value remains. If a moving average or straightforward seasonal model already performs well, a more complex architecture has to justify its maintenance, explainability and operational cost.\n\nData quality matters as well. Histories containing definition changes, missing promotions, structural breaks or stockouts treated as true demand can limit any method. **An advanced model cannot reconstruct information that was never captured.** Complexity should come after the team has separated modeling limitations from data limitations.\n\n**Decision and reversibility**\nForecast horizon should be derived from the decision. If procurement must commit six weeks ahead, that horizon matters. If staffing can change within 48 hours, the requirement is different. **The useful horizon is the horizon at which the organization can still change something.**\n\nReversibility also determines how much uncertainty matters. An easy-to-correct decision can tolerate weaker forecasts. A large order subject to minimum quantities, a hiring commitment or a capacity reservation is harder to unwind and deserves more attention to ranges and scenarios.\n\nThis can lead to several forecasting views rather than one official number. Short-term execution may need one horizon and metric, while capacity or budgeting needs another. **Different decisions can require different representations of the same uncertain future.**\n\n**Test before scaling**\nA disciplined way to assess forecasting is to begin with a bounded use case. Define the decision, a baseline, the statistical metric and an economic metric. Then backtest what would have happened if the new forecast had fed the actual operating policy.\n\nThe backtest should measure more than accuracy. It can estimate average inventory, stockouts, emergency freight, utilization, capacity cost or margin under the proposed policy. **The object being tested is forecast plus decision, not the predictor in isolation.**\n\nIf the improvement is material and stable, the case for automation, broader coverage and monitoring becomes stronger. If it is not, the result is still informative: perhaps the decision needs a different policy, the data contains too little signal or the problem simply does not justify forecasting.\n\nThe final test is straightforward. Forecasting is worth building when it helps the business commit resources better under uncertainty. **If the forecast does not change a decision, reduce a meaningful cost or improve a relevant service outcome, the business case is probably not ready.**",
+      "seo_title": "When Forecasting Is Worth Building",
+      "seo_description": "A decision guide for forecasting: exploitable signal, an adjustable decision, the right horizon and enough economic impact to justify complexity.",
+      "seo_keywords": [
+        "when to use demand forecasting",
+        "forecasting business case",
+        "demand forecasting value",
+        "forecasting decision guide"
+      ],
+      "tags": [
+        "Forecasting",
+        "Business Case",
+        "Planning"
+      ]
+    },
+    "ca": {
+      "title": "Quan val la pena construir forecasting",
+      "excerpt": "Forecasting compensa quan hi ha una decisió repetida, el futur conté senyal útil i actuar millor té prou impacte econòmic.",
+      "quick": [
+        "No tota incertesa és predictible",
+        "La decisió ha de poder canviar",
+        "El valor ha de superar la complexitat"
+      ],
+      "section_titles": [
+        "Tres condicions necessàries",
+        "Senyal abans que sofisticació",
+        "Decisió i reversibilitat",
+        "Provar abans d’escalar"
+      ],
+      "business_title": "Forecasting mereix inversió quan redueix una incertesa que realment canvia una decisió.",
+      "business_steps": [
+        "Senyal aprofitable",
+        "Decisió modificable",
+        "Impacte econòmic"
+      ],
+      "body": "Forecasting no és una capacitat que totes les empreses hagin de desenvolupar al mateix nivell. En alguns negocis una previsió senzilla genera molt valor; en d’altres un model sofisticat gairebé no canvia l’operació. **La pregunta correcta no és si podem predir millor, sinó si val la pena fer-ho per a una decisió concreta.**\n\nAbans d’invertir en models, pipelines i monitorització convé comprovar tres condicions. Hi ha d’haver senyal aprofitable a les dades, una decisió que encara pugui canviar abans que sigui massa tard i prou impacte econòmic per justificar la complexitat. **Si en falta una, el projecte pot ser tècnicament interessant i comercialment feble.**\n\n**Tres condicions necessàries**\nLa primera condició és que el procés futur tingui estructura. Estacionalitat, tendència, patrons repetits o variables explicatives poden aportar senyal. Quan el fenomen està dominat per esdeveniments imprevisibles o el procés canvia contínuament, el sostre de precisió pot ser baix.\n\nLa segona condició és poder actuar. Predir demanda aporta poc si les comandes ja estan tancades, la capacitat no es pot ajustar o la política d’inventari no té marge. **Un forecast útil ha d’arribar abans que la decisió es torni difícil de revertir.**\n\nLa tercera condició és econòmica. Una millora petita pot ser valuosa quan cada error és car i la decisió es repeteix milers de vegades. Un forecast excel·lent pot no justificar l’esforç quan hi ha poques decisions o equivocar-se costa poc.\n\n**Senyal abans que sofisticació**\nUn error freqüent és començar per l’algoritme. Es comparen models de machine learning, xarxes neuronals o ensembles abans de saber quant senyal hi ha. **La primera competició no és entre algoritmes, sinó entre senyal i soroll.**\n\nUna baseline simple és estratègicament útil perquè marca quant valor incremental queda disponible. Si una mitjana mòbil o un model estacional senzill ja funciona bé, una arquitectura complexa ha de justificar manteniment, explicabilitat i cost operatiu.\n\nTambé importa la qualitat de la dada. Històrics amb canvis de definició, promocions no registrades, ruptures estructurals o stockouts tractats com a demanda real poden limitar qualsevol tècnica. **Un model avançat no pot reconstruir informació que mai no es va registrar.** La complexitat ha d’arribar després de separar problemes de dades i de modelització.\n\n**Decisió i reversibilitat**\nL’horitzó del forecast hauria de venir de la decisió. Si compres necessita comprometre’s sis setmanes abans, aquest horitzó és prioritari. Si staffing pot ajustar-se en 48 hores, la necessitat és una altra. **L’horitzó útil és aquell en què l’organització encara pot canviar alguna cosa.**\n\nLa reversibilitat també determina quant importa la incertesa. Una decisió fàcil de corregir pot tolerar una previsió pitjor. Una gran compra amb mínims, una contractació o una reserva de capacitat són més difícils de desfer i requereixen més atenció a rangs i escenaris.\n\nAixò pot portar a diverses vistes de forecasting en lloc d’un únic número oficial. L’execució a curt termini pot necessitar un horitzó i una mètrica; capacitat o pressupost, uns altres. **Decisions diferents poden necessitar representacions diferents del mateix futur incert.**\n\n**Provar abans d’escalar**\nUna manera disciplinada d’avaluar forecasting és començar per un cas acotat. Es defineixen la decisió, una baseline, la mètrica estadística i una mètrica econòmica. Després es fa backtest del que hauria passat si el nou forecast hagués alimentat la política real.\n\nLa prova ha de mesurar més que accuracy. Pot estimar inventari mitjà, ruptures, transport urgent, utilització, capacitat o marge sota la política proposada. **El que s’està provant és forecast més decisió, no només el predictor.**\n\nSi la millora és material i estable, té sentit automatitzar, ampliar cobertura i afegir monitorització. Si no ho és, el resultat també informa: potser la política és incorrecta, les dades tenen poc senyal o el problema no justifica forecasting.\n\nEl criteri final és clar. Forecasting val la pena quan ajuda a comprometre recursos millor sota incertesa. **Si la previsió no canvia una decisió, no redueix un cost rellevant o no millora un resultat de servei, probablement encara no hi ha un cas de negoci sòlid.**",
+      "seo_title": "Quan val la pena construir forecasting",
+      "seo_description": "Guia per decidir si forecasting té cas de negoci: senyal predictible, decisió modificable, horitzó útil i impacte econòmic suficient.",
+      "seo_keywords": [
+        "quan usar forecasting",
+        "forecasting cas de negoci",
+        "previsió demanda",
+        "forecasting decisió"
+      ],
+      "tags": [
+        "Forecasting",
+        "Business Case",
+        "Planning"
+      ]
+    }
+  }
+}
