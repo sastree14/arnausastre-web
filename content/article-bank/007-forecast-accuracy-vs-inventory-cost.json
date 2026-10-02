@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-007",
+  "sequence": 7,
+  "arc_id": "ARC-02",
+  "slug": "forecast-accuracy-vs-inventory-cost",
+  "scheduled_at": "2026-10-22T09:00:00+02:00",
+  "knowledge_area": "planning",
+  "cluster": "Forecasting & Planning",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "evidence_measurement",
+  "angle": "forecast accuracy vs inventory cost",
+  "primary_keyword": "forecast accuracy vs inventory cost",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-005",
+    "KB-006",
+    "KB-008"
+  ],
+  "variants": {
+    "es": {
+      "title": "Precisión del forecast vs coste de inventario",
+      "excerpt": "Reducir error estadístico no implica reducir inventario. El coste depende de cómo el forecast cambia stock de seguridad, reposición y nivel de servicio.",
+      "quick": [
+        "Accuracy no equivale a menos stock",
+        "El coste depende de la política",
+        "La mejora debe medirse en euros"
+      ],
+      "section_titles": [
+        "Dos curvas distintas",
+        "De error a stock",
+        "El papel del nivel de servicio",
+        "Medir el valor correctamente"
+      ],
+      "business_title": "La mejora real aparece cuando la precisión reduce el coste total sin deteriorar el servicio.",
+      "business_steps": [
+        "Menor error",
+        "Mejor política de stock",
+        "Menor coste total"
+      ],
+      "body": "Una mejora en forecast accuracy suele presentarse como una vía directa para reducir inventario. La relación existe, pero no es automática. **El error estadístico y el coste de inventario viven en capas distintas del sistema.** Entre ambos hay una política de reposición, un nivel de servicio objetivo, un lead time y una distribución de incertidumbre.\n\nPor eso una caída clara en WAPE puede producir un ahorro pequeño, mientras una mejora modesta en determinados SKUs puede liberar mucho capital o evitar roturas costosas. **El valor depende de qué error se reduce, dónde y cómo responde la política de stock.**\n\n**Dos curvas distintas**\nLa curva de accuracy describe cuánto se desvía la previsión respecto a la demanda real. La curva de coste describe lo que ocurre cuando esa previsión alimenta decisiones de inventario. No tienen por qué moverse en paralelo.\n\nImaginemos dos SKUs. El primero tiene gran volumen, lead time corto y bajo coste de almacenamiento. El segundo tiene menos volumen, lead time largo y un stockout muy caro. Mejorar diez puntos relativos el forecast del primero puede tener menos impacto económico que mejorar unos pocos puntos en el segundo. **La importancia de un error no viene solo de su tamaño, sino de la decisión que desencadena.**\n\nEso también explica por qué una métrica agregada puede ser insuficiente para priorizar mejoras. El equipo necesita conectar error con economics: coste de holding, coste de ruptura, obsolescencia, expediciones urgentes y capital inmovilizado.\n\n**De error a stock**\nEn muchas políticas, la incertidumbre del forecast influye en el stock de seguridad. Si la variabilidad del error disminuye de forma fiable, el sistema puede necesitar menos buffer para mantener el mismo nivel de servicio. Pero **reducir el error medio no garantiza reducir la incertidumbre relevante para el buffer**.\n\nUn modelo puede mejorar MAE sin cambiar demasiado los errores extremos. Otro puede reducir sesgo pero mantener una dispersión similar. Dependiendo de la fórmula o simulación usada para safety stock, el impacto será distinto.\n\nTambién importa el lead time. El error relevante para inventario no siempre es el de un periodo individual, sino el error acumulado durante el tiempo de reposición. **La política debe evaluarse sobre el horizonte en el que el stock tiene que proteger a la operación.**\n\n**El papel del nivel de servicio**\nNo se puede hablar de coste de inventario sin especificar qué servicio se quiere sostener. Reducir stock siempre es posible si aceptamos más roturas. La pregunta es cuánto capital podemos liberar **manteniendo un nivel de servicio coherente con la estrategia comercial**.\n\nAquí aparece el verdadero trade-off. Un forecast mejor puede desplazar la frontera entre inventario y disponibilidad: para el mismo servicio, menos stock; o para el mismo stock, mejor servicio. La decisión empresarial es qué combinación interesa.\n\nEso significa que medir solo “reducción de inventario” puede ser engañoso. Si el ahorro viene acompañado de más backorders, ventas perdidas o urgencias logísticas, el resultado neto puede ser peor.\n\n**Medir el valor correctamente**\nLa forma más sólida de cuantificar el beneficio es hacer backtesting de la política completa. Se toma la previsión antigua y la nueva, se alimentan ambas a la misma lógica de reposición y se simula inventario, roturas y costes bajo condiciones comparables.\n\nDespués puede evaluarse una segunda capa: quizá el nuevo forecast permite también rediseñar la política. **El objetivo no es demostrar que el predictor es mejor, sino que el sistema forecast + inventario es económicamente superior.**\n\nConviene reportar al menos tres dimensiones: accuracy, nivel de servicio y coste total de inventario. Si solo mejora la primera, todavía no sabemos si existe impacto empresarial.\n\nLa conclusión es simple. Forecasting puede reducir capital y mejorar disponibilidad, pero **el puente entre precisión y coste es una decisión de inventario explícita**. Sin ese puente, la empresa puede celebrar una métrica mejor y mantener prácticamente el mismo stock.",
+      "seo_title": "Forecast accuracy vs coste de inventario",
+      "seo_description": "Cómo conectar precisión del forecast con stock de seguridad, nivel de servicio, capital inmovilizado y coste total de inventario.",
+      "seo_keywords": [
+        "forecast accuracy vs inventory cost",
+        "forecasting inventario",
+        "stock de seguridad",
+        "forecast accuracy"
+      ],
+      "tags": [
+        "Forecasting",
+        "Inventory",
+        "Business Impact"
+      ]
+    },
+    "en": {
+      "title": "Forecast accuracy vs inventory cost",
+      "excerpt": "Lower statistical error does not automatically mean lower inventory. Cost depends on how the forecast changes safety stock, replenishment and service level.",
+      "quick": [
+        "Accuracy does not equal less stock",
+        "Cost depends on policy",
+        "Value should be measured economically"
+      ],
+      "section_titles": [
+        "Two different curves",
+        "From error to stock",
+        "The role of service level",
+        "Measure value correctly"
+      ],
+      "business_title": "Real improvement appears when accuracy lowers total cost without damaging service.",
+      "business_steps": [
+        "Lower error",
+        "Better stock policy",
+        "Lower total cost"
+      ],
+      "body": "Improved forecast accuracy is often presented as a direct route to lower inventory. The relationship is real, but it is not automatic. **Statistical error and inventory cost sit in different layers of the system.** Between them are replenishment policy, service targets, lead time and the distribution of uncertainty.\n\nThat is why a clear reduction in WAPE can produce little financial benefit, while a modest improvement on selected items can release meaningful working capital or avoid expensive stockouts. **Value depends on which error falls, where it falls and how inventory policy responds.**\n\n**Two different curves**\nThe accuracy curve describes deviation between forecast and actual demand. The cost curve describes what happens when that forecast feeds inventory decisions. The two do not have to move in parallel.\n\nConsider two SKUs. The first has high volume, short lead time and low holding cost. The second has lower volume, long lead time and expensive stockouts. A large relative accuracy improvement on the first may create less economic value than a smaller improvement on the second. **The importance of an error comes not only from its size but from the decision it triggers.**\n\nThis is why aggregate metrics are weak prioritization tools on their own. Error should be connected to economics: holding cost, shortage cost, obsolescence, emergency freight and working capital.\n\n**From error to stock**\nIn many policies, forecast uncertainty influences safety stock. If error variability falls reliably, the system may need less buffer to protect the same service level. But **lower average error does not guarantee lower uncertainty in the part of the distribution that drives the buffer**.\n\nOne model may improve MAE while extreme misses remain unchanged. Another may remove bias while dispersion stays similar. Depending on the safety-stock formula or simulation, the inventory response can be different.\n\nLead time matters as well. The relevant error for inventory may not be one-period error but cumulative error over the replenishment horizon. **The policy should be evaluated across the period during which inventory must protect operations.**\n\n**The role of service level**\nInventory cost cannot be discussed without stating the service level the company intends to maintain. Stock can always be reduced by accepting more shortages. The real question is how much capital can be released **while maintaining a service level consistent with the commercial strategy**.\n\nThis is the core trade-off. Better forecasting can shift the frontier between inventory and availability: less stock for the same service, or better service for the same stock. Management still has to choose the preferred combination.\n\nThat means “inventory reduction” alone is a weak success measure. If lower stock comes with more backorders, lost sales or emergency logistics, the net result may deteriorate.\n\n**Measure value correctly**\nThe strongest way to quantify the benefit is to backtest the full policy. Take the old and new forecasts, feed both into the same replenishment logic and simulate inventory, shortages and cost under comparable conditions.\n\nA second layer can then test whether the improved forecast supports a better policy as well. **The objective is not to prove that the predictor is better, but that the forecast-plus-inventory system is economically superior.**\n\nAt minimum, reporting should show three dimensions: accuracy, service level and total inventory cost. If only the first improves, business impact remains unproven.\n\nForecasting can reduce capital and improve availability, but **the bridge between accuracy and cost is an explicit inventory decision**. Without that bridge, the company can celebrate a better metric while carrying almost the same inventory.",
+      "seo_title": "Forecast Accuracy vs Inventory Cost",
+      "seo_description": "How forecast accuracy connects to safety stock, service level, working capital and total inventory cost through replenishment policy.",
+      "seo_keywords": [
+        "forecast accuracy vs inventory cost",
+        "inventory forecasting",
+        "safety stock",
+        "forecast accuracy"
+      ],
+      "tags": [
+        "Forecasting",
+        "Inventory",
+        "Business Impact"
+      ]
+    },
+    "ca": {
+      "title": "Precisió del forecast vs cost d’inventari",
+      "excerpt": "Reduir error estadístic no implica reduir inventari. El cost depèn de com el forecast canvia safety stock, reposició i nivell de servei.",
+      "quick": [
+        "Accuracy no equival a menys estoc",
+        "El cost depèn de la política",
+        "La millora s’ha de mesurar econòmicament"
+      ],
+      "section_titles": [
+        "Dues corbes diferents",
+        "De l’error a l’estoc",
+        "El paper del nivell de servei",
+        "Mesurar bé el valor"
+      ],
+      "business_title": "La millora real apareix quan la precisió redueix el cost total sense deteriorar el servei.",
+      "business_steps": [
+        "Menys error",
+        "Millor política d’estoc",
+        "Menys cost total"
+      ],
+      "body": "Una millora en forecast accuracy es presenta sovint com una via directa per reduir inventari. La relació existeix, però no és automàtica. **L’error estadístic i el cost d’inventari viuen en capes diferents del sistema.** Entre tots dos hi ha la política de reposició, el nivell de servei, el lead time i la distribució de la incertesa.\n\nPer això una baixada clara de WAPE pot produir poc estalvi, mentre una millora modesta en alguns SKUs pot alliberar molt capital o evitar ruptures costoses. **El valor depèn de quin error es redueix, on i com respon la política d’estoc.**\n\n**Dues corbes diferents**\nLa corba d’accuracy descriu la desviació entre previsió i demanda real. La corba de cost descriu què passa quan aquesta previsió alimenta decisions d’inventari. No han de moure’s en paral·lel.\n\nImaginem dos SKUs. El primer té molt volum, lead time curt i baix cost d’emmagatzematge. El segon té menys volum, lead time llarg i una ruptura molt cara. Millorar molt el forecast del primer pot tenir menys impacte econòmic que una millora petita en el segon. **La importància d’un error no ve només de la mida, sinó de la decisió que activa.**\n\nPer això una mètrica agregada és insuficient per prioritzar millores. Cal connectar error amb cost de holding, ruptura, obsolescència, transport urgent i capital immobilitzat.\n\n**De l’error a l’estoc**\nEn moltes polítiques, la incertesa del forecast influeix en el safety stock. Si la variabilitat de l’error baixa de manera fiable, el sistema pot necessitar menys buffer per mantenir el mateix servei. Però **reduir l’error mitjà no garanteix reduir la incertesa que realment determina el buffer**.\n\nUn model pot millorar MAE sense canviar gaire els errors extrems. Un altre pot eliminar biaix però mantenir una dispersió semblant. Segons la fórmula o simulació de safety stock, la resposta serà diferent.\n\nTambé importa el lead time. L’error rellevant per inventari pot ser l’error acumulat durant l’horitzó de reposició, no el d’un sol període. **La política s’ha d’avaluar sobre el temps en què l’estoc ha de protegir l’operació.**\n\n**El paper del nivell de servei**\nNo es pot parlar de cost d’inventari sense especificar quin servei es vol mantenir. Sempre es pot reduir estoc acceptant més ruptures. La pregunta real és quant capital es pot alliberar **mantenint un nivell de servei coherent amb l’estratègia comercial**.\n\nAquí apareix el trade-off. Un forecast millor pot moure la frontera entre inventari i disponibilitat: menys estoc per al mateix servei, o millor servei amb el mateix estoc. La direcció ha de triar la combinació.\n\nMesurar només “reducció d’inventari” pot ser enganyós. Si l’estalvi porta més backorders, vendes perdudes o urgències logístiques, el resultat net pot empitjorar.\n\n**Mesurar bé el valor**\nLa manera més sòlida de quantificar el benefici és fer backtesting de la política completa. Es comparen forecast antic i nou, tots dos alimenten la mateixa lògica de reposició i es simulen inventari, ruptures i costos en condicions comparables.\n\nDesprés es pot provar si el nou forecast permet també redissenyar la política. **L’objectiu no és demostrar que el predictor és millor, sinó que el sistema forecast més inventari és econòmicament superior.**\n\nCom a mínim, cal reportar tres dimensions: accuracy, nivell de servei i cost total d’inventari. Si només millora la primera, l’impacte empresarial continua sense demostrar.\n\nForecasting pot reduir capital i millorar disponibilitat, però **el pont entre precisió i cost és una decisió d’inventari explícita**. Sense aquest pont, l’empresa pot celebrar una mètrica millor i mantenir gairebé el mateix estoc.",
+      "seo_title": "Forecast accuracy vs cost d’inventari",
+      "seo_description": "Com connectar precisió del forecast amb safety stock, nivell de servei, capital immobilitzat i cost total d’inventari.",
+      "seo_keywords": [
+        "forecast accuracy vs inventory cost",
+        "forecasting inventari",
+        "safety stock",
+        "forecast accuracy"
+      ],
+      "tags": [
+        "Forecasting",
+        "Inventory",
+        "Business Impact"
+      ]
+    }
+  }
+}
