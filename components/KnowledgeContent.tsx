@@ -119,7 +119,17 @@ const FILTER_ORDER: KnowledgeArea[] = [
   'business_systems',
 ]
 
+function generatedMeta(item: PublicGeneratedArticle) {
+  const critique = item.critique && typeof item.critique === 'object' ? item.critique : {}
+  const raw = (critique as Record<string, unknown>).article_meta
+  return raw && typeof raw === 'object' ? raw as Record<string, unknown> : {}
+}
+
 function generatedAreas(item: PublicGeneratedArticle): KnowledgeArea[] {
+  const meta = generatedMeta(item)
+  const explicit = String(meta.knowledge_area || '') as KnowledgeArea
+  if (FILTER_ORDER.includes(explicit) && explicit !== 'all') return [explicit]
+
   const text = [item.topic, item.challenge, item.industry, item.content_family, item.title]
     .filter(Boolean)
     .join(' ')
@@ -191,7 +201,7 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
         key,
         href: `/knowledge/${key}`,
         title: item.title,
-        excerpt: compactExcerpt(item.body),
+        excerpt: String(generatedMeta(item).excerpt || compactExcerpt(item.body)),
         areas: generatedAreas(item),
       }]
     })
