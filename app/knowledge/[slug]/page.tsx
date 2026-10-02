@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { getArticleBySlug } from '@/lib/content'
 import { getPublicGeneratedArticleVariants } from '@/lib/public-growth'
 import ArticleContent from '@/components/ArticleContent'
-import GeneratedArticleContent from '@/components/GeneratedArticleContent'
+import GeneratedArticleContent from '@/components/GeneratedArticleContent'\nimport KnowledgeArticleGoldStandard from '@/components/KnowledgeArticleGoldStandard'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -62,7 +62,7 @@ export default async function ArticlePage({ params }: Props) {
       publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://sc-analytics.io'},
       mainEntityOfPage:`https://sc-analytics.io/knowledge/${slug}`,
     }
-    return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><ArticleContent article={staticArticle} /></>
+    const isGoldStandard = slug === 'why-inventory-visibility-is-not-inventory-control-and-what-that-costs'\n    return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/>{isGoldStandard ? <KnowledgeArticleGoldStandard article={staticArticle} /> : <ArticleContent article={staticArticle} />}</>
   }
 
   const generated = await getPublicGeneratedArticleVariants(slug)
