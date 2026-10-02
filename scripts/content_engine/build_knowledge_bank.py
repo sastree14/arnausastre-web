@@ -395,6 +395,62 @@ def build_manifest(output_dir: Path, catalog: dict[str, Any]) -> dict[str, Any]:
     return manifest
 
 
+def validate_catalog(catalog: dict[str, Any]) -> list[dict[str, Any]]:
+    specs = list(catalog.get("specs") or [])
+    if len(specs) != 200:
+        raise ValueError(f"Knowledge catalog must contain exactly 200 specs; found {len(specs)}")
+
+    seen_ids: set[str] = set()
+    seen_slugs: dict[str, str] = {}
+    seen_titles: dict[str, str] = {}
+    seen_keywords: dict[str, str] = {}
+
+    for spec in specs:
+        spec_id = str(spec.get("spec_id") or "")
+        if not spec_id or spec_id in seen_ids:
+            raise ValueError(f"Duplicate or empty spec_id: {spec_id!r}")
+        seen_ids.add(spec_id)
+
+        if spec.get("content_family") == "case_project_proof":
+            raise ValueError(f"{spec_id}: case_project_proof is excluded from the website Knowledge bank")
+
+        stable_slug = slugify(str(spec.get("title_seed_en") or spec_id))
+        normalized_title = re.sub(r"[^a-z0-9]+", " ", str(spec.get("title_seed_en") or "").lower()).strip()
+        keyword = re.sub(r"\s+", " ", str(spec.get("primary_keyword") or "").lower()).strip()
+
+        if stable_slug in seen_slugs:
+            raise ValueError(f"Slug collision: {spec_id} and {seen_slugs[stable_slug]} -> {stable_slug}")
+        seen_slugs[stable_slug] = spec_id
+
+        if normalized_title in seen_titles:
+            raise ValueError(f"Title collision: {spec_id} and {seen_titles[normalized_title]}")
+        seen_titles[normalized_title] = spec_id
+
+        if keyword and keyword in seen_keywords:
+            raise ValueError(f"Primary keyword collision: {spec_id} and {seen_keywords[keyword]} -> {keyword}")
+        if keyword:
+            seen_keywords[keyword] = spec_id
+
+    sequences = sorted(int(spec.get("sequence") or 0) for spec in specs)
+    if sequences != list(range(1, 201)):
+        raise ValueError("Knowledge catalog sequences must be exactly 1..200")
+
+    return specs
+
+
+def cleanup_orphans(output_dir: Path, specs: list[dict[str, Any]]) -> list[str]:
+    expected = {article_path(output_dir, spec).resolve() for spec in specs}
+    removed: list[str] = []
+    if not output_dir.exists():
+        return removed
+    for candidate in output_dir.glob("*.json"):
+        if candidate.name == "manifest.json":
+            continue
+        if candidate.resolve() not in expected:
+            removed.append(str(candidate))
+            candidate.unlink()
+    return removed
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Materialize the SC-Analytics 200-article Knowledge bank.")
     parser.add_argument("--catalog", type=Path, default=DEFAULT_CATALOG)
@@ -408,11 +464,15 @@ def main() -> int:
     args = parser.parse_args()
 
     catalog = json.loads(args.catalog.read_text(encoding="utf-8"))
-    specs = list(catalog.get("specs") or [])
-    if len(specs) != 200:
-        raise SystemExit(f"Knowledge catalog must contain exactly 200 specs; found {len(specs)}")
+    try:
+        specs = validate_catalog(catalog)
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
 
     args.output.mkdir(parents=True, exist_ok=True)
+    removed = cleanup_orphans(args.output, specs)
+    if removed:
+        print(json.dumps({"removed_orphan_articles": len(removed), "paths": removed}, ensure_ascii=False), flush=True)
 
     if args.only:
         requested = {value.strip() for value in args.only.split(",") if value.strip()}
