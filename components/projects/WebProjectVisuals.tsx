@@ -6,48 +6,12 @@ type Architecture = WebsiteProjectGoldStandard['architecture']
 type Evidence = WebsiteProjectGoldStandard['evidence']
 
 export function HorizonDecisionVisual({ data, lang }: { data: HorizonLogic; lang?: SiteLanguage }) {
-  const localized = lang
-    ? {
-        en: {
-          title: 'Evaluation by planning horizon',
-          note: 'A different business decision at each horizon',
-          rule: 'Decision rule',
-          takeaway: 'Use each horizon to support the planning decision it actually drives.',
-          horizons: [
-            { horizon: '1 month', label: 'Near term', note: 'Immediate demand signal with less accumulated uncertainty.' },
-            { horizon: '3 months', label: 'Short range', note: 'Error and bias before the planning window broadens.' },
-            { horizon: '6 months', label: 'Medium range', note: 'Forecast degradation made visible, not averaged away.' },
-            { horizon: '9 months', label: 'Longer range', note: 'Long-horizon usefulness for purchasing and inventory.' },
-          ],
-        },
-        es: {
-          title: 'Evaluación por horizonte de planificación',
-          note: 'Una decisión de negocio distinta en cada horizonte',
-          rule: 'Regla de decisión',
-          takeaway: 'Usar cada horizonte para apoyar la decisión de planificación que realmente mueve.',
-          horizons: [
-            { horizon: '1 mes', label: 'Muy corto plazo', note: 'Señal inmediata de demanda con menor incertidumbre acumulada.' },
-            { horizon: '3 meses', label: 'Corto plazo', note: 'Error y sesgo antes de ampliar la ventana de planificación.' },
-            { horizon: '6 meses', label: 'Medio plazo', note: 'La degradación del forecast queda visible, no escondida en un promedio.' },
-            { horizon: '9 meses', label: 'Largo plazo', note: 'Utilidad real del forecast para compras e inventario.' },
-          ],
-        },
-        ca: {
-          title: 'Avaluació per horitzó de planificació',
-          note: 'Una decisió de negoci diferent a cada horitzó',
-          rule: 'Regla de decisió',
-          takeaway: 'Utilitzar cada horitzó per donar suport a la decisió de planificació que realment mou.',
-          horizons: [
-            { horizon: '1 mes', label: 'Molt curt termini', note: 'Senyal immediat de demanda amb menys incertesa acumulada.' },
-            { horizon: '3 mesos', label: 'Curt termini', note: 'Error i biaix abans d’ampliar la finestra de planificació.' },
-            { horizon: '6 mesos', label: 'Mitjà termini', note: 'La degradació del forecast queda visible, no amagada en una mitjana.' },
-            { horizon: '9 mesos', label: 'Llarg termini', note: 'Utilitat real del forecast per a compres i inventari.' },
-          ],
-        },
-      }[lang]
-    : null
+  const labels = {
+    en: { title: 'Decision sequence', note: 'Each stage answers a different operating question', rule: 'Decision rule' },
+    es: { title: 'Secuencia de decisión', note: 'Cada etapa responde a una pregunta operativa distinta', rule: 'Regla de decisión' },
+    ca: { title: 'Seqüència de decisió', note: 'Cada etapa respon a una pregunta operativa diferent', rule: 'Regla de decisió' },
+  }[lang || 'en']
 
-  const horizons = localized?.horizons || data.horizons
   const horizonPalette = [
     { bg: '#F8F2E9', border: '#DDCFBD' },
     { bg: '#F2ECF7', border: '#D7C8E3' },
@@ -58,20 +22,16 @@ export function HorizonDecisionVisual({ data, lang }: { data: HorizonLogic; lang
   return (
     <div className="border border-[#D8DDE3] bg-white">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D8DDE3] bg-[#F6F2EA] px-6 py-4">
-        <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-700">
-          {localized?.title || 'Horizon-level evaluation'}
-        </p>
-        <p className="text-[14px] font-medium text-slate-600">
-          {localized?.note || 'Each planning horizon is evaluated separately'}
-        </p>
+        <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-700">{labels.title}</p>
+        <p className="text-[14px] font-medium text-slate-600">{labels.note}</p>
       </div>
 
       <div className="grid gap-3 p-3 md:grid-cols-4">
-        {horizons.map((item, index) => {
+        {data.horizons.map((item, index) => {
           const palette = horizonPalette[index % horizonPalette.length]
           return (
             <div
-              key={item.horizon}
+              key={`${item.horizon}-${item.label}`}
               className="min-h-[190px] border px-6 py-6"
               style={{ backgroundColor: palette.bg, borderColor: palette.border }}
             >
@@ -94,8 +54,8 @@ export function HorizonDecisionVisual({ data, lang }: { data: HorizonLogic; lang
 
       <div className="border-t border-[#D8DDE3] px-6 py-5">
         <p className="text-[17px] leading-8 text-slate-800">
-          <span className="font-semibold text-slate-950">{localized?.rule || 'Decision rule'} — </span>
-          {localized?.takeaway || data.takeaway}
+          <span className="font-semibold text-slate-950">{labels.rule} — </span>
+          {data.takeaway}
         </p>
       </div>
     </div>
@@ -128,15 +88,7 @@ function ArchitectureStage({
   )
 }
 
-function ArchitectureNode({
-  index,
-  title,
-  detail,
-}: {
-  index: number
-  title: string
-  detail: string
-}) {
+function ArchitectureNode({ index, title, detail }: { index: number; title: string; detail: string }) {
   return (
     <div className="min-w-0 border-t border-white/15 bg-black/5 first:border-t-0">
       <div className="flex items-center gap-3 border-b border-white/10 px-5 py-2.5">
@@ -151,248 +103,98 @@ function ArchitectureNode({
 }
 
 export function ArchitectureSystemVisual({ data, lang }: { data: Architecture; lang?: SiteLanguage }) {
-  const labels = lang
-    ? {
-        en: {
-          title: 'SC-12 · System architecture',
-          flow: 'Data → modelling → evaluation → planning',
-          inputs: 'Inputs',
-          models: 'Models',
-          evaluation: 'Evaluation',
-          decision: 'Decision output',
-          integrations: 'Integration boundaries',
-          provenance: 'Public portfolio implementation',
-        },
-        es: {
-          title: 'SC-12 · Arquitectura del sistema',
-          flow: 'Datos → modelización → evaluación → planificación',
-          inputs: 'Entradas',
-          models: 'Modelos',
-          evaluation: 'Evaluación',
-          decision: 'Salida de decisión',
-          integrations: 'Capas de integración',
-          provenance: 'Implementación pública de portfolio',
-        },
-        ca: {
-          title: 'SC-12 · Arquitectura del sistema',
-          flow: 'Dades → modelització → avaluació → planificació',
-          inputs: 'Entrades',
-          models: 'Models',
-          evaluation: 'Avaluació',
-          decision: 'Sortida de decisió',
-          integrations: 'Capes d’integració',
-          provenance: 'Implementació pública de portfolio',
-        },
-      }[lang]
-    : null
+  const labels = {
+    en: { inputs: 'Inputs', core: 'Core system', validation: 'Validation', decision: 'Decision output', integrations: 'Integration boundaries', provenance: 'Public portfolio implementation' },
+    es: { inputs: 'Entradas', core: 'Sistema central', validation: 'Validación', decision: 'Salida de decisión', integrations: 'Capas de integración', provenance: 'Implementación pública de portfolio' },
+    ca: { inputs: 'Entrades', core: 'Sistema central', validation: 'Validació', decision: 'Sortida de decisió', integrations: 'Capes d’integració', provenance: 'Implementació pública de portfolio' },
+  }[lang || 'en']
 
-  const localizedArchitecture = lang
-    ? {
-        en: null,
-        es: {
-          steps: [
-            { title: 'Pedidos + inventario', detail: 'Histórico operativo de pedidos, inventario y atributos de producto.' },
-            { title: 'Ingeniería de variables', detail: 'Prepara señales para modelado y contexto específico por horizonte.' },
-            { title: 'Modelos de referencia', detail: 'Mantienen una referencia sencilla para comparar cada alternativa.' },
-            { title: 'Candidatos de ML', detail: 'XGBoost y LightGBM se evalúan junto a enfoques estadísticos.' },
-            { title: 'Backtesting por horizonte', detail: 'Mide el rendimiento por separado a 1, 3, 6 y 9 meses.' },
-            { title: 'Selección del forecast', detail: 'Prioriza comportamiento fuera de muestra y simplicidad operativa.' },
-            { title: 'Salida de planificación', detail: 'Expone forecasts, intervalos e indicadores para la decisión.' },
-          ],
-          integrations: [
-            { title: 'PostgreSQL', detail: 'Fuente histórica para pedidos, inventario y atributos de producto.' },
-            { title: 'FastAPI', detail: 'Capa de servicio para solicitudes de forecast y escenarios.' },
-            { title: 'Almacenamiento de objetos', detail: 'Backtests, artefactos entrenados y resultados del modelo.' },
-          ],
-        },
-        ca: {
-          steps: [
-            { title: 'Comandes + inventari', detail: 'Històric operatiu de comandes, inventari i atributs de producte.' },
-            { title: 'Enginyeria de variables', detail: 'Prepara senyals per al modelatge i context específic per horitzó.' },
-            { title: 'Models de referència', detail: 'Mantenen una referència senzilla per comparar cada alternativa.' },
-            { title: 'Candidats de ML', detail: 'XGBoost i LightGBM s’avaluen juntament amb enfocaments estadístics.' },
-            { title: 'Backtesting per horitzó', detail: 'Mesura el rendiment per separat a 1, 3, 6 i 9 mesos.' },
-            { title: 'Selecció del forecast', detail: 'Prioritza comportament fora de mostra i simplicitat operativa.' },
-            { title: 'Sortida de planificació', detail: 'Exposa forecasts, intervals i indicadors per a la decisió.' },
-          ],
-          integrations: [
-            { title: 'PostgreSQL', detail: 'Font històrica per a comandes, inventari i atributs de producte.' },
-            { title: 'FastAPI', detail: 'Capa de servei per a peticions de forecast i escenaris.' },
-            { title: 'Emmagatzematge d’objectes', detail: 'Backtests, artefactes entrenats i resultats del model.' },
-          ],
-        },
-      }[lang]
-    : null
-
-  const steps = localizedArchitecture?.steps || data.steps
-  const integrations = localizedArchitecture?.integrations || data.integrations
-  const [orders, feature, baseline, ml, backtest, selection, planning] = steps
-  const decisionCompanion = lang
-    ? {
-        en: {
-          title: 'Inventory scenario',
-          detail: 'Translates the forecast into coverage, service-level and working-capital implications.',
-        },
-        es: {
-          title: 'Escenario de inventario',
-          detail: 'Traduce el forecast a cobertura, nivel de servicio e impacto sobre capital circulante.',
-        },
-        ca: {
-          title: 'Escenari d’inventari',
-          detail: 'Tradueix el forecast a cobertura, nivell de servei i impacte sobre capital circulant.',
-        },
-      }[lang]
-    : {
-        title: 'Inventory scenario',
-        detail: 'Translate forecast output into inventory coverage and service implications.',
-      }
+  const groups = [
+    { label: labels.inputs, tone: 'blue' as const, steps: data.steps.slice(0, 2), offset: 0 },
+    { label: labels.core, tone: 'violet' as const, steps: data.steps.slice(2, 4), offset: 2 },
+    { label: labels.validation, tone: 'teal' as const, steps: data.steps.slice(4, 6), offset: 4 },
+    { label: labels.decision, tone: 'slate' as const, steps: data.steps.slice(6, 8), offset: 6 },
+  ]
 
   return (
     <div className="min-w-0 border border-[#5E86A8] bg-[#0D1B2A] text-white">
       <div className="grid gap-3 border-b border-[#5E86A8] px-5 py-5 sm:px-6 md:grid-cols-[1fr_auto] md:items-end">
         <div>
-          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">
-            {labels?.title || 'SC-12 · System architecture'}
-          </p>
-          <p className="mt-2 text-[16px] leading-7 text-[#C2D2E0]">
-            {labels?.flow || 'Data → modelling → evaluation → planning'}
-          </p>
+          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{data.eyebrow}</p>
+          <p className="mt-2 text-[16px] leading-7 text-[#C2D2E0]">{data.body}</p>
         </div>
-        <p className="text-[13px] leading-6 text-[#9DB3C7]">
-          {labels?.provenance || 'Public portfolio implementation'}
-        </p>
+        <p className="text-[13px] leading-6 text-[#9DB3C7]">{labels.provenance}</p>
       </div>
 
       <div className="min-w-0 px-5 py-7 sm:px-6 lg:px-7 xl:px-8">
         <div className="grid min-w-0 items-start grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-4">
-          <ArchitectureStage label={labels?.inputs || 'Inputs'} tone="blue">
-            {orders ? <ArchitectureNode index={1} title={orders.title} detail={orders.detail} /> : null}
-            {feature ? <ArchitectureNode index={2} title={feature.title} detail={feature.detail} /> : null}
-          </ArchitectureStage>
-
-          <ArchitectureStage label={labels?.models || 'Models'} tone="violet">
-            {baseline ? <ArchitectureNode index={3} title={baseline.title} detail={baseline.detail} /> : null}
-            {ml ? <ArchitectureNode index={4} title={ml.title} detail={ml.detail} /> : null}
-          </ArchitectureStage>
-
-          <ArchitectureStage label={labels?.evaluation || 'Evaluation'} tone="teal">
-            {backtest ? <ArchitectureNode index={5} title={backtest.title} detail={backtest.detail} /> : null}
-            {selection ? <ArchitectureNode index={6} title={selection.title} detail={selection.detail} /> : null}
-          </ArchitectureStage>
-
-          <ArchitectureStage label={labels?.decision || 'Decision output'} tone="slate">
-            {planning ? <ArchitectureNode index={7} title={planning.title} detail={planning.detail} /> : null}
-            <ArchitectureNode index={8} title={decisionCompanion.title} detail={decisionCompanion.detail} />
-          </ArchitectureStage>
+          {groups.map((group) => (
+            <ArchitectureStage key={group.label} label={group.label} tone={group.tone}>
+              {group.steps.map((step, index) => (
+                <ArchitectureNode
+                  key={`${group.label}-${step.title}`}
+                  index={group.offset + index + 1}
+                  title={step.title}
+                  detail={step.detail}
+                />
+              ))}
+            </ArchitectureStage>
+          ))}
         </div>
 
-        <div className="mt-8 border-t border-[#5E86A8] pt-5">
-          <p className="mb-4 text-[14px] font-semibold uppercase tracking-[0.14em] text-[#C2D2E0]">
-            {labels?.integrations || 'Integration boundaries'}
-          </p>
-          <div className="grid border border-[#5E86A8] lg:grid-cols-3 lg:divide-x lg:divide-[#5E86A8]">
-            {integrations.map((integration) => (
-              <div
-                key={integration.title}
-                className="min-w-0 border-b border-[#5E86A8] px-5 py-5 last:border-b-0 lg:border-b-0"
-              >
-                <h4 className="break-words text-[17px] font-semibold leading-7 text-white">{integration.title}</h4>
-                <p className="mt-2 break-words text-[15px] leading-7 text-[#C2D2E0]">{integration.detail}</p>
-              </div>
-            ))}
+        {data.integrations.length ? (
+          <div className="mt-8 border-t border-[#5E86A8] pt-5">
+            <p className="mb-4 text-[14px] font-semibold uppercase tracking-[0.14em] text-[#C2D2E0]">{labels.integrations}</p>
+            <div className="grid border border-[#5E86A8] lg:grid-cols-3 lg:divide-x lg:divide-[#5E86A8]">
+              {data.integrations.map((integration) => (
+                <div
+                  key={integration.title}
+                  className="min-w-0 border-b border-[#5E86A8] px-5 py-5 last:border-b-0 lg:border-b-0"
+                >
+                  <h4 className="break-words text-[17px] font-semibold leading-7 text-white">{integration.title}</h4>
+                  <p className="mt-2 break-words text-[15px] leading-7 text-[#C2D2E0]">{integration.detail}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     </div>
   )
 }
 
-export function EvidenceFrameworkVisual({ data, lang }: { data: Evidence; lang?: SiteLanguage }) {
-  const localized = lang
-    ? {
-        en: {
-          left: 'Forecast evaluation',
-          right: 'Validation coverage',
-          labels: {
-            WAPE: 'WAPE',
-            MAE: 'MAE',
-            'Forecast bias': 'Forecast bias',
-            'Planning horizons': 'Planning horizons',
-            'Backtest observations': 'Backtest observations',
-          },
-          notes: {
-            WAPE: 'Weighted percentage error',
-            MAE: 'Mean absolute error',
-            'Forecast bias': 'Systematic forecast direction',
-            'Planning horizons': '1 · 3 · 6 · 9 months',
-            'Backtest observations': 'Public validation observations',
-          },
-        },
-        es: {
-          left: 'Evaluación del forecast',
-          right: 'Cobertura de validación',
-          labels: {
-            WAPE: 'WAPE',
-            MAE: 'MAE',
-            'Forecast bias': 'Sesgo del forecast',
-            'Planning horizons': 'Horizontes de planificación',
-            'Backtest observations': 'Observaciones de backtest',
-          },
-          notes: {
-            WAPE: 'Error porcentual ponderado',
-            MAE: 'Error absoluto medio',
-            'Forecast bias': 'Sesgo sistemático',
-            'Planning horizons': '1 · 3 · 6 · 9 meses',
-            'Backtest observations': 'Observaciones de validación',
-          },
-        },
-        ca: {
-          left: 'Avaluació del forecast',
-          right: 'Cobertura de validació',
-          labels: {
-            WAPE: 'WAPE',
-            MAE: 'MAE',
-            'Forecast bias': 'Biaix del forecast',
-            'Planning horizons': 'Horitzons de planificació',
-            'Backtest observations': 'Observacions de backtest',
-          },
-          notes: {
-            WAPE: 'Error percentual ponderat',
-            MAE: 'Error absolut mitjà',
-            'Forecast bias': 'Biaix sistemàtic',
-            'Planning horizons': '1 · 3 · 6 · 9 mesos',
-            'Backtest observations': 'Observacions de validació',
-          },
-        },
-      }[lang]
-    : null
+export function EvidenceFrameworkVisual({
+  data,
+  lang,
+  groupLabels,
+}: {
+  data: Evidence
+  lang?: SiteLanguage
+  groupLabels?: [string, string]
+}) {
+  const fallback = {
+    en: ['Primary evidence', 'Validation coverage'],
+    es: ['Evidencia principal', 'Cobertura de validación'],
+    ca: ['Evidència principal', 'Cobertura de validació'],
+  }[lang || 'en'] as [string, string]
 
+  const labels = groupLabels || fallback
   const evaluationMetrics = data.metrics.slice(0, 3)
   const validationMetrics = data.metrics.slice(3, 5)
 
-  const renderMetric = (metric: Evidence['metrics'][number]) => {
-    const metricKey = metric.label as keyof typeof localized.notes
-    const label = localized?.labels[metricKey] || metric.label
-    const note = localized?.notes[metricKey] || metric.note
-
-    return (
-      <div key={metric.label} className="flex min-h-[170px] flex-col px-5 py-5">
-        <p className="min-h-[30px] text-[12px] font-semibold uppercase leading-[1.25] tracking-[0.1em] text-indigo-700">
-          {label}
-        </p>
-        <p className="mt-3 text-[30px] font-semibold leading-none tracking-[-0.02em] text-[#1D2B44]">{metric.value}</p>
-        <p className="mt-auto pt-4 text-[13px] leading-5 text-slate-600">{note}</p>
-      </div>
-    )
-  }
+  const renderMetric = (metric: Evidence['metrics'][number]) => (
+    <div key={`${metric.label}-${metric.value}`} className="flex min-h-[170px] flex-col px-5 py-5">
+      <p className="min-h-[30px] text-[12px] font-semibold uppercase leading-[1.25] tracking-[0.1em] text-indigo-700">{metric.label}</p>
+      <p className="mt-3 text-[30px] font-semibold leading-none tracking-[-0.02em] text-[#1D2B44]">{metric.value}</p>
+      <p className="mt-auto pt-4 text-[13px] leading-5 text-slate-600">{metric.note}</p>
+    </div>
+  )
 
   return (
     <div className="grid gap-4 lg:grid-cols-[3fr_2fr]">
       <section className="overflow-hidden border border-[#D8CBE5] bg-[#F4EFF8]">
         <div className="border-b border-[#D8CBE5] bg-[#ECE3F3] px-6 py-4">
-          <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#40385F]">
-            {localized?.left || 'Forecast evaluation'}
-          </p>
+          <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#40385F]">{labels[0]}</p>
         </div>
         <div className="grid divide-y divide-[#D8CBE5] bg-[#FBF9FC] md:grid-cols-3 md:divide-x md:divide-y-0">
           {evaluationMetrics.map(renderMetric)}
@@ -401,9 +203,7 @@ export function EvidenceFrameworkVisual({ data, lang }: { data: Evidence; lang?:
 
       <section className="overflow-hidden border border-[#C6DCE8] bg-[#EAF3F8]">
         <div className="border-b border-[#C6DCE8] bg-[#DDECF4] px-6 py-4">
-          <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#31536B]">
-            {localized?.right || 'Validation coverage'}
-          </p>
+          <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#31536B]">{labels[1]}</p>
         </div>
         <div className="grid divide-y divide-[#C6DCE8] bg-[#F7FBFD] md:grid-cols-2 md:divide-x md:divide-y-0">
           {validationMetrics.map(renderMetric)}
@@ -412,4 +212,3 @@ export function EvidenceFrameworkVisual({ data, lang }: { data: Evidence; lang?:
     </div>
   )
 }
-
