@@ -62,7 +62,7 @@ const COPY = {
     featuredLabel: 'ARTÍCULOS DESTACADOS',
     featuredTitle: 'Tres ideas para empezar.',
     featuredBody: 'Una selección que iremos renovando para poner delante las ideas que más merece la pena explorar ahora.',
-    read: 'Leer análisis',
+    read: 'Descubrir análisis',
     filterLabel: 'EXPLORA POR ÁREA',
     count: 'análisis',
     library: 'TODOS LOS ANÁLISIS',
@@ -86,7 +86,7 @@ const COPY = {
     featuredLabel: 'ARTICLES DESTACATS',
     featuredTitle: 'Tres idees per començar.',
     featuredBody: 'Una selecció que anirem renovant per posar davant les idees que més val la pena explorar ara.',
-    read: 'Llegir anàlisi',
+    read: 'Descobrir anàlisi',
     filterLabel: 'EXPLORA PER ÀREA',
     count: 'anàlisis',
     library: 'TOTES LES ANÀLISIS',
@@ -110,7 +110,7 @@ const COPY = {
     featuredLabel: 'FEATURED ARTICLES',
     featuredTitle: 'Three ideas to start with.',
     featuredBody: 'A rotating selection of the ideas we think are most worth exploring right now.',
-    read: 'Read analysis',
+    read: 'Explore analysis',
     filterLabel: 'EXPLORE BY AREA',
     count: 'analyses',
     library: 'ALL ANALYSES',
@@ -310,7 +310,7 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
               <Link
                 key={item.key}
                 href={item.href}
-                className={`group flex min-h-[205px] flex-col border-b border-r border-slate-300 p-6 transition ${
+                className={`group flex min-h-[190px] flex-col border-b border-r border-slate-300 p-6 transition ${
                   index % 2 === 0 ? 'bg-white hover:bg-[#FAFAF7]' : 'bg-[#F9F8F4] hover:bg-[#F4F1EA]'
                 }`}
               >
@@ -318,11 +318,10 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
                   <span className="font-mono text-[12px] text-slate-400">{String(index + 1).padStart(2, '0')}</span>
                   <ArrowRight className="h-4 w-4 text-slate-400 transition-transform group-hover:translate-x-1" />
                 </div>
-                <h3 className="mt-5 max-w-[28ch] text-[22px] leading-[1.12] text-slate-950 transition-colors group-hover:text-indigo-800" style={{ fontFamily: 'var(--font-playfair)' }}>
+                <h3 className="mt-5 max-w-[26ch] text-[25px] leading-[1.08] text-slate-950 transition-colors group-hover:text-indigo-800" style={{ fontFamily: 'var(--font-playfair)' }}>
                   {item.title}
                 </h3>
-                <p className="mt-3 line-clamp-2 text-[14px] leading-6 text-slate-600">{item.excerpt}</p>
-                <p className="mt-auto pt-5 text-[14px] font-semibold text-indigo-700">{t.read} →</p>
+                <p className="mt-auto pt-7 text-[16px] font-semibold text-indigo-700">{t.read} →</p>
               </Link>
             ))}
           </div>
