@@ -60,7 +60,6 @@ const COPY = {
     empty: 'Todavía no hay análisis publicados en esta área.',
     emptyCta: 'Explorar todo',
     finalTitle: '¿Buscas una idea, problema o decisión concreta?',
-    finalBody: 'Cuéntanos qué estás intentando resolver y te orientamos hacia el contenido o el siguiente paso más útil.',
     contact: 'Contacta con nosotros',
   },
   ca: {
@@ -83,7 +82,6 @@ const COPY = {
     empty: 'Encara no hi ha anàlisis publicades en aquesta àrea.',
     emptyCta: 'Explorar-ho tot',
     finalTitle: 'Busques una idea, problema o decisió concreta?',
-    finalBody: 'Explica’ns què estàs intentant resoldre i t’orientem cap al contingut o el següent pas més útil.',
     contact: 'Contacta amb nosaltres',
   },
   en: {
@@ -106,7 +104,6 @@ const COPY = {
     empty: 'No analysis has been published in this area yet.',
     emptyCta: 'Explore all',
     finalTitle: 'Looking for a specific idea, problem or decision?',
-    finalBody: 'Tell us what you are trying to solve and we will point you towards the most useful content or next step.',
     contact: 'Contact us',
   },
 } as const
@@ -216,11 +213,9 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
     <>
       <section className="border-b border-slate-300 bg-white">
         <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] py-9 sm:w-[calc(100%_-_48px)] lg:py-11">
-          <div className="grid gap-6 lg:grid-cols-[190px_1fr] lg:gap-10">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.15em] text-indigo-700">{t.featuredLabel}</p>
-            <div>
-              <h2 className="text-[32px] leading-tight text-slate-950 sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.featuredTitle}</h2>
-            </div>
+          <div className="mx-auto max-w-[760px] border-y border-slate-300 py-6 text-center">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-indigo-700">{t.featuredLabel}</p>
+            <h2 className="mt-3 text-[34px] leading-tight text-slate-950 sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.featuredTitle}</h2>
           </div>
 
           <div className="mt-7 grid border-l border-t border-slate-300 lg:grid-cols-3">
@@ -309,15 +304,14 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
         )}
       </section>
 
-      <section className="border-y border-slate-300 bg-[#F4F1EA]">
-        <div className="mx-auto flex w-[calc(100%_-_32px)] max-w-[1800px] flex-col gap-5 py-9 sm:w-[calc(100%_-_48px)] md:flex-row md:items-center md:justify-between">
-          <div>
-            <h2 className="text-[30px] leading-tight text-slate-950 sm:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.finalTitle}</h2>
-            <p className="mt-2 max-w-3xl text-[16px] leading-7 text-slate-700">{t.finalBody}</p>
+      <section className="border-y border-[#AFC0CF] bg-[#E8EFF5]">
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] py-9 sm:w-[calc(100%_-_48px)] lg:py-10">
+          <div className="flex flex-col gap-6 border-l-4 border-[#0D1B2A] pl-6 md:flex-row md:items-center md:justify-between md:pl-8">
+            <h2 className="max-w-5xl text-[34px] leading-[1.05] text-slate-950 sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.finalTitle}</h2>
+            <Link href="/contact?intent=discovery" className="inline-flex shrink-0 items-center gap-3 bg-[#0D1B2A] px-7 py-4 text-[16px] font-semibold text-white transition hover:bg-[#13283C]">
+              {t.contact}<ArrowRight className="h-5 w-5" />
+            </Link>
           </div>
-          <Link href="/contact?intent=discovery" className="inline-flex shrink-0 items-center gap-2 bg-slate-950 px-6 py-3.5 text-[15px] font-semibold text-white transition hover:bg-slate-800">
-            {t.contact}<ArrowRight className="h-4 w-4" />
-          </Link>
         </div>
       </section>
     </>
