@@ -108,17 +108,17 @@ export function publicProject(project: Project, lang: SiteLanguage) {
 export const projectUi = {
   en: {
     label: 'SUCCESS STORIES', title: 'Problems, systems and decisions.', sub: 'Selected work across forecasting, optimisation, AI, automation, risk and decision systems. Start with the case closest to the problem you are trying to solve.',
-    back: '← All success stories', sourceNote: 'Detailed case documentation is currently maintained in English to preserve the original evidence record.',
+    back: '← All success stories', sourceNote: 'The public success story is localized here; technical repository evidence may remain in English when that is the implementation language.',
     detailCta: 'Have a similar decision or process to improve?', detailCtaSub: 'We can start by understanding the operating problem and decide whether an analytical system is justified.', contact: 'Discuss the problem',
   },
   es: {
     label: 'CASOS DE ÉXITO', title: 'Problemas, sistemas y decisiones.', sub: 'Una selección de trabajos de forecasting, optimización, IA, automatización, riesgo y sistemas de decisión. Empieza por el caso que más se parece al problema que quieres resolver.',
-    back: '← Todos los casos de éxito', sourceNote: 'La documentación detallada de estos casos históricos se mantiene actualmente en inglés para conservar el registro original de evidencia.',
+    back: '← Todos los casos de éxito', sourceNote: 'El caso de éxito público está localizado aquí; la evidencia del repositorio técnico puede mantenerse en inglés cuando sea el idioma de implementación.',
     detailCta: '¿Tienes una decisión o proceso parecido que mejorar?', detailCtaSub: 'Podemos empezar por comprender el problema operativo y decidir si un sistema analítico está justificado.', contact: 'Hablar del problema',
   },
   ca: {
     label: 'CASOS D’ÈXIT', title: 'Problemes, sistemes i decisions.', sub: 'Una selecció de treballs de forecasting, optimització, IA, automatització, risc i sistemes de decisió. Comença pel cas que més s’assembla al problema que vols resoldre.',
-    back: '← Tots els casos d’èxit', sourceNote: 'La documentació detallada d’aquests casos històrics es manté actualment en anglès per conservar el registre original d’evidència.',
+    back: '← Tots els casos d’èxit', sourceNote: 'El cas d’èxit públic està localitzat aquí; l’evidència del repositori tècnic es pot mantenir en anglès quan sigui l’idioma d’implementació.',
     detailCta: 'Tens una decisió o procés semblant que cal millorar?', detailCtaSub: 'Podem començar per comprendre el problema operatiu i decidir si un sistema analític està justificat.', contact: 'Parlar del problema',
   },
 } as const
