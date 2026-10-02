@@ -166,6 +166,28 @@ Each section: short **bold** subtitle, then 1–3 paragraphs.
 Do not make every section the same length. Weight sections by importance.
 Lightweight markdown only — no HTML, no ## heading levels.
 
+### Selective emphasis
+
+Use **bold** inside body paragraphs as a scanning aid.
+
+The purpose is to create visual anchors for busy readers without turning the article into a highlighted document.
+
+Bold:
+- the central diagnosis or contradiction
+- a quantified consequence or economically relevant figure
+- an important trade-off, risk, or limitation
+- the decision rule or implication the reader should remember
+
+Guidelines:
+- normally **1–3 short bold phrases per section**
+- prefer phrases or one strong sentence, not entire paragraphs
+- do not bold generic transitions or obvious statements
+- the article should still read naturally if every bold phrase is removed
+- use emphasis consistently across EN / ES / CA versions
+
+A reader scanning only the bold phrases should be able to recover the article's core argument.
+
+
 ### Density
 
 Some sections carry more weight than others. Let the content determine the length. A section that makes one precise point can be one paragraph. A section that describes a consequence chain will be longer. Uniform section length is a sign of template-following.
