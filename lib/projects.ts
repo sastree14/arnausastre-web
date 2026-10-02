@@ -1,6 +1,7 @@
 import 'server-only'
 import fs from 'fs'
 import path from 'path'
+import { getPortfolioCaseProfile, portfolioCaseProfiles } from '@/lib/portfolio-case-registry'
 
 export interface ProjectMetric {
   label: string
@@ -118,23 +119,37 @@ function parseProjectTxt(content: string, slug: string): Project {
   }
 }
 
-export function getAllProjects(): Project[] {
-  if (!fs.existsSync(PROJECTS_DIR)) return []
+function projectFromProfile(slug: string): Project | undefined {
+  const profile = getPortfolioCaseProfile(slug)
+  if (!profile) return undefined
 
-  return fs
-    .readdirSync(PROJECTS_DIR, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
-    .map((d) => {
-      const txtPath = path.join(PROJECTS_DIR, d.name, 'project.txt')
-      if (!fs.existsSync(txtPath)) return null
-      return parseProjectTxt(fs.readFileSync(txtPath, 'utf-8'), d.name)
-    })
-    .filter((p): p is Project => p !== null && p.status.toLowerCase() === 'published')
+  return {
+    slug: profile.slug,
+    headline: profile.title.en,
+    industry: profile.archetype,
+    capability: profile.technologies.slice(0, 4).join(' · '),
+    challenge: profile.archetype,
+    audience: 'Business and technical decision-makers',
+    description: profile.summary.en,
+    metrics: [],
+    image: 'cover.png',
+    imagePath: `/projects/${profile.slug}/cover.png`,
+    status: 'Published',
+    sections: [
+      { title: 'Problem', body: profile.summary.en },
+      { title: 'Approach', body: 'A public portfolio implementation structured around a concrete decision, explicit validation and inspectable technical evidence.' },
+      { title: 'Solution', body: `Implemented with ${profile.technologies.slice(0, 6).join(', ')}.` },
+    ],
+    confidentiality: 'Public portfolio implementation. Reference metrics and economics are illustrative unless explicitly stated otherwise.',
+  }
+}
+
+export function getAllProjects(): Project[] {
+  return portfolioCaseProfiles
+    .map((profile) => projectFromProfile(profile.slug))
+    .filter((project): project is Project => Boolean(project))
 }
 
 export function getProjectBySlug(slug: string): Project | undefined {
-  const txtPath = path.join(PROJECTS_DIR, slug, 'project.txt')
-  if (!fs.existsSync(txtPath)) return undefined
-  const p = parseProjectTxt(fs.readFileSync(txtPath, 'utf-8'), slug)
-  return p.status.toLowerCase() === 'published' ? p : undefined
+  return projectFromProfile(slug)
 }
