@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-024",
+  "sequence": 24,
+  "arc_id": "ARC-06",
+  "slug": "how-to-choose-a-safety-stock-policy",
+  "scheduled_at": "2026-12-03T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Inventory & Supply Chain",
+  "editorial_pillar": "industries_use_cases",
+  "content_family": "decision_guide",
+  "angle": "safety stock policy",
+  "primary_keyword": "safety stock policy",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-021",
+    "KB-022",
+    "KB-023"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cómo elegir una política de stock de seguridad",
+      "excerpt": "La política correcta depende de variabilidad, lead time, criticidad y coste de servicio. El objetivo no es acumular buffer, sino comprar resiliencia donde compensa.",
+      "quick": [
+        "Empieza por el riesgo",
+        "Segmenta antes de calcular",
+        "Mide servicio y coste juntos"
+      ],
+      "section_titles": [
+        "Define qué quieres proteger",
+        "Segmenta la cartera",
+        "Elige el mecanismo de buffer",
+        "Valida la política"
+      ],
+      "business_title": "Una política de safety stock debe traducir incertidumbre y servicio a una cantidad de buffer defendible.",
+      "business_steps": [
+        "Riesgo relevante",
+        "Target de servicio",
+        "Buffer validado"
+      ],
+      "body": "Elegir una política de stock de seguridad no debería empezar por una fórmula. Debería empezar por una pregunta de negocio: **qué riesgo queremos cubrir y cuánto estamos dispuestos a pagar por cubrirlo**. El safety stock existe para absorber incertidumbre durante el tiempo en que la operación no puede reaccionar.\n\nEso significa que una política correcta depende de cuatro elementos: variabilidad de demanda, incertidumbre de lead time, nivel de servicio y economics del producto. Si alguno cambia, el buffer adecuado también puede cambiar. **La fórmula es una consecuencia de la política, no al revés.**\n\n**Define qué quieres proteger**\nEl primer paso es especificar el evento que queremos evitar. Puede ser una ruptura de stock, una expedición urgente, una parada de producción o incumplir un SLA. No todos esos eventos tienen el mismo coste.\n\nDespués hay que identificar qué incertidumbre provoca el riesgo. A veces domina la demanda; otras, el lead time; en otros casos ambos interactúan. **Safety stock debe cubrir la variabilidad relevante durante el periodo de exposición real.**\n\nTambién conviene definir qué no pretende resolver la política. Un buffer de inventario no corrige un proveedor crónicamente incumplidor ni una previsión manipulada. Puede mitigar consecuencias, pero no sustituye la mejora de la causa.\n\n**Segmenta la cartera**\nAplicar una única política a toda la cartera suele ser ineficiente. Productos con alto margen, alta criticidad o sustitución difícil pueden justificar targets altos. Otros con demanda estable, lead time corto o fácil sustitución pueden operar con buffers menores.\n\nLa segmentación puede combinar ABC con variabilidad, lead time y coste de ruptura. **Dos SKUs con el mismo valor anual pueden necesitar políticas muy distintas si uno es estable y el otro intermitente.**\n\nTambién es útil distinguir ciclo de vida. Un lanzamiento tiene poca historia; un producto maduro puede tener parámetros más estables; un producto en declive necesita evitar exceso. La política debería reconocer esas fases.\n\n**Elige el mecanismo de buffer**\nUna opción básica es utilizar desviación de demanda y un factor asociado al nivel de servicio. Si el lead time también varía, la estimación debería incorporar esa incertidumbre. En entornos complejos puede ser más robusto simular demanda y reposición en lugar de confiar en una fórmula cerrada.\n\nLa elección depende de calidad de datos y complejidad. **No tiene sentido desplegar una fórmula sofisticada si el lead time registrado es poco fiable o la demanda está censurada por stockouts.** Primero debe corregirse la señal.\n\nPara series intermitentes, percentiles empíricos o simulación pueden ser más útiles que asumir distribuciones suaves. Para carteras grandes, una política híbrida puede combinar reglas simples en segmentos estables y métodos más ricos donde el riesgo justifica el esfuerzo.\n\n**Valida la política**\nUna política no se valida solo porque la fórmula sea conocida. Debe probarse con backtesting o simulación. Se reproduce cómo habría evolucionado inventario bajo diferentes niveles de servicio y se comparan roturas, stock medio, urgencias y coste total.\n\nLa validación debería incluir varios periodos y escenarios. **Una política que funciona solo en un año estable puede fallar justo cuando más se necesita.** Conviene probar volatilidad, cambios de lead time y shocks razonables.\n\nTambién hace falta governance. Debe existir una cadencia de recalibración, límites a cambios bruscos y criterios de override. Los responsables necesitan saber por qué un buffer sube o baja.\n\nLa política final debe ser interpretable. Poder decir “este SKU mantiene este buffer porque su variabilidad, lead time y criticidad justifican este target” es mejor que heredar un porcentaje sin explicación.\n\nLa regla práctica es clara: **empieza por el riesgo, tradúcelo a servicio, calcula el buffer y comprueba después si realmente mejora la frontera entre disponibilidad y capital**. Eso convierte safety stock en una decisión económica y no en una costumbre de inventario.",
+      "seo_title": "Cómo elegir una política de safety stock",
+      "seo_description": "Guía para elegir una política de stock de seguridad según variabilidad, lead time, criticidad, nivel de servicio y coste total.",
+      "seo_keywords": [
+        "safety stock policy",
+        "política stock seguridad",
+        "safety stock calculation",
+        "nivel servicio inventario"
+      ],
+      "tags": [
+        "Inventory",
+        "Safety Stock",
+        "Decision Guide"
+      ]
+    },
+    "en": {
+      "title": "How to choose a safety stock policy",
+      "excerpt": "The right policy depends on variability, lead time, criticality and service economics. The goal is not more buffer, but resilience where it pays.",
+      "quick": [
+        "Start with the risk",
+        "Segment before calculating",
+        "Measure service and cost together"
+      ],
+      "section_titles": [
+        "Define what you are protecting",
+        "Segment the portfolio",
+        "Choose the buffer mechanism",
+        "Validate the policy"
+      ],
+      "business_title": "A safety stock policy should translate uncertainty and service objectives into a defensible amount of buffer.",
+      "business_steps": [
+        "Relevant risk",
+        "Service target",
+        "Validated buffer"
+      ],
+      "body": "Choosing a safety stock policy should not begin with a formula. It should begin with a business question: **which risk are we trying to cover and how much are we willing to pay to cover it?** Safety stock exists to absorb uncertainty during the period in which the operation cannot react.\n\nThat means the right policy depends on four elements: demand variability, lead-time uncertainty, service level and product economics. When any of them changes, the appropriate buffer may change as well. **The formula is a consequence of the policy, not the other way around.**\n\n**Define what you are protecting**\nThe first step is to specify the event the business wants to avoid. It may be a stockout, emergency shipment, production stoppage or SLA failure. Those outcomes do not carry the same cost.\n\nThen identify which uncertainty creates the exposure. Sometimes demand dominates; sometimes lead time does; in other cases they interact. **Safety stock should cover the variability that matters during the real exposure window.**\n\nIt is equally useful to define what the policy is not meant to solve. Inventory buffer does not fix a chronically unreliable supplier or manipulated demand history. It can reduce consequences, but it does not remove the root cause.\n\n**Segment the portfolio**\nOne policy across the whole portfolio is usually inefficient. High-margin, high-criticality or hard-to-substitute products may justify higher targets. Stable items with short lead time and easy substitution can operate with less protection.\n\nSegmentation can combine ABC classification with variability, lead time and shortage cost. **Two SKUs with the same annual value can require very different policies when one is stable and the other intermittent.**\n\nLife cycle matters too. A launch has little history, a mature product may have stable parameters and a declining product should avoid excess. Policy should recognize those states.\n\n**Choose the buffer mechanism**\nA basic approach uses demand variability and a service-level factor. If lead time also varies, that uncertainty should be represented as well. In complex environments, simulation can be more robust than a closed-form formula.\n\nMethod choice should reflect data quality and complexity. **A sophisticated formula adds little when recorded lead time is unreliable or observed demand is censored by stockouts.** Signal quality comes first.\n\nFor intermittent series, empirical quantiles or simulation may outperform smooth distribution assumptions. In large portfolios, a hybrid policy can keep simple rules for stable segments and richer methods where risk justifies the effort.\n\n**Validate the policy**\nA policy is not validated simply because its formula is familiar. It should be backtested or simulated. Recreate how inventory would have evolved under different service targets and compare stockouts, average stock, emergency actions and total cost.\n\nValidation should include several periods and scenarios. **A policy that performs only in a stable year may fail precisely when resilience is most valuable.** Volatility, lead-time deterioration and reasonable shocks should be tested.\n\nGovernance matters as well. The system needs a recalibration cadence, limits on abrupt changes and override criteria. Users should understand why a buffer moves.\n\nThe final policy should be interpretable. Being able to explain that a SKU carries a buffer because its variability, lead time and criticality justify a target is stronger than inheriting an unexplained percentage.\n\nThe practical rule is simple: **start from risk, translate it into service, calculate the buffer, then verify that it improves the trade-off between availability and capital**. That turns safety stock into an economic decision rather than an inventory habit.",
+      "seo_title": "How to Choose a Safety Stock Policy",
+      "seo_description": "A practical guide to safety stock policy using demand variability, lead time, criticality, service level and total inventory cost.",
+      "seo_keywords": [
+        "safety stock policy",
+        "safety stock calculation",
+        "inventory service level",
+        "inventory buffer"
+      ],
+      "tags": [
+        "Inventory",
+        "Safety Stock",
+        "Decision Guide"
+      ]
+    },
+    "ca": {
+      "title": "Com triar una política d’estoc de seguretat",
+      "excerpt": "La política correcta depèn de variabilitat, lead time, criticitat i cost de servei. L’objectiu no és més buffer, sinó resiliència on compensa.",
+      "quick": [
+        "Comença pel risc",
+        "Segmenta abans de calcular",
+        "Mesura servei i cost junts"
+      ],
+      "section_titles": [
+        "Defineix què vols protegir",
+        "Segmenta la cartera",
+        "Tria el mecanisme de buffer",
+        "Valida la política"
+      ],
+      "business_title": "Una política de safety stock ha de traduir incertesa i servei a una quantitat de buffer defensable.",
+      "business_steps": [
+        "Risc rellevant",
+        "Target de servei",
+        "Buffer validat"
+      ],
+      "body": "Triar una política d’estoc de seguretat no hauria de començar per una fórmula. Hauria de començar per una pregunta de negoci: **quin risc volem cobrir i quant estem disposats a pagar per cobrir-lo?** Safety stock existeix per absorbir incertesa durant el període en què l’operació no pot reaccionar.\n\nAixò significa que la política adequada depèn de quatre elements: variabilitat de demanda, incertesa de lead time, nivell de servei i economics del producte. Si algun canvia, el buffer adequat també pot canviar. **La fórmula és una conseqüència de la política, no al revés.**\n\n**Defineix què vols protegir**\nEl primer pas és especificar l’esdeveniment que volem evitar. Pot ser una ruptura, un transport urgent, una parada de producció o incomplir un SLA. Aquests resultats no tenen el mateix cost.\n\nDesprés cal identificar quina incertesa crea l’exposició. A vegades domina la demanda; d’altres, el lead time; en alguns casos tots dos interactuen. **Safety stock ha de cobrir la variabilitat rellevant durant la finestra real d’exposició.**\n\nTambé convé definir què no vol resoldre la política. Un buffer no arregla un proveïdor crònicament poc fiable ni un històric de demanda manipulat. Pot mitigar conseqüències, però no elimina la causa.\n\n**Segmenta la cartera**\nUna sola política per a tota la cartera sol ser ineficient. Productes de marge alt, molta criticitat o substitució difícil poden justificar targets alts. Articles estables, lead time curt o fàcil substitució poden operar amb menys protecció.\n\nLa segmentació pot combinar ABC amb variabilitat, lead time i cost de ruptura. **Dos SKUs amb el mateix valor anual poden necessitar polítiques molt diferents si un és estable i l’altre intermitent.**\n\nEl cicle de vida també importa. Un llançament té poca història, un producte madur pot tenir paràmetres més estables i un producte en declivi ha d’evitar excés.\n\n**Tria el mecanisme de buffer**\nUna opció bàsica utilitza variabilitat de demanda i un factor de nivell de servei. Si el lead time també varia, aquesta incertesa s’ha d’incorporar. En entorns complexos, la simulació pot ser més robusta que una fórmula tancada.\n\nLa tria depèn de qualitat de dades i complexitat. **Una fórmula sofisticada aporta poc si el lead time registrat és poc fiable o la demanda observada està censurada per stockouts.** Primer cal corregir el senyal.\n\nEn sèries intermitents, quantils empírics o simulació poden ser útils. En carteres grans, una política híbrida pot mantenir regles simples en segments estables i mètodes més rics on el risc ho justifica.\n\n**Valida la política**\nUna política no queda validada perquè la fórmula sigui coneguda. Cal fer backtesting o simulació. Es reprodueix com hauria evolucionat l’inventari sota diversos targets i es comparen ruptures, stock mitjà, urgències i cost total.\n\nLa validació ha d’incloure diversos períodes i escenaris. **Una política que només funciona en un any estable pot fallar just quan més es necessita.** Cal provar volatilitat, deteriorament de lead time i shocks raonables.\n\nTambé fa falta governance. Hi ha d’haver cadència de recalibració, límits a canvis bruscos i criteris d’override. Els responsables han d’entendre per què un buffer puja o baixa.\n\nLa política final ha de ser interpretable. Poder explicar que un SKU manté un buffer perquè variabilitat, lead time i criticitat justifiquen el target és millor que heretar un percentatge sense explicació.\n\nLa regla pràctica és clara: **comença pel risc, tradueix-lo a servei, calcula el buffer i comprova si realment millora la frontera entre disponibilitat i capital**. Això converteix safety stock en una decisió econòmica i no en una rutina d’inventari.",
+      "seo_title": "Com triar una política de safety stock",
+      "seo_description": "Guia per triar una política d’estoc de seguretat segons variabilitat, lead time, criticitat, nivell de servei i cost total.",
+      "seo_keywords": [
+        "safety stock policy",
+        "política estoc seguretat",
+        "safety stock calculation",
+        "nivell servei inventari"
+      ],
+      "tags": [
+        "Inventory",
+        "Safety Stock",
+        "Decision Guide"
+      ]
+    }
+  }
+}
