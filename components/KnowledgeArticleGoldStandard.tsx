@@ -98,6 +98,9 @@ const COPY = {
       ['Control significa decidir', 'La optimización empieza cuando el sistema recomienda cuánto, cuándo y dónde actuar.'],
     ],
     contents: 'EN ESTE ANÁLISIS',
+    contentsTitle: 'Del dato a la decisión',
+    introTitle: 'Contexto y tesis',
+    sectionTitles: ['Datos en tiempo real', 'Visibilidad vs. control', 'Límites del reporting', 'Optimización: trade-offs'],
     businessLabel: 'QUÉ SIGNIFICA PARA TU EMPRESA',
     businessTitle: 'Si ves mejor el inventario pero sigues decidiendo igual, has mejorado la visibilidad, no el control.',
     businessBody: 'La pregunta útil no es cuántos datos puedes consultar. Es cuántas decisiones de inventario siguen dependiendo de reglas fijas, excepciones y criterio manual.',
@@ -122,6 +125,9 @@ const COPY = {
       ['Control significa decidir', 'L’optimització comença quan el sistema recomana quant, quan i on actuar.'],
     ],
     contents: 'EN AQUESTA ANÀLISI',
+    contentsTitle: 'De la dada a la decisió',
+    introTitle: 'Context i tesi',
+    sectionTitles: ['Dades en temps real', 'Visibilitat vs. control', 'Límits del reporting', 'Optimització: trade-offs'],
     businessLabel: 'QUÈ SIGNIFICA PER A LA TEVA EMPRESA',
     businessTitle: 'Si veus millor l’inventari però continues decidint igual, has millorat la visibilitat, no el control.',
     businessBody: 'La pregunta útil no és quantes dades pots consultar. És quantes decisions d’inventari encara depenen de regles fixes, excepcions i criteri manual.',
@@ -146,6 +152,9 @@ const COPY = {
       ['Control means deciding', 'Optimisation starts when the system recommends how much, when and where to act.'],
     ],
     contents: 'IN THIS ANALYSIS',
+    contentsTitle: 'From data to decision',
+    introTitle: 'Context & thesis',
+    sectionTitles: ['Real-time data', 'Visibility vs. control', 'Reporting limits', 'Optimisation trade-offs'],
     businessLabel: 'WHAT THIS MEANS FOR YOUR BUSINESS',
     businessTitle: 'If you can see inventory better but still make the same decisions, you improved visibility, not control.',
     businessBody: 'The useful question is not how much data you can access. It is how many inventory decisions still depend on fixed rules, exceptions and manual judgement.',
@@ -204,16 +213,16 @@ export default function KnowledgeArticleGoldStandard({ article }: { article: Art
         </div>
       </section>
 
-      <section className="mx-auto w-[calc(100%_-_32px)] max-w-[1180px] py-10 sm:w-[calc(100%_-_48px)] lg:py-14">
-        <div className="lg:grid lg:grid-cols-[minmax(0,820px)_250px] lg:justify-center lg:gap-14 lg:items-start">
+      <section className="mx-auto w-[calc(100%_-_32px)] max-w-[1280px] py-10 sm:w-[calc(100%_-_48px)] lg:py-14">
+        <div className="lg:grid lg:grid-cols-[minmax(0,860px)_280px] lg:justify-center lg:gap-16 lg:items-start">
           <article className="border-t border-slate-400">
             {segments.map((segment, segmentIndex) => {
               if (segment.type === 'intro') {
                 return (
-                  <div key={segmentIndex} className="border-b border-slate-300 bg-white px-6 py-8 md:px-8 md:py-9">
+                  <div key={segmentIndex} id="article-context" className="scroll-mt-28 border-b border-slate-300 bg-white px-6 py-8 md:px-8 md:py-9">
                     <div className="space-y-6">
                       {segment.paragraphs.map((paragraph, index) => (
-                        <p key={index} className="text-[18px] leading-9 text-[#1D2B44]">{renderInline(paragraph)}</p>
+                        <p key={index} className="hyphens-auto text-justify text-[18px] leading-9 text-[#1D2B44]">{renderInline(paragraph)}</p>
                       ))}
                     </div>
                   </div>
@@ -223,6 +232,7 @@ export default function KnowledgeArticleGoldStandard({ article }: { article: Art
               const sectionNumber = segments
                 .slice(0, segmentIndex + 1)
                 .filter((item) => item.type === 'section').length
+              const displayHeading = t.sectionTitles[sectionNumber - 1] || segment.heading
 
               return (
                 <section key={`${segment.heading}-${segmentIndex}`} id={`section-${sectionNumber}`} className="border-b border-slate-300 bg-white px-6 py-9 md:px-8 md:py-10">
@@ -230,11 +240,11 @@ export default function KnowledgeArticleGoldStandard({ article }: { article: Art
                     <span className="font-mono text-[13px] font-semibold text-indigo-700">{String(sectionNumber).padStart(2, '0')}</span>
                     <div>
                       <h2 className="max-w-[24ch] text-[29px] leading-[1.08] text-slate-950 sm:text-[33px]" style={{ fontFamily: 'var(--font-playfair)' }}>
-                        {segment.heading}
+                        {displayHeading}
                       </h2>
                       <div className="mt-6 space-y-6">
                         {segment.paragraphs.map((paragraph, index) => (
-                          <p key={index} className="text-[17px] leading-8 text-slate-700">{renderInline(paragraph)}</p>
+                          <p key={index} className="hyphens-auto text-justify text-[17px] leading-8 text-slate-700">{renderInline(paragraph)}</p>
                         ))}
                       </div>
                     </div>
@@ -245,25 +255,37 @@ export default function KnowledgeArticleGoldStandard({ article }: { article: Art
           </article>
 
           <aside className="sticky top-24 mt-8 hidden self-start lg:mt-0 lg:block">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">{t.contents}</p>
-            <nav className="mt-4 border-l border-slate-300">
-              {headings.map((section, index) => (
+            <div className="border border-slate-300 bg-[#F4F1EA] p-5">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-indigo-700">{t.contents}</p>
+              <p className="mt-2 text-[22px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{t.contentsTitle}</p>
+
+              <nav className="mt-5 border-t border-slate-300">
                 <a
-                  key={section.heading}
-                  href={`#section-${index + 1}`}
-                  className="grid grid-cols-[28px_1fr] gap-2 border-b border-slate-200 py-3.5 pl-4 text-[13px] leading-6 text-slate-600 transition hover:text-indigo-700"
+                  href="#article-context"
+                  className="grid grid-cols-[30px_1fr] gap-2 border-b border-slate-300 py-4 text-[14px] font-semibold leading-5 text-slate-800 transition hover:text-indigo-700"
                 >
-                  <span className="font-mono text-slate-400">{String(index + 1).padStart(2, '0')}</span>
-                  <span>{section.heading}</span>
+                  <span className="font-mono text-[12px] text-indigo-700">00</span>
+                  <span>{t.introTitle}</span>
                 </a>
-              ))}
-            </nav>
+
+                {headings.map((section, index) => (
+                  <a
+                    key={section.heading}
+                    href={`#section-${index + 1}`}
+                    className="grid grid-cols-[30px_1fr] gap-2 border-b border-slate-300 py-4 text-[14px] font-medium leading-5 text-slate-700 transition hover:text-indigo-700"
+                  >
+                    <span className="font-mono text-[12px] text-slate-400">{String(index + 1).padStart(2, '0')}</span>
+                    <span>{t.sectionTitles[index] || section.heading}</span>
+                  </a>
+                ))}
+              </nav>
+            </div>
           </aside>
         </div>
       </section>
 
       <section className="border-y border-slate-300 bg-[#F4F1EA]">
-        <div className="mx-auto grid w-[calc(100%_-_32px)] max-w-[1180px] gap-7 py-10 sm:w-[calc(100%_-_48px)] lg:grid-cols-[190px_minmax(0,1fr)] lg:gap-10">
+        <div className="mx-auto grid w-[calc(100%_-_32px)] max-w-[1380px] gap-7 py-10 sm:w-[calc(100%_-_48px)] lg:grid-cols-[190px_minmax(0,1fr)] lg:gap-10">
           <p className="text-[12px] font-semibold uppercase tracking-[0.15em] text-indigo-700">{t.businessLabel}</p>
           <div>
             <h2 className="max-w-4xl text-[31px] leading-[1.08] text-slate-950 sm:text-[37px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.businessTitle}</h2>
@@ -273,7 +295,7 @@ export default function KnowledgeArticleGoldStandard({ article }: { article: Art
       </section>
 
       <section className="bg-white">
-        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1180px] py-10 sm:w-[calc(100%_-_48px)] lg:py-12">
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1380px] py-10 sm:w-[calc(100%_-_48px)] lg:py-12">
           <div className="text-center">
             <p className="text-[12px] font-semibold uppercase tracking-[0.15em] text-indigo-700">{t.nextLabel}</p>
             <h2 className="mt-3 text-[31px] leading-tight text-slate-950 sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.nextTitle}</h2>
