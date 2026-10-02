@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-110",
+  "sequence": 110,
+  "arc_id": "ARC-28",
+  "slug": "centralized-bi-vs-self-service-bi",
+  "scheduled_at": "2027-06-30T09:00:00+02:00",
+  "knowledge_area": "analytics",
+  "cluster": "Analytics & Decision Intelligence",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "compare",
+  "angle": "centralized vs self service bi",
+  "primary_keyword": "centralized vs self service bi",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-109",
+    "KB-111",
+    "KB-112"
+  ],
+  "variants": {
+    "es": {
+      "title": "BI centralizado vs self-service BI",
+      "excerpt": "BI centralizado maximiza consistencia; self-service maximiza velocidad. El diseño correcto suele combinar gobierno central con exploración distribuida.",
+      "quick": [
+        "Centralizado aporta control",
+        "Self-service aporta velocidad",
+        "El híbrido suele ser más robusto"
+      ],
+      "section_titles": [
+        "Qué hace bien un modelo centralizado",
+        "Qué hace bien self-service BI",
+        "Dónde falla cada extremo",
+        "Cómo diseñar un modelo híbrido"
+      ],
+      "business_title": "La mejor arquitectura de BI suele centralizar definiciones, calidad y plataforma mientras descentraliza preguntas, exploración y análisis de dominio.",
+      "business_steps": [
+        "Gobierno central",
+        "Exploración local",
+        "Semántica compartida"
+      ],
+      "body": "BI centralizado y self-service BI suelen presentarse como modelos opuestos. Uno prioriza control y consistencia; el otro autonomía y velocidad. **En realidad, ambos resuelven problemas diferentes y los dos pueden fallar si se aplican como dogma.**\n\nUn modelo completamente centralizado puede convertir al equipo de datos en cuello de botella. Un modelo totalmente libre puede producir múltiples versiones de las mismas métricas. **La decisión madura no consiste en elegir control o velocidad, sino en decidir qué debe centralizarse y qué puede distribuirse.**\n\n**Qué hace bien un modelo centralizado**\nUn equipo central puede controlar definiciones, modelos de datos, calidad y publicación oficial.\n\nEso reduce inconsistencias y facilita mantener una única versión de métricas críticas.\n\nTambién permite aplicar estándares de seguridad, permisos, naming y documentación.\n\n**La centralización es especialmente valiosa cuando una definición debe ser idéntica para toda la organización.**\n\nRevenue, gross margin, active customer o regulatory metrics no deberían depender de quién crea el dashboard.\n\nEl equipo central también puede optimizar arquitectura y costes.\n\nPuede evitar que diez equipos repliquen la misma lógica en herramientas diferentes.\n\nOtra ventaja es el control del cambio. Una modificación de métrica puede revisarse y desplegarse con trazabilidad.\n\nEl problema aparece cuando cada pregunta, incluso exploratoria, necesita pasar por el mismo proceso.\n\n**Qué hace bien self-service BI**\nSelf-service reduce latencia.\n\nLos equipos pueden explorar sin abrir tickets para cada nueva hipótesis.\n\nEso es especialmente útil en marketing, ventas, operaciones o producto, donde las preguntas cambian rápido.\n\n**La autonomía local acelera aprendizaje cuando los usuarios entienden el dominio y tienen acceso a una base confiable.**\n\nTambién distribuye conocimiento analítico.\n\nNo todo insight tiene que depender de una persona del equipo central.\n\nLos usuarios avanzados pueden construir vistas específicas para sus decisiones.\n\nAdemás, self-service ayuda a descubrir necesidades antes de convertirlas en productos de datos oficiales.\n\nUna exploración local puede demostrar valor y luego madurar a métrica o dashboard gobernado.\n\nEl problema aparece cuando cada análisis empieza desde tablas raw y redefine conceptos básicos.\n\n**Dónde falla cada extremo**\nEl modelo centralizado falla por cola.\n\nEl equipo de BI termina respondiendo cambios pequeños, creando filtros y corrigiendo reportes para múltiples stakeholders.\n\n**La consistencia puede conseguirse a costa de una velocidad de decisión demasiado lenta.**\n\nTambién puede alejar al equipo de datos del contexto de dominio.\n\nUn analista central no siempre conoce las sutilezas de una decisión comercial o de operaciones.\n\nSelf-service extremo falla por fragmentación.\n\nMétricas duplicadas, dashboards paralelos, cálculos incompatibles y problemas de seguridad.\n\nLa organización gana velocidad local y pierde coherencia global.\n\nTambién aparecen costes ocultos: más queries, más herramientas, más mantenimiento y más tiempo reconciliando cifras.\n\nEn ambos extremos puede disminuir confianza.\n\n**Cómo diseñar un modelo híbrido**\nEl modelo híbrido empieza separando plataforma, semántica y exploración.\n\nLa plataforma puede estar centralizada: warehouse, herramientas, seguridad, observabilidad y estándares.\n\nLa semántica crítica también debe ser común: métricas certificadas, dimensiones y relaciones.\n\n**La exploración, en cambio, puede vivir cerca del dominio que entiende la decisión.**\n\nLos equipos pueden crear análisis y dashboards sobre modelos gobernados.\n\nTambién pueden tener áreas sandbox para experimentar.\n\nEl paso de sandbox a reporting oficial necesita un proceso simple de promoción.\n\nNo hace falta una aprobación burocrática; sí una revisión de definición, calidad y owner.\n\nLos dominios pueden ser responsables de algunas métricas si existe accountability claro.\n\nUn modelo federado funciona bien cuando el conocimiento está distribuido.\n\nEl equipo central actúa como platform team y guardian de estándares.\n\nLos equipos de negocio actúan como productores y consumidores de análisis.\n\nLa documentación debe ser discoverable.\n\nSi encontrar la métrica oficial es difícil, el usuario volverá a crearla.\n\nLa capacitación también importa.\n\nSelf-service sin data literacy puede aumentar errores.\n\nNo todos los usuarios necesitan el mismo nivel de acceso.\n\nSe pueden ofrecer capas: dashboards certificados, exploración semántica, SQL avanzado y raw access para perfiles autorizados.\n\nLos costes deben monitorizarse.\n\nLa libertad de consulta puede generar consumo excesivo si no existen límites y observabilidad.\n\nTambién conviene medir duplicación.\n\nSi cinco dashboards responden la misma pregunta, existe una oportunidad de consolidación.\n\nEl éxito no debe medirse por número de creadores.\n\nMejor medir tiempo hasta insight, confianza en métricas, reducción de tickets y menor reconciliación manual.\n\nLos cambios de negocio deben propagarse con claridad.\n\nCuando cambia una definición, los usuarios afectados deben saberlo.\n\nLa arquitectura debe soportar versionado y deprecación.\n\nTambién conviene mantener un catálogo de activos.\n\nNo todo debe ser oficial, pero cada activo debería mostrar estado: exploratorio, validado, certificado o deprecated.\n\nFinalmente, la distribución de responsabilidades debe quedar explícita.\n\nQuién define métricas, quién mantiene fuentes, quién aprueba acceso y quién responde por calidad.\n\n**BI centralizado gana cuando importa consistencia; self-service gana cuando importa velocidad. El modelo más sólido suele centralizar los contratos y descentralizar las preguntas.** Así la empresa evita que gobernanza se convierta en cuello de botella y que autonomía se convierta en caos.",
+      "seo_title": "BI centralizado vs self-service BI",
+      "seo_description": "Comparación entre BI centralizado y self-service BI y cómo diseñar un modelo híbrido con semántica común, autonomía y governance.",
+      "seo_keywords": [
+        "centralized vs self service bi",
+        "self service BI",
+        "centralized BI",
+        "BI governance"
+      ],
+      "tags": [
+        "Analytics",
+        "Self-Service BI",
+        "BI Governance"
+      ]
+    },
+    "en": {
+      "title": "Centralized BI vs self-service BI",
+      "excerpt": "Centralized BI maximizes consistency; self-service maximizes speed. Strong designs usually combine central governance with distributed exploration.",
+      "quick": [
+        "Centralized provides control",
+        "Self-service provides speed",
+        "Hybrid is usually stronger"
+      ],
+      "section_titles": [
+        "What centralized BI does well",
+        "What self-service BI does well",
+        "Where each extreme fails",
+        "How to design a hybrid model"
+      ],
+      "business_title": "The strongest BI architecture usually centralizes definitions, quality and platform while decentralizing questions, exploration and domain analysis.",
+      "business_steps": [
+        "Central governance",
+        "Local exploration",
+        "Shared semantics"
+      ],
+      "body": "Centralized BI and self-service BI are often presented as opposites. One prioritizes control and consistency; the other autonomy and speed. **In practice, they solve different problems and both can fail when applied as ideology.**\n\nA fully centralized model can turn the data team into a bottleneck. A completely free model can produce several versions of the same metrics. **The mature decision is not control versus speed; it is deciding what should be centralized and what can be distributed.**\n\n**What centralized BI does well**\nA central team can control definitions, data models, quality and official publication.\n\nThat reduces inconsistency and makes critical metrics easier to maintain as a single source.\n\nSecurity, permissions, naming and documentation standards can also be applied consistently.\n\n**Centralization is especially valuable when a definition must remain identical across the organization.**\n\nRevenue, gross margin, active customer and regulatory metrics should not depend on who builds the dashboard.\n\nThe central team can also optimize architecture and cost.\n\nIt can prevent ten teams from rebuilding the same logic in different tools.\n\nChange control is another advantage. Metric modifications can be reviewed and deployed with traceability.\n\nThe weakness appears when every question, including exploratory ones, goes through the same queue.\n\n**What self-service BI does well**\nSelf-service reduces latency.\n\nTeams can explore without creating tickets for every hypothesis.\n\nThat is particularly valuable in marketing, sales, operations and product, where questions change quickly.\n\n**Local autonomy accelerates learning when users understand the domain and work from a trusted foundation.**\n\nIt also distributes analytical capability.\n\nEvery insight no longer depends on a central analyst.\n\nAdvanced users can build views tailored to their own decisions.\n\nSelf-service can also surface needs before they become official data products.\n\nA local exploration can prove value and later mature into a governed metric or dashboard.\n\nThe weakness appears when every analysis starts from raw tables and redefines basic business concepts.\n\n**Where each extreme fails**\nCentralization fails through queueing.\n\nThe BI team ends up handling small changes, filters and report corrections for many stakeholders.\n\n**Consistency can be purchased at the cost of decision latency.**\n\nIt can also distance the data team from domain context.\n\nA central analyst may not know the operational nuances of a commercial or supply-chain decision.\n\nExtreme self-service fails through fragmentation.\n\nDuplicated metrics, parallel dashboards, incompatible calculations and security issues appear.\n\nThe organization gains local speed and loses global coherence.\n\nHidden cost grows too: more queries, more tools, more maintenance and more time reconciling figures.\n\nTrust can fall in both extremes.\n\n**How to design a hybrid model**\nA hybrid model separates platform, semantics and exploration.\n\nPlatform can be centralized: warehouse, tools, security, observability and standards.\n\nCritical semantics should also be common: certified metrics, dimensions and relationships.\n\n**Exploration, however, can remain close to the domain that understands the decision.**\n\nTeams can create analysis and dashboards on governed models.\n\nThey can also use sandbox areas for experimentation.\n\nMoving from sandbox to official reporting needs a lightweight promotion process.\n\nIt does not require bureaucracy, but it does require review of definition, quality and ownership.\n\nDomains can own selected metrics where accountability is clear.\n\nA federated model works well when business knowledge is distributed.\n\nThe central team acts as platform owner and guardian of standards.\n\nBusiness teams act as producers and consumers of analysis.\n\nDocumentation must be discoverable.\n\nIf the official metric is difficult to find, users will recreate it.\n\nTraining matters too.\n\nSelf-service without data literacy can multiply errors.\n\nNot every user needs the same access level.\n\nThe organization can expose layers: certified dashboards, semantic exploration, advanced SQL and raw access for authorized profiles.\n\nCost should be monitored.\n\nOpen query access can create unnecessary consumption without limits and observability.\n\nDuplication should also be measured.\n\nIf five dashboards answer the same question, consolidation may be valuable.\n\nSuccess should not be measured by creator count alone.\n\nBetter measures include time to insight, metric trust, fewer tickets and less manual reconciliation.\n\nBusiness-definition changes must propagate clearly.\n\nWhen a metric changes, affected users should know.\n\nArchitecture should support versioning and deprecation.\n\nA catalogue of analytical assets helps too.\n\nNot everything needs official status, but every asset can show a state: exploratory, validated, certified or deprecated.\n\nFinally, responsibilities need explicit definition.\n\nWho defines metrics, maintains sources, approves access and owns quality?\n\n**Centralized BI wins when consistency matters; self-service wins when speed matters. The strongest model usually centralizes contracts and decentralizes questions.** That prevents governance from becoming a bottleneck and autonomy from becoming chaos.",
+      "seo_title": "Centralized BI vs Self-Service BI",
+      "seo_description": "How centralized and self-service BI compare and how to design a hybrid model with shared semantics, autonomy and governance.",
+      "seo_keywords": [
+        "centralized vs self service bi",
+        "self service BI",
+        "centralized BI",
+        "BI governance"
+      ],
+      "tags": [
+        "Analytics",
+        "Self-Service BI",
+        "BI Governance"
+      ]
+    },
+    "ca": {
+      "title": "BI centralitzat vs self-service BI",
+      "excerpt": "BI centralitzat maximitza consistència; self-service maximitza velocitat. El disseny sòlid combina govern central amb exploració distribuïda.",
+      "quick": [
+        "Centralitzat aporta control",
+        "Self-service aporta velocitat",
+        "El model híbrid sol ser més robust"
+      ],
+      "section_titles": [
+        "Què fa bé un model centralitzat",
+        "Què fa bé self-service BI",
+        "On falla cada extrem",
+        "Com dissenyar un model híbrid"
+      ],
+      "business_title": "La millor arquitectura de BI acostuma a centralitzar definicions, qualitat i plataforma mentre descentralitza preguntes, exploració i anàlisi de domini.",
+      "business_steps": [
+        "Govern central",
+        "Exploració local",
+        "Semàntica compartida"
+      ],
+      "body": "BI centralitzat i self-service BI sovint es presenten com models oposats. Un prioritza control i consistència; l’altre autonomia i velocitat. **En realitat, resolen problemes diferents i tots dos poden fallar si s’apliquen com a dogma.**\n\nUn model completament centralitzat pot convertir l’equip de dades en un coll d’ampolla. Un model totalment lliure pot produir diverses versions de les mateixes mètriques. **La decisió madura no és control contra velocitat, sinó decidir què s’ha de centralitzar i què es pot distribuir.**\n\n**Què fa bé un model centralitzat**\nUn equip central pot controlar definicions, models de dades, qualitat i publicació oficial.\n\nAixò redueix inconsistències i facilita mantenir una única versió de mètriques crítiques.\n\nTambé permet aplicar estàndards de seguretat, permisos, naming i documentació.\n\n**La centralització és especialment valuosa quan una definició ha de ser idèntica per tota l’organització.**\n\nRevenue, gross margin, active customer o regulatory metrics no haurien de dependre de qui crea el dashboard.\n\nL’equip central també pot optimitzar arquitectura i costos.\n\nPot evitar que deu equips repliquin la mateixa lògica en eines diferents.\n\nUn altre avantatge és el control de canvi. Una modificació de mètrica es pot revisar i desplegar amb traçabilitat.\n\nEl problema apareix quan cada pregunta, fins i tot exploratòria, necessita passar per la mateixa cua.\n\n**Què fa bé self-service BI**\nSelf-service redueix latència.\n\nEls equips poden explorar sense obrir tickets per cada hipòtesi.\n\nAixò és especialment útil en marketing, vendes, operacions o producte, on les preguntes canvien ràpid.\n\n**L’autonomia local accelera aprenentatge quan els usuaris entenen el domini i treballen sobre una base fiable.**\n\nTambé distribueix capacitat analítica.\n\nNo tot insight ha de dependre d’un analista central.\n\nEls usuaris avançats poden construir vistes adaptades a les seves decisions.\n\nSelf-service també ajuda a descobrir necessitats abans de convertir-les en productes de dades oficials.\n\nUna exploració local pot demostrar valor i després madurar a mètrica o dashboard governat.\n\nEl problema apareix quan cada anàlisi comença des de taules raw i redefineix conceptes bàsics.\n\n**On falla cada extrem**\nEl model centralitzat falla per cua.\n\nL’equip de BI acaba gestionant canvis petits, filtres i correccions de reports per molts stakeholders.\n\n**La consistència es pot aconseguir a costa d’una latència de decisió massa alta.**\n\nTambé pot allunyar l’equip de dades del context de domini.\n\nUn analista central no sempre coneix les subtileses d’una decisió comercial o operativa.\n\nSelf-service extrem falla per fragmentació.\n\nMètriques duplicades, dashboards paral·lels, càlculs incompatibles i problemes de seguretat.\n\nL’organització guanya velocitat local i perd coherència global.\n\nTambé apareixen costos ocults: més queries, més eines, més manteniment i més temps reconciliant xifres.\n\nLa confiança pot baixar en tots dos extrems.\n\n**Com dissenyar un model híbrid**\nEl model híbrid separa plataforma, semàntica i exploració.\n\nLa plataforma pot estar centralitzada: warehouse, eines, seguretat, observabilitat i estàndards.\n\nLa semàntica crítica també ha de ser comuna: mètriques certificades, dimensions i relacions.\n\n**L’exploració, en canvi, pot viure a prop del domini que entén la decisió.**\n\nEls equips poden crear anàlisis i dashboards sobre models governats.\n\nTambé poden disposar de sandbox per experimentar.\n\nEl pas de sandbox a reporting oficial necessita un procés simple de promoció.\n\nNo cal burocràcia, però sí revisió de definició, qualitat i owner.\n\nEls dominis poden ser responsables d’algunes mètriques si existeix accountability clar.\n\nUn model federat funciona bé quan el coneixement està distribuït.\n\nL’equip central actua com platform team i guardian d’estàndards.\n\nEls equips de negoci actuen com productors i consumidors d’anàlisi.\n\nLa documentació ha de ser fàcil de descobrir.\n\nSi trobar la mètrica oficial és difícil, l’usuari la recrearà.\n\nLa capacitació també importa.\n\nSelf-service sense data literacy pot augmentar errors.\n\nNo tots els usuaris necessiten el mateix nivell d’accés.\n\nPodem oferir capes: dashboards certificats, exploració semàntica, SQL avançat i raw access per perfils autoritzats.\n\nEls costos s’han de monitoritzar.\n\nLa llibertat de consulta pot generar consum excessiu si no hi ha límits i observabilitat.\n\nTambé convé mesurar duplicació.\n\nSi cinc dashboards responen la mateixa pregunta, pot existir una oportunitat de consolidació.\n\nL’èxit no s’ha de mesurar pel nombre de creadors.\n\nMillor mesurar temps fins a insight, confiança en mètriques, reducció de tickets i menys reconciliació manual.\n\nEls canvis de negoci s’han de propagar amb claredat.\n\nQuan canvia una definició, els usuaris afectats ho han de saber.\n\nL’arquitectura ha de suportar versionat i deprecació.\n\nTambé convé mantenir un catàleg d’actius.\n\nNo tot ha de ser oficial, però cada actiu pot mostrar estat: exploratori, validat, certificat o deprecated.\n\nFinalment, la distribució de responsabilitats ha de quedar explícita.\n\nQui defineix mètriques, manté fonts, aprova accés i respon per qualitat?\n\n**BI centralitzat guanya quan importa consistència; self-service guanya quan importa velocitat. El model més sòlid acostuma a centralitzar contractes i descentralitzar preguntes.** Així la governança no es converteix en coll d’ampolla i l’autonomia no es converteix en caos.",
+      "seo_title": "BI centralitzat vs self-service BI",
+      "seo_description": "Comparació entre BI centralitzat i self-service BI i com dissenyar un model híbrid amb semàntica comuna, autonomia i governance.",
+      "seo_keywords": [
+        "centralized vs self service bi",
+        "self service BI",
+        "centralized BI",
+        "BI governance"
+      ],
+      "tags": [
+        "Analytics",
+        "Self-Service BI",
+        "BI Governance"
+      ]
+    }
+  }
+}
