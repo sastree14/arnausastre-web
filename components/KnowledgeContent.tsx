@@ -39,29 +39,10 @@ const STATIC_AREAS: Record<string, KnowledgeArea[]> = {
   'why-professional-services-firms-misdiagnose-capacity-problems': ['planning', 'operations'],
 }
 
-const FEATURED_HOOKS = {
-  es: {
-    'why-inventory-visibility-is-not-inventory-control-and-what-that-costs': 'Ver mejor el inventario no significa decidir mejor sobre él.',
-    'why-operational-supplier-risk-outstrips-financial-risk-and-what-it-costs': 'El riesgo que aparece en operaciones puede llegar mucho antes que el que aparece en finanzas.',
-    'cuando-la-fijacion-dinamica-de-precios-crea-mas-problemas-que-soluciones': 'Cambiar precios más rápido no siempre significa tomar mejores decisiones.',
-  },
-  ca: {
-    'why-inventory-visibility-is-not-inventory-control-and-what-that-costs': 'Veure millor l’inventari no significa decidir millor sobre ell.',
-    'why-operational-supplier-risk-outstrips-financial-risk-and-what-it-costs': 'El risc que apareix a operacions pot arribar molt abans que el que apareix a finances.',
-    'cuando-la-fijacion-dinamica-de-precios-crea-mas-problemas-que-soluciones': 'Canviar preus més ràpid no sempre significa prendre millors decisions.',
-  },
-  en: {
-    'why-inventory-visibility-is-not-inventory-control-and-what-that-costs': 'Seeing inventory more clearly does not mean making better inventory decisions.',
-    'why-operational-supplier-risk-outstrips-financial-risk-and-what-it-costs': 'Operational supplier risk can surface long before financial risk becomes visible.',
-    'cuando-la-fijacion-dinamica-de-precios-crea-mas-problemas-que-soluciones': 'Changing prices faster does not always mean making better pricing decisions.',
-  },
-} as const
-
 const COPY = {
   es: {
     featuredLabel: 'ARTÍCULOS DESTACADOS',
     featuredTitle: 'Tres ideas para empezar.',
-    featuredBody: 'Una selección que iremos renovando para poner delante las ideas que más merece la pena explorar ahora.',
     read: 'Descubrir análisis',
     filterLabel: 'EXPLORA POR ÁREA',
     count: 'análisis',
@@ -85,7 +66,6 @@ const COPY = {
   ca: {
     featuredLabel: 'ARTICLES DESTACATS',
     featuredTitle: 'Tres idees per començar.',
-    featuredBody: 'Una selecció que anirem renovant per posar davant les idees que més val la pena explorar ara.',
     read: 'Descobrir anàlisi',
     filterLabel: 'EXPLORA PER ÀREA',
     count: 'anàlisis',
@@ -109,7 +89,6 @@ const COPY = {
   en: {
     featuredLabel: 'FEATURED ARTICLES',
     featuredTitle: 'Three ideas to start with.',
-    featuredBody: 'A rotating selection of the ideas we think are most worth exploring right now.',
     read: 'Explore analysis',
     filterLabel: 'EXPLORE BY AREA',
     count: 'analyses',
@@ -241,18 +220,16 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
             <p className="text-[12px] font-semibold uppercase tracking-[0.15em] text-indigo-700">{t.featuredLabel}</p>
             <div>
               <h2 className="text-[32px] leading-tight text-slate-950 sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.featuredTitle}</h2>
-              <p className="mt-3 max-w-3xl text-[16px] leading-7 text-slate-600">{t.featuredBody}</p>
             </div>
           </div>
 
           <div className="mt-7 grid border-l border-t border-slate-300 lg:grid-cols-3">
             {featuredItems.map((item, index) => {
-              const hook = FEATURED_HOOKS[lang][item.key as keyof typeof FEATURED_HOOKS.es] || item.excerpt
               return (
                 <Link
                   key={item.key}
                   href={item.href}
-                  className={`group flex min-h-[245px] flex-col border-b border-r border-slate-300 p-6 transition ${
+                  className={`group flex min-h-[215px] flex-col border-b border-r border-slate-300 p-6 transition ${
                     index === 1 ? 'bg-[#F4F1EA] hover:bg-[#EEEAE1]' : index === 2 ? 'bg-[#EDF2F6] hover:bg-[#E5EDF3]' : 'bg-white hover:bg-[#FAFAF7]'
                   }`}
                 >
@@ -260,9 +237,8 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
                     <span className="font-mono text-[13px] font-semibold text-indigo-700">0{index + 1}</span>
                     <ArrowRight className="h-5 w-5 text-slate-400 transition-transform group-hover:translate-x-1" />
                   </div>
-                  <h3 className="mt-6 max-w-[24ch] text-[25px] leading-[1.08] text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{item.title}</h3>
-                  <p className="mt-4 flex-1 text-[16px] font-medium leading-7 text-slate-700">{hook}</p>
-                  <p className="mt-6 text-[15px] font-semibold text-indigo-700">{t.read} →</p>
+                  <h3 className="mt-6 max-w-[24ch] flex-1 text-[27px] leading-[1.06] text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{item.title}</h3>
+                  <p className="mt-7 text-[16px] font-semibold text-indigo-700">{t.read} →</p>
                 </Link>
               )
             })}
