@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-085",
+  "sequence": 85,
+  "arc_id": "ARC-22",
+  "slug": "build-vs-buy-ai-what-should-actually-drive-the-choice",
+  "scheduled_at": "2027-05-05T09:00:00+02:00",
+  "knowledge_area": "ai_automation",
+  "cluster": "AI & Automation",
+  "editorial_pillar": "consulting_decision_insights",
+  "content_family": "compare",
+  "angle": "build vs buy ai",
+  "primary_keyword": "build vs buy ai",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-086",
+    "KB-087",
+    "KB-088"
+  ],
+  "variants": {
+    "es": {
+      "title": "Build vs buy en IA: qué debería decidir la elección",
+      "excerpt": "La elección depende de diferenciación, sensibilidad de datos, profundidad de integración, velocidad y coste de ownership, no de una preferencia ideológica por construir o comprar.",
+      "quick": [
+        "Construir compra diferenciación",
+        "Comprar compra velocidad",
+        "Partner compra capacidad sin estructura interna"
+      ],
+      "section_titles": [
+        "Cuándo construir tiene sentido",
+        "Cuándo comprar es mejor",
+        "Dónde entra un partner especializado",
+        "Compara coste total, no solo licencia"
+      ],
+      "business_title": "Build, buy o partner debería decidirse según qué capacidad diferencia al negocio y cuánto cuesta mantenerla con calidad durante años.",
+      "business_steps": [
+        "Diferenciación",
+        "Integración",
+        "Ownership"
+      ],
+      "body": "Las discusiones de build vs buy en IA suelen simplificarse demasiado. “Construir nos da control” y “comprar es más rápido” son ciertas, pero insuficientes. **La decisión real depende de si la capacidad crea diferenciación, qué profundidad de integración necesita, qué datos utiliza y quién podrá mantenerla después del lanzamiento.**\n\nExiste además una tercera opción que muchas comparaciones ignoran: utilizar un partner especializado para construir o mantener una capacidad sin crear desde el primer día todo el equipo interno. **La pregunta no es qué opción parece más tecnológica; es qué estructura permite capturar valor con el menor coste total y el riesgo adecuado.**\n\n**Cuándo construir tiene sentido**\nConstruir internamente es más atractivo cuando la capacidad forma parte del core diferencial.\n\nSi el sistema determina cómo una empresa fija precios, asigna inventario, optimiza una red o utiliza datos propietarios difíciles de replicar, tener mayor control sobre lógica y evolución puede ser estratégico.\n\n**Cuanto más específica es la ventaja competitiva, más razonable resulta poseer una parte mayor del sistema.**\n\nTambién favorece build una integración profunda con procesos internos, datos sensibles o arquitecturas que ningún producto estándar representa bien.\n\nLa empresa puede necesitar modificar reglas con frecuencia, experimentar con modelos propios o controlar completamente el roadmap.\n\nPero construir implica más que desarrollar una primera versión. Necesita producto, data, ingeniería, seguridad, observabilidad, soporte y ownership continuo.\n\n**Cuándo comprar es mejor**\nComprar suele ser superior cuando el problema es commodity y un proveedor ya resuelve la mayor parte con calidad.\n\nCRM, OCR estándar, transcripción, scheduling, soporte básico o generación documental pueden disponer de soluciones maduras.\n\n**No existe ventaja competitiva en reconstruir infraestructura que el mercado ya ofrece mejor y más barata.**\n\nSaaS también compra velocidad. Permite validar un proceso antes de comprometer meses de desarrollo.\n\nAdemás, el proveedor absorbe parte del mantenimiento, seguridad, actualizaciones e infraestructura.\n\nEl límite aparece cuando la empresa empieza a adaptar sus procesos al producto en lugar de que la herramienta soporte el proceso.\n\nTambién pueden crecer costes por usuario, volumen, API, módulos adicionales o lock-in.\n\n**Dónde entra un partner especializado**\nEntre build y buy existe una tercera arquitectura: construir capacidad a medida con un partner externo.\n\nEsto puede tener sentido cuando el caso requiere personalización, pero la empresa no necesita o no quiere crear un equipo completo de data/AI internamente.\n\n**El partner compra velocidad y expertise sin convertir cada capacidad en headcount permanente.**\n\nPuede encargarse de discovery, arquitectura, implementación, integración y mantenimiento, mientras el cliente conserva ownership de negocio y datos.\n\nEste modelo es especialmente útil cuando existen varios casos de uso, demanda variable o necesidad de perfiles distintos según proyecto.\n\nTambién reduce el riesgo de contratar demasiado pronto un equipo antes de validar dónde está el valor.\n\nEl riesgo es dependencia externa, por lo que contratos, documentación, propiedad intelectual, acceso a código y transferencia de conocimiento deben estar claros.\n\n**Compara coste total, no solo licencia**\nEl error habitual es comparar una licencia SaaS con salarios de desarrolladores o presupuesto de proyecto.\n\nEl coste real incluye integración, configuración, datos, seguridad, soporte, cambios, downtime, formación y coste de oportunidad. **Total cost of ownership puede invertir una decisión que parecía obvia mirando solo el precio inicial.**\n\nEn build, hay que incluir recruiting, ramp-up, infraestructura, retraining de modelos, on-call y deuda técnica.\n\nEn buy, hay que incluir seats, consumo, conectores, personalización, exportabilidad y posibles aumentos de precio.\n\nEn partner, hay que considerar fee, dependencia, SLA, mantenimiento y capacidad de transferir el sistema si cambia la relación.\n\nLa velocidad también tiene valor económico. Esperar nueve meses para construir internamente puede costar más que pagar una solución externa durante ese periodo.\n\nLa reversibilidad importa. Un SaaS mensual puede permitir experimentar; una plataforma interna con gran capex crea más compromiso.\n\nLa sensibilidad de datos puede descartar algunas opciones o requerir despliegues privados.\n\nLa integración es otro driver. Si el valor depende de coordinar CRM, ERP, warehouse, procesos internos y lógica propia, una solución genérica puede quedarse corta.\n\nTambién importa la frecuencia de cambio. Un producto estándar evoluciona según roadmap del vendor; una solución propia puede adaptarse a prioridades internas.\n\nEl riesgo de concentración debe revisarse. Depender de un proveedor crítico sin plan de salida puede ser tan problemático como depender de una única persona interna.\n\nConviene construir una matriz con cinco dimensiones: diferenciación, time-to-value, integración, sensibilidad y ownership.\n\nCada opción puede evaluarse sobre esas dimensiones y luego compararse con economics reales.\n\nA veces la solución correcta es híbrida: comprar infraestructura base, construir la lógica diferencial y utilizar un partner para integrar y mantener.\n\n**Build tiene sentido cuando poseer la capacidad crea ventaja; buy cuando el problema es estándar y la velocidad importa; partner cuando necesitamos una solución adaptada sin construir toda la función internamente.** La elección madura no maximiza control ni minimiza coste inicial: optimiza valor y ownership a lo largo del ciclo de vida.",
+      "seo_title": "Build vs buy en IA: cómo decidir",
+      "seo_description": "Cómo elegir entre construir, comprar o trabajar con un partner de IA según diferenciación, integración, datos, velocidad y total cost of ownership.",
+      "seo_keywords": [
+        "build vs buy ai",
+        "AI build vs buy",
+        "AI partner",
+        "AI strategy"
+      ],
+      "tags": [
+        "AI Strategy",
+        "Build vs Buy",
+        "Technology Partner"
+      ]
+    },
+    "en": {
+      "title": "Build vs buy AI: what should actually drive the choice",
+      "excerpt": "The decision depends on differentiation, data sensitivity, integration depth, speed and ownership cost rather than an ideological preference for building or buying.",
+      "quick": [
+        "Build buys differentiation",
+        "Buy buys speed",
+        "Partner buys capability without internal structure"
+      ],
+      "section_titles": [
+        "When building makes sense",
+        "When buying is better",
+        "Where a specialist partner fits",
+        "Compare total cost, not only license"
+      ],
+      "business_title": "Build, buy or partner should be decided by which capability differentiates the business and what it costs to own that capability well over time.",
+      "business_steps": [
+        "Differentiation",
+        "Integration",
+        "Ownership"
+      ],
+      "body": "Build-versus-buy discussions in AI are often oversimplified. “Building gives control” and “buying is faster” are both true but incomplete. **The real decision depends on whether the capability creates differentiation, how deeply it must integrate, which data it uses and who will maintain it after launch.**\n\nThere is also a third option that many comparisons ignore: using a specialist partner to build or maintain capability without creating an entire internal team on day one. **The question is not which option looks more technological; it is which structure captures value with the right total cost and risk.**\n\n**When building makes sense**\nInternal development becomes more attractive when the capability is part of the company’s core differentiation.\n\nIf the system determines pricing, inventory allocation, network optimization or the use of proprietary data that competitors cannot easily reproduce, stronger control over logic and evolution can be strategic.\n\n**The more specific the competitive advantage, the more reasonable it is to own a larger share of the system.**\n\nBuild is also favoured by deep integration requirements, sensitive data or architectures that standard products cannot represent well.\n\nThe company may need frequent rule changes, proprietary experimentation or complete roadmap control.\n\nBut building means more than producing a first version. It requires product, data, engineering, security, observability, support and long-term ownership.\n\n**When buying is better**\nBuying is usually stronger when the problem is commodity and a vendor already solves most of it well.\n\nCRM, standard OCR, transcription, scheduling, basic support or document generation may already have mature products.\n\n**There is little competitive advantage in rebuilding infrastructure the market already provides better and cheaper.**\n\nSaaS also buys speed. It allows the company to validate a process before committing months of engineering.\n\nThe vendor absorbs part of maintenance, security, updates and infrastructure.\n\nThe limitation appears when the business starts adapting its processes to the product rather than having the tool support the process.\n\nCosts can also expand through seats, usage, APIs, premium modules or lock-in.\n\n**Where a specialist partner fits**\nBetween build and buy sits a third architecture: custom capability delivered with an external specialist.\n\nThis can work when the use case needs customization but the company does not need or want a complete internal data/AI function.\n\n**A partner buys speed and expertise without turning every capability into permanent headcount.**\n\nThe partner can handle discovery, architecture, implementation, integration and maintenance while the client retains business and data ownership.\n\nThis model is especially useful when several use cases exist, demand is variable or different specialist profiles are needed across projects.\n\nIt also reduces the risk of hiring a large team before the company has validated where value actually sits.\n\nExternal dependency remains a risk, so contracts, documentation, IP, source-code access and knowledge transfer should be explicit.\n\n**Compare total cost, not only license**\nA common mistake is comparing SaaS license cost with developer salaries or a project fee.\n\nReal cost includes integration, configuration, data work, security, support, changes, downtime, training and opportunity cost. **Total cost of ownership can reverse a decision that looked obvious from the upfront price.**\n\nFor build, include recruiting, ramp-up, infrastructure, model retraining, on-call and technical debt.\n\nFor buy, include seats, usage, connectors, customization, exportability and potential pricing increases.\n\nFor partner, include fees, dependency, SLA, maintenance and the ability to transfer ownership if the relationship changes.\n\nSpeed also has economic value. Waiting nine months for an internal build may cost more than paying an external solution during that period.\n\nReversibility matters. Monthly SaaS can support experimentation; internal platforms with large capex create more commitment.\n\nData sensitivity can eliminate some options or require private deployment.\n\nIntegration is another driver. If value depends on coordinating CRM, ERP, warehouse, internal workflows and proprietary logic, generic software may be insufficient.\n\nChange frequency matters too. Standard products evolve according to vendor roadmaps; owned systems can follow internal priorities.\n\nConcentration risk should be reviewed. Depending on a critical vendor with no exit plan can be as dangerous as depending on one internal specialist.\n\nA useful matrix can score five dimensions: differentiation, time-to-value, integration, sensitivity and ownership.\n\nEach option can then be evaluated against real economics.\n\nOften the strongest answer is hybrid: buy base infrastructure, build the differentiated logic and use a partner to integrate or operate it.\n\n**Build makes sense when owning the capability creates advantage; buy when the problem is standard and speed matters; partner when tailored capability is needed without building the full function internally.** Mature selection optimizes lifecycle value and ownership rather than maximizing control or minimizing upfront cost.",
+      "seo_title": "Build vs Buy AI: How to Decide",
+      "seo_description": "How to choose between building, buying or using an AI partner based on differentiation, integration, data, speed and total ownership cost.",
+      "seo_keywords": [
+        "build vs buy ai",
+        "AI build vs buy",
+        "AI partner",
+        "AI strategy"
+      ],
+      "tags": [
+        "AI Strategy",
+        "Build vs Buy",
+        "Technology Partner"
+      ]
+    },
+    "ca": {
+      "title": "Build vs buy en IA: què hauria de decidir l’elecció",
+      "excerpt": "La tria depèn de diferenciació, sensibilitat de dades, profunditat d’integració, velocitat i cost d’ownership, no d’una preferència per construir o comprar.",
+      "quick": [
+        "Build compra diferenciació",
+        "Buy compra velocitat",
+        "Partner compra capacitat sense estructura interna"
+      ],
+      "section_titles": [
+        "Quan construir té sentit",
+        "Quan comprar és millor",
+        "On entra un partner especialitzat",
+        "Compara cost total, no només llicència"
+      ],
+      "business_title": "Build, buy o partner s’hauria de decidir segons quina capacitat diferencia el negoci i quant costa mantenir-la bé durant anys.",
+      "business_steps": [
+        "Diferenciació",
+        "Integració",
+        "Ownership"
+      ],
+      "body": "Les discussions de build vs buy en IA sovint se simplifiquen massa. “Construir dona control” i “comprar és més ràpid” són certes, però incompletes. **La decisió real depèn de si la capacitat crea diferenciació, quina profunditat d’integració necessita, quines dades utilitza i qui la mantindrà després del llançament.**\n\nTambé existeix una tercera opció que moltes comparacions ignoren: utilitzar un partner especialitzat per construir o mantenir capacitat sense crear tot un equip intern des del primer dia. **La pregunta no és quina opció sembla més tecnològica; és quina estructura captura valor amb el cost total i risc adequats.**\n\n**Quan construir té sentit**\nConstruir internament és més atractiu quan la capacitat forma part del core diferencial.\n\nSi el sistema determina pricing, assignació d’inventari, optimització de xarxa o l’ús de dades propietàries difícils de replicar, tenir més control sobre lògica i evolució pot ser estratègic.\n\n**Com més específica és l’avantatge competitiu, més raonable és posseir una part més gran del sistema.**\n\nBuild també guanya pes quan hi ha integració profunda, dades sensibles o arquitectures que cap producte estàndard representa bé.\n\nL’empresa pot necessitar canviar regles sovint, experimentar amb models propis o controlar completament el roadmap.\n\nPerò construir és més que desenvolupar una primera versió. Requereix producte, dades, enginyeria, seguretat, observabilitat, suport i ownership continu.\n\n**Quan comprar és millor**\nComprar acostuma a ser superior quan el problema és commodity i un proveïdor ja resol gran part amb qualitat.\n\nCRM, OCR estàndard, transcripció, scheduling, suport bàsic o generació documental poden disposar de productes madurs.\n\n**Hi ha poc avantatge competitiu a reconstruir infraestructura que el mercat ja ofereix millor i més barata.**\n\nSaaS també compra velocitat. Permet validar un procés abans de comprometre mesos de desenvolupament.\n\nEl vendor absorbeix part del manteniment, seguretat, actualitzacions i infraestructura.\n\nEl límit apareix quan l’empresa adapta processos al producte en lloc que l’eina suporti el procés.\n\nEls costos també poden créixer per seats, ús, APIs, mòduls premium o lock-in.\n\n**On entra un partner especialitzat**\nEntre build i buy existeix una tercera arquitectura: capacitat a mida desenvolupada amb un especialista extern.\n\nPot tenir sentit quan el cas necessita personalització, però l’empresa no necessita o no vol crear una funció completa de data/AI.\n\n**Un partner compra velocitat i expertise sense convertir cada capacitat en headcount permanent.**\n\nEl partner pot assumir discovery, arquitectura, implementació, integració i manteniment mentre el client conserva ownership de negoci i dades.\n\nAquest model és especialment útil quan hi ha diversos casos d’ús, demanda variable o perfils especialistes diferents segons projecte.\n\nTambé redueix el risc de contractar un equip gran abans de validar on és realment el valor.\n\nLa dependència externa continua sent un risc, així que contractes, documentació, propietat intel·lectual, accés a codi i transferència de coneixement han d’estar clars.\n\n**Compara cost total, no només llicència**\nUn error habitual és comparar llicència SaaS amb salaris de desenvolupadors o fee de projecte.\n\nEl cost real inclou integració, configuració, dades, seguretat, suport, canvis, downtime, formació i cost d’oportunitat. **Total cost of ownership pot invertir una decisió que semblava òbvia mirant només el preu inicial.**\n\nEn build, cal incloure recruiting, ramp-up, infraestructura, retraining, on-call i deute tècnic.\n\nEn buy, seats, consum, connectors, personalització, exportabilitat i possibles increments de preu.\n\nEn partner, fee, dependència, SLA, manteniment i capacitat de transferir el sistema si canvia la relació.\n\nLa velocitat també té valor econòmic. Esperar nou mesos per construir internament pot costar més que pagar una solució externa durant aquell període.\n\nLa reversibilitat importa. SaaS mensual pot facilitar experimentació; una plataforma interna amb capex alt crea més compromís.\n\nLa sensibilitat de dades pot descartar opcions o exigir private deployment.\n\nLa integració és un altre driver. Si el valor depèn de coordinar CRM, ERP, warehouse, workflows interns i lògica pròpia, un producte genèric pot quedar curt.\n\nLa freqüència de canvi també compta. Productes estàndard evolucionen segons roadmap del vendor; sistemes propis poden seguir prioritats internes.\n\nEl risc de concentració s’ha de revisar. Dependre d’un vendor crític sense pla de sortida pot ser tan problemàtic com dependre d’un únic especialista intern.\n\nUna matriu útil pot puntuar cinc dimensions: diferenciació, time-to-value, integració, sensibilitat i ownership.\n\nCada opció es pot comparar després amb economics reals.\n\nSovint la millor resposta és híbrida: comprar infraestructura base, construir lògica diferencial i utilitzar un partner per integrar o operar.\n\n**Build té sentit quan posseir la capacitat crea avantatge; buy quan el problema és estàndard i la velocitat importa; partner quan necessitem capacitat adaptada sense construir tota la funció internament.** La selecció madura optimitza valor de cicle de vida i ownership, no control màxim ni cost inicial mínim.",
+      "seo_title": "Build vs buy en IA: com decidir",
+      "seo_description": "Com triar entre construir, comprar o treballar amb un partner d’IA segons diferenciació, integració, dades, velocitat i cost total d’ownership.",
+      "seo_keywords": [
+        "build vs buy ai",
+        "AI build vs buy",
+        "AI partner",
+        "AI strategy"
+      ],
+      "tags": [
+        "AI Strategy",
+        "Build vs Buy",
+        "Technology Partner"
+      ]
+    }
+  }
+}
