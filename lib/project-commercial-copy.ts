@@ -2,11 +2,11 @@ import type { SiteLanguage } from '@/lib/public-copy'
 
 export const projectOverviewUi = {
   en: {
-    back: 'All cases',
+    back: 'All success stories',
     caseStudy: 'Read the full case',
     repository: 'Technical repository',
     contact: 'Talk to us about a similar problem',
-    snapshot: 'The case in 30 seconds',
+    snapshot: 'The success story in 30 seconds',
     problem: 'Business problem',
     changed: 'What changed',
     utility: 'Business utility',
@@ -17,11 +17,11 @@ export const projectOverviewUi = {
     scenarioNote: 'Reference economics — not attributed to a specific client',
   },
   es: {
-    back: 'Todos los casos',
+    back: 'Todos los casos de éxito',
     caseStudy: 'Ver el caso completo',
     repository: 'Repositorio técnico',
     contact: 'Háblanos de un problema similar',
-    snapshot: 'El caso en 30 segundos',
+    snapshot: 'El caso de éxito en 30 segundos',
     problem: 'Problema de negocio',
     changed: 'Qué cambió',
     utility: 'Utilidad para el negocio',
@@ -32,11 +32,11 @@ export const projectOverviewUi = {
     scenarioNote: 'Modelo económico de referencia — no se atribuye a un cliente concreto',
   },
   ca: {
-    back: 'Tots els casos',
+    back: 'Tots els casos d’èxit',
     caseStudy: 'Veure el cas complet',
     repository: 'Repositori tècnic',
     contact: 'Parla’ns d’un problema similar',
-    snapshot: 'El cas en 30 segons',
+    snapshot: 'El cas d’èxit en 30 segons',
     problem: 'Problema de negoci',
     changed: 'Què va canviar',
     utility: 'Utilitat per al negoci',
