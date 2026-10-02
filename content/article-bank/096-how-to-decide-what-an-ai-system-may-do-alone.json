@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-096",
+  "sequence": 96,
+  "arc_id": "ARC-24",
+  "slug": "how-to-decide-what-an-ai-system-may-do-alone",
+  "scheduled_at": "2027-06-01T09:00:00+02:00",
+  "knowledge_area": "ai_automation",
+  "cluster": "AI & Automation",
+  "editorial_pillar": "consulting_decision_insights",
+  "content_family": "decision_guide",
+  "angle": "ai autonomy decision",
+  "primary_keyword": "ai autonomy decision",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-093",
+    "KB-094",
+    "KB-095"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cómo decidir qué puede hacer sola una IA",
+      "excerpt": "La autonomía debería crecer con evidencia y reducirse cuando aumentan impacto, irreversibilidad, incertidumbre y exposición externa.",
+      "quick": [
+        "Autonomía no es binaria",
+        "El riesgo define límites",
+        "La evidencia permite ampliar permisos"
+      ],
+      "section_titles": [
+        "Descompón el workflow en acciones",
+        "Clasifica impacto e irreversibilidad",
+        "Asigna un nivel de autonomía",
+        "Aumenta permisos solo con evidencia"
+      ],
+      "business_title": "La autonomía correcta no es máxima ni mínima: es la mínima supervisión necesaria para mantener una decisión dentro de un riesgo aceptable.",
+      "business_steps": [
+        "Acción",
+        "Riesgo",
+        "Permiso"
+      ],
+      "body": "Decidir si una IA puede actuar sola no debería resolverse con una pregunta binaria: autónoma o supervisada. **La autonomía puede diseñarse por acción, nivel de riesgo, importe, contexto y reversibilidad**.\n\nUn mismo sistema puede buscar información sin aprobación, redactar con revisión, actualizar campos de bajo riesgo automáticamente y necesitar confirmación humana para enviar dinero o cancelar un contrato. **El objetivo es asignar libertad exactamente donde la evidencia demuestra que el sistema puede operar de forma segura y útil.**\n\n**Descompón el workflow en acciones**\nAntes de hablar de autonomía, divide el proceso en pasos concretos.\n\nLeer datos, buscar documentos, clasificar una petición, generar un draft, modificar un CRM, enviar un email, aprobar una devolución o ejecutar un pago son acciones distintas.\n\n**Cada acción debería tener su propio perfil de riesgo y permiso.**\n\nEsto evita dar al agente acceso amplio simplemente porque necesita una parte pequeña del sistema.\n\nTambién permite utilizar arquitecturas híbridas: reasoning flexible en interpretación y ejecución determinista en acciones sensibles.\n\nPara cada paso conviene definir inputs, outputs, tools, condiciones de éxito y fallos posibles.\n\nLa granularidad importa. “Gestionar un cliente” es demasiado amplio; “actualizar el campo de prioridad” es controlable.\n\n**Clasifica impacto e irreversibilidad**\nEl siguiente paso es valorar qué ocurre si la acción sale mal.\n\nImpacto puede ser financiero, contractual, reputacional, regulatorio, de seguridad o experiencia de cliente.\n\nIrreversibilidad pregunta cuánto cuesta corregir el error. **Una acción fácil de deshacer tolera más autonomía que una acción que produce consecuencias permanentes.**\n\nTambién hay que considerar escala. Un error pequeño ejecutado 100.000 veces puede ser crítico.\n\nLa exposición externa aumenta riesgo. Un borrador interno no tiene la misma consecuencia que una publicación pública.\n\nLa sensibilidad de datos influye: leer información confidencial requiere permisos aunque no exista una acción externa.\n\nLa incertidumbre también importa. Si el sistema opera con inputs ambiguos o datos incompletos, puede necesitar más escalado.\n\nEstas dimensiones pueden traducirse a una matriz de riesgo.\n\n**Asigna un nivel de autonomía**\nUna escala práctica puede tener cuatro niveles.\n\nNivel 0: solo lectura. El sistema busca, resume o analiza, pero no escribe en sistemas operativos.\n\nNivel 1: recomendación. Propone una acción y una persona decide.\n\nNivel 2: ejecución reversible y acotada. **El sistema puede actuar solo dentro de límites definidos y escalar excepciones.**\n\nNivel 3: ejecución autónoma de acciones más relevantes con monitorización continua y hard limits.\n\nNo todos los workflows necesitan llegar al nivel 3.\n\nEl nivel puede variar por importe, cliente, segmento o tipo de acción.\n\nPor ejemplo, una devolución pequeña puede automatizarse y una grande requerir aprobación.\n\nTambién se pueden utilizar thresholds de confianza, aunque deben estar calibrados y combinados con riesgo.\n\nLas tools deben imponer permisos técnicamente. El modelo no debería depender únicamente de una instrucción textual para respetar límites.\n\n**Aumenta permisos solo con evidencia**\nLa autonomía debería ampliarse de forma progresiva.\n\nEmpieza en shadow mode: el sistema decide, pero no ejecuta. Compara sus decisiones con las humanas.\n\nDespués puede pasar a recommendation mode y registrar overrides.\n\n**La tasa de corrección, los tipos de error y los outcomes deben justificar cada aumento de autonomía.**\n\nCuando los fallos se concentran en categorías conocidas, podemos añadir reglas, contexto o escalado específico.\n\nTambién conviene medir beneficio: tiempo ahorrado, latencia reducida, mejora de calidad o capacidad liberada.\n\nSi la autonomía no crea valor adicional, no existe motivo para asumir más riesgo.\n\nEl sistema necesita límites de frecuencia y coste. Un agente que entra en loop no debería poder ejecutar acciones indefinidamente.\n\nTambién necesita rollback. Acciones reversibles deberían conservar historial y posibilidad de deshacer.\n\nLos cambios de versión deben volver a pasar por evaluación si pueden alterar comportamiento materialmente.\n\nLa monitorización debe seguir task success, errores, overrides, tool failures, latencia, coste y resultados de negocio.\n\nLas alertas deberían activarse ante degradación, no ante cualquier variación.\n\nEl human on the loop necesita herramientas para pausar el sistema o bloquear una categoría de acciones.\n\nLa cobertura importa. Un sistema que opera 24/7 con supervisión solo en horario laboral necesita límites diferentes durante periodos sin cobertura.\n\nLa seguridad debe revisar prompt injection, acceso a datos y posibilidad de encadenar tools de forma inesperada.\n\nTambién conviene separar identidad del agente de identidad del usuario. Las acciones deberían ejecutarse con permisos mínimos y auditables.\n\nLas decisiones críticas pueden requerir dual control o aprobación explícita.\n\nLa política de autonomía debe documentarse de forma legible: qué puede hacer el sistema, con qué límites, cuándo escala y quién responde.\n\nTambién debe revisarse cuando cambia el negocio. Un workflow que hoy mueve 100 € puede mover 100.000 € dentro de un año.\n\nLa autonomía no es un destino final. Puede aumentar, reducirse o retirarse según evidencia.\n\nFinalmente, la comparación debe ser con una alternativa real. Si una persona tarda cinco segundos en revisar una acción y el coste del error es enorme, mantener revisión puede ser racional.\n\n**Una IA debería actuar sola únicamente allí donde impacto, reversibilidad, volumen y evidencia permiten que la autonomía genere más valor que riesgo.** Diseñar permisos por acción y ampliar libertad de forma progresiva convierte la autonomía en una decisión de ingeniería y negocio, no en una apuesta.",
+      "seo_title": "Cómo decidir qué puede hacer sola una IA",
+      "seo_description": "Guía para definir autonomía de IA según acción, impacto, irreversibilidad, volumen, permisos, evidencia, supervisión y escalado.",
+      "seo_keywords": [
+        "ai autonomy decision",
+        "AI autonomy framework",
+        "agent permissions",
+        "AI governance"
+      ],
+      "tags": [
+        "AI Governance",
+        "Autonomy",
+        "Decision Guide"
+      ]
+    },
+    "en": {
+      "title": "How to decide what an AI system may do alone",
+      "excerpt": "Autonomy should grow with evidence and shrink as impact, irreversibility, uncertainty and external exposure increase.",
+      "quick": [
+        "Autonomy is not binary",
+        "Risk defines boundaries",
+        "Evidence can expand permissions"
+      ],
+      "section_titles": [
+        "Break the workflow into actions",
+        "Classify impact and irreversibility",
+        "Assign an autonomy level",
+        "Increase permissions only with evidence"
+      ],
+      "business_title": "The right autonomy level is neither maximum nor minimum; it is the least supervision required to keep decisions inside acceptable risk.",
+      "business_steps": [
+        "Action",
+        "Risk",
+        "Permission"
+      ],
+      "body": "Deciding whether an AI system may act alone should not be reduced to one binary question: autonomous or supervised. **Autonomy can be designed by action, risk level, monetary amount, context and reversibility**.\n\nThe same system may search information without approval, draft with human review, update low-risk CRM fields automatically and require confirmation before moving money or cancelling a contract. **The objective is to grant freedom exactly where evidence shows the system can operate safely and usefully.**\n\n**Break the workflow into actions**\nBefore discussing autonomy, decompose the process into concrete steps.\n\nReading data, searching documents, classifying a request, generating a draft, modifying a CRM, sending an email, approving a refund and issuing a payment are different actions.\n\n**Each action should have its own risk and permission profile.**\n\nThis prevents broad system access when the agent only needs a small capability.\n\nIt also supports hybrid architecture: flexible reasoning for interpretation and deterministic execution for sensitive actions.\n\nFor each step, define inputs, outputs, tools, success conditions and possible failures.\n\nGranularity matters. “Manage a customer” is too broad; “update the priority field” is controllable.\n\n**Classify impact and irreversibility**\nNext evaluate what happens when the action is wrong.\n\nImpact may be financial, contractual, reputational, regulatory, security-related or customer-facing.\n\nIrreversibility asks how difficult correction would be. **An easy-to-reverse action can tolerate more autonomy than one with permanent consequences.**\n\nScale matters too. A small error repeated 100,000 times can become critical.\n\nExternal exposure increases risk. An internal draft is different from a public post.\n\nData sensitivity matters even without external action because access to confidential information requires permission boundaries.\n\nUncertainty is another factor. Ambiguous inputs or incomplete data may require more escalation.\n\nThese dimensions can be converted into a risk matrix.\n\n**Assign an autonomy level**\nA practical scale can use four levels.\n\nLevel 0: read only. The system searches, summarizes or analyzes but does not write to operational systems.\n\nLevel 1: recommendation. It proposes an action and a person decides.\n\nLevel 2: bounded reversible execution. **The system may act alone inside defined limits and escalate exceptions.**\n\nLevel 3: autonomous execution of more consequential actions with continuous monitoring and hard limits.\n\nNot every workflow should reach level 3.\n\nLevels can differ by amount, customer, segment or action type.\n\nA small refund can be automated while a large one still needs approval.\n\nConfidence thresholds can be used, but they should be calibrated and combined with risk.\n\nTools must enforce permissions technically. The model should not rely only on textual instructions to respect boundaries.\n\n**Increase permissions only with evidence**\nAutonomy should expand progressively.\n\nBegin in shadow mode: the system decides but does not execute. Compare its decisions with human decisions.\n\nThen move to recommendation mode and record overrides.\n\n**Correction rate, error types and downstream outcomes should justify each increase in autonomy.**\n\nWhen failures cluster in known categories, add rules, context or targeted escalation.\n\nBenefits should be measured too: time saved, lower latency, higher quality or released capacity.\n\nIf additional autonomy creates no additional value, there is no reason to assume more risk.\n\nThe system needs frequency and cost limits. An agent stuck in a loop should not be able to execute indefinitely.\n\nRollback matters too. Reversible actions should preserve history and support undo.\n\nMaterial version changes should trigger re-evaluation when behaviour may change.\n\nMonitoring should include task success, errors, overrides, tool failures, latency, cost and business outcomes.\n\nAlerts should respond to meaningful degradation rather than every variation.\n\nHuman-on-the-loop supervisors need controls to pause the system or block an action category.\n\nCoverage matters. A system operating 24/7 with supervision only during working hours needs different boundaries outside staffed periods.\n\nSecurity review should include prompt injection, data access and unexpected tool chaining.\n\nAgent identity should be separated from user identity where appropriate. Actions should use minimum, auditable permissions.\n\nCritical decisions may require dual control or explicit approval.\n\nThe autonomy policy should be understandable: what the system may do, within which limits, when it escalates and who owns the outcome.\n\nIt should also be reviewed when the business changes. A workflow moving €100 today may move €100,000 next year.\n\nAutonomy is not a final destination. It can expand, contract or be removed as evidence changes.\n\nThe comparison should remain practical. If a person can review an action in five seconds and error cost is enormous, human approval may remain rational.\n\n**An AI system should act alone only where impact, reversibility, volume and evidence make autonomy more valuable than risky.** Designing permissions by action and expanding freedom progressively turns autonomy into an engineering and business decision rather than a bet.",
+      "seo_title": "How to Decide What an AI System May Do Alone",
+      "seo_description": "A guide to AI autonomy based on action, impact, irreversibility, volume, permissions, evidence, supervision and escalation.",
+      "seo_keywords": [
+        "ai autonomy decision",
+        "AI autonomy framework",
+        "agent permissions",
+        "AI governance"
+      ],
+      "tags": [
+        "AI Governance",
+        "Autonomy",
+        "Decision Guide"
+      ]
+    },
+    "ca": {
+      "title": "Com decidir què pot fer sola una IA",
+      "excerpt": "L’autonomia hauria de créixer amb evidència i reduir-se quan augmenten impacte, irreversibilitat, incertesa i exposició externa.",
+      "quick": [
+        "L’autonomia no és binària",
+        "El risc defineix límits",
+        "L’evidència permet ampliar permisos"
+      ],
+      "section_titles": [
+        "Descompon el workflow en accions",
+        "Classifica impacte i irreversibilitat",
+        "Assigna un nivell d’autonomia",
+        "Augmenta permisos només amb evidència"
+      ],
+      "business_title": "L’autonomia correcta no és màxima ni mínima: és la mínima supervisió necessària per mantenir una decisió dins d’un risc acceptable.",
+      "business_steps": [
+        "Acció",
+        "Risc",
+        "Permís"
+      ],
+      "body": "Decidir si una IA pot actuar sola no s’hauria de reduir a una pregunta binària: autònoma o supervisada. **L’autonomia es pot dissenyar per acció, nivell de risc, import, context i reversibilitat**.\n\nEl mateix sistema pot buscar informació sense aprovació, redactar amb revisió, actualitzar camps de baix risc automàticament i necessitar confirmació abans de moure diners o cancel·lar un contracte. **L’objectiu és donar llibertat exactament on l’evidència mostra que el sistema pot operar de manera segura i útil.**\n\n**Descompon el workflow en accions**\nAbans de parlar d’autonomia, divideix el procés en passos concrets.\n\nLlegir dades, buscar documents, classificar una petició, generar un draft, modificar un CRM, enviar un email, aprovar una devolució o executar un pagament són accions diferents.\n\n**Cada acció hauria de tenir el seu propi perfil de risc i permís.**\n\nAixò evita donar accés ampli a l’agent quan només necessita una capacitat petita.\n\nTambé permet arquitectures híbrides: reasoning flexible en interpretació i execució determinista en accions sensibles.\n\nPer cada pas convé definir inputs, outputs, tools, condicions d’èxit i possibles fallades.\n\nLa granularitat importa. “Gestionar un client” és massa ampli; “actualitzar el camp de prioritat” és controlable.\n\n**Classifica impacte i irreversibilitat**\nEl següent pas és valorar què passa si l’acció surt malament.\n\nL’impacte pot ser financer, contractual, reputacional, regulatori, de seguretat o experiència de client.\n\nLa irreversibilitat pregunta quant costa corregir l’error. **Una acció fàcil de desfer tolera més autonomia que una acció amb conseqüències permanents.**\n\nTambé cal considerar escala. Un error petit executat 100.000 vegades pot ser crític.\n\nL’exposició externa augmenta risc. Un draft intern no és igual que una publicació pública.\n\nLa sensibilitat de dades influeix: llegir informació confidencial necessita permisos encara que no existeixi acció externa.\n\nLa incertesa també importa. Inputs ambigus o dades incompletes poden requerir més escalat.\n\nAquestes dimensions es poden convertir en una matriu de risc.\n\n**Assigna un nivell d’autonomia**\nUna escala pràctica pot tenir quatre nivells.\n\nNivell 0: només lectura. El sistema busca, resumeix o analitza, però no escriu en sistemes operatius.\n\nNivell 1: recomanació. Proposa una acció i una persona decideix.\n\nNivell 2: execució reversible i acotada. **El sistema pot actuar sol dins de límits definits i escalar excepcions.**\n\nNivell 3: execució autònoma d’accions més rellevants amb monitorització contínua i hard limits.\n\nNo tots els workflows necessiten arribar al nivell 3.\n\nEl nivell pot variar per import, client, segment o tipus d’acció.\n\nUna devolució petita pot automatitzar-se mentre una gran continua necessitant aprovació.\n\nTambé podem utilitzar thresholds de confiança, però han d’estar calibrats i combinar-se amb risc.\n\nLes tools han d’imposar permisos tècnicament. El model no hauria de dependre només d’una instrucció textual per respectar límits.\n\n**Augmenta permisos només amb evidència**\nL’autonomia hauria d’ampliar-se progressivament.\n\nComença en shadow mode: el sistema decideix però no executa. Compara les decisions amb les humanes.\n\nDesprés passa a recommendation mode i registra overrides.\n\n**La taxa de correcció, els tipus d’error i els outcomes han de justificar cada augment d’autonomia.**\n\nQuan les fallades es concentren en categories conegudes, podem afegir regles, context o escalat específic.\n\nTambé cal mesurar benefici: temps estalviat, latència reduïda, qualitat millorada o capacitat alliberada.\n\nSi més autonomia no crea més valor, no hi ha motiu per assumir més risc.\n\nEl sistema necessita límits de freqüència i cost. Un agent en loop no hauria de poder executar indefinidament.\n\nTambé necessita rollback. Les accions reversibles haurien de conservar historial i possibilitat de desfer.\n\nEls canvis de versió materials han de tornar a passar per avaluació si poden alterar comportament.\n\nLa monitorització ha de seguir task success, errors, overrides, tool failures, latency, cost i outcomes de negoci.\n\nLes alertes haurien d’activar-se davant degradació rellevant, no qualsevol variació.\n\nEl human on the loop necessita controls per pausar el sistema o bloquejar una categoria d’accions.\n\nLa cobertura importa. Un sistema 24/7 amb supervisió només en horari laboral necessita límits diferents fora dels períodes amb equip.\n\nLa seguretat ha de revisar prompt injection, accés a dades i possible tool chaining inesperat.\n\nTambé convé separar identitat de l’agent d’identitat de l’usuari. Les accions haurien d’executar-se amb permisos mínims i auditables.\n\nLes decisions crítiques poden requerir dual control o aprovació explícita.\n\nLa policy d’autonomia ha de ser entenedora: què pot fer el sistema, amb quins límits, quan escala i qui respon.\n\nTambé s’ha de revisar quan canvia el negoci. Un workflow que avui mou 100 € pot moure 100.000 € l’any vinent.\n\nL’autonomia no és un destí final. Pot augmentar, reduir-se o retirar-se segons l’evidència.\n\nFinalment, la comparació ha de ser realista. Si una persona tarda cinc segons a revisar una acció i el cost de l’error és enorme, mantenir revisió pot ser racional.\n\n**Una IA hauria d’actuar sola només allà on impacte, reversibilitat, volum i evidència fan que l’autonomia generi més valor que risc.** Dissenyar permisos per acció i ampliar llibertat progressivament converteix l’autonomia en una decisió d’enginyeria i negoci, no en una aposta.",
+      "seo_title": "Com decidir què pot fer sola una IA",
+      "seo_description": "Guia per definir autonomia d’IA segons acció, impacte, irreversibilitat, volum, permisos, evidència, supervisió i escalat.",
+      "seo_keywords": [
+        "ai autonomy decision",
+        "AI autonomy framework",
+        "agent permissions",
+        "AI governance"
+      ],
+      "tags": [
+        "AI Governance",
+        "Autonomy",
+        "Decision Guide"
+      ]
+    }
+  }
+}
