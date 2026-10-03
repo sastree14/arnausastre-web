@@ -11,6 +11,7 @@ from growth.src.storage import get_store
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_BANK = ROOT / "content" / "article-bank"
+DEFAULT_CATALOG = ROOT / "content" / "editorial" / "knowledge_bank_v1.json"
 
 
 def load_articles(bank_dir: Path) -> list[dict[str, Any]]:
@@ -75,24 +76,33 @@ def article_meta(article: dict[str, Any], variant: dict[str, Any], slug_by_spec:
     }
 
 
-def seed(*, bank_dir: Path, mode: str, expected: int, limit: int = 0) -> dict[str, Any]:
+def seed(*, bank_dir: Path, catalog_path: Path, mode: str, expected: int, limit: int = 0) -> dict[str, Any]:
     articles = load_articles(bank_dir)
     validate_bank(articles, expected=expected)
     if limit > 0:
         articles = articles[:limit]
+
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+    strategy = catalog.get("publication_strategy") or {}
+    initial_published = max(0, int(strategy.get("initial_published_articles") or 0))
 
     cfg = load_config()
     tenant_id = cfg["company"]["tenant_id"]
     store = get_store()
     slug_by_spec = {row["spec_id"]: row["slug"] for row in load_articles(bank_dir)}
     now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    existing_items = {str(row.get("content_id")): row for row in store.list("content_items")}
+    existing_approvals = {str(row.get("approval_id")): row for row in store.list("approvals")}
 
     seeded_items = 0
     seeded_approvals = 0
 
     for article in articles:
         brief_id = str(article["slug"])
+        sequence = int(article.get("sequence") or 0)
         schedule_at = str(article["scheduled_at"]) if mode == "scheduled" else None
+        if mode == "scheduled" and sequence <= initial_published:
+            schedule_at = now
         status = "scheduled" if mode == "scheduled" else "approved"
 
         for language in ("es", "en", "ca"):
@@ -104,6 +114,11 @@ def seed(*, bank_dir: Path, mode: str, expected: int, limit: int = 0) -> dict[st
                 "article_bank": True,
                 "article_meta": article_meta(article, variant, slug_by_spec),
             }
+            existing_item = existing_items.get(cid) or {}
+            already_published = existing_item.get("status") == "published" and bool(existing_item.get("published_at"))
+            item_status = "published" if already_published else status
+            item_schedule = None if already_published else schedule_at
+
             item = {
                 "content_id": cid,
                 "tenant_id": tenant_id,
@@ -114,11 +129,13 @@ def seed(*, bank_dir: Path, mode: str, expected: int, limit: int = 0) -> dict[st
                 "objective": "authority",
                 "target_audience": [],
                 "evidence_ids": [],
-                "status": status,
+                "status": item_status,
                 "visual_type": "none",
                 "visual_path": "",
                 "source_case": "",
-                "scheduled_at": schedule_at,
+                "scheduled_at": item_schedule,
+                "published_at": existing_item.get("published_at") if already_published else None,
+                "external_post_url": existing_item.get("external_post_url") if already_published else None,
                 "brief_id": brief_id,
                 "language": language,
                 "content_family": article.get("content_family", "explain_understand"),
@@ -130,6 +147,8 @@ def seed(*, bank_dir: Path, mode: str, expected: int, limit: int = 0) -> dict[st
             seeded_items += 1
 
             aid = approval_id(article["spec_id"], language)
+            existing_approval = existing_approvals.get(aid) or {}
+            approval_executed = already_published or existing_approval.get("status") == "executed"
             approval = {
                 "approval_id": aid,
                 "tenant_id": tenant_id,
@@ -142,14 +161,14 @@ def seed(*, bank_dir: Path, mode: str, expected: int, limit: int = 0) -> dict[st
                     "language": language,
                     "spec_id": article["spec_id"],
                     "sequence": article["sequence"],
-                    "scheduled_at": schedule_at,
+                    "scheduled_at": item_schedule,
                     "source": "knowledge_bank_v1",
                     "execution_mode": "scheduled_website_publication",
                 },
-                "status": "approved",
-                "created_at": now,
-                "decided_at": now,
-                "executed_at": None,
+                "status": "executed" if approval_executed else "approved",
+                "created_at": existing_approval.get("created_at") or now,
+                "decided_at": existing_approval.get("decided_at") or now,
+                "executed_at": (existing_approval.get("executed_at") or existing_item.get("published_at") or now) if approval_executed else None,
             }
             store.upsert("approvals", approval, key="approval_id")
             seeded_approvals += 1
@@ -159,7 +178,9 @@ def seed(*, bank_dir: Path, mode: str, expected: int, limit: int = 0) -> dict[st
         "families": len(articles),
         "content_items": seeded_items,
         "approvals": seeded_approvals,
-        "first_scheduled_at": articles[0].get("scheduled_at") if articles and mode == "scheduled" else None,
+        "initial_release_families": min(initial_published, len(articles)) if mode == "scheduled" else 0,
+        "first_scheduled_at": now if articles and mode == "scheduled" and initial_published else (articles[0].get("scheduled_at") if articles and mode == "scheduled" else None),
+        "next_scheduled_at": next((row.get("scheduled_at") for row in articles if int(row.get("sequence") or 0) > initial_published), None) if mode == "scheduled" else None,
         "last_scheduled_at": articles[-1].get("scheduled_at") if articles and mode == "scheduled" else None,
     }
 
@@ -167,6 +188,7 @@ def seed(*, bank_dir: Path, mode: str, expected: int, limit: int = 0) -> dict[st
 def main() -> int:
     parser = argparse.ArgumentParser(description="Seed the materialized SC-Analytics Knowledge bank into the Growth content store.")
     parser.add_argument("--bank", type=Path, default=DEFAULT_BANK)
+    parser.add_argument("--catalog", type=Path, default=DEFAULT_CATALOG)
     parser.add_argument("--mode", choices=("staged", "scheduled"), default="staged")
     parser.add_argument("--expected", type=int, default=200)
     parser.add_argument("--limit", type=int, default=0)
@@ -185,7 +207,7 @@ def main() -> int:
         }, indent=2))
         return 0
 
-    result = seed(bank_dir=args.bank, mode=args.mode, expected=args.expected, limit=args.limit)
+    result = seed(bank_dir=args.bank, catalog_path=args.catalog, mode=args.mode, expected=args.expected, limit=args.limit)
     print(json.dumps(result, indent=2, ensure_ascii=False))
     return 0
 
