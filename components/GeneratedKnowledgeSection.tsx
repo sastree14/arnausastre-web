@@ -39,7 +39,7 @@ export default function GeneratedKnowledgeSection({ articles }: { articles: Publ
             if (!item) return null
             const locale = lang === 'ca' ? 'ca-ES' : lang === 'es' ? 'es-ES' : 'en-GB'
             return (
-              <Link key={key} href={`/knowledge/${key}`} className="group rounded-2xl border border-slate-800 bg-slate-900/70 p-6 transition hover:border-slate-600">
+              <Link key={key} href={`/knowledge/${key}/${lang}`} className="group rounded-2xl border border-slate-800 bg-slate-900/70 p-6 transition hover:border-slate-600">
                 <div className="flex flex-wrap gap-2 text-[11px] uppercase tracking-wide text-slate-500">
                   {item.content_family && <span>{item.content_family}</span>}
                   {item.language && <span>· {item.language}</span>}
