@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-174",
+  "sequence": 174,
+  "arc_id": "ARC-44",
+  "slug": "logistic-regression-vs-boosting-for-credit-risk",
+  "scheduled_at": "2027-12-05T09:00:00+01:00",
+  "knowledge_area": "risk_decision",
+  "cluster": "Finance, Risk & Pricing",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "compare",
+  "angle": "logistic regression vs xgboost credit scoring",
+  "primary_keyword": "logistic regression vs xgboost credit scoring",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-173",
+    "KB-175",
+    "KB-176"
+  ],
+  "variants": {
+    "es": {
+      "title": "Regresión logística vs boosting en riesgo de crédito",
+      "excerpt": "La logística aporta estabilidad y explicación directa; boosting puede capturar no linealidades e interacciones. La elección depende del lift y del coste de gobernarlo.",
+      "quick": [
+        "Logística es un baseline fuerte",
+        "Boosting puede comprar lift",
+        "Governance decide cuánto vale la complejidad"
+      ],
+      "section_titles": [
+        "Qué ofrece la regresión logística",
+        "Qué añade boosting",
+        "El trade-off real está en el sistema",
+        "Cómo comparar ambos enfoques"
+      ],
+      "business_title": "El mejor modelo de crédito no es el más complejo, sino el que mejora decisiones lo suficiente para justificar explainability, mantenimiento y governance adicionales.",
+      "business_steps": [
+        "Baseline",
+        "Lift",
+        "Governance"
+      ],
+      "body": "Regresión logística y gradient boosting representan dos enfoques muy distintos para credit scoring. La primera impone una estructura relativamente simple y legible; el segundo puede capturar relaciones no lineales e interacciones con mucha más flexibilidad. **La pregunta correcta no es cuál es más moderno, sino cuánto valor adicional compra esa flexibilidad.**\n\nEn muchos portfolios, una regresión logística bien construida sigue siendo un baseline difícil de superar de forma económicamente material. En otros, boosting genera un lift claro. **El criterio debería ser cuánto cambia la decisión de crédito y cuánto cuesta gobernar la complejidad adicional.**\n\n**Qué ofrece la regresión logística**\nLa regresión logística relaciona features con los log-odds del evento.\n\nSu estructura facilita revisar dirección de coeficientes, estabilidad y coherencia económica.\n\n**La legibilidad ayuda a explicar por qué cambia el riesgo y simplifica validación y documentación.**\n\nTambién suele ser rápida de entrenar y servir.\n\nCon regularización, transformaciones adecuadas y buen feature engineering puede capturar gran parte de la señal disponible.\n\nOtra ventaja es la estabilidad. Los coeficientes pueden monitorizarse y compararse entre vintages.\n\nSin embargo, la relación lineal en log-odds puede ser demasiado restrictiva si existen thresholds, saturaciones o interacciones complejas.\n\nLa solución puede ser añadir bins, splines o interacciones, aunque demasiada ingeniería manual puede reducir parte de la simplicidad original.\n\n**Qué añade boosting**\nGradient boosting construye muchas reglas secuenciales que capturan no linealidades e interacciones automáticamente.\n\nEsto puede mejorar ranking y performance en datasets tabulares ricos.\n\n**El lift aparece cuando el riesgo depende de combinaciones que un modelo lineal no representa bien.**\n\nPor ejemplo, utilization puede tener un efecto distinto según tenure, ingreso o comportamiento reciente.\n\nBoosting puede modelar estas interacciones sin especificarlas a mano.\n\nTambién gestiona relaciones con thresholds de forma natural.\n\nEl coste está en la explicabilidad y la governance.\n\nSHAP y reason codes pueden ayudar, pero requieren una capa adicional de diseño y validación.\n\nLa calibration puede necesitar tratamiento específico, especialmente si el modelo optimiza ranking.\n\n**El trade-off real está en el sistema**\nUna mejora de AUC no es suficiente para justificar boosting.\n\nHay que traducirla a approval rate, bad rate, expected loss, margen y capital.\n\n**Un lift estadístico pequeño puede generar mucho valor en gran volumen o casi ninguno si no cambia el cutoff operativo.**\n\nTambién conviene medir estabilidad out-of-time.\n\nUn modelo muy flexible puede aprender patrones temporales que se degradan más rápido.\n\nLa explainability debe evaluarse desde el uso real: reason codes, revisión de casos, auditoría, model risk y comunicación interna.\n\nLa infraestructura también cambia. Boosting puede requerir pipelines de features más complejas y mayor observabilidad.\n\nLa sensibilidad a missing values, categorías y cambios upstream debe probarse.\n\nNo todo coste es computacional; gran parte es coste de validación y mantenimiento.\n\n**Cómo comparar ambos enfoques**\nLa comparación debe utilizar el mismo target, horizonte, población y split temporal.\n\nDespués conviene medir AUC, PR AUC cuando corresponda, calibration, Brier score y performance por score bands.\n\n**La comparación decisiva ocurre en la policy, no en la tabla de métricas.**\n\nPodemos simular approval rates y expected profit a distintos cutoffs.\n\nTambién conviene analizar false declines y defaults adicionales.\n\nLos segmentos deben revisarse por separado para detectar deterioro oculto.\n\nLa estabilidad por vintage y periodo macroeconómico es fundamental.\n\nUna buena práctica es mantener la regresión logística como champion o baseline vivo y exigir al boosting una mejora material.\n\nTambién pueden utilizarse monotonic constraints en boosting para alinear relaciones con conocimiento de riesgo cuando tenga sentido.\n\nLa selección de features debe controlar leakage y proxies problemáticos.\n\nLa calibration puede hacerse con una capa posterior si el ranking es bueno y las probabilidades no.\n\nLos reason codes necesitan consistencia. Una explicación variable o difícil de comunicar puede aumentar friction operativa.\n\nEl challenger debe evaluarse no solo offline, sino bajo la policy que realmente se utilizaría.\n\nTambién conviene calcular total cost of ownership del modelo.\n\nSi boosting mejora expected profit de forma sustancial, puede justificar ese coste.\n\nSi apenas cambia outcomes y exige mucha más governance, la logística puede ser superior.\n\nEn algunos casos una arquitectura híbrida es razonable: logística para segmentos regulados o con poca información y boosting para otros.\n\nLa elección puede revisarse cuando crece el volumen o cambian los datos.\n\nFinalmente, el modelo debe integrarse con thresholds, pricing y monitoring.\n\n**Regresión logística compra claridad y estabilidad; boosting compra flexibilidad y potencial lift.** El modelo correcto es aquel cuyo valor incremental sobre la política de crédito compensa la complejidad adicional que la organización tendrá que mantener durante todo su ciclo de vida.",
+      "seo_title": "Regresión logística vs boosting en credit scoring",
+      "seo_description": "Comparación de regresión logística y boosting en riesgo de crédito según lift, calibration, estabilidad, explainability, governance y valor económico.",
+      "seo_keywords": [
+        "logistic regression vs xgboost credit scoring",
+        "credit risk boosting",
+        "credit scoring logistic regression",
+        "XGBoost credit risk"
+      ],
+      "tags": [
+        "Credit Risk",
+        "Logistic Regression",
+        "Gradient Boosting"
+      ]
+    },
+    "en": {
+      "title": "Logistic regression vs boosting for credit risk",
+      "excerpt": "Logistic regression provides stability and direct explanation; boosting can capture nonlinear effects and interactions. The choice depends on lift and governance cost.",
+      "quick": [
+        "Logistic regression is a strong baseline",
+        "Boosting can buy lift",
+        "Governance determines the value of complexity"
+      ],
+      "section_titles": [
+        "What logistic regression offers",
+        "What boosting adds",
+        "The real trade-off is in the system",
+        "How to compare both approaches"
+      ],
+      "business_title": "The best credit model is not the most complex one, but the one that improves decisions enough to justify additional explainability, maintenance and governance.",
+      "business_steps": [
+        "Baseline",
+        "Lift",
+        "Governance"
+      ],
+      "body": "Logistic regression and gradient boosting represent very different approaches to credit scoring. The first imposes a relatively simple and legible structure; the second can capture nonlinear relationships and interactions with much greater flexibility. **The right question is not which method is more modern, but how much additional value that flexibility buys.**\n\nIn many portfolios, a well-designed logistic model remains a difficult baseline to beat materially. In others, boosting creates clear predictive lift. **The criterion should be how much the lending decision changes and how much extra complexity must be governed.**\n\n**What logistic regression offers**\nLogistic regression relates features to the log-odds of the event.\n\nIts structure makes coefficient direction, stability and economic plausibility easier to inspect.\n\n**Legibility supports explanation and simplifies validation and documentation.**\n\nTraining and scoring are also inexpensive.\n\nWith regularization, appropriate transformations and strong feature engineering, logistic regression can capture a large share of available signal.\n\nStability is another advantage. Coefficients can be monitored across vintages and periods.\n\nThe limitation is structural. A linear relationship in log-odds may be too restrictive when thresholds, saturation effects or complex interactions matter.\n\nBins, splines and manual interactions can help, although excessive engineering can reduce the original simplicity.\n\n**What boosting adds**\nGradient boosting builds many sequential decision rules that capture nonlinearities and interactions automatically.\n\nThat can improve ranking and predictive performance in rich tabular datasets.\n\n**Lift appears when credit risk depends on combinations a linear model cannot represent cleanly.**\n\nUtilization, for example, may have a different effect depending on tenure, income or recent payment behaviour.\n\nBoosting can learn those interactions without specifying them manually.\n\nThreshold effects are also natural for tree-based models.\n\nThe price is explainability and governance complexity.\n\nSHAP and reason-code layers can help, but they introduce additional design and validation work.\n\nCalibration may also need explicit attention, especially when the model is optimized primarily for ranking.\n\n**The real trade-off is in the system**\nAn AUC improvement alone does not justify boosting.\n\nThe gain should be translated into approval rate, bad rate, expected loss, margin and capital.\n\n**A small statistical lift can create substantial value at scale or almost none if the operating cutoff barely changes.**\n\nOut-of-time stability should be compared as well.\n\nA flexible model can learn transient patterns that degrade more quickly.\n\nExplainability should be evaluated from the real use case: reason codes, case review, audit, model risk and internal communication.\n\nInfrastructure may become more complex too. Boosting can require richer feature pipelines and stronger observability.\n\nSensitivity to missing values, categories and upstream changes needs testing.\n\nMuch of the cost is not compute; it is validation, maintenance and operational governance.\n\n**How to compare both approaches**\nUse the same target, horizon, population and temporal split.\n\nThen compare AUC, PR AUC where relevant, calibration, Brier score and performance by score band.\n\n**The decisive comparison occurs at the policy layer rather than in the metrics table.**\n\nSimulate approval rates and expected profit across cutoffs.\n\nMeasure false declines and additional defaults.\n\nReview important segments separately so aggregate gains do not hide local deterioration.\n\nVintage and macro-period stability are essential.\n\nA useful approach is to keep logistic regression as a live champion or baseline and require boosting to deliver a material gain.\n\nMonotonic constraints can also be used in boosting when risk relationships should follow defensible directions.\n\nFeature selection should control leakage and problematic proxies.\n\nPost-hoc calibration can be added if ranking is strong but probability estimates are weak.\n\nReason codes need consistency. Explanations that change unpredictably can create operational friction.\n\nThe challenger should be evaluated under the policy that would actually be deployed.\n\nTotal model ownership cost should be estimated too.\n\nIf boosting materially improves expected profit, the complexity may be justified.\n\nIf outcomes barely change and governance grows substantially, logistic regression may remain the stronger choice.\n\nHybrid architectures are possible: logistic models for regulated or data-light segments and boosting elsewhere.\n\nThe decision can be revisited as volume and data quality improve.\n\nFinally, the model must integrate with thresholds, pricing and monitoring.\n\n**Logistic regression buys clarity and stability; boosting buys flexibility and potential lift.** The right model is the one whose incremental decision value pays for the complexity the institution must own throughout the model lifecycle.",
+      "seo_title": "Logistic Regression vs Boosting for Credit Risk",
+      "seo_description": "Logistic regression and boosting compared for credit scoring across lift, calibration, stability, explainability, governance and economic value.",
+      "seo_keywords": [
+        "logistic regression vs xgboost credit scoring",
+        "credit risk boosting",
+        "credit scoring logistic regression",
+        "XGBoost credit risk"
+      ],
+      "tags": [
+        "Credit Risk",
+        "Logistic Regression",
+        "Gradient Boosting"
+      ]
+    },
+    "ca": {
+      "title": "Regressió logística vs boosting en risc de crèdit",
+      "excerpt": "La logística aporta estabilitat i explicació directa; boosting pot capturar no linealitats i interaccions. La tria depèn del lift i del cost de governance.",
+      "quick": [
+        "La logística és un baseline fort",
+        "Boosting pot comprar lift",
+        "Governance decideix quant val la complexitat"
+      ],
+      "section_titles": [
+        "Què ofereix la regressió logística",
+        "Què afegeix boosting",
+        "El trade-off real és al sistema",
+        "Com comparar els dos enfocaments"
+      ],
+      "business_title": "El millor model de crèdit no és el més complex, sinó el que millora decisions prou per justificar explainability, manteniment i governance addicionals.",
+      "business_steps": [
+        "Baseline",
+        "Lift",
+        "Governance"
+      ],
+      "body": "Regressió logística i gradient boosting representen enfocaments molt diferents per credit scoring. La primera imposa una estructura relativament simple i llegible; el segon pot capturar relacions no lineals i interaccions amb molta més flexibilitat. **La pregunta correcta no és quin mètode és més modern, sinó quant valor addicional compra aquesta flexibilitat.**\n\nEn molts portfolios, una regressió logística ben construïda continua sent un baseline difícil de superar de forma material. En altres, boosting aporta un lift clar. **El criteri hauria de ser quant canvia la decisió de crèdit i quant costa governar la complexitat addicional.**\n\n**Què ofereix la regressió logística**\nLa regressió logística relaciona features amb els log-odds de l’esdeveniment.\n\nLa seva estructura facilita revisar direcció dels coeficients, estabilitat i coherència econòmica.\n\n**La llegibilitat ajuda a explicar i simplifica validació i documentació.**\n\nTambé és ràpida d’entrenar i servir.\n\nAmb regularització, transformacions adequades i bon feature engineering pot capturar gran part de la senyal disponible.\n\nL’estabilitat és un altre avantatge. Els coeficients es poden monitoritzar entre vintages.\n\nLa limitació és estructural. Una relació lineal en log-odds pot ser massa restrictiva amb thresholds, saturació o interaccions complexes.\n\nBins, splines i interaccions manuals poden ajudar, tot i que massa enginyeria pot reduir la simplicitat inicial.\n\n**Què afegeix boosting**\nGradient boosting construeix moltes regles seqüencials que capturen no linealitats i interaccions automàticament.\n\nAixò pot millorar ranking i performance en datasets tabulars rics.\n\n**El lift apareix quan el risc depèn de combinacions que un model lineal no representa bé.**\n\nUtilization, per exemple, pot tenir un efecte diferent segons tenure, ingressos o comportament recent.\n\nBoosting pot aprendre aquestes interaccions sense especificar-les a mà.\n\nEls efectes de threshold també són naturals en arbres.\n\nEl cost està en explainability i governance.\n\nSHAP i reason codes poden ajudar, però introdueixen una capa addicional de disseny i validació.\n\nLa calibration també pot necessitar tractament específic.\n\n**El trade-off real és al sistema**\nUna millora d’AUC no justifica boosting per si sola.\n\nCal traduir-la a approval rate, bad rate, expected loss, marge i capital.\n\n**Un lift estadístic petit pot generar molt valor a escala o gairebé cap si el cutoff operatiu no canvia.**\n\nTambé cal comparar estabilitat out-of-time.\n\nUn model flexible pot aprendre patrons temporals que degraden més ràpid.\n\nExplainability s’ha d’avaluar des de l’ús real: reason codes, revisió de casos, auditoria, model risk i comunicació.\n\nLa infraestructura també pot fer-se més complexa. Boosting pot necessitar pipelines de features més riques i millor observabilitat.\n\nLa sensibilitat a missing values, categories i canvis upstream s’ha de provar.\n\nGran part del cost no és computacional; és validació, manteniment i governance operatiu.\n\n**Com comparar els dos enfocaments**\nLa comparació ha d’utilitzar el mateix target, horitzó, població i split temporal.\n\nDesprés comparem AUC, PR AUC quan correspongui, calibration, Brier score i performance per score bands.\n\n**La comparació decisiva passa a la capa de policy i no a la taula de mètriques.**\n\nPodem simular approval rates i expected profit a diferents cutoffs.\n\nTambé convé mesurar false declines i defaults addicionals.\n\nEls segments importants s’han de revisar per separat.\n\nL’estabilitat per vintage i període macroeconòmic és essencial.\n\nUna bona pràctica és mantenir la logística com champion o baseline viu i exigir al boosting una millora material.\n\nTambé es poden utilitzar monotonic constraints quan les relacions de risc han de seguir direccions defensables.\n\nLa selecció de features ha de controlar leakage i proxies problemàtics.\n\nLa calibration post-hoc pot ajudar si el ranking és fort i les probabilitats no.\n\nEls reason codes necessiten consistència. Explicacions molt variables poden generar friction operativa.\n\nEl challenger s’ha d’avaluar sota la policy que realment es desplegaria.\n\nTambé cal estimar total cost of ownership.\n\nSi boosting millora expected profit de forma material, la complexitat pot compensar.\n\nSi els outcomes gairebé no canvien i governance creix molt, la logística pot continuar sent millor.\n\nTambé poden existir arquitectures híbrides: logística per segments regulats o amb poques dades i boosting en altres.\n\nLa decisió es pot revisar quan creix volum o milloren dades.\n\nFinalment, el model s’ha d’integrar amb thresholds, pricing i monitoring.\n\n**Regressió logística compra claredat i estabilitat; boosting compra flexibilitat i potencial lift.** El model correcte és aquell on el valor incremental sobre la decisió paga la complexitat que l’organització haurà de mantenir durant tot el cicle de vida.",
+      "seo_title": "Regressió logística vs boosting en credit scoring",
+      "seo_description": "Comparació de regressió logística i boosting en risc de crèdit segons lift, calibration, estabilitat, explainability, governance i valor econòmic.",
+      "seo_keywords": [
+        "logistic regression vs xgboost credit scoring",
+        "credit risk boosting",
+        "credit scoring logistic regression",
+        "XGBoost credit risk"
+      ],
+      "tags": [
+        "Credit Risk",
+        "Logistic Regression",
+        "Gradient Boosting"
+      ]
+    }
+  }
+}
