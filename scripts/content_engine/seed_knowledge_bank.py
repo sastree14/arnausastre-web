@@ -221,12 +221,18 @@ def main() -> int:
     articles = load_articles(args.bank)
     validate_bank(articles, expected=args.expected)
     if args.dry_run:
+        catalog = json.loads(args.catalog.read_text(encoding="utf-8"))
+        strategy = catalog.get("publication_strategy") or {}
+        initial_published = max(0, int(strategy.get("initial_published_articles") or 0))
+        next_sequence = initial_published + 1
         print(json.dumps({
             "valid": True,
             "families": len(articles),
             "variants": len(articles) * 3,
-            "first_scheduled_at": articles[0]["scheduled_at"],
-            "last_scheduled_at": articles[-1]["scheduled_at"],
+            "initial_release_families": min(initial_published, len(articles)),
+            "first_scheduled_at": schedule_for(1, strategy) if articles else None,
+            "next_scheduled_at": schedule_for(next_sequence, strategy) if len(articles) >= next_sequence else None,
+            "last_scheduled_at": schedule_for(int(articles[-1]["sequence"]), strategy) if articles else None,
         }, indent=2))
         return 0
 
