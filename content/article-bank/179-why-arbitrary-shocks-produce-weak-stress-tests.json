@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-179",
+  "sequence": 179,
+  "arc_id": "ARC-45",
+  "slug": "why-arbitrary-shocks-produce-weak-stress-tests",
+  "scheduled_at": "2027-12-17T09:00:00+01:00",
+  "knowledge_area": "finance",
+  "cluster": "Finance, Risk & Pricing",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "failure_modes_mistakes",
+  "angle": "stress testing scenarios",
+  "primary_keyword": "stress testing scenarios",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-177",
+    "KB-178",
+    "KB-180"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué shocks arbitrarios producen malos stress tests",
+      "excerpt": "Un shock genérico puede generar una cifra severa sin revelar cómo se rompe el sistema. Los mejores escenarios tienen mecanismo, dependencias y respuesta.",
+      "quick": [
+        "Severidad sin mecanismo aporta poco",
+        "Los drivers deben moverse con coherencia",
+        "El escenario debe revelar una vulnerabilidad"
+      ],
+      "section_titles": [
+        "El porcentaje arbitrario no explica causalidad",
+        "Los shocks aislados ignoran dependencias",
+        "Un buen escenario tiene narrativa y transmisión",
+        "Evalúa el stress por lo que permite decidir"
+      ],
+      "business_title": "Un stress test es útil cuando explica cómo un shock se transmite hasta una restricción crítica y qué acción puede reducir la vulnerabilidad.",
+      "business_steps": [
+        "Mecanismo",
+        "Transmisión",
+        "Respuesta"
+      ],
+      "body": "Aplicar un -20 % a ventas, +15 % a costes y +200 puntos básicos a tipos puede parecer un stress test riguroso porque produce números claramente adversos. Pero **la severidad del resultado no garantiza la calidad del escenario**.\n\nUn buen stress test debería explicar por qué cambian las variables, cómo se relacionan y qué parte del sistema se vuelve frágil. Si los shocks son arbitrarios, el ejercicio puede terminar siendo una tabla de sensibilidades disfrazada de análisis de resiliencia. **Lo importante no es mover muchas variables, sino representar un mecanismo de tensión relevante para el negocio.**\n\n**El porcentaje arbitrario no explica causalidad**\nUn shock porcentual es fácil de construir y comparar.\n\nTambién puede ser útil para una primera sensibilidad.\n\nEl problema aparece cuando se utiliza como sustituto de una narrativa económica.\n\n**Una caída de ventas no debería existir aislada de la causa que la provoca.**\n\nSi la causa es recesión, pueden cambiar también precios, mix, impagos y coste de financiación.\n\nSi la causa es la pérdida de un cliente, quizá el efecto sea concentrado en una región o producto y no en toda la compañía.\n\nSi la causa es una disrupción de supply chain, ventas pueden caer mientras costes unitarios suben y working capital empeora.\n\nEl mismo -20 % de revenue puede tener implicaciones de caja completamente distintas según el mecanismo.\n\n**Los shocks aislados ignoran dependencias**\nMuchas vulnerabilidades aparecen cuando varias variables cambian juntas.\n\nUn tipo de interés más alto puede coincidir con menor demanda y mayor default.\n\nUna crisis de liquidez puede ampliar spreads y reducir el valor de activos justo cuando necesitamos vender.\n\n**Las correlaciones observadas en condiciones normales pueden dejar de ser útiles bajo estrés.**\n\nPor eso mover una variable manteniendo todo lo demás constante puede infraestimar riesgo.\n\nTambién puede sobreestimarlo si asume que no existe ninguna respuesta operativa.\n\nLas dependencias deben tener justificación económica, no solo estadística.\n\nConviene identificar efectos de primer orden y de segundo orden.\n\nUna caída de demanda reduce ingresos; después puede aumentar inventario, empeorar absorción de costes fijos y consumir caja.\n\nUn downgrade puede aumentar funding cost; después puede activar collateral adicional o covenants.\n\n**Un buen escenario tiene narrativa y transmisión**\nLa narrativa no es decoración.\n\nObliga a especificar qué ocurre primero, qué variables reaccionan y qué restricciones aparecen.\n\n**Un escenario útil puede explicarse como una cadena causal comprensible por finance, risk y operaciones.**\n\nPor ejemplo: shock energético → aumento de coste de producción → menor margen → subida de precios → caída parcial de demanda → aumento de working capital → reducción de liquidez.\n\nCada flecha puede modelarse con una sensibilidad o regla diferente.\n\nTambién conviene incluir management actions realistas.\n\nLa empresa puede recortar capex, renegociar términos, cambiar sourcing o utilizar una línea de crédito.\n\nPero esas acciones necesitan límites: tiempo, coste y disponibilidad.\n\nLa narrativa permite cuestionar si una respuesta es realmente viable bajo el mismo escenario.\n\n**Evalúa el stress por lo que permite decidir**\nUn buen stress test no se mide por cuántos millones de pérdida produce.\n\nSe mide por si descubre una vulnerabilidad accionable.\n\nPuede revelar que el liquidity buffer es insuficiente, que una concentración supera la tolerancia o que una línea de financiación llega demasiado tarde.\n\n**El escenario debería terminar en un trigger, un owner y una respuesta.**\n\nTambién conviene comparar varios niveles de severidad para entender cuándo aparece el punto de ruptura.\n\nReverse stress testing puede ser útil para buscar qué shock sería necesario para llegar a un breach concreto.\n\nLos escenarios históricos aportan una referencia de plausibilidad.\n\nLos hipotéticos permiten cubrir riesgos nuevos.\n\nLa combinación evita depender demasiado de lo ya observado.\n\nCada escenario debe versionarse con sus supuestos.\n\nLos resultados necesitan descomposición para distinguir qué driver domina la pérdida.\n\nSi el resultado depende casi completamente de una variable, quizá el resto del stress añade complejidad sin información.\n\nTambién conviene incluir sensibilidad a las propias elasticidades del modelo.\n\nSi una pequeña modificación cambia radicalmente el resultado, la incertidumbre debe comunicarse.\n\nLos escenarios deberían revisarse cuando cambia el negocio: nuevos mercados, deuda, proveedores, clientes o productos.\n\nNo tiene sentido mantener un stress relevante hace tres años si la exposición ya no existe.\n\nLa frecuencia de ejecución depende de la velocidad de cambio del riesgo.\n\nEl sistema debe guardar historial para observar si resiliencia mejora o empeora.\n\nFinalmente, el lenguaje de comunicación importa. Un stress no es una predicción y no debe presentarse como “esto ocurrirá”.\n\n**Los shocks arbitrarios producen números adversos; los buenos stress tests producen comprensión de mecanismos.** La diferencia está en representar una cadena causal que permita descubrir fragilidad y preparar una respuesta antes de que el escenario deje de ser hipotético.",
+      "seo_title": "Cómo diseñar buenos escenarios de stress testing",
+      "seo_description": "Por qué shocks arbitrarios producen stress tests débiles y cómo diseñar escenarios con mecanismos, dependencias, narrativa, triggers y acciones.",
+      "seo_keywords": [
+        "stress testing scenarios",
+        "stress test design",
+        "risk scenarios",
+        "financial stress testing"
+      ],
+      "tags": [
+        "Finance",
+        "Stress Testing",
+        "Scenario Design"
+      ]
+    },
+    "en": {
+      "title": "Why arbitrary shocks produce weak stress tests",
+      "excerpt": "A generic shock can generate a severe number without revealing how the system breaks. Strong scenarios include mechanisms, dependencies and responses.",
+      "quick": [
+        "Severity without mechanism adds little",
+        "Drivers should move coherently",
+        "The scenario should reveal a vulnerability"
+      ],
+      "section_titles": [
+        "An arbitrary percentage does not explain causality",
+        "Isolated shocks ignore dependencies",
+        "A strong scenario has narrative and transmission",
+        "Evaluate stress by the decision it supports"
+      ],
+      "business_title": "A stress test is useful when it explains how a shock propagates into a critical constraint and which action can reduce the vulnerability.",
+      "business_steps": [
+        "Mechanism",
+        "Transmission",
+        "Response"
+      ],
+      "body": "Applying a 20% sales decline, a 15% cost increase and a 200-basis-point rate shock can look rigorous because the resulting numbers are clearly adverse. But **the severity of the outcome does not guarantee the quality of the scenario**.\n\nA strong stress test should explain why variables move, how they interact and which part of the system becomes fragile. Arbitrary shocks can turn the exercise into a table of sensitivities disguised as resilience analysis. **The goal is not to move many variables; it is to represent a relevant mechanism of stress.**\n\n**An arbitrary percentage does not explain causality**\nPercentage shocks are easy to construct and compare.\n\nThey can also be useful as an initial sensitivity.\n\nThe problem appears when they replace an economic narrative.\n\n**A sales decline should not be separated from the cause that creates it.**\n\nIf the cause is recession, pricing, mix, defaults and funding costs may move too.\n\nIf the cause is losing one major customer, the effect may be concentrated in one region or product rather than the whole company.\n\nIf the cause is a supply-chain disruption, sales may decline while unit cost rises and working capital deteriorates.\n\nThe same 20% revenue decline can therefore produce very different liquidity outcomes depending on the mechanism.\n\n**Isolated shocks ignore dependencies**\nMany vulnerabilities appear when several variables move together.\n\nHigher rates may coincide with weaker demand and higher defaults.\n\nA liquidity crisis can widen spreads and reduce asset values precisely when the organization needs to sell.\n\n**Correlations observed in normal conditions may become unreliable under stress.**\n\nMoving one variable while holding everything else fixed can therefore understate risk.\n\nIt can also overstate risk if the model assumes no operational response is possible.\n\nDependencies should be justified economically rather than only statistically.\n\nFirst-order and second-order effects should be identified.\n\nLower demand reduces revenue; it may then increase inventory, worsen fixed-cost absorption and consume cash.\n\nA downgrade increases funding cost; it may then trigger additional collateral or covenants.\n\n**A strong scenario has narrative and transmission**\nNarrative is not decoration.\n\nIt forces the organization to specify what happens first, which variables react and which constraints activate.\n\n**A useful scenario can be explained as a causal chain understood by finance, risk and operations.**\n\nFor example: energy shock → higher production cost → lower margin → price increase → partial demand decline → higher working capital → weaker liquidity.\n\nEach link can use a different sensitivity or rule.\n\nRealistic management actions should also be included.\n\nThe company may delay capex, renegotiate terms, change sourcing or draw a credit line.\n\nBut those actions have limits in time, cost and availability.\n\nNarrative makes it possible to challenge whether the response would actually remain feasible under the same scenario.\n\n**Evaluate stress by the decision it supports**\nA good stress test is not judged by how many millions of loss it generates.\n\nIt is judged by whether it reveals an actionable vulnerability.\n\nIt may show that liquidity buffer is insufficient, concentration exceeds tolerance or a funding line becomes available too late.\n\n**The scenario should end in a trigger, an owner and a response.**\n\nSeveral severity levels can help identify where the failure point begins.\n\nReverse stress testing can search for the shock required to reach a specific breach.\n\nHistorical scenarios provide a plausibility anchor.\n\nHypothetical scenarios cover new risks.\n\nUsing both prevents overreliance on past events.\n\nEvery scenario should be versioned with its assumptions.\n\nResults should be decomposed to reveal which driver dominates loss.\n\nIf one variable explains nearly everything, the rest of the scenario may add complexity without information.\n\nSensitivity to model elasticities should be tested as well.\n\nIf small changes in one assumption move the result dramatically, that uncertainty should be visible.\n\nScenarios should be updated as the business changes through new markets, debt, suppliers, customers or products.\n\nThere is little value in preserving a stress that was relevant three years ago when the exposure no longer exists.\n\nExecution frequency should reflect how quickly risk changes.\n\nHistorical results should be stored so resilience can be compared over time.\n\nCommunication matters too. A stress scenario is not a forecast and should not be presented as “this will happen”.\n\n**Arbitrary shocks produce adverse numbers; strong stress tests produce understanding of mechanisms.** The difference is a coherent causal chain that reveals fragility and prepares a response before the scenario stops being hypothetical.",
+      "seo_title": "How to Design Better Stress-Testing Scenarios",
+      "seo_description": "Why arbitrary shocks create weak stress tests and how to design scenarios with mechanisms, dependencies, narrative, triggers and actions.",
+      "seo_keywords": [
+        "stress testing scenarios",
+        "stress test design",
+        "risk scenarios",
+        "financial stress testing"
+      ],
+      "tags": [
+        "Finance",
+        "Stress Testing",
+        "Scenario Design"
+      ]
+    },
+    "ca": {
+      "title": "Per què shocks arbitraris produeixen mals stress tests",
+      "excerpt": "Un shock genèric pot generar una xifra severa sense revelar com es trenca el sistema. Els millors escenaris tenen mecanisme, dependències i resposta.",
+      "quick": [
+        "Severitat sense mecanisme aporta poc",
+        "Els drivers s’han de moure amb coherència",
+        "L’escenari ha de revelar una vulnerabilitat"
+      ],
+      "section_titles": [
+        "El percentatge arbitrari no explica causalitat",
+        "Els shocks aïllats ignoren dependències",
+        "Un bon escenari té narrativa i transmissió",
+        "Avalua el stress pel que permet decidir"
+      ],
+      "business_title": "Un stress test és útil quan explica com un shock es transmet fins a una restricció crítica i quina acció pot reduir la vulnerabilitat.",
+      "business_steps": [
+        "Mecanisme",
+        "Transmissió",
+        "Resposta"
+      ],
+      "body": "Aplicar un -20 % a vendes, +15 % a costos i +200 punts bàsics a tipus pot semblar un stress test rigorós perquè produeix números clarament adversos. Però **la severitat del resultat no garanteix la qualitat de l’escenari**.\n\nUn bon stress test hauria d’explicar per què canvien les variables, com es relacionen i quina part del sistema es torna fràgil. Si els shocks són arbitraris, l’exercici pot acabar sent una taula de sensibilitats disfressada d’anàlisi de resiliència. **L’objectiu no és moure moltes variables, sinó representar un mecanisme de tensió rellevant.**\n\n**El percentatge arbitrari no explica causalitat**\nUn shock percentual és fàcil de construir i comparar.\n\nTambé pot ser útil com a primera sensibilitat.\n\nEl problema apareix quan substitueix una narrativa econòmica.\n\n**Una caiguda de vendes no hauria d’existir separada de la causa que la provoca.**\n\nSi la causa és recessió, també poden canviar pricing, mix, impagaments i cost de funding.\n\nSi la causa és perdre un gran client, l’efecte pot concentrar-se en una regió o producte i no en tota l’empresa.\n\nSi la causa és una disrupció de supply chain, vendes poden baixar mentre cost unitari puja i working capital empitjora.\n\nEl mateix -20 % de revenue pot tenir resultats de caixa molt diferents segons el mecanisme.\n\n**Els shocks aïllats ignoren dependències**\nMoltes vulnerabilitats apareixen quan diverses variables canvien juntes.\n\nTipus més alts poden coincidir amb menys demanda i més default.\n\nUna crisi de liquiditat pot ampliar spreads i reduir valor d’actius just quan necessitem vendre.\n\n**Les correlacions observades en condicions normals poden deixar de ser fiables sota estrès.**\n\nPer això moure una variable mantenint les altres constants pot infraestimar risc.\n\nTambé pot sobreestimar-lo si assumim que no existeix cap resposta operativa.\n\nLes dependències s’han de justificar econòmicament i no només estadísticament.\n\nConvé identificar efectes de primer ordre i segon ordre.\n\nMenys demanda redueix ingressos; després pot augmentar inventari, empitjorar absorció de costos fixos i consumir caixa.\n\nUn downgrade pot augmentar funding cost i després activar collateral o covenants.\n\n**Un bon escenari té narrativa i transmissió**\nLa narrativa no és decoració.\n\nObliga a definir què passa primer, quines variables reaccionen i quines restriccions s’activen.\n\n**Un escenari útil es pot explicar com una cadena causal comprensible per finance, risk i operacions.**\n\nPer exemple: shock energètic → cost de producció més alt → marge menor → pujada de preus → caiguda parcial de demanda → més working capital → menys liquiditat.\n\nCada relació pot modelar-se amb una sensibilitat diferent.\n\nTambé s’han d’incloure management actions realistes.\n\nL’empresa pot retardar capex, renegociar termes, canviar sourcing o utilitzar una línia de crèdit.\n\nPerò aquestes accions tenen límits de temps, cost i disponibilitat.\n\nLa narrativa permet qüestionar si la resposta continuaria sent viable sota el mateix scenario.\n\n**Avalua el stress pel que permet decidir**\nUn bon stress test no es mesura pels milions de pèrdua que genera.\n\nEs mesura per si descobreix una vulnerabilitat accionable.\n\nPot revelar que el liquidity buffer és insuficient, que una concentració supera tolerància o que una línia de finançament arriba massa tard.\n\n**L’escenari ha d’acabar en un trigger, un owner i una resposta.**\n\nDiversos nivells de severitat ajuden a veure on comença el punt de ruptura.\n\nReverse stress testing pot buscar quin shock seria necessari per arribar a un breach concret.\n\nEls escenaris històrics aporten una referència de plausibilitat.\n\nEls hipotètics cobreixen riscos nous.\n\nLa combinació evita dependre massa del passat.\n\nCada scenario s’ha de versionar amb els seus supòsits.\n\nEls resultats s’han de descompondre per veure quin driver domina la pèrdua.\n\nSi una variable explica gairebé tot, la resta pot afegir complexitat sense informació.\n\nTambé convé provar sensibilitat a les elasticitats del model.\n\nSi un canvi petit altera molt el resultat, aquesta incertesa s’ha de comunicar.\n\nEls escenaris s’han d’actualitzar quan canvia el negoci: mercats, deute, proveïdors, clients o productes.\n\nNo té sentit mantenir un stress rellevant fa tres anys si l’exposició ja no existeix.\n\nLa freqüència d’execució depèn de la velocitat del risc.\n\nCal conservar historial per observar si la resiliència millora o empitjora.\n\nFinalment, el llenguatge importa. Un stress no és una predicció i no s’ha de presentar com “això passarà”.\n\n**Els shocks arbitraris produeixen números adversos; els bons stress tests produeixen comprensió de mecanismes.** La diferència és una cadena causal coherent que descobreix fragilitat i prepara una resposta abans que l’escenari deixi de ser hipotètic.",
+      "seo_title": "Com dissenyar bons escenaris de stress testing",
+      "seo_description": "Per què shocks arbitraris produeixen stress tests febles i com dissenyar escenaris amb mecanismes, dependències, narrativa, triggers i accions.",
+      "seo_keywords": [
+        "stress testing scenarios",
+        "stress test design",
+        "risk scenarios",
+        "financial stress testing"
+      ],
+      "tags": [
+        "Finance",
+        "Stress Testing",
+        "Scenario Design"
+      ]
+    }
+  }
+}
