@@ -40,6 +40,8 @@ jobs:
       - run: pip install -r growth/requirements.txt
       - run: python -m growth.src.cli validate
       - name: Validate complete Knowledge bank
+        env:
+          PYTHONPATH: ${{ github.workspace }}
         run: |
           python scripts/content_engine/build_knowledge_bank.py \
             --catalog content/editorial/knowledge_bank_v1.json \
