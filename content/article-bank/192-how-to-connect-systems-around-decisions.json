@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-192",
+  "sequence": 192,
+  "arc_id": "ARC-48",
+  "slug": "how-to-connect-systems-around-decisions",
+  "scheduled_at": "2028-01-19T09:00:00+01:00",
+  "knowledge_area": "business_systems",
+  "cluster": "Simulation & Business Systems",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "system_architecture",
+  "angle": "business systems architecture",
+  "primary_keyword": "business systems architecture",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-189",
+    "KB-190",
+    "KB-191"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cómo conectar sistemas alrededor de decisiones",
+      "excerpt": "Una arquitectura útil no conecta herramientas por conectarlas. Organiza sistemas de registro, datos, modelos y automatización alrededor del flujo que lleva de un evento a una decisión y a una acción.",
+      "quick": [
+        "Empieza por la decisión",
+        "Define sources of truth",
+        "Devuelve la acción al workflow"
+      ],
+      "section_titles": [
+        "Dibuja primero el flujo de decisión",
+        "Asigna responsabilidades por capa",
+        "Conecta mediante contratos y eventos",
+        "Cierra el loop con outcome y observabilidad"
+      ],
+      "business_title": "La arquitectura empresarial gana valor cuando cada sistema aporta el contexto necesario para una decisión y recibe de vuelta una acción trazable.",
+      "business_steps": [
+        "Contexto",
+        "Decisión",
+        "Outcome"
+      ],
+      "body": "Conectar sistemas no debería empezar preguntando qué API ofrece cada herramienta. **La arquitectura más útil empieza por identificar una decisión importante y dibujar qué contexto necesita, dónde se calcula y dónde se ejecuta.**\n\nEste enfoque evita una red de integraciones creadas sin prioridad. También ayuda a distinguir qué datos deben moverse, cuáles pueden consultarse bajo demanda y qué lógica debería permanecer desacoplada. **El objetivo no es que todos los sistemas hablen con todos, sino que el contexto correcto llegue al punto de decisión en el momento adecuado.**\n\n**Dibuja primero el flujo de decisión**\nEmpieza con una decisión concreta: aprobar crédito, priorizar una oportunidad, lanzar una orden de compra, planificar capacidad o escalar una incidencia.\n\nDespués identifica el trigger. Puede ser un evento, una petición del usuario o una ejecución programada.\n\n**El trigger define cuándo empieza el flujo y qué latencia tiene sentido.**\n\nA continuación enumera la información necesaria. Una decisión de reposición puede necesitar stock, forecast, lead time, MOQ, precio y capital disponible.\n\nNo todos esos datos viven en el mismo sistema.\n\nTambién hay que definir quién o qué toma la decisión: una regla, un modelo, una optimización, una persona o una combinación.\n\nFinalmente, define dónde se ejecuta la acción. Una recomendación comercial debería terminar en el CRM; una orden propuesta puede volver al ERP.\n\n**Asigna responsabilidades por capa**\nCada capa debe tener una función clara.\n\nLos sistemas de registro protegen transacciones y estado operativo.\n\nEl warehouse o lakehouse consolida histórico y contexto analítico.\n\nLos servicios de decisión calculan scores, forecasts, optimizaciones o recomendaciones.\n\nLa automatización coordina la secuencia y aplica acciones.\n\n**Separar responsabilidades hace el sistema más mantenible y evita duplicar lógica.**\n\nTambién debemos definir source of truth por entidad y campo.\n\nCliente puede tener identidad maestra en CRM; factura en ERP; eventos de producto en una plataforma operacional.\n\nLa capa analítica no debería convertirse en autoridad accidental sobre datos transaccionales.\n\nLos modelos necesitan versionado y contratos de features.\n\nLas reglas estratégicas conviene mantenerlas fuera de customizaciones cerradas cuando queremos portabilidad.\n\n**Conecta mediante contratos y eventos**\nUna integración sólida necesita contratos claros, no solo conexiones.\n\nLos schemas deben definir campos, tipos, significado, versión y condiciones de nulidad.\n\nLos identificadores deben ser consistentes entre dominios.\n\n**Un contrato de datos convierte una integración técnica en una dependencia explícita y gobernable.**\n\nLos eventos también necesitan semántica. “OpportunityWon” debería significar lo mismo para todos sus consumidores.\n\nCuando un cambio rompe ese significado, debe existir versionado.\n\nNo todo flujo necesita sincronía.\n\nUn evento de pago puede propagarse asíncronamente; una validación de disponibilidad antes de confirmar una venta puede necesitar respuesta síncrona.\n\nQueues y event buses ayudan a desacoplar productores y consumidores.\n\nAPIs son útiles cuando un sistema necesita consultar estado actual.\n\nBatch sigue siendo válido para decisiones que no necesitan baja latencia.\n\nLa arquitectura debe elegir el mecanismo más simple compatible con la decisión.\n\n**Cierra el loop con outcome y observabilidad**\nLa arquitectura no termina al entregar una recomendación.\n\nNecesitamos registrar qué acción se tomó y qué resultado produjo.\n\n**Sin outcome no podemos saber si la decisión mejoró ni aprender de overrides y excepciones.**\n\nSi el sistema recomienda priorizar un lead y el comercial no lo hace, esa señal puede indicar falta de confianza o contexto.\n\nSi una orden sugerida se corrige, debemos guardar la modificación y el motivo.\n\nLa observabilidad debe seguir el flujo extremo a extremo: trigger, datos, versión del modelo, recomendación, acción y outcome.\n\nTambién debe incluir errores técnicos, latencia, retries y fallbacks.\n\nEl tracing ayuda a investigar por qué una decisión concreta ocurrió.\n\nLos permisos deben respetarse en cada salto.\n\nUn servicio de decisión puede necesitar más contexto que el usuario final, pero no debería exponerlo indebidamente.\n\nLa seguridad de service accounts y scopes es fundamental.\n\nLa resiliencia también importa. Si el modelo falla, el workflow necesita fallback o escalado humano.\n\nLos sistemas de registro no deberían quedar bloqueados por una capa analítica secundaria.\n\nLa idempotencia evita acciones duplicadas cuando hay retries.\n\nLa reconciliación detecta divergencias entre sistemas.\n\nTambién conviene definir SLAs por flujo. Una alerta crítica puede necesitar segundos; un forecast puede tolerar horas.\n\nLa frecuencia de actualización debe reflejar el valor, no una obsesión por real time.\n\nLa arquitectura debe poder evolucionar. Si cambiamos CRM o proveedor de modelos, la lógica central debería requerir el menor rediseño posible.\n\nUna capa de servicios bien definida facilita esta portabilidad.\n\nTambién ayuda documentar el mapa de decisiones, no solo el mapa de aplicaciones.\n\nEse mapa muestra qué decisiones dependen de qué sistemas y cuáles son críticas.\n\nAsí es más fácil priorizar inversiones de integración.\n\nUna empresa pequeña puede empezar con pocas APIs y jobs programados.\n\nUna organización compleja puede necesitar event-driven architecture, semantic layer y observabilidad distribuida.\n\n**La sofisticación debe crecer con la complejidad real del flujo.**\n\nEl éxito no se mide por número de integraciones, sino por reducción de tiempos, errores, trabajo manual y decisiones incompletas.\n\nEn definitiva, **conectar sistemas alrededor de decisiones significa diseñar el camino completo desde el contexto hasta la acción y de la acción al outcome.** ERP, CRM, datos, modelos y automatización dejan de ser piezas aisladas cuando cada uno conoce su responsabilidad dentro de ese flujo.",
+      "seo_title": "Arquitectura de sistemas alrededor de decisiones",
+      "seo_description": "Cómo diseñar una arquitectura empresarial conectando ERP, CRM, datos, modelos y automatización alrededor del flujo de decisión y outcome.",
+      "seo_keywords": [
+        "business systems architecture",
+        "decision system architecture",
+        "ERP CRM integration",
+        "enterprise architecture"
+      ],
+      "tags": [
+        "Business Systems",
+        "Architecture",
+        "Decision Systems"
+      ]
+    },
+    "en": {
+      "title": "How to connect systems around decisions",
+      "excerpt": "Useful architecture does not connect tools for its own sake. It organizes systems of record, data, models and automation around the flow from event to decision to action.",
+      "quick": [
+        "Start from the decision",
+        "Define sources of truth",
+        "Return action to the workflow"
+      ],
+      "section_titles": [
+        "Map the decision flow first",
+        "Assign responsibilities by layer",
+        "Connect through contracts and events",
+        "Close the loop with outcomes and observability"
+      ],
+      "business_title": "Enterprise architecture creates value when each system contributes the context required for a decision and receives a traceable action in return.",
+      "business_steps": [
+        "Context",
+        "Decision",
+        "Outcome"
+      ],
+      "body": "Connecting systems should not begin by asking which API every tool exposes. **Useful architecture starts by identifying an important decision and mapping which context it needs, where it is calculated and where it is executed.**\n\nThis avoids a network of integrations created without priority. It also clarifies which data should move, which can be queried on demand and which logic should remain decoupled. **The objective is not to make every system talk to every other system, but to deliver the right context to the decision point at the right time.**\n\n**Map the decision flow first**\nStart with one concrete decision: approve credit, prioritize an opportunity, create a purchase order, plan capacity or escalate an incident.\n\nThen identify the trigger. It may be an event, a user request or a scheduled run.\n\n**The trigger defines when the flow begins and what latency is appropriate.**\n\nNext list the information required. A replenishment decision may need stock, forecast, lead time, MOQ, price and available capital.\n\nThose data may live in several systems.\n\nThe decision owner must also be defined: a rule, model, optimization, person or combination.\n\nFinally, define where the action is executed. A commercial recommendation should return to CRM; a proposed purchase order may return to ERP.\n\n**Assign responsibilities by layer**\nEach layer should have a clear role.\n\nSystems of record protect transactions and operating state.\n\nA warehouse or lakehouse consolidates historical and analytical context.\n\nDecision services calculate scores, forecasts, optimizations and recommendations.\n\nAutomation coordinates the sequence and applies actions.\n\n**Separation of responsibilities makes the system easier to maintain and prevents duplicated logic.**\n\nA source of truth should also be defined for each entity and field.\n\nCustomer identity may belong to CRM; invoices to ERP; product events to an operational platform.\n\nThe analytical layer should not accidentally become authoritative for transactional state.\n\nModels need versioning and feature contracts.\n\nStrategic business logic should be kept outside closed customizations when portability matters.\n\n**Connect through contracts and events**\nStrong integration needs contracts, not only connections.\n\nSchemas should define fields, types, meaning, version and nullability.\n\nIdentifiers must be consistent across domains.\n\n**A data contract turns a technical integration into an explicit, governable dependency.**\n\nEvents need semantics too. “OpportunityWon” should mean the same thing to every consumer.\n\nWhen that meaning changes, versioning should exist.\n\nNot every flow requires synchronous communication.\n\nA payment event may propagate asynchronously; an availability check before confirming an order may require a synchronous answer.\n\nQueues and event buses help decouple producers and consumers.\n\nAPIs are useful when a system needs current state on demand.\n\nBatch remains valid for decisions that do not need low latency.\n\nArchitecture should choose the simplest mechanism compatible with the decision.\n\n**Close the loop with outcomes and observability**\nArchitecture does not end when a recommendation is delivered.\n\nThe action taken and resulting outcome should be recorded.\n\n**Without outcomes, the organization cannot know whether the decision improved or learn from overrides and exceptions.**\n\nIf a lead is recommended and sales ignores it, that may indicate missing context or lack of trust.\n\nIf a proposed order is changed, the modification and reason should be captured.\n\nObservability should follow the end-to-end flow: trigger, data, model version, recommendation, action and outcome.\n\nIt should also include technical errors, latency, retries and fallback.\n\nTracing helps investigate why one specific decision occurred.\n\nPermissions should remain valid at every hop.\n\nA decision service may need more context than the end user, but it should not expose that context unnecessarily.\n\nService-account security and scoped permissions are essential.\n\nResilience matters too. If the model fails, the workflow needs fallback or human escalation.\n\nSystems of record should not be blocked by a secondary analytical layer.\n\nIdempotency prevents duplicate actions during retries.\n\nReconciliation detects divergence between systems.\n\nSLAs can be defined by flow. A critical alert may require seconds; a forecast can tolerate hours.\n\nUpdate frequency should follow value rather than a reflexive preference for real time.\n\nArchitecture should be evolvable. Replacing CRM or a model provider should require as little redesign of core logic as possible.\n\nWell-defined service boundaries improve portability.\n\nIt also helps to document a decision map rather than only an application map.\n\nThe decision map shows which decisions depend on which systems and which are critical.\n\nThat makes integration investment easier to prioritize.\n\nA small company can begin with a few APIs and scheduled jobs.\n\nA complex organization may need event-driven architecture, semantic layers and distributed observability.\n\n**Sophistication should grow with the real complexity of the flow.**\n\nSuccess is not the number of integrations; it is reduced delays, errors, manual work and decisions made with incomplete context.\n\nUltimately, **connecting systems around decisions means designing the complete path from context to action and from action to outcome.** ERP, CRM, data, models and automation stop being isolated components when each has a clear responsibility inside that flow.",
+      "seo_title": "Business Systems Architecture Around Decisions",
+      "seo_description": "How to connect ERP, CRM, data, models and automation around the end-to-end flow from decision context to action and measurable outcome.",
+      "seo_keywords": [
+        "business systems architecture",
+        "decision system architecture",
+        "ERP CRM integration",
+        "enterprise architecture"
+      ],
+      "tags": [
+        "Business Systems",
+        "Architecture",
+        "Decision Systems"
+      ]
+    },
+    "ca": {
+      "title": "Com connectar sistemes al voltant de decisions",
+      "excerpt": "Una arquitectura útil no connecta eines per connectar-les. Organitza sistemes de registre, dades, models i automatització al voltant del flux d’event a decisió i acció.",
+      "quick": [
+        "Comença per la decisió",
+        "Defineix sources of truth",
+        "Retorna l’acció al workflow"
+      ],
+      "section_titles": [
+        "Dibuixa primer el flux de decisió",
+        "Assigna responsabilitats per capa",
+        "Connecta mitjançant contractes i events",
+        "Tanca el loop amb outcome i observabilitat"
+      ],
+      "business_title": "L’arquitectura empresarial crea valor quan cada sistema aporta el context necessari per una decisió i rep de tornada una acció traçable.",
+      "business_steps": [
+        "Context",
+        "Decisió",
+        "Outcome"
+      ],
+      "body": "Connectar sistemes no hauria de començar preguntant quina API ofereix cada eina. **L’arquitectura més útil comença identificant una decisió important i dibuixant quin context necessita, on es calcula i on s’executa.**\n\nAquest enfocament evita una xarxa d’integracions creades sense prioritat. També ajuda a distingir quines dades s’han de moure, quines es poden consultar sota demanda i quina lògica ha de quedar desacoblada. **L’objectiu no és que tots els sistemes parlin amb tots, sinó que el context correcte arribi al punt de decisió al moment adequat.**\n\n**Dibuixa primer el flux de decisió**\nComença amb una decisió concreta: aprovar crèdit, prioritzar una oportunitat, crear una ordre de compra, planificar capacitat o escalar una incidència.\n\nDesprés identifica el trigger. Pot ser un event, una petició de l’usuari o una execució programada.\n\n**El trigger defineix quan comença el flux i quina latència té sentit.**\n\nA continuació enumera la informació necessària. Una decisió de reposició pot necessitar stock, forecast, lead time, MOQ, preu i capital disponible.\n\nAquestes dades poden viure en diversos sistemes.\n\nTambé cal definir qui o què pren la decisió: una regla, model, optimització, persona o combinació.\n\nFinalment, defineix on s’executa l’acció. Una recomanació comercial ha de tornar al CRM; una ordre proposada pot tornar a l’ERP.\n\n**Assigna responsabilitats per capa**\nCada capa ha de tenir una funció clara.\n\nEls sistemes de registre protegeixen transaccions i estat operatiu.\n\nEl warehouse o lakehouse consolida històric i context analític.\n\nEls serveis de decisió calculen scores, forecasts, optimitzacions o recomanacions.\n\nL’automatització coordina la seqüència i aplica accions.\n\n**Separar responsabilitats fa el sistema més mantenible i evita duplicar lògica.**\n\nTambé cal definir source of truth per entitat i camp.\n\nClient pot tenir identitat mestra al CRM; factura a l’ERP; events de producte en una plataforma operativa.\n\nLa capa analítica no ha de convertir-se accidentalment en autoritat sobre estat transaccional.\n\nEls models necessiten versionat i feature contracts.\n\nLa lògica estratègica convé mantenir-la fora de customitzacions tancades quan importa la portabilitat.\n\n**Connecta mitjançant contractes i events**\nUna integració sòlida necessita contractes clars, no només connexions.\n\nEls schemas han de definir camps, tipus, significat, versió i nul·labilitat.\n\nEls identificadors han de ser consistents entre dominis.\n\n**Un data contract converteix una integració tècnica en una dependència explícita i governable.**\n\nEls events també necessiten semàntica. “OpportunityWon” ha de significar el mateix per tots els consumidors.\n\nQuan aquest significat canvia, ha d’existir versionat.\n\nNo tot flux necessita sincronisme.\n\nUn event de pagament pot propagar-se asíncronament; una validació de disponibilitat abans de confirmar una venda pot necessitar resposta síncrona.\n\nQueues i event buses ajuden a desacoblar productors i consumidors.\n\nAPIs són útils quan un sistema necessita estat actual.\n\nBatch continua sent vàlid per decisions sense baixa latència.\n\nL’arquitectura ha d’escollir el mecanisme més simple compatible amb la decisió.\n\n**Tanca el loop amb outcome i observabilitat**\nL’arquitectura no acaba quan entrega una recomanació.\n\nCal registrar quina acció es pren i quin resultat produeix.\n\n**Sense outcome no podem saber si la decisió ha millorat ni aprendre d’overrides i excepcions.**\n\nSi es recomana un lead i vendes l’ignora, això pot indicar falta de context o confiança.\n\nSi una ordre suggerida es canvia, hem de guardar la modificació i el motiu.\n\nL’observabilitat ha de seguir el flux end-to-end: trigger, dades, versió del model, recomanació, acció i outcome.\n\nTambé ha d’incloure errors tècnics, latència, retries i fallback.\n\nEl tracing ajuda a investigar per què una decisió concreta ha passat.\n\nEls permisos s’han de respectar en cada salt.\n\nUn servei de decisió pot necessitar més context que l’usuari final, però no l’ha d’exposar indegudament.\n\nLa seguretat de service accounts i scopes és essencial.\n\nLa resiliència també importa. Si el model falla, el workflow necessita fallback o escalat humà.\n\nEls sistemes de registre no haurien de quedar bloquejats per una capa analítica secundària.\n\nLa idempotència evita accions duplicades durant retries.\n\nLa reconciliació detecta divergències entre sistemes.\n\nTambé convé definir SLAs per flux. Una alerta crítica pot necessitar segons; un forecast pot tolerar hores.\n\nLa freqüència d’actualització ha de reflectir valor i no una obsessió per real time.\n\nL’arquitectura ha de poder evolucionar. Si canviem CRM o proveïdor de models, la lògica central hauria de requerir el menor redisseny possible.\n\nUna capa de serveis ben definida facilita aquesta portabilitat.\n\nTambé ajuda documentar el mapa de decisions, no només el mapa d’aplicacions.\n\nAquest mapa mostra quines decisions depenen de quins sistemes i quines són crítiques.\n\nAixí és més fàcil prioritzar inversions d’integració.\n\nUna empresa petita pot començar amb poques APIs i jobs programats.\n\nUna organització complexa pot necessitar event-driven architecture, semantic layer i observabilitat distribuïda.\n\n**La sofisticació ha de créixer amb la complexitat real del flux.**\n\nL’èxit no es mesura pel nombre d’integracions, sinó per reducció de temps, errors, feina manual i decisions amb context incomplet.\n\nEn definitiva, **connectar sistemes al voltant de decisions significa dissenyar el camí complet des del context fins a l’acció i de l’acció a l’outcome.** ERP, CRM, dades, models i automatització deixen de ser peces aïllades quan cadascun coneix la seva responsabilitat dins d’aquest flux.",
+      "seo_title": "Arquitectura de sistemes al voltant de decisions",
+      "seo_description": "Com dissenyar una arquitectura connectant ERP, CRM, dades, models i automatització al voltant del flux de decisió, acció i outcome.",
+      "seo_keywords": [
+        "business systems architecture",
+        "decision system architecture",
+        "ERP CRM integration",
+        "enterprise architecture"
+      ],
+      "tags": [
+        "Business Systems",
+        "Architecture",
+        "Decision Systems"
+      ]
+    }
+  }
+}
