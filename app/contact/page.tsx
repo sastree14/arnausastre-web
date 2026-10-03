@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
@@ -9,141 +8,203 @@ const COPY = {
     eyebrow: 'HABLEMOS',
     title: 'Empecemos por lo que debería funcionar mejor.',
     intro: 'Cuéntanos qué quieres mejorar o qué oportunidad estás valorando. Nosotros vemos contigo si podemos aportar valor y cuál sería el siguiente paso.',
+
     expectLabel: 'PRIMERA CONVERSACIÓN',
     expect: [
-      ['30 min', 'Contexto, objetivo y restricciones.'],
-      ['Sin coste', 'La primera sesión de discovery no tiene coste.'],
-      ['Sin compromiso', 'Si no existe un caso razonable, también te lo diremos.'],
+      ['30 minutos', 'Alineamos contexto, objetivo y prioridad.'],
+      ['Sin coste', 'La primera conversación corre por nuestra cuenta.'],
+      ['Sin compromiso', 'Si no vemos un encaje claro, te lo diremos.'],
     ],
+
     intentLabel: '¿QUÉ TE TRAE HASTA AQUÍ?',
     intents: [
       ['problem', 'Tengo un problema concreto', 'Hay una decisión, proceso o sistema que debería funcionar mejor.'],
-      ['opportunity', 'Quiero explorar una oportunidad', 'Sé que los datos o la inteligencia artificial pueden aportar valor, pero todavía no sé dónde.'],
-      ['partner', 'Busco un Partner Data & AI', 'Necesito capacidad recurrente sin construir todas las especialidades internamente.'],
+      ['opportunity', 'Quiero explorar una oportunidad', 'Veo potencial en datos o IA, pero todavía no está claro dónde capturar más valor.'],
+      ['partner', 'Busco un Partner Data & AI', 'Quiero ampliar capacidad especializada con un modelo de colaboración continuada.'],
     ],
-    formLabel: 'CUÉNTANOS EL CONTEXTO',
-    formTitle: 'Con unas líneas es suficiente.',
-    formBody: 'Qué quieres mejorar, por qué importa y qué contexto debemos conocer. Con eso podemos empezar.',
+
+    intentForms: {
+      problem: {
+        label: 'CUÉNTANOS EL PROBLEMA',
+        title: 'Danos el contexto suficiente para entender qué debe cambiar.',
+        body: 'No necesitamos una solución definida. Nos interesa entender la situación actual, la decisión afectada y qué resultado debería mejorar.',
+        message: 'Problema o situación actual',
+        placeholder: '¿Qué está ocurriendo hoy? ¿Qué debería funcionar mejor? ¿Qué impacto está teniendo en el negocio?',
+        prompts: ['Qué está ocurriendo hoy', 'Qué decisión, proceso o sistema está afectado', 'Qué resultado debería mejorar'],
+      },
+      opportunity: {
+        label: 'CUÉNTANOS LA OPORTUNIDAD',
+        title: 'Explícanos dónde ves potencial y qué quieres valorar.',
+        body: 'Podemos ayudarte a convertir una oportunidad amplia en una pregunta concreta, priorizada y económicamente razonable.',
+        message: 'Oportunidad a explorar',
+        placeholder: '¿Dónde ves una oportunidad? ¿Qué objetivo empresarial te gustaría mejorar? ¿Qué datos, procesos o capacidades existen hoy?',
+        prompts: ['Dónde ves potencial de mejora', 'Qué objetivo empresarial quieres reforzar', 'Qué información o capacidades existen hoy'],
+      },
+      partner: {
+        label: 'CUÉNTANOS EL CONTEXTO DE COLABORACIÓN',
+        title: 'Entendamos qué capacidad quieres reforzar y cómo debería encajar con tu organización.',
+        body: 'Nos interesa conocer vuestro equipo actual, las necesidades recurrentes y el tipo de especialización que queréis activar cuando haga falta.',
+        message: 'Contexto del modelo partner',
+        placeholder: '¿Qué equipo tenéis hoy? ¿Qué capacidades queréis reforzar? ¿Qué tipo de necesidades aparecen de forma recurrente?',
+        prompts: ['Qué equipo y capacidades tenéis hoy', 'Qué especialidades queréis reforzar', 'Qué tipo de necesidades queréis cubrir de forma recurrente'],
+      },
+    },
+
     name: 'Nombre',
     company: 'Empresa',
     email: 'Email',
-    message: 'Contexto',
-    placeholder: 'Qué está pasando hoy, qué debería mejorar y qué restricciones o prioridades debemos conocer...',
     send: 'Enviar contexto',
     sending: 'Enviando…',
     successTitle: 'Contexto recibido.',
     success: 'Gracias. Revisaremos lo que nos has contado y continuaremos la conversación desde ahí.',
     error: 'No hemos podido enviar el mensaje. Puedes volver a intentarlo o reservar directamente una conversación.',
+
     callLabel: '¿PREFIERES HABLARLO?',
     callTitle: 'Reserva directamente 30 minutos.',
     callBody: 'Si prefieres explicarlo hablando, reserva 30 minutos. No necesitas llegar con una solución definida.',
     calendly: 'Reservar discovery',
-    nextLabel: 'QUÉ PASA DESPUÉS',
+
+    nextLabel: 'PRÓXIMOS PASOS',
     next: [
-      'Entendemos el problema y la decisión que importa.',
-      'Valoramos si datos, matemáticas o inteligencia artificial pueden aportar suficiente valor.',
-      'Si tiene sentido, proponemos el siguiente paso más pequeño que permita avanzar.',
-    ],
-    exploreLabel: '¿AÚN NO QUIERES CONTACTAR?',
-    exploreTitle: '¿Prefieres conocernos mejor antes de hablar?',
-    explore: [
-      ['Mira nuestros casos', '/projects'],
-      ['Lee cómo pensamos', '/knowledge'],
-      ['Explora el modelo partner', '/partner-analitico'],
+      ['01', 'Revisamos el contexto', 'Identificamos la prioridad, la decisión y el resultado que importa.'],
+      ['02', 'Definimos el encaje', 'Valoramos enfoque, alcance y criterios de éxito.'],
+      ['03', 'Proponemos un primer paso', 'Si existe un caso razonable, planteamos una forma concreta de avanzar.'],
     ],
   },
+
   ca: {
     eyebrow: 'PARLEM',
     title: 'Comencem pel que hauria de funcionar millor.',
     intro: 'Explica’ns què vols millorar o quina oportunitat estàs valorant. Nosaltres veiem amb tu si podem aportar valor i quin seria el següent pas.',
+
     expectLabel: 'PRIMERA CONVERSA',
     expect: [
-      ['30 min', 'Context, objectiu i restriccions.'],
-      ['Sense cost', 'La primera sessió de discovery no té cost.'],
-      ['Sense compromís', 'Si no existeix un cas raonable, també t’ho direm.'],
+      ['30 minuts', 'Alineem context, objectiu i prioritat.'],
+      ['Sense cost', 'La primera conversa va a càrrec nostre.'],
+      ['Sense compromís', 'Si no veiem un encaix clar, t’ho direm.'],
     ],
+
     intentLabel: 'QUÈ ET PORTA FINS AQUÍ?',
     intents: [
       ['problem', 'Tinc un problema concret', 'Hi ha una decisió, procés o sistema que hauria de funcionar millor.'],
-      ['opportunity', 'Vull explorar una oportunitat', 'Sé que les dades o la intel·ligència artificial poden aportar valor, però encara no sé on.'],
-      ['partner', 'Busco un Partner Data & AI', 'Necessito capacitat recurrent sense construir totes les especialitats internament.'],
+      ['opportunity', 'Vull explorar una oportunitat', 'Veig potencial en dades o IA, però encara no és clar on capturar més valor.'],
+      ['partner', 'Busco un Partner Data & AI', 'Vull ampliar capacitat especialitzada amb un model de col·laboració continuada.'],
     ],
-    formLabel: 'EXPLICA’NS EL CONTEXT',
-    formTitle: 'Amb unes línies n’hi ha prou.',
-    formBody: 'Què vols millorar, per què importa i quin context hem de conèixer. Amb això podem començar.',
+
+    intentForms: {
+      problem: {
+        label: 'EXPLICA’NS EL PROBLEMA',
+        title: 'Dona’ns prou context per entendre què ha de canviar.',
+        body: 'No necessitem una solució definida. Ens interessa entendre la situació actual, la decisió afectada i quin resultat hauria de millorar.',
+        message: 'Problema o situació actual',
+        placeholder: 'Què està passant avui? Què hauria de funcionar millor? Quin impacte està tenint en el negoci?',
+        prompts: ['Què està passant avui', 'Quina decisió, procés o sistema està afectat', 'Quin resultat hauria de millorar'],
+      },
+      opportunity: {
+        label: 'EXPLICA’NS L’OPORTUNITAT',
+        title: 'Explica’ns on veus potencial i què vols valorar.',
+        body: 'Podem ajudar-te a convertir una oportunitat àmplia en una pregunta concreta, prioritzada i econòmicament raonable.',
+        message: 'Oportunitat a explorar',
+        placeholder: 'On veus una oportunitat? Quin objectiu empresarial t’agradaria millorar? Quines dades, processos o capacitats existeixen avui?',
+        prompts: ['On veus potencial de millora', 'Quin objectiu empresarial vols reforçar', 'Quina informació o capacitats existeixen avui'],
+      },
+      partner: {
+        label: 'EXPLICA’NS EL CONTEXT DE COL·LABORACIÓ',
+        title: 'Entenguem quina capacitat vols reforçar i com hauria d’encaixar amb la teva organització.',
+        body: 'Ens interessa conèixer l’equip actual, les necessitats recurrents i el tipus d’especialització que voleu activar quan calgui.',
+        message: 'Context del model partner',
+        placeholder: 'Quin equip teniu avui? Quines capacitats voleu reforçar? Quin tipus de necessitats apareixen de manera recurrent?',
+        prompts: ['Quin equip i capacitats teniu avui', 'Quines especialitats voleu reforçar', 'Quin tipus de necessitats voleu cobrir de manera recurrent'],
+      },
+    },
+
     name: 'Nom',
     company: 'Empresa',
     email: 'Email',
-    message: 'Context',
-    placeholder: 'Què està passant avui, què hauria de millorar i quines restriccions o prioritats hem de conèixer...',
     send: 'Enviar context',
     sending: 'Enviant…',
     successTitle: 'Context rebut.',
     success: 'Gràcies. Revisarem el que ens has explicat i continuarem la conversa des d’aquí.',
     error: 'No hem pogut enviar el missatge. Pots tornar-ho a provar o reservar directament una conversa.',
+
     callLabel: 'PREFEREIXES PARLAR-NE?',
     callTitle: 'Reserva directament 30 minuts.',
     callBody: 'Si prefereixes explicar-ho parlant, reserva 30 minuts. No cal arribar amb una solució definida.',
     calendly: 'Reservar discovery',
-    nextLabel: 'QUÈ PASSA DESPRÉS',
+
+    nextLabel: 'PRÒXIMS PASSOS',
     next: [
-      'Entenem el problema i la decisió que importa.',
-      'Valorem si dades, matemàtiques o intel·ligència artificial poden aportar prou valor.',
-      'Si té sentit, proposem el següent pas més petit que permeti avançar.',
-    ],
-    exploreLabel: 'ENCARA NO VOLS CONTACTAR?',
-    exploreTitle: 'Prefereixes conèixer-nos millor abans de parlar?',
-    explore: [
-      ['Mira els nostres casos', '/projects'],
-      ['Llegeix com pensem', '/knowledge'],
-      ['Explora el model partner', '/partner-analitico'],
+      ['01', 'Revisem el context', 'Identifiquem la prioritat, la decisió i el resultat que importa.'],
+      ['02', 'Definim l’encaix', 'Valorem enfocament, abast i criteris d’èxit.'],
+      ['03', 'Proposem un primer pas', 'Si existeix un cas raonable, plantegem una manera concreta d’avançar.'],
     ],
   },
+
   en: {
     eyebrow: 'LET’S TALK',
     title: 'Start with what should work better.',
     intro: 'Tell us what you want to improve or which opportunity you are considering. We will assess whether we can create value and what the next step should be.',
+
     expectLabel: 'FIRST CONVERSATION',
     expect: [
-      ['30 min', 'Context, objective and constraints.'],
-      ['No cost', 'The first discovery session is free.'],
-      ['No commitment', 'If there is no reasonable case, we will say so.'],
+      ['30 minutes', 'Align the context, objective and priority.'],
+      ['No cost', 'The first conversation is on us.'],
+      ['No commitment', 'If there is no clear fit, we will say so.'],
     ],
+
     intentLabel: 'WHAT BRINGS YOU HERE?',
     intents: [
       ['problem', 'I have a concrete problem', 'A decision, process or system should work better than it does today.'],
-      ['opportunity', 'I want to explore an opportunity', 'I know data or artificial intelligence could create value, but I do not yet know where.'],
-      ['partner', 'I need a Data & AI Partner', 'I need recurring capability without building every specialism in-house.'],
+      ['opportunity', 'I want to explore an opportunity', 'I see potential in data or AI, but the highest-value opportunity is not yet clear.'],
+      ['partner', 'I need a Data & AI Partner', 'I want to extend specialist capability through an ongoing collaboration model.'],
     ],
-    formLabel: 'TELL US THE CONTEXT',
-    formTitle: 'A few lines are enough.',
-    formBody: 'What should improve, why it matters and which context we should know. That is enough to start.',
+
+    intentForms: {
+      problem: {
+        label: 'TELL US ABOUT THE PROBLEM',
+        title: 'Give us enough context to understand what needs to change.',
+        body: 'You do not need a predefined solution. We want to understand the current situation, the affected decision and the outcome that should improve.',
+        message: 'Problem or current situation',
+        placeholder: 'What is happening today? What should work better? What business impact is it creating?',
+        prompts: ['What is happening today', 'Which decision, process or system is affected', 'Which outcome should improve'],
+      },
+      opportunity: {
+        label: 'TELL US ABOUT THE OPPORTUNITY',
+        title: 'Tell us where you see potential and what you want to assess.',
+        body: 'We can help turn a broad opportunity into a concrete, prioritised and economically sensible question.',
+        message: 'Opportunity to explore',
+        placeholder: 'Where do you see an opportunity? Which business objective would you like to improve? What data, processes or capabilities exist today?',
+        prompts: ['Where you see improvement potential', 'Which business objective you want to strengthen', 'What information or capabilities exist today'],
+      },
+      partner: {
+        label: 'TELL US ABOUT THE COLLABORATION CONTEXT',
+        title: 'Let us understand which capability you want to strengthen and how it should fit your organisation.',
+        body: 'We want to understand your current team, recurring needs and the specialist capability you want to activate when required.',
+        message: 'Partner-model context',
+        placeholder: 'What team do you have today? Which capabilities do you want to strengthen? What needs recur over time?',
+        prompts: ['Your current team and capabilities', 'Which specialisms you want to strengthen', 'Which needs you want to cover on a recurring basis'],
+      },
+    },
+
     name: 'Name',
     company: 'Company',
     email: 'Email',
-    message: 'Context',
-    placeholder: 'What is happening today, what should improve and which constraints or priorities should we know...',
     send: 'Send context',
     sending: 'Sending…',
     successTitle: 'Context received.',
     success: 'Thank you. We will review what you shared and continue the conversation from there.',
     error: 'We could not send the message. You can try again or book a conversation directly.',
+
     callLabel: 'PREFER TO TALK?',
     callTitle: 'Book 30 minutes directly.',
     callBody: 'If you would rather explain it in conversation, book 30 minutes. You do not need a predefined solution.',
     calendly: 'Book discovery',
-    nextLabel: 'WHAT HAPPENS NEXT',
+
+    nextLabel: 'NEXT STEPS',
     next: [
-      'We understand the problem and the decision that matters.',
-      'We assess whether data, mathematics or artificial intelligence can create enough value.',
-      'If it makes sense, we propose the smallest sensible next step.',
-    ],
-    exploreLabel: 'NOT READY TO CONTACT US YET?',
-    exploreTitle: 'Prefer to get to know us better first?',
-    explore: [
-      ['Browse our case studies', '/projects'],
-      ['Read how we think', '/knowledge'],
-      ['Explore the partner model', '/partner-analitico'],
+      ['01', 'We review the context', 'We identify the priority, the decision and the outcome that matters.'],
+      ['02', 'We define the fit', 'We assess the approach, scope and success criteria.'],
+      ['03', 'We propose a first step', 'If there is a sensible case, we outline a concrete way to move forward.'],
     ],
   },
 } as const
@@ -169,6 +230,8 @@ export default function ContactPage() {
     () => t.intents.find(([key]) => key === intent) || t.intents[0],
     [intent, t.intents],
   )
+
+  const selectedForm = t.intentForms[intent]
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -205,20 +268,23 @@ export default function ContactPage() {
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:py-20 lg:grid-cols-[1.08fr_.92fr] lg:items-stretch">
-          <div className="flex flex-col justify-end">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
-            <h1 className="mt-5 text-[44px] leading-[1.04] tracking-[-0.03em] sm:text-[56px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-            <p className="mt-6 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
+        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-14 md:py-16 lg:grid-cols-[1.08fr_.92fr] lg:items-start">
+          <div>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
+            <h1 className="mt-4 text-[46px] leading-[1.04] tracking-[-0.03em] sm:text-[58px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
+            <p className="mt-5 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
           </div>
 
-          <aside className="flex h-full flex-col border-y border-[#5E86A8] py-5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{t.expectLabel}</p>
-            <div className="mt-3 grid flex-1 grid-rows-3 border-t border-[#496C8A]">
-              {t.expect.map(([value, body]) => (
-                <div key={value} className="grid min-h-[72px] grid-cols-[110px_1fr] items-center gap-4 border-b border-[#496C8A] py-3.5">
-                  <p className="text-[16px] font-semibold text-white">{value}</p>
-                  <p className="text-[15px] leading-6 text-[#D5E1EB]">{body}</p>
+          <aside>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{t.expectLabel}</p>
+            <div className="mt-4">
+              {t.expect.map(([value, body], index) => (
+                <div
+                  key={value}
+                  className={`grid min-h-[76px] grid-cols-[150px_1fr] items-center gap-5 border-t border-[#496C8A] py-4 ${index === t.expect.length - 1 ? 'border-b' : ''}`}
+                >
+                  <p className="whitespace-nowrap text-[17px] font-semibold text-white">{value}</p>
+                  <p className="text-[16px] leading-6 text-[#D5E1EB]">{body}</p>
                 </div>
               ))}
             </div>
@@ -228,7 +294,7 @@ export default function ContactPage() {
 
       <section className="border-b border-slate-300 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-10 md:py-12">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.intentLabel}</p>
+          <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.intentLabel}</p>
           <div className="mt-5 grid border-l border-t border-slate-300 lg:grid-cols-3">
             {t.intents.map(([key, title, body], index) => {
               const active = intent === key
@@ -237,12 +303,10 @@ export default function ContactPage() {
                   key={key}
                   type="button"
                   onClick={() => setIntent(key as IntentKey)}
-                  className={`min-h-[160px] border-b border-r border-slate-300 p-5 text-left transition ${
-                    active ? 'bg-[#0D1B2A] text-white' : index === 1 ? 'bg-[#F4F1EA] text-slate-950 hover:bg-[#EEEAE1]' : 'bg-white text-slate-950 hover:bg-slate-50'
-                  }`}
+                  className={`min-h-[165px] border-b border-r border-slate-300 p-5 text-left transition ${active ? 'bg-[#0D1B2A] text-white' : index === 1 ? 'bg-[#F4F1EA] text-slate-950 hover:bg-[#EEEAE1]' : 'bg-white text-slate-950 hover:bg-slate-50'}`}
                 >
                   <div className="flex items-start justify-between gap-4">
-                    <p className={`font-mono text-[11px] ${active ? 'text-[#7A7DFF]' : 'text-indigo-700'}`}>0{index + 1}</p>
+                    <p className={`font-mono text-[12px] ${active ? 'text-[#7A7DFF]' : 'text-indigo-700'}`}>0{index + 1}</p>
                     <span className={`text-[12px] font-semibold ${active ? 'text-[#A8BACB]' : 'text-slate-300'}`}>{active ? '✓' : '→'}</span>
                   </div>
                   <h2 className={`mt-5 text-[22px] font-semibold ${active ? 'text-white' : 'text-slate-950'}`}>{title}</h2>
@@ -257,9 +321,18 @@ export default function ContactPage() {
       <section className="border-b border-slate-300 bg-[#FAFAF7]">
         <div className="mx-auto grid max-w-7xl gap-6 px-6 py-12 md:py-16 lg:grid-cols-[1.1fr_.9fr]">
           <div className="border border-slate-300 bg-white p-6 md:p-8">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.formLabel}</p>
-            <h2 className="mt-3 text-[32px] leading-[1.08] sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.formTitle}</h2>
-            <p className="mt-3 max-w-2xl text-[17px] leading-7 text-slate-700">{t.formBody}</p>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{selectedForm.label}</p>
+            <h2 className="mt-3 text-[32px] leading-[1.08] sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{selectedForm.title}</h2>
+            <p className="mt-3 max-w-2xl text-[17px] leading-7 text-slate-700">{selectedForm.body}</p>
+
+            <div className="mt-6 grid gap-2 sm:grid-cols-3">
+              {selectedForm.prompts.map((prompt, index) => (
+                <div key={prompt} className="border border-slate-200 bg-[#FAFAF7] px-4 py-3">
+                  <span className="font-mono text-[11px] font-semibold text-indigo-700">0{index + 1}</span>
+                  <p className="mt-2 text-[14px] font-medium leading-6 text-slate-700">{prompt}</p>
+                </div>
+              ))}
+            </div>
 
             {submitted ? (
               <div className="mt-8 border border-emerald-300 bg-emerald-50 p-6">
@@ -300,13 +373,13 @@ export default function ContactPage() {
                 </label>
 
                 <label className="block text-[15px] font-semibold text-slate-700">
-                  {t.message}
+                  {selectedForm.message}
                   <textarea
                     required
                     rows={6}
                     value={form.message}
                     onChange={(event) => setForm({ ...form, message: event.target.value })}
-                    placeholder={t.placeholder}
+                    placeholder={selectedForm.placeholder}
                     className="mt-2 w-full resize-none border border-slate-300 bg-white px-4 py-3 font-normal leading-7 text-slate-950 outline-none transition focus:border-indigo-500"
                   />
                 </label>
@@ -327,7 +400,7 @@ export default function ContactPage() {
 
           <aside className="space-y-5">
             <div className="border border-[#496C8A] bg-[#0D1B2A] p-6 text-white md:p-8">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{t.callLabel}</p>
+              <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{t.callLabel}</p>
               <h2 className="mt-3 text-[30px] leading-[1.08]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.callTitle}</h2>
               <p className="mt-4 text-[16px] leading-7 text-[#D5E1EB]">{t.callBody}</p>
               <a
@@ -341,33 +414,20 @@ export default function ContactPage() {
             </div>
 
             <div className="border border-slate-300 bg-[#F4F1EA] p-6 md:p-8">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.nextLabel}</p>
-              <div className="mt-4 border-t border-slate-300">
-                {t.next.map((item, index) => (
-                  <div key={item} className="grid grid-cols-[36px_1fr] gap-3 border-b border-slate-300 py-4">
-                    <span className="font-mono text-[11px] text-indigo-700">0{index + 1}</span>
-                    <p className="text-[16px] leading-7 text-slate-600">{item}</p>
+              <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.nextLabel}</p>
+              <div className="mt-5 border-t border-slate-300">
+                {t.next.map(([number, title, body]) => (
+                  <div key={number} className="grid grid-cols-[56px_1fr] gap-4 border-b border-slate-300 py-5">
+                    <span className="font-mono text-[20px] font-semibold text-indigo-700">{number}</span>
+                    <div>
+                      <p className="text-[18px] font-semibold text-slate-950">{title}</p>
+                      <p className="mt-2 text-[16px] leading-7 text-slate-600">{body}</p>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
           </aside>
-        </div>
-      </section>
-
-      <section className="border-b border-slate-300 bg-white">
-        <div className="mx-auto grid max-w-7xl gap-7 px-6 py-10 lg:grid-cols-[190px_1fr] lg:gap-10">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.exploreLabel}</p>
-          <div>
-            <h2 className="text-[28px] leading-[1.08] sm:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
-            <div className="mt-6 grid border-t border-slate-300 md:grid-cols-3 md:divide-x md:divide-slate-300">
-              {t.explore.map(([label, href]) => (
-                <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[15px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
-                  {label}<span className="text-indigo-700 transition group-hover:translate-x-1">→</span>
-                </Link>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
     </main>
