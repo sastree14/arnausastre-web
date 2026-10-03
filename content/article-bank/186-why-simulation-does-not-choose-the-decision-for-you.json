@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-186",
+  "sequence": 186,
+  "arc_id": "ARC-47",
+  "slug": "why-simulation-does-not-choose-the-decision-for-you",
+  "scheduled_at": "2028-01-04T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Simulation & Business Systems",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "point_of_view_contrarian",
+  "angle": "simulation decision support",
+  "primary_keyword": "simulation decision support",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-185",
+    "KB-187",
+    "KB-188"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué simular no elige la decisión por ti",
+      "excerpt": "La simulación muestra qué podría ocurrir bajo una política. Elegir qué política conviene requiere objetivos, restricciones y criterios de decisión explícitos.",
+      "quick": [
+        "Simular evalúa políticas",
+        "No define el objetivo",
+        "La decisión exige criterio"
+      ],
+      "section_titles": [
+        "La simulación responde qué puede pasar",
+        "Una buena simulación no define qué conviene",
+        "Comparar escenarios no equivale a optimizar",
+        "La decisión necesita una función de valor"
+      ],
+      "business_title": "La simulación es potente cuando cuantifica consecuencias e incertidumbre; la elección aparece cuando la empresa explicita qué resultado quiere maximizar y qué restricciones acepta.",
+      "business_steps": [
+        "Política",
+        "Consecuencia",
+        "Decisión"
+      ],
+      "body": "Simular un sistema puede producir gráficos muy convincentes: colas que crecen, inventarios que bajan, tiempos de espera, costes, niveles de servicio o miles de trayectorias futuras. Pero **una simulación no decide por sí sola qué alternativa debe elegir la empresa**.\n\nSu trabajo principal es responder una pregunta condicional: si aplicamos esta política y el mundo evoluciona bajo estos supuestos, ¿qué puede ocurrir? Esa información es valiosa, pero todavía falta una capa. **Para elegir necesitamos definir qué resultado preferimos, qué riesgos toleramos y qué restricciones no podemos violar.**\n\n**La simulación responde qué puede pasar**\nUna simulación representa la dinámica de un sistema cuando existe incertidumbre, interacción o comportamiento difícil de capturar con una fórmula simple.\n\nPuede modelar llegadas de clientes, fallos de máquinas, demanda aleatoria, tiempos de proceso, rutas, capacidad, inventario o decisiones humanas.\n\nEsto permite observar distribuciones y no solo promedios. **Dos políticas con el mismo coste esperado pueden tener riesgos muy distintos.**\n\nTambién ayuda a estudiar fenómenos emergentes. Una pequeña variación de demanda puede crear colas enormes cuando un recurso trabaja cerca del límite.\n\nLa simulación permite experimentar sin intervenir el sistema real, lo cual es especialmente útil cuando probar en producción es caro o arriesgado.\n\nPero todo resultado depende de inputs, supuestos y reglas. Si el modelo representa mal el proceso, la precisión visual no compensa.\n\n**Una buena simulación no define qué conviene**\nSupongamos dos políticas de inventario. La primera tiene menor coste medio; la segunda reduce mucho el riesgo de stockout.\n\n¿Cuál es mejor? La simulación puede cuantificar ambos resultados, pero no sabe cuánto valor asigna la empresa al servicio frente al coste.\n\n**La preferencia entre outcomes es una decisión empresarial, no una propiedad del modelo.**\n\nLo mismo ocurre con capacidad. Una configuración puede minimizar tiempo de espera y otra maximizar utilización de recursos. Ambas pueden ser técnicamente eficientes bajo objetivos distintos.\n\nSin una función de valor, la simulación puede terminar en una colección de escenarios interesantes pero sin recomendación clara.\n\nTambién existe el riesgo de elegir el escenario “que se ve mejor” en un dashboard sin explicitar el trade-off.\n\nUna decisión madura traduce métricas operativas a economics o prioridades estratégicas.\n\n**Comparar escenarios no equivale a optimizar**\nProbar cinco alternativas y escoger la mejor es una forma válida de decisión cuando el espacio es pequeño.\n\nPero si existen miles o millones de combinaciones posibles, **la simulación por sí sola no explora eficientemente el espacio de decisiones**.\n\nCambiar niveles de stock, turnos, rutas, capacidades, prioridades y reglas simultáneamente puede generar un número enorme de políticas.\n\nEn estos casos la optimización puede proponer decisiones candidatas y la simulación evaluar su comportamiento bajo incertidumbre.\n\nTambién puede utilizarse simulation optimization: un algoritmo busca configuraciones mientras la simulación actúa como evaluador.\n\nLa diferencia conceptual es importante. Optimización pregunta qué decisión satisface mejor un objetivo bajo restricciones; simulación pregunta qué consecuencias tendría una decisión dada.\n\nCuando confundimos ambas, terminamos usando brute force donde existe estructura matemática aprovechable.\n\n**La decisión necesita una función de valor**\nPara convertir simulación en decision support hay que definir qué significa “mejor”.\n\nPuede ser beneficio esperado, coste total, nivel de servicio, probabilidad de incumplimiento, tiempo de ciclo o una combinación.\n\n**El objetivo debe reflejar la decisión real, no únicamente la métrica más fácil de calcular.**\n\nTambién conviene incluir riesgo. Una política con mejor media puede ser peor si genera colas extremas o pérdidas severas en una proporción relevante de casos.\n\nPercentiles, CVaR, probabilidad de superar un límite o worst-case razonable pueden complementar el valor esperado.\n\nLas restricciones deben distinguirse de las preferencias. Una capacidad legal o física no debería compensarse simplemente con más beneficio.\n\nLos escenarios también necesitan pesos o interpretación. Un shock extremo puede ser útil para stress testing sin ser la base del objetivo cotidiano.\n\nLa sensibilidad ayuda a saber si la decisión cambia cuando varían supuestos inciertos.\n\nSi pequeñas modificaciones de parámetros producen otra política preferida, la recomendación es frágil y quizá necesite más información.\n\nLa validación del modelo debe incluir expertos del proceso y datos históricos. La simulación debe reproducir patrones relevantes antes de utilizarse para decidir.\n\nTambién hay que separar precisión de utilidad. No es necesario modelar cada detalle si ese detalle no cambia la elección.\n\nUn modelo simple puede ser mejor si permite iterar rápido y hace transparentes los drivers.\n\nLa interfaz final debería mostrar trade-offs, no esconderlos. Coste frente a servicio, riesgo frente a retorno o utilización frente a espera son ejemplos.\n\nEl decisor puede necesitar explorar políticas y entender por qué una opción domina a otra.\n\nEn algunos casos no existe una única alternativa óptima. Una frontera de Pareto puede mostrar varias soluciones eficientes para distintos niveles de preferencia.\n\nTambién conviene registrar la policy elegida y los supuestos con los que se evaluó.\n\nCuando cambian demanda, costes o capacidad, la simulación puede reevaluar la decisión.\n\n**Simular no significa decidir.** Simular nos permite comprender consecuencias, incertidumbre y trade-offs. La decisión aparece cuando ese conocimiento se combina con objetivos, restricciones y una definición explícita del valor que la organización quiere proteger o maximizar.",
+      "seo_title": "Simulación para decisiones: qué hace y qué no hace",
+      "seo_description": "Por qué la simulación evalúa consecuencias pero no elige por sí sola la mejor política, y cómo conectarla con objetivos, riesgo y restricciones.",
+      "seo_keywords": [
+        "simulation decision support",
+        "business simulation",
+        "simulation optimization",
+        "decision modeling"
+      ],
+      "tags": [
+        "Simulation",
+        "Decision Science",
+        "Operations"
+      ]
+    },
+    "en": {
+      "title": "Why simulation does not choose the decision for you",
+      "excerpt": "Simulation shows what may happen under a policy. Choosing which policy is best still requires explicit objectives, constraints and decision criteria.",
+      "quick": [
+        "Simulation evaluates policies",
+        "It does not define the objective",
+        "Decisions require criteria"
+      ],
+      "section_titles": [
+        "Simulation answers what may happen",
+        "A strong simulation does not define what is preferable",
+        "Comparing scenarios is not the same as optimizing",
+        "The decision needs a value function"
+      ],
+      "business_title": "Simulation is powerful when it quantifies consequences and uncertainty; choice appears only when the organization states what it wants to optimize and which constraints it must respect.",
+      "business_steps": [
+        "Policy",
+        "Consequence",
+        "Decision"
+      ],
+      "body": "Simulation can produce highly persuasive outputs: growing queues, falling inventory, waiting times, costs, service levels or thousands of possible future trajectories. But **a simulation does not decide by itself which alternative the organization should choose**.\n\nIts main job is conditional: if we apply this policy and the world evolves under these assumptions, what may happen? That information is valuable, but one layer is still missing. **Choosing requires an explicit view of preferred outcomes, tolerated risk and constraints that cannot be violated.**\n\n**Simulation answers what may happen**\nSimulation represents system dynamics when uncertainty, interaction or behaviour is difficult to capture with one closed-form equation.\n\nIt can model customer arrivals, machine failures, stochastic demand, processing times, routes, capacity, inventory or human decisions.\n\nThis allows distributions to be observed rather than only averages. **Two policies with the same expected cost can have very different risk profiles.**\n\nSimulation also reveals emergent effects. A small increase in demand may create very large queues when one resource is close to saturation.\n\nIt lets teams experiment without intervening in the real operation, which is useful when real tests are expensive or risky.\n\nEvery result, however, depends on inputs, assumptions and rules. Visual precision cannot rescue a model that represents the process poorly.\n\n**A strong simulation does not define what is preferable**\nConsider two inventory policies. The first has lower average cost; the second sharply reduces stockout risk.\n\nWhich one is better? Simulation can quantify both outcomes, but it does not know how the organization values service relative to cost.\n\n**Preference between outcomes is a business decision, not a property of the simulation.**\n\nThe same applies to capacity. One configuration may minimize waiting time while another maximizes resource utilization. Both can be efficient under different objectives.\n\nWithout a value function, simulation can end as a collection of interesting scenarios with no clear recommendation.\n\nThere is also a risk of choosing the scenario that “looks best” on a dashboard without making the trade-off explicit.\n\nA mature decision model translates operating metrics into economics or strategic priorities.\n\n**Comparing scenarios is not the same as optimizing**\nTesting five alternatives and choosing the best can work when the decision space is small.\n\nBut with thousands or millions of feasible combinations, **simulation alone is an inefficient search mechanism**.\n\nChanging stock levels, shifts, routes, capacities, priorities and service rules simultaneously creates an enormous policy space.\n\nOptimization can generate candidate decisions while simulation evaluates how those candidates behave under uncertainty.\n\nSimulation optimization can go further: a search algorithm proposes configurations and the simulation acts as the evaluator.\n\nThe conceptual difference matters. Optimization asks which decision best satisfies an objective under constraints; simulation asks what consequences follow from a given decision.\n\nConfusing the two often leads to brute force where mathematical structure could make the search much more efficient.\n\n**The decision needs a value function**\nTurning simulation into decision support requires a definition of “better”.\n\nThe objective may be expected profit, total cost, service level, probability of breach, cycle time or a combination.\n\n**The objective should represent the real decision rather than whichever metric is easiest to calculate.**\n\nRisk should be included too. A policy with the best average may be unattractive if it creates extreme queues or severe losses often enough.\n\nPercentiles, CVaR, probability of exceeding a limit or a reasonable worst case can complement expected value.\n\nConstraints should be separated from preferences. A legal or physical limit should not simply be traded away for more profit.\n\nScenarios also need interpretation. An extreme shock may be useful for stress testing without deserving the same weight as normal operations.\n\nSensitivity analysis shows whether the preferred policy changes when uncertain assumptions move.\n\nIf small parameter changes produce a different recommendation, the decision is fragile and may require better information.\n\nModel validation should involve process experts and historical evidence. The simulation should reproduce relevant operating patterns before it is trusted for decisions.\n\nPrecision should also be separated from usefulness. There is little reason to model detail that never changes the choice.\n\nA simpler model may be stronger when it supports fast iteration and makes the important drivers transparent.\n\nThe final interface should expose trade-offs rather than hide them. Cost versus service, risk versus return and utilization versus waiting are common examples.\n\nDecision makers may need to explore alternatives and understand why one dominates another.\n\nSometimes there is no single optimum. A Pareto frontier can show efficient alternatives under different preferences.\n\nThe selected policy and the assumptions under which it was evaluated should be recorded.\n\nAs demand, cost or capacity changes, the simulation can be rerun to reassess the policy.\n\n**Simulation is not the same as decision.** Simulation helps us understand consequences, uncertainty and trade-offs. Decision emerges when that understanding is combined with objectives, constraints and an explicit definition of the value the organization wants to protect or maximize.",
+      "seo_title": "Simulation Decision Support: What It Can and Cannot Decide",
+      "seo_description": "Why simulation evaluates consequences without choosing the best policy by itself, and how objectives, constraints and risk turn it into decision support.",
+      "seo_keywords": [
+        "simulation decision support",
+        "business simulation",
+        "simulation optimization",
+        "decision modeling"
+      ],
+      "tags": [
+        "Simulation",
+        "Decision Science",
+        "Operations"
+      ]
+    },
+    "ca": {
+      "title": "Per què simular no tria la decisió per tu",
+      "excerpt": "La simulació mostra què pot passar sota una policy. Triar quina convé necessita objectius, restriccions i criteris de decisió explícits.",
+      "quick": [
+        "Simular avalua policies",
+        "No defineix l’objectiu",
+        "La decisió necessita criteri"
+      ],
+      "section_titles": [
+        "La simulació respon què pot passar",
+        "Una bona simulació no defineix què convé",
+        "Comparar escenaris no és optimitzar",
+        "La decisió necessita una funció de valor"
+      ],
+      "business_title": "La simulació és potent quan quantifica conseqüències i incertesa; la tria apareix quan l’empresa explicita què vol optimitzar i quines restriccions accepta.",
+      "business_steps": [
+        "Policy",
+        "Conseqüència",
+        "Decisió"
+      ],
+      "body": "Simular un sistema pot produir resultats molt convincents: cues que creixen, inventaris que baixen, temps d’espera, costos, nivells de servei o milers de trajectòries futures. Però **una simulació no decideix per si sola quina alternativa ha de triar l’empresa**.\n\nLa seva feina principal és condicional: si apliquem aquesta policy i el món evoluciona sota aquests supòsits, què pot passar? Aquesta informació és valuosa, però encara falta una capa. **Per triar cal definir quins outcomes preferim, quin risc tolerem i quines restriccions no podem violar.**\n\n**La simulació respon què pot passar**\nLa simulació representa la dinàmica d’un sistema quan hi ha incertesa, interacció o comportament difícil de capturar amb una fórmula simple.\n\nPot modelar arribades de clients, fallades de màquines, demanda aleatòria, temps de procés, rutes, capacitat, inventari o decisions humanes.\n\nAixò permet observar distribucions i no només mitjanes. **Dues policies amb el mateix cost esperat poden tenir perfils de risc molt diferents.**\n\nTambé ajuda a veure efectes emergents. Una petita pujada de demanda pot crear cues enormes quan un recurs està a prop del límit.\n\nPermet experimentar sense intervenir el sistema real, especialment útil quan provar en producció és car o arriscat.\n\nPerò cada resultat depèn d’inputs, supòsits i regles. Una precisió visual elevada no compensa un model que representa malament el procés.\n\n**Una bona simulació no defineix què convé**\nSuposem dues policies d’inventari. La primera té menor cost mitjà; la segona redueix molt el risc de stockout.\n\nQuina és millor? La simulació pot quantificar els dos outcomes, però no sap quant valora l’empresa servei davant cost.\n\n**La preferència entre outcomes és una decisió empresarial, no una propietat del model.**\n\nPassa igual amb capacitat. Una configuració pot minimitzar espera i una altra maximitzar utilització. Totes dues poden ser eficients sota objectius diferents.\n\nSense una funció de valor, la simulació pot acabar en una col·lecció d’escenaris interessants sense recomanació clara.\n\nTambé existeix el risc d’escollir l’escenari que “es veu millor” en un dashboard sense fer explícit el trade-off.\n\nUna decisió madura tradueix mètriques operatives a economics o prioritats estratègiques.\n\n**Comparar escenaris no és optimitzar**\nProvar cinc alternatives i escollir la millor pot funcionar quan l’espai de decisió és petit.\n\nPerò quan hi ha milers o milions de combinacions, **la simulació sola és un mecanisme de cerca ineficient**.\n\nCanviar nivells de stock, torns, rutes, capacitats, prioritats i regles de servei alhora crea un espai enorme de policies.\n\nL’optimització pot proposar decisions candidates i la simulació avaluar com es comporten sota incertesa.\n\nSimulation optimization va més enllà: un algoritme busca configuracions mentre la simulació actua com a avaluador.\n\nLa diferència conceptual importa. Optimització pregunta quina decisió satisfà millor un objectiu sota restriccions; simulació pregunta quines conseqüències té una decisió donada.\n\nConfondre-les porta sovint a brute force quan podríem aprofitar estructura matemàtica.\n\n**La decisió necessita una funció de valor**\nPer convertir simulació en decision support cal definir què significa “millor”.\n\nPot ser benefici esperat, cost total, nivell de servei, probabilitat d’incompliment, temps de cicle o una combinació.\n\n**L’objectiu ha de representar la decisió real i no només la mètrica més fàcil de calcular.**\n\nTambé cal incorporar risc. Una policy amb millor mitjana pot ser pitjor si genera cues extremes o pèrdues severes amb prou freqüència.\n\nPercentils, CVaR, probabilitat de superar un límit o un worst-case raonable poden complementar l’esperança.\n\nLes restriccions s’han de separar de les preferències. Un límit legal o físic no s’hauria de compensar simplement amb més benefici.\n\nEls escenaris també necessiten interpretació. Un shock extrem pot servir per stress testing sense tenir el mateix pes que operació normal.\n\nL’anàlisi de sensibilitat mostra si la decisió canvia quan varien supòsits incerts.\n\nSi petits canvis de paràmetres produeixen una altra policy preferida, la recomanació és fràgil i pot necessitar més informació.\n\nLa validació ha d’incloure experts del procés i dades històriques. La simulació ha de reproduir patrons rellevants abans de servir per decidir.\n\nTambé cal separar precisió d’utilitat. No cal modelar cada detall si aquell detall no canvia la tria.\n\nUn model simple pot ser millor si permet iterar ràpid i fa transparents els drivers.\n\nLa interfície final hauria de mostrar trade-offs. Cost davant servei, risc davant retorn o utilització davant espera en són exemples.\n\nEl decisor pot necessitar explorar policies i entendre per què una alternativa domina una altra.\n\nA vegades no existeix una única solució òptima. Una frontera de Pareto pot mostrar alternatives eficients sota preferències diferents.\n\nTambé convé registrar la policy escollida i els supòsits amb què s’ha avaluat.\n\nQuan canvien demanda, costos o capacitat, la simulació pot tornar a avaluar la decisió.\n\n**Simular no és decidir.** Simular ajuda a entendre conseqüències, incertesa i trade-offs. La decisió apareix quan aquest coneixement es combina amb objectius, restriccions i una definició explícita del valor que l’organització vol protegir o maximitzar.",
+      "seo_title": "Simulació per decisions: què fa i què no fa",
+      "seo_description": "Per què la simulació avalua conseqüències però no tria sola la millor policy, i com connectar-la amb objectius, risc i restriccions.",
+      "seo_keywords": [
+        "simulation decision support",
+        "business simulation",
+        "simulation optimization",
+        "decision modeling"
+      ],
+      "tags": [
+        "Simulation",
+        "Decision Science",
+        "Operations"
+      ]
+    }
+  }
+}
