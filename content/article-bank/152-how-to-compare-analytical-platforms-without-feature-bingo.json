@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-152",
+  "sequence": 152,
+  "arc_id": "ARC-38",
+  "slug": "how-to-compare-analytical-platforms-without-feature-bingo",
+  "scheduled_at": "2027-10-13T09:00:00+02:00",
+  "knowledge_area": "business_systems",
+  "cluster": "Cloud & Platforms",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "framework_playbook",
+  "angle": "data platform comparison criteria",
+  "primary_keyword": "data platform comparison criteria",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-149",
+    "KB-150",
+    "KB-151"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cómo comparar plataformas sin caer en una lista de features",
+      "excerpt": "Una comparación útil parte de workloads, equipo, governance, integración y economics. Las features solo importan cuando cambian el resultado operativo.",
+      "quick": [
+        "Compara workflows reales",
+        "Incluye coste de operar",
+        "Puntúa restricciones antes que extras"
+      ],
+      "section_titles": [
+        "Empieza por requisitos que cambian la arquitectura",
+        "Compara workflows de extremo a extremo",
+        "Incluye equipo, governance y riesgo",
+        "Decide con economics y evidencia"
+      ],
+      "business_title": "Una plataforma analítica debería evaluarse por cómo entrega y opera los workloads reales, no por cuántas casillas marca en una tabla comparativa.",
+      "business_steps": [
+        "Requisitos",
+        "Workflow",
+        "Economics"
+      ],
+      "body": "Las comparativas de plataformas de datos suelen degenerar en feature bingo: una tabla con almacenamiento, streaming, notebooks, ML, governance, sharing, serverless y decenas de checkmarks. **El problema es que dos plataformas pueden marcar casi las mismas casillas y generar experiencias operativas completamente distintas.**\n\nUna feature solo importa si cambia cómo se entrega, gobierna o mantiene un workload. **La comparación correcta debe empezar por el trabajo que la empresa necesita hacer y terminar en el coste total de hacerlo bien.**\n\n**Empieza por requisitos que cambian la arquitectura**\nAntes de mirar productos, define restricciones y patrones de uso.\n\nVolumen, latencia, concurrencia, tipos de datos, frecuencia de actualización, residencia, seguridad y SLA pueden cambiar la solución.\n\n**Un requisito duro debe pesar más que diez features opcionales.**\n\nTambién hay que entender quién utilizará la plataforma.\n\nUn equipo de analysts centrado en SQL tiene necesidades diferentes a un grupo de data engineers y data scientists.\n\nEl porcentaje de BI, engineering y ML cambia mucho el fit.\n\nLa integración existente también importa: cloud, identity, orchestration, BI, catálogo y herramientas de desarrollo.\n\nCon esto podemos descartar opciones o identificar dónde necesitamos una PoC.\n\n**Compara workflows de extremo a extremo**\nEn lugar de preguntar si existe “streaming”, construye un workflow que lo utilice.\n\nIngesta eventos, procesa, almacena, transforma, sirve una métrica y monitoriza el flujo.\n\nPara BI, prueba una fuente real hasta dashboard.\n\nPara ML, prueba preparación de features, training, deployment y monitoring.\n\n**El objetivo es medir fricción entre capas, no el rendimiento de una pieza aislada.**\n\nRegistra tiempo de implementación, líneas o componentes necesarios, permisos, debugging y coste.\n\nTambién conviene probar un cambio de schema, un fallo de pipeline y la incorporación de un nuevo usuario.\n\nLas plataformas se diferencian mucho cuando aparece la operación diaria.\n\nUn benchmark sintético de query puede ser útil, pero no debería decidir una arquitectura completa.\n\n**Incluye equipo, governance y riesgo**\nLa plataforma vivirá dentro de una organización.\n\nQué skills existen hoy? Qué tan fácil es contratar? Cuánto tarda alguien nuevo en ser productivo?\n\n**La complejidad que el equipo no puede operar se convierte en riesgo, aunque la tecnología sea excelente.**\n\nGovernance debe evaluarse con escenarios concretos: permisos por dominio, datos sensibles, auditoría, lineage y ownership.\n\nTambién importa la separación entre desarrollo y producción.\n\nLa observability debe permitir entender fallos, uso y coste.\n\nEl riesgo de lock-in necesita análisis específico.\n\nDatos en formatos abiertos pueden ser más portables que metadatos, jobs o features propietarias.\n\nNo es necesario eliminar dependencia, pero sí saber dónde existe.\n\nLa seguridad debe probarse en configuración real, no compararse solo por certificaciones.\n\n**Decide con economics y evidencia**\nUna vez evaluados workflows y operación, modela total cost of ownership.\n\nIncluye compute, storage, transferencias, licencias, soporte, talento, administración y tiempo de entrega.\n\n**Una plataforma más cara por unidad puede ser más barata si reduce mucho la carga de ingeniería.**\n\nY una plataforma aparentemente barata puede ser costosa si exige mantener clusters, tuning o muchas herramientas adicionales.\n\nConviene modelar volumen actual, crecimiento probable y un escenario alto.\n\nTambién uno, tres y cinco años.\n\nTime-to-value debe entrar en la cuenta.\n\nLa migración y el coste de salida también importan.\n\nUn scorecard puede ayudar, pero cada dimensión necesita un peso relacionado con negocio.\n\nPor ejemplo, si ML representa el 10 % del valor, no debería dominar la decisión solo porque una plataforma tenga tooling más atractivo.\n\nLas puntuaciones deberían acompañarse de evidencia de PoC o referencias internas.\n\nTambién conviene distinguir must-have, should-have y nice-to-have.\n\nLos nice-to-have no deberían compensar un mal fit en un requisito crítico.\n\nLa decisión final debe documentar supuestos: volumen, usuarios, workloads, skills y pricing.\n\nEso permite revisarla más adelante cuando cambie la empresa.\n\nUn framework útil puede tener seis bloques: restricciones, workloads, usuarios, governance, integración y economics.\n\nDespués se añade riesgo de migración y lock-in.\n\nSi dos opciones quedan muy cerca, la simplicidad puede ser un buen desempate.\n\nMenos plataformas y menos conceptos suelen reducir coste operativo.\n\nTambién puede ganar la opción que mejor encaja con los skills actuales, aunque el benchmark sea ligeramente peor.\n\nLa arquitectura debe optimizar valor total, no performance máxima.\n\nPor último, la comparación debe revisarse periódicamente. Los productos evolucionan y las necesidades también.\n\n**Feature bingo falla porque trata todas las capacidades como si tuvieran el mismo valor.** Una comparación seria pregunta qué trabajo importa, qué restricciones son reales, cuánto cuesta operar cada alternativa y qué riesgo aceptamos.\n\nLa mejor plataforma no es la que tiene más features. Es **la que soporta los workflows importantes con la menor complejidad justificable y economics sostenibles para la organización que la va a operar.**",
+      "seo_title": "Cómo comparar plataformas de datos sin feature bingo",
+      "seo_description": "Criterios para comparar plataformas analíticas según workloads, equipo, governance, integración, riesgo y total cost of ownership.",
+      "seo_keywords": [
+        "data platform comparison criteria",
+        "analytics platform comparison",
+        "data platform evaluation",
+        "data architecture selection"
+      ],
+      "tags": [
+        "Data Platform",
+        "Framework",
+        "Architecture"
+      ]
+    },
+    "en": {
+      "title": "How to compare analytical platforms without feature bingo",
+      "excerpt": "A useful comparison starts with workloads, team, governance, integration and economics. Features matter only when they change operating outcomes.",
+      "quick": [
+        "Compare real workflows",
+        "Include operating cost",
+        "Score constraints before extras"
+      ],
+      "section_titles": [
+        "Start with requirements that change architecture",
+        "Compare end-to-end workflows",
+        "Include team, governance and risk",
+        "Decide with economics and evidence"
+      ],
+      "business_title": "An analytical platform should be evaluated by how it delivers and operates real workloads, not by how many boxes it ticks in a comparison table.",
+      "business_steps": [
+        "Requirements",
+        "Workflow",
+        "Economics"
+      ],
+      "body": "Data-platform comparisons often collapse into feature bingo: a table covering storage, streaming, notebooks, ML, governance, sharing, serverless and dozens of checkmarks. **The problem is that two platforms can tick almost the same boxes while creating completely different operating experiences.**\n\nA feature matters only when it changes how a workload is delivered, governed or maintained. **The right comparison should begin with the work the company needs to perform and end with the total cost of performing it well.**\n\n**Start with requirements that change architecture**\nBefore looking at products, define constraints and usage patterns.\n\nVolume, latency, concurrency, data types, update frequency, residency, security and SLA can materially change the solution.\n\n**One hard requirement should outweigh ten optional features.**\n\nThe user population also matters.\n\nAn analyst-heavy SQL team has different needs from a group dominated by data engineers and data scientists.\n\nThe balance between BI, engineering and ML changes platform fit significantly.\n\nExisting integration matters too: cloud, identity, orchestration, BI, catalogue and development tooling.\n\nWith that context, some options can be eliminated and others identified for proof-of-concept testing.\n\n**Compare end-to-end workflows**\nInstead of asking whether a platform “supports streaming”, build a workflow that uses it.\n\nIngest events, process them, store them, transform them, serve a metric and monitor the flow.\n\nFor BI, test a real source through to a dashboard.\n\nFor ML, test feature preparation, training, deployment and monitoring.\n\n**The objective is measuring friction between layers rather than the performance of one isolated component.**\n\nRecord implementation time, required components, permissions, debugging effort and cost.\n\nIt is also useful to test a schema change, a failed pipeline and onboarding a new user.\n\nPlatforms often differentiate most clearly in daily operations.\n\nA synthetic query benchmark can still help, but it should not decide an entire architecture.\n\n**Include team, governance and risk**\nThe platform will live inside an organization.\n\nWhich skills exist today? How difficult is hiring? How long does a new team member take to become productive?\n\n**Complexity the team cannot operate becomes risk even when the technology is excellent.**\n\nGovernance should be tested through concrete scenarios: domain permissions, sensitive data, audit, lineage and ownership.\n\nDevelopment and production separation also matters.\n\nObservability should make failures, usage and cost understandable.\n\nLock-in risk needs specific analysis.\n\nOpen data formats may be portable while metadata, jobs and proprietary features are not.\n\nDependency does not need to be eliminated, but it should be explicit.\n\nSecurity should be tested in realistic configurations rather than compared only through certification lists.\n\n**Decide with economics and evidence**\nOnce workflows and operations are understood, model total cost of ownership.\n\nInclude compute, storage, transfer, licensing, support, talent, administration and delivery time.\n\n**A platform with higher unit pricing can be cheaper overall when it substantially reduces engineering effort.**\n\nA platform that looks inexpensive can become costly when clusters, tuning or several supporting tools need ownership.\n\nModel current volume, likely growth and a high scenario.\n\nAlso compare one-, three- and five-year economics.\n\nTime-to-value belongs in the calculation.\n\nMigration and exit cost matter too.\n\nA scorecard can organize the decision, but each dimension needs a weight tied to business value.\n\nIf ML represents only 10% of value, it should not dominate selection solely because one platform has more attractive ML tooling.\n\nScores should be supported by proof-of-concept evidence or internal experience.\n\nMust-have, should-have and nice-to-have should be separated.\n\nNice-to-have capabilities should not compensate for a poor fit on a critical requirement.\n\nThe final decision should document assumptions around volume, users, workloads, skills and pricing.\n\nThat makes future review possible when the business changes.\n\nA practical framework can use six blocks: constraints, workloads, users, governance, integration and economics.\n\nMigration and lock-in risk can then be layered on top.\n\nIf two options remain close, simplicity can be a strong tie-breaker.\n\nFewer platforms and fewer concepts often reduce operating cost.\n\nThe option matching current skills may also be stronger even with a slightly weaker benchmark.\n\nArchitecture should optimize total value rather than maximum theoretical performance.\n\nFinally, the comparison should be revisited periodically as products and needs evolve.\n\n**Feature bingo fails because it treats every capability as if it has equal value.** Serious evaluation asks which work matters, which constraints are real, what each option costs to operate and which risks are acceptable.\n\nThe best platform is not the one with the most features. It is **the one that supports important workflows with the least justified complexity and sustainable economics for the organization that will operate it.**",
+      "seo_title": "How to Compare Data Platforms Without Feature Bingo",
+      "seo_description": "A framework for comparing analytical platforms using workloads, team, governance, integration, risk and total cost of ownership.",
+      "seo_keywords": [
+        "data platform comparison criteria",
+        "analytics platform comparison",
+        "data platform evaluation",
+        "data architecture selection"
+      ],
+      "tags": [
+        "Data Platform",
+        "Framework",
+        "Architecture"
+      ]
+    },
+    "ca": {
+      "title": "Com comparar plataformes sense caure en una llista de features",
+      "excerpt": "Una comparació útil parteix de workloads, equip, governance, integració i economics. Les features només importen quan canvien el resultat operatiu.",
+      "quick": [
+        "Compara workflows reals",
+        "Inclou cost d’operar",
+        "Puntua restriccions abans que extres"
+      ],
+      "section_titles": [
+        "Comença per requisits que canvien l’arquitectura",
+        "Compara workflows de punta a punta",
+        "Inclou equip, governance i risc",
+        "Decideix amb economics i evidència"
+      ],
+      "business_title": "Una plataforma analítica s’ha d’avaluar per com entrega i opera workloads reals, no per quantes caselles marca en una taula comparativa.",
+      "business_steps": [
+        "Requisits",
+        "Workflow",
+        "Economics"
+      ],
+      "body": "Les comparatives de plataformes de dades sovint degeneren en feature bingo: una taula amb storage, streaming, notebooks, ML, governance, sharing, serverless i desenes de checkmarks. **El problema és que dues plataformes poden marcar gairebé les mateixes caselles i crear experiències operatives completament diferents.**\n\nUna feature només importa si canvia com s’entrega, governa o manté un workload. **La comparació correcta ha de començar per la feina que l’empresa necessita fer i acabar en el cost total de fer-la bé.**\n\n**Comença per requisits que canvien l’arquitectura**\nAbans de mirar productes, defineix restriccions i patrons d’ús.\n\nVolum, latència, concurrència, tipus de dades, freqüència d’actualització, residència, seguretat i SLA poden canviar la solució.\n\n**Un requisit dur ha de pesar més que deu features opcionals.**\n\nTambé cal entendre qui utilitzarà la plataforma.\n\nUn equip d’analysts centrat en SQL té necessitats diferents d’un grup de data engineers i data scientists.\n\nEl percentatge de BI, engineering i ML canvia molt l’encaix.\n\nLa integració existent també importa: cloud, identitat, orchestration, BI, catàleg i tooling de desenvolupament.\n\nAmb aquest context podem descartar opcions o identificar on necessitem una PoC.\n\n**Compara workflows de punta a punta**\nEn lloc de preguntar si existeix “streaming”, construeix un workflow que l’utilitzi.\n\nIngesta events, processa, emmagatzema, transforma, serveix una mètrica i monitoritza el flux.\n\nPer BI, prova una font real fins a dashboard.\n\nPer ML, prova preparació de features, training, deployment i monitoring.\n\n**L’objectiu és mesurar fricció entre capes i no el rendiment d’una peça aïllada.**\n\nRegistra temps d’implementació, components necessaris, permisos, debugging i cost.\n\nTambé convé provar un canvi de schema, una fallada de pipeline i l’alta d’un nou usuari.\n\nLes plataformes es diferencien molt quan apareix l’operació diària.\n\nUn benchmark sintètic de query pot ser útil, però no hauria de decidir tota una arquitectura.\n\n**Inclou equip, governance i risc**\nLa plataforma viurà dins d’una organització.\n\nQuins skills existeixen avui? Com de fàcil és contractar? Quant triga un membre nou a ser productiu?\n\n**La complexitat que l’equip no pot operar es converteix en risc encara que la tecnologia sigui excel·lent.**\n\nGovernance s’ha d’avaluar amb escenaris concrets: permisos per domini, dades sensibles, auditoria, lineage i ownership.\n\nTambé importa separar desenvolupament i producció.\n\nL’observability ha de permetre entendre fallades, ús i cost.\n\nEl risc de lock-in necessita anàlisi específica.\n\nDades en formats oberts poden ser portables mentre metadades, jobs o features propietàries no ho són.\n\nNo cal eliminar dependència, però sí saber on existeix.\n\nLa seguretat s’ha de provar en configuració real i no només per certificacions.\n\n**Decideix amb economics i evidència**\nQuan workflows i operació són coneguts, modela total cost of ownership.\n\nInclou compute, storage, transferències, llicències, suport, talent, administració i temps de delivery.\n\n**Una plataforma més cara per unitat pot ser més barata si redueix molt la càrrega d’enginyeria.**\n\nI una plataforma aparentment barata pot resultar cara si exigeix clusters, tuning o moltes eines addicionals.\n\nConvé modelar volum actual, creixement probable i un escenari alt.\n\nTambé un, tres i cinc anys.\n\nTime-to-value forma part de la decisió.\n\nMigració i cost de sortida també importen.\n\nUn scorecard pot ajudar, però cada dimensió necessita un pes relacionat amb negoci.\n\nSi ML representa només el 10 % del valor, no hauria de dominar perquè una plataforma tingui tooling més atractiu.\n\nLes puntuacions han d’anar acompanyades d’evidència de PoC o experiència interna.\n\nTambé convé separar must-have, should-have i nice-to-have.\n\nEls nice-to-have no haurien de compensar un mal encaix en un requisit crític.\n\nLa decisió final ha de documentar supòsits sobre volum, usuaris, workloads, skills i pricing.\n\nAixò permet revisar-la quan canviï l’empresa.\n\nUn framework pràctic pot tenir sis blocs: restriccions, workloads, usuaris, governance, integració i economics.\n\nDesprés s’hi afegeix risc de migració i lock-in.\n\nSi dues opcions queden molt a prop, la simplicitat pot ser un bon desempat.\n\nMenys plataformes i menys conceptes acostumen a reduir cost operatiu.\n\nTambé pot guanyar l’opció que encaixa millor amb els skills actuals encara que el benchmark sigui lleugerament pitjor.\n\nL’arquitectura ha d’optimitzar valor total, no performance màxima.\n\nFinalment, la comparació s’ha de revisar periòdicament perquè productes i necessitats evolucionen.\n\n**Feature bingo falla perquè tracta totes les capacitats com si tinguessin el mateix valor.** Una comparació seriosa pregunta quina feina importa, quines restriccions són reals, quant costa operar cada alternativa i quin risc acceptem.\n\nLa millor plataforma no és la que té més features. És **la que suporta els workflows importants amb la menor complexitat justificable i economics sostenibles per l’organització que l’operarà.**",
+      "seo_title": "Com comparar plataformes de dades sense feature bingo",
+      "seo_description": "Criteris per comparar plataformes analítiques segons workloads, equip, governance, integració, risc i cost total d’ownership.",
+      "seo_keywords": [
+        "data platform comparison criteria",
+        "analytics platform comparison",
+        "data platform evaluation",
+        "data architecture selection"
+      ],
+      "tags": [
+        "Data Platform",
+        "Framework",
+        "Architecture"
+      ]
+    }
+  }
+}
