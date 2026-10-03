@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-108",
+  "sequence": 108,
+  "arc_id": "ARC-27",
+  "slug": "how-to-design-kpis-around-a-decision",
+  "scheduled_at": "2027-06-25T09:00:00+02:00",
+  "knowledge_area": "analytics",
+  "cluster": "Analytics & Decision Intelligence",
+  "editorial_pillar": "consulting_decision_insights",
+  "content_family": "framework_playbook",
+  "angle": "kpi design framework",
+  "primary_keyword": "kpi design framework",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-105",
+    "KB-106",
+    "KB-107"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cómo diseñar KPIs alrededor de una decisión",
+      "excerpt": "Un KPI útil empieza por el outcome y la decisión que queremos mejorar. Después se eligen drivers, leading indicators y guardrails que orientan comportamiento sin romper el sistema.",
+      "quick": [
+        "Empieza por el outcome",
+        "Conecta cada métrica con una decisión",
+        "Añade guardrails contra optimización local"
+      ],
+      "section_titles": [
+        "Define primero la decisión",
+        "Construye una jerarquía de métricas",
+        "Diseña targets y guardrails",
+        "Revisa el KPI como un sistema vivo"
+      ],
+      "business_title": "El mejor KPI no es el más fácil de medir, sino el que ayuda a tomar una decisión mejor sin inducir comportamientos que destruyan el outcome global.",
+      "business_steps": [
+        "Decisión",
+        "Métrica",
+        "Comportamiento"
+      ],
+      "body": "Diseñar KPIs suele empezar por los datos disponibles: qué podemos medir, qué aparece en el ERP o qué pide dirección en el dashboard. Ese orden es cómodo, pero puede producir métricas correctas que no ayudan a decidir. **Un KPI debería empezar por una decisión y un outcome, no por una columna disponible.**\n\nLa lógica es sencilla. Primero definimos qué resultado queremos mejorar. Después identificamos qué decisiones mueven ese resultado. Solo entonces escogemos señales que permitan observar y orientar esas decisiones. **La métrica es una herramienta dentro del sistema de gestión, no el punto de partida.**\n\n**Define primero la decisión**\nLa primera pregunta no es “qué KPI ponemos”, sino “qué decisión queremos mejorar”.\n\nPuede ser cuánto inventario comprar, qué oportunidades priorizar, cuándo intervenir en churn, qué capacidad asignar o qué coste aceptar.\n\nDespués hay que definir el outcome.\n\n**Una métrica solo es útil si sabemos qué resultado debería mejorar cuando actuamos sobre ella**.\nPor ejemplo, si queremos mejorar disponibilidad sin inflar stock, el outcome no puede ser únicamente service level ni únicamente inventario.\n\nNecesitamos representar el trade-off.\n\nTambién conviene definir quién toma la decisión, con qué frecuencia y qué variables controla.\n\nUn KPI que un equipo no puede influir genera accountability sin capacidad real.\n\nLa ventana temporal importa. La señal debe aparecer con suficiente antelación para que exista una acción posible.\n\n**Construye una jerarquía de métricas**\nUna arquitectura de KPIs puede organizarse en tres niveles.\n\nPrimero, el outcome principal: margen, retención, disponibilidad, rentabilidad, tiempo de ciclo o el resultado relevante.\n\nSegundo, los drivers o leading indicators que anticipan o explican el outcome.\n\nTercero, guardrails que protegen dimensiones que podrían sacrificarse al optimizar.\n\n**Esta jerarquía ayuda a evitar que un proxy se convierta silenciosamente en el objetivo final**.\nPor ejemplo, en ventas el outcome puede ser margen incremental.\n\nLos drivers pueden ser oportunidades cualificadas, win rate y tiempo de ciclo.\n\nLos guardrails pueden incluir churn temprano o descuento medio.\n\nNo hace falta una gran cantidad de métricas.\n\nDe hecho, demasiadas métricas diluyen señal y responsabilidad.\n\nLa jerarquía debe ser lo bastante pequeña para que una persona pueda explicar qué importa y por qué.\n\n**Diseña targets y guardrails**\nDespués hay que decidir cómo se utilizará cada métrica.\n\nUn target puede orientar esfuerzo, pero también puede producir gaming.\n\nPor eso debemos anticipar cómo podría mejorar el número sin mejorar el outcome.\n\n**Un buen diseño intenta hacer difícil ganar el KPI destruyendo otra parte importante del sistema**.\nLos guardrails son una herramienta para eso.\n\nSi producción optimiza throughput, podemos vigilar defectos y downtime.\n\nSi ventas optimiza conversión, podemos vigilar margen y calidad del cliente.\n\nSi soporte optimiza velocidad, podemos vigilar reopen rate y satisfacción.\n\nTambién conviene utilizar rangos cuando la precisión del target es falsa.\n\nUn objetivo de 92,37 % puede transmitir una exactitud que el negocio no necesita.\n\nLas bandas permiten gestionar incertidumbre y evitar reacciones excesivas a ruido.\n\nLos targets también deben adaptarse al contexto cuando regiones o segmentos tienen condiciones estructuralmente distintas.\n\n**Revisa el KPI como un sistema vivo**\nUn KPI no debería aprobarse una vez y permanecer indefinidamente.\n\nLos procesos cambian, aparecen nuevos canales y la relación entre proxy y outcome puede deteriorarse.\n\n**La organización debe revisar si el KPI sigue prediciendo, explicando o moviendo el resultado que justificó su existencia**.\nUna revisión periódica puede comprobar cuatro cosas.\n\nPrimero, relación con outcome.\n\nSegundo, comportamiento inducido.\n\nTercero, calidad y estabilidad de datos.\n\nCuarto, utilidad en la decisión.\n\nTambién conviene analizar casos donde el KPI mejoró y el resultado empeoró.\n\nEsas divergencias contienen mucha información.\n\nLos usuarios pueden aportar señales cualitativas.\n\nSi dicen que una métrica les obliga a hacer algo absurdo para cumplir el target, existe un problema de diseño.\n\nLa definición debe estar documentada: fórmula, población, periodo, exclusiones, owner y fuente.\n\nLos cambios deben versionarse.\n\nEl dashboard debería mostrar contexto, no solo el número.\n\nComparación histórica, rango esperado, drivers y guardrails ayudan a interpretar.\n\nLas alertas también deben responder a una acción concreta.\n\nNo todo cambio merece una reunión.\n\nEl KPI puede tener niveles de severidad o condiciones persistentes antes de escalar.\n\nTambién debemos evitar premiar únicamente un resultado que tarda demasiado en aparecer.\n\nCombinar leading y lagging permite intervenir antes y confirmar después.\n\nLa causalidad no siempre puede demostrarse, pero la lógica debería ser explícita.\n\n¿Por qué creemos que mover este indicador ayuda al outcome?\n\nEsa hipótesis puede testearse con datos y experimentos cuando sea posible.\n\nTambién conviene revisar incentivos monetarios separadamente.\n\nCuando una métrica determina compensación, el comportamiento adaptativo aumenta.\n\nA veces es mejor usar una cesta pequeña de métricas y juicio manager que una fórmula mecánica.\n\nLos KPIs locales deberían conectarse con una métrica global.\n\nEsto ayuda a evitar que departamentos optimicen en direcciones incompatibles.\n\nFinalmente, cada KPI debería tener una condición de retirada.\n\nSi deja de influir decisiones, pierde relación con outcome o se vuelve redundante, debe simplificarse.\n\n**Diseñar KPIs alrededor de una decisión significa empezar por el comportamiento y el resultado que queremos conseguir, y después elegir la mínima estructura de métricas capaz de orientar ese sistema sin distorsionarlo**.",
+      "seo_title": "Framework para diseñar KPIs alrededor de una decisión",
+      "seo_description": "Cómo diseñar KPIs empezando por outcomes y decisiones, conectando leading indicators, targets y guardrails para evitar incentivos perversos.",
+      "seo_keywords": [
+        "kpi design framework",
+        "KPI design",
+        "performance metric framework",
+        "decision KPI"
+      ],
+      "tags": [
+        "Analytics",
+        "KPIs",
+        "Framework"
+      ]
+    },
+    "en": {
+      "title": "How to design KPIs around a decision",
+      "excerpt": "A useful KPI starts from the outcome and decision that should improve. Drivers, leading indicators and guardrails then shape behaviour without breaking the system.",
+      "quick": [
+        "Start from the outcome",
+        "Connect every metric to a decision",
+        "Add guardrails against local optimization"
+      ],
+      "section_titles": [
+        "Define the decision first",
+        "Build a metric hierarchy",
+        "Design targets and guardrails",
+        "Review the KPI as a living system"
+      ],
+      "business_title": "The best KPI is not the easiest number to measure, but the one that supports a better decision without inducing behaviour that damages the global outcome.",
+      "business_steps": [
+        "Decision",
+        "Metric",
+        "Behaviour"
+      ],
+      "body": "KPI design often begins with available data: what can be measured, what exists in the ERP or what management wants on the dashboard. That order is convenient, but it can produce correct metrics that do not improve decisions. **A KPI should begin with a decision and an outcome rather than an available column.**\n\nThe logic is straightforward. First define the result that should improve. Then identify the decisions that influence that result. Only then choose signals that help observe and steer those decisions. **The metric is a tool inside the management system, not the starting point.**\n\n**Define the decision first**\nThe first question is not “which KPI should we use?” but “which decision should become better?”.\n\nThat decision may involve how much inventory to buy, which opportunities to prioritize, when to intervene in churn, how much capacity to allocate or which cost to accept.\n\nThen define the outcome.\n\n**A metric is useful only when the organization knows which result should improve when people act on it**.\nFor example, if the objective is availability without excessive stock, the outcome cannot be service level alone or inventory alone.\n\nThe trade-off needs representation.\n\nIt is also useful to define who makes the decision, how often it is made and which variables that person controls.\n\nA KPI that a team cannot influence creates accountability without real agency.\n\nTime horizon matters too. The signal must appear early enough for an intervention to exist.\n\n**Build a metric hierarchy**\nA KPI architecture can be organized in three levels.\n\nFirst, the primary outcome: margin, retention, availability, profitability, cycle time or another relevant result.\n\nSecond, drivers or leading indicators that anticipate or explain the outcome.\n\nThird, guardrails protecting dimensions that could be sacrificed during optimization.\n\n**This hierarchy helps prevent a proxy from quietly becoming the final objective**.\nIn sales, for example, the outcome may be incremental margin.\n\nDrivers may include qualified opportunities, win rate and cycle time.\n\nGuardrails may include early churn or average discount.\n\nThe system does not need many metrics.\n\nToo many metrics dilute both signal and accountability.\n\nThe hierarchy should be small enough that a person can explain what matters and why.\n\n**Design targets and guardrails**\nNext decide how each metric will be used.\n\nA target can direct effort, but it can also create gaming.\n\nThe team should anticipate how the number might improve without improving the outcome.\n\n**Strong KPI design makes it difficult to win the metric by damaging another important part of the system**.\nGuardrails are one tool for doing that.\n\nIf production optimizes throughput, track defects and downtime.\n\nIf sales optimizes conversion, track margin and customer quality.\n\nIf support optimizes speed, track reopen rate and satisfaction.\n\nRanges can be better than false precision.\n\nA target of 92.37% may imply a level of exactness the business does not need.\n\nBands help manage uncertainty and prevent overreaction to noise.\n\nTargets may also need contextual adjustment when regions or segments face structurally different conditions.\n\n**Review the KPI as a living system**\nA KPI should not be approved once and remain indefinitely.\n\nProcesses evolve, channels change and the relationship between proxy and outcome can weaken.\n\n**The organization should review whether the KPI still predicts, explains or moves the result that justified its existence**.\nA periodic review can inspect four areas.\n\nFirst, relationship with outcome.\n\nSecond, induced behaviour.\n\nThird, data quality and stability.\n\nFourth, usefulness in the decision.\n\nCases where the KPI improved while the outcome worsened are particularly valuable.\n\nThose divergences reveal hidden weaknesses.\n\nUsers can add qualitative evidence too.\n\nIf teams report that the metric forces irrational behaviour just to hit the target, the design needs attention.\n\nDefinitions should be documented: formula, population, period, exclusions, owner and source.\n\nChanges need versioning.\n\nThe dashboard should show context rather than only the number.\n\nHistorical comparison, expected range, drivers and guardrails improve interpretation.\n\nAlerts should also connect to action.\n\nNot every movement needs a meeting.\n\nSeverity levels or persistence conditions can help filter noise.\n\nThe system should avoid relying only on outcomes that arrive too late.\n\nCombining leading and lagging indicators allows earlier intervention and later confirmation.\n\nCausality may not always be provable, but the logic should be explicit.\n\nWhy does the organization believe moving this indicator will improve the outcome?\n\nThat hypothesis can be tested through data or experimentation where feasible.\n\nFinancial incentives deserve separate review.\n\nWhen compensation depends directly on a metric, adaptive behaviour becomes stronger.\n\nSometimes a small basket of metrics plus manager judgement is better than a mechanical formula.\n\nLocal KPIs should also connect to a global outcome.\n\nThat reduces the chance that departments optimize in incompatible directions.\n\nFinally, every KPI should have an exit condition.\n\nIf it stops influencing decisions, loses connection to outcome or becomes redundant, it should be simplified or removed.\n\n**Designing KPIs around a decision means starting from the behaviour and result the organization wants, then choosing the smallest metric structure that can steer that system without distorting it**.",
+      "seo_title": "A KPI Design Framework Around Decisions",
+      "seo_description": "How to design KPIs from outcomes and decisions, using leading indicators, targets and guardrails to avoid distorted incentives.",
+      "seo_keywords": [
+        "kpi design framework",
+        "KPI design",
+        "performance metric framework",
+        "decision KPI"
+      ],
+      "tags": [
+        "Analytics",
+        "KPIs",
+        "Framework"
+      ]
+    },
+    "ca": {
+      "title": "Com dissenyar KPIs al voltant d’una decisió",
+      "excerpt": "Un KPI útil comença per l’outcome i la decisió que volem millorar. Després triem drivers, leading indicators i guardrails que orientin comportament sense trencar el sistema.",
+      "quick": [
+        "Comença per l’outcome",
+        "Connecta cada mètrica amb una decisió",
+        "Afegeix guardrails contra optimització local"
+      ],
+      "section_titles": [
+        "Defineix primer la decisió",
+        "Construeix una jerarquia de mètriques",
+        "Dissenya targets i guardrails",
+        "Revisa el KPI com un sistema viu"
+      ],
+      "business_title": "El millor KPI no és el més fàcil de mesurar, sinó el que ajuda a prendre una decisió millor sense induir comportaments que perjudiquin l’outcome global.",
+      "business_steps": [
+        "Decisió",
+        "Mètrica",
+        "Comportament"
+      ],
+      "body": "Dissenyar KPIs sovint comença per les dades disponibles: què podem mesurar, què existeix a l’ERP o què demana direcció al dashboard. Aquest ordre és còmode, però pot produir mètriques correctes que no milloren decisions. **Un KPI hauria de començar per una decisió i un outcome, no per una columna disponible.**\n\nLa lògica és senzilla. Primer definim quin resultat volem millorar. Després identifiquem quines decisions el mouen. Només aleshores triem senyals que permetin observar i orientar aquelles decisions. **La mètrica és una eina dins del sistema de gestió, no el punt de partida.**\n\n**Defineix primer la decisió**\nLa primera pregunta no és “quin KPI posem”, sinó “quina decisió volem millorar”.\n\nPot ser quant inventari comprar, quines oportunitats prioritzar, quan intervenir en churn, quina capacitat assignar o quin cost acceptar.\n\nDesprés cal definir l’outcome.\n\n**Una mètrica només és útil si sabem quin resultat hauria de millorar quan actuem sobre ella**.\nPer exemple, si volem millorar disponibilitat sense inflar stock, l’outcome no pot ser només service level ni només inventari.\n\nCal representar el trade-off.\n\nTambé convé definir qui pren la decisió, amb quina freqüència i quines variables controla.\n\nUn KPI que un equip no pot influir crea accountability sense capacitat real.\n\nL’horitzó temporal també importa. La senyal ha d’arribar prou aviat perquè existeixi una acció possible.\n\n**Construeix una jerarquia de mètriques**\nUna arquitectura de KPIs es pot organitzar en tres nivells.\n\nPrimer, l’outcome principal: marge, retenció, disponibilitat, rendibilitat, temps de cicle o un altre resultat rellevant.\n\nSegon, drivers o leading indicators que anticipen o expliquen l’outcome.\n\nTercer, guardrails que protegeixen dimensions que podrien sacrificar-se durant l’optimització.\n\n**Aquesta jerarquia ajuda a evitar que un proxy es converteixi silenciosament en l’objectiu final**.\nEn vendes, per exemple, l’outcome pot ser marge incremental.\n\nEls drivers poden ser oportunitats qualificades, win rate i temps de cicle.\n\nEls guardrails poden incloure churn inicial o descompte mitjà.\n\nNo cal una gran quantitat de mètriques.\n\nMassa mètriques dilueixen senyal i responsabilitat.\n\nLa jerarquia ha de ser prou petita perquè una persona pugui explicar què importa i per què.\n\n**Dissenya targets i guardrails**\nDesprés cal decidir com s’utilitzarà cada mètrica.\n\nUn target pot orientar esforç, però també pot generar gaming.\n\nHem d’anticipar com podria millorar el número sense millorar l’outcome.\n\n**Un bon disseny intenta fer difícil guanyar el KPI destruint una altra part important del sistema**.\nEls guardrails són una eina per aconseguir-ho.\n\nSi producció optimitza throughput, podem vigilar defectes i downtime.\n\nSi vendes optimitza conversió, podem vigilar marge i qualitat del client.\n\nSi suport optimitza velocitat, podem vigilar reopen rate i satisfacció.\n\nTambé convé utilitzar rangs quan la precisió del target és falsa.\n\nUn objectiu de 92,37 % pot transmetre una exactitud que el negoci no necessita.\n\nLes bandes ajuden a gestionar incertesa i evitar reaccions excessives al soroll.\n\nEls targets també es poden adaptar al context quan regions o segments tenen condicions estructuralment diferents.\n\n**Revisa el KPI com un sistema viu**\nUn KPI no s’hauria d’aprovar una vegada i quedar-se indefinidament.\n\nEls processos canvien, apareixen nous canals i la relació entre proxy i outcome es pot deteriorar.\n\n**L’organització ha de revisar si el KPI continua predient, explicant o movent el resultat que justificava la seva existència**.\nUna revisió periòdica pot comprovar quatre àrees.\n\nPrimera, relació amb outcome.\n\nSegona, comportament induït.\n\nTercera, qualitat i estabilitat de dades.\n\nQuarta, utilitat en la decisió.\n\nEls casos on el KPI millora i l’outcome empitjora són especialment informatius.\n\nAquestes divergències revelen debilitats ocultes.\n\nEls usuaris també poden aportar evidència qualitativa.\n\nSi l’equip diu que la mètrica l’obliga a fer coses absurdes per complir target, cal revisar el disseny.\n\nLa definició ha d’estar documentada: fórmula, població, període, exclusions, owner i font.\n\nEls canvis s’han de versionar.\n\nEl dashboard ha de mostrar context, no només el número.\n\nComparació històrica, rang esperat, drivers i guardrails ajuden a interpretar.\n\nLes alertes també s’han de connectar amb una acció.\n\nNo tot moviment necessita una reunió.\n\nNivells de severitat o condicions de persistència poden reduir soroll.\n\nTambé hem d’evitar dependre només d’outcomes que arriben massa tard.\n\nCombinar leading i lagging permet intervenir abans i confirmar després.\n\nLa causalitat no sempre es pot demostrar, però la lògica ha de ser explícita.\n\nPer què creiem que moure aquest indicador millorarà l’outcome?\n\nAquesta hipòtesi es pot provar amb dades o experimentació quan sigui possible.\n\nEls incentius monetaris necessiten una revisió separada.\n\nQuan la compensació depèn directament d’una mètrica, el comportament adaptatiu augmenta.\n\nA vegades és millor una petita cistella de mètriques més judici de manager que una fórmula mecànica.\n\nEls KPIs locals també han de connectar-se amb un outcome global.\n\nAixò redueix que departaments optimitzin en direccions incompatibles.\n\nFinalment, cada KPI hauria de tenir una condició de retirada.\n\nSi deixa d’influir decisions, perd connexió amb outcome o es torna redundant, s’ha de simplificar o eliminar.\n\n**Dissenyar KPIs al voltant d’una decisió significa començar pel comportament i el resultat que volem aconseguir, i després triar la mínima estructura de mètriques capaç d’orientar aquell sistema sense distorsionar-lo**.",
+      "seo_title": "Framework per dissenyar KPIs al voltant d’una decisió",
+      "seo_description": "Com dissenyar KPIs des d’outcomes i decisions, connectant leading indicators, targets i guardrails per evitar incentius perversos.",
+      "seo_keywords": [
+        "kpi design framework",
+        "KPI design",
+        "performance metric framework",
+        "decision KPI"
+      ],
+      "tags": [
+        "Analytics",
+        "KPIs",
+        "Framework"
+      ]
+    }
+  }
+}

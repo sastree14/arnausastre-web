@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getAllProjects, getProjectBySlug } from '@/lib/projects'
-import ProjectDetailClient from '@/components/ProjectDetailClient'
+import ProjectOverviewCommercial from '@/components/projects/ProjectOverviewCommercial'
+import { getWebsiteProjectGoldStandard } from '@/lib/website-project-gold-standard'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -11,24 +12,32 @@ export async function generateStaticParams() {
   return getAllProjects().map((p) => ({ slug: p.slug }))
 }
 
-export async function generateMetadata({params}:Props):Promise<Metadata>{
-  const {slug}=await params
-  const project=getProjectBySlug(slug)
-  if(!project)return{}
-  const title=project.headline
-  const description=project.description
-  const canonical=`/projects/${slug}`
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const goldStandard = getWebsiteProjectGoldStandard(slug)
+  const project = getProjectBySlug(slug)
+
+  if (!project) return {}
+
+  const title = goldStandard?.title || project.headline
+  const description = goldStandard?.description || project.description
+  const canonical = `/projects/${slug}`
+
   return {
     title,
     description,
-    keywords:[project.industry,project.capability,project.challenge].filter(Boolean),
-    alternates:{canonical},
-    openGraph:{
+    keywords: [
+      project.industry,
+      project.capability,
+      project.challenge,
+      ...(goldStandard?.capabilities || []),
+    ].filter(Boolean),
+    alternates: { canonical },
+    openGraph: {
       title,
       description,
-      url:`https://sc-analytics.io${canonical}`,
-      type:'article',
-      images:project.image&&project.image!=='__generated__'?[{url:project.imagePath,alt:project.headline}]:undefined,
+      url: `https://sc-analytics.io${canonical}`,
+      type: 'article',
     },
   }
 }
@@ -38,5 +47,6 @@ export default async function ProjectPage({ params }: Props) {
   const project = getProjectBySlug(slug)
   if (!project) notFound()
 
-  return <ProjectDetailClient project={project} />
+  const goldStandard = getWebsiteProjectGoldStandard(slug)
+  return <ProjectOverviewCommercial project={project} goldStandard={goldStandard} />
 }

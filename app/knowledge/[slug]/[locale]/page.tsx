@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import ArticleContent from '@/components/ArticleContent'
-import GeneratedArticleContent from '@/components/GeneratedArticleContent'
+import GeneratedKnowledgeArticleGoldStandard from '@/components/GeneratedKnowledgeArticleGoldStandard'
+import KnowledgeArticleGoldStandard from '@/components/KnowledgeArticleGoldStandard'
 import { getArticleBySlug } from '@/lib/content'
 import { getPublicGeneratedArticleVariants } from '@/lib/public-growth'
 
@@ -43,9 +43,11 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
   }
 
   const variants=await getPublicGeneratedArticleVariants(slug)
-  const article=variants.find(item=>item.language===locale)
+  const article=variants.find(item=>item.language===locale)||variants.find(item=>item.language==='es')||variants.find(item=>item.language==='en')||variants[0]
   if(!article)return{}
-  const title=clean(article.title),description=summary(article.body)
+  const articleMeta=(article.critique && typeof article.critique==='object' ? (article.critique as Record<string,unknown>).article_meta : null) as Record<string,unknown>|null
+  const title=clean(String(articleMeta?.seo_title||article.title)),description=summary(String(articleMeta?.seo_description||articleMeta?.excerpt||article.body))
+  const seoKeywords=Array.isArray(articleMeta?.seo_keywords)?articleMeta?.seo_keywords:[article.topic,article.industry,article.challenge]
   const available=Object.fromEntries(
     variants
       .filter(item=>SUPPORTED.has(String(item.language) as Locale))
@@ -54,7 +56,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
   return{
     title,
     description,
-    keywords:[article.topic,article.industry,article.challenge].filter(Boolean) as string[],
+    keywords:seoKeywords.filter(Boolean) as string[],
     alternates:{canonical,languages:available},
     openGraph:{title,description,url:'https://sc-analytics.io'+canonical,type:'article',locale:locale==='es'?'es_ES':locale==='ca'?'ca_ES':'en_GB',publishedTime:article.published_at||undefined},
   }
@@ -81,11 +83,11 @@ export default async function LocalizedArticle({params}:Props){
       publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://sc-analytics.io'},
       mainEntityOfPage:'https://sc-analytics.io/knowledge/'+slug+'/'+locale,
     }
-    return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><ArticleContent article={staticArticle} forcedLanguage={locale}/></>
+    return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><KnowledgeArticleGoldStandard article={staticArticle} forcedLanguage={locale}/></>
   }
 
   const variants=await getPublicGeneratedArticleVariants(slug)
-  const article=variants.find(item=>item.language===locale)
+  const article=variants.find(item=>item.language===locale)||variants.find(item=>item.language==='es')||variants.find(item=>item.language==='en')||variants[0]
   if(!article)notFound()
   const schema={
     '@context':'https://schema.org',
@@ -98,5 +100,5 @@ export default async function LocalizedArticle({params}:Props){
     publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://sc-analytics.io'},
     mainEntityOfPage:'https://sc-analytics.io/knowledge/'+slug+'/'+locale,
   }
-  return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><GeneratedArticleContent variants={variants} forcedLanguage={locale}/></>
+  return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><GeneratedKnowledgeArticleGoldStandard variants={variants} forcedLanguage={locale}/></>
 }

@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-053",
+  "sequence": 53,
+  "arc_id": "ARC-14",
+  "slug": "facility-location-is-not-a-distance-problem",
+  "scheduled_at": "2027-02-14T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Optimization & OR",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "point_of_view_contrarian",
+  "angle": "facility location optimization",
+  "primary_keyword": "facility location optimization",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-054",
+    "KB-055",
+    "KB-056"
+  ],
+  "variants": {
+    "es": {
+      "title": "Facility location no es un problema de distancia",
+      "excerpt": "Elegir una ubicación implica transporte, coste fijo, servicio, capacidad, resiliencia y crecimiento. La distancia es solo una capa del diseño de red.",
+      "quick": [
+        "Más cerca no siempre es mejor",
+        "Coste fijo y servicio compiten",
+        "La resiliencia cambia la red"
+      ],
+      "section_titles": [
+        "La distancia explica solo una parte",
+        "El coste fijo cambia la geometría",
+        "Servicio y resiliencia también importan",
+        "Diseñar para el futuro, no solo para hoy"
+      ],
+      "business_title": "Una decisión de localización debe equilibrar coste, servicio y resiliencia durante años, no minimizar kilómetros en una fotografía actual.",
+      "business_steps": [
+        "Demanda y flujos",
+        "Coste total",
+        "Red robusta"
+      ],
+      "body": "Cuando una empresa decide dónde abrir un almacén, planta, hub o punto de servicio, la intuición suele empezar con un mapa. Buscar el centro de los clientes parece razonable. Pero **facility location no es un problema de encontrar el punto más cercano; es un problema de diseño de red bajo múltiples costes y restricciones.**\n\nUna ubicación reduce algunas distancias y aumenta otras. Puede mejorar servicio y encarecer estructura fija. Puede ahorrar transporte y aumentar riesgo de concentración. **La decisión correcta aparece al evaluar el sistema completo, no una coordenada aislada.**\n\n**La distancia explica solo una parte**\nLa demanda no está distribuida de forma uniforme. Algunos clientes pesan más por volumen, margen, frecuencia o SLA. Por eso el centro geométrico rara vez coincide con el centro económico.\n\nTambién existen rutas, carreteras, peajes, congestión y modos de transporte. **Diez kilómetros en línea recta no equivalen a diez kilómetros operativos.**\n\nEl tiempo de entrega puede importar más que la distancia. Una ubicación algo más lejana pero bien conectada por autopista, puerto o red de transporte puede ofrecer mejor servicio que una posición aparentemente central.\n\nAdemás, las operaciones de entrada y salida pueden tener geografías distintas. Un hub debe considerar proveedores y clientes, no solo demanda final.\n\n**El coste fijo cambia la geometría**\nCada instalación añade alquiler o capex, personal, sistemas, mantenimiento y stock duplicado. Abrir más ubicaciones puede reducir transporte de última milla, pero aumenta coste estructural.\n\nTambién puede aumentar inventario. **Distribuir stock entre varios nodos suele reducir pooling de demanda y exigir más safety stock agregado.** Ese efecto puede ser material en productos volátiles.\n\nUna única instalación aprovecha economías de escala, pero puede generar viajes largos y dependencia excesiva de un nodo.\n\nPor eso la decisión no se resuelve preguntando dónde está el centro, sino cuántas instalaciones abrir y dónde colocarlas.\n\n**Servicio y resiliencia también importan**\nEl nivel de servicio puede imponer límites. Si ciertos clientes deben recibir en cuatro horas o un día, la red necesita suficiente cobertura geográfica.\n\nLa resiliencia introduce otro trade-off. **Una red muy concentrada puede ser eficiente en condiciones normales y frágil ante una interrupción.** Dos hubs pueden costar más y reducir riesgo de parada total.\n\nTambién existen restricciones de capacidad. Un emplazamiento barato puede no permitir crecimiento, personal disponible o conexiones logísticas suficientes.\n\nFactores regulatorios, fiscales, energéticos o laborales pueden cambiar la decisión aunque no aparezcan en un mapa de distancias.\n\n**Diseñar para el futuro, no solo para hoy**\nFacility location es una decisión de largo plazo. La demanda utilizada debería incluir escenarios de crecimiento, cambios de mix y posibles mercados nuevos.\n\nUn modelo útil prueba alternativas bajo varios futuros. **Una ubicación ligeramente más cara hoy puede ser mejor si evita una expansión costosa dentro de dos años.**\n\nTambién conviene analizar sensibilidad: qué ocurre si cambia combustible, alquiler, demanda o nivel de servicio. Una solución que deja de ser atractiva ante pequeños cambios es frágil.\n\nLa capacidad de cierre o expansión también importa. Algunas localizaciones ofrecen mayor opcionalidad contractual o física. Ese valor puede justificar un coste inicial superior.\n\nEl modelo debería incluir coste de transición. Mover inventario, cerrar instalaciones o migrar operaciones tiene costes que pueden hacer inviable una solución teóricamente superior.\n\nLa decisión final no tiene por qué ser una única respuesta. Puede existir un conjunto de alternativas eficientes con distintos perfiles de coste y resiliencia. Management puede elegir dentro de esa frontera.\n\nAdemás, los supuestos deben quedar documentados. Volúmenes, costes, tiempos de viaje y SLAs cambian; la red debería revisarse cuando cambien materialmente.\n\nLa clave es pensar en red, no en puntos. **Facility location decide cómo una empresa quiere posicionar capacidad frente a demanda durante años. La distancia importa, pero solo dentro de una decisión mucho más amplia sobre coste, servicio, riesgo y flexibilidad.**",
+      "seo_title": "Facility location: más que minimizar distancia",
+      "seo_description": "Por qué facility location optimization debe equilibrar transporte, coste fijo, inventario, servicio, capacidad, resiliencia y crecimiento.",
+      "seo_keywords": [
+        "facility location optimization",
+        "network design",
+        "warehouse location",
+        "facility location model"
+      ],
+      "tags": [
+        "Optimization",
+        "Facility Location",
+        "Network Design"
+      ]
+    },
+    "en": {
+      "title": "Facility location is not a distance problem",
+      "excerpt": "Choosing a location involves transport, fixed cost, service, capacity, resilience and growth. Distance is only one layer of network design.",
+      "quick": [
+        "Closer is not always better",
+        "Fixed cost and service compete",
+        "Resilience changes the network"
+      ],
+      "section_titles": [
+        "Distance explains only part of the decision",
+        "Fixed cost changes the geometry",
+        "Service and resilience matter too",
+        "Design for the future, not only today"
+      ],
+      "business_title": "A location decision should balance cost, service and resilience over years, not minimize kilometres in one snapshot.",
+      "business_steps": [
+        "Demand and flows",
+        "Total cost",
+        "Robust network"
+      ],
+      "body": "When a company decides where to open a warehouse, plant, hub or service point, intuition often begins with a map. Finding the centre of customers seems reasonable. But **facility location is not a problem of finding the closest point; it is a network-design decision under multiple costs and constraints.**\n\nOne location shortens some distances and lengthens others. It can improve service while increasing fixed cost. It can reduce transport while increasing concentration risk. **The right decision appears only when the entire system is evaluated rather than one coordinate.**\n\n**Distance explains only part of the decision**\nDemand is not distributed uniformly. Some customers matter more because of volume, margin, frequency or SLA. The geographic centre therefore rarely equals the economic centre.\n\nRoads, congestion, tolls and transport modes matter too. **Ten kilometres in a straight line is not the same as ten operational kilometres.**\n\nDelivery time can matter more than distance. A slightly more distant location with strong motorway, port or transport connectivity can outperform a visually central site.\n\nInbound and outbound flows may also have different geographies. A hub should consider suppliers and customers together.\n\n**Fixed cost changes the geometry**\nEvery facility adds rent or capex, labour, systems, maintenance and duplicated inventory. More locations can lower last-mile transport while increasing structural cost.\n\nInventory can rise as well. **Splitting stock across multiple nodes usually reduces demand pooling and can increase total safety stock.** That effect matters particularly for volatile products.\n\nA single facility captures scale economies but can create long journeys and excessive dependency on one node.\n\nThe question is therefore not simply where the centre sits, but how many facilities should exist and where.\n\n**Service and resilience matter too**\nService targets can impose geographic limits. If key customers require four-hour or next-day delivery, the network needs enough coverage.\n\nResilience introduces another trade-off. **A highly concentrated network may be efficient in normal conditions and fragile during disruption.** Two hubs can cost more but reduce the risk of total failure.\n\nCapacity matters too. A low-cost site may lack room to expand, labour availability or sufficient transport connections.\n\nRegulatory, tax, energy and labour factors can change the answer even when they do not appear on the distance map.\n\n**Design for the future, not only today**\nFacility location is a long-term commitment. Demand inputs should include growth scenarios, changing product mix and potential new markets.\n\nA useful model tests alternatives under several futures. **A slightly more expensive location today may be stronger if it avoids a costly expansion two years later.**\n\nSensitivity analysis should test fuel, rent, demand and service assumptions. A solution that stops being attractive after small changes is fragile.\n\nExpansion and exit flexibility also matter. Some sites offer more contractual or physical optionality. That flexibility can justify a higher initial cost.\n\nTransition cost belongs in the decision. Moving inventory, closing facilities and migrating operations can make a theoretically superior design economically unattractive.\n\nThe answer does not have to be one winner. There may be several efficient networks with different cost and resilience profiles. Management can choose along that frontier.\n\nAssumptions should remain documented. Volumes, costs, travel times and SLAs evolve, and the network should be reviewed when they change materially.\n\nThe key is to think in networks rather than points. **Facility location determines how the company positions capacity against demand for years. Distance matters, but only inside a broader decision about cost, service, risk and flexibility.**\n\nThe decision should also distinguish average performance from peak conditions. A site that looks efficient on annual averages may fail during seasonal peaks because dock, labour or carrier capacity becomes constrained. **Facility design should be tested against the periods that determine service risk, not only against annualized flows.** This often changes the attractiveness of locations with apparently similar transport economics.",
+      "seo_title": "Facility Location Is More Than Distance",
+      "seo_description": "Why facility location optimization should balance transport, fixed cost, inventory, service, capacity, resilience and future growth.",
+      "seo_keywords": [
+        "facility location optimization",
+        "network design",
+        "warehouse location",
+        "facility location model"
+      ],
+      "tags": [
+        "Optimization",
+        "Facility Location",
+        "Network Design"
+      ]
+    },
+    "ca": {
+      "title": "Facility location no és un problema de distància",
+      "excerpt": "Escollir una ubicació implica transport, cost fix, servei, capacitat, resiliència i creixement. La distància és només una capa del disseny de xarxa.",
+      "quick": [
+        "Més a prop no sempre és millor",
+        "Cost fix i servei competeixen",
+        "La resiliència canvia la xarxa"
+      ],
+      "section_titles": [
+        "La distància explica només una part",
+        "El cost fix canvia la geometria",
+        "Servei i resiliència també importen",
+        "Dissenyar pel futur, no només per avui"
+      ],
+      "business_title": "Una decisió de localització ha d’equilibrar cost, servei i resiliència durant anys, no minimitzar quilòmetres en una fotografia actual.",
+      "business_steps": [
+        "Demanda i fluxos",
+        "Cost total",
+        "Xarxa robusta"
+      ],
+      "body": "Quan una empresa decideix on obrir un magatzem, planta, hub o punt de servei, la intuïció sol començar amb un mapa. Buscar el centre dels clients sembla raonable. Però **facility location no és un problema de trobar el punt més proper; és una decisió de disseny de xarxa sota múltiples costos i restriccions.**\n\nUna ubicació redueix algunes distàncies i n’augmenta d’altres. Pot millorar servei i encarir estructura fixa. Pot estalviar transport i augmentar risc de concentració. **La decisió correcta apareix quan s’avalua tot el sistema i no una coordenada aïllada.**\n\n**La distància explica només una part**\nLa demanda no està distribuïda uniformement. Alguns clients pesen més per volum, marge, freqüència o SLA. Per això el centre geogràfic rarament coincideix amb el centre econòmic.\n\nTambé hi ha carreteres, congestió, peatges i modes de transport. **Deu quilòmetres en línia recta no equivalen a deu quilòmetres operatius.**\n\nEl temps de lliurament pot importar més que la distància. Una ubicació una mica més lluny però ben connectada per autopista, port o transport pot oferir millor servei.\n\nEls fluxos d’entrada i sortida també poden tenir geografies diferents. Un hub ha de considerar proveïdors i clients alhora.\n\n**El cost fix canvia la geometria**\nCada instal·lació afegeix lloguer o capex, personal, sistemes, manteniment i inventari duplicat. Més ubicacions poden reduir last-mile i augmentar cost estructural.\n\nTambé pot pujar inventari. **Dividir stock entre diversos nodes sol reduir pooling de demanda i pot exigir més safety stock total.** L’efecte és important en productes volàtils.\n\nUna única instal·lació aprofita economies d’escala però pot crear trajectes llargs i dependència excessiva d’un node.\n\nPer això la pregunta no és només on està el centre, sinó quantes instal·lacions calen i on.\n\n**Servei i resiliència també importen**\nEls targets de servei poden imposar límits geogràfics. Si clients clau necessiten entrega en quatre hores o un dia, la xarxa necessita prou cobertura.\n\nLa resiliència introdueix un altre trade-off. **Una xarxa molt concentrada pot ser eficient en condicions normals i fràgil davant una interrupció.** Dos hubs poden costar més i reduir risc de fallada total.\n\nTambé hi ha restriccions de capacitat. Un emplaçament barat pot no permetre créixer, no tenir prou personal o connexions logístiques.\n\nFactors regulatoris, fiscals, energètics o laborals poden canviar la decisió encara que no apareguin al mapa.\n\n**Dissenyar pel futur, no només per avui**\nFacility location és una decisió de llarg termini. La demanda utilitzada ha d’incloure escenaris de creixement, canvis de mix i mercats potencials.\n\nUn bon model prova alternatives en diversos futurs. **Una ubicació lleugerament més cara avui pot ser millor si evita una expansió costosa d’aquí a dos anys.**\n\nTambé convé fer sensibilitat a combustible, lloguer, demanda i servei. Una solució que deixa de ser atractiva amb petits canvis és fràgil.\n\nLa flexibilitat d’expansió o sortida també importa. Alguns emplaçaments ofereixen més opcionalitat contractual o física, i això pot justificar més cost inicial.\n\nEl cost de transició forma part de la decisió. Moure inventari, tancar instal·lacions o migrar operacions pot fer inviable una opció teòricament superior.\n\nLa resposta no ha de ser un únic guanyador. Pot haver-hi diverses xarxes eficients amb perfils diferents de cost i resiliència. Management pot triar dins d’aquesta frontera.\n\nEls supòsits han de quedar documentats. Volums, costos, temps de viatge i SLAs canvien; la xarxa s’ha de revisar quan ho fan materialment.\n\nLa clau és pensar en xarxa, no en punts. **Facility location decideix com una empresa posiciona capacitat davant la demanda durant anys. La distància importa, però només dins d’una decisió més àmplia sobre cost, servei, risc i flexibilitat.**\n\nLa decisió també ha de distingir rendiment mitjà de condicions de pic. Un emplaçament que sembla eficient amb mitjanes anuals pot fallar en temporada alta perquè molls, personal o carriers queden saturats. **El disseny s’ha de provar contra els períodes que determinen el risc de servei, no només amb fluxos anualitzats.** Això pot canviar l’atractiu de localitzacions amb economics de transport semblants.",
+      "seo_title": "Facility location: més que minimitzar distància",
+      "seo_description": "Per què facility location optimization ha d’equilibrar transport, cost fix, inventari, servei, capacitat, resiliència i creixement.",
+      "seo_keywords": [
+        "facility location optimization",
+        "network design",
+        "warehouse location",
+        "facility location model"
+      ],
+      "tags": [
+        "Optimization",
+        "Facility Location",
+        "Network Design"
+      ]
+    }
+  }
+}

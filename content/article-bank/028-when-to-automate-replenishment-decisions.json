@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-028",
+  "sequence": 28,
+  "arc_id": "ARC-07",
+  "slug": "when-to-automate-replenishment-decisions",
+  "scheduled_at": "2026-12-13T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Inventory & Supply Chain",
+  "editorial_pillar": "industries_use_cases",
+  "content_family": "decision_guide",
+  "angle": "automated replenishment",
+  "primary_keyword": "automated replenishment",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-025",
+    "KB-026",
+    "KB-027"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cuándo automatizar decisiones de reposición",
+      "excerpt": "Automatizar pedidos tiene sentido cuando la política es estable, los datos son fiables y las excepciones están definidas. Si no, solo automatizamos una mala regla.",
+      "quick": [
+        "Automatiza una política, no un hábito",
+        "Los datos deben ser confiables",
+        "Las excepciones necesitan ownership"
+      ],
+      "section_titles": [
+        "Qué debe estar estable primero",
+        "Qué decisiones sí se pueden automatizar",
+        "Dónde mantener intervención humana",
+        "Cómo desplegar sin perder control"
+      ],
+      "business_title": "La reposición se automatiza bien cuando la lógica ya es defendible antes de quitar a la persona del bucle.",
+      "business_steps": [
+        "Política validada",
+        "Automatización gradual",
+        "Control por excepción"
+      ],
+      "body": "Automatizar reposición puede reducir trabajo manual, acelerar decisiones y mantener consistencia en carteras grandes. También puede amplificar errores a una velocidad que un proceso manual nunca alcanzaría. **La pregunta no es si una orden puede automatizarse técnicamente, sino si la política que la genera es suficientemente fiable para ejecutarse sin revisión constante.**\n\nUn buen sistema automático no elimina criterio humano; lo desplaza. Las personas dejan de revisar cada SKU y pasan a diseñar reglas, monitorizar excepciones y corregir cambios de régimen. **La automatización funciona mejor cuando la decisión rutinaria está estandarizada y la atención humana se reserva para los casos que realmente necesitan juicio.**\n\n**Qué debe estar estable primero**\nAntes de automatizar, la posición de inventario debe ser confiable. Stock on hand, tránsito, reservas, pedidos abiertos y backorders necesitan una definición consistente. Un error de integración puede generar compras duplicadas aunque el modelo de reposición sea correcto.\n\nTambién deben estar razonablemente calibrados lead time, MOQ, safety stock y calendario de proveedor. **Automatizar parámetros incorrectos no elimina el problema; elimina la pausa que permitía a un planner detectarlo.**\n\nLa política necesita un backtest. Debe demostrar que bajo periodos normales y situaciones más volátiles mantiene servicio y coste dentro de rangos aceptables. Si la lógica cambia cada semana porque todavía estamos aprendiendo cómo debería funcionar, es pronto para una automatización completa.\n\n**Qué decisiones sí se pueden automatizar**\nLos mejores candidatos son decisiones frecuentes, repetitivas y con reglas claras. SKUs estables, proveedores fiables y restricciones conocidas suelen permitir un alto grado de automatización.\n\nLa orden puede calcularse automáticamente y ejecutarse directamente si el riesgo es bajo, o pasar por una aprobación ligera cuando supera un umbral económico. **No toda automatización tiene que ser binaria entre manual y completamente autónoma.**\n\nTambién pueden automatizarse tareas auxiliares: detectar que el reorder point fue cruzado, calcular cantidad sugerida, consolidar órdenes, comprobar mínimos, generar alertas y preparar documentación. A menudo estas capas capturan gran parte del ahorro antes de automatizar el compromiso final.\n\n**Dónde mantener intervención humana**\nNuevos productos, demanda intermitente extrema, promociones inéditas, proveedores en crisis o decisiones con gran compromiso de caja merecen más supervisión. El problema no es que el algoritmo no pueda producir un número, sino que **la incertidumbre estructural puede estar fuera de lo aprendido por la política**.\n\nLas excepciones deberían estar definidas ex ante. Por ejemplo, revisión obligatoria cuando la cantidad supera cierto importe, el lead time cambia más de un umbral, el forecast drift aumenta o un proveedor entra en estado de riesgo.\n\nTambién conviene capturar el motivo del override humano. Si el usuario modifica una sugerencia, el sistema debería preguntar por qué: información comercial, restricción no registrada, calidad de datos o criterio de riesgo. Esa información permite mejorar la política.\n\n**Cómo desplegar sin perder control**\nLa transición más segura suele empezar en modo recomendación. El sistema calcula órdenes y se comparan con las decisiones humanas sin ejecutar. Después puede pasar a aprobación de un clic y, finalmente, a ejecución automática para segmentos de bajo riesgo.\n\nEste despliegue progresivo permite medir tasa de aceptación, overrides, impacto de inventario y errores operativos. **La confianza se construye con evidencia de decisiones correctas, no con una promesa de inteligencia.**\n\nLos guardrails deben incluir límites de cantidad, presupuesto, frecuencia y variación respecto al comportamiento esperado. También necesita un kill switch claro para detener automatización si datos o integraciones fallan.\n\nLa monitorización debe ir más allá de “workflow ejecutado”. Hay que comprobar servicio, stock, pedidos cancelados, urgencias y anomalías. Un pipeline verde puede estar tomando malas decisiones de forma perfectamente puntual.\n\nFinalmente, ownership debe ser explícito. Alguien responde por parámetros, alguien por datos y alguien por las excepciones operativas. **Un sistema autónomo sin propietario no es autonomía; es una decisión sin responsable.**\n\nAutomatizar reposición tiene mucho sentido cuando la política está validada, la información es fiable y las excepciones son visibles. **Primero construimos una buena decisión; después hacemos que se ejecute sola donde el riesgo lo permite.**",
+      "seo_title": "Cuándo automatizar la reposición",
+      "seo_description": "Guía para automatizar decisiones de reposición con datos fiables, políticas validadas, guardrails, excepciones y despliegue progresivo.",
+      "seo_keywords": [
+        "automated replenishment",
+        "automatización reposición",
+        "inventory automation",
+        "replenishment system"
+      ],
+      "tags": [
+        "Inventory",
+        "Automation",
+        "Replenishment"
+      ]
+    },
+    "en": {
+      "title": "When to automate replenishment decisions",
+      "excerpt": "Automated ordering makes sense when policy is stable, data is reliable and exceptions are defined. Otherwise, the system only automates a bad rule.",
+      "quick": [
+        "Automate a policy, not a habit",
+        "Data must be trustworthy",
+        "Exceptions need ownership"
+      ],
+      "section_titles": [
+        "What should be stable first",
+        "Which decisions can be automated",
+        "Where to keep human intervention",
+        "Deploy without losing control"
+      ],
+      "business_title": "Replenishment automates well when the logic is defensible before the person is removed from the loop.",
+      "business_steps": [
+        "Validated policy",
+        "Gradual automation",
+        "Exception control"
+      ],
+      "body": "Automating replenishment can reduce manual work, speed up decisions and create consistency across large portfolios. It can also amplify mistakes at a speed that a manual process never could. **The question is not whether an order can be automated technically, but whether the policy generating it is reliable enough to execute without constant review.**\n\nA strong automated system does not eliminate human judgment; it relocates it. People stop reviewing every SKU and instead design rules, monitor exceptions and respond to regime changes. **Automation works best when routine decisions are standardized and human attention is reserved for cases that genuinely require judgment.**\n\n**What should be stable first**\nBefore automation, inventory position must be trustworthy. On-hand stock, in-transit goods, reservations, open purchase orders and backorders need consistent definitions. An integration error can generate duplicate purchases even when replenishment logic is correct.\n\nLead time, MOQ, safety stock and supplier calendars should also be reasonably calibrated. **Automating incorrect parameters does not remove the problem; it removes the pause that allowed a planner to detect it.**\n\nThe policy needs backtesting. It should demonstrate acceptable service and cost across normal periods and more volatile conditions. If the logic changes every week because the organization is still learning what the policy should be, full automation is premature.\n\n**Which decisions can be automated**\nThe best candidates are frequent, repetitive decisions governed by clear rules. Stable SKUs, reliable suppliers and known constraints often support a high degree of automation.\n\nOrders can be calculated and executed directly when risk is low, or routed through light approval above an economic threshold. **Automation does not have to be binary between manual and fully autonomous.**\n\nSupporting tasks can also be automated: detecting reorder-point breaches, calculating suggested quantities, consolidating orders, checking minimums, creating alerts and preparing documents. These layers often capture much of the efficiency before the final commitment is automated.\n\n**Where to keep human intervention**\nNew products, extremely intermittent demand, unprecedented promotions, distressed suppliers and high-cash commitments deserve closer supervision. The issue is not whether an algorithm can output a number; **structural uncertainty may sit outside what the policy has learned**.\n\nExceptions should be defined in advance. Manual review can be required when order value crosses a threshold, lead time changes materially, forecast drift rises or a supplier enters a risk state.\n\nHuman overrides should also be coded by reason. If a user changes a recommendation, the system should capture whether the cause was commercial information, an unrecorded constraint, data quality or risk judgment. That evidence improves policy design.\n\n**Deploy without losing control**\nA safer transition usually begins in recommendation mode. The system calculates orders and compares them with human decisions without executing. It can then move to one-click approval and eventually direct execution for low-risk segments.\n\nProgressive deployment makes acceptance rate, overrides, inventory impact and operating errors observable. **Trust is built through evidence of good decisions, not through a claim of intelligence.**\n\nGuardrails should include quantity, budget, frequency and deviation limits. A clear kill switch is also necessary to stop automation when data or integrations fail.\n\nMonitoring must go beyond “workflow succeeded”. Service, stock, cancelled orders, emergency actions and anomalies need to be tracked. A green pipeline can execute poor decisions perfectly on time.\n\nOwnership should be explicit as well. Someone owns parameters, someone owns data quality and someone owns operating exceptions. **An autonomous system without an owner is not autonomy; it is a decision without accountability.**\n\nReplenishment is a strong automation candidate once policy is validated, information is trustworthy and exceptions are visible. **First build a good decision; then let it execute itself where the risk permits.**\n\nA final maturity test is recovery behaviour. The system should know what happens when data is late, a supplier integration fails or the forecast is unavailable. **Automation is mature when failure leads to a safe fallback rather than to a silent bad order.** A simple baseline policy, frozen parameters or temporary approval mode can provide that fallback until the primary system is healthy again.",
+      "seo_title": "When to Automate Replenishment",
+      "seo_description": "A guide to automated replenishment using reliable data, validated policies, guardrails, exception handling and progressive deployment.",
+      "seo_keywords": [
+        "automated replenishment",
+        "inventory automation",
+        "replenishment automation",
+        "automated ordering"
+      ],
+      "tags": [
+        "Inventory",
+        "Automation",
+        "Replenishment"
+      ]
+    },
+    "ca": {
+      "title": "Quan automatitzar decisions de reposició",
+      "excerpt": "Automatitzar comandes té sentit quan la política és estable, les dades són fiables i les excepcions estan definides. Si no, només automatitzem una mala regla.",
+      "quick": [
+        "Automatitza una política, no un hàbit",
+        "Les dades han de ser fiables",
+        "Les excepcions necessiten ownership"
+      ],
+      "section_titles": [
+        "Què ha d’estar estable primer",
+        "Quines decisions es poden automatitzar",
+        "On mantenir intervenció humana",
+        "Desplegar sense perdre control"
+      ],
+      "business_title": "La reposició s’automatitza bé quan la lògica ja és defensable abans de treure la persona del bucle.",
+      "business_steps": [
+        "Política validada",
+        "Automatització gradual",
+        "Control per excepció"
+      ],
+      "body": "Automatitzar reposició pot reduir feina manual, accelerar decisions i mantenir consistència en carteres grans. També pot amplificar errors a una velocitat que un procés manual no assoliria. **La pregunta no és si una ordre es pot automatitzar tècnicament, sinó si la política que la genera és prou fiable per executar-se sense revisió constant.**\n\nUn bon sistema automàtic no elimina criteri humà; el desplaça. Les persones deixen de revisar cada SKU i passen a dissenyar regles, monitoritzar excepcions i respondre a canvis de règim. **L’automatització funciona millor quan la decisió rutinària està estandarditzada i l’atenció humana es reserva per als casos que realment necessiten judici.**\n\n**Què ha d’estar estable primer**\nAbans d’automatitzar, la posició d’inventari ha de ser fiable. Stock on hand, trànsit, reserves, comandes obertes i backorders necessiten definicions consistents. Un error d’integració pot generar compres duplicades encara que la lògica sigui correcta.\n\nLead time, MOQ, safety stock i calendaris de proveïdor també han d’estar raonablement calibrats. **Automatitzar paràmetres incorrectes no elimina el problema; elimina la pausa que permetia a un planner detectar-lo.**\n\nLa política necessita backtesting. Ha de demostrar servei i cost acceptables en períodes normals i més volàtils. Si la lògica canvia cada setmana perquè encara estem aprenent com ha de funcionar, és aviat per a una automatització completa.\n\n**Quines decisions es poden automatitzar**\nEls millors candidats són decisions freqüents, repetitives i amb regles clares. SKUs estables, proveïdors fiables i restriccions conegudes permeten un grau elevat d’automatització.\n\nLa comanda es pot calcular i executar directament si el risc és baix, o passar per una aprovació lleugera quan supera un llindar econòmic. **L’automatització no ha de ser binària entre manual i completament autònoma.**\n\nTambé es poden automatitzar tasques auxiliars: detectar que s’ha creuat el reorder point, calcular quantitat suggerida, consolidar ordres, comprovar mínims, generar alertes i preparar documents. Aquestes capes capturen molta eficiència abans d’automatitzar el compromís final.\n\n**On mantenir intervenció humana**\nProductes nous, demanda extremadament intermitent, promocions inèdites, proveïdors en crisi o grans compromisos de caixa necessiten més supervisió. El problema no és que l’algoritme no pugui donar un número; **la incertesa estructural pot estar fora del que la política ha après.**\n\nLes excepcions han d’estar definides ex ante. Es pot exigir revisió quan l’import supera un llindar, el lead time canvia materialment, augmenta forecast drift o un proveïdor entra en risc.\n\nEls overrides humans també s’han de registrar per motiu. Si un usuari modifica una recomanació, el sistema ha de capturar si hi havia informació comercial, una restricció no registrada, un problema de dades o criteri de risc.\n\n**Desplegar sense perdre control**\nLa transició més segura acostuma a començar en mode recomanació. El sistema calcula ordres i les compara amb decisions humanes sense executar. Després pot passar a aprovació d’un clic i, finalment, execució directa en segments de baix risc.\n\nAquest desplegament progressiu permet mesurar acceptació, overrides, impacte d’inventari i errors. **La confiança es construeix amb evidència de bones decisions, no amb una promesa d’intel·ligència.**\n\nEls guardrails han d’incloure límits de quantitat, pressupost, freqüència i desviació. També cal un kill switch clar quan fallen dades o integracions.\n\nLa monitorització ha d’anar més enllà de “workflow executat”. Cal seguir servei, stock, comandes cancel·lades, urgències i anomalies. Un pipeline verd pot executar males decisions puntualment.\n\nOwnership també ha de ser explícit. Algú respon pels paràmetres, algú per dades i algú per excepcions. **Un sistema autònom sense propietari no és autonomia; és una decisió sense responsable.**\n\nAutomatitzar reposició té sentit quan la política està validada, la informació és fiable i les excepcions són visibles. **Primer construïm una bona decisió; després fem que s’executi sola on el risc ho permet.**\n\nUna última prova de maduresa és el comportament davant fallades. El sistema ha de saber què passa si les dades arriben tard, falla una integració de proveïdor o el forecast no està disponible. **L’automatització és madura quan la fallada porta a un fallback segur i no a una mala comanda silenciosa.** Una política baseline, paràmetres congelats o un mode temporal d’aprovació poden donar aquesta protecció.",
+      "seo_title": "Quan automatitzar la reposició",
+      "seo_description": "Guia per automatitzar decisions de reposició amb dades fiables, polítiques validades, guardrails, excepcions i desplegament progressiu.",
+      "seo_keywords": [
+        "automated replenishment",
+        "automatització reposició",
+        "inventory automation",
+        "replenishment system"
+      ],
+      "tags": [
+        "Inventory",
+        "Automation",
+        "Replenishment"
+      ]
+    }
+  }
+}

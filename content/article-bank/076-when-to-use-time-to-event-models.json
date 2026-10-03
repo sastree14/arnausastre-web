@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-076",
+  "sequence": 76,
+  "arc_id": "ARC-19",
+  "slug": "when-to-use-time-to-event-models",
+  "scheduled_at": "2027-04-12T09:00:00+02:00",
+  "knowledge_area": "risk_decision",
+  "cluster": "Machine Learning",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "decision_guide",
+  "angle": "when to use survival analysis",
+  "primary_keyword": "when to use survival analysis",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-073",
+    "KB-074",
+    "KB-075"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cuándo usar modelos de tiempo hasta evento",
+      "excerpt": "Survival analysis merece la pena cuando timing, censura y riesgo dinámico cambian la intervención, la prioridad o la planificación de capacidad.",
+      "quick": [
+        "El evento debe tener timing relevante",
+        "La censura debe tratarse bien",
+        "La decisión debe usar la curva temporal"
+      ],
+      "section_titles": [
+        "Comprueba si el tiempo cambia la decisión",
+        "Revisa censura y timestamps",
+        "Elige una estructura de modelo adecuada",
+        "Valida contra una política real"
+      ],
+      "business_title": "Time-to-event es el enfoque correcto cuando conservar la dimensión temporal mejora una decisión concreta más de lo que cuesta la complejidad añadida.",
+      "business_steps": [
+        "Timing relevante",
+        "Modelo temporal",
+        "Decisión validada"
+      ],
+      "body": "Los modelos de tiempo hasta evento no deberían utilizarse simplemente porque el dataset contiene fechas. **Survival analysis tiene sentido cuando el momento del evento cambia la acción que la empresa quiere tomar** y cuando la censura forma parte natural de los datos.\n\nLa decisión debe empezar por negocio: qué cambia si sabemos que el riesgo está concentrado en dos semanas frente a seis meses. Si la respuesta es “nada”, una clasificación puede ser más sencilla. **La dimensión temporal solo merece complejidad cuando añade una ventaja operativa real.**\n\n**Comprueba si el tiempo cambia la decisión**\nEl primer criterio es si existe una intervención sensible al momento.\n\nEn mantenimiento, conocer riesgo antes de una parada programada puede permitir reparar sin downtime adicional. En churn, intervenir demasiado pronto puede malgastar incentivos. En crédito, el horizonte de default puede afectar vigilancia y provisión.\n\n**Si dos casos con el mismo riesgo acumulado reciben acciones distintas por su timing**, existe una señal fuerte a favor de time-to-event.\n\nTambién puede ser útil cuando la empresa necesita anticipar volumen futuro de eventos y planificar recursos.\n\nOtra señal es trabajar con múltiples horizontes. Si hoy mantenemos clasificadores separados a 30, 90 y 180 días, un modelo temporal puede ofrecer una estructura más coherente.\n\n**Revisa censura y timestamps**\nSurvival necesita una definición precisa de tiempo cero, evento y final de observación.\n\nEl tiempo cero puede ser alta de cliente, origen de préstamo, instalación de máquina o inicio de tratamiento. **Una definición incorrecta de entrada puede sesgar toda la curva de riesgo.**\n\nTambién hay que distinguir censura de ausencia de datos. Un caso censurado aporta información hasta su última observación.\n\nDelayed entry o left truncation pueden aparecer cuando los casos entran al dataset después de haber estado expuestos al riesgo durante un periodo.\n\nLos competing risks también importan. Un evento puede impedir observar otro: por ejemplo, cancelación voluntaria frente a cierre de cuenta por impago.\n\nLa calidad y granularidad de timestamps condicionan qué método es viable.\n\n**Elige una estructura de modelo adecuada**\nCox proportional hazards es un baseline clásico cuando su supuesto de proportional hazards es razonable.\n\nModelos paramétricos pueden ser útiles si la forma temporal tiene una distribución interpretable. Random survival forests y boosting permiten mayor flexibilidad. Discrete-time survival transforma el problema en una secuencia de riesgos por intervalo.\n\n**El método más complejo no es automáticamente mejor**; debe responder a la estructura de datos y a la decisión.\n\nSi existen covariates que cambian con el tiempo, puede ser necesario actualizar features o utilizar formulaciones time-varying.\n\nLa elección también depende de sample size y número de eventos observados. Muchos registros con pocos eventos reales pueden limitar la complejidad útil.\n\nLa interpretabilidad importa. Una survival probability a 90 días puede ser más fácil de utilizar que un hazard ratio aislado.\n\n**Valida contra una política real**\nLa evaluación debe incluir discriminación temporal y calibration. Concordance index puede medir ranking, mientras Brier score o calibration por horizonte ayudan a evaluar probabilidades.\n\nPero el benchmark más importante es la decisión. **¿La información temporal mejora priorización, timing de intervención o planificación frente a un clasificador simple?**\n\nSe pueden simular políticas: actuar sobre top riesgo a 30 días, reservar capacidad según eventos esperados o comparar coste de intervención temprana y tardía.\n\nLa validación debe ser out-of-time cuando el entorno evoluciona.\n\nTambién conviene evaluar por cohorts, tenure y segmentos. El hazard base puede ser muy diferente entre poblaciones.\n\nLos supuestos deben probarse, no darse por válidos. Si proportional hazards no se cumple, el modelo o interpretación necesitan ajustes.\n\nLa calibración puede variar por horizonte. Un modelo bien calibrado a 30 días puede ser peor a un año.\n\nLa frecuencia de rescoring también forma parte del diseño. Si features cambian diariamente pero el score solo se actualiza trimestralmente, el beneficio de un modelo temporal puede perderse.\n\nEn producción deben monitorizarse distribución de tiempos, censura, eventos, calibration y capacidad consumida por la policy.\n\nTambién hay que decidir qué ocurre cuando no existe suficiente historia para un caso nuevo.\n\nUna estrategia híbrida puede combinar survival con reglas de negocio, especialmente para restricciones duras o eventos especiales.\n\nEl coste de mantenimiento debe compararse con alternativas. Si un único survival model sustituye varios clasificadores y mejora coherencia, puede incluso simplificar el sistema.\n\nPor último, la decisión debería documentar por qué se eligió survival. Qué parte de valor proviene del timing, qué supuestos se aceptaron y qué baseline se superó.\n\n**Usa time-to-event cuando el tiempo no sea una columna decorativa, sino una variable que cambia la decisión.** Si conservar timing, censura y evolución de riesgo mejora una acción concreta, survival analysis deja de ser sofisticación y se convierte en la representación correcta del problema.",
+      "seo_title": "Cuándo usar survival analysis",
+      "seo_description": "Guía para decidir si usar modelos time-to-event según timing, censura, timestamps, competing risks, validación y valor operativo.",
+      "seo_keywords": [
+        "when to use survival analysis",
+        "time to event model",
+        "survival analysis decision",
+        "survival modeling"
+      ],
+      "tags": [
+        "Machine Learning",
+        "Survival Analysis",
+        "Decision Guide"
+      ]
+    },
+    "en": {
+      "title": "When to use time-to-event models",
+      "excerpt": "Survival analysis is worthwhile when timing, censoring and changing risk affect intervention, prioritization or capacity planning.",
+      "quick": [
+        "Event timing must matter",
+        "Censoring must be handled correctly",
+        "The decision must use the time curve"
+      ],
+      "section_titles": [
+        "Check whether time changes the decision",
+        "Review censoring and timestamps",
+        "Choose an appropriate model structure",
+        "Validate against a real policy"
+      ],
+      "business_title": "Time-to-event is the right approach when preserving the temporal dimension improves a concrete decision enough to justify added complexity.",
+      "business_steps": [
+        "Relevant timing",
+        "Temporal model",
+        "Validated decision"
+      ],
+      "body": "Time-to-event models should not be used simply because a dataset contains dates. **Survival analysis is appropriate when event timing changes the action the organization wants to take** and when censoring is a natural part of the data.\n\nThe decision should begin with the business question: what changes if risk is concentrated in two weeks rather than six months? If the answer is “nothing”, classification may be simpler. **The time dimension deserves complexity only when it creates a real operating advantage.**\n\n**Check whether time changes the decision**\nThe first criterion is whether an intervention is time-sensitive.\n\nIn maintenance, knowing failure risk before a planned shutdown can allow repair without additional downtime. In churn, intervening too early can waste incentives. In credit, default timing can affect monitoring and provisioning.\n\n**If two cases with the same cumulative risk receive different actions because of timing**, that is a strong signal for time-to-event modeling.\n\nIt is also useful when the organization needs forecasts of future event volume for capacity planning.\n\nAnother signal is maintaining several classifiers for different horizons. A temporal model may provide a more coherent representation across 30, 90 and 180 days.\n\n**Review censoring and timestamps**\nSurvival requires precise definitions for time zero, event and end of observation.\n\nTime zero may be customer acquisition, loan origination, machine installation or treatment start. **A poor entry definition can bias the entire risk curve.**\n\nCensoring should be distinguished from missing data. A censored case provides information up to its last observed time.\n\nDelayed entry or left truncation can occur when cases enter the dataset after already being exposed to risk.\n\nCompeting risks may matter too. One event can prevent another from being observed, such as voluntary cancellation versus account closure after non-payment.\n\nTimestamp quality and granularity determine which methods are feasible.\n\n**Choose an appropriate model structure**\nCox proportional hazards is a strong classical baseline when its proportional-hazards assumption is reasonable.\n\nParametric models can be useful when the time distribution has interpretable structure. Random survival forests and boosting add flexibility. Discrete-time survival turns the problem into a sequence of interval risks.\n\n**The most complex method is not automatically the best**; it should match the data structure and the decision.\n\nIf covariates change over time, features may need regular updating or explicitly time-varying formulations.\n\nSample size and event count matter as well. Many records with few observed events can limit useful complexity.\n\nInterpretability matters too. A 90-day survival probability is often easier to act on than an isolated hazard ratio.\n\n**Validate against a real policy**\nEvaluation should include temporal discrimination and calibration. Concordance index can assess ranking, while Brier score and horizon-specific calibration assess probability quality.\n\nBut the strongest benchmark is the decision itself. **Does temporal information improve prioritization, intervention timing or capacity planning relative to a simpler classifier?**\n\nPolicy simulations can test actions: intervene on top near-term risk, reserve capacity using expected events or compare the economics of early versus late intervention.\n\nValidation should be out of time when the environment evolves.\n\nCohorts, tenure and segments should also be examined because baseline hazard may differ substantially.\n\nModel assumptions should be tested rather than assumed. If proportional hazards fails, model structure or interpretation needs adjustment.\n\nCalibration can vary by horizon. A model strong at 30 days may be weak at one year.\n\nRescoring frequency is part of design. If features change daily but scores update quarterly, much of the temporal benefit may disappear.\n\nProduction monitoring should cover time distributions, censoring, event rates, calibration and capacity consumed by the decision policy.\n\nThe system also needs behaviour for new cases with limited history.\n\nHybrid designs can combine survival with business rules, particularly for hard constraints or special events.\n\nOwnership cost should be compared with alternatives. One survival model can sometimes replace several horizon classifiers and simplify the overall system.\n\nFinally, the choice should be documented: what value comes from timing, which assumptions were accepted and which baseline was beaten.\n\n**Use time-to-event when time is not a decorative column but a variable that changes the decision.** If preserving timing, censoring and risk evolution improves a concrete action, survival analysis becomes the correct representation of the problem rather than unnecessary sophistication.",
+      "seo_title": "When to Use Survival Analysis",
+      "seo_description": "A guide to choosing time-to-event models based on timing, censoring, timestamps, competing risks, validation and operational value.",
+      "seo_keywords": [
+        "when to use survival analysis",
+        "time to event model",
+        "survival analysis decision",
+        "survival modeling"
+      ],
+      "tags": [
+        "Machine Learning",
+        "Survival Analysis",
+        "Decision Guide"
+      ]
+    },
+    "ca": {
+      "title": "Quan utilitzar models de temps fins a esdeveniment",
+      "excerpt": "Survival analysis val la pena quan timing, censura i risc dinàmic canvien la intervenció, la prioritat o la planificació de capacitat.",
+      "quick": [
+        "El timing de l’esdeveniment ha d’importar",
+        "La censura s’ha de tractar bé",
+        "La decisió ha d’utilitzar la corba temporal"
+      ],
+      "section_titles": [
+        "Comprova si el temps canvia la decisió",
+        "Revisa censura i timestamps",
+        "Tria una estructura de model adequada",
+        "Valida contra una política real"
+      ],
+      "business_title": "Time-to-event és l’enfocament correcte quan conservar la dimensió temporal millora una decisió concreta prou per justificar la complexitat afegida.",
+      "business_steps": [
+        "Timing rellevant",
+        "Model temporal",
+        "Decisió validada"
+      ],
+      "body": "Els models de temps fins a esdeveniment no s’haurien d’utilitzar simplement perquè el dataset conté dates. **Survival analysis té sentit quan el timing de l’esdeveniment canvia l’acció que l’organització vol prendre** i quan la censura forma part natural de les dades.\n\nLa decisió ha de començar per negoci: què canvia si sabem que el risc està concentrat en dues setmanes en lloc de sis mesos? Si la resposta és “res”, classificació pot ser més simple. **La dimensió temporal només mereix complexitat quan crea un avantatge operatiu real.**\n\n**Comprova si el temps canvia la decisió**\nEl primer criteri és si existeix una intervenció sensible al moment.\n\nEn manteniment, conèixer risc abans d’una parada programada pot permetre reparar sense downtime addicional. En churn, intervenir massa aviat pot malgastar incentius. En crèdit, el timing de default pot afectar seguiment i provisió.\n\n**Si dos casos amb el mateix risc acumulat reben accions diferents pel timing**, existeix un senyal fort a favor de time-to-event.\n\nTambé és útil quan l’organització necessita anticipar volum futur d’esdeveniments i planificar recursos.\n\nUn altre senyal és mantenir diversos classificadors per diferents horitzons. Un model temporal pot oferir una estructura més coherent a 30, 90 i 180 dies.\n\n**Revisa censura i timestamps**\nSurvival necessita definicions precises de temps zero, esdeveniment i final d’observació.\n\nEl temps zero pot ser alta de client, origen de préstec, instal·lació de màquina o inici de tractament. **Una mala definició d’entrada pot sesgar tota la corba de risc.**\n\nLa censura s’ha de distingir de missing data. Un cas censurat aporta informació fins a l’últim moment observat.\n\nDelayed entry o left truncation poden aparèixer quan els casos entren al dataset després d’haver estat exposats al risc.\n\nCompeting risks també poden importar. Un esdeveniment pot impedir observar-ne un altre, com cancel·lació voluntària davant tancament per impagament.\n\nLa qualitat i granularitat dels timestamps determinen quins mètodes són viables.\n\n**Tria una estructura de model adequada**\nCox proportional hazards és un baseline clàssic quan el supòsit de proportional hazards és raonable.\n\nModels paramètrics poden ser útils quan la distribució temporal té estructura interpretable. Random survival forests i boosting afegeixen flexibilitat. Discrete-time survival converteix el problema en una seqüència de riscos per interval.\n\n**El mètode més complex no és automàticament millor**; ha d’encaixar amb l’estructura de dades i la decisió.\n\nSi les covariates canvien amb el temps, pot caldre actualitzar features regularment o utilitzar formulacions time-varying.\n\nLa mida de mostra i el nombre d’esdeveniments també importen. Molts registres amb pocs events observats poden limitar la complexitat útil.\n\nLa interpretabilitat compta. Una survival probability a 90 dies acostuma a ser més fàcil d’utilitzar que un hazard ratio aïllat.\n\n**Valida contra una política real**\nL’avaluació ha d’incloure discriminació temporal i calibration. Concordance index pot mesurar ranking, mentre Brier score i calibration per horitzó avaluen probabilitats.\n\nPerò el benchmark principal és la decisió. **La informació temporal millora priorització, timing d’intervenció o planning de capacitat respecte a un classificador simple?**\n\nEs poden simular policies: actuar sobre top risc a curt termini, reservar capacitat segons events esperats o comparar economics d’intervenció primerenca i tardana.\n\nLa validació ha de ser out-of-time quan l’entorn evoluciona.\n\nTambé convé avaluar cohorts, tenure i segments perquè el hazard base pot variar molt.\n\nEls supòsits s’han de provar. Si proportional hazards falla, estructura o interpretació necessiten ajust.\n\nLa calibració pot variar per horitzó. Un model bo a 30 dies pot ser feble a un any.\n\nLa freqüència de rescoring també forma part del disseny. Si features canvien cada dia i el score només s’actualitza trimestralment, el benefici temporal es pot perdre.\n\nEn producció cal monitoritzar distribució de temps, censura, events, calibration i capacitat consumida per la policy.\n\nTambé s’ha de decidir què passa amb casos nous amb poc historial.\n\nEls dissenys híbrids poden combinar survival amb regles de negoci, sobretot per restriccions dures o esdeveniments especials.\n\nEl cost d’ownership s’ha de comparar amb alternatives. Un únic survival model pot substituir diversos classificadors i simplificar el sistema.\n\nFinalment, la decisió ha de documentar per què es va triar survival: quin valor ve del timing, quins supòsits s’accepten i quin baseline es supera.\n\n**Utilitza time-to-event quan el temps no sigui una columna decorativa, sinó una variable que canvia la decisió.** Si conservar timing, censura i evolució de risc millora una acció concreta, survival analysis es converteix en la representació correcta del problema.",
+      "seo_title": "Quan utilitzar survival analysis",
+      "seo_description": "Guia per decidir si utilitzar models time-to-event segons timing, censura, timestamps, competing risks, validació i valor operatiu.",
+      "seo_keywords": [
+        "when to use survival analysis",
+        "time to event model",
+        "survival analysis decision",
+        "survival modeling"
+      ],
+      "tags": [
+        "Machine Learning",
+        "Survival Analysis",
+        "Decision Guide"
+      ]
+    }
+  }
+}

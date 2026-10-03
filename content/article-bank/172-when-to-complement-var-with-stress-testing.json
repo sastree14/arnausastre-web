@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-172",
+  "sequence": 172,
+  "arc_id": "ARC-43",
+  "slug": "when-to-complement-var-with-stress-testing",
+  "scheduled_at": "2027-11-30T09:00:00+01:00",
+  "knowledge_area": "finance",
+  "cluster": "Finance, Risk & Pricing",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "decision_guide",
+  "angle": "var stress testing",
+  "primary_keyword": "var stress testing",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-169",
+    "KB-170",
+    "KB-171"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cuándo complementar VaR con stress testing",
+      "excerpt": "VaR resume el riesgo bajo una distribución modelada; stress testing pregunta qué ocurre cuando esa distribución deja de representar bien el entorno.",
+      "quick": [
+        "VaR resume el centro y la cola modelada",
+        "Stress testing desafía supuestos",
+        "Los escenarios deben terminar en decisiones"
+      ],
+      "section_titles": [
+        "Usa stress tests cuando el histórico no basta",
+        "Diseña escenarios que rompan supuestos relevantes",
+        "Conecta pérdidas con liquidez y capacidad de respuesta",
+        "Integra escenarios en límites y decisiones"
+      ],
+      "business_title": "Stress testing aporta valor cuando obliga a responder qué pasaría bajo condiciones que el modelo no considera probables, pero que la empresa no puede permitirse ignorar.",
+      "business_steps": [
+        "Escenario",
+        "Impacto",
+        "Respuesta"
+      ],
+      "body": "VaR es útil para resumir una distribución de pérdidas bajo un conjunto de supuestos. El problema es que los momentos que más preocupan a una organización suelen ser precisamente aquellos en los que esos supuestos dejan de comportarse como en el histórico. **Stress testing sirve para preguntar qué ocurre fuera de la comodidad estadística del modelo.**\n\nNo se trata de sustituir VaR. Se trata de reconocer que una distribución estimada no contiene todas las formas posibles de fallar. **VaR y stress testing responden preguntas diferentes y deberían convivir cuando la cola, la liquidez o la concentración pueden cambiar rápidamente.**\n\n**Usa stress tests cuando el histórico no basta**\nEl histórico es una referencia, no una garantía de cobertura.\n\nUn periodo de datos puede no contener una subida brusca de tipos, una crisis de liquidez, una ruptura de correlaciones o un shock geopolítico comparable al que queremos entender.\n\n**Si el riesgo relevante no aparece en la muestra, una métrica calibrada con esa muestra no puede describirlo bien por sí sola**.\n\nEsto es especialmente importante en portfolios nuevos, mercados con cambios estructurales o posiciones con poca historia.\n\nTambién importa cuando la empresa tiene exposiciones no lineales. Opciones, guarantees, covenants o margin calls pueden generar pérdidas discontinuas.\n\nOtro caso es la concentración. Una posición muy grande en un factor concreto puede parecer manejable bajo volatilidad normal y convertirse en problemática con un shock dirigido.\n\nLos stress tests permiten forzar esas situaciones de forma explícita.\n\n**Diseña escenarios que rompan supuestos relevantes**\nUn escenario útil no es simplemente “todo cae un 20 %”.\n\nDebe atacar los factores que realmente sostienen el riesgo del negocio.\n\nPuede combinar subida de tipos, widening de spreads, caída de equity, movimiento de FX y deterioro de liquidez.\n\n**El escenario debe ser adverso de forma coherente, no extremo de forma arbitraria**.\n\nLos históricos son útiles: repetir aproximadamente episodios conocidos permite comprobar sensibilidad.\n\nLos hipotéticos son igual de importantes porque permiten explorar eventos no observados.\n\nReverse stress testing añade otra perspectiva: en lugar de preguntar qué pérdida produce un shock, pregunta qué combinación de eventos sería necesaria para romper un límite crítico.\n\nEsto ayuda a descubrir dependencias ocultas.\n\nTambién conviene diseñar escenarios por narrativa: inflación persistente, cierre de financiación, caída de demanda, shock de commodity o fallo de contraparte.\n\nLa narrativa obliga a conectar variables en lugar de moverlas de forma aislada.\n\n**Conecta pérdidas con liquidez y capacidad de respuesta**\nUna pérdida de mercado no siempre es el único problema.\n\nEn estrés, pueden aumentar haircuts, margin requirements, spreads de financiación y tiempo necesario para vender activos.\n\n**El riesgo real puede venir de no poder sostener la posición hasta que el mercado se normalice**.\n\nPor eso el stress test debería incluir cash needs, collateral, líneas de crédito y disponibilidad de funding.\n\nTambién debe considerar acciones de management.\n\nSi un escenario supone que la empresa puede vender activos, hay que preguntar a qué precio y con qué profundidad de mercado.\n\nSi supone refinanciación, hay que comprobar si esa financiación seguiría disponible bajo el mismo shock.\n\nLa respuesta operativa puede reducir o amplificar pérdidas.\n\nTambién conviene modelar efectos de segundo orden: ventas forzadas, downgrades, llamadas de margen o incumplimiento de covenants.\n\n**Integra escenarios en límites y decisiones**\nStress testing pierde valor cuando se convierte en un ejercicio trimestral sin consecuencias.\n\nLos escenarios deberían conectar con límites, capital, hedging, liquidez y planes de contingencia.\n\n**Cada stress relevante necesita una pregunta de decisión: qué haríamos si esta pérdida o esta necesidad de liquidez apareciera mañana**.\n\nPuede definirse un umbral de pérdida tolerable por escenario.\n\nTambién pueden existir triggers de revisión si una concentración supera cierto nivel o si el headroom de liquidez cae demasiado.\n\nLos resultados deben descomponerse por factor, posición y unidad de negocio para localizar vulnerabilidades.\n\nLa frecuencia depende del riesgo. Un portfolio dinámico puede necesitar stress diario o semanal; exposiciones más estables pueden revisarse con menor frecuencia.\n\nLos escenarios deben versionarse. Si cambian los factores o shocks, management necesita saber por qué el resultado cambió.\n\nTambién hay que evitar optimizar el portfolio únicamente contra escenarios conocidos. Un sistema puede volverse resistente a cinco tests concretos y frágil frente a un sexto no contemplado.\n\nPor eso conviene mantener una combinación de escenarios recurrentes, históricos y exploratorios.\n\nLa incertidumbre del propio stress test debe comunicarse. Un resultado de 12 millones no es una predicción exacta; es una estimación bajo una narrativa definida.\n\nComparar stress loss con VaR y Expected Shortfall ayuda a ver cuánto riesgo adicional aparece fuera del comportamiento habitual.\n\nTambién puede servir para validar si los límites de VaR están alineados con la tolerancia real al riesgo.\n\nEn algunos casos, un stress revela que una posición pequeña aporta una gran pérdida bajo un shock específico. Ese insight puede no aparecer en el ranking normal de contribución al VaR.\n\nLa gobernanza debe definir quién aprueba escenarios y qué cambios requieren escalado.\n\nFinalmente, los resultados deben llegar a personas que pueden actuar: treasury, risk, portfolio management, CFO o comité correspondiente.\n\n**Complementa VaR con stress testing cuando la empresa necesita entender qué ocurre si cambian las reglas estadísticas del entorno.** VaR resume un rango modelado; los stress tests examinan si la organización puede sobrevivir y responder cuando ese rango deja de ser suficiente.",
+      "seo_title": "Cuándo complementar VaR con stress testing",
+      "seo_description": "Cómo combinar VaR y stress testing para explorar shocks fuera del histórico, liquidez, concentración, escenarios adversos y capacidad de respuesta.",
+      "seo_keywords": [
+        "var stress testing",
+        "VaR stress tests",
+        "financial stress testing",
+        "tail risk scenarios"
+      ],
+      "tags": [
+        "Finance",
+        "Risk",
+        "Stress Testing"
+      ]
+    },
+    "en": {
+      "title": "When to complement VaR with stress testing",
+      "excerpt": "VaR summarizes risk under a modeled distribution; stress testing asks what happens when that distribution no longer represents the environment well.",
+      "quick": [
+        "VaR summarizes modeled risk",
+        "Stress tests challenge assumptions",
+        "Scenarios should end in decisions"
+      ],
+      "section_titles": [
+        "Use stress tests when history is not enough",
+        "Design scenarios that break relevant assumptions",
+        "Connect losses to liquidity and response capacity",
+        "Integrate scenarios into limits and decisions"
+      ],
+      "business_title": "Stress testing creates value when it forces the organization to ask what would happen under conditions the model considers unlikely but the business cannot afford to ignore.",
+      "business_steps": [
+        "Scenario",
+        "Impact",
+        "Response"
+      ],
+      "body": "VaR is useful for summarizing a distribution of losses under a defined set of assumptions. The problem is that the moments organizations care about most are often the moments when those assumptions stop behaving like the historical sample. **Stress testing asks what happens outside the statistical comfort zone of the model.**\n\nIt is not a replacement for VaR. It recognizes that an estimated distribution cannot describe every way a portfolio or balance sheet can fail. **VaR and stress testing answer different questions and should coexist when tails, liquidity or concentration can change quickly.**\n\n**Use stress tests when history is not enough**\nHistorical data are a reference, not a guarantee of coverage.\n\nThe sample may contain no comparable episode of a sharp rate shock, liquidity crisis, correlation break or geopolitical event.\n\n**If the relevant risk is absent from the sample, a metric calibrated on that sample cannot fully describe it**.\n\nThis matters especially for new portfolios, structurally changing markets and positions with limited history.\n\nIt also matters for nonlinear exposures. Options, guarantees, covenants and margin calls can create discontinuous losses.\n\nConcentration is another trigger. A large position in one factor may look manageable under normal volatility and become dangerous under a targeted shock.\n\nStress testing makes those conditions explicit.\n\n**Design scenarios that break relevant assumptions**\nA useful scenario is not simply “everything falls 20%”.\n\nIt should attack the factors that actually support the organization’s risk profile.\n\nA scenario can combine higher rates, wider spreads, equity losses, FX moves and weaker liquidity.\n\n**The scenario should be coherently adverse rather than arbitrarily extreme**.\n\nHistorical scenarios are useful because they replay approximately known episodes.\n\nHypothetical scenarios are equally important because they explore events the sample has never observed.\n\nReverse stress testing starts from the opposite direction: what combination of events would breach a critical capital, liquidity or loss threshold?\n\nThat question can expose hidden dependencies.\n\nNarrative scenarios also help: persistent inflation, funding closure, demand collapse, commodity shock or counterparty failure.\n\nNarratives force variables to move consistently rather than independently.\n\n**Connect losses to liquidity and response capacity**\nMarket loss is not always the main problem.\n\nUnder stress, haircuts, margin requirements, funding spreads and liquidation times can all rise.\n\n**The real risk may be the inability to carry a position long enough for markets to normalize**.\n\nStress tests should therefore include cash needs, collateral, credit lines and available funding.\n\nThey should also include management actions.\n\nIf the scenario assumes asset sales, at what price and market depth?\n\nIf it assumes refinancing, would funding actually be available under the same shock?\n\nOperating responses can reduce or amplify losses.\n\nSecond-order effects matter too: forced selling, downgrades, margin calls and covenant breaches.\n\n**Integrate scenarios into limits and decisions**\nStress testing loses value when it becomes a quarterly exercise with no consequences.\n\nScenarios should connect with risk limits, capital, hedging, liquidity and contingency planning.\n\n**Every material stress needs a decision question: what would we do if this loss or liquidity need appeared tomorrow**?\n\nThe organization can define tolerable loss thresholds by scenario.\n\nReview triggers can activate when concentration rises or liquidity headroom falls.\n\nResults should be decomposed by factor, position and business unit to reveal the source of vulnerability.\n\nFrequency should match risk speed. Dynamic portfolios may need daily or weekly stress testing; stable exposures can be reviewed less often.\n\nScenarios need versioning. If shocks or factors change, management should understand why results moved.\n\nThe portfolio should not be optimized only against known scenarios. A system can become robust to five named tests and fragile to a sixth.\n\nA mixture of recurring, historical and exploratory scenarios helps prevent this.\n\nUncertainty in the stress result should be explicit. A €12 million loss is not an exact forecast; it is an estimate under a defined narrative.\n\nComparing stress loss with VaR and Expected Shortfall shows how much additional risk appears beyond normal modeled behaviour.\n\nIt can also reveal whether VaR limits are consistent with the organization’s true risk tolerance.\n\nSometimes a small position contributes little to normal VaR and dominates loss under a specific shock. That insight is exactly why scenarios matter.\n\nGovernance should define who approves scenarios and which results require escalation.\n\nOutputs need to reach people who can act: treasury, risk, portfolio management, the CFO or the relevant committee.\n\n**Complement VaR with stress testing when the organization needs to understand what happens if the statistical rules of the environment change.** VaR summarizes modeled behaviour; stress tests examine whether the business can survive and respond when that model is no longer enough.",
+      "seo_title": "When to Complement VaR with Stress Testing",
+      "seo_description": "How VaR and stress testing work together to explore shocks beyond history, liquidity, concentration, adverse scenarios and response capacity.",
+      "seo_keywords": [
+        "var stress testing",
+        "VaR stress tests",
+        "financial stress testing",
+        "tail risk scenarios"
+      ],
+      "tags": [
+        "Finance",
+        "Risk",
+        "Stress Testing"
+      ]
+    },
+    "ca": {
+      "title": "Quan complementar VaR amb stress testing",
+      "excerpt": "VaR resumeix el risc sota una distribució modelada; stress testing pregunta què passa quan aquella distribució deixa de representar bé l’entorn.",
+      "quick": [
+        "VaR resumeix risc modelat",
+        "Stress testing desafia supòsits",
+        "Els escenaris han d’acabar en decisions"
+      ],
+      "section_titles": [
+        "Utilitza stress tests quan l’històric no basta",
+        "Dissenya escenaris que trenquin supòsits rellevants",
+        "Connecta pèrdues amb liquiditat i capacitat de resposta",
+        "Integra escenaris en límits i decisions"
+      ],
+      "business_title": "Stress testing aporta valor quan obliga a respondre què passaria sota condicions que el model considera poc probables però que l’empresa no es pot permetre ignorar.",
+      "business_steps": [
+        "Escenari",
+        "Impacte",
+        "Resposta"
+      ],
+      "body": "VaR és útil per resumir una distribució de pèrdues sota un conjunt de supòsits. El problema és que els moments que més preocupen una organització sovint són aquells on aquests supòsits deixen de comportar-se com a l’històric. **Stress testing pregunta què passa fora de la zona de confort estadística del model.**\n\nNo substitueix VaR. Reconeix que una distribució estimada no descriu totes les formes possibles de fallar. **VaR i stress testing responen preguntes diferents i haurien de conviure quan cua, liquiditat o concentració poden canviar ràpidament.**\n\n**Utilitza stress tests quan l’històric no basta**\nLes dades històriques són una referència, no una garantia de cobertura.\n\nLa mostra pot no contenir cap episodi comparable a un shock fort de tipus, crisi de liquiditat, ruptura de correlacions o esdeveniment geopolític.\n\n**Si el risc rellevant no apareix a la mostra, una mètrica calibrada amb aquella mostra no el pot descriure completament**.\n\nAixò importa especialment en portfolios nous, mercats amb canvis estructurals o posicions amb poc historial.\n\nTambé importa amb exposicions no lineals. Opcions, garanties, covenants o margin calls poden generar pèrdues discontínues.\n\nLa concentració és un altre trigger. Una posició gran en un factor pot semblar assumible amb volatilitat normal i ser perillosa sota un shock dirigit.\n\nStress testing fa explícites aquestes condicions.\n\n**Dissenya escenaris que trenquin supòsits rellevants**\nUn escenari útil no és simplement “tot cau un 20 %”.\n\nHa d’atacar els factors que realment sostenen el perfil de risc.\n\nPot combinar pujada de tipus, widening de spreads, caiguda d’equity, moviment d’FX i deteriorament de liquiditat.\n\n**L’escenari ha de ser advers de manera coherent i no extrem de forma arbitrària**.\n\nEls escenaris històrics són útils perquè reprodueixen aproximadament episodis coneguts.\n\nEls hipotètics són igual d’importants perquè exploren events mai observats.\n\nReverse stress testing comença al revés: quina combinació d’events faria superar un límit crític de capital, liquiditat o pèrdua?\n\nAquesta pregunta pot revelar dependències ocultes.\n\nEls escenaris narratius també ajuden: inflació persistent, tancament de finançament, caiguda de demanda, shock de commodity o fallada de contraparte.\n\nLa narrativa obliga les variables a moure’s de forma coherent.\n\n**Connecta pèrdues amb liquiditat i capacitat de resposta**\nLa pèrdua de mercat no sempre és el principal problema.\n\nEn estrès poden augmentar haircuts, margin requirements, spreads de funding i temps de liquidació.\n\n**El risc real pot ser no poder sostenir la posició fins que el mercat es normalitzi**.\n\nPer això els stress tests haurien d’incloure necessitats de caixa, collateral, línies de crèdit i funding disponible.\n\nTambé han d’incorporar accions de management.\n\nSi assumim venda d’actius, a quin preu i amb quina profunditat?\n\nSi assumim refinançament, continuaria disponible sota el mateix shock?\n\nLes respostes operatives poden reduir o amplificar pèrdues.\n\nTambé importen efectes de segon ordre: vendes forçades, downgrades, margin calls i covenant breaches.\n\n**Integra escenaris en límits i decisions**\nStress testing perd valor quan és un exercici trimestral sense conseqüències.\n\nEls escenaris s’han de connectar amb límits, capital, hedging, liquiditat i plans de contingència.\n\n**Cada stress material necessita una pregunta de decisió: què faríem si aquesta pèrdua o necessitat de liquiditat aparegués demà**?\n\nEs poden definir llindars tolerables de pèrdua per escenari.\n\nTambé poden existir triggers de revisió si augmenta una concentració o baixa massa el liquidity headroom.\n\nEls resultats s’han de descompondre per factor, posició i unitat de negoci.\n\nLa freqüència depèn de la velocitat del risc. Portfolios dinàmics poden necessitar stress diari o setmanal; exposicions estables, menys freqüència.\n\nEls escenaris han de versionar-se. Si canvien shocks o factors, management ha d’entendre per què canvia el resultat.\n\nNo convé optimitzar el portfolio només contra escenaris coneguts. Un sistema pot ser resistent a cinc tests i fràgil davant un sisè.\n\nPer això és útil combinar escenaris recurrents, històrics i exploratoris.\n\nLa incertesa del stress result s’ha de comunicar. Una pèrdua de 12 milions no és una predicció exacta; és una estimació sota una narrativa.\n\nComparar stress loss amb VaR i Expected Shortfall mostra quant risc addicional apareix fora del comportament normal.\n\nTambé pot validar si els límits de VaR encaixen amb la tolerància real al risc.\n\nEn alguns casos, una posició petita aporta poc VaR normal i una gran pèrdua sota un shock específic.\n\nGovernance ha de definir qui aprova escenaris i quins resultats exigeixen escalat.\n\nFinalment, els outputs han d’arribar a qui pot actuar: treasury, risk, portfolio management, CFO o comitè.\n\n**Complementa VaR amb stress testing quan l’empresa necessita entendre què passa si canvien les regles estadístiques de l’entorn.** VaR resumeix comportament modelat; els stress tests examinen si l’organització pot sobreviure i respondre quan el model deixa de ser suficient.",
+      "seo_title": "Quan complementar VaR amb stress testing",
+      "seo_description": "Com combinar VaR i stress testing per explorar shocks fora de l’històric, liquiditat, concentració, escenaris adversos i capacitat de resposta.",
+      "seo_keywords": [
+        "var stress testing",
+        "VaR stress tests",
+        "financial stress testing",
+        "tail risk scenarios"
+      ],
+      "tags": [
+        "Finance",
+        "Risk",
+        "Stress Testing"
+      ]
+    }
+  }
+}

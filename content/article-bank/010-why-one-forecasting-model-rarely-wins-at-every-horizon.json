@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-010",
+  "sequence": 10,
+  "arc_id": "ARC-03",
+  "slug": "why-one-forecasting-model-rarely-wins-at-every-horizon",
+  "scheduled_at": "2026-10-29T09:00:00+01:00",
+  "knowledge_area": "planning",
+  "cluster": "Forecasting & Planning",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "point_of_view_contrarian",
+  "angle": "multi horizon forecast models",
+  "primary_keyword": "multi horizon forecast models",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-009",
+    "KB-011",
+    "KB-012"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué un modelo no suele ganar en todos los horizontes",
+      "excerpt": "El modelo que domina H1 puede no ser el mejor en H6 o H9. La señal, la incertidumbre y el objetivo cambian con la distancia temporal.",
+      "quick": [
+        "El ranking cambia por horizonte",
+        "La señal reciente pierde peso",
+        "Un ensemble puede ser más estable"
+      ],
+      "section_titles": [
+        "El horizonte cambia el problema",
+        "Por qué cambian los rankings",
+        "Un modelo único tiene un coste",
+        "Diseñar para estabilidad"
+      ],
+      "business_title": "Buscar un campeón global puede empeorar decisiones concretas si oculta dónde funciona cada modelo.",
+      "business_steps": [
+        "Varios horizontes",
+        "Rendimientos distintos",
+        "Selección por decisión"
+      ],
+      "body": "En forecasting multihorizonte es tentador buscar un único modelo ganador. Se calcula una métrica media para H1, H3, H6 y H9, se ordenan candidatos y se despliega el mejor. El procedimiento es limpio, pero **puede esconder que el ranking de modelos cambia de forma material según el horizonte**.\n\nUn modelo que explota muy bien la información reciente puede dominar el corto plazo y degradarse cuando esa señal pierde relevancia. Otro más estructural puede ser menos reactivo en H1 y más estable en H9. **No existe ninguna razón teórica para que la misma arquitectura sea óptima en decisiones temporales distintas.**\n\n**El horizonte cambia el problema**\nEn H1, el modelo dispone de información cercana al momento que intenta predecir. Lags recientes, tendencia local, eventos confirmados o señales operativas pueden aportar mucho. A medida que el horizonte se aleja, parte de esa información deja de estar disponible o pierde poder explicativo.\n\nAl mismo tiempo, ganan importancia patrones más estables: calendario, estacionalidad, tendencia, contratos o variables macro relevantes. **El balance entre señal local y estructura cambia con la distancia temporal.**\n\nPor eso comparar modelos solo con una métrica promedio puede ser engañoso. Si H1 es crítico para reposición y H9 para capacidad, ambos horizontes merecen una lectura propia.\n\n**Por qué cambian los rankings**\nLos modelos tienen sesgos inductivos diferentes. Un método simple puede reaccionar bien a patrones estables; un boosting puede capturar interacciones entre features; una red puede aprender dependencias más complejas cuando hay datos suficientes. Ninguna ventaja se mantiene necesariamente en todos los horizontes.\n\nTambién influye cómo se construye el target. En un enfoque directo se entrena una relación específica para cada horizonte. En uno recursivo, el error se propaga porque las predicciones anteriores se convierten en inputs. **La arquitectura de forecasting altera el perfil de error a lo largo del horizonte.**\n\nAdemás, la disponibilidad de features cambia. Una promoción confirmada para la próxima semana puede estar codificada con precisión; una promoción dentro de nueve meses quizá ni siquiera exista todavía en el sistema.\n\n**Un modelo único tiene un coste**\nUtilizar un solo modelo tiene ventajas operativas: menos mantenimiento, menos pipelines y una explicación más sencilla. Esa simplicidad puede ser razonable cuando las diferencias entre horizontes son pequeñas.\n\nEl problema aparece cuando se fuerza esa uniformidad aunque el rendimiento sea muy desigual. **La simplicidad técnica deja de ser una ventaja si degrada una decisión importante.** Un modelo global puede parecer competitivo en promedio y fallar justo en el horizonte con mayor impacto económico.\n\nEl extremo contrario tampoco es ideal. Mantener nueve modelos totalmente independientes puede multiplicar complejidad, monitorización y riesgo de inconsistencia. La decisión es un trade-off entre especialización y operabilidad.\n\n**Diseñar para estabilidad**\nUna estrategia práctica es evaluar cada candidato por horizonte y por decisión. Después se pueden agrupar horizontes con comportamiento similar. Quizá H1-H3 compartan un modelo y H6-H9 otro. **No hace falta elegir entre un único modelo y una arquitectura completamente fragmentada.**\n\nLos ensembles también pueden aportar estabilidad. Si varios modelos cometen errores distintos, combinarlos puede reducir dependencia de un ganador frágil. Sin embargo, el ensemble debe demostrar valor fuera de muestra y no convertirse en complejidad decorativa.\n\nConviene medir además la estabilidad temporal del ranking. Un modelo que gana por muy poco en un backtest y pierde con frecuencia en otros periodos quizá no sea una elección robusta.\n\nLa pregunta final no es “¿cuál es nuestro mejor modelo?”. Es “¿qué modelo o combinación soporta mejor cada decisión con una complejidad razonable?”. **En forecasting multihorizonte, la arquitectura correcta suele ser la que reconoce que el futuro no se comporta igual a todas las distancias.**\n\nLa selección puede hacerse aún más robusta usando una regla de mínima complejidad: si dos modelos quedan muy cerca en un horizonte, se mantiene el más simple y solo se especializa cuando la diferencia es estable y económicamente relevante. **No toda victoria estadística merece otro modelo en producción.** Este criterio evita convertir pequeños cambios de ranking en una arquitectura difícil de operar y concentra la complejidad donde realmente cambia la decisión.",
+      "seo_title": "Un modelo no gana en todos los horizontes",
+      "seo_description": "Por qué el ranking de modelos cambia entre H1, H3, H6 y H9 y cómo equilibrar especialización, ensembles y complejidad operativa.",
+      "seo_keywords": [
+        "multi horizon forecast models",
+        "modelos forecasting multihorizonte",
+        "H1 H9 model",
+        "forecast ensemble"
+      ],
+      "tags": [
+        "Forecasting",
+        "Multi-Horizon",
+        "Model Selection"
+      ]
+    },
+    "en": {
+      "title": "Why one forecasting model rarely wins at every horizon",
+      "excerpt": "The model that dominates H1 may not be best at H6 or H9. Signal, uncertainty and the objective change with temporal distance.",
+      "quick": [
+        "Rankings change by horizon",
+        "Recent signal loses weight",
+        "Ensembles can improve stability"
+      ],
+      "section_titles": [
+        "Horizon changes the problem",
+        "Why rankings change",
+        "The cost of one model",
+        "Design for stability"
+      ],
+      "business_title": "A global champion can weaken specific decisions if it hides where each model actually works.",
+      "business_steps": [
+        "Multiple horizons",
+        "Different performance",
+        "Decision-level selection"
+      ],
+      "body": "In multi-horizon forecasting it is tempting to search for one winning model. Calculate an average metric across H1, H3, H6 and H9, rank the candidates and deploy the best. The procedure is clean, but **it can hide material changes in model ranking across horizons**.\n\nA model that exploits recent information extremely well may dominate the short term and deteriorate as that signal becomes less relevant. A more structural model may be less reactive at H1 and more stable at H9. **There is no theoretical reason the same architecture should be optimal for different temporal decisions.**\n\n**Horizon changes the problem**\nAt H1, the model has information close to the period it is predicting. Recent lags, local trend, confirmed events and operational signals can be powerful. As the horizon extends, some of that information becomes unavailable or loses explanatory value.\n\nStable patterns become relatively more important: calendar effects, seasonality, trend, contracts or relevant external variables. **The balance between local signal and structural signal changes with temporal distance.**\n\nThat is why comparing models only through an average metric can mislead. If H1 supports replenishment and H9 supports capacity, each horizon deserves its own performance view.\n\n**Why rankings change**\nModels have different inductive biases. A simple statistical method can react well to stable patterns; boosting can exploit feature interactions; neural approaches can learn richer dependencies when enough data exists. No advantage is guaranteed to persist across all horizons.\n\nTarget construction matters too. A direct strategy learns a separate relationship for each horizon. A recursive strategy propagates error because previous predictions become later inputs. **Forecast architecture changes the error profile across the horizon.**\n\nFeature availability also changes. A promotion confirmed for next week can be encoded precisely; a promotion nine months away may not exist in the planning system yet.\n\n**The cost of one model**\nA single model has operational advantages: less maintenance, fewer pipelines and simpler explanation. That simplicity can be sensible when horizon-level differences are small.\n\nThe problem appears when uniformity is forced despite clear performance gaps. **Technical simplicity stops being an advantage when it degrades an important decision.** A global model can look competitive on average while failing on the horizon with the highest economic impact.\n\nThe opposite extreme is not automatically better. Maintaining nine independent models can multiply monitoring, retraining and consistency problems. The design is a trade-off between specialization and operability.\n\n**Design for stability**\nA practical approach is to evaluate each candidate by horizon and decision. Horizons with similar behaviour can then be grouped. H1-H3 may share one model while H6-H9 use another. **The choice is not limited to one model or complete fragmentation.**\n\nEnsembles can also improve stability. When models make different errors, combination can reduce dependence on a fragile winner. But an ensemble should demonstrate out-of-sample value rather than become decorative complexity.\n\nIt is also useful to measure ranking stability over time. A model that wins narrowly in one backtest and frequently loses in other periods may not be a robust choice.\n\nThe final question is not “what is our best model?”. It is “which model or combination supports each decision best at reasonable complexity?”. **In multi-horizon forecasting, the strongest architecture usually acknowledges that the future behaves differently at different distances.**\n\nSelection can be made more robust with a minimum-complexity rule: when two models are very close at a horizon, keep the simpler one and specialize only when the difference is stable and economically meaningful. **Not every statistical win deserves another production model.** This prevents small ranking changes from turning into an architecture that is expensive to operate and concentrates complexity where it actually changes the decision.\n\nA final operational check is fallback behaviour. If the horizon-specific model fails, drifts or loses required features, the system should know which simpler model takes over. **Specialization is only useful when failure modes remain manageable.** Designing a fallback hierarchy prevents an architecture with several horizon models from becoming less resilient than the single-model system it replaced.",
+      "seo_title": "Why Forecast Models Change by Horizon",
+      "seo_description": "Why model rankings change across H1, H3, H6 and H9 and how to balance specialization, ensembles and operational complexity.",
+      "seo_keywords": [
+        "multi horizon forecast models",
+        "forecast model by horizon",
+        "H1 H9 model",
+        "forecast ensemble"
+      ],
+      "tags": [
+        "Forecasting",
+        "Multi-Horizon",
+        "Model Selection"
+      ]
+    },
+    "ca": {
+      "title": "Per què un model no sol guanyar en tots els horitzons",
+      "excerpt": "El model que domina H1 pot no ser el millor en H6 o H9. El senyal, la incertesa i l’objectiu canvien amb la distància temporal.",
+      "quick": [
+        "El rànquing canvia per horitzó",
+        "El senyal recent perd pes",
+        "Els ensembles poden donar estabilitat"
+      ],
+      "section_titles": [
+        "L’horitzó canvia el problema",
+        "Per què canvien els rànquings",
+        "El cost d’un únic model",
+        "Dissenyar per estabilitat"
+      ],
+      "business_title": "Buscar un campió global pot empitjorar decisions concretes si amaga on funciona cada model.",
+      "business_steps": [
+        "Diversos horitzons",
+        "Rendiments diferents",
+        "Selecció per decisió"
+      ],
+      "body": "En forecasting multihoritzó és temptador buscar un únic model guanyador. Es calcula una mètrica mitjana per H1, H3, H6 i H9, s’ordenen els candidats i es desplega el millor. El procediment és net, però **pot amagar canvis materials en el rànquing de models segons l’horitzó**.\n\nUn model que explota molt bé la informació recent pot dominar el curt termini i degradar-se quan aquest senyal perd rellevància. Un model més estructural pot ser menys reactiu en H1 i més estable en H9. **No hi ha cap raó perquè la mateixa arquitectura sigui òptima per decisions temporals diferents.**\n\n**L’horitzó canvia el problema**\nEn H1, el model disposa d’informació propera al període que vol predir. Lags recents, tendència local, esdeveniments confirmats o senyals operatius poden aportar molt. Quan l’horitzó s’allunya, part d’aquesta informació deixa d’estar disponible o perd poder explicatiu.\n\nAlhora, guanyen importància patrons més estables: calendari, estacionalitat, tendència, contractes o variables externes. **L’equilibri entre senyal local i estructura canvia amb la distància temporal.**\n\nPer això una mètrica mitjana pot enganyar. Si H1 suporta reposició i H9 capacitat, cadascun mereix la seva pròpia lectura.\n\n**Per què canvien els rànquings**\nEls models tenen biaixos inductius diferents. Un mètode simple pot reaccionar bé a patrons estables; boosting pot capturar interaccions; xarxes poden aprendre dependències més riques quan hi ha prou dades. Cap avantatge es manté necessàriament a tots els horitzons.\n\nTambé importa com es construeix el target. Una estratègia directa aprèn una relació específica per horitzó. Una de recursiva propaga error perquè les prediccions anteriors es converteixen en inputs. **L’arquitectura de forecasting canvia el perfil d’error al llarg de l’horitzó.**\n\nLa disponibilitat de features també varia. Una promoció confirmada per la setmana vinent és informació concreta; una promoció d’aquí a nou mesos pot no existir encara al sistema.\n\n**El cost d’un únic model**\nUn únic model té avantatges operatius: menys manteniment, menys pipelines i una explicació més simple. Pot ser raonable si les diferències entre horitzons són petites.\n\nEl problema apareix quan es força aquesta uniformitat tot i tenir rendiments desiguals. **La simplicitat tècnica deixa de ser una virtut si degrada una decisió important.** Un model global pot semblar competitiu de mitjana i fallar just a l’horitzó amb més impacte econòmic.\n\nL’extrem contrari tampoc és ideal. Mantenir nou models independents multiplica monitorització, retraining i riscos d’inconsistència. El disseny és un trade-off entre especialització i operabilitat.\n\n**Dissenyar per estabilitat**\nUna estratègia pràctica és avaluar cada candidat per horitzó i decisió. Després es poden agrupar horitzons amb comportament semblant. Potser H1-H3 comparteixen model i H6-H9 n’utilitzen un altre. **No cal triar entre un únic model i una fragmentació total.**\n\nEls ensembles també poden aportar estabilitat quan els models cometen errors diferents. Però han de demostrar valor fora de mostra i no convertir-se en complexitat decorativa.\n\nTambé convé mirar l’estabilitat temporal del rànquing. Un model que guanya per poc en un backtest i perd sovint en altres períodes pot no ser robust.\n\nLa pregunta final no és “quin és el nostre millor model?”. És “quin model o combinació suporta millor cada decisió amb una complexitat raonable?”. **En forecasting multihoritzó, la millor arquitectura sol reconèixer que el futur no es comporta igual a totes les distàncies.**\n\nLa selecció es pot fer més robusta amb una regla de mínima complexitat: si dos models queden molt a prop en un horitzó, es manté el més simple i només s’especialitza quan la diferència és estable i econòmicament rellevant. **No tota victòria estadística mereix un altre model en producció.** Això evita convertir petits canvis de rànquing en una arquitectura difícil d’operar i concentra la complexitat on realment canvia la decisió.\n\nUna última comprovació operativa és el comportament de fallback. Si un model específic d’horitzó falla, deriva o perd features necessàries, el sistema ha de saber quin model més simple el substitueix. **L’especialització només és útil si les fallades continuen sent gestionables.** Dissenyar una jerarquia de fallback evita que una arquitectura amb diversos models sigui menys resilient que el sistema únic que volia millorar.",
+      "seo_title": "Models de forecasting segons horitzó",
+      "seo_description": "Per què el rànquing de models canvia entre H1, H3, H6 i H9 i com equilibrar especialització, ensembles i complexitat operativa.",
+      "seo_keywords": [
+        "multi horizon forecast models",
+        "models forecasting multihoritzó",
+        "H1 H9 model",
+        "forecast ensemble"
+      ],
+      "tags": [
+        "Forecasting",
+        "Multi-Horizon",
+        "Model Selection"
+      ]
+    }
+  }
+}

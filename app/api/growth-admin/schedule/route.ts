@@ -57,7 +57,21 @@ export async function POST(request: Request) {
     scheduled_at: scheduledAt,
     status: approved ? (scheduledAt ? 'scheduled' : 'approved') : item.status,
   }
-  const updated = await updateGrowthRow('content_items', 'content_id', contentId, updates)
-  if (!updated) return new NextResponse('Content not found', { status: 404 })
+
+  if (item.content_type === 'article' && item.channel === 'website' && item.brief_id) {
+    const family = await queryGrowthTable<typeof item>('content_items', {
+      brief_id: `eq.${item.brief_id}`,
+      content_type: 'eq.article',
+      channel: 'eq.website',
+      limit: '10',
+    }, { cacheSeconds: 0 })
+
+    if (!family.length) return new NextResponse('Article family not found', { status: 404 })
+    await Promise.all(family.map((variant) => updateGrowthRow('content_items', 'content_id', variant.content_id, updates)))
+  } else {
+    const updated = await updateGrowthRow('content_items', 'content_id', contentId, updates)
+    if (!updated) return new NextResponse('Content not found', { status: 404 })
+  }
+
   return NextResponse.redirect(calendarReturnUrl(request, contentId, Boolean(scheduledAt)), 303)
 }

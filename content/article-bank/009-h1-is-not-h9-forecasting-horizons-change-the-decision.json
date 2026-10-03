@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-009",
+  "sequence": 9,
+  "arc_id": "ARC-03",
+  "slug": "h1-is-not-h9-forecasting-horizons-change-the-decision",
+  "scheduled_at": "2026-10-27T09:00:00+01:00",
+  "knowledge_area": "planning",
+  "cluster": "Forecasting & Planning",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "explain_understand",
+  "angle": "forecast horizon planning",
+  "primary_keyword": "forecast horizon planning",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-010",
+    "KB-011",
+    "KB-012"
+  ],
+  "variants": {
+    "es": {
+      "title": "H1 no es H9: el horizonte cambia la decisión",
+      "excerpt": "Un forecast a un periodo y uno a nueve no resuelven la misma decisión. Horizonte, tolerancia, features y métrica deben diseñarse según el uso operativo.",
+      "quick": [
+        "Cada horizonte decide algo distinto",
+        "La incertidumbre crece con el tiempo",
+        "Una sola métrica no basta"
+      ],
+      "section_titles": [
+        "El horizonte viene de la decisión",
+        "La incertidumbre no crece igual",
+        "La señal cambia con el horizonte",
+        "Evaluar H1 y H9 por separado"
+      ],
+      "business_title": "El mejor horizonte es aquel que llega justo antes de la decisión que todavía puedes cambiar.",
+      "business_steps": [
+        "Horizonte",
+        "Decisión asociada",
+        "Tolerancia adecuada"
+      ],
+      "body": "Hablar de “el forecast” en singular puede esconder una diferencia fundamental: una previsión a un periodo y otra a nueve periodos no están resolviendo el mismo problema. **El horizonte cambia la decisión, la incertidumbre y el tipo de señal que resulta útil.** Tratar H1 y H9 como dos columnas del mismo output suele simplificar demasiado el diseño.\n\nEn operaciones reales, H1 puede servir para ajustar una compra o un turno próximo, mientras H9 puede alimentar capacidad, presupuesto o contratos. La consecuencia es clara: **no tiene sentido exigir el mismo nivel de precisión ni usar necesariamente el mismo modelo para todos los horizontes.**\n\n**El horizonte viene de la decisión**\nLa primera pregunta debería ser cuándo se vuelve difícil cambiar la decisión. Si un proveedor necesita seis semanas de preaviso, un forecast a una semana puede ser excelente y llegar demasiado tarde. Si staffing puede ajustarse mañana, un forecast a nueve meses es demasiado distante para la ejecución diaria.\n\nEso significa que el horizonte útil no se define por comodidad técnica. **Se define por el lead time de la acción.** Una empresa puede necesitar varios horizontes porque compra, producción, finanzas y comercial operan con compromisos distintos.\n\nTambién importa la cadencia. H1 en datos diarios no equivale a H1 en datos mensuales. Siempre conviene expresar el horizonte en tiempo operativo y vincularlo a la decisión concreta que pretende soportar.\n\n**La incertidumbre no crece igual**\nEn general, predecir más lejos introduce más incertidumbre porque aparecen más fuentes de variación y menos información reciente. Pero esa incertidumbre no crece de forma uniforme. Algunos negocios tienen una estacionalidad fuerte que hace relativamente estable el largo plazo agregado, mientras el corto plazo diario es muy ruidoso.\n\nPor eso **la dificultad del horizonte depende de la estructura de la demanda, no solo de la distancia temporal**. A nivel agregado, H9 puede ser razonablemente estable; a nivel SKU y tienda, puede volverse demasiado incierto.\n\nLa decisión debería incorporar esa diferencia. En horizontes largos suelen ser más útiles intervalos, escenarios y rangos que un único punto. El objetivo deja de ser acertar exactamente y pasa a dimensionar capacidad o riesgo.\n\n**La señal cambia con el horizonte**\nLas variables que ayudan a H1 pueden ser irrelevantes para H9. Ventas recientes, tráfico o stock disponible suelen contener mucha señal de corto plazo. Para horizontes largos pueden pesar más calendario, estacionalidad, tendencias de categoría, contratos o planes comerciales.\n\nEsto implica que **un único set de features puede no ser óptimo para todos los horizontes**. También cambia la forma de modelar promociones o eventos: una campaña confirmada mañana es información concreta; una campaña posible dentro de meses es un escenario.\n\nEl propio target puede necesitar otra granularidad. H1 puede predecirse por SKU y ubicación, mientras H9 quizá tenga más sentido por familia o región antes de desagregar.\n\n**Evaluar H1 y H9 por separado**\nPromediar el error de todos los horizontes en una sola métrica puede esconder qué decisión funciona y cuál no. Un modelo puede ser excelente en H1 y mediocre en H9, mientras otro hace lo contrario. **La evaluación debe mostrar una curva de rendimiento por horizonte.**\n\nTambién conviene definir tolerancias distintas. La empresa puede exigir alta precisión cerca de la ejecución y aceptar rangos más amplios en planificación estratégica. Eso no es rebajar el estándar; es alinear el estándar con la decisión.\n\nLa práctica más útil es construir una matriz: horizonte, decisión, granularidad, métrica, tolerancia y política asociada. Así el forecast deja de ser una secuencia de columnas y se convierte en un sistema de apoyo a decisiones.\n\nH1 no es simplemente la primera versión de H9. **Cada horizonte representa una ventana distinta para actuar.** Diseñarlo así suele aportar más valor que buscar un único modelo que parezca bueno en promedio.\n\nEn la práctica, este diseño también afecta a la comunicación. Un responsable operativo no necesita recibir nueve curvas de error sin contexto; necesita saber qué horizonte gobierna su acción y cuánto puede confiar en él. **La presentación debe seguir la misma arquitectura que la decisión.** Mostrar H1 como compromiso operativo y H9 como rango de planificación reduce el riesgo de que una previsión lejana se interprete con una precisión que el modelo nunca prometió.",
+      "seo_title": "H1 vs H9: horizontes de forecasting",
+      "seo_description": "Por qué H1, H3, H6 y H9 requieren decisiones, features, granularidad, métricas y tolerancias distintas en un sistema de forecasting.",
+      "seo_keywords": [
+        "forecast horizon planning",
+        "multi horizon forecasting",
+        "H1 H9 forecast",
+        "horizonte forecasting"
+      ],
+      "tags": [
+        "Forecasting",
+        "Multi-Horizon",
+        "Planning"
+      ]
+    },
+    "en": {
+      "title": "H1 is not H9: forecasting horizons change the decision",
+      "excerpt": "A one-step and a nine-step forecast do not solve the same decision. Horizon, tolerance, features and metrics should follow the operational use.",
+      "quick": [
+        "Each horizon supports a different decision",
+        "Uncertainty changes with distance",
+        "One metric is not enough"
+      ],
+      "section_titles": [
+        "The decision defines the horizon",
+        "Uncertainty does not grow uniformly",
+        "Signal changes by horizon",
+        "Evaluate H1 and H9 separately"
+      ],
+      "business_title": "The right horizon is the one that arrives just before the decision can no longer change.",
+      "business_steps": [
+        "Horizon",
+        "Associated decision",
+        "Appropriate tolerance"
+      ],
+      "body": "Talking about “the forecast” in the singular can hide a fundamental distinction: a one-step forecast and a nine-step forecast are not solving the same problem. **Horizon changes the decision, the uncertainty and the type of signal that is useful.** Treating H1 and H9 as two columns of the same output often oversimplifies the system.\n\nIn real operations, H1 may support a near-term purchase or staffing adjustment, while H9 may inform capacity, budgets or contracts. The consequence is straightforward: **the same accuracy target and the same model do not have to be appropriate at every horizon.**\n\n**The decision defines the horizon**\nThe first question is when the decision becomes difficult to change. If a supplier needs six weeks of notice, an excellent one-week forecast still arrives too late. If staffing can be changed tomorrow, a nine-month forecast is too distant for daily execution.\n\nThe useful horizon is therefore not selected for technical convenience. **It is defined by the lead time of the action.** A company may need several horizons because procurement, production, finance and commercial teams make commitments at different times.\n\nCadence matters too. H1 in daily data is not the same as H1 in monthly data. Horizons should be expressed in operating time and explicitly connected to the decision they support.\n\n**Uncertainty does not grow uniformly**\nForecasting further ahead generally introduces more uncertainty because there is less recent information and more opportunity for conditions to change. But uncertainty does not increase uniformly. Some businesses have strong seasonality that makes aggregate long-range demand relatively stable while short-term daily demand remains noisy.\n\nThis means **horizon difficulty depends on demand structure, not only temporal distance**. H9 at category level may be usable while H9 by SKU and store becomes extremely uncertain.\n\nThe decision should reflect that. Longer horizons often benefit from intervals, ranges and scenarios rather than a single point estimate. The objective shifts from exact prediction toward sizing capacity and risk.\n\n**Signal changes by horizon**\nFeatures that help H1 may contribute little to H9. Recent sales, traffic or availability can carry strong short-term signal. Longer horizons may depend more on calendar effects, category trends, contracts and commercial plans.\n\nThat means **one feature set may not be optimal for every horizon**. Promotions and events also change meaning: a confirmed campaign tomorrow is concrete information; a possible campaign months away is closer to a scenario.\n\nTarget granularity can change as well. H1 may reasonably operate by SKU and location, while H9 may be more stable at family or region level before later disaggregation.\n\n**Evaluate H1 and H9 separately**\nA single metric averaged across all horizons can hide which decisions work and which do not. One model may be excellent at H1 and weak at H9, while another shows the reverse pattern. **Evaluation should expose a performance curve by horizon.**\n\nTolerance can differ too. The company may require tight accuracy close to execution while accepting wider ranges for strategic planning. That is not lowering standards; it is aligning standards with the decision.\n\nA practical design is a matrix containing horizon, decision, granularity, metric, tolerance and associated policy. This turns forecasting from a sequence of columns into a decision-support system.\n\nH1 is not simply the first version of H9. **Each horizon represents a different window in which the business can still act.** Designing around those windows usually creates more value than searching for one model that looks good on average.\n\nIn practice, this design also changes communication. An operator does not need nine error curves without context; they need to know which horizon governs their action and how much confidence it deserves. **Presentation should follow the same architecture as the decision.** Showing H1 as an operating commitment and H9 as a planning range reduces the risk that a distant forecast is interpreted with a level of precision the model never promised.",
+      "seo_title": "H1 vs H9: Forecasting Horizons",
+      "seo_description": "Why H1, H3, H6 and H9 need different decisions, features, granularities, metrics and tolerances in a forecasting system.",
+      "seo_keywords": [
+        "forecast horizon planning",
+        "multi horizon forecasting",
+        "H1 H9 forecast",
+        "forecast horizon"
+      ],
+      "tags": [
+        "Forecasting",
+        "Multi-Horizon",
+        "Planning"
+      ]
+    },
+    "ca": {
+      "title": "H1 no és H9: l’horitzó canvia la decisió",
+      "excerpt": "Un forecast a un període i un a nou no resolen la mateixa decisió. Horitzó, tolerància, features i mètrica han de seguir l’ús operatiu.",
+      "quick": [
+        "Cada horitzó suporta una decisió diferent",
+        "La incertesa canvia amb la distància",
+        "Una sola mètrica no és suficient"
+      ],
+      "section_titles": [
+        "La decisió defineix l’horitzó",
+        "La incertesa no creix igual",
+        "El senyal canvia amb l’horitzó",
+        "Avaluar H1 i H9 per separat"
+      ],
+      "business_title": "El millor horitzó és el que arriba just abans que la decisió deixi de poder canviar.",
+      "business_steps": [
+        "Horitzó",
+        "Decisió associada",
+        "Tolerància adequada"
+      ],
+      "body": "Parlar de “el forecast” en singular pot amagar una diferència fonamental: una previsió a un període i una a nou no resolen el mateix problema. **L’horitzó canvia la decisió, la incertesa i el tipus de senyal que és útil.** Tractar H1 i H9 com dues columnes del mateix output sol simplificar massa el sistema.\n\nEn operacions reals, H1 pot servir per ajustar una compra o un torn proper, mentre H9 pot alimentar capacitat, pressupost o contractes. La conseqüència és clara: **no cal exigir la mateixa precisió ni utilitzar necessàriament el mateix model a tots els horitzons.**\n\n**La decisió defineix l’horitzó**\nLa primera pregunta és quan la decisió es torna difícil de canviar. Si un proveïdor necessita sis setmanes de preavís, un forecast excel·lent a una setmana arriba massa tard. Si staffing es pot ajustar demà, un forecast a nou mesos és massa distant per a l’execució diària.\n\nPer tant, l’horitzó útil no es tria per comoditat tècnica. **El defineix el lead time de l’acció.** Una empresa pot necessitar diversos horitzons perquè compres, producció, finances i comercial prenen compromisos en moments diferents.\n\nLa cadència també importa. H1 en dades diàries no és H1 en dades mensuals. Cal expressar l’horitzó en temps operatiu i vincular-lo a la decisió.\n\n**La incertesa no creix igual**\nPredir més lluny acostuma a introduir més incertesa perquè hi ha menys informació recent i més opcions que canviïn les condicions. Però aquesta incertesa no creix uniformement. Alguns negocis tenen una estacionalitat forta que fa estable la demanda agregada a llarg termini mentre el curt termini diari continua sent sorollós.\n\nAixò significa que **la dificultat de l’horitzó depèn de l’estructura de la demanda, no només de la distància temporal**. H9 per categoria pot ser útil i H9 per SKU i botiga pot ser massa incert.\n\nLa decisió ho ha de reflectir. En horitzons llargs, intervals, rangs i escenaris solen ser més útils que un únic punt.\n\n**El senyal canvia amb l’horitzó**\nLes variables que ajuden H1 poden aportar poc a H9. Vendes recents, trànsit o disponibilitat poden contenir molt senyal de curt termini. En horitzons llargs poden pesar més calendari, tendències, contractes o plans comercials.\n\nPer això **un únic conjunt de features pot no ser òptim per a tots els horitzons**. Promocions i esdeveniments també canvien de significat: una campanya confirmada demà és informació concreta; una possible campanya d’aquí a mesos és un escenari.\n\nLa granularitat del target pot canviar. H1 pot predir-se per SKU i ubicació, mentre H9 pot ser més estable per família o regió.\n\n**Avaluar H1 i H9 per separat**\nUna mètrica única mitjana de tots els horitzons pot ocultar quines decisions funcionen i quines no. Un model pot ser excel·lent en H1 i feble en H9, mentre un altre fa el contrari. **L’avaluació ha de mostrar una corba de rendiment per horitzó.**\n\nLes toleràncies també poden ser diferents. L’empresa pot exigir molta precisió a prop de l’execució i acceptar rangs més amplis en planificació estratègica. Això no és rebaixar l’estàndard, sinó alinear-lo amb la decisió.\n\nUna pràctica útil és construir una matriu amb horitzó, decisió, granularitat, mètrica, tolerància i política associada. Així forecasting deixa de ser una seqüència de columnes.\n\nH1 no és simplement la primera versió de H9. **Cada horitzó representa una finestra diferent per actuar.** Dissenyar el sistema al voltant d’aquestes finestres acostuma a aportar més valor que buscar un únic model bo de mitjana.\n\nA la pràctica, aquest disseny també canvia la comunicació. Un responsable operatiu no necessita nou corbes d’error sense context; necessita saber quin horitzó governa la seva acció i quina confiança mereix. **La presentació ha de seguir la mateixa arquitectura que la decisió.** Mostrar H1 com a compromís operatiu i H9 com a rang de planificació evita interpretar una previsió llunyana amb una precisió que el model mai no ha promès.",
+      "seo_title": "H1 vs H9: horitzons de forecasting",
+      "seo_description": "Per què H1, H3, H6 i H9 necessiten decisions, features, granularitats, mètriques i toleràncies diferents en forecasting.",
+      "seo_keywords": [
+        "forecast horizon planning",
+        "multi horizon forecasting",
+        "H1 H9 forecast",
+        "horitzó forecasting"
+      ],
+      "tags": [
+        "Forecasting",
+        "Multi-Horizon",
+        "Planning"
+      ]
+    }
+  }
+}

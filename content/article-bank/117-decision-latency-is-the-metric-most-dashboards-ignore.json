@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-117",
+  "sequence": 117,
+  "arc_id": "ARC-30",
+  "slug": "decision-latency-is-the-metric-most-dashboards-ignore",
+  "scheduled_at": "2027-07-18T09:00:00+02:00",
+  "knowledge_area": "analytics",
+  "cluster": "Analytics & Decision Intelligence",
+  "editorial_pillar": "consulting_decision_insights",
+  "content_family": "point_of_view_contrarian",
+  "angle": "decision latency",
+  "primary_keyword": "decision latency",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-118",
+    "KB-119",
+    "KB-120"
+  ],
+  "variants": {
+    "es": {
+      "title": "Decision latency: la métrica que muchos dashboards ignoran",
+      "excerpt": "Una señal puede ser correcta y llegar demasiado tarde. El valor analítico depende de cuánto tiempo pasa entre detectar, entender, decidir y actuar.",
+      "quick": [
+        "Ver antes no basta",
+        "Cada espera erosiona valor",
+        "La acción marca el final"
+      ],
+      "section_titles": [
+        "El dato puede llegar a tiempo y la decisión no",
+        "La latencia se reparte entre varias etapas",
+        "El valor de una señal cae con el tiempo",
+        "Mide el ciclo completo hasta la acción"
+      ],
+      "business_title": "El ROI de analytics depende no solo de detectar bien una señal, sino de convertirla en una acción antes de que pierda valor.",
+      "business_steps": [
+        "Detección",
+        "Decisión",
+        "Acción"
+      ],
+      "body": "Muchas organizaciones miden freshness, tiempo de carga, disponibilidad de dashboard y precisión de modelos, pero dejan fuera una variable que afecta directamente al valor: **cuánto tiempo transcurre desde que aparece una señal hasta que alguien actúa sobre ella**.\n\nEse intervalo es decision latency. Puede ser de segundos, horas, días o semanas. Y puede convertir un sistema técnicamente excelente en una herramienta poco útil. **Una predicción correcta demasiado tarde puede valer menos que una señal ligeramente peor que llega cuando todavía podemos intervenir.**\n\n**El dato puede llegar a tiempo y la decisión no**\nUn dashboard puede refrescar cada cinco minutos y aun así soportar una decisión lenta.\n\nLa señal aparece, pero nadie la revisa hasta la mañana siguiente. Después se valida con otro equipo, se busca contexto, se pide aprobación y la acción se ejecuta dos días más tarde.\n\n**Real-time data no implica** real-time decision.\n\nEsto ocurre porque la velocidad técnica representa solo una parte del proceso.\n\nUn sistema puede reducir ETL de seis horas a diez minutos y no cambiar prácticamente nada si el cuello de botella está en revisión o aprobación.\n\nPor eso medir solo data latency puede llevar a inversiones que mejoran infraestructura sin mejorar outcomes.\n\nEl punto de partida debe ser la decisión: cuánto valor perdemos por cada hora o día de retraso.\n\n**La latencia se reparte entre varias etapas**\nDecision latency puede dividirse en pasos.\n\nPrimero, detection latency: cuánto tardamos en saber que ha ocurrido algo.\n\nSegundo, interpretation latency: cuánto tardamos en entender qué significa y si importa.\n\nTercero, decision latency estricta: cuánto tardamos en elegir una respuesta.\n\nCuarto, execution latency: cuánto tardamos en realizarla.\n\n**El cuello de botella puede estar** en cualquier punto de esa cadena.\n\nPor ejemplo, un forecast puede actualizarse diariamente, pero compras revisarlo semanalmente.\n\nUna alerta de churn puede llegar al CRM en segundos, pero el comercial necesita recopilar historial manualmente antes de contactar.\n\nUna incidencia operativa puede detectarse rápido, pero una aprobación multinivel bloquea la respuesta.\n\nSeparar etapas ayuda a evitar soluciones incorrectas.\n\n**El valor de una señal cae con el tiempo**\nNo todas las decisiones sufren igual por retraso.\n\nEn fraude, segundos pueden importar.\n\nEn inventario, varias horas o un día pueden ser relevantes.\n\nEn planificación estratégica, una semana puede no cambiar la acción.\n\nLa pregunta es cuánto se degrada el valor con el tiempo. **Cada caso tiene una curva de decay distinta.**\n\nPodemos imaginar una opportunity window: el periodo durante el cual actuar todavía genera beneficio.\n\nSi una alerta llega dentro de esa ventana, existe valor potencial.\n\nSi llega después, la señal puede ser correcta y operacionalmente inútil.\n\nEsto cambia cómo evaluamos modelos.\n\nUna mejora pequeña de accuracy puede valer menos que una reducción grande de latency si la decisión es sensible al tiempo.\n\nTambién puede justificar modelos más simples o datos menos perfectos cuando permiten actuar mucho antes.\n\n**Mide el ciclo completo hasta la acción**\nLa métrica clave debería registrar timestamps a lo largo de todo el proceso.\n\nCuándo se generó el evento, cuándo estuvo disponible el dato, cuándo se detectó la señal, cuándo se revisó, cuándo se decidió y cuándo se ejecutó.\n\n**Sin esos timestamps, la organización sabe que decide lento** pero no sabe dónde pierde el tiempo.\n\nDespués podemos calcular percentiles, no solo medias.\n\nEl p95 puede revelar casos que se atascan aunque el promedio parezca aceptable.\n\nTambién conviene segmentar por tipo de decisión, equipo y severidad.\n\nUn caso crítico debería tener un SLA diferente a una señal informativa.\n\nLas colas deben hacerse visibles. Si cientos de excepciones esperan revisión, el problema puede ser capacidad y no analytics.\n\nLas aprobaciones pueden evaluarse. Algunas existen por riesgo real; otras son herencia del proceso.\n\nEl sistema también puede reducir interpretation latency aportando contexto automático: comparativa, causa probable, impacto y acciones anteriores.\n\nException-based reporting reduce detection latency al evitar revisar todo.\n\nRecomendaciones pueden reducir decision latency cuando el criterio está bien definido.\n\nAutomatización de acciones reversibles puede reducir execution latency.\n\nPero no todo debe acelerarse. Algunas decisiones necesitan deliberación porque el coste de error es alto.\n\nEl objetivo no es decidir siempre más rápido, sino **eliminar espera que no aporta mejor criterio**.\n\nTambién conviene medir outcome frente a latency. ¿Los casos resueltos en una hora generan resultados mejores que los resueltos en un día?\n\nEsto ayuda a estimar el valor de invertir en velocidad.\n\nEl diseño técnico debería responder a esa evidencia. Streaming no tiene sentido si actuar antes no cambia nada.\n\nDel mismo modo, un batch diario puede ser insuficiente si la oportunidad desaparece en minutos.\n\nLa propiedad del proceso importa. Alguien debe responder por el cycle time completo y no solo por su etapa.\n\nFinalmente, la mejora debe compararse con la precisión. A partir de cierto nivel, una señal “suficientemente buena” que activa antes puede generar más retorno que una señal marginalmente más precisa.\n\n**Decision latency es la métrica que muchos dashboards ignoran porque los dashboards terminan en mostrar información, mientras el valor termina en actuar.** Medir el tiempo completo desde señal hasta acción permite encontrar dónde se pierde ROI y rediseñar analytics alrededor de la velocidad que la decisión realmente necesita.",
+      "seo_title": "Decision latency: la métrica olvidada de analytics",
+      "seo_description": "Qué es decision latency, cómo medirla y por qué el tiempo entre señal y acción puede importar más que mejorar ligeramente la precisión.",
+      "seo_keywords": [
+        "decision latency",
+        "analytics decision latency",
+        "decision speed",
+        "real time decision"
+      ],
+      "tags": [
+        "Analytics",
+        "Decision Intelligence",
+        "Decision Latency"
+      ]
+    },
+    "en": {
+      "title": "Decision latency is the metric most dashboards ignore",
+      "excerpt": "A signal can be correct and still arrive too late. Analytical value depends on the time between detecting, understanding, deciding and acting.",
+      "quick": [
+        "Seeing earlier is not enough",
+        "Every wait erodes value",
+        "Action marks the end"
+      ],
+      "section_titles": [
+        "Data can arrive on time while the decision does not",
+        "Latency is distributed across several stages",
+        "The value of a signal decays with time",
+        "Measure the full cycle through action"
+      ],
+      "business_title": "Analytics ROI depends not only on detecting the right signal, but on converting it into action before its value disappears.",
+      "business_steps": [
+        "Detection",
+        "Decision",
+        "Action"
+      ],
+      "body": "Many organizations measure freshness, dashboard load time, data availability and model accuracy while ignoring a variable that directly shapes value: **how long it takes from the moment a signal appears until someone acts on it**.\n\nThat interval is decision latency. It may be seconds, hours, days or weeks, and it can turn a technically excellent system into a weak business tool. **A correct prediction delivered too late can be worth less than a slightly weaker signal delivered while intervention is still possible.**\n\n**Data can arrive on time while the decision does not**\nA dashboard may refresh every five minutes and still support a slow decision process.\n\nThe signal appears, but nobody reviews it until the next morning. Then another team validates it, context is collected, approval is requested and the action is executed two days later.\n\n**Real-time data does not imply** a real-time decision.\n\nThat is because technical speed represents only one part of the process.\n\nA system can reduce ETL from six hours to ten minutes and change almost nothing if review or approval is the real bottleneck.\n\nMeasuring only data latency can therefore encourage infrastructure investment without changing outcomes.\n\nThe starting point should be the decision: how much value is lost for each hour or day of delay?\n\n**Latency is distributed across several stages**\nDecision latency can be separated into stages.\n\nFirst, detection latency: how long it takes to know that something happened.\n\nSecond, interpretation latency: how long it takes to understand what the signal means and whether it matters.\n\nThird, decision latency in the narrow sense: how long it takes to choose a response.\n\nFourth, execution latency: how long it takes to carry the response out.\n\n**The bottleneck can sit** anywhere in that chain.\n\nA forecast may refresh daily while purchasing reviews it weekly.\n\nA churn alert may enter CRM immediately while the salesperson manually gathers history before making contact.\n\nAn operational incident may be detected quickly while multi-level approval delays response.\n\nBreaking latency into stages helps prevent solving the wrong problem.\n\n**The value of a signal decays with time**\nNot every decision is equally sensitive to delay.\n\nIn fraud, seconds may matter.\n\nIn inventory, hours or a day may matter.\n\nIn strategic planning, a week may make little difference.\n\nThe key question is how value decays over time. **Every use case has a different decay curve.**\n\nWe can think in terms of an opportunity window: the period during which action can still create benefit.\n\nIf a signal arrives inside that window, it has potential value.\n\nIf it arrives later, the prediction may be accurate and operationally useless.\n\nThis changes model evaluation.\n\nA small gain in accuracy may be worth less than a large reduction in latency when the decision is time-sensitive.\n\nIt can also justify simpler models or slightly less complete data when those choices allow much earlier action.\n\n**Measure the full cycle through action**\nThe key measurement practice is to record timestamps across the process.\n\nWhen the event occurred, when data became available, when the signal was detected, when it was reviewed, when a decision was made and when execution happened.\n\n**Without those timestamps, the organization knows it is slow** but not where time is being lost.\n\nPercentiles matter, not only averages.\n\nThe p95 can reveal cases that become stuck even when the mean looks acceptable.\n\nSegmentation by decision type, team and severity is useful too.\n\nCritical cases should have different SLAs from informational signals.\n\nQueues need visibility. If hundreds of exceptions are waiting for review, the bottleneck may be capacity rather than analytics.\n\nApprovals should also be challenged. Some protect real risk; others are inherited process.\n\nSystems can reduce interpretation latency by attaching context automatically: comparison, likely cause, impact and previous actions.\n\nException-based reporting reduces detection latency by removing the need to scan everything.\n\nRecommendations can reduce decision latency when criteria are sufficiently clear.\n\nAutomation of reversible actions can reduce execution latency.\n\nNot every decision should be accelerated, however. Some decisions require deliberation because error cost is high.\n\nThe objective is not to decide faster at all costs, but **to eliminate waiting that does not improve judgment**.\n\nOutcome should also be analyzed against latency. Do cases resolved within an hour perform better than those resolved within a day?\n\nThat evidence helps quantify the value of speed.\n\nTechnical design should follow that evidence. Streaming adds little when earlier action changes nothing.\n\nLikewise, daily batch may be too slow when the opportunity disappears within minutes.\n\nProcess ownership matters. Someone needs responsibility for the full cycle time rather than only one stage.\n\nFinally, speed should be compared with precision. Beyond a certain point, a sufficiently good signal that arrives earlier may create more return than a marginally more accurate one.\n\n**Decision latency is the metric many dashboards ignore because dashboards end at information while business value ends at action.** Measuring the full path from signal to execution reveals where ROI is lost and allows analytics to be redesigned around the speed the decision actually requires.",
+      "seo_title": "Decision Latency: The Metric Dashboards Ignore",
+      "seo_description": "What decision latency is, how to measure it and why time from signal to action can matter more than marginal gains in predictive accuracy.",
+      "seo_keywords": [
+        "decision latency",
+        "analytics decision latency",
+        "decision speed",
+        "real time decision"
+      ],
+      "tags": [
+        "Analytics",
+        "Decision Intelligence",
+        "Decision Latency"
+      ]
+    },
+    "ca": {
+      "title": "Decision latency: la mètrica que molts dashboards ignoren",
+      "excerpt": "Una senyal pot ser correcta i arribar massa tard. El valor analític depèn del temps entre detectar, entendre, decidir i actuar.",
+      "quick": [
+        "Veure abans no basta",
+        "Cada espera erosiona valor",
+        "L’acció marca el final"
+      ],
+      "section_titles": [
+        "La dada pot arribar a temps i la decisió no",
+        "La latència es reparteix entre diverses etapes",
+        "El valor d’una senyal cau amb el temps",
+        "Mesura el cicle complet fins a l’acció"
+      ],
+      "business_title": "El ROI d’analytics depèn no només de detectar bé una senyal, sinó de convertir-la en acció abans que perdi valor.",
+      "business_steps": [
+        "Detecció",
+        "Decisió",
+        "Acció"
+      ],
+      "body": "Moltes organitzacions mesuren freshness, temps de càrrega, disponibilitat de dashboard i accuracy de models, però deixen fora una variable que afecta directament el valor: **quant temps passa des que apareix una senyal fins que algú hi actua**.\n\nAquest interval és decision latency. Pot ser de segons, hores, dies o setmanes. I pot convertir un sistema tècnicament excel·lent en una eina poc útil. **Una predicció correcta massa tard pot valer menys que una senyal una mica pitjor que arriba quan encara podem intervenir.**\n\n**La dada pot arribar a temps i la decisió no**\nUn dashboard pot refrescar cada cinc minuts i continuar suportant una decisió lenta.\n\nLa senyal apareix, però ningú la revisa fins l’endemà. Després es valida amb un altre equip, es busca context, es demana aprovació i l’acció s’executa dos dies més tard.\n\n**Real-time data no implica** real-time decision.\n\nAixò passa perquè la velocitat tècnica representa només una part del procés.\n\nUn sistema pot reduir ETL de sis hores a deu minuts i no canviar gaire si el coll d’ampolla és la revisió o aprovació.\n\nMesurar només data latency pot portar a invertir en infraestructura sense canviar outcomes.\n\nEl punt de partida ha de ser la decisió: quant valor perdem per cada hora o dia de retard?\n\n**La latència es reparteix entre diverses etapes**\nDecision latency es pot separar en fases.\n\nPrimer, detection latency: quant triguem a saber que ha passat alguna cosa.\n\nSegon, interpretation latency: quant triguem a entendre què significa i si importa.\n\nTercer, decision latency en sentit estricte: quant triguem a triar resposta.\n\nQuart, execution latency: quant triguem a executar-la.\n\n**El coll d’ampolla pot estar** en qualsevol punt d’aquesta cadena.\n\nUn forecast pot actualitzar-se diàriament i compres revisar-lo setmanalment.\n\nUna alerta de churn pot entrar al CRM en segons i el comercial recopilar historial manualment abans de contactar.\n\nUna incidència operativa pot detectar-se ràpid, però una aprovació multinivell bloquejar la resposta.\n\nSeparar etapes ajuda a no resoldre el problema equivocat.\n\n**El valor d’una senyal cau amb el temps**\nNo totes les decisions pateixen igual pel retard.\n\nEn frau, poden importar segons.\n\nEn inventari, hores o un dia.\n\nEn planificació estratègica, una setmana pot no canviar l’acció.\n\nLa pregunta és com es degrada el valor amb el temps. **Cada cas té una corba de decay diferent.**\n\nPodem imaginar una opportunity window: el període durant el qual actuar encara genera benefici.\n\nSi la senyal arriba dins d’aquesta finestra, existeix valor potencial.\n\nSi arriba després, pot ser correcta i operacionalment inútil.\n\nAixò canvia com avaluem models.\n\nUna petita millora d’accuracy pot valer menys que una gran reducció de latency si la decisió és sensible al temps.\n\nTambé pot justificar models més simples o dades una mica menys completes quan permeten actuar molt abans.\n\n**Mesura el cicle complet fins a l’acció**\nLa pràctica clau és registrar timestamps a tot el procés.\n\nQuan es genera l’esdeveniment, quan la dada està disponible, quan es detecta la senyal, quan es revisa, quan es decideix i quan s’executa.\n\n**Sense aquests timestamps, l’organització sap que decideix lent** però no sap on perd el temps.\n\nImporten percentils, no només mitjanes.\n\nEl p95 pot revelar casos encallats encara que la mitjana sembli acceptable.\n\nTambé convé segmentar per tipus de decisió, equip i severitat.\n\nEls casos crítics haurien de tenir SLA diferent de les senyals informatives.\n\nLes cues s’han de fer visibles. Si centenars d’excepcions esperen revisió, el problema pot ser capacitat i no analytics.\n\nLes aprovacions també s’han d’avaluar. Algunes protegeixen risc real; altres són herència del procés.\n\nEl sistema pot reduir interpretation latency aportant context automàtic: comparativa, causa probable, impacte i accions anteriors.\n\nException-based reporting redueix detection latency evitant revisar-ho tot.\n\nRecomanacions poden reduir decision latency quan el criteri està clar.\n\nAutomatitzar accions reversibles pot reduir execution latency.\n\nPerò no tot s’ha d’accelerar. Algunes decisions necessiten deliberació perquè el cost d’error és alt.\n\nL’objectiu no és decidir sempre més ràpid, sinó **eliminar espera que no millora el criteri**.\n\nTambé convé comparar outcome amb latency. Els casos resolts en una hora obtenen millors resultats que els resolts en un dia?\n\nAixò ajuda a quantificar el valor de la velocitat.\n\nEl disseny tècnic ha de seguir aquesta evidència. Streaming no té sentit si actuar abans no canvia res.\n\nDe la mateixa manera, batch diari pot ser massa lent si l’oportunitat desapareix en minuts.\n\nL’ownership del procés importa. Algú ha de respondre pel cycle time complet i no només per una etapa.\n\nFinalment, la velocitat s’ha de comparar amb la precisió. A partir de cert nivell, una senyal prou bona que arriba abans pot generar més retorn que una de marginalment més precisa.\n\n**Decision latency és la mètrica que molts dashboards ignoren perquè els dashboards acaben en mostrar informació mentre el valor acaba en actuar.** Mesurar tot el camí de senyal a execució mostra on es perd ROI i permet redissenyar analytics segons la velocitat que la decisió necessita.",
+      "seo_title": "Decision latency: la mètrica oblidada d’analytics",
+      "seo_description": "Què és decision latency, com mesurar-la i per què el temps entre senyal i acció pot importar més que millorar lleugerament l’accuracy.",
+      "seo_keywords": [
+        "decision latency",
+        "analytics decision latency",
+        "decision speed",
+        "real time decision"
+      ],
+      "tags": [
+        "Analytics",
+        "Decision Intelligence",
+        "Decision Latency"
+      ]
+    }
+  }
+}

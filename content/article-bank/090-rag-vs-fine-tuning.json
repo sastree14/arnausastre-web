@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-090",
+  "sequence": 90,
+  "arc_id": "ARC-23",
+  "slug": "rag-vs-fine-tuning",
+  "scheduled_at": "2027-05-17T09:00:00+02:00",
+  "knowledge_area": "ai_automation",
+  "cluster": "AI & Automation",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "compare",
+  "angle": "rag vs fine tuning",
+  "primary_keyword": "rag vs fine tuning",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-089",
+    "KB-091",
+    "KB-092"
+  ],
+  "variants": {
+    "es": {
+      "title": "RAG vs fine-tuning",
+      "excerpt": "RAG cambia el contexto que recibe el modelo; fine-tuning cambia su comportamiento. La elección depende de si el problema es conocimiento, estilo, tarea o ambos.",
+      "quick": [
+        "RAG actualiza contexto",
+        "Fine-tuning ajusta comportamiento",
+        "Pueden combinarse"
+      ],
+      "section_titles": [
+        "Qué resuelve RAG",
+        "Qué resuelve fine-tuning",
+        "Dónde se confunden ambos enfoques",
+        "Cómo elegir la arquitectura"
+      ],
+      "business_title": "RAG y fine-tuning resuelven problemas distintos: uno aporta conocimiento recuperable y el otro adapta cómo responde o ejecuta una tarea.",
+      "business_steps": [
+        "Problema",
+        "Arquitectura",
+        "Evaluación"
+      ],
+      "body": "RAG y fine-tuning suelen aparecer como alternativas para “mejorar” un sistema con LLM, pero **actúan sobre partes distintas del problema**. RAG cambia la información que el modelo recibe en el momento de responder. Fine-tuning modifica el comportamiento aprendido del modelo a partir de ejemplos.\n\nLa pregunta correcta no es cuál es más avanzado. Es **qué está fallando hoy**: falta conocimiento actualizado, el modelo no sigue el estilo o formato, la tarea requiere patrones específicos o necesitamos combinar varias de estas cosas.\n\n**Qué resuelve RAG**\nRAG es útil cuando la respuesta depende de información que no queremos codificar en los pesos del modelo.\n\nPuede tratarse de políticas internas, catálogo, contratos, documentación técnica, procedimientos o datos que cambian con frecuencia.\n\n**La principal ventaja es que el conocimiento puede actualizarse** sin reentrenar el modelo.\n\nSi cambia una política, actualizamos la fuente o el índice y la siguiente consulta puede utilizar la nueva versión.\n\nRAG también facilita procedencia. Podemos citar documentos y mostrar de dónde sale una afirmación.\n\nEsto es especialmente valioso en entornos empresariales donde la verificación importa.\n\nLa calidad, sin embargo, depende de retrieval: corpus, chunking, embeddings, metadata, filtros, reranking y permisos.\n\nUn generador excelente con contexto incorrecto seguirá dando una mala respuesta.\n\n**Qué resuelve fine-tuning**\nFine-tuning es más adecuado cuando queremos modificar patrones de comportamiento.\n\nPuede enseñar un formato consistente, una taxonomía, un estilo de clasificación, una estructura de salida o una forma específica de seguir instrucciones.\n\n**Fine-tuning no es una base de datos fiable** para conocimiento que cambia constantemente.\n\nAunque un modelo pueda memorizar información de entrenamiento, actualizar hechos mediante nuevos fine-tunes es más lento, más difícil de auditar y menos preciso que recuperar una fuente actual.\n\nDonde sí puede aportar mucho es en tareas repetitivas con ejemplos de alta calidad.\n\nPor ejemplo, clasificar tickets según categorías internas, producir JSON con un schema complejo o imitar una estructura de respuesta especializada.\n\nTambién puede reducir prompt length si parte del comportamiento queda internalizado en el modelo.\n\n**Dónde se confunden ambos enfoques**\nUn error frecuente es intentar fine-tunear porque el modelo “no conoce” documentación privada.\n\nSi el problema es acceso a información, RAG suele ser más natural.\n\nEl error opuesto es añadir más retrieval cuando el modelo ya tiene el contexto correcto pero sigue respondiendo en un formato inconsistente. **Más documentos no corrigen un problema de comportamiento.**\n\nTambién hay casos donde el problema es la instrucción. Antes de cambiar arquitectura, un prompt mejor, tool schema más claro o output parser puede resolverlo.\n\nOtro punto de confusión es el coste. Fine-tuning tiene coste de dataset, entrenamiento, evaluación y mantenimiento; RAG tiene coste de indexación, retrieval, storage y latency.\n\nLa comparación debe incluir el ciclo de vida, no solo una llamada.\n\n**Cómo elegir la arquitectura**\nEmpieza diagnosticando el error con un conjunto de casos reales.\n\nSi la respuesta falla porque falta evidencia relevante, mejora retrieval.\n\nSi la evidencia está presente pero el modelo no sigue el patrón esperado, considera prompt engineering, constrained decoding o fine-tuning.\n\n**La arquitectura debería atacar la causa del fallo**, no el síntoma visible.\n\nTambién hay que considerar freshness. Conocimiento que cambia cada semana favorece RAG.\n\nTareas estables con miles de ejemplos consistentes pueden favorecer fine-tuning.\n\nLa trazabilidad también influye. Si el usuario necesita ver la fuente de una afirmación, RAG aporta una ventaja natural.\n\nLa latencia puede favorecer un modelo fine-tuned si elimina prompts largos y retrieval complejo, aunque depende de la infraestructura.\n\nLa privacidad debe evaluarse en ambos casos: dónde se almacenan documentos, quién puede recuperar cada fuente y cómo se gestionan datasets de entrenamiento.\n\nLa evaluación debe separar retrieval quality de generation quality.\n\nEn RAG podemos medir recall@k, precision@k y faithfulness.\n\nEn fine-tuning podemos medir task accuracy, schema compliance, style adherence o error rate según la tarea.\n\nTambién es frecuente combinar ambos enfoques. Un modelo fine-tuned para clasificar o responder en un formato específico puede recibir conocimiento actualizado mediante RAG.\n\nOtra arquitectura es utilizar RAG para generar training examples y después fine-tunear cuando el patrón ya es estable.\n\nNo todo problema necesita ninguno de los dos. Si el modelo base con una buena instrucción resuelve la tarea, añadir capas solo aumenta coste.\n\nLa decisión debe incluir capacidad interna. RAG necesita operación de índices y pipelines; fine-tuning necesita datasets limpios, versionados y evaluación de regresiones.\n\nTambién conviene diseñar una salida. Cambiar de embedding model o proveedor debería ser posible; lo mismo con checkpoints fine-tuned.\n\nFinalmente, el éxito debe medirse por workflow. ¿La respuesta es correcta, verificable y útil? ¿Reduce tiempo o errores? ¿Mantiene calidad cuando cambia el conocimiento?\n\n**RAG es la herramienta natural cuando el problema está en qué sabe el sistema en cada consulta; fine-tuning cuando el problema está en cómo se comporta.** Cuando conocimiento y comportamiento requieren adaptación, ambos pueden formar parte de la misma arquitectura.",
+      "seo_title": "RAG vs fine-tuning: diferencias y cuándo usar cada uno",
+      "seo_description": "Cómo elegir entre RAG y fine-tuning según conocimiento, comportamiento, freshness, trazabilidad, evaluación y coste operativo.",
+      "seo_keywords": [
+        "rag vs fine tuning",
+        "RAG fine tuning",
+        "retrieval augmented generation",
+        "LLM fine tuning"
+      ],
+      "tags": [
+        "RAG",
+        "Fine-tuning",
+        "LLM Architecture"
+      ]
+    },
+    "en": {
+      "title": "RAG vs fine-tuning",
+      "excerpt": "RAG changes the context a model receives; fine-tuning changes model behaviour. The choice depends on whether the problem is knowledge, style, task execution or a combination.",
+      "quick": [
+        "RAG updates context",
+        "Fine-tuning adapts behaviour",
+        "They can be combined"
+      ],
+      "section_titles": [
+        "What RAG solves",
+        "What fine-tuning solves",
+        "Where the two approaches are confused",
+        "How to choose the architecture"
+      ],
+      "business_title": "RAG and fine-tuning solve different problems: one supplies retrievable knowledge while the other adapts how the model behaves or executes a task.",
+      "business_steps": [
+        "Problem",
+        "Architecture",
+        "Evaluation"
+      ],
+      "body": "RAG and fine-tuning are often presented as alternative ways to “improve” an LLM system, but **they operate on different parts of the problem**. RAG changes the information the model receives at response time. Fine-tuning changes learned model behaviour using examples.\n\nThe right question is not which approach is more advanced. It is **what is currently failing**: missing up-to-date knowledge, inconsistent style or format, a specialized task pattern, or some combination of these.\n\n**What RAG solves**\nRAG is useful when the answer depends on information that should not be encoded permanently in model weights.\n\nThat may include internal policy, product catalogues, contracts, technical documentation, procedures or information that changes frequently.\n\n**Its main advantage is that knowledge can be updated** without retraining the model.\n\nWhen policy changes, the source or index can be updated and the next query can use the new version.\n\nRAG also supports provenance. The system can cite documents and show where an answer came from.\n\nThat is especially valuable in enterprise settings where verification matters.\n\nQuality, however, depends on retrieval: corpus design, chunking, embeddings, metadata, filters, reranking and permissions.\n\nAn excellent generator with the wrong context still produces a poor answer.\n\n**What fine-tuning solves**\nFine-tuning is more appropriate when the objective is changing behavioural patterns.\n\nIt can teach consistent formatting, an internal taxonomy, a classification style, a structured output or a specialized instruction-following pattern.\n\n**Fine-tuning is not a reliable database** for knowledge that changes constantly.\n\nA model may memorize training information, but updating facts through repeated fine-tunes is slower, harder to audit and less precise than retrieving a current source.\n\nFine-tuning can be powerful for repeatable tasks with high-quality examples.\n\nExamples include classifying tickets into internal categories, producing JSON with a complex schema or following a specialized response structure.\n\nIt can also reduce prompt length when some behaviour becomes internalized.\n\n**Where the two approaches are confused**\nA common mistake is fine-tuning because the model “does not know” private documentation.\n\nIf the problem is access to information, RAG is usually more natural.\n\nThe opposite mistake is adding more retrieval when the correct evidence is already present but output remains inconsistent. **More documents do not solve a behaviour problem.**\n\nSometimes the issue is simply instruction quality. A stronger prompt, clearer tool schema or output parser may solve the problem before architecture changes.\n\nCost can also be misunderstood. Fine-tuning carries dataset, training, evaluation and maintenance cost; RAG carries indexing, retrieval, storage and latency cost.\n\nThe comparison should cover the lifecycle rather than one request.\n\n**How to choose the architecture**\nStart by diagnosing failures using real test cases.\n\nIf the response fails because relevant evidence is missing, improve retrieval.\n\nIf the evidence is present but behaviour is wrong, consider prompt engineering, constrained decoding or fine-tuning.\n\n**Architecture should attack the cause of failure**, rather than the visible symptom.\n\nFreshness matters too. Knowledge that changes weekly strongly favours RAG.\n\nStable tasks with thousands of consistent examples may favour fine-tuning.\n\nTraceability is another factor. If users need to see the source behind a claim, RAG provides a natural advantage.\n\nLatency can favour a fine-tuned model when it replaces long prompts and complex retrieval, although infrastructure matters.\n\nPrivacy needs review in both approaches: where documents are stored, who can retrieve each source and how training datasets are managed.\n\nEvaluation should separate retrieval quality from generation quality.\n\nFor RAG, teams can measure recall@k, precision@k and faithfulness.\n\nFor fine-tuning, task accuracy, schema compliance, style adherence or error rate may be more relevant.\n\nCombining both is common. A model fine-tuned for classification or structured response can still receive current knowledge through RAG.\n\nAnother path is using RAG to generate training examples and fine-tuning later once the behaviour pattern becomes stable.\n\nSome problems need neither. If the base model with a good instruction already solves the task, additional architecture only adds cost.\n\nInternal capability matters. RAG requires index and retrieval operations; fine-tuning requires clean, versioned datasets and regression evaluation.\n\nExit paths should also be designed. Changing embedding model or provider should be possible, as should replacing fine-tuned checkpoints.\n\nSuccess should ultimately be measured at workflow level. Is the answer correct, verifiable and useful? Does it reduce time or errors? Does quality remain stable when knowledge changes?\n\n**RAG is the natural tool when the problem is what the system knows at query time; fine-tuning when the problem is how it behaves.** When both knowledge and behaviour require adaptation, both can belong in the same architecture.",
+      "seo_title": "RAG vs Fine-Tuning: When to Use Each",
+      "seo_description": "How to choose between RAG and fine-tuning based on knowledge, behaviour, freshness, traceability, evaluation and operating cost.",
+      "seo_keywords": [
+        "rag vs fine tuning",
+        "RAG fine tuning",
+        "retrieval augmented generation",
+        "LLM fine tuning"
+      ],
+      "tags": [
+        "RAG",
+        "Fine-tuning",
+        "LLM Architecture"
+      ]
+    },
+    "ca": {
+      "title": "RAG vs fine-tuning",
+      "excerpt": "RAG canvia el context que rep el model; fine-tuning canvia el seu comportament. La tria depèn de si el problema és coneixement, estil, tasca o tots dos.",
+      "quick": [
+        "RAG actualitza context",
+        "Fine-tuning adapta comportament",
+        "Es poden combinar"
+      ],
+      "section_titles": [
+        "Què resol RAG",
+        "Què resol fine-tuning",
+        "On es confonen els dos enfocaments",
+        "Com triar l’arquitectura"
+      ],
+      "business_title": "RAG i fine-tuning resolen problemes diferents: un aporta coneixement recuperable i l’altre adapta com respon o executa una tasca el model.",
+      "business_steps": [
+        "Problema",
+        "Arquitectura",
+        "Avaluació"
+      ],
+      "body": "RAG i fine-tuning sovint es presenten com alternatives per “millorar” un sistema amb LLM, però **actuen sobre parts diferents del problema**. RAG canvia la informació que el model rep en el moment de respondre. Fine-tuning canvia el comportament après a partir d’exemples.\n\nLa pregunta correcta no és quin enfocament és més avançat. És **què està fallant avui**: falta coneixement actualitzat, el model no segueix l’estil o format, la tasca necessita patrons específics o cal una combinació.\n\n**Què resol RAG**\nRAG és útil quan la resposta depèn d’informació que no volem codificar permanentment als pesos del model.\n\nPot ser policy interna, catàleg, contractes, documentació tècnica, procediments o informació que canvia sovint.\n\n**El principal avantatge és que el coneixement es pot actualitzar** sense reentrenar el model.\n\nSi canvia una policy, actualitzem la font o l’índex i la següent consulta pot utilitzar la nova versió.\n\nRAG també facilita procedència. Podem citar documents i mostrar d’on surt una afirmació.\n\nAixò és especialment valuós en entorns empresarials on la verificació importa.\n\nLa qualitat, però, depèn de retrieval: corpus, chunking, embeddings, metadata, filtres, reranking i permisos.\n\nUn generador excel·lent amb context incorrecte continuarà donant una mala resposta.\n\n**Què resol fine-tuning**\nFine-tuning és més adequat quan volem modificar patrons de comportament.\n\nPot ensenyar format consistent, taxonomia interna, estil de classificació, output estructurat o una forma especialitzada de seguir instruccions.\n\n**Fine-tuning no és una base de dades fiable** per coneixement que canvia constantment.\n\nUn model pot memoritzar informació del training, però actualitzar fets amb nous fine-tunes és més lent, difícil d’auditar i menys precís que recuperar una font actual.\n\nOn sí pot aportar molt és en tasques repetitives amb exemples d’alta qualitat.\n\nPer exemple, classificar tickets en categories internes, produir JSON amb schema complex o seguir una estructura de resposta especialitzada.\n\nTambé pot reduir prompt length si una part del comportament queda internalitzada.\n\n**On es confonen els dos enfocaments**\nUn error freqüent és intentar fine-tunear perquè el model “no coneix” documentació privada.\n\nSi el problema és accés a informació, RAG sol ser més natural.\n\nL’error contrari és afegir més retrieval quan l’evidència correcta ja hi és però el model continua responent en un format inconsistent. **Més documents no corregeixen un problema de comportament.**\n\nA vegades el problema és simplement la instrucció. Un prompt millor, un tool schema més clar o un output parser poden resoldre’l abans de canviar arquitectura.\n\nEl cost també es pot entendre malament. Fine-tuning té cost de dataset, training, avaluació i manteniment; RAG té indexació, retrieval, storage i latency.\n\nLa comparació ha d’incloure el cicle de vida i no només una request.\n\n**Com triar l’arquitectura**\nComença diagnosticant els errors amb casos reals.\n\nSi la resposta falla perquè falta evidència rellevant, millora retrieval.\n\nSi l’evidència hi és però el comportament és incorrecte, considera prompt engineering, constrained decoding o fine-tuning.\n\n**L’arquitectura ha d’atacar la causa de la fallada**, no el símptoma visible.\n\nLa frescor també importa. Coneixement que canvia cada setmana afavoreix RAG.\n\nTasques estables amb milers d’exemples consistents poden afavorir fine-tuning.\n\nLa traçabilitat és un altre factor. Si l’usuari necessita veure la font d’una afirmació, RAG té un avantatge natural.\n\nLa latència pot afavorir un model fine-tuned si elimina prompts llargs i retrieval complex, encara que depèn de la infraestructura.\n\nLa privacitat s’ha de revisar en tots dos: on es guarden documents, qui recupera cada font i com es gestionen datasets de training.\n\nL’avaluació ha de separar retrieval quality de generation quality.\n\nEn RAG podem mesurar recall@k, precision@k i faithfulness.\n\nEn fine-tuning podem mesurar task accuracy, schema compliance, style adherence o error rate.\n\nCombinar tots dos és habitual. Un model fine-tuned per classificar o respondre en format específic pot rebre coneixement actual mitjançant RAG.\n\nUna altra via és utilitzar RAG per generar exemples i fine-tunear quan el patró ja és estable.\n\nAlguns problemes no necessiten cap dels dos. Si el model base amb una bona instrucció resol la tasca, més arquitectura només afegeix cost.\n\nLa capacitat interna importa. RAG necessita operació d’índexs i pipelines; fine-tuning necessita datasets nets, versionats i avaluació de regressions.\n\nTambé convé dissenyar una sortida. Canviar d’embedding model o proveïdor ha de ser possible, igual que substituir checkpoints fine-tuned.\n\nFinalment, l’èxit s’ha de mesurar a nivell de workflow. La resposta és correcta, verificable i útil? Redueix temps o errors? Manté qualitat quan canvia el coneixement?\n\n**RAG és l’eina natural quan el problema és què sap el sistema en cada consulta; fine-tuning quan el problema és com es comporta.** Quan coneixement i comportament necessiten adaptació, tots dos poden formar part de la mateixa arquitectura.",
+      "seo_title": "RAG vs fine-tuning: diferències i quan utilitzar-los",
+      "seo_description": "Com triar entre RAG i fine-tuning segons coneixement, comportament, frescor, traçabilitat, avaluació i cost operatiu.",
+      "seo_keywords": [
+        "rag vs fine tuning",
+        "RAG fine tuning",
+        "retrieval augmented generation",
+        "LLM fine tuning"
+      ],
+      "tags": [
+        "RAG",
+        "Fine-tuning",
+        "LLM Architecture"
+      ]
+    }
+  }
+}

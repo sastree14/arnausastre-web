@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-042",
+  "sequence": 42,
+  "arc_id": "ARC-11",
+  "slug": "manual-routing-vs-optimization",
+  "scheduled_at": "2027-01-17T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Optimization & OR",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "compare",
+  "angle": "manual vs optimized routing",
+  "primary_keyword": "manual vs optimized routing",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-041",
+    "KB-043",
+    "KB-044"
+  ],
+  "variants": {
+    "es": {
+      "title": "Planificación manual vs optimización de rutas",
+      "excerpt": "La planificación manual aporta contexto y flexibilidad; la optimización aporta consistencia cuando crecen paradas, restricciones y combinaciones posibles.",
+      "quick": [
+        "Manual entiende excepciones",
+        "Optimización explora más combinaciones",
+        "El valor aparece con complejidad"
+      ],
+      "section_titles": [
+        "Lo que hace bien una persona",
+        "Dónde empieza a fallar lo manual",
+        "Qué aporta un optimizador",
+        "Un modelo híbrido suele ser mejor"
+      ],
+      "business_title": "La optimización merece la pena cuando la complejidad supera la capacidad humana de comparar opciones de forma consistente.",
+      "business_steps": [
+        "Criterio humano",
+        "Complejidad combinatoria",
+        "Decisión asistida"
+      ],
+      "body": "Un dispatcher con experiencia puede construir rutas sorprendentemente buenas. Conoce clientes, tráfico, conductores, excepciones y reglas que quizá nunca se han documentado. Por eso **la comparación entre planificación manual y optimización no debería partir de la idea de que la persona “lo hace mal”**.\n\nEl problema aparece cuando el número de paradas, vehículos y restricciones crece. Las combinaciones posibles aumentan mucho más rápido que la capacidad de una persona para compararlas. **La optimización aporta valor cuando transforma esa complejidad en una búsqueda sistemática sin perder las reglas de negocio.**\n\n**Lo que hace bien una persona**\nUn planner puede incorporar información difícil de estructurar: una calle problemática, un cliente flexible aunque el sistema diga otra cosa, un conductor especialmente adecuado o un evento puntual.\n\nTambién entiende prioridades implícitas. Puede saber qué entrega conviene proteger aunque la penalización contractual sea baja. **El juicio humano es fuerte cuando el contexto cambia y la información no está completamente en los datos.**\n\nAdemás, la planificación manual permite reaccionar con rapidez ante situaciones inéditas. No necesita modelar formalmente cada excepción para actuar.\n\n**Dónde empieza a fallar lo manual**\nLa dificultad crece de manera combinatoria. Añadir unas pocas paradas no añade unas pocas alternativas; puede multiplicar el espacio de soluciones.\n\nUna persona tiende a usar heurísticas: proximidad geográfica, rutas históricas, zonas conocidas o secuencias habituales. Funcionan bien hasta que varias restricciones compiten a la vez. **El planner no puede evaluar miles de alternativas y sus trade-offs de forma consistente cada mañana.**\n\nTambién aparece variabilidad entre personas. Dos dispatchers pueden producir soluciones distintas para el mismo día. Eso dificulta estandarizar coste, servicio y conocimiento.\n\nEl tiempo es otro límite. Si planificar consume horas, la organización pierde capacidad de reaccionar a pedidos tardíos o incidencias.\n\n**Qué aporta un optimizador**\nUn modelo puede explorar muchas combinaciones respetando capacidad, ventanas, turnos y reglas. Puede evaluar alternativas contra un objetivo común: coste, kilómetros, vehículos, lateness o una mezcla.\n\nLa principal ventaja no siempre es encontrar “el óptimo”. **Es aplicar el mismo criterio de decisión a una complejidad que manualmente obliga a simplificar demasiado.**\n\nTambién permite simular. ¿Qué ocurre si añadimos un vehículo? ¿Si cambiamos una ventana? ¿Si consolidamos una zona? Esa capacidad convierte routing en una herramienta de diseño, no solo de despacho diario.\n\nLa trazabilidad mejora. Si la función objetivo y las restricciones están claras, podemos explicar qué trade-off llevó a una solución.\n\n**Un modelo híbrido suele ser mejor**\nLa alternativa más realista no es persona o algoritmo. Es un sistema donde el optimizador resuelve la parte combinatoria y el planner gestiona contexto, excepciones y aprobación.\n\nEl modelo puede generar una primera solución, mostrar violaciones blandas y permitir cambios. **Los overrides deberían quedar registrados para distinguir información válida no modelada de preferencias históricas que quizá ya no aportan valor.**\n\nCon el tiempo, excepciones recurrentes pueden convertirse en nuevas restricciones o features. Así el sistema aprende del uso.\n\nTambién conviene medir aceptación. Si los planners modifican siempre las mismas rutas, el problema puede estar en el modelo. Si las aceptan y el coste baja, la automatización puede aumentar gradualmente.\n\nLa decisión de invertir debería considerar escala, complejidad y frecuencia. Diez paradas estables pueden no justificar un VRP. Cientos de servicios diarios con ventanas, skills y flota heterogénea probablemente sí.\n\nLa comparación final no debe ser “quién es más inteligente”. **La planificación manual aporta contexto; la optimización aporta capacidad de búsqueda y consistencia.** El mayor valor suele aparecer cuando cada parte se utiliza donde tiene ventaja.\n\nUna forma útil de medir cuándo aparece esa ventaja es observar la sensibilidad a cambios. Si añadir dos pedidos obliga al planner a rehacer gran parte de la jornada, el proceso manual tiene poca capacidad de absorción. **Un buen sistema optimizado debería poder recalcular alternativas sin reconstruir el conocimiento desde cero.** Esa capacidad de respuesta suele ser tan importante como el ahorro de kilómetros.",
+      "seo_title": "Planificación manual vs optimización de rutas",
+      "seo_description": "Comparación entre routing manual y optimización VRP según complejidad, restricciones, consistencia, simulación y juicio humano.",
+      "seo_keywords": [
+        "manual vs optimized routing",
+        "planificación manual rutas",
+        "VRP optimization",
+        "route planning"
+      ],
+      "tags": [
+        "Optimization",
+        "Routing",
+        "Decision Support"
+      ]
+    },
+    "en": {
+      "title": "Manual routing vs optimization",
+      "excerpt": "Manual planning provides context and flexibility; optimization provides consistency as stops, constraints and possible combinations grow.",
+      "quick": [
+        "Humans understand exceptions",
+        "Optimization explores more combinations",
+        "Value appears with complexity"
+      ],
+      "section_titles": [
+        "What people do well",
+        "Where manual planning starts to fail",
+        "What an optimizer adds",
+        "A hybrid model is often stronger"
+      ],
+      "business_title": "Optimization becomes worthwhile when complexity exceeds the ability of a person to compare alternatives consistently.",
+      "business_steps": [
+        "Human judgment",
+        "Combinatorial complexity",
+        "Assisted decision"
+      ],
+      "body": "An experienced dispatcher can build surprisingly strong routes. They know customers, traffic, drivers, exceptions and rules that may never have been documented. **The comparison between manual planning and optimization should not start from the assumption that the person is doing a poor job.**\n\nThe challenge appears as the number of stops, vehicles and constraints grows. The set of possible combinations expands much faster than a person’s ability to compare them. **Optimization creates value when it turns that complexity into systematic search without losing business rules.**\n\n**What people do well**\nA planner can incorporate information that is difficult to structure: a problematic street, a customer who is actually flexible, a driver who fits a particular route or a one-off event.\n\nPeople also understand implicit priorities. They may know which delivery deserves protection even when the contractual penalty is small. **Human judgment is strongest when context changes and information is not fully represented in data.**\n\nManual planning can also react quickly to unprecedented situations without formally modeling every exception.\n\n**Where manual planning starts to fail**\nRouting is combinatorial. Adding a few stops does not create only a few more alternatives; it can multiply the solution space.\n\nPeople therefore use heuristics: geographic proximity, historical routes, familiar zones and habitual sequences. These work until multiple constraints interact. **A planner cannot evaluate thousands of alternatives and trade-offs consistently every morning.**\n\nVariation between planners also appears. Two dispatchers may create different solutions for the same day, making cost, service and knowledge difficult to standardize.\n\nTime becomes another limit. If planning takes hours, the organization has less ability to absorb late orders or disruptions.\n\n**What an optimizer adds**\nA model can explore many combinations while respecting capacity, time windows, shifts and operating rules. Alternatives can be evaluated against one objective: cost, kilometres, vehicles, lateness or a weighted combination.\n\nThe main advantage is not always finding “the optimum”. **It is applying the same decision logic to complexity that manual planning is forced to simplify.**\n\nOptimization also enables simulation. What happens if one vehicle is added? If a customer window changes? If a region is consolidated? Routing becomes a network-design tool as well as a dispatch tool.\n\nTraceability improves too. With explicit objectives and constraints, the team can explain which trade-off produced the recommendation.\n\n**A hybrid model is often stronger**\nThe realistic choice is rarely human or algorithm. It is a system where the optimizer handles combinatorial search and the planner handles context, exceptions and approval.\n\nThe model can produce a first solution, expose soft violations and allow edits. **Overrides should be captured so the team can distinguish valid unmodeled information from historical preferences that may no longer create value.**\n\nRepeated exceptions can later become constraints or additional data. The system learns from use.\n\nAcceptance rate is useful evidence. If planners always change the same routes, the model likely misses something. If suggestions are accepted and cost falls, more automation may be justified.\n\nInvestment should follow scale, complexity and frequency. Ten stable stops may not need a VRP. Hundreds of daily jobs with windows, skills and heterogeneous vehicles often do.\n\nThe final comparison is not about who is smarter. **Manual planning contributes context; optimization contributes search capacity and consistency.** The strongest operating model usually gives each side the part of the problem it handles best.\n\nA useful way to see when optimization starts to win is to measure sensitivity to change. If two late jobs force the planner to rebuild most of the day, the manual process has little capacity to absorb new information. **A strong optimized system should generate alternatives without reconstructing the planning logic from scratch.** That responsiveness can matter as much as mileage savings.\n\nThere is also a governance advantage. When rules live mostly in one person’s experience, it is difficult to audit why a route was chosen or to train a new planner. **Formal optimization turns at least part of that tacit knowledge into explicit policy.**",
+      "seo_title": "Manual Routing vs Route Optimization",
+      "seo_description": "Manual route planning and VRP optimization compared across complexity, constraints, consistency, simulation and human judgment.",
+      "seo_keywords": [
+        "manual vs optimized routing",
+        "route planning",
+        "VRP optimization",
+        "manual routing"
+      ],
+      "tags": [
+        "Optimization",
+        "Routing",
+        "Decision Support"
+      ]
+    },
+    "ca": {
+      "title": "Planificació manual vs optimització de rutes",
+      "excerpt": "La planificació manual aporta context i flexibilitat; l’optimització aporta consistència quan creixen parades, restriccions i combinacions.",
+      "quick": [
+        "La persona entén excepcions",
+        "L’optimització explora més combinacions",
+        "El valor apareix amb complexitat"
+      ],
+      "section_titles": [
+        "Què fa bé una persona",
+        "On comença a fallar el manual",
+        "Què aporta un optimitzador",
+        "Un model híbrid sol ser millor"
+      ],
+      "business_title": "L’optimització val la pena quan la complexitat supera la capacitat humana de comparar alternatives de manera consistent.",
+      "business_steps": [
+        "Criteri humà",
+        "Complexitat combinatòria",
+        "Decisió assistida"
+      ],
+      "body": "Un dispatcher amb experiència pot construir rutes sorprenentment bones. Coneix clients, trànsit, conductors, excepcions i regles que potser mai s’han documentat. Per això **la comparació entre planificació manual i optimització no hauria de partir de la idea que la persona ho fa malament.**\n\nEl problema apareix quan creix el nombre de parades, vehicles i restriccions. Les combinacions possibles augmenten molt més ràpid que la capacitat d’una persona per comparar-les. **L’optimització aporta valor quan converteix aquesta complexitat en una cerca sistemàtica sense perdre les regles de negoci.**\n\n**Què fa bé una persona**\nUn planner pot incorporar informació difícil d’estructurar: un carrer problemàtic, un client flexible encara que el sistema indiqui el contrari, un conductor adequat o un esdeveniment puntual.\n\nTambé entén prioritats implícites. Pot saber quina entrega convé protegir encara que la penalització contractual sigui baixa. **El judici humà és fort quan el context canvia i la informació no està completament a les dades.**\n\nLa planificació manual també permet reaccionar ràpidament davant situacions noves sense formalitzar cada excepció.\n\n**On comença a fallar el manual**\nRouting és combinatori. Afegir unes quantes parades no afegeix només unes quantes alternatives; pot multiplicar l’espai de solucions.\n\nPer això les persones utilitzen heurístiques: proximitat, rutes històriques, zones conegudes o seqüències habituals. Funcionen fins que diverses restriccions competeixen. **Un planner no pot avaluar milers d’alternatives i trade-offs de manera consistent cada matí.**\n\nTambé apareix variabilitat entre planners. Dues persones poden produir solucions diferents pel mateix dia, dificultant estandarditzar cost, servei i coneixement.\n\nEl temps és un altre límit. Si planificar consumeix hores, queda menys capacitat per reaccionar a comandes tardanes o incidències.\n\n**Què aporta un optimitzador**\nUn model pot explorar moltes combinacions respectant capacitat, finestres, torns i regles. Pot avaluar alternatives contra un objectiu comú: cost, quilòmetres, vehicles, retard o una combinació.\n\nL’avantatge principal no sempre és trobar “l’òptim”. **És aplicar el mateix criteri de decisió a una complexitat que manualment obliga a simplificar massa.**\n\nTambé permet simular. Què passa si afegim un vehicle? Si canviem una finestra? Si consolidem una zona? Routing es converteix en eina de disseny, no només de dispatch.\n\nLa traçabilitat millora. Amb objectiu i restriccions explícits, es pot explicar quin trade-off ha portat a la solució.\n\n**Un model híbrid sol ser millor**\nL’alternativa realista no és persona o algoritme. És un sistema on l’optimitzador resol la cerca combinatòria i el planner gestiona context, excepcions i aprovació.\n\nEl model pot generar una primera solució, mostrar violacions toves i permetre canvis. **Els overrides s’han de registrar per distingir informació vàlida no modelada de preferències històriques que potser ja no creen valor.**\n\nLes excepcions recurrents poden convertir-se després en restriccions o dades. El sistema aprèn de l’ús.\n\nTambé convé mesurar acceptació. Si els planners canvien sempre les mateixes rutes, falta alguna cosa. Si accepten les propostes i baixa el cost, es pot augmentar automatització.\n\nLa inversió ha de seguir escala, complexitat i freqüència. Deu parades estables poden no necessitar VRP. Centenars de serveis diaris amb finestres, skills i flota heterogènia probablement sí.\n\nLa comparació final no és qui és més intel·ligent. **La planificació manual aporta context; l’optimització aporta capacitat de cerca i consistència.** El millor model operatiu utilitza cada part on té avantatge.\n\nUna manera útil de veure quan l’optimització comença a guanyar és mesurar sensibilitat al canvi. Si dues comandes tardanes obliguen el planner a reconstruir gran part del dia, el procés manual té poca capacitat per absorbir informació nova. **Un bon sistema optimitzat hauria de generar alternatives sense reconstruir la lògica de planning des de zero.** Aquesta reactivitat pot importar tant com l’estalvi de quilòmetres.\n\nTambé hi ha un avantatge de governance. Quan les regles viuen sobretot en l’experiència d’una persona, costa auditar per què es va triar una ruta o formar un nou planner. **Formalitzar part de la decisió converteix coneixement tàcit en política explícita.**",
+      "seo_title": "Planificació manual vs optimització de rutes",
+      "seo_description": "Comparació entre routing manual i optimització VRP segons complexitat, restriccions, consistència, simulació i judici humà.",
+      "seo_keywords": [
+        "manual vs optimized routing",
+        "planificació manual rutes",
+        "VRP optimization",
+        "route planning"
+      ],
+      "tags": [
+        "Optimization",
+        "Routing",
+        "Decision Support"
+      ]
+    }
+  }
+}

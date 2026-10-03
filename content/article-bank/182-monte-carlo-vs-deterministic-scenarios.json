@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-182",
+  "sequence": 182,
+  "arc_id": "ARC-46",
+  "slug": "monte-carlo-vs-deterministic-scenarios",
+  "scheduled_at": "2027-12-25T09:00:00+01:00",
+  "knowledge_area": "finance",
+  "cluster": "Simulation & Business Systems",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "compare",
+  "angle": "monte carlo vs scenario analysis",
+  "primary_keyword": "monte carlo vs scenario analysis",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-181",
+    "KB-183",
+    "KB-184"
+  ],
+  "variants": {
+    "es": {
+      "title": "Monte Carlo vs escenarios deterministas",
+      "excerpt": "Los escenarios discretos son más simples y explicables; Monte Carlo representa una distribución completa. La elección depende de cómo la incertidumbre afecta la decisión.",
+      "quick": [
+        "Escenarios explican narrativas",
+        "Monte Carlo estima distribuciones",
+        "La decisión define la complejidad"
+      ],
+      "section_titles": [
+        "Qué hacen bien los escenarios deterministas",
+        "Qué añade Monte Carlo",
+        "Dónde aparece el trade-off real",
+        "Cómo elegir entre ambos"
+      ],
+      "business_title": "Los escenarios son mejores para narrativas concretas; Monte Carlo es mejor cuando necesitamos probabilidades y una distribución de outcomes.",
+      "business_steps": [
+        "Narrativa",
+        "Distribución",
+        "Decisión"
+      ],
+      "body": "Escenarios deterministas y Monte Carlo son dos formas distintas de trabajar con incertidumbre. **Los escenarios seleccionan unos pocos futuros concretos; Monte Carlo genera una distribución de muchos futuros posibles.**\n\nLa elección no debería depender de cuál parece más sofisticado. Depende de qué necesita decidir la organización. **Si tres escenarios bien diseñados responden la pregunta, una simulación puede añadir complejidad sin valor. Si la probabilidad y la forma de la distribución importan, Monte Carlo puede ofrecer información que los escenarios discretos no capturan.**\n\n**Qué hacen bien los escenarios deterministas**\nUn escenario base, downside y upside es fácil de construir, explicar y discutir.\n\nCada uno puede tener una narrativa clara: menor demanda, costes altos, retraso de proyecto o mayor crecimiento.\n\n**La principal ventaja es la trazabilidad entre supuestos y resultado**.\n\nManagement puede ver qué cambia y por qué.\n\nTambién es sencillo conectar escenarios con acciones concretas.\n\nSi el downside genera un cash shortfall, podemos discutir financiación.\n\nSi el upside supera capacidad, podemos planificar inversión.\n\nLos escenarios son especialmente útiles cuando existen pocos drivers dominantes o cuando la incertidumbre principal es estructural.\n\nSu límite es que representan puntos, no una distribución completa.\n\n**Qué añade Monte Carlo**\nMonte Carlo permite que cada variable incierta tome muchos valores según una distribución.\n\nEl resultado ya no es tres NPVs o tres saldos de caja, sino miles de outcomes.\n\n**Esto permite responder preguntas probabilísticas: qué probabilidad hay de perder dinero, romper un covenant o caer bajo un buffer**.\n\nTambién podemos observar percentiles y expected value.\n\nLa técnica es útil cuando varias variables inciertas interactúan.\n\nPuede capturar combinaciones que un diseño manual de escenarios no habría contemplado.\n\nSin embargo, necesita más supuestos.\n\nTenemos que definir distribuciones, correlaciones y dependencias.\n\nEso puede crear falsa precisión si la evidencia es débil.\n\n**Dónde aparece el trade-off real**\nLos escenarios son más fáciles de comunicar.\n\nMonte Carlo es más rico estadísticamente, pero puede ser más difícil de interpretar.\n\n**La mayor complejidad solo merece la pena si cambia una decisión**.\n\nSi la empresa necesita saber si un proyecto es viable bajo tres condiciones estratégicas, escenarios pueden ser suficientes.\n\nSi necesita comparar probabilidad de shortfall entre alternativas, Monte Carlo puede ser mejor.\n\nTambién hay diferencias de datos.\n\nCon poco histórico, una distribución sofisticada puede ser difícil de defender.\n\nEn esos casos, rangos explícitos y escenarios transparentes pueden ser más honestos.\n\nLa estabilidad también importa.\n\nMonte Carlo puede ser sensible a correlations y tails que no se observan bien.\n\nLos escenarios pueden ser sensibles a la elección subjetiva de los casos.\n\n**Cómo elegir entre ambos**\nEmpieza por la pregunta.\n\n¿Necesitamos entender mecanismos concretos o una distribución probabilística?\n\nSi la respuesta es mecanismo, escenarios deterministas suelen ser más directos.\n\nSi la respuesta es probabilidad, percentiles o risk-adjusted comparison, Monte Carlo gana valor.\n\n**También pueden combinarse: escenarios para shocks estructurales y Monte Carlo para incertidumbre dentro de cada escenario**.\n\nPor ejemplo, podemos tener un escenario de recesión y dentro simular demanda, DSO y margen.\n\nEsto evita pedir a una única distribución que represente cambios estructurales.\n\nLa complejidad debe ser proporcional al valor de la decisión.\n\nTambién conviene comparar tiempo de mantenimiento.\n\nUn modelo Monte Carlo necesita actualizar distribuciones y dependencias.\n\nUn escenario necesita revisar narrativas y magnitudes.\n\nEn ambos casos, los supuestos deben versionarse.\n\nSensitivity analysis ayuda a identificar drivers dominantes.\n\nSi dos variables explican casi todo, quizá un modelo probabilístico enorme no sea necesario.\n\nLa comunicación de resultados debe evitar falsa precisión.\n\nUn 23,7 % de probabilidad no debería interpretarse como una verdad exacta si los parámetros son inciertos.\n\nLos escenarios tampoco deben presentarse como forecasts.\n\nSon posibilidades diseñadas para analizar decisiones.\n\nLa validación puede utilizar outcomes reales, aunque en decisiones únicas siempre habrá limitaciones.\n\nEl ownership debe ser claro.\n\nFinalmente, conviene preguntarse qué acción cambiaría entre métodos.\n\n**Los escenarios deterministas compran simplicidad y narrativa; Monte Carlo compra una distribución y probabilidades.** La mejor elección es la que aporta suficiente información para decidir sin introducir más complejidad de la que la organización puede justificar.",
+      "seo_title": "Monte Carlo vs escenarios deterministas",
+      "seo_description": "Comparación entre Monte Carlo y scenario analysis según explicabilidad, probabilidades, distribuciones, datos y valor para la decisión.",
+      "seo_keywords": [
+        "monte carlo vs scenario analysis",
+        "Monte Carlo scenarios",
+        "deterministic scenarios",
+        "probabilistic planning"
+      ],
+      "tags": [
+        "Monte Carlo",
+        "Scenario Analysis",
+        "Simulation"
+      ]
+    },
+    "en": {
+      "title": "Monte Carlo vs deterministic scenarios",
+      "excerpt": "Discrete scenarios are simpler and easier to explain; Monte Carlo represents a full distribution. The right choice depends on how uncertainty affects the decision.",
+      "quick": [
+        "Scenarios explain narratives",
+        "Monte Carlo estimates distributions",
+        "The decision determines complexity"
+      ],
+      "section_titles": [
+        "What deterministic scenarios do well",
+        "What Monte Carlo adds",
+        "Where the real trade-off appears",
+        "How to choose between them"
+      ],
+      "business_title": "Scenarios are stronger for concrete narratives; Monte Carlo is stronger when probabilities and the full outcome distribution matter.",
+      "business_steps": [
+        "Narrative",
+        "Distribution",
+        "Decision"
+      ],
+      "body": "Deterministic scenarios and Monte Carlo are two different ways to work with uncertainty. **Scenarios select a small number of explicit futures; Monte Carlo generates a distribution across many possible futures.**\n\nThe choice should not be driven by which method looks more sophisticated. It should follow the decision. **If three well-designed scenarios answer the question, simulation may add complexity without value. If probability and distribution shape matter, Monte Carlo can provide information discrete scenarios cannot.**\n\n**What deterministic scenarios do well**\nA base, downside and upside case is easy to construct, explain and discuss.\n\nEach can have a clear narrative: weaker demand, higher cost, project delay or faster growth.\n\n**The main advantage is traceability from assumptions to outcome**.\n\nManagement can see what changed and why.\n\nScenarios are also easy to connect with actions.\n\nIf downside creates a cash shortfall, financing can be discussed.\n\nIf upside exceeds capacity, investment can be planned.\n\nScenarios work especially well when a few drivers dominate or uncertainty is structural.\n\nTheir limitation is that they represent points rather than a full distribution.\n\n**What Monte Carlo adds**\nMonte Carlo allows each uncertain variable to take many values according to a distribution.\n\nThe output is no longer three NPVs or three cash balances, but thousands of outcomes.\n\n**That supports probabilistic questions: what is the chance of losing money, breaching a covenant or falling below a buffer**?\n\nPercentiles and expected value also become available.\n\nThe method is useful when several uncertain variables interact.\n\nIt can generate combinations that manual scenario design may never include.\n\nThe cost is additional assumptions.\n\nDistributions, correlations and dependencies must be specified.\n\nThat can create false precision when evidence is weak.\n\n**Where the real trade-off appears**\nScenarios are easier to communicate.\n\nMonte Carlo is statistically richer but can be harder to interpret.\n\n**Additional complexity is worthwhile only when it changes the decision**.\n\nIf the organization wants to know whether a project survives three strategic conditions, scenarios may be enough.\n\nIf it needs the probability of shortfall across alternatives, Monte Carlo may be better.\n\nData availability matters too.\n\nWith limited history, a sophisticated distribution may be difficult to defend.\n\nTransparent ranges and deterministic cases can then be more honest.\n\nStability matters as well.\n\nMonte Carlo can be sensitive to correlations and tails that are poorly observed.\n\nScenarios can be sensitive to subjective case selection.\n\n**How to choose between them**\nStart from the question.\n\nDo we need to understand concrete mechanisms or a probability distribution?\n\nIf the need is mechanism, deterministic scenarios are usually more direct.\n\nIf the need is probability, percentiles or risk-adjusted comparison, Monte Carlo becomes more valuable.\n\n**The methods can also be combined: scenarios for structural shocks and Monte Carlo for uncertainty inside each scenario**.\n\nFor example, a recession scenario can still simulate demand, DSO and margin.\n\nThat avoids asking one baseline distribution to represent structural change.\n\nComplexity should remain proportional to decision value.\n\nMaintenance effort should also be compared.\n\nMonte Carlo models need distribution and dependency updates.\n\nScenario models need narrative and severity updates.\n\nAssumptions should be versioned in both cases.\n\nSensitivity analysis can identify dominant drivers.\n\nIf two variables explain most output variation, a massive simulation may be unnecessary.\n\nResults should avoid false precision.\n\nA 23.7% probability is not exact truth when parameters are uncertain.\n\nScenarios should not be presented as forecasts either.\n\nThey are designed possibilities for decision analysis.\n\nValidation can compare outputs with realized outcomes where available, although unique strategic decisions will always have limits.\n\nOwnership should be clear.\n\nThe final question is what action changes under each method.\n\n**Deterministic scenarios buy simplicity and narrative; Monte Carlo buys a distribution and probabilities.** The right method gives enough information to decide without adding complexity the organization cannot justify. The comparison should remain practical, transparent and proportionate to the economic importance of the choice.",
+      "seo_title": "Monte Carlo vs Deterministic Scenarios",
+      "seo_description": "Monte Carlo and scenario analysis compared across explainability, probabilities, distributions, data requirements and decision value.",
+      "seo_keywords": [
+        "monte carlo vs scenario analysis",
+        "Monte Carlo scenarios",
+        "deterministic scenarios",
+        "probabilistic planning"
+      ],
+      "tags": [
+        "Monte Carlo",
+        "Scenario Analysis",
+        "Simulation"
+      ]
+    },
+    "ca": {
+      "title": "Monte Carlo vs escenaris deterministes",
+      "excerpt": "Els escenaris discrets són més simples i explicables; Monte Carlo representa una distribució completa. La tria depèn de com la incertesa afecta la decisió.",
+      "quick": [
+        "Els escenaris expliquen narratives",
+        "Monte Carlo estima distribucions",
+        "La decisió defineix la complexitat"
+      ],
+      "section_titles": [
+        "Què fan bé els escenaris deterministes",
+        "Què afegeix Monte Carlo",
+        "On apareix el trade-off real",
+        "Com triar entre tots dos"
+      ],
+      "business_title": "Els escenaris són millors per narratives concretes; Monte Carlo és millor quan necessitem probabilitats i una distribució d’outcomes.",
+      "business_steps": [
+        "Narrativa",
+        "Distribució",
+        "Decisió"
+      ],
+      "body": "Escenaris deterministes i Monte Carlo són dues maneres diferents de treballar amb incertesa. **Els escenaris seleccionen uns pocs futurs concrets; Monte Carlo genera una distribució de molts futurs possibles.**\n\nLa tria no hauria de dependre de quin mètode sembla més sofisticat. Depèn de què necessitem decidir. **Si tres escenaris ben dissenyats responen la pregunta, una simulació pot afegir complexitat sense valor. Si importen la probabilitat i la forma de la distribució, Monte Carlo pot aportar informació que els escenaris no capturen.**\n\n**Què fan bé els escenaris deterministes**\nUn escenari base, downside i upside és fàcil de construir, explicar i discutir.\n\nCada un pot tenir una narrativa clara: menys demanda, costos alts, retard de projecte o més creixement.\n\n**L’avantatge principal és la traçabilitat entre supòsits i resultat**.\n\nManagement pot veure què ha canviat i per què.\n\nTambé és fàcil connectar escenaris amb accions.\n\nSi el downside genera cash shortfall, podem discutir finançament.\n\nSi l’upside supera capacitat, podem planificar inversió.\n\nEls escenaris són especialment útils quan pocs drivers dominen o la incertesa principal és estructural.\n\nEl límit és que representen punts i no una distribució completa.\n\n**Què afegeix Monte Carlo**\nMonte Carlo permet que cada variable incerta prengui molts valors segons una distribució.\n\nEl resultat ja no són tres NPVs o tres saldos, sinó milers d’outcomes.\n\n**Això permet respondre preguntes probabilístiques: quina probabilitat hi ha de perdre diners, trencar un covenant o caure sota un buffer**?\n\nTambé obtenim percentils i expected value.\n\nÉs útil quan diverses variables incertes interactuen.\n\nPot generar combinacions que el disseny manual no hauria contemplat.\n\nEl cost és més supòsits.\n\nCal definir distribucions, correlacions i dependències.\n\nAixò pot crear falsa precisió quan l’evidència és feble.\n\n**On apareix el trade-off real**\nEls escenaris són més fàcils de comunicar.\n\nMonte Carlo és més ric estadísticament, però pot ser més difícil d’interpretar.\n\n**La complexitat addicional només val la pena si canvia la decisió**.\n\nSi volem saber si un projecte és viable sota tres condicions estratègiques, els escenaris poden ser suficients.\n\nSi necessitem comparar probabilitat de shortfall entre alternatives, Monte Carlo pot ser millor.\n\nTambé importa la disponibilitat de dades.\n\nAmb poc històric, una distribució sofisticada pot ser difícil de defensar.\n\nRangs transparents i casos deterministes poden ser més honestos.\n\nL’estabilitat també importa.\n\nMonte Carlo pot ser sensible a correlacions i cues poc observades.\n\nEls escenaris poden ser sensibles a una selecció subjectiva dels casos.\n\n**Com triar entre tots dos**\nComença per la pregunta.\n\nNecessitem entendre mecanismes concrets o una distribució probabilística?\n\nSi necessitem mecanisme, els escenaris deterministes solen ser més directes.\n\nSi necessitem probabilitat, percentils o comparació risk-adjusted, Monte Carlo guanya valor.\n\n**També es poden combinar: escenaris per shocks estructurals i Monte Carlo per incertesa dins de cada escenari**.\n\nPer exemple, un escenari de recessió pot simular demanda, DSO i marge.\n\nAixò evita demanar a una sola distribució que representi canvis estructurals.\n\nLa complexitat ha de ser proporcional al valor de la decisió.\n\nTambé convé comparar manteniment.\n\nMonte Carlo necessita actualitzar distribucions i dependències.\n\nEls escenaris necessiten revisar narratives i severitat.\n\nEn tots dos casos, els supòsits s’han de versionar.\n\nSensitivity analysis ajuda a identificar drivers dominants.\n\nSi dues variables expliquen gairebé tota la variació, una simulació enorme pot ser innecessària.\n\nLa comunicació ha d’evitar falsa precisió.\n\nUn 23,7 % de probabilitat no és una veritat exacta si els paràmetres són incerts.\n\nEls escenaris tampoc s’han de presentar com forecasts.\n\nSón possibilitats dissenyades per analitzar decisions.\n\nLa validació pot comparar outputs amb outcomes observats quan sigui possible.\n\nL’ownership ha d’estar clar.\n\nFinalment, cal preguntar quina acció canvia entre mètodes.\n\n**Els escenaris deterministes compren simplicitat i narrativa; Monte Carlo compra una distribució i probabilitats.** La millor tria aporta prou informació per decidir sense introduir una complexitat que l’organització no pot justificar. La comparació ha de continuar sent pràctica, transparent i proporcional a la importància econòmica de la decisió.",
+      "seo_title": "Monte Carlo vs escenaris deterministes",
+      "seo_description": "Comparació entre Monte Carlo i scenario analysis segons explicabilitat, probabilitats, distribucions, dades i valor per la decisió.",
+      "seo_keywords": [
+        "monte carlo vs scenario analysis",
+        "Monte Carlo scenarios",
+        "deterministic scenarios",
+        "probabilistic planning"
+      ],
+      "tags": [
+        "Monte Carlo",
+        "Scenario Analysis",
+        "Simulation"
+      ]
+    }
+  }
+}

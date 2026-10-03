@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-188",
+  "sequence": 188,
+  "arc_id": "ARC-47",
+  "slug": "a-framework-for-choosing-simulation-or-optimization",
+  "scheduled_at": "2028-01-09T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Simulation & Business Systems",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "framework_playbook",
+  "angle": "simulation vs optimization framework",
+  "primary_keyword": "simulation vs optimization framework",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-185",
+    "KB-186",
+    "KB-187"
+  ],
+  "variants": {
+    "es": {
+      "title": "Un framework para elegir simulación u optimización",
+      "excerpt": "La elección depende de si queremos evaluar una política, encontrarla o hacer ambas cosas. Objetivo, restricciones, incertidumbre y tamaño del espacio de decisión marcan el camino.",
+      "quick": [
+        "Simula para evaluar",
+        "Optimiza para elegir",
+        "Combina cuando la incertidumbre importa"
+      ],
+      "section_titles": [
+        "Empieza por la pregunta de decisión",
+        "Mide la estructura del espacio de alternativas",
+        "Evalúa cómo entra la incertidumbre",
+        "Escoge la arquitectura mínima suficiente"
+      ],
+      "business_title": "El método correcto depende de la pregunta: comprender consecuencias, buscar la mejor policy o encontrar una policy que siga funcionando bajo incertidumbre.",
+      "business_steps": [
+        "Pregunta",
+        "Método",
+        "Validación"
+      ],
+      "body": "Simulación y optimización pueden modelar el mismo sistema y, aun así, resolver problemas distintos. Una empresa puede tener un modelo detallado de su operación y seguir sin saber si necesita evaluar una política, encontrar una política mejor o combinar ambas tareas. **La elección correcta empieza por la pregunta de decisión, no por la herramienta disponible.**\n\nUn framework práctico debe mirar cuatro elementos: qué queremos decidir, cuántas alternativas existen, cómo entra la incertidumbre y cuánto detalle necesita el resultado. **Simulación y optimización no compiten; ocupan posiciones diferentes dentro del ciclo de decisión.**\n\n**Empieza por la pregunta de decisión**\nLa primera pregunta es si ya tenemos una policy candidata.\n\nSi queremos saber qué ocurre al contratar dos personas más, aumentar safety stock o cambiar una regla de prioridad, estamos evaluando una decisión concreta.\n\nCuando la policy ya existe y la pregunta es “qué pasaría si…”, simulación suele ser el punto natural.\nPermite observar costes, servicio, colas, riesgo y comportamiento bajo escenarios.\n\nSi, en cambio, la pregunta es cuántas personas contratar, qué niveles de stock elegir o cómo asignar recursos entre muchas opciones, necesitamos buscar una decisión.\n\nAhí la optimización aporta una estructura explícita de objetivo y restricciones.\n\nLa formulación también obliga a definir qué significa “mejor”, algo que puede quedar ambiguo en un análisis puramente exploratorio.\n\n**Mide la estructura del espacio de alternativas**\nLa segunda dimensión es el tamaño del espacio de decisión.\n\nSi existen tres políticas plausibles, compararlas con simulación puede ser suficiente.\n\nSi existen millones de combinaciones de rutas, turnos, cantidades o asignaciones, probar escenarios manualmente no escala.\n\nCuanto mayor y más estructurado es el espacio de alternativas, más valor aporta un algoritmo de optimización.\nTambién importa si las decisiones son continuas, discretas o combinatorias.\n\nLinear programming puede resolver grandes problemas cuando existe estructura lineal.\n\nMILP cubre decisiones discretas y lógicas más complejas.\n\nHeurísticas o metaheurísticas pueden ser útiles cuando el problema exacto es demasiado costoso.\n\nLa simulación, por su parte, no necesita que la función objetivo sea analítica si podemos ejecutar el sistema y medir el resultado.\n\n**Evalúa cómo entra la incertidumbre**\nLa tercera dimensión es la incertidumbre.\n\nSi los parámetros son relativamente estables y los promedios representan bien la operación, una optimización determinista puede ser suficiente.\n\nSi demanda, tiempos, fallos o comportamiento varían materialmente, **una decisión óptima sobre valores medios puede no ser robusta.**\n\nPodemos responder de varias formas.\n\nUna opción es robust optimization, donde protegemos la solución frente a rangos de parámetros.\n\nOtra es stochastic programming, donde representamos escenarios dentro del modelo.\n\nOtra es optimizar una policy y después simularla bajo distribuciones realistas.\n\nSimulation optimization utiliza la simulación dentro del proceso de búsqueda.\n\nLa elección depende de cuánto conocemos las distribuciones y cuánto tiempo de cómputo podemos asumir.\n\n**Escoge la arquitectura mínima suficiente**\nEl cuarto paso es evitar complejidad innecesaria.\n\nNo toda decisión merece un digital twin ni un solver sofisticado. **El modelo debería ser tan complejo como sea necesario para cambiar la decisión, no tan complejo como sea posible construir.**\n\nPodemos empezar con un baseline simple.\n\nPrimero, una hoja de cálculo o modelo determinista puede mostrar los principales drivers.\n\nDespués, una simulación puede revelar si la variabilidad cambia materialmente los resultados.\n\nSi existen demasiadas alternativas, añadimos optimización.\n\nSi la solución optimizada es sensible, añadimos una capa de simulación o robustez.\n\nEste enfoque progresivo permite aprender antes de invertir.\n\nTambién conviene evaluar coste de datos. Una simulación detallada puede necesitar distribuciones que la empresa no mide bien.\n\nLa falsa precisión es un riesgo. Utilizar distribuciones sofisticadas estimadas con pocos datos no garantiza una decisión mejor.\n\nEl modelo debe validarse contra históricos o comportamiento conocido.\n\nLos stakeholders operativos deberían revisar reglas, restricciones y excepciones.\n\nLa función objetivo tiene que reflejar economics. Minimizar tiempo o distancia puede no equivaler a maximizar valor.\n\nCuando existen varios objetivos, una frontera de Pareto puede ser más útil que una única solución.\n\nTambién debemos considerar frecuencia. Una decisión estratégica anual tolera más tiempo de cálculo que una recomendación operativa cada minuto.\n\nLa explainability importa cuando el decisor necesita entender por qué cambia una policy.\n\nLa arquitectura de producción también cambia. Una simulación offline puede vivir como herramienta analítica; una optimización recurrente necesita integraciones, versionado y fallback.\n\nCuando el sistema automatiza decisiones, la monitorización debe seguir tanto inputs como outcomes.\n\nConviene definir qué evento obliga a recalcular: nueva demanda, cambio de capacidad, costes, SLA o desviación entre modelo y realidad.\n\nLa combinación no siempre es secuencial. Un solver puede incorporar outputs del simulador, o una simulación puede comparar varias soluciones generadas por optimización.\n\nTambién puede mantenerse una policy simple como baseline para detectar si la complejidad sigue aportando valor.\n\nEl framework final puede resumirse en tres preguntas. ¿Ya tengo una policy y quiero entender sus consecuencias? Simula. ¿Tengo muchas alternatives y quiero encontrar la mejor? Optimiza. ¿La mejor policy puede degradarse por incertidumbre? Combina ambos.\n\n**Simulación sirve para comprender qué puede pasar; optimización para decidir qué conviene hacer bajo un objetivo y restricciones.** La arquitectura correcta es la mínima que responde la pregunta empresarial con suficiente robustez para actuar.",
+      "seo_title": "Framework para elegir simulación u optimización",
+      "seo_description": "Cómo decidir entre simulación, optimización o un enfoque híbrido según la pregunta, el espacio de decisiones, la incertidumbre y la robustez necesaria.",
+      "seo_keywords": [
+        "simulation vs optimization framework",
+        "simulation vs optimization",
+        "decision modeling",
+        "operations research"
+      ],
+      "tags": [
+        "Simulation",
+        "Optimization",
+        "Decision Framework"
+      ]
+    },
+    "en": {
+      "title": "A framework for choosing simulation or optimization",
+      "excerpt": "The choice depends on whether we need to evaluate a policy, find one or do both. Objectives, constraints, uncertainty and decision-space size determine the method.",
+      "quick": [
+        "Simulate to evaluate",
+        "Optimize to choose",
+        "Combine when uncertainty matters"
+      ],
+      "section_titles": [
+        "Start from the decision question",
+        "Measure the structure of the alternative space",
+        "Assess how uncertainty enters",
+        "Choose the minimum sufficient architecture"
+      ],
+      "business_title": "The right method depends on the question: understand consequences, search for the best policy or find a policy that remains strong under uncertainty.",
+      "business_steps": [
+        "Question",
+        "Method",
+        "Validation"
+      ],
+      "body": "Simulation and optimization can represent the same system while solving different problems. A company may have a detailed model of operations and still be unclear whether it needs to evaluate a policy, find a better policy or combine both tasks. **The right choice begins with the decision question rather than with the available tool.**\n\nA practical framework should inspect four elements: what must be decided, how many alternatives exist, how uncertainty enters and how much detail is needed. **Simulation and optimization do not compete; they occupy different positions in the decision cycle.**\n\n**Start from the decision question**\nThe first question is whether a candidate policy already exists.\n\nIf the organization wants to know what happens after hiring two people, increasing safety stock or changing a priority rule, it is evaluating a concrete decision.\n\nWhen the policy already exists and the question is “what if?”, simulation is usually the natural starting point.\nIt can reveal cost, service, queues, risk and scenario behaviour.\n\nIf the question is instead how many people to hire, which stock levels to choose or how to allocate resources among many options, the problem requires searching for a decision.\n\nOptimization provides an explicit objective and constraints.\n\nThe formulation also forces clarity about what “better” means, which may remain ambiguous in purely exploratory analysis.\n\n**Measure the structure of the alternative space**\nThe second dimension is the size of the decision space.\n\nIf there are three plausible policies, simulation may be enough to compare them.\n\nIf there are millions of route, shift, quantity or assignment combinations, manual scenario testing does not scale.\n\nThe larger and more structured the alternative space, the more value optimization can provide.\nThe type of decisions matters too: continuous, discrete or combinatorial.\n\nLinear programming can solve very large problems when structure is linear.\n\nMILP covers discrete choices and richer logic.\n\nHeuristics or metaheuristics may be useful when exact optimization becomes too expensive.\n\nSimulation, in contrast, does not require an analytic objective when the system can be run and its performance measured.\n\n**Assess how uncertainty enters**\nThe third dimension is uncertainty.\n\nIf parameters are stable and averages represent operations well, deterministic optimization may be sufficient.\n\nIf demand, processing times, failures or behaviour vary materially, **a solution optimized on averages may not be robust.**\n\nSeveral responses are possible.\n\nRobust optimization protects against parameter ranges.\n\nStochastic programming represents scenarios inside the model.\n\nAnother approach is to optimize a candidate policy and then simulate it under realistic distributions.\n\nSimulation optimization embeds the simulator in the search process.\n\nThe choice depends on how well distributions are known and how much computation is acceptable.\n\n**Choose the minimum sufficient architecture**\nThe fourth step is avoiding unnecessary complexity.\n\nNot every decision needs a digital twin or sophisticated solver. **The model should be as complex as required to change the decision, not as complex as the team can build.**\n\nA simple baseline is a good starting point.\n\nA spreadsheet or deterministic model may first expose the main drivers.\n\nSimulation can then test whether variability materially changes outcomes.\n\nIf the alternative space is too large, optimization can be added.\n\nIf the optimized solution is sensitive, simulation or robustness can be added on top.\n\nThis progressive approach creates learning before investment.\n\nData cost should also be considered. Detailed simulation may require distributions the organization does not estimate well.\n\nFalse precision is a risk. Sophisticated distributions estimated from little data do not guarantee a better decision.\n\nThe model should be validated against historical or known behaviour.\n\nOperational stakeholders should review rules, constraints and exceptions.\n\nThe objective function must reflect economics. Minimizing time or distance may not be equivalent to maximizing value.\n\nWhen several objectives matter, a Pareto frontier may be more useful than one optimum.\n\nDecision frequency matters too. A yearly strategic decision can tolerate more computation than an operational recommendation every minute.\n\nExplainability matters when users need to understand why a policy changes.\n\nProduction architecture differs as well. An offline simulation can remain an analytical tool, while recurring optimization requires integration, versioning and fallback.\n\nWhen decisions are automated, monitoring should cover both inputs and outcomes.\n\nRecalculation triggers should be defined: new demand, capacity changes, costs, SLA or material deviation between model and reality.\n\nHybrid designs do not always need to be sequential. A solver can consume simulator outputs, or a simulator can compare several optimized solutions.\n\nA simple policy can remain as a baseline to verify that complexity continues to add value.\n\nThe framework can be reduced to three questions. Do we already have a policy and need to understand its consequences? Simulate. Do we have many alternatives and need to find the best? Optimize. Can uncertainty change the ranking of those alternatives? Combine both.\n\n**Simulation helps us understand what may happen; optimization helps us choose what to do under objectives and constraints.** The right architecture is the minimum one that answers the business question with enough robustness to act.",
+      "seo_title": "A Framework for Choosing Simulation or Optimization",
+      "seo_description": "How to choose simulation, optimization or a hybrid approach based on the decision question, alternative space, uncertainty and required robustness.",
+      "seo_keywords": [
+        "simulation vs optimization framework",
+        "simulation vs optimization",
+        "decision modeling",
+        "operations research"
+      ],
+      "tags": [
+        "Simulation",
+        "Optimization",
+        "Decision Framework"
+      ]
+    },
+    "ca": {
+      "title": "Un framework per triar simulació o optimització",
+      "excerpt": "La tria depèn de si volem avaluar una policy, trobar-la o fer totes dues coses. Objectiu, restriccions, incertesa i espai de decisió marquen el camí.",
+      "quick": [
+        "Simula per avaluar",
+        "Optimitza per triar",
+        "Combina quan la incertesa importa"
+      ],
+      "section_titles": [
+        "Comença per la pregunta de decisió",
+        "Mesura l’estructura de l’espai d’alternatives",
+        "Avalua com entra la incertesa",
+        "Tria l’arquitectura mínima suficient"
+      ],
+      "business_title": "El mètode correcte depèn de la pregunta: entendre conseqüències, buscar la millor policy o trobar una policy que continuï funcionant sota incertesa.",
+      "business_steps": [
+        "Pregunta",
+        "Mètode",
+        "Validació"
+      ],
+      "body": "Simulació i optimització poden representar el mateix sistema i resoldre problemes diferents. Una empresa pot tenir un model detallat de l’operació i continuar sense saber si necessita avaluar una policy, trobar-ne una de millor o combinar totes dues tasques. **La tria correcta comença per la pregunta de decisió i no per l’eina disponible.**\n\nUn framework pràctic ha de mirar quatre elements: què volem decidir, quantes alternatives existeixen, com entra la incertesa i quant detall necessita el resultat. **Simulació i optimització no competeixen; ocupen posicions diferents dins del cicle de decisió.**\n\n**Comença per la pregunta de decisió**\nLa primera pregunta és si ja tenim una policy candidata.\n\nSi volem saber què passa en contractar dues persones més, augmentar safety stock o canviar una regla de prioritat, estem avaluant una decisió concreta.\n\nQuan la policy ja existeix i la pregunta és “què passaria si...?”, simulació acostuma a ser el punt natural.\nPermet observar costos, servei, cues, risc i comportament sota escenaris.\n\nSi la pregunta és quantes persones contractar, quins nivells de stock escollir o com assignar recursos entre moltes opcions, necessitem buscar una decisió.\n\nAquí l’optimització aporta una estructura explícita d’objectiu i restriccions.\n\nLa formulació també obliga a definir què significa “millor”.\n\n**Mesura l’estructura de l’espai d’alternatives**\nLa segona dimensió és la mida de l’espai de decisió.\n\nSi hi ha tres policies plausibles, comparar-les amb simulació pot ser suficient.\n\nSi hi ha milions de combinacions de rutes, torns, quantitats o assignacions, provar escenaris manualment no escala.\n\nCom més gran i estructurat és l’espai d’alternatives, més valor aporta un algoritme d’optimització.\nTambé importa si les decisions són contínues, discretes o combinatòries.\n\nLinear programming pot resoldre problemes grans amb estructura lineal.\n\nMILP cobreix decisions discretes i lògica més complexa.\n\nHeurístiques o metaheurístiques poden ser útils quan l’optimització exacta és massa costosa.\n\nLa simulació, en canvi, no necessita una funció analítica si podem executar el sistema i mesurar performance.\n\n**Avalua com entra la incertesa**\nLa tercera dimensió és la incertesa.\n\nSi els paràmetres són estables i les mitjanes representen bé l’operació, una optimització determinista pot ser suficient.\n\nSi demanda, temps, fallades o comportament varien materialment, **una decisió òptima sobre valors mitjans pot no ser robusta.**\n\nPodem respondre de diverses maneres.\n\nRobust optimization protegeix davant rangs de paràmetres.\n\nStochastic programming representa escenaris dins del model.\n\nUna altra opció és optimitzar una policy i després simular-la sota distribucions realistes.\n\nSimulation optimization utilitza la simulació dins del procés de cerca.\n\nLa tria depèn de quant coneixem les distribucions i del temps de còmput disponible.\n\n**Tria l’arquitectura mínima suficient**\nEl quart pas és evitar complexitat innecessària.\n\nNo tota decisió necessita un digital twin ni un solver sofisticat. **El model ha de ser tan complex com calgui per canviar la decisió, no tan complex com puguem construir.**\n\nPodem començar amb un baseline simple.\n\nUna fulla de càlcul o model determinista pot mostrar primer els drivers principals.\n\nDesprés, simulació pot revelar si la variabilitat canvia materialment els outcomes.\n\nSi hi ha massa alternatives, afegim optimització.\n\nSi la solució optimitzada és sensible, hi afegim simulació o robustesa.\n\nAquest enfocament progressiu permet aprendre abans d’invertir.\n\nTambé convé considerar el cost de dades. Una simulació detallada pot necessitar distribucions que l’empresa no mesura bé.\n\nLa falsa precisió és un risc. Distribucions sofisticades estimades amb poques dades no garanteixen una decisió millor.\n\nEl model s’ha de validar amb històrics o comportament conegut.\n\nStakeholders operatius han de revisar regles, restriccions i excepcions.\n\nLa funció objectiu ha de reflectir economics. Minimitzar temps o distància pot no equivaler a maximitzar valor.\n\nQuan hi ha diversos objectius, una frontera de Pareto pot ser més útil que un únic òptim.\n\nLa freqüència també importa. Una decisió estratègica anual tolera més còmput que una recomanació operativa cada minut.\n\nL’explainability importa quan el decisor necessita entendre per què canvia una policy.\n\nL’arquitectura de producció també varia. Una simulació offline pot ser una eina analítica; una optimització recurrent necessita integracions, versionat i fallback.\n\nQuan el sistema automatitza decisions, el monitoring ha de cobrir inputs i outcomes.\n\nCal definir triggers de recàlcul: nova demanda, canvi de capacitat, costos, SLA o desviació entre model i realitat.\n\nLa combinació no sempre és seqüencial. Un solver pot consumir outputs del simulador, o una simulació pot comparar diverses solucions optimitzades.\n\nUna policy simple pot continuar com baseline per comprovar si la complexitat segueix aportant valor.\n\nEl framework es pot resumir en tres preguntes. Ja tenim una policy i volem entendre conseqüències? Simula. Tenim moltes alternatives i volem trobar la millor? Optimitza. La incertesa pot canviar el ranking? Combina totes dues.\n\n**Simulació serveix per entendre què pot passar; optimització per escollir què convé fer sota objectius i restriccions.** L’arquitectura correcta és la mínima que respon la pregunta empresarial amb prou robustesa per actuar.",
+      "seo_title": "Framework per triar simulació o optimització",
+      "seo_description": "Com decidir entre simulació, optimització o un enfocament híbrid segons la pregunta, l’espai d’alternatives, la incertesa i la robustesa.",
+      "seo_keywords": [
+        "simulation vs optimization framework",
+        "simulation vs optimization",
+        "decision modeling",
+        "operations research"
+      ],
+      "tags": [
+        "Simulation",
+        "Optimization",
+        "Decision Framework"
+      ]
+    }
+  }
+}

@@ -49,8 +49,11 @@ def build_presentation_package(
 
 Rules:
 - commercial-first and executive-readable;
+- the first visible layer must make the buyer problem, business consequence, changed decision or economic relevance concrete;
+- do not lead with model names, frameworks, APIs or implementation architecture unless the audience explicitly requires it;
 - preserve thesis and evidence;
-- do not invent factual claims or numeric evidence;
+- never invent a measured result, client outcome or factual numeric claim;
+- when quantified client impact is unavailable, you may use a clearly labelled illustrative business scenario only if assumptions and arithmetic are explicit and the copy states that it is not a measured client result;
 - conceptual visuals are allowed when explicitly illustrative;
 - do not mix visual languages;
 - write for the capacity of the selected format rather than writing prose first and squeezing it later.

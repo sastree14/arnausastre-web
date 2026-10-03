@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-067",
+  "sequence": 67,
+  "arc_id": "ARC-17",
+  "slug": "why-the-best-model-can-have-the-wrong-threshold",
+  "scheduled_at": "2027-03-21T09:00:00+01:00",
+  "knowledge_area": "risk_decision",
+  "cluster": "Machine Learning",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "failure_modes_mistakes",
+  "angle": "classification threshold",
+  "primary_keyword": "classification threshold",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-065",
+    "KB-066",
+    "KB-068"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué el mejor modelo puede tener el umbral equivocado",
+      "excerpt": "El modelo puede ordenar muy bien y aun así fallar como sistema de decisión si el threshold no refleja costes, prevalence, capacidad y objetivo operativo.",
+      "quick": [
+        "Modelo y threshold son decisiones distintas",
+        "0,5 rara vez es una política",
+        "El mejor umbral depende del contexto"
+      ],
+      "section_titles": [
+        "Un buen ranking no fija el punto de acción",
+        "El umbral cambia el coste de error",
+        "La capacidad operativa impone límites",
+        "El threshold debe mantenerse como política"
+      ],
+      "business_title": "El modelo ordena casos; el threshold convierte ese ranking en coste, carga operativa y acción.",
+      "business_steps": [
+        "Score",
+        "Umbral",
+        "Consecuencia"
+      ],
+      "body": "Un clasificador puede ser el mejor de todos los candidatos en ROC AUC, PR AUC o log loss y, sin embargo, producir peores decisiones que otro modelo si se utiliza con un threshold inadecuado. **Entrenar el modelo y decidir el punto de acción son dos problemas diferentes.**\n\nEl score expresa una estimación o ranking. El threshold transforma ese score en sí/no, revisar/no revisar, bloquear/no bloquear o intervenir/no intervenir. **Ese paso introduce economics, capacidad y política empresarial que no vienen definidos automáticamente por el algoritmo.**\n\n**Un buen ranking no fija el punto de acción**\nMuchos modelos binarios terminan usando 0,5 porque parece natural: por encima positivo, por debajo negativo. Pero 0,5 solo tiene sentido bajo supuestos muy específicos.\n\nLa probabilidad de corte óptima depende de prevalence, calibration, costes y acción. **El valor por defecto de una librería no es una política de negocio.**\n\nAdemás, algunos modelos producen scores que no son probabilidades bien calibradas. Un 0,8 puede significar “alto en el ranking” sin representar un 80 % de riesgo real.\n\nIncluso cuando existe buena calibración, el threshold económico puede estar muy por debajo o por encima de 0,5.\n\nUn buen ranking simplemente nos da flexibilidad para elegir mejor; no elige por nosotros.\n\n**El umbral cambia el coste de error**\nReducir threshold aumenta normalmente recall y también falsos positivos. Subirlo mejora precision en muchos casos, pero deja escapar más positivos.\n\nLa decisión depende de cuánto cuesta cada error. **Si un falso negativo es diez veces más caro que un falso positivo, un threshold orientado a accuracy puede ser una mala elección.**\n\nTambién importa el beneficio de true positives. Detectar una oportunidad puede generar ingresos, mientras revisar un falso positivo consume tiempo.\n\nUna matriz de valor permite calcular expected value para diferentes thresholds. No tiene que ser perfecta para ser útil.\n\nLa curva de coste puede revelar un rango amplio de thresholds casi equivalentes. Elegir un punto estable dentro de ese rango puede ser mejor que perseguir un máximo muy sensible.\n\n**La capacidad operativa impone límites**\nEn muchos casos el threshold no se elige por probabilidad, sino por capacidad. Un equipo de fraude puede revisar 1.000 casos al día; ventas puede contactar 300 leads; riesgo puede investigar solo una fracción de la cartera.\n\nEntonces la política real es top-k. **El volumen de acción disponible se convierte en una restricción tan importante como la performance del modelo.**\n\nSi cambia la prevalence, un threshold fijo puede generar un volumen muy distinto de alertas. Esto puede saturar equipos aunque el modelo mantenga discriminación similar.\n\nPor eso algunas organizaciones definen thresholds dinámicos o cuotas por segmento, siempre con reglas de governance claras.\n\nTambién hay que considerar el coste de cola. Saturar un equipo puede retrasar casos valiosos y degradar el beneficio incluso si recall aumenta.\n\n**El threshold debe mantenerse como política**\nEl threshold debería versionarse por separado del modelo. Cambiarlo modifica la decisión aunque los pesos del modelo no cambien.\n\nTambién necesita validación out-of-time. **Elegir el umbral que maximiza una métrica en validation y asumir que será estable puede introducir overfitting de política.**\n\nConviene comprobar su comportamiento por periodos y segmentos, y definir un rango donde la decisión sea robusta.\n\nLa calibración puede exigir actualización aunque el ranking siga siendo fuerte. Un cambio de prevalence puede alterar probabilidades y expected value.\n\nLa monitorización debe seguir volumen de positivos predichos, precision, recall, false-positive cost, false-negative cost y capacidad consumida.\n\nTambién conviene registrar qué ocurre después de la acción. Si el equipo no puede completar todas las alertas, el threshold nominal no representa la política real.\n\nEn decisiones humanas, los usuarios pueden aplicar un segundo threshold implícito. Por ejemplo, revisar todos los casos marcados pero actuar solo sobre algunos. Ese comportamiento debe entenderse.\n\nPuede tener sentido utilizar thresholds diferentes por segmento si los economics cambian, aunque esto añade complejidad y requiere justificar consistencia.\n\nEn sistemas regulados o sensibles, el threshold puede estar sujeto a límites de fairness, compliance o apetito de riesgo.\n\nLa política también debe responder a cambios de capacidad. Si un equipo duplica recursos, el punto óptimo puede moverse aunque el modelo sea idéntico.\n\nFinalmente, threshold y modelo deben compararse como una unidad. **Un modelo “mejor” solo crea una política mejor si elegimos el punto de operación adecuado.** La calidad de un clasificador no termina en cómo ordena casos; termina en cómo ese ranking se convierte en decisiones, costes y resultados.",
+      "seo_title": "Por qué el threshold puede arruinar un buen modelo",
+      "seo_description": "Cómo un threshold mal elegido puede convertir un clasificador excelente en una mala decisión al ignorar costes, prevalence, capacidad y calibración.",
+      "seo_keywords": [
+        "classification threshold",
+        "machine learning threshold",
+        "decision threshold",
+        "classifier threshold"
+      ],
+      "tags": [
+        "Machine Learning",
+        "Threshold",
+        "Classification"
+      ]
+    },
+    "en": {
+      "title": "Why the best model can have the wrong threshold",
+      "excerpt": "A model can rank extremely well and still fail as a decision system when its threshold ignores costs, prevalence, capacity and operating objectives.",
+      "quick": [
+        "Model and threshold are separate decisions",
+        "0.5 is rarely a policy",
+        "The right threshold depends on context"
+      ],
+      "section_titles": [
+        "A strong ranking does not set the action point",
+        "Threshold changes error economics",
+        "Operating capacity creates limits",
+        "Threshold should be managed as policy"
+      ],
+      "business_title": "The model ranks cases; the threshold turns that ranking into cost, workload and action.",
+      "business_steps": [
+        "Score",
+        "Threshold",
+        "Consequence"
+      ],
+      "body": "A classifier can be the strongest candidate on ROC AUC, PR AUC or log loss and still produce worse decisions than another model when its threshold is poorly chosen. **Training the model and selecting the operating point are different problems.**\n\nThe score represents an estimate or ranking. The threshold converts that score into yes/no, review/no review, block/allow or intervene/do nothing. **That step introduces economics, capacity and business policy that the algorithm does not define automatically.**\n\n**A strong ranking does not set the action point**\nMany binary models end up using 0.5 because it feels natural: above means positive, below means negative. But 0.5 is optimal only under narrow assumptions.\n\nThe appropriate probability cutoff depends on prevalence, calibration, error costs and action. **A library default is not a business policy.**\n\nSome models also output scores that are not well-calibrated probabilities. A score of 0.8 may simply mean “high in the ranking” rather than an 80% real-world risk.\n\nEven with good calibration, the economic threshold can be far below or above 0.5.\n\nStrong ranking gives the business flexibility to choose; it does not make the choice automatically.\n\n**Threshold changes error economics**\nLowering the threshold generally raises recall and false positives. Raising it often improves precision but misses more positives.\n\nThe correct trade-off depends on error cost. **If a false negative costs ten times more than a false positive, an accuracy-oriented threshold can be economically poor.**\n\nTrue-positive benefit matters too. Detecting an opportunity may create revenue, while reviewing a false positive consumes time.\n\nA value matrix can estimate expected value across thresholds. It does not need perfect precision to expose the direction of the trade-off.\n\nCost curves may reveal a broad threshold region with similar value. Choosing a stable point inside that range can be better than chasing a fragile mathematical maximum.\n\n**Operating capacity creates limits**\nIn many systems, threshold is really chosen by capacity. A fraud team can investigate 1,000 cases per day; sales can contact 300 leads; a risk team can review only a fraction of a portfolio.\n\nThe real policy is then top-k. **Available action volume becomes a constraint as important as model performance.**\n\nIf prevalence changes, a fixed threshold can produce a very different alert volume. Teams can become overloaded even if discrimination remains similar.\n\nSome organizations therefore use dynamic thresholds or segment quotas, provided governance is explicit.\n\nQueue cost also matters. Flooding an investigation team can delay valuable cases and reduce benefit even when recall rises.\n\n**Threshold should be managed as policy**\nThreshold should be versioned independently from the model. Changing it alters the decision even when model parameters are unchanged.\n\nIt also needs out-of-time validation. **Choosing the threshold that maximizes a metric on one validation period can overfit the decision policy.**\n\nBehaviour should be checked across time and segments, with preference for a robust region rather than a narrow optimum.\n\nCalibration may need updating while ranking remains strong. Changes in prevalence can alter absolute probabilities and expected value.\n\nMonitoring should include predicted-positive volume, precision, recall, false-positive cost, false-negative cost and capacity consumed.\n\nDownstream execution matters too. If the team cannot process all alerts, the nominal threshold is not the real policy.\n\nHuman users may apply a second implicit threshold. They may review every flagged case but act only on some. That behaviour should be measured.\n\nDifferent segments can justify different thresholds when economics differ, although this adds complexity and requires consistent governance.\n\nRegulated or sensitive systems may also impose fairness, compliance or risk-appetite constraints on threshold selection.\n\nCapacity changes should trigger review. If the operating team doubles, the economic threshold may move even though the model is identical.\n\nFinally, model and threshold should be evaluated as one system. **A “better” model creates a better policy only when the operating point is chosen correctly.** Classifier quality does not end with ranking; it ends when that ranking becomes decisions, costs and outcomes.",
+      "seo_title": "Why the Best Model Can Have the Wrong Threshold",
+      "seo_description": "How a poor classification threshold can turn a strong model into a weak decision by ignoring cost, prevalence, capacity and calibration.",
+      "seo_keywords": [
+        "classification threshold",
+        "machine learning threshold",
+        "decision threshold",
+        "classifier threshold"
+      ],
+      "tags": [
+        "Machine Learning",
+        "Threshold",
+        "Classification"
+      ]
+    },
+    "ca": {
+      "title": "Per què el millor model pot tenir el llindar equivocat",
+      "excerpt": "El model pot ordenar molt bé i fallar com a sistema de decisió si el llindar no reflecteix costos, prevalence, capacitat i objectiu operatiu.",
+      "quick": [
+        "Model i llindar són decisions diferents",
+        "0,5 rarament és una política",
+        "El millor llindar depèn del context"
+      ],
+      "section_titles": [
+        "Un bon ranking no fixa el punt d’acció",
+        "El llindar canvia l’economia dels errors",
+        "La capacitat operativa imposa límits",
+        "El llindar s’ha de mantenir com a política"
+      ],
+      "business_title": "El model ordena casos; el llindar converteix aquell ranking en cost, càrrega operativa i acció.",
+      "business_steps": [
+        "Score",
+        "Llindar",
+        "Conseqüència"
+      ],
+      "body": "Un classificador pot ser el millor candidat en ROC AUC, PR AUC o log loss i, tot i així, produir pitjors decisions que un altre model si utilitza un llindar inadequat. **Entrenar el model i seleccionar el punt d’operació són problemes diferents.**\n\nEl score representa una estimació o ranking. El llindar transforma aquest score en sí/no, revisar/no revisar, bloquejar/permetre o intervenir/no intervenir. **Aquest pas introdueix economics, capacitat i política empresarial que l’algoritme no defineix automàticament.**\n\n**Un bon ranking no fixa el punt d’acció**\nMolts models binaris acaben utilitzant 0,5 perquè sembla natural: per sobre positiu, per sota negatiu. Però 0,5 només és adequat sota supòsits molt concrets.\n\nEl cutoff correcte depèn de prevalence, calibration, costos i acció. **El default d’una llibreria no és una política de negoci.**\n\nAlguns models també generen scores que no són probabilitats ben calibrades. Un 0,8 pot significar “alt al ranking” sense representar un 80 % de risc real.\n\nFins i tot amb bona calibració, el threshold econòmic pot estar molt per sota o per sobre de 0,5.\n\nUn bon ranking dona flexibilitat per escollir; no escull automàticament.\n\n**El llindar canvia l’economia dels errors**\nBaixar el threshold augmenta normalment recall i falsos positius. Pujar-lo sol millorar precision però deixa escapar més positius.\n\nEl trade-off depèn del cost d’error. **Si un fals negatiu costa deu vegades més que un fals positiu, un llindar orientat a accuracy pot ser una mala política.**\n\nTambé importa el benefici dels true positives. Detectar una oportunitat pot generar ingressos, mentre revisar un fals positiu consumeix temps.\n\nUna matriu de valor pot estimar expected value per llindar. No necessita precisió perfecta per mostrar la direcció del trade-off.\n\nLes cost curves poden revelar una zona àmplia de thresholds gairebé equivalents. Un punt estable dins d’aquesta zona pot ser millor que un màxim fràgil.\n\n**La capacitat operativa imposa límits**\nEn molts sistemes el threshold es tria realment per capacitat. Un equip de frau pot investigar 1.000 casos al dia; vendes pot contactar 300 leads; risc només pot revisar una fracció de la cartera.\n\nLa política real és top-k. **El volum disponible d’acció es converteix en una restricció tan important com la performance del model.**\n\nSi canvia la prevalence, un threshold fix pot generar un volum molt diferent d’alertes. L’equip pot saturar-se encara que la discriminació sigui semblant.\n\nAlgunes organitzacions utilitzen thresholds dinàmics o quotes per segment, sempre amb governance explícit.\n\nTambé existeix cost de cua. Inundar un equip pot retardar els casos més valuosos i reduir benefici tot i que augmenti recall.\n\n**El llindar s’ha de mantenir com a política**\nEl threshold s’hauria de versionar separat del model. Canviar-lo modifica la decisió encara que els paràmetres del model siguin iguals.\n\nTambé necessita validació out-of-time. **Triar el llindar que maximitza una mètrica en un únic període pot sobreajustar la política de decisió.**\n\nCal revisar comportament per temps i segments i preferir una regió robusta abans que un òptim estret.\n\nLa calibració pot necessitar actualització encara que el ranking segueixi fort. Canvis de prevalence alteren probabilitats i expected value.\n\nLa monitorització ha d’incloure volum de positius predits, precision, recall, cost de falsos positius, cost de falsos negatius i capacitat consumida.\n\nTambé importa què passa després de l’acció. Si l’equip no pot completar totes les alertes, el llindar nominal no és la política real.\n\nEls usuaris humans poden aplicar un segon threshold implícit. Poden revisar tots els casos marcats però actuar només sobre alguns. Aquest comportament s’ha de mesurar.\n\nSegments diferents poden justificar llindars diferents si canvien economics, encara que això afegeix complexitat.\n\nSistemes regulats o sensibles també poden imposar restriccions de fairness, compliance o risk appetite.\n\nEls canvis de capacitat han d’activar revisió. Si l’equip duplica recursos, el threshold econòmic pot moure’s sense tocar el model.\n\nFinalment, model i threshold s’han d’avaluar com una unitat. **Un model “millor” només crea una política millor si el punt d’operació està ben triat.** La qualitat del classificador acaba quan el ranking es converteix en decisions, costos i outcomes.",
+      "seo_title": "Per què un bon model pot tenir mal llindar",
+      "seo_description": "Com un llindar mal triat pot convertir un classificador fort en una mala decisió si ignora costos, prevalence, capacitat i calibració.",
+      "seo_keywords": [
+        "classification threshold",
+        "machine learning threshold",
+        "decision threshold",
+        "classifier threshold"
+      ],
+      "tags": [
+        "Machine Learning",
+        "Threshold",
+        "Classification"
+      ]
+    }
+  }
+}

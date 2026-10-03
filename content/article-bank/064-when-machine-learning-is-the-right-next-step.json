@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-064",
+  "sequence": 64,
+  "arc_id": "ARC-16",
+  "slug": "when-machine-learning-is-the-right-next-step",
+  "scheduled_at": "2027-03-13T09:00:00+01:00",
+  "knowledge_area": "risk_decision",
+  "cluster": "Machine Learning",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "decision_guide",
+  "angle": "when to use machine learning",
+  "primary_keyword": "when to use machine learning",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-061",
+    "KB-062",
+    "KB-063"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cuándo machine learning sí es el siguiente paso",
+      "excerpt": "ML merece la pena cuando existe una decisión repetible, suficientes datos históricos, un baseline sólido y una mejora predictiva conectada con valor económico.",
+      "quick": [
+        "La decisión debe repetirse",
+        "Los datos deben llegar a tiempo",
+        "La mejora debe mover una acción"
+      ],
+      "section_titles": [
+        "Comprueba que existe una decisión repetible",
+        "Valida datos y baseline",
+        "Mide el valor incremental",
+        "Diseña producción antes de escalar"
+      ],
+      "business_title": "Machine learning es el siguiente paso cuando existe una brecha predictiva real que puede convertirse en una decisión mejor y sostenible.",
+      "business_steps": [
+        "Decisión repetible",
+        "Lift medible",
+        "Sistema sostenible"
+      ],
+      "body": "Machine learning puede ser una herramienta extraordinaria cuando el problema encaja con sus fortalezas. El criterio no debería ser si hay muchos datos o si el modelo puede alcanzar una métrica alta. **La pregunta es si existe una decisión repetible cuyo resultado mejora de forma material cuando utilizamos patrones aprendidos de históricos.**\n\nEso exige varias condiciones al mismo tiempo: una acción clara, datos disponibles antes de decidir, suficiente recurrencia, un baseline realista y economics que justifiquen la complejidad. **Cuando esas piezas encajan, ML deja de ser experimentación técnica y se convierte en infraestructura de decisión.**\n\n**Comprueba que existe una decisión repetible**\nML funciona mejor cuando la organización toma muchas veces una decisión parecida: priorizar leads, revisar transacciones, estimar riesgo, clasificar incidencias, recomendar productos o predecir demanda.\n\nLa repetición crea dos ventajas. Permite acumular ejemplos y permite capturar valor de una mejora pequeña muchas veces. **Una mejora modesta por decisión puede ser muy valiosa cuando se aplica a miles de decisiones.**\n\nTambién debe existir una acción asociada. Un score de riesgo sirve si modifica revisión, pricing, límites o seguimiento. Una predicción sin palanca operativa puede ser interesante y no generar impacto.\n\nLa decisión necesita un horizonte claro. Las features deben existir antes del momento en que el negocio actúa. Cualquier información posterior crea leakage y una promesa de performance imposible de reproducir.\n\n**Valida datos y baseline**\nLa siguiente condición es disponer de histórico suficiente y representativo. No existe un número universal de filas; importa la relación entre complejidad, señal, clases, segmentos y estabilidad.\n\nLos labels deben significar lo que creemos que significan. **Un target generado por decisiones humanas anteriores puede contener sesgo de selección y convertir el modelo en una copia sofisticada del proceso actual.**\n\nTambién conviene revisar missingness, cambios de definición, timestamps y cobertura por segmentos.\n\nAntes del modelo complejo debe existir un baseline fuerte. Puede ser una regla, regresión logística, modelo lineal, árbol sencillo o la política actual.\n\nEl baseline obliga a demostrar valor incremental. Si no podemos superar una solución sencilla de forma robusta, todavía no existe un caso claro para ML.\n\n**Mide el valor incremental**\nLa comparación debe traducirse a decisión. Accuracy o AUC son útiles para diagnosticar, pero no necesariamente representan el objetivo empresarial.\n\nSi solo se pueden revisar 100 casos, interesa precision o expected value en top-100. Si el coste del falso negativo es alto, el threshold debe reflejarlo. **El valor aparece en la política de uso del modelo, no únicamente en la métrica global.**\n\nProfit curves, cost matrices, uplift, ranking metrics y simulaciones pueden ayudar a cuantificar el impacto.\n\nTambién conviene medir incertidumbre. Una mejora media que desaparece en determinados segmentos o periodos puede no ser suficientemente robusta para producción.\n\nLa ganancia debe compararse con el coste completo: desarrollo, infraestructura, features, monitorización, retraining, soporte y governance.\n\n**Diseña producción antes de escalar**\nUn modelo útil necesita un camino claro desde input hasta acción. ¿Dónde se calcula el score? ¿Quién lo consume? ¿Qué ocurre si faltan datos? ¿Cómo se registra el outcome?\n\nEl sistema también necesita monitorización de datos y performance. **No basta con saber que el endpoint responde; hay que saber si la relación aprendida sigue siendo válida.**\n\nConviene definir triggers de revisión: drift, caída de calibration, cambios de policy, pérdida de lift o modificación relevante del proceso.\n\nLa explicabilidad debe adaptarse al contexto. En una recomendación interna puede ser suficiente una razón principal; en una decisión regulada puede necesitarse mucha más trazabilidad.\n\nTambién debe existir fallback. Si el modelo no puede puntuar, una regla o política segura debe mantener la operación.\n\nEl rollout puede ser gradual. Shadow mode, recomendaciones asistidas, A/B test o grupos de control permiten comprobar el impacto antes de automatizar.\n\nLa aceptación de usuarios también es una métrica. Si el modelo es técnicamente bueno pero la interfaz no ayuda a decidir, el valor seguirá sin aparecer.\n\nConviene registrar overrides y sus motivos. Un override recurrente puede revelar información que falta en los datos o un caso donde la política debería ser distinta.\n\nLa frecuencia de retraining debe responder a evidencia, no a calendario por defecto. Reentrenar cada semana sin drift puede añadir riesgo sin valor.\n\nTambién hay que definir ownership. Alguien debe responder por datos, modelo, decisión y outcome. Sin propietario, los sistemas de ML se degradan silenciosamente.\n\nFinalmente, se necesita una regla de salida. Si el modelo deja de superar el baseline o el coste operativo crece por encima del beneficio, simplificar o retirarlo debe ser una opción válida.\n\nMachine learning sí es el siguiente paso cuando la empresa puede responder claramente estas preguntas: qué decisión mejora, qué datos llegan a tiempo, cuánto supera al baseline y cómo se mantendrá. **Cuando el lift predictivo se convierte en impacto operativo repetible y supera el coste total de propiedad, ML deja de ser sofisticación y pasa a ser una inversión racional.**",
+      "seo_title": "Cuándo utilizar machine learning",
+      "seo_description": "Cómo decidir si machine learning es el siguiente paso según decisión, datos, baseline, lift, economics, producción, monitorización y mantenimiento.",
+      "seo_keywords": [
+        "when to use machine learning",
+        "machine learning decision guide",
+        "ML business case",
+        "machine learning value"
+      ],
+      "tags": [
+        "Machine Learning",
+        "Decision Guide",
+        "ML Strategy"
+      ]
+    },
+    "en": {
+      "title": "When machine learning is the right next step",
+      "excerpt": "ML is worthwhile when a repeatable decision, sufficient historical data, a strong baseline and predictive lift connect directly to economic value.",
+      "quick": [
+        "The decision must repeat",
+        "Data must arrive in time",
+        "Lift must change an action"
+      ],
+      "section_titles": [
+        "Confirm there is a repeatable decision",
+        "Validate data and baseline",
+        "Measure incremental value",
+        "Design production before scaling"
+      ],
+      "business_title": "Machine learning is the right next step when a real predictive gap can be converted into a better and sustainable operating decision.",
+      "business_steps": [
+        "Repeatable decision",
+        "Measurable lift",
+        "Sustainable system"
+      ],
+      "body": "Machine learning can be extremely powerful when the problem matches its strengths. The criterion should not be whether the company has a lot of data or whether a model can achieve an impressive metric. **The question is whether there is a repeatable decision whose outcome improves materially when historical patterns are learned.**\n\nSeveral conditions need to hold at the same time: a clear action, data available before the decision, enough recurrence, a realistic baseline and economics that justify complexity. **When those pieces align, ML stops being a technical experiment and becomes decision infrastructure.**\n\n**Confirm there is a repeatable decision**\nML works best when the organization repeatedly makes a similar choice: prioritize leads, review transactions, estimate risk, classify incidents, recommend products or forecast demand.\n\nRepetition creates two advantages. It provides examples for learning and allows a small improvement to compound across many decisions. **A modest gain per decision can be valuable when applied thousands of times.**\n\nThere must also be an action attached to the prediction. A risk score matters when it changes review, pricing, limits or follow-up. A prediction with no operating lever can be interesting without being valuable.\n\nThe decision needs a clear horizon. Features must exist before the business acts. Any information arriving afterward creates leakage and a performance promise that cannot be reproduced.\n\n**Validate data and baseline**\nThe next condition is sufficient and representative history. There is no universal row count; what matters is the relationship between complexity, signal, class balance, segments and stability.\n\nLabels need scrutiny. **A target generated by previous human decisions may contain selection bias and turn the model into a sophisticated copy of the old process.**\n\nMissingness, definition changes, timestamps and segment coverage should also be reviewed.\n\nBefore complexity, there should be a strong baseline: current rule, logistic regression, linear model, small tree or current policy.\n\nThe baseline forces the model to demonstrate incremental value. If a complex model cannot beat a simple alternative robustly, there is no strong ML case yet.\n\n**Measure incremental value**\nComparison should be translated into the decision. Accuracy and AUC are useful diagnostics, but they may not represent the business objective.\n\nIf only 100 cases can be reviewed, precision or expected value in the top 100 matters. If false negatives are expensive, the threshold should reflect that. **Value appears in the policy built around the model, not only in the aggregate metric.**\n\nProfit curves, cost matrices, uplift, ranking metrics and simulations can quantify the difference.\n\nUncertainty matters too. An average gain that disappears in specific segments or time periods may not be robust enough for production.\n\nLift should be compared with full ownership cost: development, infrastructure, features, monitoring, retraining, support and governance.\n\n**Design production before scaling**\nA useful model needs a clear path from input to action. Where is the score computed? Who consumes it? What happens when data is missing? How is the outcome captured?\n\nThe system needs both data and model monitoring. **It is not enough to know that the endpoint is healthy; the team needs to know whether the learned relationship is still valid.**\n\nReview triggers should be defined: drift, calibration deterioration, policy changes, loss of lift or material process changes.\n\nExplainability should fit the context. An internal recommendation may need only a main reason; a regulated decision may require far more traceability.\n\nFallback behaviour is essential. If the model cannot score, a safe rule or policy should keep operations running.\n\nRollout can be gradual. Shadow mode, assisted recommendations, A/B tests or control groups can verify impact before automation.\n\nUser acceptance is a metric as well. A technically strong model with a poor decision interface still fails to create value.\n\nOverrides and reasons should be captured. Repeated overrides can reveal missing information or a segment needing a different policy.\n\nRetraining frequency should be evidence-driven rather than calendar-driven. Weekly retraining without drift can add risk without benefit.\n\nOwnership should be explicit. Someone needs responsibility for data, model, decision policy and outcome. Without ownership, ML systems decay quietly.\n\nThere should also be an exit rule. If the model stops beating the baseline or operating cost rises beyond incremental benefit, simplifying or retiring it should remain possible.\n\nMachine learning is the right next step when the organization can clearly answer four questions: which decision improves, which data is available in time, how much the model beats the baseline and how the system will be maintained. **When predictive lift becomes repeatable operating impact and exceeds total ownership cost, ML becomes a rational investment rather than technical sophistication.**",
+      "seo_title": "When to Use Machine Learning",
+      "seo_description": "How to decide whether ML is the right next step using decision design, data, baselines, lift, economics, production, monitoring and maintenance.",
+      "seo_keywords": [
+        "when to use machine learning",
+        "machine learning decision guide",
+        "ML business case",
+        "machine learning value"
+      ],
+      "tags": [
+        "Machine Learning",
+        "Decision Guide",
+        "ML Strategy"
+      ]
+    },
+    "ca": {
+      "title": "Quan machine learning sí que és el següent pas",
+      "excerpt": "ML val la pena quan existeix una decisió repetible, prou dades històriques, un baseline sòlid i lift predictiu connectat amb valor econòmic.",
+      "quick": [
+        "La decisió s’ha de repetir",
+        "Les dades han d’arribar a temps",
+        "El lift ha de canviar una acció"
+      ],
+      "section_titles": [
+        "Comprova que existeix una decisió repetible",
+        "Valida dades i baseline",
+        "Mesura el valor incremental",
+        "Dissenya producció abans d’escalar"
+      ],
+      "business_title": "Machine learning és el següent pas quan existeix una bretxa predictiva real que es pot convertir en una decisió millor i sostenible.",
+      "business_steps": [
+        "Decisió repetible",
+        "Lift mesurable",
+        "Sistema sostenible"
+      ],
+      "body": "Machine learning pot ser una eina extraordinària quan el problema encaixa amb les seves fortaleses. El criteri no hauria de ser si hi ha moltes dades o si el model pot aconseguir una mètrica alta. **La pregunta és si existeix una decisió repetible que millora de manera material quan aprenem patrons dels històrics.**\n\nAixò exigeix diverses condicions alhora: una acció clara, dades disponibles abans de decidir, prou recurrència, un baseline realista i economics que justifiquin complexitat. **Quan aquestes peces encaixen, ML deixa de ser experimentació tècnica i es converteix en infraestructura de decisió.**\n\n**Comprova que existeix una decisió repetible**\nML funciona millor quan l’organització pren moltes vegades una decisió semblant: prioritzar leads, revisar transaccions, estimar risc, classificar incidències, recomanar productes o predir demanda.\n\nLa repetició crea dos avantatges. Permet acumular exemples i capturar el valor d’una petita millora moltes vegades. **Una millora modesta per decisió pot ser molt valuosa quan s’aplica milers de vegades.**\n\nTambé ha d’existir una acció associada. Un score de risc serveix si modifica revisió, pricing, límits o seguiment. Una predicció sense palanca operativa pot ser interessant i no generar impacte.\n\nLa decisió necessita un horitzó clar. Les features han d’existir abans d’actuar. Qualsevol informació posterior crea leakage i una promesa de performance impossible de reproduir.\n\n**Valida dades i baseline**\nLa següent condició és disposar d’històric suficient i representatiu. No existeix un nombre universal de files; importa la relació entre complexitat, senyal, classes, segments i estabilitat.\n\nEls labels s’han de revisar. **Un target generat per decisions humanes anteriors pot contenir selection bias i convertir el model en una còpia sofisticada del procés actual.**\n\nTambé convé revisar missingness, canvis de definició, timestamps i cobertura per segments.\n\nAbans de models complexos ha d’existir un baseline fort: regla actual, regressió logística, model lineal, arbre petit o política vigent.\n\nEl baseline obliga a demostrar valor incremental. Si un model complex no supera una alternativa simple de manera robusta, encara no hi ha un cas fort per ML.\n\n**Mesura el valor incremental**\nLa comparació s’ha de traduir a la decisió. Accuracy o AUC són útils per diagnosticar, però poden no representar l’objectiu empresarial.\n\nSi només es poden revisar 100 casos, importa precision o expected value al top-100. Si el fals negatiu és car, el threshold ha de reflectir-ho. **El valor apareix en la política construïda al voltant del model, no només en la mètrica agregada.**\n\nProfit curves, cost matrices, uplift, ranking metrics i simulacions poden quantificar la diferència.\n\nTambé importa la incertesa. Una millora mitjana que desapareix en alguns segments o períodes pot no ser prou robusta per producció.\n\nEl lift s’ha de comparar amb el cost total: desenvolupament, infraestructura, features, monitorització, retraining, suport i governance.\n\n**Dissenya producció abans d’escalar**\nUn model útil necessita un camí clar des d’input fins a acció. On es calcula el score? Qui el consumeix? Què passa si falten dades? Com es registra l’outcome?\n\nEl sistema necessita monitorització de dades i model. **No basta saber que l’endpoint funciona; cal saber si la relació apresa continua sent vàlida.**\n\nS’han de definir triggers de revisió: drift, deteriorament de calibration, canvis de policy, pèrdua de lift o modificacions materials del procés.\n\nL’explicabilitat s’ha d’adaptar al context. Una recomanació interna pot necessitar una raó principal; una decisió regulada pot requerir molta més traçabilitat.\n\nTambé cal fallback. Si el model no pot puntuar, una regla o política segura ha de mantenir l’operació.\n\nEl rollout pot ser gradual. Shadow mode, recomanacions assistides, A/B test o grups de control permeten validar impacte abans d’automatitzar.\n\nL’acceptació dels usuaris també és una mètrica. Un model tècnicament fort amb una mala interfície de decisió continua sense crear valor.\n\nEls overrides i els motius s’han de registrar. Overrides recurrents poden revelar informació absent o un segment que necessita una política diferent.\n\nLa freqüència de retraining ha de respondre a evidència i no a calendari per defecte. Reentrenar cada setmana sense drift pot afegir risc sense benefici.\n\nL’ownership ha de ser explícit. Algú ha de respondre per dades, model, política de decisió i outcome. Sense owner, els sistemes ML es degraden silenciosament.\n\nTambé ha d’existir una regla de sortida. Si el model deixa de superar el baseline o el cost operatiu supera el benefici incremental, simplificar-lo o retirar-lo ha de ser una opció.\n\nMachine learning sí que és el següent pas quan l’empresa pot respondre clarament quatre preguntes: quina decisió millora, quines dades arriben a temps, quant supera el baseline i com es mantindrà. **Quan el lift predictiu es converteix en impacte operatiu repetible i supera el cost total de propietat, ML deixa de ser sofisticació i passa a ser una inversió racional.**",
+      "seo_title": "Quan utilitzar machine learning",
+      "seo_description": "Com decidir si ML és el següent pas segons decisió, dades, baseline, lift, economics, producció, monitorització i manteniment.",
+      "seo_keywords": [
+        "when to use machine learning",
+        "machine learning decision guide",
+        "ML business case",
+        "machine learning value"
+      ],
+      "tags": [
+        "Machine Learning",
+        "Decision Guide",
+        "ML Strategy"
+      ]
+    }
+  }
+}

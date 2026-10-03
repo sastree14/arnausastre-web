@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-050",
+  "sequence": 50,
+  "arc_id": "ARC-13",
+  "slug": "priority-scoring-vs-optimization",
+  "scheduled_at": "2027-02-06T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Optimization & OR",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "compare",
+  "angle": "prioritization vs optimization",
+  "primary_keyword": "prioritization vs optimization",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-049",
+    "KB-051",
+    "KB-052"
+  ],
+  "variants": {
+    "es": {
+      "title": "Scoring de prioridades vs optimización",
+      "excerpt": "Un scoring ordena opciones; la optimización decide una cartera bajo restricciones. Son herramientas distintas y resuelven problemas diferentes.",
+      "quick": [
+        "Score = ordenar",
+        "Optimización = asignar",
+        "Las restricciones cambian la decisión"
+      ],
+      "section_titles": [
+        "Qué hace bien un scoring",
+        "Dónde falla cuando hay escasez",
+        "Qué añade la optimización",
+        "Cuándo usar cada enfoque"
+      ],
+      "business_title": "Un ranking dice qué parece más atractivo; un modelo de optimización decide qué combinación cabe realmente en los recursos disponibles.",
+      "business_steps": [
+        "Prioridad individual",
+        "Restricciones compartidas",
+        "Cartera seleccionada"
+      ],
+      "body": "Los modelos de scoring son una forma habitual de priorizar proyectos, clientes, inversiones o iniciativas. Cada opción recibe puntos según criterios definidos y después se ordena. El enfoque es intuitivo y transparente, pero **un ranking no resuelve automáticamente un problema de asignación cuando varias opciones compiten por los mismos recursos**.\n\nLa optimización empieza donde el scoring se queda corto: no solo pregunta qué iniciativa es mejor individualmente, sino qué combinación completa crea más valor respetando presupuesto, capacidad y dependencias. **Ordenar y asignar no son la misma decisión.**\n\n**Qué hace bien un scoring**\nUn scoring es útil para estructurar criterios. Puede combinar valor estratégico, retorno, urgencia, riesgo, complejidad o impacto comercial.\n\nTambién obliga a hacer visibles preferencias que antes eran informales. **La principal fortaleza del scoring es convertir una conversación cualitativa en una comparación consistente.**\n\nEs especialmente práctico cuando las opciones son independientes y la restricción principal es atención o secuencia. Si solo necesitamos saber qué proyecto revisar primero, un ranking puede ser suficiente.\n\nAdemás, es fácil de comunicar. Stakeholders pueden entender de dónde sale la puntuación y discutir pesos o criterios.\n\n**Dónde falla cuando hay escasez**\nEl problema aparece cuando los proyectos consumen cantidades diferentes de recursos. Un proyecto con score 95 puede requerir casi todo el presupuesto, mientras tres proyectos con score 80 juntos generan más valor.\n\nEl ranking tampoco representa bien dependencias. **Una iniciativa puede tener mucho score y no poder ejecutarse sin otra de menor puntuación.** O dos proyectos pueden competir por el mismo equipo especializado.\n\nTambién puede ignorar mínimos y máximos: al menos una iniciativa por región, no más de cierto gasto en una categoría o capacidad limitada en un trimestre.\n\nEn esos casos, seleccionar de arriba hacia abajo produce una cartera que puede ser subóptima o incluso inviable.\n\n**Qué añade la optimización**\nLa optimización considera las opciones como un sistema. Cada proyecto tiene valor y consumo de recursos; el modelo decide qué combinación maximiza el objetivo dentro de las restricciones.\n\nEsto permite capturar trade-offs. **La mejor cartera no tiene por qué contener las iniciativas con mayor score individual.** Puede incluir proyectos algo menos atractivos que encajan mejor juntos.\n\nTambién permite escenarios. Podemos ver cómo cambia la selección si aumenta presupuesto, falta un skill o aparece una nueva prioridad estratégica.\n\nLa sensibilidad aporta información muy valiosa. Si un proyecto queda fuera por una restricción concreta, management puede decidir si merece ampliar esa capacidad.\n\n**Cuándo usar cada enfoque**\nScoring funciona bien como filtro inicial, herramienta de governance o forma de construir inputs. La optimización funciona mejor cuando la selección final depende de recursos compartidos y restricciones.\n\nNo son enfoques excluyentes. **Un score puede convertirse en una estimación de valor dentro de un modelo de optimización**, siempre que la puntuación tenga sentido cardinal y no solo ordinal.\n\nTambién se puede usar scoring para descartar opciones claramente débiles y optimización para decidir entre las restantes.\n\nLa elección debería considerar complejidad. Si existen diez proyectos pequeños con presupuesto holgado, un modelo matemático puede aportar poco. Si existen cientos de iniciativas, múltiples capacidades y dependencias, el ranking manual empieza a perder coherencia.\n\nLa transparencia también importa. Un modelo de optimización debe explicar por qué una iniciativa con score alto quedó fuera. Sin esa capa, los usuarios pueden interpretar el resultado como una contradicción.\n\nConviene validar ambos enfoques con decisiones históricas. ¿El scoring habría elegido la misma cartera? ¿La optimización habría liberado recursos o mejorado el valor total? Esa comparación ayuda a cuantificar la diferencia.\n\nEl mayor error es utilizar un scoring como si fuese una asignación. **Un ranking responde quién parece mejor; una optimización responde qué combinación merece financiarse dadas las restricciones reales.** Cuando la escasez importa, esa diferencia deja de ser técnica y se convierte en una diferencia de negocio.",
+      "seo_title": "Scoring de prioridades vs optimización",
+      "seo_description": "Diferencias entre ranking por scoring y optimización de carteras cuando existen presupuesto, capacidad, dependencias y recursos compartidos.",
+      "seo_keywords": [
+        "prioritization vs optimization",
+        "priority scoring",
+        "resource allocation",
+        "portfolio optimization"
+      ],
+      "tags": [
+        "Optimization",
+        "Prioritization",
+        "Resource Allocation"
+      ]
+    },
+    "en": {
+      "title": "Priority scoring vs optimization",
+      "excerpt": "A score ranks options; optimization selects a portfolio under constraints. They are different tools solving different decision problems.",
+      "quick": [
+        "Score = rank",
+        "Optimization = allocate",
+        "Constraints change the decision"
+      ],
+      "section_titles": [
+        "What scoring does well",
+        "Where it fails under scarcity",
+        "What optimization adds",
+        "When to use each approach"
+      ],
+      "business_title": "A ranking says what looks attractive; optimization decides which combination actually fits within available resources.",
+      "business_steps": [
+        "Individual priority",
+        "Shared constraints",
+        "Selected portfolio"
+      ],
+      "body": "Scoring models are a common way to prioritize projects, customers, investments or initiatives. Each option receives points against defined criteria and is then ranked. The approach is intuitive and transparent, but **a ranking does not automatically solve an allocation problem when several options compete for the same resources**.\n\nOptimization starts where scoring stops: it asks not only which initiative looks best individually, but which complete combination creates the most value while respecting budget, capacity and dependencies. **Ranking and allocating are different decisions.**\n\n**What scoring does well**\nScoring is useful for structuring criteria. It can combine strategic value, return, urgency, risk, complexity or commercial impact.\n\nIt also makes preferences explicit that were previously informal. **Its main strength is turning a qualitative discussion into a consistent comparison.**\n\nScoring works particularly well when options are largely independent and the main problem is attention or sequencing. If the business simply needs to know which proposal to review first, a ranking may be enough.\n\nIt is also easy to communicate. Stakeholders can inspect weights, criteria and the resulting score.\n\n**Where it fails under scarcity**\nThe problem appears when projects consume different amounts of scarce resources. A project scoring 95 may absorb nearly all available budget, while three projects scoring 80 together create more total value.\n\nRankings also handle dependencies poorly. **A high-scoring initiative may be impossible without a lower-scoring prerequisite.** Two attractive projects may also compete for the same specialized team.\n\nMinimum and maximum constraints matter too: at least one project in each region, no more than a certain spend in one category, or limited capacity in one quarter.\n\nSelecting from the top down can therefore produce a portfolio that is suboptimal or even infeasible.\n\n**What optimization adds**\nOptimization treats the options as a system. Each project has value and consumes resources; the model selects the combination that best satisfies the objective within constraints.\n\nThat captures trade-offs directly. **The best portfolio does not necessarily contain the projects with the highest individual scores.** Slightly weaker projects can fit together much more efficiently.\n\nOptimization also supports scenarios. The business can test what changes when budget expands, a skill becomes unavailable or a strategic priority changes.\n\nSensitivity provides additional insight. If a project is excluded because of one binding constraint, management can decide whether expanding that resource would create enough value.\n\n**When to use each approach**\nScoring works well as an initial filter, governance mechanism or way to create inputs. Optimization is stronger when final selection depends on shared resources and constraints.\n\nThe two approaches can be combined. **A score can become an estimate of value inside an optimization model**, provided the score is meaningful beyond simple ranking.\n\nScoring can also eliminate clearly weak options before optimization chooses among the remainder.\n\nComplexity should guide the choice. Ten small projects with abundant budget may not justify optimization. Hundreds of initiatives with multiple capacity limits and dependencies usually do.\n\nTransparency matters too. An optimization model should explain why a high-scoring initiative was excluded. Without explanation, users can interpret the outcome as inconsistent.\n\nHistorical replay can help. Would scoring have selected the same portfolio? Would optimization have released resources or increased total value? That comparison quantifies the difference.\n\nThe key mistake is treating a ranking as an allocation. **A ranking answers which option looks better; optimization answers which combination deserves funding under real constraints.** When scarcity matters, that distinction becomes a business issue rather than a technical one.\n\nAnother difference appears when value is nonlinear. Funding 50% of a project may create almost no benefit while funding 100% unlocks the outcome. A ranking normally ignores that structure. **Optimization can represent thresholds, minimum viable funding and diminishing returns explicitly.** This matters when resources are divisible but project value is not.\n\nScoring also struggles with timing. Two projects can have identical scores but consume capacity in different quarters. **Portfolio feasibility depends on when resources are needed, not only how much is needed in total.**",
+      "seo_title": "Priority Scoring vs Optimization",
+      "seo_description": "How scoring and optimization differ when portfolio decisions include budget, capacity, dependencies and shared-resource constraints.",
+      "seo_keywords": [
+        "prioritization vs optimization",
+        "priority scoring",
+        "resource allocation",
+        "portfolio optimization"
+      ],
+      "tags": [
+        "Optimization",
+        "Prioritization",
+        "Resource Allocation"
+      ]
+    },
+    "ca": {
+      "title": "Scoring de prioritats vs optimització",
+      "excerpt": "Un scoring ordena opcions; l’optimització decideix una cartera sota restriccions. Són eines diferents per problemes de decisió diferents.",
+      "quick": [
+        "Score = ordenar",
+        "Optimització = assignar",
+        "Les restriccions canvien la decisió"
+      ],
+      "section_titles": [
+        "Què fa bé un scoring",
+        "On falla quan hi ha escassetat",
+        "Què afegeix l’optimització",
+        "Quan utilitzar cada enfocament"
+      ],
+      "business_title": "Un rànquing diu què sembla més atractiu; l’optimització decideix quina combinació cap realment en els recursos disponibles.",
+      "business_steps": [
+        "Prioritat individual",
+        "Restriccions compartides",
+        "Cartera seleccionada"
+      ],
+      "body": "Els models de scoring són una forma habitual de prioritzar projectes, clients, inversions o iniciatives. Cada opció rep punts segons criteris definits i després s’ordena. L’enfocament és intuïtiu i transparent, però **un rànquing no resol automàticament un problema d’assignació quan diverses opcions competeixen pels mateixos recursos**.\n\nL’optimització comença on el scoring es queda curt: no només pregunta quina iniciativa és millor individualment, sinó quina combinació completa crea més valor respectant pressupost, capacitat i dependències. **Ordenar i assignar no són la mateixa decisió.**\n\n**Què fa bé un scoring**\nUn scoring és útil per estructurar criteris. Pot combinar valor estratègic, retorn, urgència, risc, complexitat o impacte comercial.\n\nTambé obliga a fer visibles preferències que abans eren informals. **La seva principal fortalesa és convertir una conversa qualitativa en una comparació consistent.**\n\nFunciona especialment bé quan les opcions són independents i la restricció principal és atenció o seqüència. Si només cal decidir quin projecte revisar primer, un rànquing pot ser suficient.\n\nA més, és fàcil de comunicar. Els stakeholders poden entendre pesos, criteris i puntuació.\n\n**On falla quan hi ha escassetat**\nEl problema apareix quan els projectes consumeixen quantitats diferents de recursos. Un projecte amb score 95 pot requerir gairebé tot el pressupost, mentre tres amb score 80 junts creen més valor.\n\nEl rànquing tampoc representa bé dependències. **Una iniciativa amb score alt pot ser impossible sense una altra de puntuació inferior.** Dos projectes atractius poden competir pel mateix equip especialitzat.\n\nTambé poden existir mínims i màxims: almenys un projecte per regió, un màxim de despesa per categoria o capacitat limitada en un trimestre.\n\nSeleccionar de dalt a baix pot produir una cartera subòptima o inviable.\n\n**Què afegeix l’optimització**\nL’optimització considera les opcions com un sistema. Cada projecte té valor i consumeix recursos; el model selecciona la combinació que millor compleix l’objectiu sota restriccions.\n\nAixò captura trade-offs. **La millor cartera no ha d’incloure necessàriament els projectes amb més score individual.** Projectes una mica menys atractius poden encaixar molt millor junts.\n\nTambé permet escenaris. Podem veure què canvia si augmenta pressupost, falta un skill o varia una prioritat estratègica.\n\nLa sensibilitat aporta informació addicional. Si un projecte queda fora per una restricció vinculant, management pot decidir si ampliar aquell recurs crea prou valor.\n\n**Quan utilitzar cada enfocament**\nScoring funciona bé com filtre inicial, mecanisme de governance o forma de crear inputs. L’optimització és més forta quan la selecció final depèn de recursos compartits i restriccions.\n\nEs poden combinar. **Un score pot convertir-se en una estimació de valor dins d’un model d’optimització**, sempre que tingui significat més enllà del simple ordre.\n\nTambé es pot usar scoring per eliminar opcions clarament febles i optimització per decidir entre la resta.\n\nLa complexitat ha de guiar l’elecció. Deu projectes petits amb pressupost abundant poden no justificar un model. Centenars d’iniciatives amb múltiples capacitats i dependències sí.\n\nLa transparència també importa. Un model ha d’explicar per què una iniciativa amb score alt ha quedat fora. Sense aquesta capa, els usuaris poden veure el resultat com contradictori.\n\nReproduir decisions històriques ajuda. Hauria escollit scoring la mateixa cartera? Hauria alliberat recursos l’optimització? Aquesta comparació quantifica la diferència.\n\nL’error principal és utilitzar scoring com si fos una assignació. **Un rànquing respon quina opció sembla millor; una optimització respon quina combinació mereix finançament sota restriccions reals.** Quan l’escassetat importa, aquesta diferència és de negoci.\n\nUna altra diferència apareix quan el valor és no lineal. Finançar el 50 % d’un projecte pot crear gairebé cap benefici mentre el 100 % desbloqueja el resultat. Un rànquing normalment ignora aquesta estructura. **L’optimització pot representar llindars, finançament mínim viable i rendiments decreixents explícitament.** Això importa quan els recursos són divisibles però el valor del projecte no.\n\nScoring també gestiona malament el timing. Dos projectes poden tenir el mateix score i consumir capacitat en trimestres diferents. **La factibilitat depèn de quan es necessiten recursos, no només de quant se’n necessita en total.**",
+      "seo_title": "Scoring de prioritats vs optimització",
+      "seo_description": "Diferències entre scoring i optimització de carteres quan existeixen pressupost, capacitat, dependències i recursos compartits.",
+      "seo_keywords": [
+        "prioritization vs optimization",
+        "priority scoring",
+        "resource allocation",
+        "portfolio optimization"
+      ],
+      "tags": [
+        "Optimization",
+        "Prioritization",
+        "Resource Allocation"
+      ]
+    }
+  }
+}

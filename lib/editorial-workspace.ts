@@ -31,7 +31,7 @@ export async function getWorkspaceContent(): Promise<GrowthContentItem[]> {
   return queryGrowthTable<GrowthContentItem>('content_items', {
     ...createdAfter(resetAt),
     order: 'created_at.desc',
-    limit: '250',
+    limit: '1000',
   }, { cacheSeconds: 0 })
 }
 
@@ -52,4 +52,30 @@ export async function getWorkspaceEditorialTasks(): Promise<GrowthTask[]> {
     order: 'created_at.desc',
     limit: '100',
   }, { cacheSeconds: 0 })
+}
+
+
+export function collapseWebsiteArticleFamilies(items: GrowthContentItem[]): GrowthContentItem[] {
+  const result: GrowthContentItem[] = []
+  const articleFamilies = new Map<string, GrowthContentItem[]>()
+
+  for (const item of items) {
+    if (item.content_type === 'article' && item.channel === 'website' && item.brief_id) {
+      const key = item.brief_id
+      articleFamilies.set(key, [...(articleFamilies.get(key) || []), item])
+    } else {
+      result.push(item)
+    }
+  }
+
+  for (const family of articleFamilies.values()) {
+    const representative =
+      family.find((item) => item.language === 'es')
+      || family.find((item) => item.language === 'en')
+      || family.find((item) => item.language === 'ca')
+      || family[0]
+    if (representative) result.push(representative)
+  }
+
+  return result.sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')))
 }

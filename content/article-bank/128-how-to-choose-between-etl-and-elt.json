@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-128",
+  "sequence": 128,
+  "arc_id": "ARC-32",
+  "slug": "how-to-choose-between-etl-and-elt",
+  "scheduled_at": "2027-08-14T09:00:00+02:00",
+  "knowledge_area": "business_systems",
+  "cluster": "Data Engineering & Architecture",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "decision_guide",
+  "angle": "when to use etl vs elt",
+  "primary_keyword": "when to use etl vs elt",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-125",
+    "KB-126",
+    "KB-127"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cómo elegir entre ETL y ELT",
+      "excerpt": "La decisión depende de dónde conviene transformar, qué datos pueden cargarse raw, quién mantiene la lógica y cuánto valor aporta reprocessing frente a control temprano.",
+      "quick": [
+        "Empieza por governance",
+        "Decide dónde vive el compute",
+        "Alinea ownership con el equipo"
+      ],
+      "section_titles": [
+        "Define restricciones antes de elegir patrón",
+        "Decide dónde debe vivir la transformación",
+        "Evalúa flexibilidad, coste y reprocesamiento",
+        "Diseña un patrón híbrido cuando tenga sentido"
+      ],
+      "business_title": "ETL o ELT debería decidirse según control, flexibilidad y ownership, no según qué patrón parezca más moderno.",
+      "business_steps": [
+        "Restricciones",
+        "Transformación",
+        "Ownership"
+      ],
+      "body": "Elegir entre ETL y ELT parece una decisión técnica, pero en realidad mezcla arquitectura, governance y modelo operativo. **La pregunta no es solo cuándo transformar los datos, sino quién controla esa transformación, qué puede almacenarse y cuánto cuesta cambiar la lógica después.**\n\nETL transforma antes de cargar. ELT carga primero y transforma en el destino. Ambos pueden ser modernos, escalables y correctos. **El patrón adecuado es el que reduce fricción sin trasladar riesgo a otra parte del sistema.**\n\n**Define restricciones antes de elegir patrón**\nLa primera decisión no es ETL o ELT. Es qué no podemos permitir.\n\nAlgunos datos no pueden cargarse raw por privacidad, regulación o contratos. En esos casos, filtrado, anonimización o validación debe ocurrir antes.\n\n**Si existe una restricción dura** sobre qué puede entrar al destino, esa restricción pesa más que cualquier preferencia arquitectónica.\n\nTambién hay destinos con capacidad limitada, costes altos o schemas rígidos.\n\nEn otros casos, el principal requisito es velocidad de onboarding: necesitamos incorporar nuevas fuentes rápidamente y decidir transformaciones después.\n\nLa criticidad del dato también importa. Un feed operativo que alimenta decisiones sensibles puede necesitar validaciones más estrictas que una fuente exploratoria.\n\nAntes de elegir patrón, conviene listar seguridad, latencia, volumen, estructura, criticidad y retención.\n\n**Decide dónde debe vivir la transformación**\nEl segundo paso es elegir dónde queremos ejecutar compute y dónde queremos mantener la lógica.\n\nSi el warehouse o lakehouse ofrece compute escalable y el equipo trabaja principalmente en SQL, ELT puede concentrar transformación en un lugar accesible.\n\n**Mover lógica al destino puede** dar más autonomía al equipo analítico y reducir dependencia de pipelines upstream.\n\nETL puede ser mejor cuando el procesamiento necesita engines especializados, acceso cercano a la fuente o cuando el destino debe mantenerse ligero.\n\nTambién puede funcionar bien cuando reglas de transformación son estables y gestionadas por un equipo central.\n\nEl ownership es decisivo. Si analytics engineers son quienes cambian definiciones con frecuencia, una capa ELT versionada puede acelerar iteración.\n\nSi data engineering controla contratos muy estrictos y consumidores esperan datasets finales, ETL puede ofrecer una frontera más clara.\n\nLa elección debe evitar lógica repartida sin criterio entre demasiadas herramientas.\n\n**Evalúa flexibilidad, coste y reprocesamiento**\nELT gana valor cuando queremos conservar raw data y reconstruir históricos al cambiar definiciones.\n\nEso mejora reproducibilidad y reduce dependencia del sistema origen.\n\n**Poder reprocesar es valioso solo** si el coste de hacerlo es razonable y el equipo realmente necesita esa capacidad.\n\nGrandes tablas y transformaciones pesadas pueden convertir cada rebuild en una factura importante.\n\nIncremental processing, partitioning y materializations ayudan, pero añaden diseño.\n\nETL puede reducir volumen antes de cargar y evitar almacenar datos que nunca tendrán uso.\n\nTambién puede reducir egress o exposición de información sensible.\n\nLa flexibilidad tiene otro coste: más capas raw implican más catalogación, permisos y governance.\n\nHay que comparar time-to-data con time-to-trust.\n\nUna fuente disponible en cinco minutos pero no entendida durante tres días no necesariamente mejora la operación.\n\n**Diseña un patrón híbrido cuando tenga sentido**\nLa mayoría de arquitecturas maduras no son puramente ETL o ELT.\n\nEs frecuente aplicar controles críticos antes de cargar y dejar lógica analítica iterativa para después.\n\nPor ejemplo: validar schema, eliminar PII no permitida y normalizar timestamps upstream; modelar métricas, dimensiones y marts dentro del warehouse.\n\n**Un patrón híbrido permite reservar** ETL para lo que debe ser seguro y ELT para lo que necesita flexibilidad.\n\nTambién puede dividirse por fuente o caso de uso.\n\nDatos financieros pueden seguir un pipeline más controlado; eventos de producto pueden cargarse rápidamente para exploración.\n\nNo hay problema en utilizar patrones distintos si los principios de ownership y observability son coherentes.\n\nLa clave es evitar excepciones sin diseño.\n\nLos contratos de datos deben indicar qué garantías ofrece cada capa.\n\nRaw no debería significar “sin owner”. Curated no debería esconder transformaciones imposibles de rastrear.\n\nLos tests también pueden repartirse. Algunas validaciones bloquean ingestion; otras verifican transformaciones downstream.\n\nLa documentación debe mostrar qué ocurre antes y después del load.\n\nEl lineage debe atravesar ambas zonas para que un consumidor pueda seguir una métrica hasta su fuente.\n\nTambién conviene revisar coste de tooling. Tener dos stacks totalmente diferentes para ETL y ELT puede generar más mantenimiento del necesario.\n\nPuede ser preferible una plataforma que soporte ambos patrones con una experiencia operativa consistente.\n\nLa frecuencia de cambio de negocio es otro driver. Si definitions cambian a menudo, ELT suele facilitar iteración.\n\nSi las reglas casi nunca cambian y el output está muy definido, ETL puede ser más simple.\n\nLa latencia tampoco decide por sí sola. Tanto ETL como ELT pueden diseñarse para batch o near real time.\n\nEl criterio debe ser dónde se introduce menor retraso al workflow completo.\n\nLa evaluación final debería incluir seis preguntas: qué datos pueden entrar raw, dónde es más barato transformar, quién mantiene la lógica, cuánto necesitamos reprocessing, qué governance exige el caso y qué stack puede operar el equipo.\n\nA partir de ahí, el patrón suele hacerse evidente.\n\n**ETL es fuerte cuando necesitamos control antes de cargar; ELT cuando necesitamos flexibilidad después de cargar.** La arquitectura correcta puede combinar ambos y colocar cada transformación donde reduzca más coste, riesgo y dependencia.",
+      "seo_title": "Cómo elegir entre ETL y ELT",
+      "seo_description": "Guía para decidir ETL o ELT según governance, compute, ownership, flexibilidad, reprocessing, coste y restricciones de datos.",
+      "seo_keywords": [
+        "when to use etl vs elt",
+        "ETL or ELT",
+        "ETL ELT decision",
+        "data transformation architecture"
+      ],
+      "tags": [
+        "ETL",
+        "ELT",
+        "Decision Guide"
+      ]
+    },
+    "en": {
+      "title": "How to choose between ETL and ELT",
+      "excerpt": "The decision depends on where transformation should run, which data may land raw, who owns logic and how much historical reprocessing is worth relative to early control.",
+      "quick": [
+        "Start from governance",
+        "Decide where compute lives",
+        "Align ownership with the team"
+      ],
+      "section_titles": [
+        "Define constraints before choosing a pattern",
+        "Decide where transformation should live",
+        "Evaluate flexibility, cost and reprocessing",
+        "Use a hybrid pattern when it makes sense"
+      ],
+      "business_title": "ETL or ELT should be chosen around control, flexibility and ownership rather than which pattern appears more modern.",
+      "business_steps": [
+        "Constraints",
+        "Transformation",
+        "Ownership"
+      ],
+      "body": "Choosing between ETL and ELT looks technical, but it combines architecture, governance and operating model. **The question is not only when data should be transformed, but who controls that transformation, what may be stored and how expensive later changes become.**\n\nETL transforms before loading. ELT loads first and transforms in the destination. Both can be modern, scalable and appropriate. **The right pattern reduces friction without simply moving risk somewhere else in the system.**\n\n**Define constraints before choosing a pattern**\nThe first decision is not ETL or ELT. It is what the architecture cannot allow.\n\nSome data cannot land raw because of privacy, regulatory or contractual restrictions. Filtering, anonymization or validation must then happen before loading.\n\n**If there is a hard** restriction on what may enter the destination, that restriction matters more than architectural preference.\n\nSome destinations also have limited compute, high processing costs or rigid schemas.\n\nIn other cases the dominant requirement is onboarding speed: new sources need to land quickly and transformations can be decided afterward.\n\nData criticality matters too. An operational feed supporting sensitive decisions may require stronger controls than an exploratory source.\n\nBefore choosing the pattern, list security, latency, volume, structure, criticality and retention requirements.\n\n**Decide where transformation should live**\nThe second step is choosing where compute and transformation ownership should sit.\n\nIf the warehouse or lakehouse provides scalable compute and the team works primarily in SQL, ELT can concentrate logic in an accessible environment.\n\n**Moving logic into the destination** can give analytical teams more autonomy and reduce dependence on upstream pipelines.\n\nETL may be stronger when processing requires specialized engines, needs to run close to the source or when the destination should remain lightweight.\n\nIt also works well when transformation rules are stable and controlled by a centralized engineering team.\n\nOwnership is decisive. If analytics engineers frequently change definitions, a versioned ELT layer can accelerate iteration.\n\nIf data engineering maintains strict contracts and consumers expect finished datasets, ETL can create a cleaner boundary.\n\nThe architecture should avoid logic being scattered without design across many tools.\n\n**Evaluate flexibility, cost and reprocessing**\nELT gains value when raw history should be retained and rebuilt after definitions change.\n\nThat improves reproducibility and reduces dependence on the source system.\n\n**The ability to reprocess is** valuable only when the cost is reasonable and the team genuinely needs that flexibility.\n\nLarge tables and heavy transformations can make every rebuild expensive.\n\nIncremental processing, partitioning and materializations help, but they add design work.\n\nETL can reduce volume before loading and avoid storing data that will never be used.\n\nIt can also reduce egress or exposure of sensitive information.\n\nFlexibility has another cost: larger raw layers require stronger cataloging, permissions and governance.\n\nTime-to-data should be compared with time-to-trust.\n\nA source available in five minutes but not understood for three days does not necessarily improve operations.\n\n**Use a hybrid pattern when it makes sense**\nMost mature architectures are not purely ETL or ELT.\n\nIt is common to apply critical controls before loading and leave iterative analytical logic for afterward.\n\nFor example: validate schema, remove prohibited PII and normalize timestamps upstream; build metrics, dimensions and marts inside the warehouse.\n\n**A hybrid pattern reserves ETL** for what must be controlled and ELT for what benefits from flexibility.\n\nDifferent sources can also use different patterns.\n\nFinancial data may follow a more controlled pipeline while product events land rapidly for exploration.\n\nThere is nothing wrong with multiple patterns when ownership and observability principles remain consistent.\n\nThe risk is uncontrolled exceptions.\n\nData contracts should define what guarantees each layer provides.\n\nRaw should not mean “no owner”. Curated should not hide transformations that cannot be traced.\n\nTests can be distributed too. Some checks block ingestion; others validate downstream transformations.\n\nDocumentation should make clear what occurs before and after load.\n\nLineage should cross both zones so a consumer can follow a metric to its source.\n\nTooling cost deserves attention. Maintaining two completely separate stacks for ETL and ELT may create unnecessary overhead.\n\nA platform supporting both with consistent operations can be stronger.\n\nBusiness-change frequency is another driver. Frequently changing definitions generally favour ELT-style iteration.\n\nStable rules and highly defined outputs may favour ETL simplicity.\n\nLatency does not decide the question by itself. Both patterns can support batch or near-real-time designs.\n\nThe criterion should be where the complete workflow incurs less delay.\n\nA final evaluation can use six questions: which data may land raw, where transformation is cheaper, who owns logic, how much reprocessing is needed, which governance constraints apply and which stack the team can operate.\n\nFrom there the right pattern is usually clearer.\n\n**ETL is strong when control is needed before loading; ELT when flexibility is needed after loading.** The best architecture can combine both and place each transformation where it reduces more cost, risk and dependency.",
+      "seo_title": "How to Choose Between ETL and ELT",
+      "seo_description": "A practical guide to choosing ETL or ELT based on governance, compute, ownership, flexibility, reprocessing, cost and data restrictions.",
+      "seo_keywords": [
+        "when to use etl vs elt",
+        "ETL or ELT",
+        "ETL ELT decision",
+        "data transformation architecture"
+      ],
+      "tags": [
+        "ETL",
+        "ELT",
+        "Decision Guide"
+      ]
+    },
+    "ca": {
+      "title": "Com triar entre ETL i ELT",
+      "excerpt": "La decisió depèn d’on convé transformar, quines dades poden carregar-se raw, qui manté la lògica i quant valor aporta reprocessing davant control primerenc.",
+      "quick": [
+        "Comença per governance",
+        "Decideix on viu el compute",
+        "Alinea ownership amb l’equip"
+      ],
+      "section_titles": [
+        "Defineix restriccions abans de triar patró",
+        "Decideix on ha de viure la transformació",
+        "Avalua flexibilitat, cost i reprocessing",
+        "Dissenya un patró híbrid quan tingui sentit"
+      ],
+      "business_title": "ETL o ELT s’hauria de decidir segons control, flexibilitat i ownership, no segons quin patró sembli més modern.",
+      "business_steps": [
+        "Restriccions",
+        "Transformació",
+        "Ownership"
+      ],
+      "body": "Triar entre ETL i ELT sembla una decisió tècnica, però en realitat barreja arquitectura, governance i model operatiu. **La pregunta no és només quan transformar les dades, sinó qui controla aquella transformació, què es pot emmagatzemar i quant costa canviar la lògica després.**\n\nETL transforma abans de carregar. ELT carrega primer i transforma al destí. Tots dos poden ser moderns, escalables i correctes. **El patró adequat redueix fricció sense simplement traslladar risc a una altra part del sistema.**\n\n**Defineix restriccions abans de triar patró**\nLa primera decisió no és ETL o ELT. És què no podem permetre.\n\nAlgunes dades no poden carregar-se raw per privacitat, regulació o contractes. Filtrat, anonimització o validació han de passar abans.\n\n**Si existeix una restricció dura** sobre què pot entrar al destí, aquella restricció pesa més que qualsevol preferència arquitectònica.\n\nTambé hi ha destins amb capacitat limitada, costos alts o schemas rígids.\n\nEn altres casos, el requisit principal és velocitat d’onboarding: necessitem incorporar fonts ràpidament i decidir transformacions després.\n\nLa criticitat de la dada també importa. Un feed operatiu que alimenta decisions sensibles pot necessitar controls més forts que una font exploratòria.\n\nAbans de triar patró, convé llistar seguretat, latència, volum, estructura, criticitat i retenció.\n\n**Decideix on ha de viure la transformació**\nEl segon pas és triar on volem executar compute i mantenir la lògica.\n\nSi el warehouse o lakehouse ofereix compute escalable i l’equip treballa principalment amb SQL, ELT pot concentrar transformació en un entorn accessible.\n\n**Moure lògica al destí pot** donar més autonomia a l’equip analític i reduir dependència de pipelines upstream.\n\nETL pot ser millor quan el processament necessita engines especialitzats, accés proper a la font o quan el destí s’ha de mantenir lleuger.\n\nTambé funciona quan les regles són estables i gestionades per un equip central.\n\nL’ownership és decisiu. Si analytics engineers canvien definicions sovint, una capa ELT versionada pot accelerar iteració.\n\nSi data engineering controla contractes estrictes i consumidors esperen datasets finals, ETL pot oferir una frontera més clara.\n\nLa tria ha d’evitar lògica repartida sense criteri entre massa eines.\n\n**Avalua flexibilitat, cost i reprocessing**\nELT guanya valor quan volem conservar raw data i reconstruir històrics quan canvien definicions.\n\nAixò millora reproductibilitat i redueix dependència del sistema origen.\n\n**Poder reprocesar és valuós només** si el cost és raonable i l’equip realment necessita aquesta capacitat.\n\nTaules grans i transformacions pesades poden convertir cada rebuild en una factura important.\n\nIncremental processing, partitioning i materializations ajuden, però afegeixen disseny.\n\nETL pot reduir volum abans de carregar i evitar emmagatzemar dades que mai tindran ús.\n\nTambé pot reduir egress o exposició d’informació sensible.\n\nLa flexibilitat té un altre cost: més capes raw exigeixen més catàleg, permisos i governance.\n\nCal comparar time-to-data amb time-to-trust.\n\nUna font disponible en cinc minuts però no entesa durant tres dies no necessàriament millora l’operació.\n\n**Dissenya un patró híbrid quan tingui sentit**\nLa majoria d’arquitectures madures no són purament ETL o ELT.\n\nÉs habitual aplicar controls crítics abans de carregar i deixar lògica analítica iterativa per després.\n\nPer exemple: validar schema, eliminar PII no permesa i normalitzar timestamps upstream; modelar mètriques, dimensions i marts dins del warehouse.\n\n**Un patró híbrid permet reservar** ETL per allò que ha de ser segur i ELT per allò que necessita flexibilitat.\n\nTambé es pot dividir per font o cas d’ús.\n\nDades financeres poden seguir una pipeline més controlada; events de producte poden carregar-se ràpidament per exploració.\n\nNo hi ha problema en utilitzar patrons diferents si ownership i observability són coherents.\n\nLa clau és evitar excepcions sense disseny.\n\nEls data contracts han d’indicar quines garanties ofereix cada capa.\n\nRaw no hauria de significar “sense owner”. Curated no hauria d’amagar transformacions impossibles de rastrejar.\n\nEls tests també es poden repartir. Algunes validacions bloquegen ingestion; altres comproven transformacions downstream.\n\nLa documentació ha de mostrar què passa abans i després del load.\n\nEl lineage ha de travessar totes dues zones perquè un consumidor pugui seguir una mètrica fins a la font.\n\nTambé convé revisar cost de tooling. Tenir dos stacks completament diferents per ETL i ELT pot generar massa manteniment.\n\nPot ser millor una plataforma que suporti tots dos patrons amb una experiència operativa consistent.\n\nLa freqüència de canvi de negoci és un altre driver. Definicions que canvien sovint afavoreixen ELT.\n\nRegles estables i outputs molt definits poden afavorir simplicitat ETL.\n\nLa latència tampoc decideix per si sola. Tots dos patrons poden dissenyar-se per batch o near real time.\n\nEl criteri és on el workflow complet introdueix menys retard.\n\nL’avaluació final pot incloure sis preguntes: quines dades poden entrar raw, on és més barat transformar, qui manté la lògica, quant necessitem reprocessing, quina governance exigeix el cas i quin stack pot operar l’equip.\n\nA partir d’aquí, el patró acostuma a quedar clar.\n\n**ETL és fort quan necessitem control abans de carregar; ELT quan necessitem flexibilitat després de carregar.** La millor arquitectura pot combinar tots dos i situar cada transformació on redueixi més cost, risc i dependència.",
+      "seo_title": "Com triar entre ETL i ELT",
+      "seo_description": "Guia per decidir ETL o ELT segons governance, compute, ownership, flexibilitat, reprocessing, cost i restriccions de dades.",
+      "seo_keywords": [
+        "when to use etl vs elt",
+        "ETL or ELT",
+        "ETL ELT decision",
+        "data transformation architecture"
+      ],
+      "tags": [
+        "ETL",
+        "ELT",
+        "Decision Guide"
+      ]
+    }
+  }
+}

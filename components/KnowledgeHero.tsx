@@ -1,35 +1,57 @@
 'use client'
 
+import Link from 'next/link'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
-const copy = {
-  en: {
-    label: 'KNOWLEDGE',
-    title: 'Useful analysis, not content for content’s sake.',
-    sub: 'Research, frameworks and practical perspectives on forecasting, optimisation, analytics, automation and AI — selected when there is a business decision worth understanding.',
-  },
+const COPY = {
   es: {
     label: 'CONOCIMIENTO',
-    title: 'Análisis útil, no contenido por publicar.',
-    sub: 'Investigación, frameworks y perspectivas prácticas sobre forecasting, optimización, analytics, automatización e IA, seleccionadas cuando existe una decisión empresarial que merece entenderse.',
+    title: 'Ideas que conectan datos, tecnología y decisiones de negocio.',
+    sub: 'Análisis directos sobre lo que funciona, lo que falla y qué merece la pena hacer diferente.',
+    primary: 'Leer análisis destacado',
+    secondary: 'Ver casos de éxito',
   },
   ca: {
     label: 'CONEIXEMENT',
-    title: 'Anàlisi útil, no contingut per publicar.',
-    sub: 'Recerca, frameworks i perspectives pràctiques sobre forecasting, optimització, analytics, automatització i IA, seleccionades quan hi ha una decisió empresarial que mereix ser compresa.',
+    title: 'Idees que connecten dades, tecnologia i decisions de negoci.',
+    sub: 'Anàlisis directes sobre què funciona, què falla i què val la pena fer diferent.',
+    primary: 'Llegir anàlisi destacada',
+    secondary: 'Veure casos d’èxit',
+  },
+  en: {
+    label: 'KNOWLEDGE',
+    title: 'Ideas connecting data, technology and business decisions.',
+    sub: 'Direct analysis on what works, what fails and what is worth doing differently.',
+    primary: 'Read featured analysis',
+    secondary: 'See success stories',
   },
 } as const
 
+const FEATURED = '/knowledge/why-inventory-visibility-is-not-inventory-control-and-what-that-costs'
+
 export default function KnowledgeHero() {
   const { lang } = useSiteLanguage()
-  const t = copy[lang]
+  const t = COPY[lang]
 
   return (
-    <section className="border-b border-slate-200 bg-white">
-      <div className="mx-auto max-w-5xl px-6 py-20">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-600">{t.label}</p>
-        <h1 className="mt-4 max-w-4xl text-5xl leading-tight text-slate-900 md:text-6xl" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-        <p className="mt-6 max-w-3xl text-base leading-8 text-slate-600">{t.sub}</p>
+    <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
+      <div className="mx-auto grid w-[calc(100%_-_32px)] max-w-[1800px] gap-9 py-14 sm:w-[calc(100%_-_48px)] md:py-16 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+        <div className="max-w-5xl">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.label}</p>
+          <h1 className="mt-5 max-w-5xl text-[44px] leading-[1.02] tracking-[-0.03em] sm:text-[54px] lg:text-[62px]" style={{ fontFamily: 'var(--font-playfair)' }}>
+            {t.title}
+          </h1>
+          <p className="mt-5 max-w-3xl text-[18px] leading-8 text-[#EAF0F6]">{t.sub}</p>
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          <Link href={FEATURED} className="bg-white px-5 py-3.5 text-[15px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">
+            {t.primary} →
+          </Link>
+          <Link href="/projects" className="border border-[#7F9BB5] px-5 py-3.5 text-[15px] font-semibold text-white transition hover:bg-white/5">
+            {t.secondary}
+          </Link>
+        </div>
       </div>
     </section>
   )

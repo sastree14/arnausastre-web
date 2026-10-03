@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-197",
+  "sequence": 197,
+  "arc_id": "ARC-50",
+  "slug": "the-best-ai-project-may-be-the-one-you-decide-not-to-build",
+  "scheduled_at": "2028-01-31T09:00:00+01:00",
+  "knowledge_area": "business_systems",
+  "cluster": "Simulation & Business Systems",
+  "editorial_pillar": "consulting_decision_insights",
+  "content_family": "point_of_view_contrarian",
+  "angle": "when not to build ai",
+  "primary_keyword": "when not to build ai",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-198",
+    "KB-199",
+    "KB-200"
+  ],
+  "variants": {
+    "es": {
+      "title": "El mejor proyecto de IA puede ser el que decides no construir",
+      "excerpt": "No todo problema merece una solución de IA. Un buen equipo también crea valor descartando proyectos sin decisión clara, datos suficientes o economics defendibles.",
+      "quick": [
+        "No todo problema necesita IA",
+        "Primero prueba el valor",
+        "Descartar también es una decisión"
+      ],
+      "section_titles": [
+        "Empieza por la decisión económica",
+        "Descarta problemas sin señal suficiente",
+        "Compara IA contra alternativas más simples",
+        "Construye solo cuando la evidencia lo justifique"
+      ],
+      "business_title": "Un proyecto de IA merece existir cuando mejora una decisión concreta más de lo que cuesta construir, operar y mantener su complejidad.",
+      "business_steps": [
+        "Decisión",
+        "Evidencia",
+        "Inversión"
+      ],
+      "body": "La narrativa habitual alrededor de IA premia construir: más automatización, más modelos, más agentes, más casos de uso. Pero **una organización madura también obtiene valor de los proyectos que decide no iniciar**.\n\nNo construir puede ser la decisión correcta cuando el problema no está definido, los datos no soportan el caso, la intervención no existe o el coste de complejidad supera el beneficio probable. **El objetivo no es maximizar el número de iniciativas de IA; es maximizar el valor generado por las decisiones que realmente merece la pena mejorar.**\n\n**Empieza por la decisión económica**\nAntes de elegir tecnología, define qué decisión cambiará.\n\n“Queremos utilizar IA para ventas” es demasiado amplio. “Queremos priorizar cada mañana qué 50 cuentas debe trabajar el equipo comercial” ya describe una decisión operativa.\n\nDespués hay que entender qué ocurre hoy. ¿Cómo se toma la decisión? ¿Cuánto cuesta? ¿Dónde aparecen errores o retrasos?\n\n**Sin una línea base**, tampoco existe una mejora demostrable.\n\nTambién necesitamos una acción posible. Predecir churn aporta poco si la empresa no tiene ninguna intervención disponible o si todos los clientes reciben exactamente la misma campaña.\n\nEl valor económico debe aproximarse antes de construir. Puede ser ahorro de horas, reducción de pérdidas, mayor conversión, menor working capital o más capacidad operativa.\n\nNo hace falta precisión financiera perfecta; sí un orden de magnitud que permita decidir si el caso merece inversión.\n\n**Descarta problemas sin señal suficiente**\nLa segunda pregunta es si existe información capaz de mejorar la decisión.\n\nMuchos proyectos empiezan con un target atractivo y descubren tarde que los datos históricos son escasos, inconsistentes o generados después de la decisión.\n\n**Un modelo no puede aprender una señal inexistente** en el proceso histórico.\n\nTambién puede existir poca recurrencia. Si una decisión ocurre diez veces al año, quizá no hay suficientes ejemplos ni suficiente volumen para amortizar una solución sofisticada.\n\nEl fenómeno puede ser demasiado inestable. Si las reglas cambian cada semana por decisiones comerciales o regulatorias, entrenar sobre historia puede aportar poco.\n\nOtra señal de stop es la falta de ownership. Si nadie puede definir el target, aprobar cambios o actuar sobre el output, el proyecto no tiene una unidad clara de responsabilidad.\n\nLa calidad de los labels también importa. Un target basado en decisiones humanas previas puede reflejar sesgos del proceso más que el outcome real.\n\nEn estos casos, mejorar captura de datos o rediseñar proceso puede ser más valioso que entrenar un modelo.\n\n**Compara IA contra alternativas más simples**\nLa tercera pregunta es si IA supera opciones menos complejas.\n\nUna regla, un SQL bien diseñado, un dashboard de excepciones, una automatización determinista o una regresión simple pueden resolver gran parte del problema.\n\n**La alternativa correcta no es “IA o nada”**; es IA frente a la mejor solución suficientemente buena.\n\nSi una regla captura el 90 % del valor y cuesta una fracción, puede ser la mejor decisión.\n\nTambién conviene considerar cambios de proceso. El cuello de botella puede no estar en la predicción, sino en una aprobación, una mala definición de datos o una transferencia manual.\n\nUn LLM puede parecer útil para clasificar emails cuando el problema real es que existen demasiados tipos de solicitudes sin un formulario estructurado.\n\nLa simplicidad también tiene valor en mantenimiento, auditabilidad y adopción.\n\nCada capa adicional —modelo, vector store, agent orchestration, monitorización— necesita ownership y soporte.\n\nEl benchmark debería incluir total cost of ownership, no solo coste de desarrollo inicial.\n\n**Construye solo cuando la evidencia lo justifique**\nUn proyecto que supera los filtros anteriores puede empezar pequeño.\n\nLa primera fase debería probar la hipótesis central: existe suficiente señal y cambiar la decisión genera valor.\n\n**El MVP debe reducir incertidumbre**, no intentar parecer producción desde el primer día.\n\nSe puede trabajar con un subset de datos, un equipo pequeño o shadow mode.\n\nDefine desde el inicio criterios de éxito y criterios de parada. Por ejemplo: mejorar precision@50, reducir dos horas diarias de revisión o aumentar determinada tasa de conversión.\n\nSi el resultado no alcanza el umbral, cerrar el proyecto es una conclusión válida.\n\nTambién conviene establecer un coste máximo para la fase de aprendizaje. Evita que el scope crezca mientras todavía no existe evidencia.\n\nCuando el piloto funciona, recién entonces aparece la conversación sobre arquitectura de producción.\n\nLa escalabilidad debe seguir al valor, no precederlo.\n\nLos riesgos también necesitan cuantificación. Una automatización de bajo impacto puede aceptar más variabilidad que un sistema que modifica crédito, pagos o contratos.\n\nEl proyecto debe competir contra otras oportunidades. Incluso un caso con ROI positivo puede no ser prioritario si existe otro con mayor impacto y menor complejidad.\n\nUn portfolio de IA necesita ranking económico, no entusiasmo técnico.\n\nLa decisión de no construir también puede ser temporal. Mejorar datos durante seis meses y volver a evaluar puede ser superior a forzar un modelo hoy.\n\nTambién puede aparecer una solución comprada o un proveedor especializado que cambie los economics.\n\nDocumentar por qué se descarta un caso evita repetir la misma exploración cada trimestre.\n\nFinalmente, decir “no” protege capacidad del equipo. Cada proyecto que entra consume atención que deja de estar disponible para otros.\n\n**La disciplina de IA no consiste en encontrar tecnología para cada problema, sino en invertir complejidad solo donde existe una decisión valiosa, señal suficiente y una mejora que puede medirse.** A veces el mejor proyecto es exactamente el que se detiene antes de convertirse en una infraestructura cara sin impacto.",
+      "seo_title": "Cuándo no construir un proyecto de IA",
+      "seo_description": "Cómo decidir cuándo no construir IA evaluando decisión, datos, señal, alternativas simples, coste total, riesgo y valor económico esperado.",
+      "seo_keywords": [
+        "when not to build ai",
+        "AI project selection",
+        "AI business case",
+        "AI project ROI"
+      ],
+      "tags": [
+        "AI Strategy",
+        "Project Selection",
+        "Business Value"
+      ]
+    },
+    "en": {
+      "title": "The best AI project may be the one you decide not to build",
+      "excerpt": "Not every problem deserves an AI solution. Strong teams also create value by rejecting projects without a clear decision, sufficient signal or defensible economics.",
+      "quick": [
+        "Not every problem needs AI",
+        "Prove value first",
+        "Stopping is also a decision"
+      ],
+      "section_titles": [
+        "Start from the economic decision",
+        "Reject problems without enough signal",
+        "Compare AI with simpler alternatives",
+        "Build only when evidence justifies it"
+      ],
+      "business_title": "An AI project deserves to exist when it improves a concrete decision by more than the cost of building, operating and maintaining its complexity.",
+      "business_steps": [
+        "Decision",
+        "Evidence",
+        "Investment"
+      ],
+      "body": "The dominant narrative around AI rewards building: more automation, more models, more agents and more use cases. But **a mature organization also creates value from the projects it chooses not to start**.\n\nNot building can be the right decision when the problem is poorly defined, the data cannot support it, no intervention exists or complexity costs more than the likely benefit. **The objective is not to maximize AI initiatives; it is to maximize value from the decisions that are actually worth improving.**\n\n**Start from the economic decision**\nBefore selecting technology, define which decision will change.\n\n“We want to use AI in sales” is too broad. “Every morning we want to prioritize the 50 accounts the sales team should work” describes an operating decision.\n\nThen understand the current process. How is the decision made today? What does it cost? Where do errors or delays appear?\n\n**Without a baseline**, there is no measurable improvement.\n\nAn actionable lever is also required. Predicting churn adds little when the company has no intervention available or every customer receives the same treatment.\n\nEconomic value should be approximated before building. It may come from saved hours, reduced loss, higher conversion, lower working capital or additional operating capacity.\n\nThe estimate does not need perfect financial precision; it needs enough accuracy to decide whether the use case deserves investment.\n\n**Reject problems without enough signal**\nThe next question is whether available information can actually improve the decision.\n\nMany projects start with an attractive target and later discover that historical data are sparse, inconsistent or only generated after the decision point.\n\n**A model cannot learn signal that was never recorded** by the process.\n\nThe decision may also occur too infrequently. If it happens ten times per year, there may be neither enough examples nor enough volume to repay a sophisticated system.\n\nThe phenomenon can be unstable as well. If policy changes every week due to commercial or regulatory decisions, historical relationships may have little value.\n\nLack of ownership is another stop signal. If nobody can define the target, approve changes or act on the output, the project has no accountable decision owner.\n\nLabel quality matters too. A target based on previous human decisions may encode the old process rather than the outcome the organization actually cares about.\n\nIn these cases, better data capture or process redesign can be more valuable than a model.\n\n**Compare AI with simpler alternatives**\nThe third question is whether AI beats less complex solutions.\n\nA rule, well-designed SQL, exception dashboard, deterministic automation or simple regression may capture most of the available value.\n\n**The relevant alternative is not “AI or nothing”**; it is AI versus the best sufficiently good solution.\n\nIf a rule captures 90% of the value at a fraction of the cost, it may be the correct choice.\n\nProcess changes should also be considered. The bottleneck may sit in approval, data definition or manual handoff rather than prediction.\n\nAn LLM may seem useful for classifying email when the deeper problem is that the organization accepts too many request types through unstructured channels.\n\nSimplicity has value in maintenance, auditability and adoption.\n\nEvery additional layer—model, vector store, agent orchestration, monitoring—needs ownership and support.\n\nThe benchmark should include total cost of ownership rather than initial development effort alone.\n\n**Build only when evidence justifies it**\nA project that survives those filters can begin small.\n\nThe first phase should test the central hypothesis: enough signal exists and changing the decision creates value.\n\n**The MVP should reduce uncertainty**, not try to look like production on day one.\n\nA subset of data, one team or shadow mode may be sufficient.\n\nSuccess and stop criteria should be defined before experimentation: improve precision@50, reduce two hours of daily review or lift a conversion metric by a meaningful amount.\n\nIf the result does not cross the threshold, closing the project is a valid conclusion.\n\nThe learning phase should also have a cost ceiling. That prevents scope from expanding before evidence exists.\n\nOnly after value is demonstrated should production architecture become the main topic.\n\nScalability should follow value rather than precede it.\n\nRisk needs proportional treatment too. A low-impact workflow can tolerate more variability than a system modifying credit, payments or contracts.\n\nThe project also competes with other opportunities. A positive ROI use case may still rank below another opportunity with higher impact and lower complexity.\n\nAn AI portfolio needs economic prioritization rather than technical enthusiasm.\n\nA no-build decision can be temporary. Improving data for six months and revisiting the case may be stronger than forcing a model today.\n\nA purchased solution or specialist partner may also change the economics later.\n\nDocumenting why a case was rejected prevents the same investigation from repeating every quarter.\n\nFinally, saying no protects team capacity. Every project accepted consumes attention unavailable elsewhere.\n\n**AI discipline is not about finding technology for every problem; it is about investing complexity only where there is a valuable decision, enough signal and measurable improvement.** Sometimes the best AI project is the one stopped before it becomes expensive infrastructure without impact.",
+      "seo_title": "When Not to Build an AI Project",
+      "seo_description": "How to decide when not to build AI by evaluating decision quality, data signal, simple alternatives, total cost, risk and expected economic value.",
+      "seo_keywords": [
+        "when not to build ai",
+        "AI project selection",
+        "AI business case",
+        "AI project ROI"
+      ],
+      "tags": [
+        "AI Strategy",
+        "Project Selection",
+        "Business Value"
+      ]
+    },
+    "ca": {
+      "title": "El millor projecte d’IA pot ser el que decideixes no construir",
+      "excerpt": "No tot problema mereix una solució d’IA. Un bon equip també crea valor descartant projectes sense decisió clara, prou senyal o economics defensables.",
+      "quick": [
+        "No tot problema necessita IA",
+        "Primer demostra valor",
+        "Aturar també és una decisió"
+      ],
+      "section_titles": [
+        "Comença per la decisió econòmica",
+        "Descarta problemes sense prou senyal",
+        "Compara IA amb alternatives més simples",
+        "Construeix només quan l’evidència ho justifiqui"
+      ],
+      "business_title": "Un projecte d’IA mereix existir quan millora una decisió concreta més del que costa construir, operar i mantenir la seva complexitat.",
+      "business_steps": [
+        "Decisió",
+        "Evidència",
+        "Inversió"
+      ],
+      "body": "La narrativa habitual al voltant d’IA premia construir: més automatització, més models, més agents i més casos d’ús. Però **una organització madura també crea valor dels projectes que decideix no iniciar**.\n\nNo construir pot ser la decisió correcta quan el problema no està ben definit, les dades no el suporten, no existeix intervenció o la complexitat costa més que el benefici probable. **L’objectiu no és maximitzar iniciatives d’IA; és maximitzar valor de les decisions que realment val la pena millorar.**\n\n**Comença per la decisió econòmica**\nAbans de triar tecnologia, defineix quina decisió canviarà.\n\n“Volem utilitzar IA en vendes” és massa ampli. “Cada matí volem prioritzar les 50 comptes que ha de treballar l’equip comercial” descriu una decisió operativa.\n\nDesprés cal entendre el procés actual. Com es decideix avui? Quin cost té? On apareixen errors o retards?\n\n**Sense baseline**, no existeix una millora mesurable.\n\nTambé necessitem una acció possible. Predir churn aporta poc si l’empresa no té cap intervenció o tots els clients reben exactament la mateixa campanya.\n\nEl valor econòmic s’ha d’aproximar abans de construir. Pot ser estalvi d’hores, reducció de pèrdues, més conversió, menys working capital o més capacitat operativa.\n\nNo cal precisió financera perfecta; sí prou ordre de magnitud per decidir si el cas mereix inversió.\n\n**Descarta problemes sense prou senyal**\nLa següent pregunta és si existeix informació capaç de millorar la decisió.\n\nMolts projectes comencen amb un target atractiu i després descobreixen que les dades històriques són escasses, inconsistents o generades després del moment de decisió.\n\n**Un model no pot aprendre una senyal inexistent** en el procés històric.\n\nTambé pot existir poca recurrència. Si una decisió passa deu vegades l’any, pot no haver-hi prou exemples ni volum per amortitzar un sistema sofisticat.\n\nEl fenomen pot ser massa inestable. Si la policy canvia cada setmana per decisions comercials o regulatòries, les relacions històriques poden aportar poc.\n\nLa falta d’ownership és una altra senyal d’aturada. Si ningú pot definir el target, aprovar canvis o actuar sobre l’output, el projecte no té owner de decisió.\n\nLa qualitat dels labels també importa. Un target basat en decisions humanes antigues pot codificar el procés anterior i no l’outcome real.\n\nEn aquests casos, millorar captura de dades o redissenyar procés pot crear més valor que entrenar un model.\n\n**Compara IA amb alternatives més simples**\nLa tercera pregunta és si IA supera opcions menys complexes.\n\nUna regla, SQL ben dissenyat, dashboard d’excepcions, automatització determinista o regressió simple poden capturar gran part del valor.\n\n**L’alternativa correcta no és “IA o res”**; és IA davant la millor solució prou bona.\n\nSi una regla captura el 90 % del valor a una fracció del cost, pot ser la millor decisió.\n\nTambé convé considerar canvis de procés. El coll d’ampolla pot estar en una aprovació, definició de dades o handoff manual i no en la predicció.\n\nUn LLM pot semblar útil per classificar emails quan el problema real és que existeixen massa tipus de sol·licitud sense un formulari estructurat.\n\nLa simplicitat també té valor en manteniment, auditabilitat i adopció.\n\nCada capa addicional —model, vector store, orchestration, monitoring— necessita ownership i suport.\n\nEl benchmark ha d’incloure total cost of ownership i no només cost inicial de desenvolupament.\n\n**Construeix només quan l’evidència ho justifiqui**\nUn projecte que supera aquests filtres pot començar petit.\n\nLa primera fase ha de provar la hipòtesi central: hi ha prou senyal i canviar la decisió genera valor.\n\n**L’MVP ha de reduir incertesa**, no intentar semblar producció des del primer dia.\n\nEs pot utilitzar un subset de dades, un equip petit o shadow mode.\n\nEls criteris d’èxit i d’aturada s’han de definir abans: millorar precision@50, reduir dues hores diàries de revisió o augmentar una taxa de conversió de forma material.\n\nSi el resultat no supera el llindar, tancar el projecte és una conclusió vàlida.\n\nLa fase d’aprenentatge també ha de tenir un cost màxim per evitar scope creep abans d’evidència.\n\nNomés després de demostrar valor s’hauria de discutir arquitectura de producció.\n\nL’escalabilitat ha de seguir el valor i no precedir-lo.\n\nEl risc també necessita proporcionalitat. Un workflow de baix impacte pot tolerar més variabilitat que un sistema que modifica crèdit, pagaments o contractes.\n\nEl projecte competeix amb altres oportunitats. Un cas amb ROI positiu pot no ser prioritari si n’hi ha un altre amb més impacte i menys complexitat.\n\nUn portfolio d’IA necessita priorització econòmica i no entusiasme tècnic.\n\nLa decisió de no construir pot ser temporal. Millorar dades sis mesos i tornar a avaluar pot ser millor que forçar un model avui.\n\nUna solució comprada o un partner especialitzat també poden canviar els economics després.\n\nDocumentar per què es descarta un cas evita repetir la mateixa exploració cada trimestre.\n\nFinalment, dir “no” protegeix capacitat de l’equip. Cada projecte acceptat consumeix atenció que ja no està disponible per altres.\n\n**La disciplina d’IA no consisteix a trobar tecnologia per cada problema, sinó a invertir complexitat només on existeix una decisió valuosa, prou senyal i una millora mesurable.** A vegades el millor projecte és exactament el que s’atura abans de convertir-se en infraestructura cara sense impacte.",
+      "seo_title": "Quan no construir un projecte d’IA",
+      "seo_description": "Com decidir quan no construir IA avaluant decisió, dades, senyal, alternatives simples, cost total, risc i valor econòmic esperat.",
+      "seo_keywords": [
+        "when not to build ai",
+        "AI project selection",
+        "AI business case",
+        "AI project ROI"
+      ],
+      "tags": [
+        "AI Strategy",
+        "Project Selection",
+        "Business Value"
+      ]
+    }
+  }
+}

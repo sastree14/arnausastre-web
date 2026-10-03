@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-129",
+  "sequence": 129,
+  "arc_id": "ARC-33",
+  "slug": "real-time-is-a-business-requirement-not-a-data-feature",
+  "scheduled_at": "2027-08-17T09:00:00+02:00",
+  "knowledge_area": "business_systems",
+  "cluster": "Data Engineering & Architecture",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "point_of_view_contrarian",
+  "angle": "real time data business value",
+  "primary_keyword": "real time data business value",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-130",
+    "KB-131",
+    "KB-132"
+  ],
+  "variants": {
+    "es": {
+      "title": "Real time es un requisito de negocio, no una feature",
+      "excerpt": "Mover datos más rápido solo crea valor si una decisión pierde calidad cuando llega tarde. La latencia correcta debe derivarse del tiempo útil para actuar.",
+      "quick": [
+        "Empieza por la decisión",
+        "Mide el coste de llegar tarde",
+        "Compra solo la latencia necesaria"
+      ],
+      "section_titles": [
+        "La latencia útil la define la decisión",
+        "Más velocidad también compra complejidad",
+        "Near real time suele ser suficiente",
+        "Diseña el SLA desde el valor"
+      ],
+      "business_title": "Real time merece inversión cuando reducir segundos o minutos cambia una acción, evita una pérdida o captura una oportunidad que desaparecería con batch.",
+      "business_steps": [
+        "Decisión",
+        "Latencia útil",
+        "Arquitectura"
+      ],
+      "body": "“Necesitamos datos en tiempo real” es una de las frases más fáciles de aceptar y más difíciles de justificar. Suena moderna, transmite control y parece convertir cualquier dashboard o modelo en algo más valioso. Pero **mover datos más rápido no crea valor por sí mismo**.\n\nLa pregunta correcta es qué decisión se toma con esos datos y cuánto pierde si la información llega tarde. **Real time debería ser una consecuencia del tiempo útil para actuar, no una feature elegida antes de entender el proceso.**\n\n**La latencia útil la define la decisión**\nNo todas las decisiones tienen el mismo reloj.\n\nBloquear una transacción fraudulenta puede necesitar segundos. Ajustar una oferta durante una sesión digital puede necesitar menos de un minuto. Reponer inventario quizá tolere horas. Forecasting financiero puede funcionar perfectamente con batch diario.\n\n**El SLA correcto nace** de la ventana de intervención.\n\nSi una señal llega en cinco minutos y la acción se ejecuta al día siguiente, reducir ingestión a cinco segundos no cambia el outcome.\n\nPor eso conviene mapear la cadena completa: evento, dato disponible, decisión, acción y efecto.\n\nLa latencia end-to-end importa más que la latencia de una sola pipeline.\n\nTambién hay que medir el coste de llegar tarde. Si una demora de una hora apenas cambia el resultado, no existe un business case fuerte para streaming.\n\n**Más velocidad también compra complejidad**\nLas arquitecturas real time añaden componentes: brokers, consumers, state management, schemas, retries, ordering, dead-letter queues y observability específica.\n\nEsto aumenta superficie de fallo y carga operativa.\n\n**Cada segundo de latencia que** eliminamos debería comprar una mejora que compense esa complejidad.\n\nTambién aumenta el coste de debugging. Un batch permite reconstruir una ejecución de principio a fin; un sistema streaming puede necesitar entender eventos fuera de orden, duplicados y estados parciales.\n\nLa consistencia se vuelve más difícil. Exactly-once semantics, idempotencia y procesamiento de eventos tardíos no son detalles cuando el sistema dispara acciones.\n\nEl testing también cambia: además de lógica, necesitamos probar secuencias, reintentos y recovery.\n\nTodo eso puede estar justificado, pero no debería ser el punto de partida por defecto.\n\n**Near real time suele ser suficiente**\nMuchas necesidades empresariales descritas como real time son realmente near real time.\n\nActualizar cada cinco minutos, cada minuto o mediante micro-batches puede resolver el problema con una arquitectura mucho más sencilla.\n\n**La diferencia empresarial entre cinco** segundos y cinco minutos puede ser cero aunque la diferencia técnica sea enorme.\n\nEso ocurre en dashboards operativos, monitoring comercial, reporting de campañas o actualización de ciertos scores.\n\nMicro-batching puede ofrecer un buen equilibrio entre frescura y mantenibilidad.\n\nTambién permite aprovechar herramientas y procesos existentes sin introducir un stack completo de streaming.\n\nEl criterio debería ser el máximo retraso tolerable antes de que la decisión cambie.\n\nSi ese máximo son diez minutos, construir para milisegundos es sobredimensionar.\n\n**Diseña el SLA desde el valor**\nLa forma más útil de decidir es definir clases de latencia por caso de uso.\n\nPor ejemplo: subsegundo para controles críticos, segundos para interacción, minutos para operaciones, horas para planificación y batch diario para reporting estratégico.\n\n**No todos los datos de** una empresa necesitan el mismo nivel de frescura.\n\nEso permite reservar arquitecturas caras para workflows donde la velocidad realmente paga.\n\nTambién conviene separar disponibilidad de procesamiento. Un evento puede llegar en tiempo real y no necesitar transformación inmediata.\n\nOtra posibilidad es tener raw events en streaming y actualizar modelos analíticos por ventanas.\n\nEl diseño debe considerar volumen, burstiness y tolerancia a pérdida.\n\nLa prioridad de eventos también importa. No todos necesitan la misma garantía.\n\nEl coste de error debe analizarse junto a la latencia. Un sistema rápido pero inconsistente puede ser peor que uno algo más lento y fiable.\n\nTambién hay que diseñar fallback. Si la capa streaming cae, ¿puede el negocio continuar con datos de hace diez minutos?\n\nLa observability debe medir event lag, processing lag y business lag.\n\nBusiness lag es especialmente útil: cuánto tiempo pasa desde que ocurre algo hasta que una acción relevante puede ejecutarse.\n\nLa capacidad humana también limita. Un sistema puede detectar 1.000 incidencias por segundo y no crear valor si nadie puede atenderlas.\n\nAutomatización y real time suelen ir juntos cuando la respuesta debe producirse antes de que una persona pueda intervenir.\n\nEn otros casos, la arquitectura debe respetar el ritmo del equipo operativo.\n\nEl coste total incluye infraestructura, on-call, incidentes y conocimientos especializados.\n\nTambién conviene revisar dependencia de proveedores y facilidad de replay.\n\nLos eventos deberían diseñarse con schemas y contratos, no como mensajes improvisados.\n\nUna estrategia madura puede combinar varios niveles de latencia en una misma empresa.\n\nEl objetivo no es que todo se mueva rápido; es que cada decisión reciba información suficientemente fresca.\n\n**Real time es un requisito de negocio cuando el valor de la acción cae con cada segundo o minuto de retraso.** Cuando esa relación no existe, batch fiable o near real time suelen crear el mismo valor con menos complejidad.",
+      "seo_title": "Real time en datos: cuándo aporta valor de negocio",
+      "seo_description": "Cómo decidir si una arquitectura real time está justificada según latencia de decisión, coste de retraso, complejidad y SLA operativo.",
+      "seo_keywords": [
+        "real time data business value",
+        "real time data architecture",
+        "streaming business value",
+        "data latency"
+      ],
+      "tags": [
+        "Real Time Data",
+        "Streaming",
+        "Data Architecture"
+      ]
+    },
+    "en": {
+      "title": "Real time is a business requirement, not a data feature",
+      "excerpt": "Moving data faster creates value only when a decision loses quality as information arrives late. The right latency comes from the useful time to act.",
+      "quick": [
+        "Start from the decision",
+        "Measure the cost of delay",
+        "Buy only the latency you need"
+      ],
+      "section_titles": [
+        "Useful latency is defined by the decision",
+        "More speed also buys complexity",
+        "Near real time is often enough",
+        "Design the SLA from value"
+      ],
+      "business_title": "Real time is worth investment when reducing seconds or minutes changes an action, prevents a loss or captures an opportunity that would disappear under batch.",
+      "business_steps": [
+        "Decision",
+        "Useful latency",
+        "Architecture"
+      ],
+      "body": "“We need real-time data” is one of the easiest statements to accept and one of the hardest to justify. It sounds modern, signals control and seems to make every dashboard or model more valuable. But **moving data faster does not create value by itself**.\n\nThe right question is which decision uses the data and how much value is lost when information arrives late. **Real time should be a consequence of the useful action window, not a feature selected before the process is understood.**\n\n**Useful latency is defined by the decision**\nDifferent decisions run on different clocks.\n\nBlocking a fraudulent transaction may require seconds. Adjusting an offer during a digital session may need less than a minute. Inventory replenishment may tolerate hours. Financial forecasting may work perfectly with daily batch.\n\n**The correct SLA comes** from the intervention window.\n\nIf a signal arrives in five minutes and the action happens the next day, reducing ingestion to five seconds changes nothing.\n\nThe full chain should therefore be mapped: event, data availability, decision, action and effect.\n\nEnd-to-end latency matters more than the latency of one pipeline component.\n\nThe cost of delay should also be measured. If one hour of delay barely changes the outcome, there is little business case for streaming.\n\n**More speed also buys complexity**\nReal-time architectures add components: brokers, consumers, state management, schemas, retries, ordering, dead-letter queues and specialized observability.\n\nThat increases failure surface and operating burden.\n\n**Every second of latency removed** should purchase enough improvement to justify that complexity.\n\nDebugging is harder too. A batch job can often be reconstructed from start to finish; streaming systems must handle out-of-order events, duplicates and partial state.\n\nConsistency becomes more demanding. Exactly-once semantics, idempotency and late-event processing matter when streams trigger actions.\n\nTesting changes as well: sequence, retry and recovery behaviour must be tested alongside business logic.\n\nAll of that can be justified, but it should not be the default starting point.\n\n**Near real time is often enough**\nMany business requirements described as real time are actually near real time.\n\nRefreshing every five minutes, every minute or through micro-batches can solve the problem with far simpler architecture.\n\n**The business difference between five** seconds and five minutes can be zero even when the technical difference is enormous.\n\nThis is common in operational dashboards, commercial monitoring, campaign reporting and updates to some scores.\n\nMicro-batching can provide a strong balance between freshness and maintainability.\n\nIt also allows existing tools and processes to remain in place without adopting a full streaming stack.\n\nThe criterion should be the maximum delay the decision can tolerate before the action changes.\n\nIf that maximum is ten minutes, designing for milliseconds is overengineering.\n\n**Design the SLA from value**\nA practical approach is to define latency classes by use case.\n\nFor example: sub-second for critical controls, seconds for interaction, minutes for operations, hours for planning and daily batch for strategic reporting.\n\n**Not every data asset in** the company needs the same freshness level.\n\nThat reserves expensive architecture for workflows where speed actually pays.\n\nAvailability and processing can also be separated. An event may arrive immediately but not require immediate transformation.\n\nAnother pattern is streaming raw events while updating analytical models in windows.\n\nDesign should account for volume, burstiness and tolerance for loss.\n\nEvent priority matters too. Not every event needs identical guarantees.\n\nError cost should be considered alongside latency. A fast but inconsistent system can be worse than one that is slightly slower and reliable.\n\nFallback behaviour is important. If the streaming layer fails, can the business continue using data from ten minutes ago?\n\nObservability should track event lag, processing lag and business lag.\n\nBusiness lag is especially useful: how long from an event occurring until a meaningful action can be taken.\n\nHuman capacity also creates limits. A system may detect 1,000 incidents per second and still create no value when nobody can respond.\n\nAutomation and real time often belong together when action must happen faster than a person can intervene.\n\nIn other cases, architecture should match the operating rhythm of the team.\n\nTotal cost includes infrastructure, on-call, incidents and specialized skills.\n\nProvider dependency and replay capability should be reviewed too.\n\nEvents need schemas and contracts rather than improvised messages.\n\nA mature architecture can combine several latency levels across the same company.\n\nThe objective is not to make everything move quickly; it is to provide each decision with sufficiently fresh information.\n\n**Real time is a business requirement when the value of an action declines with each second or minute of delay.** When that relationship is absent, reliable batch or near-real-time processing usually creates the same value with less complexity.",
+      "seo_title": "Real-Time Data: When It Creates Business Value",
+      "seo_description": "How to decide whether real-time architecture is justified using decision latency, cost of delay, complexity and operating SLAs.",
+      "seo_keywords": [
+        "real time data business value",
+        "real time data architecture",
+        "streaming business value",
+        "data latency"
+      ],
+      "tags": [
+        "Real Time Data",
+        "Streaming",
+        "Data Architecture"
+      ]
+    },
+    "ca": {
+      "title": "Real time és un requisit de negoci, no una feature",
+      "excerpt": "Moure dades més ràpid només crea valor si una decisió perd qualitat quan arriben tard. La latència correcta deriva del temps útil per actuar.",
+      "quick": [
+        "Comença per la decisió",
+        "Mesura el cost d’arribar tard",
+        "Compra només la latència necessària"
+      ],
+      "section_titles": [
+        "La latència útil la defineix la decisió",
+        "Més velocitat també compra complexitat",
+        "Near real time sovint és suficient",
+        "Dissenya l’SLA des del valor"
+      ],
+      "business_title": "Real time mereix inversió quan reduir segons o minuts canvia una acció, evita una pèrdua o captura una oportunitat que desapareixeria amb batch.",
+      "business_steps": [
+        "Decisió",
+        "Latència útil",
+        "Arquitectura"
+      ],
+      "body": "“Necessitem dades en temps real” és una de les frases més fàcils d’acceptar i més difícils de justificar. Sona moderna, transmet control i sembla convertir qualsevol dashboard o model en una cosa més valuosa. Però **moure dades més ràpid no crea valor per si mateix**.\n\nLa pregunta correcta és quina decisió utilitza aquestes dades i quant valor perd si la informació arriba tard. **Real time hauria de ser una conseqüència del temps útil per actuar, no una feature triada abans d’entendre el procés.**\n\n**La latència útil la defineix la decisió**\nNo totes les decisions tenen el mateix rellotge.\n\nBloquejar una transacció fraudulenta pot necessitar segons. Ajustar una oferta durant una sessió digital pot necessitar menys d’un minut. Reposar inventari pot tolerar hores. Forecasting financer pot funcionar perfectament amb batch diari.\n\n**L’SLA correcte neix** de la finestra d’intervenció.\n\nSi una senyal arriba en cinc minuts i l’acció s’executa l’endemà, reduir ingestió a cinc segons no canvia l’outcome.\n\nPer això convé mapar tota la cadena: event, dada disponible, decisió, acció i efecte.\n\nLa latència end-to-end importa més que la latència d’una sola pipeline.\n\nTambé cal mesurar el cost d’arribar tard. Si una hora de retard gairebé no canvia el resultat, no existeix un business case fort per streaming.\n\n**Més velocitat també compra complexitat**\nLes arquitectures real time afegeixen components: brokers, consumers, state management, schemas, retries, ordering, dead-letter queues i observability específica.\n\nAixò augmenta superfície de fallada i càrrega operativa.\n\n**Cada segon de latència que** eliminem hauria de comprar una millora que compensi aquella complexitat.\n\nEl debugging també és més difícil. Un batch permet reconstruir una execució de principi a fi; streaming pot requerir entendre events fora d’ordre, duplicats i estats parcials.\n\nLa consistència es torna més exigent. Exactly-once semantics, idempotència i processament d’events tardans importen quan el sistema activa accions.\n\nEl testing també canvia: a més de lògica, cal provar seqüències, reintents i recovery.\n\nTot això pot estar justificat, però no hauria de ser el punt de partida per defecte.\n\n**Near real time sovint és suficient**\nMoltes necessitats empresarials descrites com real time són realment near real time.\n\nActualitzar cada cinc minuts, cada minut o amb micro-batches pot resoldre el problema amb una arquitectura molt més simple.\n\n**La diferència empresarial entre cinc** segons i cinc minuts pot ser zero encara que la diferència tècnica sigui enorme.\n\nAixò passa en dashboards operatius, monitoring comercial, reporting de campanyes o actualització de certs scores.\n\nMicro-batching pot oferir un bon equilibri entre frescor i mantenibilitat.\n\nTambé permet aprofitar eines i processos existents sense introduir un stack complet de streaming.\n\nEl criteri hauria de ser el màxim retard tolerable abans que la decisió canviï.\n\nSi aquest màxim són deu minuts, construir per mil·lisegons és sobredimensionar.\n\n**Dissenya l’SLA des del valor**\nUna manera útil de decidir és definir classes de latència per cas d’ús.\n\nPer exemple: subsegon per controls crítics, segons per interacció, minuts per operacions, hores per planificació i batch diari per reporting estratègic.\n\n**No totes les dades d’una** empresa necessiten el mateix nivell de frescor.\n\nAixò permet reservar arquitectures cares per workflows on la velocitat realment paga.\n\nTambé convé separar disponibilitat de processament. Un event pot arribar immediatament i no necessitar transformació instantània.\n\nUna altra opció és tenir raw events en streaming i actualitzar models analítics per finestres.\n\nEl disseny ha de considerar volum, burstiness i tolerància a pèrdua.\n\nLa prioritat d’events també importa. No tots necessiten la mateixa garantia.\n\nEl cost d’error s’ha d’analitzar junt amb la latència. Un sistema ràpid però inconsistent pot ser pitjor que un de lleugerament més lent i fiable.\n\nTambé cal dissenyar fallback. Si la capa streaming cau, pot el negoci continuar amb dades de fa deu minuts?\n\nL’observability ha de mesurar event lag, processing lag i business lag.\n\nBusiness lag és especialment útil: quant temps passa des que ocorre alguna cosa fins que una acció rellevant es pot executar.\n\nLa capacitat humana també limita. Un sistema pot detectar 1.000 incidències per segon i no crear valor si ningú les pot atendre.\n\nAutomatització i real time sovint van junts quan la resposta ha de passar abans que una persona pugui intervenir.\n\nEn altres casos, l’arquitectura ha de respectar el ritme de l’equip operatiu.\n\nEl cost total inclou infraestructura, on-call, incidents i coneixements especialitzats.\n\nTambé convé revisar dependència de proveïdors i facilitat de replay.\n\nEls events s’han de dissenyar amb schemas i contractes, no com missatges improvisats.\n\nUna estratègia madura pot combinar diversos nivells de latència dins de la mateixa empresa.\n\nL’objectiu no és que tot es mogui ràpid; és que cada decisió rebi informació prou fresca.\n\n**Real time és un requisit de negoci quan el valor de l’acció cau amb cada segon o minut de retard.** Quan aquesta relació no existeix, batch fiable o near real time solen crear el mateix valor amb menys complexitat.",
+      "seo_title": "Real time en dades: quan aporta valor de negoci",
+      "seo_description": "Com decidir si una arquitectura real time està justificada segons latència de decisió, cost de retard, complexitat i SLA operatiu.",
+      "seo_keywords": [
+        "real time data business value",
+        "real time data architecture",
+        "streaming business value",
+        "data latency"
+      ],
+      "tags": [
+        "Real Time Data",
+        "Streaming",
+        "Data Architecture"
+      ]
+    }
+  }
+}

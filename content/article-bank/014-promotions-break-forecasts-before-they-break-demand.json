@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-014",
+  "sequence": 14,
+  "arc_id": "ARC-04",
+  "slug": "promotions-break-forecasts-before-they-break-demand",
+  "scheduled_at": "2026-11-08T09:00:00+01:00",
+  "knowledge_area": "planning",
+  "cluster": "Forecasting & Planning",
+  "editorial_pillar": "industries_use_cases",
+  "content_family": "failure_modes_mistakes",
+  "angle": "promotion forecasting",
+  "primary_keyword": "promotion forecasting",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-013",
+    "KB-015",
+    "KB-016"
+  ],
+  "variants": {
+    "es": {
+      "title": "Las promociones rompen el forecast antes que la demanda",
+      "excerpt": "Una promoción cambia precio, visibilidad y timing al mismo tiempo. Si el modelo no conoce el evento, interpreta como demanda orgánica algo que el negocio provocó.",
+      "quick": [
+        "Promoción ≠ demanda base",
+        "El modelo necesita contexto",
+        "El uplift debe separarse"
+      ],
+      "section_titles": [
+        "Por qué una promoción rompe la señal",
+        "El problema de aprender del histórico",
+        "Separar baseline y uplift",
+        "Cómo diseñar un proceso útil"
+      ],
+      "business_title": "Una promoción no debería contaminar la demanda base que usarás para planificar el siguiente periodo.",
+      "business_steps": [
+        "Demanda base",
+        "Intervención promocional",
+        "Uplift medido"
+      ],
+      "body": "Las promociones son uno de los motivos más frecuentes por los que un forecast aparentemente estable empieza a fallar. No porque la demanda se vuelva necesariamente imprevisible, sino porque **el negocio introduce una intervención que cambia el proceso que genera las ventas**. Precio, visibilidad, canal, duración y stock disponible pueden moverse al mismo tiempo.\n\nSi el modelo no conoce esa intervención, interpreta el pico como una observación más de la serie. Después intenta aprender de ella como si fuese demanda orgánica. **El forecast termina confundiendo comportamiento del mercado con comportamiento inducido por la propia empresa.**\n\n**Por qué una promoción rompe la señal**\nUna promoción altera varias variables a la vez. El descuento puede aumentar conversión, la comunicación puede atraer tráfico adicional y la exposición puede desplazar ventas desde otros productos o semanas. El volumen observado es el resultado conjunto de todos esos efectos.\n\nPor eso comparar simplemente la semana promocional con la anterior suele ser insuficiente. Puede existir estacionalidad, tendencia o una campaña de categoría que ya habría elevado ventas sin descuento. **El uplift real es contrafactual: cuánto vendimos frente a cuánto habríamos vendido sin la promoción.**\n\nAdemás, la promoción puede adelantar demanda. Un pico hoy puede venir acompañado de una caída posterior porque clientes compraron antes de lo que habrían hecho. Medir solo el periodo promocional sobreestima el impacto.\n\n**El problema de aprender del histórico**\nCuando las promociones no están bien registradas, el histórico queda contaminado. El modelo observa picos sin una explicación causal y puede tratarlos como estacionalidad, tendencia o ruido.\n\nEso tiene dos consecuencias. Primero, la baseline futura puede quedar inflada. Segundo, el modelo puede aprender relaciones falsas con variables correlacionadas. **Un calendario promocional incompleto limita el techo de cualquier algoritmo**, por sofisticado que sea.\n\nEl problema se agrava si el stock se agotó durante la campaña. Las ventas observadas dejan de representar la demanda potencial. Un evento promocional con stockout contiene dos censuras: intervención comercial y restricción de oferta.\n\n**Separar baseline y uplift**\nUna arquitectura útil distingue entre demanda base y efecto promocional. La baseline intenta responder qué habría ocurrido sin intervención. El uplift estima cuánto cambia la demanda cuando se activa una promoción concreta bajo determinadas condiciones.\n\nEsta separación permite reutilizar mejor el histórico. **La demanda base alimenta planificación estructural; el uplift alimenta escenarios comerciales.** También hace más fácil comparar promociones porque evita atribuir todo el volumen al descuento.\n\nLas features promocionales deben capturar algo más que un indicador binario. Profundidad de descuento, duración, posición en calendario, canal, categoría y tipo de campaña pueden alterar la respuesta. No siempre habrá suficiente dato para modelar cada combinación; en ese caso, agrupar campañas similares puede ser más robusto.\n\n**Cómo diseñar un proceso útil**\nEl primer requisito es gobernar el calendario promocional. El forecast necesita saber qué campañas están confirmadas, cuáles son tentativas y cuándo se modificaron. **Un modelo no puede anticipar una decisión comercial que nunca entra en el sistema.**\n\nDespués conviene evaluar baseline y uplift por separado. Un buen forecast promocional puede fallar porque la baseline era mala o porque la respuesta al descuento fue distinta. Mezclar ambos errores impide diagnosticar.\n\nTambién es útil crear escenarios antes de que la campaña sea definitiva. Comercial puede comparar una promoción moderada, una agresiva y un escenario sin promoción, mientras operaciones evalúa stock y capacidad necesarios.\n\nLa validación final debe incluir impacto posterior. Si una campaña aumenta ventas durante siete días pero desplaza demanda de las dos semanas siguientes, el efecto neto es distinto del uplift inicial.\n\nEl objetivo no es que forecasting “adivine” las promociones. Es que el sistema conozca cuándo el negocio interviene y pueda separar esa intervención del comportamiento normal. **Cuando baseline y uplift se mezclan, la promoción rompe el forecast mucho antes de que entendamos qué pasó con la demanda.**\n\nTambé conviene distinguir entre promociones planificadas y promociones reactivas. Una campaña lanzada para corregir exceso de stock no es independiente del estado de inventario que la provocó. **Si el modelo ignora esta endogeneidad, puede aprender que determinados niveles de stock “causan” demanda cuando en realidad causaron una promoción.** Registrar el motivo de la campaña permite interpretar mejor el histórico y evita incorporar relaciones espurias en modelos futuros.",
+      "seo_title": "Promociones y forecasting de demanda",
+      "seo_description": "Por qué las promociones contaminan la demanda base y cómo separar baseline, uplift, stockouts y calendario comercial en forecasting.",
+      "seo_keywords": [
+        "promotion forecasting",
+        "forecast promociones",
+        "promotional uplift",
+        "baseline demand"
+      ],
+      "tags": [
+        "Forecasting",
+        "Promotions",
+        "Demand Planning"
+      ]
+    },
+    "en": {
+      "title": "Promotions break forecasts before they break demand",
+      "excerpt": "A promotion changes price, visibility and timing at once. If the model cannot see the event, it treats induced sales as though they were organic demand.",
+      "quick": [
+        "Promotion ≠ baseline demand",
+        "The model needs context",
+        "Uplift should be separated"
+      ],
+      "section_titles": [
+        "Why promotions break the signal",
+        "The historical-learning problem",
+        "Separate baseline and uplift",
+        "Design a useful process"
+      ],
+      "business_title": "A promotion should not contaminate the baseline demand used to plan the next period.",
+      "business_steps": [
+        "Baseline demand",
+        "Promotional intervention",
+        "Measured uplift"
+      ],
+      "body": "Promotions are one of the most common reasons a previously stable forecast begins to fail. The issue is not necessarily that demand becomes unpredictable, but that **the business introduces an intervention that changes the process generating sales**. Price, visibility, channel, duration and stock availability can move at the same time.\n\nIf the model cannot see that intervention, it treats the peak as another observation in the time series. It then learns from the event as though it represented organic demand. **The forecast begins to confuse market behaviour with behaviour induced by the company itself.**\n\n**Why promotions break the signal**\nA promotion changes several variables simultaneously. A discount may increase conversion, communication may create additional traffic and higher exposure may shift purchases from other products or periods. Observed volume is the combined result.\n\nSimply comparing a promotional week with the previous week is therefore weak evidence. Seasonality, trend or category-level activity may already have lifted demand. **True uplift is counterfactual: what did we sell relative to what would have happened without the promotion?**\n\nPromotions can also pull demand forward. A spike today may be followed by weaker sales because customers purchased earlier than they otherwise would have. Measuring only the promotional window overstates the net effect.\n\n**The historical-learning problem**\nWhen promotions are poorly recorded, history becomes contaminated. The model observes peaks without causal context and may treat them as seasonality, trend or random noise.\n\nTwo problems follow. First, future baseline demand can become inflated. Second, the model may learn false relationships with correlated variables. **An incomplete promotional calendar limits the ceiling of any algorithm**, regardless of sophistication.\n\nStockouts make the problem harder. When inventory runs out during the campaign, observed sales no longer represent potential demand. The event then contains two forms of distortion: commercial intervention and supply constraint.\n\n**Separate baseline and uplift**\nA useful architecture separates baseline demand from promotional effect. Baseline asks what would probably have happened without intervention. Uplift estimates how demand changes when a particular promotion is activated under particular conditions.\n\nThis separation makes historical data more reusable. **Baseline supports structural planning; uplift supports commercial scenarios.** It also makes campaign comparison more credible because not all observed volume is attributed to the discount.\n\nPromotional features should contain more than a binary flag. Discount depth, duration, calendar position, channel, category and campaign type can all influence response. When data is too sparse to model every combination, grouping similar campaigns can be more robust.\n\n**Design a useful process**\nThe first requirement is governance of the promotional calendar. The forecasting system needs to know which campaigns are confirmed, which remain tentative and when plans change. **A model cannot anticipate a commercial decision that never enters the data flow.**\n\nBaseline and uplift should then be evaluated separately. A promotional forecast can fail because baseline was weak or because customer response differed from expectation. Combining both errors prevents diagnosis.\n\nScenario planning is useful before campaigns are final. Commercial teams can compare moderate, aggressive and no-promotion cases while operations evaluates the inventory and capacity implications.\n\nValidation should include the post-promotion period as well. If a seven-day campaign increases sales but shifts demand away from the following two weeks, the net effect is different from the initial uplift.\n\nThe objective is not for forecasting to “guess” promotions. It is for the system to know when the business intervenes and separate that intervention from normal behaviour. **When baseline and uplift are mixed together, promotions break the forecast before the company understands what happened to demand.**\n\nIt is also useful to distinguish planned promotions from reactive promotions. A campaign launched to clear excess stock is not independent of the inventory state that triggered it. **If the model ignores that endogeneity, it may learn that certain stock conditions “cause” demand when they actually caused a promotion.** Recording campaign intent improves historical interpretation and reduces the risk of learning spurious relationships in future models.",
+      "seo_title": "Promotion Forecasting and Demand Uplift",
+      "seo_description": "Why promotions contaminate baseline demand and how to separate baseline, uplift, stockouts and commercial calendars in forecasting.",
+      "seo_keywords": [
+        "promotion forecasting",
+        "promotional uplift",
+        "baseline demand",
+        "demand forecasting promotions"
+      ],
+      "tags": [
+        "Forecasting",
+        "Promotions",
+        "Demand Planning"
+      ]
+    },
+    "ca": {
+      "title": "Les promocions trenquen el forecast abans que la demanda",
+      "excerpt": "Una promoció canvia preu, visibilitat i timing alhora. Si el model no veu l’esdeveniment, interpreta vendes induïdes com si fossin demanda orgànica.",
+      "quick": [
+        "Promoció ≠ demanda base",
+        "El model necessita context",
+        "Cal separar l’uplift"
+      ],
+      "section_titles": [
+        "Per què una promoció trenca el senyal",
+        "El problema d’aprendre de l’històric",
+        "Separar baseline i uplift",
+        "Dissenyar un procés útil"
+      ],
+      "business_title": "Una promoció no hauria de contaminar la demanda base que faràs servir per planificar el període següent.",
+      "business_steps": [
+        "Demanda base",
+        "Intervenció promocional",
+        "Uplift mesurat"
+      ],
+      "body": "Les promocions són un dels motius més freqüents pels quals un forecast aparentment estable comença a fallar. No necessàriament perquè la demanda es torni imprevisible, sinó perquè **el negoci introdueix una intervenció que canvia el procés que genera les vendes**. Preu, visibilitat, canal, durada i stock disponible poden moure’s alhora.\n\nSi el model no veu aquesta intervenció, interpreta el pic com una observació més de la sèrie. Després intenta aprendre’n com si fos demanda orgànica. **El forecast acaba confonent comportament de mercat amb comportament induït per la mateixa empresa.**\n\n**Per què una promoció trenca el senyal**\nUna promoció altera diverses variables al mateix temps. El descompte pot augmentar conversió, la comunicació pot generar trànsit i l’exposició pot desplaçar compres des d’altres productes o períodes. El volum observat és el resultat conjunt.\n\nComparar simplement la setmana promocional amb l’anterior és insuficient. Pot existir estacionalitat, tendència o activitat de categoria que ja hauria elevat la demanda. **L’uplift real és contrafactual: quant vam vendre respecte al que hauria passat sense promoció?**\n\nLa promoció també pot avançar demanda. Un pic avui pot anar seguit d’una caiguda perquè els clients han comprat abans. Mesurar només la finestra promocional sobreestima l’efecte net.\n\n**El problema d’aprendre de l’històric**\nQuan les promocions no estan ben registrades, l’històric queda contaminat. El model observa pics sense context causal i pot tractar-los com estacionalitat, tendència o soroll.\n\nAixò genera dues conseqüències. Primer, la baseline futura pot quedar inflada. Segon, el model pot aprendre relacions falses amb variables correlacionades. **Un calendari promocional incomplet limita el sostre de qualsevol algoritme**, per sofisticat que sigui.\n\nEls stockouts ho compliquen encara més. Si s’acaba l’inventari durant la campanya, les vendes observades deixen de representar la demanda potencial. L’esdeveniment combina intervenció comercial i restricció d’oferta.\n\n**Separar baseline i uplift**\nUna arquitectura útil distingeix demanda base i efecte promocional. La baseline pregunta què hauria passat sense intervenció. L’uplift estima com canvia la demanda quan s’activa una promoció concreta sota unes condicions determinades.\n\nAquesta separació fa l’històric més reutilitzable. **La baseline alimenta planificació estructural; l’uplift alimenta escenaris comercials.** També permet comparar campanyes sense atribuir tot el volum al descompte.\n\nLes features promocionals han de capturar més que un indicador binari. Profunditat de descompte, durada, posició al calendari, canal, categoria i tipus de campanya poden alterar la resposta. Si no hi ha prou dades, agrupar campanyes similars pot ser més robust.\n\n**Dissenyar un procés útil**\nEl primer requisit és governar el calendari promocional. El sistema necessita saber quines campanyes estan confirmades, quines són tentatives i quan canvien. **Un model no pot anticipar una decisió comercial que mai entra al flux de dades.**\n\nDesprés convé avaluar baseline i uplift per separat. Un forecast promocional pot fallar perquè la baseline era dolenta o perquè la resposta al descompte va ser diferent. Barrejar els errors impedeix diagnosticar.\n\nTambé és útil crear escenaris abans que la campanya sigui definitiva. Comercial pot comparar promoció moderada, agressiva i sense promoció, mentre operacions avalua estoc i capacitat.\n\nLa validació final ha d’incloure el període posterior. Si una campanya augmenta vendes set dies però desplaça demanda de les dues setmanes següents, l’efecte net és diferent.\n\nL’objectiu no és que forecasting “endevini” les promocions. És que el sistema sàpiga quan el negoci intervé i separi aquesta intervenció del comportament normal. **Quan baseline i uplift es barregen, la promoció trenca el forecast abans que entenguem què ha passat amb la demanda.**\n\nTambé convé distingir promocions planificades de promocions reactives. Una campanya llançada per corregir excés d’estoc no és independent de l’estat d’inventari que l’ha provocat. **Si el model ignora aquesta endogeneïtat, pot aprendre que certs nivells d’estoc “causen” demanda quan en realitat van causar una promoció.** Registrar el motiu de la campanya millora la interpretació de l’històric i evita relacions espúries.",
+      "seo_title": "Promocions i forecasting de demanda",
+      "seo_description": "Per què les promocions contaminen la demanda base i com separar baseline, uplift, stockouts i calendari comercial en forecasting.",
+      "seo_keywords": [
+        "promotion forecasting",
+        "forecast promocions",
+        "promotional uplift",
+        "baseline demand"
+      ],
+      "tags": [
+        "Forecasting",
+        "Promotions",
+        "Demand Planning"
+      ]
+    }
+  }
+}

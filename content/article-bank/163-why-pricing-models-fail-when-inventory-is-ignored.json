@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-163",
+  "sequence": 163,
+  "arc_id": "ARC-41",
+  "slug": "why-pricing-models-fail-when-inventory-is-ignored",
+  "scheduled_at": "2027-11-08T09:00:00+01:00",
+  "knowledge_area": "finance",
+  "cluster": "Finance, Risk & Pricing",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "failure_modes_mistakes",
+  "angle": "pricing and inventory interaction",
+  "primary_keyword": "pricing inventory optimization",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-161",
+    "KB-162",
+    "KB-164"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué un modelo de pricing falla si ignora el inventario",
+      "excerpt": "Precio e inventario están acoplados cuando vender hoy cambia la capacidad de vender mañana. Un modelo de pricing aislado puede maximizar demanda y destruir margen o disponibilidad.",
+      "quick": [
+        "El stock cambia el valor del precio",
+        "Vender hoy consume una opción futura",
+        "Pricing e inventario deben compartir objetivo"
+      ],
+      "section_titles": [
+        "El precio no decide sobre un recurso infinito",
+        "El stockout sesga la demanda observada",
+        "La reposición cambia el precio óptimo",
+        "La decisión debe optimizar el sistema completo"
+      ],
+      "business_title": "Pricing e inventario deben modelarse juntos cuando la disponibilidad altera el valor económico de vender una unidad ahora o reservarla para después.",
+      "business_steps": [
+        "Stock disponible",
+        "Demanda futura",
+        "Valor marginal"
+      ],
+      "body": "Un modelo de pricing puede estimar elasticidad correctamente y aun así tomar una mala decisión comercial si trata la demanda como si siempre pudiera servirse. **Cuando el inventario es finito, el precio decide también a qué velocidad consumimos una opción de venta futura.**\n\nEsto convierte pricing e inventory management en decisiones acopladas. Un precio bajo puede aumentar conversion y parecer exitoso mientras acelera un stockout de unidades que habrían podido venderse con más margen. **Optimizar precio sin mirar inventario puede maximizar una métrica local y empeorar el resultado total.**\n\n**El precio no decide sobre un recurso infinito**\nSi un producto puede reponerse instantáneamente y sin restricciones, el stock tiene poca influencia sobre el precio óptimo.\n\nPero muchos negocios operan con lead times, mínimos de compra, capacidad limitada o temporadas finitas.\n\nEn esos casos, una unidad disponible hoy tiene un valor de oportunidad.\n\n**Vender ahora significa renunciar a** la posibilidad de vender esa misma unidad más adelante.\nEse coste de oportunidad depende de demanda prevista, tiempo restante y probabilidad de reposición.\n\nCon inventario escaso, puede tener sentido proteger margen o limitar promociones.\n\nCon exceso de stock y poco horizonte, puede ser racional reducir precio aunque la elasticidad no haya cambiado.\n\nPor eso dos tiendas con la misma demanda esperada y distinto inventario no deberían recibir necesariamente el mismo precio.\n\n**El stockout sesga la demanda observada**\nLos datos históricos de ventas no muestran demanda cuando el producto estaba agotado.\n\nSi observamos cero ventas después de un stockout y lo tratamos como demanda cero, el modelo aprende una relación incorrecta.\n\n**Las ventas están censuradas por** disponibilidad: no podemos vender lo que no tenemos.\nEsto afecta forecasting y elasticidad.\n\nUn SKU que parece poco demandado puede haber pasado muchas horas sin stock.\n\nTambién puede existir sustitución: el cliente compra otro producto cuando el primero no está disponible.\n\nSi no modelamos esa transferencia, podemos sobreestimar demanda de sustitutos y subestimar la del producto agotado.\n\nLos features de disponibilidad deben formar parte del modelo o del proceso de reconstrucción de demanda.\n\nEn algunos contextos conviene estimar lost sales antes de entrenar pricing.\n\n**La reposición cambia el precio óptimo**\nEl inventario no es estático.\n\nÓrdenes abiertas, lead times, capacidad de proveedor y incertidumbre de entrega modifican cuánto stock esperamos tener.\n\n**Un precio que parece agresivo puede** ser correcto si una reposición grande llega mañana y peligroso si el siguiente suministro tarda seis semanas.\nPor eso pricing debería conocer al menos una representación de inventory position: on-hand, on-order, lead time y stock de seguridad.\n\nTambién puede importar capacidad física o shelf space.\n\nEn e-commerce, la disponibilidad por fulfillment center puede cambiar la experiencia regional.\n\nLos costes de compra introducen otra interacción. Si el coste marginal sube, el precio necesario para proteger contribution también cambia.\n\nEn productos perecederos, la edad del inventario y expiry añaden una dimensión temporal adicional.\n\nLa decisión ya no es simplemente “qué precio aumenta revenue”, sino cómo convertir inventario en margen antes de que pierda valor.\n\n**La decisión debe optimizar el sistema completo**\nUna función objetivo conjunta puede considerar contribution margin, stockout cost, holding cost, markdown risk y service level.\n\nNo siempre hace falta resolver un gran problema matemático.\n\nA veces una regla sencilla mejora mucho el sistema: limitar descuentos cuando weeks-of-cover es bajo o acelerar markdown cuando el exceso supera cierto threshold.\n\n**Lo importante es que el precio** reciba información sobre la escasez o exceso del recurso que está consumiendo.\nEn sistemas más avanzados se puede utilizar dynamic programming, stochastic optimization, reinforcement learning o heuristics.\n\nLa elección depende de escala, frecuencia y capacidad de experimentación.\n\nLa simulación es especialmente útil para comprobar cómo una pricing policy afecta inventario a lo largo del tiempo.\n\nTambién conviene evaluar políticas completas y no predicciones aisladas.\n\nPodemos comparar margen total, sell-through, lost sales, service level y stock residual.\n\nLos experimentos de pricing necesitan guardrails de disponibilidad para evitar agotar productos durante la prueba.\n\nLa organización también debe coordinar ownership. Si pricing optimiza revenue y supply chain optimiza service level con objetivos separados, ambos equipos pueden empujarse en direcciones opuestas.\n\nCompartir una función económica o al menos restricciones coherentes reduce ese conflicto.\n\nLa latencia de datos importa. Una recomendación basada en inventario de ayer puede ser peligrosa para productos de alta rotación.\n\nNo todo necesita realtime, pero la frescura debe alinearse con la velocidad del stock.\n\nTambién deben incorporarse cancelaciones, devoluciones y reservas si alteran disponibilidad real.\n\nLa reposición futura puede modelarse mediante escenarios cuando existe incertidumbre.\n\nPor último, conviene distinguir qué productos justifican un modelo conjunto. Para SKUs de bajo valor y suministro abundante, puede ser innecesario.\n\n**Pricing e inventario están acoplados cuando el stock tiene valor de oportunidad.** En ese momento, el mejor precio no es el que maximiza demanda hoy, sino el que utiliza el inventario de forma coherente con margen, reposición y demanda futura.",
+      "seo_title": "Pricing e inventario: por qué deben optimizarse juntos",
+      "seo_description": "Por qué un modelo de pricing puede fallar si ignora stockouts, reposición, lead times, exceso de inventario y coste de oportunidad.",
+      "seo_keywords": [
+        "pricing inventory optimization",
+        "pricing and inventory",
+        "inventory pricing model",
+        "dynamic pricing inventory"
+      ],
+      "tags": [
+        "Pricing",
+        "Inventory",
+        "Optimization"
+      ]
+    },
+    "en": {
+      "title": "Why pricing models fail when inventory is ignored",
+      "excerpt": "Price and inventory are coupled whenever selling now changes the ability to sell later. An isolated pricing model can maximize demand while destroying margin or availability.",
+      "quick": [
+        "Stock changes the value of price",
+        "Selling now consumes a future option",
+        "Pricing and inventory need a shared objective"
+      ],
+      "section_titles": [
+        "Price does not operate on an infinite resource",
+        "Stockouts bias observed demand",
+        "Replenishment changes the optimal price",
+        "The decision should optimize the whole system"
+      ],
+      "business_title": "Pricing and inventory should be modeled together whenever availability changes the economic value of selling a unit now versus reserving it for later.",
+      "business_steps": [
+        "Available stock",
+        "Future demand",
+        "Marginal value"
+      ],
+      "body": "A pricing model can estimate elasticity correctly and still make a poor commercial decision when it behaves as though all demand can always be served. **When inventory is finite, price also determines how quickly the business consumes an option to sell later.**\n\nThat makes pricing and inventory management coupled decisions. A low price can increase conversion and look successful while accelerating stockout of units that could have sold later at higher margin. **Optimizing price without inventory can improve a local metric and damage the full economic outcome.**\n\n**Price does not operate on an infinite resource**\nIf a product can be replenished instantly without constraints, inventory has little effect on the optimal price.\n\nMany businesses, however, operate with lead times, minimum order quantities, supplier capacity or finite seasons.\n\nA unit available today therefore has opportunity value.\n\n**Selling now means giving up** the possibility of selling that same unit later.\nThat opportunity cost depends on expected demand, remaining horizon and replenishment probability.\n\nWhen inventory is scarce, protecting margin or limiting promotions can be rational.\n\nWhen stock is excessive and the horizon is short, reducing price can be correct even when elasticity itself has not changed.\n\nTwo stores with identical expected demand and different stock positions should therefore not necessarily receive the same price.\n\n**Stockouts bias observed demand**\nHistorical sales do not reveal demand when a product was unavailable.\n\nIf zero sales after stockout are treated as zero demand, the model learns the wrong relationship.\n\n**Sales are censored by availability:** a business cannot sell inventory it does not have.\nThat distorts both forecasting and elasticity.\n\nA SKU that appears weak may simply have spent many hours unavailable.\n\nSubstitution adds another complication: customers may buy another product when the preferred item is out of stock.\n\nIf that transfer is ignored, demand for substitutes can be overstated while demand for the unavailable item is understated.\n\nAvailability features should therefore enter the model or the demand-reconstruction process.\n\nIn some settings, lost sales should be estimated before training the pricing model.\n\n**Replenishment changes the optimal price**\nInventory is not static.\n\nOpen purchase orders, lead times, supplier capacity and delivery uncertainty change the stock expected to arrive.\n\n**An aggressive price can be appropriate** when a large replenishment arrives tomorrow and dangerous when the next shipment is six weeks away.\nPricing should therefore know at least some representation of inventory position: on-hand, on-order, lead time and safety stock.\n\nPhysical capacity and shelf space can matter too.\n\nIn e-commerce, availability by fulfillment center can create regional differences.\n\nPurchase cost adds another interaction. If marginal cost rises, the price required to protect contribution changes.\n\nPerishable products add inventory age and expiry to the decision.\n\nThe question becomes how to convert inventory into margin before it loses value rather than simply which price increases revenue.\n\n**The decision should optimize the whole system**\nA joint objective can include contribution margin, stockout cost, holding cost, markdown risk and service level.\n\nA sophisticated mathematical optimizer is not always required.\n\nSimple rules can improve the system materially: limit discounts when weeks of cover is low or accelerate markdown when excess inventory crosses a threshold.\n\n**The key is that pricing receives** information about the scarcity or excess of the resource it is consuming.\nMore advanced systems can use dynamic programming, stochastic optimization, reinforcement learning or heuristics.\n\nThe choice depends on scale, decision frequency and ability to experiment.\n\nSimulation is useful for understanding how a pricing policy changes inventory over time.\n\nPolicies should be evaluated end to end rather than through isolated predictions.\n\nUseful outcomes include total margin, sell-through, lost sales, service level and residual inventory.\n\nPricing experiments also need availability guardrails so the test itself does not exhaust critical stock.\n\nOrganizational ownership matters. If pricing optimizes revenue and supply chain optimizes service level independently, the teams can push the business in opposite directions.\n\nA shared economic objective or at least consistent constraints reduces that conflict.\n\nData latency matters as well. A recommendation based on yesterday’s stock can be dangerous for fast-moving products.\n\nNot every use case needs realtime, but freshness should match inventory velocity.\n\nReturns, cancellations and reservations may also need inclusion when they affect actual availability.\n\nFuture replenishment can be modeled through scenarios when uncertainty is material.\n\nFinally, not every product needs joint optimization. Low-value SKUs with abundant supply may not justify the complexity.\n\n**Pricing and inventory become coupled when stock has opportunity value.** At that point the best price is not the one that maximizes demand today, but the one that uses inventory consistently with margin, replenishment and future demand.",
+      "seo_title": "Pricing and Inventory Optimization",
+      "seo_description": "Why pricing models fail when they ignore stockouts, replenishment, lead times, excess inventory and the opportunity cost of available stock.",
+      "seo_keywords": [
+        "pricing inventory optimization",
+        "pricing and inventory",
+        "inventory pricing model",
+        "dynamic pricing inventory"
+      ],
+      "tags": [
+        "Pricing",
+        "Inventory",
+        "Optimization"
+      ]
+    },
+    "ca": {
+      "title": "Per què un model de pricing falla si ignora l’inventari",
+      "excerpt": "Preu i inventari estan acoblats quan vendre avui canvia la capacitat de vendre demà. Un model de pricing aïllat pot maximitzar demanda i destruir marge o disponibilitat.",
+      "quick": [
+        "El stock canvia el valor del preu",
+        "Vendre avui consumeix una opció futura",
+        "Pricing i inventari necessiten objectiu compartit"
+      ],
+      "section_titles": [
+        "El preu no decideix sobre un recurs infinit",
+        "El stockout esbiaixa la demanda observada",
+        "La reposició canvia el preu òptim",
+        "La decisió ha d’optimitzar tot el sistema"
+      ],
+      "business_title": "Pricing i inventari s’han de modelar junts quan la disponibilitat altera el valor econòmic de vendre una unitat ara o reservar-la per després.",
+      "business_steps": [
+        "Stock disponible",
+        "Demanda futura",
+        "Valor marginal"
+      ],
+      "body": "Un model de pricing pot estimar elasticitat correctament i, tot i així, prendre una mala decisió comercial si tracta la demanda com si sempre es pogués servir. **Quan l’inventari és finit, el preu decideix també a quina velocitat consumim una opció de venda futura.**\n\nAixò converteix pricing i inventory management en decisions acoblades. Un preu baix pot augmentar conversion i semblar exitós mentre accelera un stockout d’unitats que haurien pogut vendre’s després amb més marge. **Optimitzar preu sense inventari pot millorar una mètrica local i empitjorar el resultat total.**\n\n**El preu no decideix sobre un recurs infinit**\nSi un producte es pot reposar instantàniament i sense restriccions, l’inventari influeix poc sobre el preu òptim.\n\nPerò molts negocis operen amb lead times, mínims de compra, capacitat limitada o temporades finites.\n\nUna unitat disponible avui té valor d’oportunitat.\n\n**Vendre ara significa renunciar a** la possibilitat de vendre aquella mateixa unitat més endavant.\nAquest cost depèn de demanda prevista, temps restant i probabilitat de reposició.\n\nAmb inventari escàs, pot tenir sentit protegir marge o limitar promocions.\n\nAmb excés de stock i poc horitzó, pot ser racional reduir preu encara que l’elasticitat no canviï.\n\nPer això dues botigues amb la mateixa demanda i inventari diferent no haurien de tenir necessàriament el mateix preu.\n\n**El stockout esbiaixa la demanda observada**\nLes vendes històriques no mostren demanda quan el producte estava esgotat.\n\nSi interpretem zero vendes després d’un stockout com zero demanda, el model aprèn una relació incorrecta.\n\n**Les vendes estan censurades per** disponibilitat: no podem vendre allò que no tenim.\nAixò afecta forecasting i elasticitat.\n\nUn SKU que sembla poc demandat pot haver passat moltes hores sense stock.\n\nTambé pot existir substitució: el client compra un altre producte quan el primer no està disponible.\n\nSi ignorem aquest canvi, sobreestimem demanda del substitut i subestimem la del producte esgotat.\n\nLes features de disponibilitat han d’entrar al model o al procés de reconstrucció de demanda.\n\nEn alguns casos convé estimar lost sales abans d’entrenar pricing.\n\n**La reposició canvia el preu òptim**\nL’inventari no és estàtic.\n\nOrdres obertes, lead times, capacitat del proveïdor i incertesa d’entrega modifiquen quant stock esperem.\n\n**Un preu agressiu pot ser correcte** si una gran reposició arriba demà i perillós si el següent subministrament tarda sis setmanes.\nPricing hauria de conèixer almenys inventory position: on-hand, on-order, lead time i safety stock.\n\nTambé pot importar capacitat física o shelf space.\n\nEn e-commerce, la disponibilitat per fulfillment center pot canviar l’experiència regional.\n\nEls costos de compra introdueixen una altra interacció. Si puja el cost marginal, el preu necessari per protegir contribution també canvia.\n\nEn productes peribles, l’edat de l’inventari i expiry afegeixen una dimensió temporal.\n\nLa pregunta ja no és quin preu augmenta revenue, sinó com convertir inventari en marge abans que perdi valor.\n\n**La decisió ha d’optimitzar tot el sistema**\nUna funció conjunta pot considerar contribution margin, stockout cost, holding cost, markdown risk i service level.\n\nNo sempre cal un gran optimitzador.\n\nRegles simples poden millorar molt: limitar descomptes quan weeks-of-cover és baix o accelerar markdown quan l’excés supera un threshold.\n\n**El més important és que pricing** rebi informació sobre l’escassetat o excés del recurs que consumeix.\nSistemes avançats poden utilitzar dynamic programming, stochastic optimization, reinforcement learning o heuristics.\n\nLa tria depèn d’escala, freqüència i capacitat d’experimentació.\n\nLa simulació és útil per entendre com una pricing policy afecta inventari amb el temps.\n\nTambé convé avaluar polítiques completes i no prediccions aïllades.\n\nOutcomes útils són marge total, sell-through, lost sales, service level i stock residual.\n\nEls experiments de pricing necessiten guardrails de disponibilitat.\n\nL’ownership organitzatiu importa. Si pricing optimitza revenue i supply chain service level per separat, poden empènyer en direccions oposades.\n\nUn objectiu econòmic compartit o restriccions coherents redueixen el conflicte.\n\nLa latència de dades també compta. Una recomanació basada en l’inventari d’ahir pot ser perillosa en productes ràpids.\n\nNo tot necessita realtime, però freshness ha d’encaixar amb velocitat de stock.\n\nDevolucions, cancel·lacions i reserves poden afectar disponibilitat real.\n\nLa reposició futura es pot modelar per escenaris quan hi ha incertesa.\n\nFinalment, no tots els productes justifiquen optimització conjunta. SKUs de baix valor i oferta abundant poden no necessitar-la.\n\n**Pricing i inventari estan acoblats quan el stock té valor d’oportunitat.** En aquell moment, el millor preu no és el que maximitza demanda avui, sinó el que utilitza l’inventari coherentment amb marge, reposició i demanda futura.",
+      "seo_title": "Pricing i inventari: per què optimitzar-los junts",
+      "seo_description": "Per què un model de pricing falla si ignora stockouts, reposició, lead times, excés d’inventari i cost d’oportunitat.",
+      "seo_keywords": [
+        "pricing inventory optimization",
+        "pricing and inventory",
+        "inventory pricing model",
+        "dynamic pricing inventory"
+      ],
+      "tags": [
+        "Pricing",
+        "Inventory",
+        "Optimization"
+      ]
+    }
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-031",
+  "sequence": 31,
+  "arc_id": "ARC-08",
+  "slug": "why-supplier-scorecards-miss-variability",
+  "scheduled_at": "2026-12-21T09:00:00+01:00",
+  "knowledge_area": "risk_decision",
+  "cluster": "Inventory & Supply Chain",
+  "editorial_pillar": "industries_use_cases",
+  "content_family": "diagnose",
+  "angle": "supplier scorecard failure modes",
+  "primary_keyword": "supplier scorecard analytics",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-029",
+    "KB-030",
+    "KB-032"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué un scorecard de proveedores puede ocultar variabilidad",
+      "excerpt": "Un scorecard puede verse sano y la operación seguir sufriendo retrasos, urgencias y buffers. El problema suele estar en agregación, severidad y dependencia.",
+      "quick": [
+        "El promedio suaviza extremos",
+        "La severidad importa",
+        "Un score necesita contexto operativo"
+      ],
+      "section_titles": [
+        "Cómo un scorecard pierde señal",
+        "La severidad desaparece al agregar",
+        "Dependencia y mix distorsionan",
+        "Convertir el score en diagnóstico"
+      ],
+      "business_title": "Un buen scorecard no solo clasifica proveedores: explica qué riesgo operativo está creando cada uno.",
+      "business_steps": [
+        "Score agregado",
+        "Riesgo oculto",
+        "Diagnóstico accionable"
+      ],
+      "body": "Los scorecards de proveedores suelen buscar simplicidad: OTIF, calidad, coste, lead time y quizá una puntuación total. Esa síntesis facilita reuniones y comparaciones, pero puede generar una falsa sensación de control. **Un scorecard puede estar en verde mientras la operación sigue financiando variabilidad, urgencias y excepciones.**\n\nEl problema no es medir. El problema es comprimir fenómenos distintos en una puntuación que elimina información relevante para decidir. **Cuando el score sustituye al diagnóstico, una cifra ordenada puede ocultar un proceso inestable.**\n\n**Cómo un scorecard pierde señal**\nLa primera pérdida aparece con la agregación. Un proveedor puede tener un OTIF anual razonable aunque concentre fallos en meses críticos. También puede rendir bien en productos simples y mal en una familia esencial.\n\nPromediar esas observaciones mezcla contextos con economics diferentes. **Un 95 % agregado no dice si el 5 % restante afecta pedidos de bajo impacto o componentes sin sustituto.**\n\nOtra pérdida aparece con pesos fijos. Dar 30 % a coste, 30 % a servicio y 40 % a calidad puede parecer objetivo, pero esos pesos rara vez reflejan cómo cambia el riesgo por producto o decisión.\n\n**La severidad desaparece al agregar**\nMuchas métricas cuentan eventos, pero no su severidad. Dos proveedores pueden fallar el 10 % de las entregas; uno se retrasa un día y otro tres semanas. La frecuencia es idéntica y el coste operativo no.\n\nLa misma lógica aplica a cantidad. Un short shipment pequeño no es equivalente a entregar solo la mitad de un componente crítico. **Contar incidencias sin medir tamaño puede hacer que los extremos desaparezcan dentro del promedio.**\n\nLos percentiles, distribución de retrasos y coste de excepción complementan mejor el score. No hace falta mostrar veinte métricas en portada; sí conservar la capacidad de profundizar cuando una cifra cambia.\n\n**Dependencia y mix distorsionan**\nEl score del proveedor también depende del mix que le asignamos. Un proveedor que atiende referencias difíciles puede parecer peor que otro con productos estables. Compararlos sin ajustar contexto puede castigar al que soporta más complejidad.\n\nLa dependencia introduce otra dimensión. **Un proveedor con score medio puede ser más riesgoso que uno con score bajo si concentra una parte crítica de la operación y no existe alternativa.**\n\nPor eso conviene añadir exposición: gasto, volumen, número de SKUs críticos, concentración por planta o tiempo necesario para sustituir. Rendimiento y dependencia juntos explican mejor el riesgo.\n\nTambién hay efectos de ruta. El mismo proveedor puede tener buenos resultados hacia una planta y problemas hacia otra por transportista, aduana o infraestructura. El score total oculta el nodo real.\n\n**Convertir el score en diagnóstico**\nUn scorecard útil debería funcionar en capas. Arriba, pocas métricas para priorizar. Debajo, distribución, tendencia, severidad, mix y dependencia para entender la causa. **La portada sirve para detectar; el detalle sirve para decidir.**\n\nLas métricas también deberían activar acciones predefinidas. Un aumento de variabilidad puede llevar a revisar safety stock. Una cola de retrasos extremos puede activar sourcing alternativo. Un deterioro de calidad puede cambiar inspección o contrato.\n\nConviene separar performance histórico de riesgo futuro. Un proveedor puede haber cumplido bien y estar mostrando señales de deterioro: mayor dispersión, más excepciones o dependencia creciente.\n\nEl score debería incluir tendencia, no solo nivel. Una puntuación de 80 que cae desde 95 cuenta una historia distinta de otra que sube desde 60.\n\nFinalmente, cualquier puntuación compuesta debe permitir volver a los componentes. **Si nadie puede explicar por qué el proveedor tiene 73 puntos ni qué decisión cambia al pasar a 70, el score es más decorativo que operativo.**\n\nEl objetivo no es tener el ranking más elegante. Es detectar dónde se genera riesgo, cuánto cuesta y qué respuesta tiene sentido. **Un scorecard es bueno cuando reduce tiempo hasta el diagnóstico, no cuando consigue resumir toda la cadena de suministro en una sola cifra.**",
+      "seo_title": "Por qué fallan los supplier scorecards",
+      "seo_description": "Cómo la agregación, severidad, mix y dependencia pueden hacer que un scorecard de proveedores oculte variabilidad y riesgo operativo.",
+      "seo_keywords": [
+        "supplier scorecard analytics",
+        "supplier scorecard",
+        "supplier variability",
+        "supplier risk metrics"
+      ],
+      "tags": [
+        "Supply Chain",
+        "Supplier Scorecard",
+        "Risk"
+      ]
+    },
+    "en": {
+      "title": "Why supplier scorecards miss variability",
+      "excerpt": "A scorecard can look healthy while operations still suffers delays, expediting and buffers. Aggregation, severity and dependency often explain the gap.",
+      "quick": [
+        "Averages smooth extremes",
+        "Severity matters",
+        "Scores need operating context"
+      ],
+      "section_titles": [
+        "How scorecards lose signal",
+        "Severity disappears in aggregation",
+        "Dependency and mix distort the view",
+        "Turn scoring into diagnosis"
+      ],
+      "business_title": "A strong supplier scorecard does more than rank suppliers: it explains which operating risk each supplier creates.",
+      "business_steps": [
+        "Aggregate score",
+        "Hidden risk",
+        "Actionable diagnosis"
+      ],
+      "body": "Supplier scorecards usually aim for simplicity: OTIF, quality, cost, lead time and perhaps one composite score. That summary makes meetings and comparisons easier, but it can create false confidence. **A scorecard can remain green while operations continues to finance variability, expediting and exceptions.**\n\nThe problem is not measurement itself. It is compressing different phenomena into a score that removes information needed for decisions. **When the score replaces diagnosis, a tidy number can hide an unstable process.**\n\n**How scorecards lose signal**\nThe first loss comes from aggregation. A supplier can post acceptable annual OTIF while concentrating failures in critical months. It can perform well on simple products and poorly on one essential family.\n\nAveraging those observations mixes contexts with different economics. **A 95% aggregate result does not reveal whether the remaining 5% affects low-impact orders or irreplaceable components.**\n\nAnother problem is fixed weighting. Assigning 30% to cost, 30% to service and 40% to quality can look objective, but those weights rarely match how risk changes across products and decisions.\n\n**Severity disappears in aggregation**\nMany metrics count failures but ignore severity. Two suppliers can fail 10% of deliveries; one is one day late and the other three weeks late. Frequency is identical while operating cost is not.\n\nQuantity failures behave similarly. A small short shipment is not equivalent to delivering half of a critical component. **Counting incidents without measuring size allows extreme cases to disappear inside the average.**\n\nPercentiles, delay distributions and exception cost provide a better second layer. The headline does not need twenty metrics, but the system should preserve drill-down when the score moves.\n\n**Dependency and mix distort the view**\nSupplier scores also depend on the mix assigned to each supplier. A company handling difficult products may appear worse than one serving stable items. Direct comparison without context can punish the supplier carrying more complexity.\n\nDependency adds another dimension. **A supplier with an average score can be more dangerous than one with a lower score when it supports a critical share of operations and has no realistic substitute.**\n\nExposure should therefore sit beside performance: spend, volume, critical SKU count, plant concentration and replacement lead time. Performance plus dependency explains risk better than either alone.\n\nRoute effects matter too. The same supplier can perform well into one site and poorly into another because of transport, customs or infrastructure. A total score hides the actual failing node.\n\n**Turn scoring into diagnosis**\nA useful scorecard should operate in layers. The top layer contains a few metrics for prioritization. Below it sit distributions, trends, severity, mix and dependency for diagnosis. **The headline detects; the detail enables action.**\n\nMetrics should also trigger defined responses. Higher variability may lead to a safety-stock review. A growing tail of extreme delays may trigger alternative sourcing. Quality deterioration may change inspection or contractual controls.\n\nHistorical performance should be separated from forward-looking risk. A supplier can have a good record while beginning to show deterioration through higher dispersion, more exceptions or growing dependency.\n\nTrend matters as much as level. A score of 80 falling from 95 tells a different story from 80 rising from 60.\n\nFinally, any composite score should allow users to return to its components. **If nobody can explain why a supplier has 73 points or which decision changes at 70, the score is more decorative than operational.**\n\nThe objective is not the most elegant ranking. It is to identify where risk is created, how much it costs and which response makes sense. **A scorecard is successful when it shortens time to diagnosis, not when it compresses the entire supply chain into one number.**\n\nA practical governance rule is to prohibit composite scores from hiding red-line conditions. A supplier should not receive a healthy total because strong price performance offsets a severe reliability breach on a critical component. **Some risks should act as gates, not weighted averages.** Defining those non-compensable conditions prevents the mathematics of the score from neutralizing events that management would never accept operationally.",
+      "seo_title": "Why Supplier Scorecards Miss Variability",
+      "seo_description": "How aggregation, severity, product mix and dependency can make supplier scorecards hide operational variability and risk.",
+      "seo_keywords": [
+        "supplier scorecard analytics",
+        "supplier scorecard",
+        "supplier variability",
+        "supplier risk metrics"
+      ],
+      "tags": [
+        "Supply Chain",
+        "Supplier Scorecard",
+        "Risk"
+      ]
+    },
+    "ca": {
+      "title": "Per què un scorecard de proveïdors pot ocultar variabilitat",
+      "excerpt": "Un scorecard pot semblar sa mentre l’operació pateix retards, urgències i buffers. Agregació, severitat i dependència solen explicar la diferència.",
+      "quick": [
+        "La mitjana suavitza extrems",
+        "La severitat importa",
+        "El score necessita context operatiu"
+      ],
+      "section_titles": [
+        "Com un scorecard perd senyal",
+        "La severitat desapareix en agregar",
+        "Dependència i mix distorsionen",
+        "Convertir el score en diagnòstic"
+      ],
+      "business_title": "Un bon scorecard no només classifica proveïdors: explica quin risc operatiu crea cadascun.",
+      "business_steps": [
+        "Score agregat",
+        "Risc ocult",
+        "Diagnòstic accionable"
+      ],
+      "body": "Els scorecards de proveïdors acostumen a buscar simplicitat: OTIF, qualitat, cost, lead time i potser una puntuació total. Aquesta síntesi facilita reunions i comparacions, però pot generar falsa sensació de control. **Un scorecard pot continuar en verd mentre l’operació segueix finançant variabilitat, urgències i excepcions.**\n\nEl problema no és mesurar. És comprimir fenòmens diferents en una puntuació que elimina informació necessària per decidir. **Quan el score substitueix el diagnòstic, una xifra ordenada pot amagar un procés inestable.**\n\n**Com un scorecard perd senyal**\nLa primera pèrdua apareix amb l’agregació. Un proveïdor pot tenir un OTIF anual acceptable i concentrar fallades en mesos crítics. També pot funcionar bé en productes simples i malament en una família essencial.\n\nPromitjar aquestes observacions barreja contexts amb economics diferents. **Un 95 % agregat no diu si el 5 % restant afecta comandes de baix impacte o components sense substitut.**\n\nUn altre problema són els pesos fixos. Donar 30 % a cost, 30 % a servei i 40 % a qualitat pot semblar objectiu, però aquests pesos rarament representen com canvia el risc segons producte i decisió.\n\n**La severitat desapareix en agregar**\nMoltes mètriques compten fallades però no severitat. Dos proveïdors poden fallar el 10 % de les entregues; un es retarda un dia i l’altre tres setmanes. La freqüència és igual i el cost operatiu no.\n\nPassa igual amb quantitat. Un short shipment petit no és equivalent a entregar només la meitat d’un component crític. **Comptar incidències sense mesurar mida fa que els extrems desapareguin dins la mitjana.**\n\nPercentils, distribució de retards i cost d’excepció donen una segona capa millor. No cal mostrar vint mètriques a la portada, però sí conservar drill-down quan el score canvia.\n\n**Dependència i mix distorsionen**\nEl score també depèn del mix assignat. Un proveïdor amb productes difícils pot semblar pitjor que un altre amb articles estables. Comparar-los sense context pot castigar qui suporta més complexitat.\n\nLa dependència afegeix una altra dimensió. **Un proveïdor amb score mitjà pot ser més arriscat que un amb score baix si concentra una part crítica de l’operació i no té substitut real.**\n\nPer això cal afegir exposició: despesa, volum, nombre de SKUs crítics, concentració per planta i temps necessari per substituir. Rendiment i dependència junts expliquen millor el risc.\n\nTambé hi ha efectes de ruta. El mateix proveïdor pot funcionar bé cap a una planta i malament cap a una altra per transport, duana o infraestructura. El score total amaga el node real.\n\n**Convertir el score en diagnòstic**\nUn scorecard útil hauria de funcionar en capes. A dalt, poques mètriques per prioritzar. A sota, distribució, tendència, severitat, mix i dependència per entendre la causa. **La portada serveix per detectar; el detall serveix per decidir.**\n\nLes mètriques també han d’activar accions. Més variabilitat pot portar a revisar safety stock. Una cua creixent de retards extrems pot activar sourcing alternatiu. Deteriorament de qualitat pot canviar inspecció o contracte.\n\nCal separar performance històric de risc futur. Un proveïdor pot haver complert bé i començar a mostrar deteriorament amb més dispersió, excepcions o dependència.\n\nLa tendència importa tant com el nivell. Un score de 80 baixant des de 95 explica una història diferent d’un 80 pujant des de 60.\n\nFinalment, qualsevol puntuació composta ha de permetre tornar als components. **Si ningú pot explicar per què el proveïdor té 73 punts ni quina decisió canvia en passar a 70, el score és més decoratiu que operatiu.**\n\nL’objectiu no és tenir el rànquing més elegant. És detectar on neix el risc, quant costa i quina resposta té sentit. **Un scorecard és bo quan redueix el temps fins al diagnòstic, no quan resumeix tota la cadena en una sola xifra.**\n\nUna regla pràctica de governance és impedir que un score compost amagui condicions de línia vermella. Un proveïdor no hauria d’obtenir una puntuació sana perquè un bon preu compensa una fallada greu de fiabilitat en un component crític. **Alguns riscos han de funcionar com a gates, no com a mitjanes ponderades.** Definir aquestes condicions evita que les matemàtiques del score neutralitzin esdeveniments que operacions mai acceptaria.",
+      "seo_title": "Per què fallen els supplier scorecards",
+      "seo_description": "Com agregació, severitat, mix i dependència poden fer que un scorecard de proveïdors amagui variabilitat i risc operatiu.",
+      "seo_keywords": [
+        "supplier scorecard analytics",
+        "supplier scorecard",
+        "supplier variability",
+        "supplier risk metrics"
+      ],
+      "tags": [
+        "Supply Chain",
+        "Supplier Scorecard",
+        "Risk"
+      ]
+    }
+  }
+}
