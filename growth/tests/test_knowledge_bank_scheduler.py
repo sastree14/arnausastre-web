@@ -103,7 +103,11 @@ def test_seed_releases_first_five_and_preserves_published_rows(tmp_path: Path, m
     assert datetime.fromisoformat(launch_rows[0]["scheduled_at"].replace("Z", "+00:00")).timestamp() <= datetime.now().timestamp() + 2
 
     assert len(later_rows) == 3
-    assert all(row["scheduled_at"] == "2030-01-01T09:00:00+01:00" for row in later_rows)
+    # The bank fixture deliberately carries a stale 2030 date for sequence 6.
+    # The seed must ignore it and resolve the canonical first post-launch slot
+    # from publication_strategy.
+    assert all(row["scheduled_at"] == "2026-10-07T09:00:00+02:00" for row in later_rows)
+    assert result["next_scheduled_at"] == "2026-10-07T09:00:00+02:00"
 
     published_at = "2026-10-03T12:00:00Z"
     for row in [row for row in rows if row["brief_id"] == "article-001"]:
