@@ -496,7 +496,11 @@ def main() -> int:
     if args.validate_only:
         apply_schedule(args.output, catalog)
         manifest = build_manifest(args.output, catalog)
-        print(json.dumps({"valid": manifest["valid"], "failed": manifest["failed"]}, indent=2))
+        print(json.dumps({
+            "valid": manifest["valid"],
+            "failed": manifest["failed"],
+            "failures": manifest["failures"],
+        }, indent=2, ensure_ascii=False))
         return 0 if manifest["failed"] == 0 else 1
 
     if not os.environ.get("OPENAI_API_KEY"):
