@@ -188,7 +188,7 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
   const items = useMemo<KnowledgeItem[]>(() => {
     const staticItems: KnowledgeItem[] = articles.map((article) => ({
       key: article.slug,
-      href: `/knowledge/${article.slug}`,
+      href: `/knowledge/${article.slug}/${lang}`,
       title: lang === 'en' ? article.titleEn : lang === 'ca' ? (article.titleCa || article.titleEs) : article.titleEs,
       excerpt: lang === 'en' ? article.excerptEn : lang === 'ca' ? (article.excerptCa || article.excerptEs) : article.excerptEs,
       areas: STATIC_AREAS[article.slug] || ['analytics'],
@@ -199,7 +199,7 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
       if (!item) return []
       return [{
         key,
-        href: `/knowledge/${key}`,
+        href: `/knowledge/${key}/${lang}`,
         title: item.title,
         excerpt: String(generatedMeta(item).excerpt || compactExcerpt(item.body)),
         areas: generatedAreas(item),
