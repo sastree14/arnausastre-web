@@ -88,9 +88,17 @@ def schedule_for(sequence: int, strategy: dict[str, Any]) -> str:
     tz = ZoneInfo(timezone_name)
     base = datetime.fromisoformat(str(strategy["start_local"])).replace(tzinfo=tz)
     cadence = [int(value) for value in strategy.get("cadence_days") or [3]]
+    initial_published = max(0, int(strategy.get("initial_published_articles") or 0))
+
+    # The initial families are released together by the scheduler seed. The
+    # configured start_local is therefore the first publication slot AFTER the
+    # launch set, so sequence initial_published + 1 must land exactly on base.
+    if sequence <= initial_published:
+        return base.isoformat()
+
     cursor = base
-    for idx in range(1, sequence):
-        cursor += timedelta(days=cadence[(idx - 1) % len(cadence)])
+    for idx in range(initial_published + 1, sequence):
+        cursor += timedelta(days=cadence[(idx - initial_published - 1) % len(cadence)])
     return cursor.isoformat()
 
 
