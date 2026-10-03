@@ -59,7 +59,9 @@ const COPY = {
     },
     empty: 'Todavía no hay análisis publicados en esta área.',
     emptyCta: 'Explorar todo',
-    finalTitle: '¿Buscas una idea, problema o decisión concreta?',
+    finalLabel: '¿TIENES ALGO CONCRETO EN MENTE?',
+    finalTitle: 'Comparte tu caso.',
+    finalBody: 'Si hay una decisión, un problema o una oportunidad que merece una segunda mirada, empecemos por ahí.',
     contact: 'Contacta con nosotros',
   },
   ca: {
@@ -81,7 +83,9 @@ const COPY = {
     },
     empty: 'Encara no hi ha anàlisis publicades en aquesta àrea.',
     emptyCta: 'Explorar-ho tot',
-    finalTitle: 'Busques una idea, problema o decisió concreta?',
+    finalLabel: 'TENS ALGUNA COSA CONCRETA EN MENT?',
+    finalTitle: 'Comparteix el teu cas.',
+    finalBody: 'Si hi ha una decisió, un problema o una oportunitat que mereix una segona mirada, comencem per aquí.',
     contact: 'Contacta amb nosaltres',
   },
   en: {
@@ -103,7 +107,9 @@ const COPY = {
     },
     empty: 'No analysis has been published in this area yet.',
     emptyCta: 'Explore all',
-    finalTitle: 'Looking for a specific idea, problem or decision?',
+    finalLabel: 'HAVE SOMETHING SPECIFIC IN MIND?',
+    finalTitle: 'Share your case.',
+    finalBody: 'If there is a decision, problem or opportunity worth a second look, start there.',
     contact: 'Contact us',
   },
 } as const
@@ -314,14 +320,16 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
         )}
       </section>
 
-      <section className="border-y border-[#AFC0CF] bg-[#E8EFF5]">
-        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] py-9 sm:w-[calc(100%_-_48px)] lg:py-10">
-          <div className="flex flex-col gap-6 border-l-4 border-[#0D1B2A] pl-6 md:flex-row md:items-center md:justify-between md:pl-8">
-            <h2 className="max-w-5xl text-[34px] leading-[1.05] text-slate-950 sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.finalTitle}</h2>
-            <Link href="/contact?intent=discovery" className="inline-flex shrink-0 items-center gap-3 bg-[#0D1B2A] px-7 py-4 text-[16px] font-semibold text-white transition hover:bg-[#13283C]">
-              {t.contact}<ArrowRight className="h-5 w-5" />
-            </Link>
+      <section className="border-y border-[#496C8A] bg-[#0D1B2A] text-white">
+        <div className="mx-auto grid w-[calc(100%_-_32px)] max-w-[1800px] gap-8 py-10 sm:w-[calc(100%_-_48px)] lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:py-12">
+          <div>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#7A7DFF]">{t.finalLabel}</p>
+            <h2 className="mt-3 max-w-4xl text-[36px] leading-[1.03] text-white sm:text-[44px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.finalTitle}</h2>
+            <p className="mt-4 max-w-3xl text-[17px] leading-7 text-[#D5E1EB]">{t.finalBody}</p>
           </div>
+          <Link href="/contact?intent=discovery" className="inline-flex shrink-0 items-center gap-3 bg-white px-7 py-4 text-[16px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">
+            {t.contact}<ArrowRight className="h-5 w-5" />
+          </Link>
         </div>
       </section>
     </>
