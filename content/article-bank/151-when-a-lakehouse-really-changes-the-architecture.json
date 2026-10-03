@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-151",
+  "sequence": 151,
+  "arc_id": "ARC-38",
+  "slug": "when-a-lakehouse-really-changes-the-architecture",
+  "scheduled_at": "2027-10-11T09:00:00+02:00",
+  "knowledge_area": "business_systems",
+  "cluster": "Cloud & Platforms",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "decision_guide",
+  "angle": "when to use databricks lakehouse",
+  "primary_keyword": "when to use databricks lakehouse",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-149",
+    "KB-150",
+    "KB-152"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cuándo un lakehouse cambia realmente la arquitectura",
+      "excerpt": "Un lakehouse aporta valor cuando unificar datos, engineering, analytics y ML reduce duplicación real. Si el problema es solo BI, puede añadir más complejidad que beneficio.",
+      "quick": [
+        "El lakehouse debe eliminar silos reales",
+        "ML y engineering cambian el fit",
+        "No todo warehouse necesita reemplazo"
+      ],
+      "section_titles": [
+        "Qué cambia de verdad con un lakehouse",
+        "Cuándo la unificación compra valor",
+        "Cuándo un warehouse sigue siendo suficiente",
+        "Cómo migrar sin convertir la arquitectura en un proyecto infinito"
+      ],
+      "business_title": "Un lakehouse merece la pena cuando reduce duplicación entre data lake, warehouse y ML y crea un modelo operativo más simple para workloads realmente diversos.",
+      "business_steps": [
+        "Silos actuales",
+        "Workloads diversos",
+        "Unificación útil"
+      ],
+      "body": "El término lakehouse suele aparecer como una evolución inevitable del data warehouse. Esa lectura es demasiado simple. **Un lakehouse cambia realmente la arquitectura cuando sustituye duplicación entre almacenamiento, ingeniería, analytics y machine learning por una capa de datos y governance más unificada.**\n\nSi una empresa solo necesita reporting estructurado, dashboards y algunas transformaciones SQL, un warehouse moderno puede seguir siendo perfectamente suficiente. **La pregunta no es si el lakehouse es más nuevo, sino si resuelve una fragmentación que hoy cuesta tiempo, dinero y coordinación.**\n\n**Qué cambia de verdad con un lakehouse**\nEn una arquitectura clásica, el data lake puede almacenar datos raw y semi-estructurados mientras el warehouse contiene modelos curados para BI.\n\nML puede añadir otra capa: features, notebooks, pipelines y copias adicionales para training.\n\n**El lakehouse intenta reducir esas fronteras permitiendo trabajar sobre una base de datos más compartida y gobernada.**\n\nEso puede simplificar movement entre storage y compute.\n\nTambién puede acercar data engineers, analytics engineers y data scientists a un mismo catálogo, permisos y activos.\n\nPlataformas como Databricks empujan especialmente esta idea mediante formatos abiertos, processing distribuido, SQL y tooling de ML dentro de un mismo ecosistema.\n\nEl valor no está en el nombre lakehouse; está en eliminar duplicaciones que ya existen.\n\n**Cuándo la unificación compra valor**\nEl primer caso es una organización donde BI, data engineering y ML trabajan sobre copias distintas de los mismos datos.\n\nSi cada equipo mantiene pipelines paralelos, **una capa compartida puede reducir reconciliación, latencia y inconsistencias.**\n\nEl segundo caso son datasets grandes o semi-estructurados donde mantener todo dentro de un warehouse tradicional resulta incómodo o costoso.\n\nEl tercero es cuando ML y data science son parte central de la plataforma y necesitan acceso directo a grandes volúmenes históricos.\n\nTambién puede ser útil en arquitecturas donde batch, streaming y analytics necesitan convivir sobre los mismos activos.\n\nLa governance unificada puede aportar valor si hoy existen catálogos y permisos separados.\n\nOtro driver es el deseo de trabajar con formatos abiertos y separar en mayor medida datos de una única engine.\n\nPero cada una de estas ventajas debe medirse contra complejidad operativa.\n\n**Cuándo un warehouse sigue siendo suficiente**\nSi el 90 % de los usuarios trabajan con SQL y dashboards, el problema quizá no necesita un lakehouse.\n\nUn warehouse gestionado puede ofrecer una experiencia más simple para analytics tradicional.\n\n**No merece la pena introducir Spark, notebooks, clusters o nuevos patterns si el negocio no utilizará esa capacidad.**\n\nTambién puede ser innecesario si ML es limitado y puede operar sobre extractos o tablas curadas sin duplicación problemática.\n\nOtra señal es un equipo pequeño sin skills de data engineering distribuido.\n\nLa arquitectura debe adaptarse a la organización y no al revés.\n\nTambién conviene revisar si el problema real es modeling, governance o calidad, no plataforma.\n\nMigrar a un lakehouse no arregla definiciones inconsistentes ni ownership difuso.\n\nSi la plataforma actual cumple SLA, coste y velocidad, cambiar por tendencia puede destruir más valor del que crea.\n\n**Cómo migrar sin convertir la arquitectura en un proyecto infinito**\nLa migración debería empezar por un workload concreto que hoy sufre fragmentación.\n\nPor ejemplo, un pipeline que copia datos del lake al warehouse y después a un entorno de ML.\n\n**El objetivo es demostrar que la nueva arquitectura elimina pasos, no simplemente que puede reproducirlos.**\n\nConviene medir coste, latencia, complejidad y experiencia de los equipos antes y después.\n\nNo hace falta migrar todos los workloads a la vez.\n\nUna coexistencia temporal puede ser más segura, con criterios claros sobre qué nuevo caso va al lakehouse y qué permanece en el warehouse.\n\nLa governance debe diseñarse desde el principio: catálogo, permisos, lineage, entornos y ownership.\n\nTambién hay que estandarizar cómo trabajan notebooks, jobs, SQL y production pipelines.\n\nSin estándares, una plataforma flexible puede convertirse rápidamente en fragmentación interna.\n\nEl coste debe modelarse con workloads reales. Compute distribuido puede ser muy eficiente en ciertos casos y caro si se deja sin control.\n\nAutoscaling, job clusters, serverless y políticas de recursos ayudan, pero necesitan disciplina.\n\nLa observability debe cubrir pipelines, jobs, calidad y costes.\n\nTambién conviene definir qué datos permanecen en formatos abiertos y qué metadatos o features dependen de la plataforma.\n\nLa estrategia de salida importa, especialmente en programas de varios años.\n\nNo todos los workloads deben converger en un único motor. Una arquitectura bien diseñada puede utilizar varias engines sobre una capa de datos común.\n\nEl éxito debería medirse por reducción de duplicación, lead time, incidents, coste y velocidad de entrega de casos de uso.\n\nSi el lakehouse solo añade otra plataforma junto a lake y warehouse, el proyecto ha fallado en su objetivo principal.\n\n**Un lakehouse cambia la arquitectura cuando reduce fronteras reales entre datos, analytics y ML.** Si no elimina duplicación, no mejora governance o no simplifica el delivery, probablemente hemos añadido una categoría nueva sin resolver un problema nuevo.",
+      "seo_title": "Cuándo usar un lakehouse o Databricks",
+      "seo_description": "Cuándo un lakehouse aporta valor frente a un warehouse según duplicación, data engineering, ML, formatos abiertos, governance y coste operativo.",
+      "seo_keywords": [
+        "when to use databricks lakehouse",
+        "lakehouse vs warehouse",
+        "Databricks lakehouse",
+        "data lakehouse"
+      ],
+      "tags": [
+        "Databricks",
+        "Lakehouse",
+        "Data Architecture"
+      ]
+    },
+    "en": {
+      "title": "When a lakehouse really changes the architecture",
+      "excerpt": "A lakehouse creates value when unifying data, engineering, analytics and ML removes real duplication. If the problem is only BI, it can add more complexity than benefit.",
+      "quick": [
+        "Lakehouse should remove real silos",
+        "ML and engineering change the fit",
+        "Not every warehouse needs replacement"
+      ],
+      "section_titles": [
+        "What a lakehouse actually changes",
+        "When unification buys value",
+        "When a warehouse is still enough",
+        "How to migrate without creating an endless program"
+      ],
+      "business_title": "A lakehouse is worthwhile when it reduces duplication across data lake, warehouse and ML and creates a simpler operating model for genuinely diverse workloads.",
+      "business_steps": [
+        "Current silos",
+        "Diverse workloads",
+        "Useful unification"
+      ],
+      "body": "The term lakehouse is often presented as the inevitable evolution of the data warehouse. That framing is too simplistic. **A lakehouse materially changes architecture when it replaces duplication across storage, engineering, analytics and machine learning with a more shared and governed data layer.**\n\nIf a company mainly needs structured reporting, dashboards and SQL transformations, a modern warehouse can remain completely sufficient. **The question is not whether lakehouse is newer, but whether it removes fragmentation that currently costs time, money and coordination.**\n\n**What a lakehouse actually changes**\nIn a traditional architecture, the data lake may store raw and semi-structured data while the warehouse contains curated BI models.\n\nMachine learning can add another layer: features, notebooks, pipelines and additional copies for training.\n\n**The lakehouse model attempts to reduce those boundaries by allowing more workloads to operate on a shared governed data foundation.**\n\nThat can simplify movement between storage and compute.\n\nIt can also bring data engineers, analytics engineers and data scientists closer to one catalogue, permission model and set of assets.\n\nPlatforms such as Databricks push this idea through open data formats, distributed processing, SQL and ML tooling inside one ecosystem.\n\nThe value is not the lakehouse label itself; it is the duplication that disappears.\n\n**When unification buys value**\nThe first strong case is an organization where BI, data engineering and ML work from different copies of the same data.\n\nWhen each team maintains parallel pipelines, **a shared layer can reduce reconciliation, latency and inconsistency.**\n\nThe second case is very large or semi-structured datasets that are awkward or expensive to keep entirely inside a conventional warehouse pattern.\n\nThe third is when ML and data science are central to the platform and need direct access to large historical datasets.\n\nIt can also fit architectures where batch, streaming and analytics need to coexist around the same assets.\n\nUnified governance can create value when catalogues and permissions are fragmented today.\n\nAnother driver is the desire to use open formats and separate data more clearly from one execution engine.\n\nEvery advantage still needs to be compared with operating complexity.\n\n**When a warehouse is still enough**\nIf 90% of users work through SQL and dashboards, the problem may not need lakehouse architecture.\n\nA managed warehouse can provide a simpler experience for traditional analytics.\n\n**There is little value in introducing Spark, notebooks, clusters or new patterns when the business will not use those capabilities.**\n\nA lakehouse may also be unnecessary when ML use is limited and can work effectively from curated tables without harmful duplication.\n\nA small team without distributed-data-engineering skills is another signal to be cautious.\n\nArchitecture should fit the organization rather than forcing the organization to fit the architecture.\n\nIt is also worth checking whether the real problem is modeling, governance or data quality rather than platform.\n\nMigrating to a lakehouse does not fix inconsistent metric definitions or unclear ownership.\n\nIf the current platform meets SLA, cost and delivery needs, changing for trend reasons can destroy more value than it creates.\n\n**How to migrate without creating an endless program**\nMigration should begin with one workload where fragmentation is already painful.\n\nFor example, a pipeline that copies data from a lake into a warehouse and then into an ML environment.\n\n**The objective is proving that the new architecture removes steps, not merely that it can reproduce them.**\n\nMeasure cost, latency, complexity and team experience before and after.\n\nThere is no need to migrate every workload at once.\n\nTemporary coexistence can be safer, with explicit criteria for which new workloads go to the lakehouse and which remain in the warehouse.\n\nGovernance should be designed early: catalogue, permissions, lineage, environments and ownership.\n\nTeams also need standards for notebooks, jobs, SQL and production pipelines.\n\nWithout standards, a flexible platform can quickly create a new form of internal fragmentation.\n\nCost should be modeled using realistic workloads. Distributed compute can be very efficient in some cases and expensive when left uncontrolled.\n\nAutoscaling, job clusters, serverless options and resource policies help but still require discipline.\n\nObservability should cover pipelines, jobs, data quality and cost.\n\nIt is also useful to define which data remains in open formats and which metadata or capabilities depend on the platform.\n\nExit strategy matters in multi-year programs.\n\nNot every workload has to converge on one execution engine. A strong architecture can use several engines over a common data foundation.\n\nSuccess should be measured through reduced duplication, lead time, incidents, cost and use-case delivery speed.\n\nIf the lakehouse simply becomes another platform next to the lake and warehouse, the program has missed its central objective.\n\n**A lakehouse changes architecture when it removes real boundaries between data, analytics and ML.** If it does not reduce duplication, improve governance or simplify delivery, the organization may have added a new category without solving a new problem.",
+      "seo_title": "When to Use a Lakehouse or Databricks",
+      "seo_description": "When lakehouse architecture creates value compared with a warehouse based on duplication, engineering, ML, open formats, governance and operating cost.",
+      "seo_keywords": [
+        "when to use databricks lakehouse",
+        "lakehouse vs warehouse",
+        "Databricks lakehouse",
+        "data lakehouse"
+      ],
+      "tags": [
+        "Databricks",
+        "Lakehouse",
+        "Data Architecture"
+      ]
+    },
+    "ca": {
+      "title": "Quan un lakehouse canvia realment l’arquitectura",
+      "excerpt": "Un lakehouse aporta valor quan unificar dades, engineering, analytics i ML redueix duplicació real. Si el problema és només BI, pot afegir més complexitat que benefici.",
+      "quick": [
+        "El lakehouse ha d’eliminar silos reals",
+        "ML i engineering canvien l’encaix",
+        "No tot warehouse necessita substitució"
+      ],
+      "section_titles": [
+        "Què canvia realment amb un lakehouse",
+        "Quan la unificació compra valor",
+        "Quan un warehouse continua sent suficient",
+        "Com migrar sense convertir-ho en un programa infinit"
+      ],
+      "business_title": "Un lakehouse val la pena quan redueix duplicació entre data lake, warehouse i ML i crea un model operatiu més simple per workloads realment diversos.",
+      "business_steps": [
+        "Silos actuals",
+        "Workloads diversos",
+        "Unificació útil"
+      ],
+      "body": "El terme lakehouse sovint es presenta com una evolució inevitable del data warehouse. Aquesta lectura és massa simple. **Un lakehouse canvia realment l’arquitectura quan substitueix duplicació entre storage, engineering, analytics i machine learning per una capa de dades més compartida i governada.**\n\nSi una empresa necessita principalment reporting estructurat, dashboards i transformacions SQL, un warehouse modern pot continuar sent suficient. **La pregunta no és si el lakehouse és més nou, sinó si resol una fragmentació que avui costa temps, diners i coordinació.**\n\n**Què canvia realment amb un lakehouse**\nEn una arquitectura clàssica, el data lake pot guardar dades raw i semi-estructurades mentre el warehouse conté models curats per BI.\n\nML pot afegir una altra capa: features, notebooks, pipelines i còpies per training.\n\n**El model lakehouse intenta reduir aquestes fronteres permetent que més workloads operin sobre una base compartida i governada.**\n\nAixò pot simplificar movement entre storage i compute.\n\nTambé pot acostar data engineers, analytics engineers i data scientists a un mateix catàleg, permisos i actius.\n\nPlataformes com Databricks impulsen aquesta idea amb formats oberts, processament distribuït, SQL i tooling de ML dins d’un mateix ecosistema.\n\nEl valor no és el nom lakehouse; és la duplicació que desapareix.\n\n**Quan la unificació compra valor**\nEl primer cas és una organització on BI, data engineering i ML treballen sobre còpies diferents de les mateixes dades.\n\nSi cada equip manté pipelines paral·leles, **una capa compartida pot reduir reconciliació, latència i inconsistències.**\n\nEl segon cas són datasets molt grans o semi-estructurats que resulten incòmodes o cars dins d’un patró de warehouse convencional.\n\nEl tercer és quan ML i data science són centrals i necessiten accés directe a grans històrics.\n\nTambé pot encaixar quan batch, streaming i analytics han de conviure sobre els mateixos actius.\n\nUna governance unificada pot aportar valor si avui catàlegs i permisos estan fragmentats.\n\nUn altre driver és voler formats oberts i més separació entre dades i una única engine.\n\nTotes aquestes avantatges s’han de comparar amb complexitat operativa.\n\n**Quan un warehouse continua sent suficient**\nSi el 90 % dels usuaris treballa amb SQL i dashboards, el problema pot no necessitar un lakehouse.\n\nUn warehouse gestionat pot donar una experiència més simple per analytics tradicional.\n\n**No té gaire sentit introduir Spark, notebooks, clusters o nous patterns si el negoci no utilitzarà aquella capacitat.**\n\nTambé pot ser innecessari si ML és limitat i pot operar sobre taules curades sense duplicació problemàtica.\n\nUn equip petit sense skills de data engineering distribuït és un altre senyal.\n\nL’arquitectura ha d’encaixar amb l’organització i no al revés.\n\nTambé convé comprovar si el problema real és modeling, governance o qualitat i no plataforma.\n\nMigrar a lakehouse no arregla definicions inconsistents ni ownership difús.\n\nSi la plataforma actual compleix SLA, cost i velocitat, canviar per tendència pot destruir més valor del que crea.\n\n**Com migrar sense convertir-ho en un programa infinit**\nLa migració ha de començar per un workload on la fragmentació ja fa mal.\n\nPer exemple, una pipeline que copia dades del lake al warehouse i després a un entorn de ML.\n\n**L’objectiu és demostrar que la nova arquitectura elimina passos, no simplement que els pot reproduir.**\n\nCal mesurar cost, latència, complexitat i experiència dels equips abans i després.\n\nNo fa falta migrar tots els workloads alhora.\n\nUna coexistència temporal pot ser més segura, amb criteris explícits sobre què va al lakehouse i què continua al warehouse.\n\nLa governance s’ha de dissenyar des del principi: catàleg, permisos, lineage, entorns i ownership.\n\nTambé cal estandarditzar com treballen notebooks, jobs, SQL i production pipelines.\n\nSense estàndards, una plataforma flexible pot crear ràpidament una nova fragmentació interna.\n\nEl cost s’ha de modelar amb workloads reals. Compute distribuït pot ser molt eficient en alguns casos i car sense control.\n\nAutoscaling, job clusters, serverless i resource policies ajuden, però necessiten disciplina.\n\nL’observability ha de cobrir pipelines, jobs, qualitat i costos.\n\nTambé convé definir quines dades queden en formats oberts i quines capacitats depenen de la plataforma.\n\nL’estratègia de sortida importa en programes de diversos anys.\n\nNo tots els workloads han de convergir en una única engine. Una bona arquitectura pot utilitzar diverses engines sobre una base comuna.\n\nL’èxit s’ha de mesurar per reducció de duplicació, lead time, incidents, cost i velocitat de delivery.\n\nSi el lakehouse només afegeix una altra plataforma al costat del lake i warehouse, el projecte ha fallat en l’objectiu principal.\n\n**Un lakehouse canvia l’arquitectura quan redueix fronteres reals entre dades, analytics i ML.** Si no elimina duplicació, no millora governance o no simplifica delivery, probablement hem afegit una categoria nova sense resoldre un problema nou.",
+      "seo_title": "Quan utilitzar un lakehouse o Databricks",
+      "seo_description": "Quan un lakehouse aporta valor davant un warehouse segons duplicació, data engineering, ML, formats oberts, governance i cost operatiu.",
+      "seo_keywords": [
+        "when to use databricks lakehouse",
+        "lakehouse vs warehouse",
+        "Databricks lakehouse",
+        "data lakehouse"
+      ],
+      "tags": [
+        "Databricks",
+        "Lakehouse",
+        "Data Architecture"
+      ]
+    }
+  }
+}
