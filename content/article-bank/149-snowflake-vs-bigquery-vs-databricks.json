@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-149",
+  "sequence": 149,
+  "arc_id": "ARC-38",
+  "slug": "snowflake-vs-bigquery-vs-databricks",
+  "scheduled_at": "2027-10-06T09:00:00+02:00",
+  "knowledge_area": "business_systems",
+  "cluster": "Cloud & Platforms",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "compare",
+  "angle": "snowflake vs bigquery vs databricks",
+  "primary_keyword": "snowflake vs bigquery vs databricks",
+  "search_intent": "commercial_investigation",
+  "freshness": "review_180d",
+  "related_case": "",
+  "related_specs": [
+    "KB-150",
+    "KB-151",
+    "KB-152"
+  ],
+  "variants": {
+    "es": {
+      "title": "Snowflake vs BigQuery vs Databricks",
+      "excerpt": "Las tres plataformas pueden soportar analytics moderno, pero parten de modelos operativos distintos: warehouse gestionado, analytics serverless y lakehouse orientado a datos y ML.",
+      "quick": [
+        "Snowflake prioriza experiencia de warehouse",
+        "BigQuery prioriza serverless analytics",
+        "Databricks prioriza lakehouse y engineering"
+      ],
+      "section_titles": [
+        "Snowflake: warehouse-first y operación gestionada",
+        "BigQuery: analytics serverless dentro de GCP",
+        "Databricks: lakehouse, engineering y ML",
+        "Elige por workload y operating model"
+      ],
+      "business_title": "La plataforma correcta depende de qué trabajo domina: BI y SQL, análisis serverless, o ingeniería y ML sobre una capa de datos más flexible.",
+      "business_steps": [
+        "Workload dominante",
+        "Modelo operativo",
+        "Governance y coste"
+      ],
+      "body": "Snowflake, BigQuery y Databricks suelen aparecer en la misma shortlist porque las tres pueden almacenar, procesar y servir grandes volúmenes de datos. Eso no significa que sean equivalentes. **Cada una parte de una filosofía operativa distinta y optimiza una experiencia diferente para equipos de datos.**\n\nSnowflake suele sentirse warehouse-first y muy gestionado. BigQuery empuja hacia analytics serverless dentro del ecosistema Google Cloud. Databricks parte de una visión lakehouse con fuerte foco en data engineering, ciencia de datos y machine learning. **La mejor elección depende menos de la etiqueta de producto y más del workload dominante y del equipo que lo va a operar.**\n\n**Snowflake: warehouse-first y operación gestionada**\nSnowflake resulta natural cuando el centro de gravedad es BI, SQL, reporting y data sharing con una experiencia muy gestionada.\n\nSeparar storage y compute facilita aislar workloads y escalar recursos según consumidores distintos.\n\n**Su atractivo principal suele ser reducir fricción operativa para equipos analíticos que quieren trabajar sobre datos estructurados y gobernados.**\n\nTambién puede integrarse con múltiples clouds y herramientas de BI, lo que resulta útil en empresas con ecosistemas heterogéneos.\n\nLa experiencia SQL reduce barreras para analysts y analytics engineers.\n\nEl coste debe gobernarse bien: warehouses, concurrencia, auto-suspend y patrones de uso influyen mucho.\n\nTambién conviene evaluar cómo encaja ML, data engineering avanzado y formatos abiertos respecto a necesidades futuras.\n\n**BigQuery: analytics serverless dentro de GCP**\nBigQuery destaca por un operating model donde el usuario puede ejecutar analytics a gran escala sin administrar clusters de forma tradicional.\n\nEso puede simplificar capacidad y acelerar experimentación.\n\n**El valor aparece cuando la empresa quiere elasticidad y poca administración de infraestructura, especialmente si ya opera dentro de Google Cloud.**\n\nEl modelo de consumo exige disciplina en particionado, clustering, diseño de consultas y control de gasto.\n\nLa proximidad con otros servicios de GCP puede simplificar pipelines de datos, machine learning y aplicaciones.\n\nTambién puede ser atractivo para workloads muy variables donde provisionar capacidad fija sería poco eficiente.\n\nEl trade-off aparece si el resto del ecosistema empresarial vive fuera de GCP o si la organización quiere un modelo comercial y de governance distinto.\n\n**Databricks: lakehouse, engineering y ML**\nDatabricks suele encajar bien cuando el problema no termina en reporting.\n\nData engineering complejo, notebooks, pipelines sobre datos semi-estructurados, machine learning y workloads de ciencia de datos pueden formar parte central de la arquitectura.\n\n**El lakehouse busca acercar la flexibilidad del data lake a capacidades de gestión y analytics tradicionalmente asociadas al warehouse.**\n\nEsto puede reducir duplicación entre plataformas separadas para engineering, analytics y ML.\n\nEl coste es una superficie más amplia de conceptos y operación.\n\nEquipos con experiencia en Spark, Python y data engineering pueden aprovechar mejor esa flexibilidad.\n\nPara un negocio centrado casi exclusivamente en dashboards SQL, parte de esa potencia puede ser innecesaria.\n\nTambién hay que revisar governance, serving SQL, experiencia de analistas y cómo se distribuyen responsabilidades entre equipos.\n\n**Elige por workload y operating model**\nLa primera pregunta es qué porcentaje del valor viene de BI y SQL frente a engineering y ML.\n\nSi reporting y analytics estructurado dominan, una experiencia warehouse-first puede ser muy eficiente.\n\nSi el negocio está profundamente en GCP y quiere serverless analytics, BigQuery puede reducir fricción.\n\nSi data engineering, ML y formatos abiertos son centrales, un enfoque lakehouse puede encajar mejor.\n\n**No compares solo benchmarks; compara el ciclo completo desde ingestion hasta consumo y mantenimiento.**\n\nLa segunda pregunta es quién opera la plataforma.\n\nUn equipo pequeño puede valorar servicios muy gestionados y estándares simples.\n\nUn equipo grande de data engineering puede preferir mayor control y flexibilidad.\n\nLa tercera pregunta es governance. Cómo se gestionan catálogos, permisos, lineage, datos sensibles y acceso de diferentes equipos?\n\nLa cuarta es coste. Hay que modelar compute, storage, concurrency, transferencia, licencias y administración con workloads reales.\n\nLa quinta es integración. Qué BI, orchestration, ML, cloud y herramientas externas existen ya?\n\nTambién conviene revisar portabilidad y formatos de datos.\n\nUna plataforma que ofrece mucha productividad puede justificar lock-in, pero la dependencia debe ser consciente.\n\nLa decisión puede ser híbrida, aunque duplicar plataformas tiene coste.\n\nPor ejemplo, algunas empresas usan un warehouse para BI y un lakehouse para ML, pero deben justificar por qué dos sistemas son mejores que uno.\n\nLa duplicación de datos, seguridad y skills puede reducir el beneficio.\n\nUna PoC debería utilizar un flujo real con volumen representativo.\n\nMide tiempo de ingestión, transformación, consulta, coste, experiencia de desarrollo y administración.\n\nIncluye un escenario de crecimiento y uno de fallo.\n\nTambién conviene comprobar how easy is onboarding for analysts and engineers.\n\nLa arquitectura correcta debe poder mantenerse durante años, no solo ganar una demo.\n\nComo estas plataformas evolucionan rápidamente, comparativas de features específicas deben revisarse periódicamente.\n\nPero el criterio central sigue siendo estable: workload, equipo, governance y economics.\n\n**Snowflake, BigQuery y Databricks no compiten únicamente por ser “la plataforma de datos”.** Representan formas distintas de organizar analytics. Elegir bien significa identificar qué modelo operativo reduce más fricción para la forma real en que la empresa transforma datos en decisiones.",
+      "seo_title": "Snowflake vs BigQuery vs Databricks",
+      "seo_description": "Comparación entre Snowflake, BigQuery y Databricks según BI, serverless analytics, lakehouse, ML, governance y operating model.",
+      "seo_keywords": [
+        "snowflake vs bigquery vs databricks",
+        "data platform comparison",
+        "Snowflake BigQuery Databricks",
+        "lakehouse vs warehouse"
+      ],
+      "tags": [
+        "Snowflake",
+        "BigQuery",
+        "Databricks"
+      ]
+    },
+    "en": {
+      "title": "Snowflake vs BigQuery vs Databricks",
+      "excerpt": "All three platforms can support modern analytics, but they begin from different operating models: managed warehouse, serverless analytics and lakehouse-oriented engineering and ML.",
+      "quick": [
+        "Snowflake emphasizes warehouse experience",
+        "BigQuery emphasizes serverless analytics",
+        "Databricks emphasizes lakehouse and engineering"
+      ],
+      "section_titles": [
+        "Snowflake: warehouse-first and managed operations",
+        "BigQuery: serverless analytics inside GCP",
+        "Databricks: lakehouse, engineering and ML",
+        "Choose by workload and operating model"
+      ],
+      "business_title": "The right platform depends on which work dominates: BI and SQL, serverless analysis, or engineering and ML over a more flexible data layer.",
+      "business_steps": [
+        "Dominant workload",
+        "Operating model",
+        "Governance and cost"
+      ],
+      "body": "Snowflake, BigQuery and Databricks often appear on the same shortlist because all three can store, process and serve large volumes of data. That does not make them equivalent. **Each platform begins from a different operating philosophy and optimizes a different experience for data teams.**\n\nSnowflake generally feels warehouse-first and highly managed. BigQuery pushes toward serverless analytics inside Google Cloud. Databricks begins from a lakehouse perspective with strong emphasis on data engineering, data science and machine learning. **The strongest fit depends less on category labels and more on the dominant workload and the team operating it.**\n\n**Snowflake: warehouse-first and managed operations**\nSnowflake is a natural fit when the center of gravity is BI, SQL, reporting and data sharing with a highly managed experience.\n\nSeparating storage and compute makes it easier to isolate workloads and scale resources for different consumers.\n\n**Its main attraction is often reduced operational friction for analytical teams working with structured and governed data.**\n\nIt can also integrate across clouds and BI ecosystems, which can help companies with heterogeneous estates.\n\nThe SQL experience lowers barriers for analysts and analytics engineers.\n\nCost still needs governance: warehouses, concurrency, auto-suspend and workload patterns materially affect spend.\n\nTeams should also evaluate how future ML, advanced engineering and open-format requirements fit the architecture.\n\n**BigQuery: serverless analytics inside GCP**\nBigQuery stands out through an operating model where teams can run large analytical workloads without managing clusters in the traditional way.\n\nThat can simplify capacity management and accelerate experimentation.\n\n**The value is strongest when the organization wants elasticity and minimal infrastructure administration, particularly when it already operates on Google Cloud.**\n\nConsumption economics require discipline around partitioning, clustering, query design and cost controls.\n\nProximity to other GCP services can simplify data pipelines, machine learning and application integration.\n\nIt can also fit highly variable workloads where fixed capacity would be inefficient.\n\nThe trade-off appears when the broader enterprise ecosystem sits outside GCP or the organization prefers a different governance or commercial model.\n\n**Databricks: lakehouse, engineering and ML**\nDatabricks often fits when the problem extends well beyond reporting.\n\nComplex data engineering, notebooks, semi-structured data pipelines, machine learning and data-science workflows can all be central to the architecture.\n\n**The lakehouse model aims to combine data-lake flexibility with management and analytical capabilities historically associated with warehouses.**\n\nThat can reduce duplication between separate engineering, analytics and ML platforms.\n\nThe cost is a broader conceptual and operational surface.\n\nTeams with Spark, Python and data-engineering experience can exploit the flexibility more effectively.\n\nFor businesses focused almost entirely on SQL dashboards, part of that capability may be unnecessary.\n\nGovernance, SQL serving, analyst experience and team responsibilities still need explicit evaluation.\n\n**Choose by workload and operating model**\nThe first question is how much business value comes from BI and SQL compared with engineering and ML.\n\nIf structured reporting dominates, a warehouse-first experience can be highly efficient.\n\nIf the company is deeply embedded in GCP and values serverless analysis, BigQuery can reduce friction.\n\nIf engineering, ML and open data patterns are central, a lakehouse approach may fit better.\n\n**Do not compare only benchmarks; compare the full path from ingestion to consumption and maintenance.**\n\nThe second question is who operates the platform.\n\nA small team may value managed services and simpler standards.\n\nA large engineering organization may prefer greater flexibility and control.\n\nThe third question is governance: catalogues, permissions, lineage, sensitive data and access across teams.\n\nThe fourth is economics. Model compute, storage, concurrency, transfer, licensing and administration using realistic workloads.\n\nThe fifth is integration. Which BI, orchestration, ML, cloud and external tools already exist?\n\nPortability and data formats matter as well.\n\nA highly productive platform can justify lock-in, but dependency should be explicit.\n\nHybrid architecture is possible, although every additional platform creates cost.\n\nSome companies use a warehouse for BI and a lakehouse for ML, but they should prove that two systems create more value than one.\n\nDuplicated data, security and skills can reduce the benefit.\n\nA proof of concept should use a real flow and representative volume.\n\nMeasure ingestion time, transformation, query performance, cost, developer experience and administration.\n\nInclude a growth scenario and a failure scenario.\n\nAnalyst and engineer onboarding should also be tested.\n\nThe right platform must be maintainable for years rather than simply win a demo.\n\nBecause these products evolve quickly, detailed feature comparisons need periodic review.\n\nBut the core selection criteria remain stable: workload, team, governance and economics.\n\n**Snowflake, BigQuery and Databricks are not merely competing to be “the data platform”.** They represent different ways of organizing analytics. Good selection means choosing the operating model that creates the least friction between raw data and business decisions.",
+      "seo_title": "Snowflake vs BigQuery vs Databricks",
+      "seo_description": "Snowflake, BigQuery and Databricks compared across BI, serverless analytics, lakehouse, ML, governance and operating model.",
+      "seo_keywords": [
+        "snowflake vs bigquery vs databricks",
+        "data platform comparison",
+        "Snowflake BigQuery Databricks",
+        "lakehouse vs warehouse"
+      ],
+      "tags": [
+        "Snowflake",
+        "BigQuery",
+        "Databricks"
+      ]
+    },
+    "ca": {
+      "title": "Snowflake vs BigQuery vs Databricks",
+      "excerpt": "Les tres plataformes poden suportar analytics modern, però parteixen de models diferents: warehouse gestionat, analytics serverless i lakehouse orientat a engineering i ML.",
+      "quick": [
+        "Snowflake prioritza experiència de warehouse",
+        "BigQuery prioritza serverless analytics",
+        "Databricks prioritza lakehouse i engineering"
+      ],
+      "section_titles": [
+        "Snowflake: warehouse-first i operació gestionada",
+        "BigQuery: analytics serverless dins de GCP",
+        "Databricks: lakehouse, engineering i ML",
+        "Tria per workload i model operatiu"
+      ],
+      "business_title": "La plataforma correcta depèn de quin treball domina: BI i SQL, anàlisi serverless, o engineering i ML sobre una capa de dades més flexible.",
+      "business_steps": [
+        "Workload dominant",
+        "Model operatiu",
+        "Governance i cost"
+      ],
+      "body": "Snowflake, BigQuery i Databricks solen aparèixer a la mateixa shortlist perquè les tres poden emmagatzemar, processar i servir grans volums de dades. Això no significa que siguin equivalents. **Cada plataforma parteix d’una filosofia operativa diferent i optimitza una experiència distinta pels equips de dades.**\n\nSnowflake acostuma a sentir-se warehouse-first i molt gestionat. BigQuery empeny cap a analytics serverless dins de Google Cloud. Databricks parteix d’una visió lakehouse amb molt focus en data engineering, data science i machine learning. **La millor opció depèn menys de l’etiqueta i més del workload dominant i de l’equip que l’operarà.**\n\n**Snowflake: warehouse-first i operació gestionada**\nSnowflake encaixa naturalment quan el centre de gravetat és BI, SQL, reporting i data sharing amb una experiència molt managed.\n\nSeparar storage i compute facilita aïllar workloads i escalar recursos segons consumidors diferents.\n\n**El seu atractiu principal acostuma a ser reduir fricció operativa per equips analítics que treballen amb dades estructurades i governades.**\n\nTambé pot integrar-se amb múltiples clouds i eines BI, útil en empreses amb ecosistemes heterogenis.\n\nL’experiència SQL redueix barreres per analysts i analytics engineers.\n\nEl cost necessita governance: warehouses, concurrency, auto-suspend i patrons d’ús influeixen molt.\n\nTambé convé revisar com encaixen ML, engineering avançat i formats oberts amb necessitats futures.\n\n**BigQuery: analytics serverless dins de GCP**\nBigQuery destaca per un operating model on l’equip pot executar analytics a gran escala sense administrar clusters de forma tradicional.\n\nAixò simplifica capacitat i accelera experimentació.\n\n**El valor és especialment fort quan l’empresa vol elasticitat i poca administració d’infraestructura, sobretot si ja opera dins de Google Cloud.**\n\nEls economics de consum exigeixen disciplina en particionat, clustering, disseny de queries i control de despesa.\n\nLa proximitat amb altres serveis GCP pot simplificar pipelines, machine learning i aplicacions.\n\nTambé pot encaixar amb workloads molt variables on provisionar capacitat fixa seria poc eficient.\n\nEl trade-off apareix si la resta de l’ecosistema viu fora de GCP o si l’organització vol un altre model comercial o de governance.\n\n**Databricks: lakehouse, engineering i ML**\nDatabricks acostuma a encaixar quan el problema va molt més enllà de reporting.\n\nData engineering complex, notebooks, pipelines sobre dades semi-estructurades, machine learning i workflows de data science poden ser centrals.\n\n**El model lakehouse intenta combinar flexibilitat de data lake amb capacitats de gestió i analytics tradicionalment associades al warehouse.**\n\nAixò pot reduir duplicació entre plataformes separades per engineering, analytics i ML.\n\nEl cost és una superfície conceptual i operativa més àmplia.\n\nEquips amb experiència Spark, Python i data engineering poden aprofitar millor aquesta flexibilitat.\n\nPer un negoci centrat gairebé exclusivament en dashboards SQL, part d’aquesta potència pot ser innecessària.\n\nGovernance, serving SQL, experiència d’analistes i responsabilitats dels equips també s’han d’avaluar.\n\n**Tria per workload i model operatiu**\nLa primera pregunta és quin percentatge del valor ve de BI i SQL davant engineering i ML.\n\nSi reporting estructurat domina, una experiència warehouse-first pot ser molt eficient.\n\nSi el negoci està profundament dins GCP i vol serverless analytics, BigQuery pot reduir fricció.\n\nSi engineering, ML i formats oberts són centrals, un lakehouse pot encaixar millor.\n\n**No comparis només benchmarks; compara tot el camí des d’ingestion fins a consum i manteniment.**\n\nLa segona pregunta és qui opera la plataforma.\n\nUn equip petit pot valorar serveis molt managed i estàndards simples.\n\nUn equip gran de data engineering pot preferir més control i flexibilitat.\n\nLa tercera pregunta és governance: catàlegs, permisos, lineage, dades sensibles i accés entre equips.\n\nLa quarta és cost. Cal modelar compute, storage, concurrency, transferència, llicències i administració amb workloads reals.\n\nLa cinquena és integració. Quin BI, orchestration, ML, cloud i eines externes existeixen?\n\nLa portabilitat i els formats també importen.\n\nUna plataforma molt productiva pot justificar lock-in, però la dependència ha de ser conscient.\n\nL’arquitectura híbrida és possible, encara que cada plataforma extra té cost.\n\nAlgunes empreses utilitzen warehouse per BI i lakehouse per ML, però han de justificar per què dos sistemes creen més valor que un.\n\nDuplicació de dades, seguretat i skills pot reduir el benefici.\n\nUna PoC ha d’utilitzar un flux real i volum representatiu.\n\nMesura ingestió, transformació, consulta, cost, experiència de desenvolupament i administració.\n\nInclou un escenari de creixement i un de fallada.\n\nTambé convé provar onboarding d’analistes i engineers.\n\nLa plataforma correcta s’ha de mantenir durant anys i no només guanyar una demo.\n\nCom que aquestes plataformes evolucionen ràpid, les comparatives de features concretes s’han de revisar.\n\nPerò els criteris centrals es mantenen: workload, equip, governance i economics.\n\n**Snowflake, BigQuery i Databricks no competeixen només per ser “la plataforma de dades”.** Representen formes diferents d’organitzar analytics. Triar bé és identificar quin model operatiu redueix més fricció entre dades i decisions empresarials.",
+      "seo_title": "Snowflake vs BigQuery vs Databricks",
+      "seo_description": "Comparació entre Snowflake, BigQuery i Databricks segons BI, serverless analytics, lakehouse, ML, governance i model operatiu.",
+      "seo_keywords": [
+        "snowflake vs bigquery vs databricks",
+        "data platform comparison",
+        "Snowflake BigQuery Databricks",
+        "lakehouse vs warehouse"
+      ],
+      "tags": [
+        "Snowflake",
+        "BigQuery",
+        "Databricks"
+      ]
+    }
+  }
+}
