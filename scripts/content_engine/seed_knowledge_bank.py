@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import argparse
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from growth.src.config import load_config
 from growth.src.storage import get_store
@@ -46,6 +47,28 @@ def content_id(spec_id: str, language: str) -> str:
 
 def approval_id(spec_id: str, language: str) -> str:
     return f"approval_knowledge_{spec_id.lower().replace('-', '_')}_{language}"
+
+
+def schedule_for(sequence: int, strategy: dict[str, Any]) -> str:
+    """Resolve the canonical publication slot from the editorial strategy.
+
+    Article-bank JSON can outlive scheduling-policy changes. Seeding therefore
+    treats the catalog as the source of truth instead of trusting stale
+    scheduled_at values materialized in individual article files.
+    """
+    timezone_name = str(strategy.get("timezone") or "Europe/Madrid")
+    tz = ZoneInfo(timezone_name)
+    base = datetime.fromisoformat(str(strategy["start_local"])).replace(tzinfo=tz)
+    cadence = [int(value) for value in strategy.get("cadence_days") or [3]]
+    initial_published = max(0, int(strategy.get("initial_published_articles") or 0))
+
+    if sequence <= initial_published:
+        return base.isoformat()
+
+    cursor = base
+    for idx in range(initial_published + 1, sequence):
+        cursor += timedelta(days=cadence[(idx - initial_published - 1) % len(cadence)])
+    return cursor.isoformat()
 
 
 def article_meta(article: dict[str, Any], variant: dict[str, Any], slug_by_spec: dict[str, str]) -> dict[str, Any]:
@@ -100,7 +123,7 @@ def seed(*, bank_dir: Path, catalog_path: Path, mode: str, expected: int, limit:
     for article in articles:
         brief_id = str(article["slug"])
         sequence = int(article.get("sequence") or 0)
-        schedule_at = str(article["scheduled_at"]) if mode == "scheduled" else None
+        schedule_at = schedule_for(sequence, strategy) if mode == "scheduled" else None
         if mode == "scheduled" and sequence <= initial_published:
             schedule_at = now
         status = "scheduled" if mode == "scheduled" else "approved"
@@ -180,8 +203,8 @@ def seed(*, bank_dir: Path, catalog_path: Path, mode: str, expected: int, limit:
         "approvals": seeded_approvals,
         "initial_release_families": min(initial_published, len(articles)) if mode == "scheduled" else 0,
         "first_scheduled_at": now if articles and mode == "scheduled" and initial_published else (articles[0].get("scheduled_at") if articles and mode == "scheduled" else None),
-        "next_scheduled_at": next((row.get("scheduled_at") for row in articles if int(row.get("sequence") or 0) > initial_published), None) if mode == "scheduled" else None,
-        "last_scheduled_at": articles[-1].get("scheduled_at") if articles and mode == "scheduled" else None,
+        "next_scheduled_at": next((schedule_for(int(row.get("sequence") or 0), strategy) for row in articles if int(row.get("sequence") or 0) > initial_published), None) if mode == "scheduled" else None,
+        "last_scheduled_at": schedule_for(int(articles[-1].get("sequence") or 0), strategy) if articles and mode == "scheduled" else None,
     }
 
 
