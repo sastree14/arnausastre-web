@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-190",
+  "sequence": 190,
+  "arc_id": "ARC-48",
+  "slug": "crm-vs-erp-vs-decision-system",
+  "scheduled_at": "2028-01-14T09:00:00+01:00",
+  "knowledge_area": "business_systems",
+  "cluster": "Simulation & Business Systems",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "compare",
+  "angle": "crm vs erp vs analytics",
+  "primary_keyword": "crm vs erp vs analytics",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-189",
+    "KB-191",
+    "KB-192"
+  ],
+  "variants": {
+    "es": {
+      "title": "CRM vs ERP vs sistema de decisión",
+      "excerpt": "CRM organiza relaciones, ERP organiza transacciones y un sistema de decisión convierte ambos contextos en prioridades, recomendaciones y acciones.",
+      "quick": [
+        "CRM explica relación",
+        "ERP explica operación",
+        "Decision intelligence conecta ambos"
+      ],
+      "section_titles": [
+        "CRM organiza el contexto comercial",
+        "ERP organiza el contexto transaccional",
+        "El sistema de decisión interpreta el contexto",
+        "La arquitectura correcta separa responsabilidades"
+      ],
+      "business_title": "CRM, ERP y decision intelligence no deberían competir por la misma función: registran partes distintas del negocio y la capa de decisión las convierte en acción.",
+      "business_steps": [
+        "Relación",
+        "Transacción",
+        "Decisión"
+      ],
+      "body": "CRM, ERP y sistemas de decision intelligence suelen aparecer juntos en conversaciones de transformación, pero **no son versiones diferentes de la misma herramienta**. Cada uno resuelve una responsabilidad distinta dentro del sistema operativo de la empresa.\n\nEl CRM organiza relaciones y actividad comercial. El ERP protege transacciones y recursos. La capa de decisión combina contexto, modelos y reglas para responder qué conviene hacer. **Cuando una empresa intenta forzar una sola plataforma para cubrir las tres funciones, suele terminar con más campos, más workarounds y menos claridad.**\n\n**CRM organiza el contexto comercial**\nEl CRM está diseñado alrededor de clientes, contactos, oportunidades, actividades y pipeline.\n\nSu valor está en mantener continuidad entre personas y equipos: qué se habló, qué necesita el cliente, qué propuesta está abierta y cuál es el siguiente paso.\n\n**El CRM es especialmente fuerte en registrar la relación y el proceso comercial.**\n\nTambién puede incorporar automatizaciones, scoring y reporting, pero esas capacidades suelen apoyarse en la información disponible dentro de su propio modelo de datos.\n\nCuando una decisión necesita margen real, capacidad operativa, inventario, pagos, riesgo o señales de producto, el CRM puede no tener contexto suficiente.\n\nDuplicar todos esos datos dentro del CRM tampoco es siempre buena arquitectura.\n\nEl objetivo debería ser enriquecer la decisión sin convertir la plataforma comercial en un segundo ERP.\n\n**ERP organiza el contexto transaccional**\nEl ERP trabaja alrededor de pedidos, compras, facturas, contabilidad, materiales, producción, inventario y recursos.\n\nSu prioridad es integridad operativa: que una venta tenga impacto correcto en stock, facturación y contabilidad.\n\n**El ERP es la referencia natural para muchas verdades transaccionales.**\n\nTambién puede incluir módulos de planificación y analytics.\n\nPero un ERP no siempre representa bien comportamientos de clientes, señales de marketing, conversaciones o modelos predictivos específicos.\n\nAdemás, personalizarlo agresivamente para alojar cada nueva lógica puede aumentar dependencia, coste de upgrades y complejidad.\n\nEl ERP debería seguir siendo fiable incluso si una capa analítica falla.\n\nEso sugiere separar core transaccional de decisiones avanzadas.\n\n**El sistema de decisión interpreta el contexto**\nLa tercera capa responde preguntas que CRM y ERP por sí solos no resuelven bien.\n\n¿Qué oportunidad merece atención primero? ¿Qué productos debemos comprar? ¿Qué cliente tiene riesgo? ¿Qué pedidos deberíamos priorizar? ¿Qué capacidad hace falta?\n\n**Un sistema de decisión utiliza datos para convertir estado en recomendación.**\n\nPuede combinar reglas, forecasting, optimización, machine learning, simulación o IA generativa.\n\nNo necesita ser una aplicación independiente. Puede ser un servicio que calcula una recomendación y la devuelve al CRM o ERP.\n\nLa interfaz ideal suele estar donde el usuario ya trabaja.\n\nEl comercial puede ver una prioridad dentro de su oportunidad.\n\nEl planner puede ver una propuesta de pedido dentro de su entorno operativo.\n\nLa calidad de la decisión depende de una visión coherente entre sistemas.\n\n**La arquitectura correcta separa responsabilidades**\nUna arquitectura madura empieza definiendo source of truth por dominio.\n\nEl CRM puede ser autoridad sobre actividad comercial; el ERP sobre factura e inventario; el warehouse sobre histórico analítico consolidado.\n\nLa capa de decisión consume lo necesario y devuelve outputs accionables.\n\n**Separar responsabilidades reduce duplicación de lógica y facilita cambiar componentes.**\n\nTambién permite utilizar best-of-breed sin convertir integraciones en caos.\n\nLos identificadores compartidos son fundamentales. Cliente, producto, pedido y oportunidad deben poder relacionarse.\n\nLos eventos deben tener timestamps fiables.\n\nLa semántica también debe alinearse. “Cliente activo”, “venta” o “margen” no deberían significar cosas distintas en cada equipo.\n\nUna capa de datos o semantic layer puede ayudar.\n\nLa latencia se diseña según decisión. No todo necesita streaming.\n\nAlgunas recomendaciones se recalculan cada noche; otras reaccionan a un evento.\n\nLos permisos deben viajar con la información.\n\nLa observabilidad necesita saber qué sistema aportó cada dato y qué versión del modelo generó cada output.\n\nTambién conviene evitar ciclos opacos. Si una recomendación vuelve al CRM y luego entra de nuevo como feature sin distinguir causa y efecto, el modelo puede aprender su propia intervención.\n\nLos outcomes deben registrarse de forma explícita.\n\nLa arquitectura también necesita fallback. Si analytics deja de responder, la operación básica debe seguir.\n\nUn sistema de decisión puede crecer gradualmente.\n\nPrimero puede aportar alertas.\n\nDespués prioridades y recomendaciones.\n\nMás adelante puede automatizar acciones de bajo riesgo.\n\nNo todas las decisiones merecen una capa sofisticada. Algunas reglas caben perfectamente dentro del CRM o ERP.\n\nLa pregunta es dónde vive la lógica de forma más mantenible y cercana al contexto necesario.\n\nTambién hay que valorar vendor lock-in. Si una lógica estratégica queda atrapada en customizaciones difíciles de exportar, cambiar plataforma se vuelve caro.\n\nServicios desacoplados pueden proteger la lógica diferencial.\n\nEl coste total incluye integraciones, mantenimiento, licencias y equipo.\n\nLa experiencia de usuario debe evitar saltos constantes entre plataformas.\n\nLa mejor arquitectura técnica pierde valor si obliga a personas a reconstruir contexto manualmente.\n\n**CRM gestiona relaciones, ERP gestiona transacciones y un sistema de decisión transforma ambos contextos en una acción recomendada.** La arquitectura funciona cuando cada capa hace bien su trabajo y comparte únicamente el contexto necesario para decidir mejor.",
+      "seo_title": "CRM vs ERP vs sistema de decisión",
+      "seo_description": "Diferencias entre CRM, ERP y decision intelligence: qué registra cada sistema y cómo una capa analítica convierte contexto en acciones.",
+      "seo_keywords": [
+        "crm vs erp vs analytics",
+        "CRM ERP decision system",
+        "decision intelligence",
+        "business systems architecture"
+      ],
+      "tags": [
+        "CRM",
+        "ERP",
+        "Decision Intelligence"
+      ]
+    },
+    "en": {
+      "title": "CRM vs ERP vs decision system",
+      "excerpt": "CRM organizes relationships, ERP organizes transactions and a decision system turns both contexts into priorities, recommendations and actions.",
+      "quick": [
+        "CRM explains relationships",
+        "ERP explains operations",
+        "Decision intelligence connects both"
+      ],
+      "section_titles": [
+        "CRM organizes commercial context",
+        "ERP organizes transactional context",
+        "The decision system interprets context",
+        "The right architecture separates responsibilities"
+      ],
+      "business_title": "CRM, ERP and decision intelligence should not compete for the same role: they record different parts of the business and the decision layer turns them into action.",
+      "business_steps": [
+        "Relationship",
+        "Transaction",
+        "Decision"
+      ],
+      "body": "CRM, ERP and decision-intelligence systems often appear together in transformation discussions, but **they are not different versions of the same tool**. Each solves a different responsibility inside the company’s operating system.\n\nCRM organizes relationships and commercial activity. ERP protects transactions and resources. The decision layer combines context, models and rules to answer what should happen next. **When one platform is forced to cover all three roles, the result is often more fields, more workarounds and less clarity.**\n\n**CRM organizes commercial context**\nCRM is designed around customers, contacts, opportunities, activities and pipeline.\n\nIts value is continuity across people and teams: what was discussed, what the customer needs, which proposal is open and what the next step should be.\n\n**CRM is especially strong at recording the relationship and the commercial process.**\n\nIt may also include automation, scoring and reporting, but those capabilities typically rely on information available inside its own data model.\n\nWhen a decision needs real margin, operating capacity, inventory, payment behaviour, risk or product signals, CRM may not have enough context.\n\nCopying all of those data into CRM is not automatically good architecture either.\n\nThe goal should be to enrich decisions without turning the commercial platform into a second ERP.\n\n**ERP organizes transactional context**\nERP works around orders, purchasing, invoices, accounting, materials, production, inventory and resources.\n\nIts priority is operational integrity: a sale should affect inventory, billing and accounting correctly.\n\n**ERP is the natural authority for many transactional truths.**\n\nIt may also include planning and analytics modules.\n\nBut ERP does not always represent customer behaviour, marketing signals, conversations or specialized predictive models well.\n\nHeavy customization can also increase vendor dependency, upgrade cost and complexity.\n\nERP should remain reliable even when an analytical layer fails.\n\nThat argues for separating the transactional core from advanced decision logic.\n\n**The decision system interprets context**\nThe third layer answers questions CRM and ERP alone do not solve particularly well.\n\nWhich opportunity deserves attention first? Which products should be purchased? Which customer is at risk? Which orders should be prioritized? How much capacity is needed?\n\n**A decision system uses data to convert state into recommendation.**\n\nIt may combine rules, forecasting, optimization, machine learning, simulation or generative AI.\n\nIt does not need to be a standalone application. It may be a service that calculates a recommendation and returns it to CRM or ERP.\n\nThe best interface is often the place where the user already works.\n\nA salesperson can see priority inside the opportunity.\n\nA planner can see a proposed order inside the operating environment.\n\nDecision quality depends on coherent context across systems.\n\n**The right architecture separates responsibilities**\nA mature architecture starts by defining the source of truth for each domain.\n\nCRM may own commercial activity; ERP invoices and inventory; the warehouse consolidated analytical history.\n\nThe decision layer consumes what it needs and returns actionable outputs.\n\n**Clear responsibility reduces duplicated logic and makes components easier to change.**\n\nIt also allows best-of-breed tools without turning integration into chaos.\n\nShared identifiers are essential. Customer, product, order and opportunity must be joinable.\n\nEvents need reliable timestamps.\n\nSemantics must align as well. “Active customer”, “sale” and “margin” should not mean different things across teams.\n\nA data or semantic layer can help.\n\nLatency should match the decision. Not everything needs streaming.\n\nSome recommendations can refresh nightly; others react to events.\n\nPermissions need to travel with the data.\n\nObservability should show which system supplied each fact and which model version created each output.\n\nOpaque feedback loops should be avoided. If a recommendation returns to CRM and later becomes a feature without distinguishing intervention from natural behaviour, the model can learn its own actions.\n\nOutcomes should therefore be logged explicitly.\n\nFallback matters too. If analytics is unavailable, core operations should continue.\n\nA decision system can mature gradually.\n\nIt may begin with alerts.\n\nThen priorities and recommendations.\n\nLater, low-risk actions can be automated.\n\nNot every decision deserves a sophisticated external layer. Some rules fit perfectly inside CRM or ERP.\n\nThe key question is where the logic is most maintainable and has access to the context it needs.\n\nVendor lock-in matters too. Strategic logic embedded in difficult-to-export customization can make future platform changes expensive.\n\nDecoupled services can protect differentiated logic.\n\nTotal cost includes integration, maintenance, licenses and specialist teams.\n\nUser experience should minimize system switching.\n\nStrong architecture loses value when people have to rebuild context manually across applications.\n\n**CRM manages relationships, ERP manages transactions and a decision system transforms both contexts into recommended action.** Architecture works when each layer performs its own responsibility well and shares only the context needed to improve decisions.",
+      "seo_title": "CRM vs ERP vs Decision System",
+      "seo_description": "The difference between CRM, ERP and decision intelligence: what each system records and how analytics turns operating context into action.",
+      "seo_keywords": [
+        "crm vs erp vs analytics",
+        "CRM ERP decision system",
+        "decision intelligence",
+        "business systems architecture"
+      ],
+      "tags": [
+        "CRM",
+        "ERP",
+        "Decision Intelligence"
+      ]
+    },
+    "ca": {
+      "title": "CRM vs ERP vs sistema de decisió",
+      "excerpt": "CRM organitza relacions, ERP organitza transaccions i un sistema de decisió converteix tots dos contextos en prioritats, recomanacions i accions.",
+      "quick": [
+        "CRM explica relació",
+        "ERP explica operació",
+        "Decision intelligence connecta tots dos"
+      ],
+      "section_titles": [
+        "CRM organitza el context comercial",
+        "ERP organitza el context transaccional",
+        "El sistema de decisió interpreta el context",
+        "L’arquitectura correcta separa responsabilitats"
+      ],
+      "business_title": "CRM, ERP i decision intelligence no haurien de competir per la mateixa funció: registren parts diferents del negoci i la capa de decisió les converteix en acció.",
+      "business_steps": [
+        "Relació",
+        "Transacció",
+        "Decisió"
+      ],
+      "body": "CRM, ERP i sistemes de decision intelligence sovint apareixen junts en converses de transformació, però **no són versions diferents de la mateixa eina**. Cadascun resol una responsabilitat diferent dins del sistema operatiu de l’empresa.\n\nEl CRM organitza relacions i activitat comercial. L’ERP protegeix transaccions i recursos. La capa de decisió combina context, models i regles per respondre què convé fer després. **Quan una sola plataforma intenta cobrir les tres funcions, acostumen a aparèixer més camps, més workarounds i menys claredat.**\n\n**CRM organitza el context comercial**\nEl CRM està dissenyat al voltant de clients, contactes, oportunitats, activitats i pipeline.\n\nEl seu valor és mantenir continuïtat entre persones i equips: què s’ha parlat, què necessita el client, quina proposta està oberta i quin és el següent pas.\n\n**El CRM és especialment fort registrant la relació i el procés comercial.**\n\nTambé pot incorporar automatitzacions, scoring i reporting, però aquestes capacitats solen dependre de la informació del seu propi model de dades.\n\nQuan una decisió necessita marge real, capacitat operativa, inventari, pagaments, risc o senyals de producte, el CRM pot no tenir prou context.\n\nDuplicar totes aquestes dades dins del CRM tampoc és necessàriament bona arquitectura.\n\nL’objectiu hauria de ser enriquir la decisió sense convertir la plataforma comercial en un segon ERP.\n\n**ERP organitza el context transaccional**\nL’ERP treballa al voltant de comandes, compres, factures, comptabilitat, materials, producció, inventari i recursos.\n\nLa prioritat és integritat operativa: una venda ha d’afectar correctament stock, facturació i comptabilitat.\n\n**L’ERP és l’autoritat natural per moltes veritats transaccionals.**\n\nTambé pot incloure mòduls de planning i analytics.\n\nPerò l’ERP no sempre representa bé comportament de clients, senyals de màrqueting, converses o models predictius específics.\n\nPersonalitzar-lo agressivament també pot augmentar dependència, cost d’upgrades i complexitat.\n\nL’ERP hauria de continuar sent fiable encara que una capa analítica falli.\n\nAixò suggereix separar core transaccional de lògica de decisió avançada.\n\n**El sistema de decisió interpreta el context**\nLa tercera capa respon preguntes que CRM i ERP sols no resolen especialment bé.\n\nQuina oportunitat mereix atenció primer? Quins productes hem de comprar? Quin client té risc? Quines comandes prioritzem? Quina capacitat necessitem?\n\n**Un sistema de decisió utilitza dades per convertir estat en recomanació.**\n\nPot combinar regles, forecasting, optimització, machine learning, simulació o IA generativa.\n\nNo necessita ser una aplicació independent. Pot ser un servei que calcula una recomanació i la retorna al CRM o ERP.\n\nLa millor interfície acostuma a ser allà on l’usuari ja treballa.\n\nUn comercial pot veure la prioritat dins de l’oportunitat.\n\nUn planner pot veure una proposta de compra dins del seu entorn operatiu.\n\nLa qualitat de decisió depèn d’un context coherent entre sistemes.\n\n**L’arquitectura correcta separa responsabilitats**\nUna arquitectura madura comença definint source of truth per domini.\n\nCRM pot ser autoritat sobre activitat comercial; ERP sobre factura i inventari; warehouse sobre històric analític consolidat.\n\nLa capa de decisió consumeix allò necessari i retorna outputs accionables.\n\n**Separar responsabilitats redueix lògica duplicada i facilita canviar components.**\n\nTambé permet utilitzar best-of-breed sense convertir integracions en caos.\n\nEls identificadors compartits són essencials. Client, producte, comanda i oportunitat s’han de poder relacionar.\n\nEls events necessiten timestamps fiables.\n\nLa semàntica també s’ha d’alinear. “Client actiu”, “venda” o “marge” no haurien de significar coses diferents.\n\nUna capa de dades o semantic layer pot ajudar.\n\nLa latència es dissenya segons decisió. No tot necessita streaming.\n\nAlgunes recomanacions es recalculen cada nit; altres reaccionen a un event.\n\nEls permisos han de viatjar amb la informació.\n\nL’observabilitat ha de mostrar quin sistema aporta cada dada i quina versió del model genera cada output.\n\nCal evitar feedback loops opacs. Si una recomanació torna al CRM i després entra com feature sense distingir intervenció de comportament natural, el model pot aprendre la seva pròpia acció.\n\nEls outcomes s’han de registrar explícitament.\n\nTambé cal fallback. Si analytics falla, l’operació bàsica ha de continuar.\n\nUn sistema de decisió pot madurar gradualment.\n\nPot començar amb alertes.\n\nDesprés prioritats i recomanacions.\n\nMés endavant, accions de baix risc poden automatitzar-se.\n\nNo tota decisió necessita una capa sofisticada. Algunes regles caben perfectament dins del CRM o ERP.\n\nLa pregunta és on viu la lògica de manera més mantenible i amb el context necessari.\n\nTambé importa vendor lock-in. Lògica estratègica atrapada en customitzacions difícils d’exportar pot fer car un canvi futur.\n\nServeis desacoblats poden protegir la lògica diferencial.\n\nEl cost total inclou integració, manteniment, llicències i equips.\n\nL’experiència d’usuari ha de reduir salts entre plataformes.\n\nUna bona arquitectura perd valor si obliga les persones a reconstruir context manualment.\n\n**CRM gestiona relacions, ERP gestiona transaccions i un sistema de decisió transforma tots dos contextos en una acció recomanada.** L’arquitectura funciona quan cada capa fa bé la seva funció i comparteix només el context necessari per decidir millor.",
+      "seo_title": "CRM vs ERP vs sistema de decisió",
+      "seo_description": "Diferències entre CRM, ERP i decision intelligence: què registra cada sistema i com analytics converteix context operatiu en accions.",
+      "seo_keywords": [
+        "crm vs erp vs analytics",
+        "CRM ERP decision system",
+        "decision intelligence",
+        "business systems architecture"
+      ],
+      "tags": [
+        "CRM",
+        "ERP",
+        "Decision Intelligence"
+      ]
+    }
+  }
+}
