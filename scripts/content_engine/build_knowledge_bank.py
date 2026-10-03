@@ -377,6 +377,11 @@ def build_manifest(output_dir: Path, catalog: dict[str, Any]) -> dict[str, Any]:
             if issues:
                 failures.append({"spec_id": spec["spec_id"], "reason": issues})
                 continue
+            try:
+                manifest_path = path.resolve().relative_to(ROOT.resolve())
+            except ValueError:
+                manifest_path = path.resolve()
+
             articles.append({
                 "spec_id": data["spec_id"],
                 "sequence": data["sequence"],
@@ -385,7 +390,7 @@ def build_manifest(output_dir: Path, catalog: dict[str, Any]) -> dict[str, Any]:
                 "knowledge_area": data.get("knowledge_area"),
                 "content_family": data.get("content_family"),
                 "freshness": data.get("freshness"),
-                "path": str(path.relative_to(ROOT)),
+                "path": str(manifest_path),
             })
         except Exception as exc:
             failures.append({"spec_id": spec["spec_id"], "reason": str(exc)})
