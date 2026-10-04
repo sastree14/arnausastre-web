@@ -36,23 +36,20 @@ const COPY = {
     models: [
       {
         title: 'Proyecto individualizado',
-        hook: '¿Tienes un problema concreto que quieres resolver?',
-        body: 'Definimos alcance, resultado esperado y una solución proporcional a la necesidad.',
-        primary: 'Cuéntanoslo sin compromiso',
+        hook: 'Resolvemos una necesidad concreta con alcance y resultado definidos.',
+        primary: 'Cuéntanos tu caso',
         primaryHref: '/contact?intent=problem',
       },
       {
-        title: 'Partner analítico y tecnológico',
-        hook: '¿Necesitas capacidad recurrente sin incorporar cada especialidad de forma permanente?',
-        body: 'Conservamos contexto y activamos la especialidad necesaria cuando aparece una nueva necesidad.',
-        primary: 'Explorar el modelo partner',
+        title: 'Partner Data e IA',
+        hook: 'Añade capacidad especializada cuando la necesites, sin perder contexto.',
+        primary: 'Explorar modelo partner',
         primaryHref: '/partner-analitico',
       },
       {
         title: 'Discovery',
-        hook: '¿Hay una oportunidad clara, pero todavía no sabes qué debería construirse?',
-        body: 'Empezamos entendiendo la oportunidad y valoramos si existe un caso que merezca avanzar.',
-        primary: 'Reservar una primera conversación',
+        hook: 'Aterrizamos la oportunidad antes de decidir qué construir.',
+        primary: 'Reservar conversación',
         primaryHref: '/contact?intent=discovery',
       },
     ],
@@ -103,23 +100,20 @@ const COPY = {
     models: [
       {
         title: 'Projecte individualitzat',
-        hook: 'Tens un problema concret que vols resoldre?',
-        body: 'Definim abast, resultat esperat i una solució proporcional a la necessitat.',
-        primary: 'Explica’ns-ho sense compromís',
+        hook: 'Resolem una necessitat concreta amb abast i resultat definits.',
+        primary: 'Explica’ns el teu cas',
         primaryHref: '/contact?intent=problem',
       },
       {
-        title: 'Partner analític i tecnològic',
-        hook: 'Necessites capacitat recurrent sense incorporar cada especialitat de manera permanent?',
-        body: 'Conservem context i activem l’especialitat necessària quan apareix una nova necessitat.',
-        primary: 'Explorar el model partner',
+        title: 'Partner Dades i IA',
+        hook: 'Afegeix capacitat especialitzada quan la necessitis, sense perdre context.',
+        primary: 'Explorar model partner',
         primaryHref: '/partner-analitico',
       },
       {
         title: 'Discovery',
-        hook: 'Hi ha una oportunitat clara, però encara no saps què s’hauria de construir?',
-        body: 'Comencem entenent l’oportunitat i valorem si existeix un cas que mereixi avançar.',
-        primary: 'Reservar una primera conversa',
+        hook: 'Aterrem l’oportunitat abans de decidir què construir.',
+        primary: 'Reservar conversa',
         primaryHref: '/contact?intent=discovery',
       },
     ],
@@ -170,23 +164,20 @@ const COPY = {
     models: [
       {
         title: 'Defined project',
-        hook: 'Do you have a concrete problem you want to solve?',
-        body: 'We define scope, expected outcome and a solution proportionate to the need.',
-        primary: 'Tell us without commitment',
+        hook: 'Solve one concrete need with a defined scope and outcome.',
+        primary: 'Tell us about your case',
         primaryHref: '/contact?intent=problem',
       },
       {
-        title: 'Analytical & technology partner',
-        hook: 'Need recurring capability without permanently hiring every specialism?',
-        body: 'We retain context and activate the right specialism when a new need appears.',
+        title: 'Data and AI Partner',
+        hook: 'Add specialist capability when you need it, without losing context.',
         primary: 'Explore the partner model',
         primaryHref: '/partner-analitico',
       },
       {
         title: 'Discovery',
-        hook: 'Is there a clear opportunity, but not yet a clear answer to what should be built?',
-        body: 'We start by understanding the opportunity and whether there is a case worth pursuing.',
-        primary: 'Book a first conversation',
+        hook: 'Shape the opportunity before deciding what to build.',
+        primary: 'Book a conversation',
         primaryHref: '/contact?intent=discovery',
       },
     ],
@@ -274,15 +265,24 @@ export default function ServicesPage() {
 
           <div className="mt-8 grid border-l border-t border-slate-300 lg:grid-cols-3">
             {t.models.map((model, index) => (
-              <article key={model.title} className={`flex min-h-[330px] flex-col border-b border-r border-slate-300 p-6 md:p-7 ${index === 1 ? 'bg-[#0D1B2A] text-white' : 'bg-white text-slate-950'}`}>
-                <h3 className={`text-[30px] leading-tight ${index === 1 ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{model.title}</h3>
-                <p className={`mt-5 text-[19px] font-semibold leading-7 ${index === 1 ? 'text-white' : 'text-slate-900'}`}>{model.hook}</p>
-                <p className={`mt-4 text-[16px] leading-7 ${index === 1 ? 'text-[#D5E1EB]' : 'text-slate-600'}`}>{model.body}</p>
+              <article
+                key={model.title}
+                className={`flex min-h-[265px] flex-col border-b border-r border-slate-300 p-7 md:p-8 ${index === 1 ? 'bg-[#0D1B2A] text-white' : 'bg-white text-slate-950'}`}
+              >
+                <h3
+                  className={`min-h-[68px] text-[28px] leading-[1.08] ${index === 1 ? 'text-white' : 'text-slate-950'}`}
+                  style={{ fontFamily: 'var(--font-playfair)' }}
+                >
+                  {model.title}
+                </h3>
+                <p className={`mt-5 max-w-[31ch] text-[18px] font-semibold leading-7 ${index === 1 ? 'text-[#EAF0F6]' : 'text-slate-800'}`}>
+                  {model.hook}
+                </p>
 
-                <div className={`mt-auto border-t pt-6 ${index === 1 ? 'border-[#496C8A]' : 'border-slate-300'}`}>
+                <div className={`mt-auto pt-7`}>
                   <Link
                     href={model.primaryHref}
-                    className={`flex w-full items-center justify-between px-4 py-3.5 text-[16px] font-semibold ${index === 1 ? 'bg-white text-[#0D1B2A]' : 'bg-slate-950 text-white'}`}
+                    className={`flex w-full items-center justify-between px-4 py-3.5 text-[15px] font-semibold transition ${index === 1 ? 'bg-white text-[#0D1B2A] hover:bg-[#EAF0F6]' : 'bg-slate-950 text-white hover:bg-slate-800'}`}
                   >
                     <span>{model.primary}</span><span>→</span>
                   </Link>
@@ -300,17 +300,22 @@ export default function ServicesPage() {
             <h2 className="mx-auto mt-3 max-w-3xl text-[32px] leading-[1.08] sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
           </div>
 
-          <div className="mx-auto mt-7 grid max-w-5xl border-l border-t border-slate-300 md:grid-cols-3">
-            {t.exploreLinks.map(([title, href, cta], index) => (
-              <Link
-                key={href}
-                href={href}
-                className={`group flex min-h-[220px] flex-col justify-between border-b border-r border-slate-300 p-7 text-left transition hover:bg-[#FAFAF7] ${index === 1 ? 'bg-[#F4F1EA]' : 'bg-white'}`}
-              >
-                <h3 className="max-w-[270px] text-[27px] font-semibold leading-8 text-slate-950">{title}</h3>
-                <p className="mt-8 text-[17px] font-semibold text-indigo-700">{cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
-              </Link>
-            ))}
+          <div className="mx-auto mt-7 grid max-w-5xl gap-3 md:grid-cols-3">
+            {t.exploreLinks.map(([title, href, cta], index) => {
+              const middle = index === 1
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`group relative flex min-h-[220px] flex-col justify-between border p-7 text-left transition duration-200 hover:z-10 hover:-translate-y-1 hover:scale-[1.015] hover:shadow-lg active:scale-[1.005] ${middle ? 'border-[#31536B] bg-[#31536B] text-white' : index === 0 ? 'border-[#DDCFBD] bg-[#F8F3EA] text-slate-950' : 'border-[#D2C4DD] bg-[#F1ECF5] text-slate-950'}`}
+                >
+                  <h3 className={`max-w-[270px] text-[26px] font-semibold leading-8 ${middle ? 'text-white' : 'text-slate-950'}`}>{title}</h3>
+                  <p className={`mt-8 text-[16px] font-semibold ${middle ? 'text-white' : 'text-indigo-700'}`}>
+                    {cta} <span className="inline-block transition group-hover:translate-x-1">→</span>
+                  </p>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>
