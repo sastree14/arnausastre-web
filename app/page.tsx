@@ -50,7 +50,7 @@ const COPY = {
       },
       {
         number: '04',
-        title: 'Partner Data & AI',
+        title: 'Partner Data e IA',
         hook: 'Capacidad especializada que se integra con tu organización cuando la necesitas.',
         href: '/partner-analitico',
         cta: 'Explorar el modelo partner',
@@ -135,7 +135,7 @@ const COPY = {
       },
       {
         number: '04',
-        title: 'Partner Data & AI',
+        title: 'Partner Dades i IA',
         hook: 'Capacitat especialitzada que s’integra amb la teva organització quan la necessites.',
         href: '/partner-analitico',
         cta: 'Explorar el model partner',
@@ -220,7 +220,7 @@ const COPY = {
       },
       {
         number: '04',
-        title: 'Data & AI Partner',
+        title: 'Data and AI Partner',
         hook: 'Specialist capability that integrates with your organisation when you need it.',
         href: '/partner-analitico',
         cta: 'Explore the partner model',
