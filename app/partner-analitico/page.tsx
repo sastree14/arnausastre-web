@@ -20,20 +20,22 @@ const COPY = {
     ],
 
     fitLabel: 'PARA QUIÉN',
-    fitTitle: 'Para empresas que quieren reforzar sus equipos con capacidad especializada cuando la necesitan.',
+    fitTitle: 'Tres formas de sumar capacidad especializada.',
+    fitMore: 'Saber más',
+    fitLess: 'Ver menos',
     fits: [
-      ['Empresas que quieren ampliar capacidad', 'Añadimos especialización a iniciativas concretas sin alterar cómo ya trabaja el equipo.'],
-      ['Equipos con retos técnicos específicos', 'Entramos cuando un problema exige más profundidad en datos, IA, modelado o automatización.'],
+      ['Empresas que quieren ampliar capacidad', 'Especialización adicional para iniciativas concretas.'],
+      ['Equipos con retos técnicos específicos', 'Aportamos profundidad en datos, IA, modelado o automatización cuando el reto lo exige.'],
       ['Agencias y consultoras', 'Complementamos vuestra propuesta con capacidad técnica especializada cuando el proyecto lo requiere.'],
     ],
 
     modelLabel: 'CÓMO FUNCIONA',
-    modelTitle: 'Aprendemos el contexto y aportamos valor donde más se necesita.',
+    modelTitle: 'Un modelo que suma capacidad sin perder contexto.',
     model: [
-      ['01', 'Aprendemos el contexto', 'Entendemos negocio, sistemas y prioridades.'],
-      ['02', 'Entramos donde hace falta', 'Activamos la especialidad adecuada.'],
-      ['03', 'Conservamos conocimiento', 'Cada proyecto acelera el siguiente.'],
-      ['04', 'Seguimos aportando valor', 'Seguimos mientras aporte valor.'],
+      ['01', 'Entendemos vuestro contexto'],
+      ['02', 'Activamos la especialidad adecuada'],
+      ['03', 'Conservamos el conocimiento'],
+      ['04', 'Aportamos valor de forma continua'],
     ],
 
     exploreLabel: 'VALOREMOS EL ENCAJE',
@@ -65,20 +67,22 @@ const COPY = {
     ],
 
     fitLabel: 'PER A QUI',
-    fitTitle: 'Per a empreses que volen reforçar els seus equips amb capacitat especialitzada quan la necessiten.',
+    fitTitle: 'Tres maneres de sumar capacitat especialitzada.',
+    fitMore: 'Saber-ne més',
+    fitLess: 'Veure menys',
     fits: [
-      ['Empreses que volen ampliar capacitat', 'Afegim especialització a iniciatives concretes sense alterar com ja treballa l’equip.'],
-      ['Equips amb reptes tècnics específics', 'Entrem quan un problema exigeix més profunditat en dades, IA, modelatge o automatització.'],
+      ['Empreses que volen ampliar capacitat', 'Especialització addicional per a iniciatives concretes.'],
+      ['Equips amb reptes tècnics específics', 'Aportem profunditat en dades, IA, modelatge o automatització quan el repte ho exigeix.'],
       ['Agències i consultores', 'Complementem la vostra proposta amb capacitat tècnica especialitzada quan el projecte ho requereix.'],
     ],
 
     modelLabel: 'COM FUNCIONA',
-    modelTitle: 'Aprenem el context i aportem valor on més es necessita.',
+    modelTitle: 'Un model que suma capacitat sense perdre context.',
     model: [
-      ['01', 'Aprenem el context', 'Entenem negoci, sistemes i prioritats.'],
-      ['02', 'Entrem on cal', 'Activem l’especialitat adequada.'],
-      ['03', 'Conservem coneixement', 'Cada projecte accelera el següent.'],
-      ['04', 'Seguim aportant valor', 'Seguim mentre aporti valor.'],
+      ['01', 'Entenem el vostre context'],
+      ['02', 'Activem l’especialitat adequada'],
+      ['03', 'Conservem el coneixement'],
+      ['04', 'Aportem valor de manera contínua'],
     ],
 
     exploreLabel: 'VALOREM L’ENCAIX',
@@ -110,20 +114,22 @@ const COPY = {
     ],
 
     fitLabel: 'WHO IT IS FOR',
-    fitTitle: 'For companies that want to strengthen their teams with specialist capability when they need it.',
+    fitTitle: 'Three ways to add specialist capability.',
+    fitMore: 'Learn more',
+    fitLess: 'Show less',
     fits: [
-      ['Companies looking to extend capability', 'We add specialist depth to concrete initiatives without changing how the existing team works.'],
-      ['Teams facing specific technical challenges', 'We step in when a problem needs deeper expertise in data, AI, modelling or automation.'],
+      ['Companies looking to extend capability', 'Additional specialist depth for concrete initiatives.'],
+      ['Teams facing specific technical challenges', 'We add depth in data, AI, modelling or automation when the challenge requires it.'],
       ['Agencies and consultancies', 'We complement your offer with specialist technical capability when a project requires it.'],
     ],
 
     modelLabel: 'HOW IT WORKS',
-    modelTitle: 'We learn the context and create value where it matters most.',
+    modelTitle: 'A model that adds capability without losing context.',
     model: [
-      ['01', 'We learn the context', 'We understand the business, systems and priorities.'],
-      ['02', 'We step in where needed', 'We activate the right specialist capability.'],
-      ['03', 'We retain knowledge', 'Every project makes the next one faster.'],
-      ['04', 'We keep creating value', 'We stay involved while it adds value.'],
+      ['01', 'We understand your context'],
+      ['02', 'We activate the right specialism'],
+      ['03', 'We retain the knowledge'],
+      ['04', 'We keep creating value'],
     ],
 
     exploreLabel: 'ASSESS THE FIT',
@@ -193,15 +199,29 @@ export default function AnalyticalPartnerPage() {
           <div className="mt-8 grid gap-3 lg:grid-cols-3">
             {t.fits.map(([title, body], index) => {
               const palette = fitPalette[index]
+              const expandable = index === 1
               return (
                 <article
                   key={title}
-                  className="min-h-[220px] border p-7"
+                  className="flex min-h-[220px] flex-col border p-7"
                   style={{ backgroundColor: palette.bg, borderColor: palette.border }}
                 >
                   <p className="font-mono text-[13px] font-semibold text-indigo-700">0{index + 1}</p>
-                  <h3 className="mt-5 max-w-[24ch] text-[22px] font-semibold leading-7 text-[#1D2B44]">{title}</h3>
-                  <p className="mt-4 max-w-[34ch] text-[16px] leading-7 text-slate-700">{body}</p>
+                  <h3 className="mt-5 max-w-[24ch] text-[27px] font-semibold leading-[1.12] text-[#1D2B44]">{title}</h3>
+
+                  {expandable ? (
+                    <details className="group mt-auto pt-8">
+                      <summary className="cursor-pointer list-none text-[15px] font-semibold text-indigo-700">
+                        <span className="group-open:hidden">{t.fitMore} →</span>
+                        <span className="hidden group-open:inline">{t.fitLess} ↑</span>
+                      </summary>
+                      <p className="mt-4 max-w-[34ch] border-t pt-4 text-[15px] leading-6 text-slate-700" style={{ borderColor: palette.border }}>
+                        {body}
+                      </p>
+                    </details>
+                  ) : (
+                    <p className="mt-auto max-w-[31ch] pt-8 text-[15px] leading-6 text-slate-700">{body}</p>
+                  )}
                 </article>
               )
             })}
@@ -217,20 +237,19 @@ export default function AnalyticalPartnerPage() {
           </div>
 
           <div className="mt-9 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-            {t.model.map(([number, title, body], index) => {
+            {t.model.map(([number, title], index) => {
               const palette = modelPalette[index]
               return (
                 <article
                   key={number}
-                  className="min-h-[200px] border p-6"
+                  className="flex min-h-[180px] flex-col border p-6"
                   style={{ backgroundColor: palette.bg, borderColor: palette.border }}
                 >
                   <div className="flex items-center gap-4">
                     <span className="font-mono text-[14px] font-semibold text-indigo-700">{number}</span>
                     <span className="h-px flex-1" style={{ backgroundColor: palette.border }} />
                   </div>
-                  <h3 className="mt-6 text-[21px] font-semibold leading-7 text-[#1D2B44]">{title}</h3>
-                  <p className="mt-3 text-[16px] leading-7 text-slate-700">{body}</p>
+                  <h3 className="mt-auto max-w-[18ch] pt-8 text-[23px] font-semibold leading-7 text-[#1D2B44]">{title}</h3>
                 </article>
               )
             })}
