@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-011",
+  "sequence": 11,
+  "arc_id": "ARC-03",
+  "slug": "direct-vs-recursive-multi-step-forecasting",
+  "scheduled_at": "2026-11-01T09:00:00+01:00",
+  "knowledge_area": "planning",
+  "cluster": "Forecasting & Planning",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "compare",
+  "angle": "direct vs recursive forecasting",
+  "primary_keyword": "direct vs recursive forecasting",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-009",
+    "KB-010",
+    "KB-012"
+  ],
+  "variants": {
+    "es": {
+      "title": "Forecasting multi-step directo vs recursivo",
+      "excerpt": "El enfoque recursivo reutiliza sus propias predicciones; el directo aprende cada horizonte por separado. La elección cambia error, complejidad y coherencia.",
+      "quick": [
+        "Recursivo reutiliza predicciones",
+        "Directo especializa horizontes",
+        "El trade-off es error vs complejidad"
+      ],
+      "section_titles": [
+        "Cómo funciona el enfoque recursivo",
+        "Qué cambia con el enfoque directo",
+        "Dónde aparece el error",
+        "Cómo elegir entre ambos"
+      ],
+      "business_title": "La arquitectura multi-step debe elegirse por horizonte, datos y coste de propagación del error.",
+      "business_steps": [
+        "Estrategia multi-step",
+        "Perfil de error",
+        "Decisión por horizonte"
+      ],
+      "body": "Cuando un sistema debe predecir varios pasos hacia delante aparece una decisión de arquitectura que no existe en el forecast a un único horizonte: cómo construir H2, H3 o H9. Dos enfoques clásicos son el recursivo y el directo. **El recursivo reaprovecha sus propias predicciones; el directo aprende cada horizonte como un problema específico.**\n\nNinguno es universalmente superior. El enfoque recursivo ofrece una estructura compacta y coherente, pero puede acumular error. El directo reduce esa propagación a costa de más modelos y más parámetros que mantener. **La elección debe seguir el comportamiento del problema y el uso de cada horizonte.**\n\n**Cómo funciona el enfoque recursivo**\nEn una estrategia recursiva se entrena normalmente un modelo para predecir el siguiente paso. Para obtener H2, la predicción de H1 se introduce como si fuese información disponible; para H3 se repite el proceso. El mismo mecanismo se extiende hasta el final del horizonte.\n\nLa ventaja es operativa. **Un único modelo puede generar toda la trayectoria**, lo que simplifica entrenamiento, despliegue y mantenimiento. Además, la secuencia suele mantener una lógica temporal consistente porque cada paso depende del anterior.\n\nEl riesgo es que el modelo se entrena con valores reales históricos y, en inferencia, recibe predicciones imperfectas. Esa diferencia entre entrenamiento y uso puede hacer que pequeños errores iniciales se propaguen.\n\n**Qué cambia con el enfoque directo**\nLa estrategia directa construye una relación separada para cada horizonte. Un modelo aprende H1, otro H2 y otro H9, o una arquitectura multi-output produce objetivos diferenciados sin alimentar sus propias predicciones.\n\nEsto evita parte de la propagación porque **H9 no depende explícitamente del valor predicho para H8**. Cada horizonte puede aprender features y patrones adecuados a su distancia temporal.\n\nEl coste es complejidad. Más horizontes significan más modelos, más hiperparámetros, más monitorización y potencialmente menos coherencia entre puntos de la trayectoria. También se necesita suficiente información para entrenar cada target de forma robusta.\n\n**Dónde aparece el error**\nEn recursivo, el error puede crecer de forma acumulativa. Si H1 se desvía y ese valor alimenta H2, el segundo paso parte de una entrada ya imperfecta. En procesos muy autoregresivos, ese efecto puede ser importante.\n\nEn directo, la propagación es menor, pero aparece otro problema: **cada horizonte se optimiza de forma más independiente**. El sistema puede producir una trayectoria menos suave o relaciones entre H3 y H4 difíciles de explicar si los modelos divergen.\n\nTambién existen estrategias híbridas: direct-recursive, multi-output, sequence models o ensembles por horizonte. No deberían elegirse por moda, sino porque resuelven una limitación observada en backtesting.\n\n**Cómo elegir entre ambos**\nEl primer criterio es la longitud del horizonte. En horizontes cortos, un enfoque recursivo puede ser suficientemente estable y mucho más simple. A medida que la cadena se alarga, conviene medir cuánto crece el error por propagación.\n\nEl segundo criterio es la cantidad de datos. **Especializar horizontes necesita evidencia suficiente para que cada modelo aprenda algo real.** En datasets pequeños, dividir demasiado puede aumentar varianza y fragilidad.\n\nEl tercero es la decisión. Si H1 y H9 soportan acciones distintas, el enfoque directo permite especializar mejor cada target. Si toda la trayectoria alimenta una misma simulación y la coherencia temporal es crítica, recursivo o multi-output pueden ser más atractivos.\n\nLa comparación correcta debería mostrar error por horizonte, estabilidad temporal, coste de mantenimiento y coherencia de la trayectoria. **La estrategia multi-step es parte del sistema de decisión, no un detalle de implementación.** Elegirla bien significa entender cómo queremos que el error evolucione cuando el futuro se aleja.\n\nTambién conviene evaluar la sensibilidad a errores iniciales de forma explícita. Se puede perturbar H1 dentro de rangos plausibles y observar cómo cambia la trayectoria recursiva. **Ese test revela si la arquitectura amplifica pequeñas desviaciones.** En directo, el equivalente es comprobar coherencia entre horizontes vecinos. Estas pruebas complementan la accuracy media y ayudan a detectar sistemas que parecen buenos en backtesting pero generan trayectorias frágiles cuando las condiciones se apartan ligeramente del histórico.",
+      "seo_title": "Forecasting directo vs recursivo",
+      "seo_description": "Comparación entre forecasting multi-step directo y recursivo: propagación de error, especialización por horizonte, datos y complejidad operativa.",
+      "seo_keywords": [
+        "direct vs recursive forecasting",
+        "multi step forecasting",
+        "forecasting directo recursivo",
+        "multi horizon forecasting"
+      ],
+      "tags": [
+        "Forecasting",
+        "Multi-Step",
+        "Model Architecture"
+      ]
+    },
+    "en": {
+      "title": "Direct vs recursive multi-step forecasting",
+      "excerpt": "Recursive forecasting reuses its own predictions; direct forecasting learns horizons separately. The choice changes error propagation, complexity and consistency.",
+      "quick": [
+        "Recursive reuses predictions",
+        "Direct specializes horizons",
+        "The trade-off is error vs complexity"
+      ],
+      "section_titles": [
+        "How recursive forecasting works",
+        "What changes with direct forecasting",
+        "Where error appears",
+        "How to choose"
+      ],
+      "business_title": "Multi-step architecture should follow horizon length, data availability and the cost of error propagation.",
+      "business_steps": [
+        "Multi-step strategy",
+        "Error profile",
+        "Horizon-level decision"
+      ],
+      "body": "When a system has to forecast several steps ahead, an architectural choice appears that does not exist in a single-horizon problem: how should H2, H3 or H9 be produced? Two classic strategies are recursive and direct forecasting. **Recursive forecasting reuses its own predictions; direct forecasting learns each horizon as a distinct target.**\n\nNeither is universally superior. Recursive systems offer a compact and coherent structure but can accumulate error. Direct systems reduce that propagation at the cost of more models and more parameters to maintain. **The choice should follow the behaviour of the process and the role of each horizon.**\n\n**How recursive forecasting works**\nA recursive strategy usually trains a model to predict the next step. To obtain H2, the H1 prediction is inserted as though it were observed information; H3 repeats the process, and the mechanism continues to the end of the horizon.\n\nThe operational advantage is clear. **One model can generate the entire trajectory**, simplifying training, deployment and maintenance. The resulting sequence also tends to preserve a temporal logic because each step depends on the previous one.\n\nThe risk is a train-use mismatch. During training the model sees real historical values; during inference it receives imperfect predictions. Small early errors can therefore propagate and alter later inputs.\n\n**What changes with direct forecasting**\nA direct strategy learns a separate relationship for each horizon. One model predicts H1, another H2 and another H9, or a multi-output architecture produces separate targets without feeding predictions back into later steps.\n\nThis removes part of the propagation problem because **H9 does not explicitly depend on the predicted value of H8**. Each horizon can learn the features and patterns that matter at its own temporal distance.\n\nThe cost is complexity. More horizons can mean more models, hyperparameters, monitoring and potentially less coherence across the path. There also needs to be enough data for each target to learn a stable relationship.\n\n**Where error appears**\nWith recursive forecasting, error can compound. If H1 misses and that prediction becomes an input for H2, the second step starts from imperfect information. In strongly autoregressive processes this effect can become material.\n\nDirect forecasting reduces that channel but introduces another issue: **each horizon is optimized more independently**. The resulting trajectory can be less smooth, and H3 and H4 may show relationships that are difficult to explain if their models diverge.\n\nHybrid strategies exist as well: direct-recursive combinations, multi-output models, sequence architectures and horizon ensembles. They should solve observed failure modes rather than add sophistication for its own sake.\n\n**How to choose**\nThe first criterion is horizon length. For short horizons, recursive forecasting may remain stable enough while being significantly simpler. As the chain grows, measure how quickly error increases because of propagation.\n\nThe second criterion is data volume. **Horizon specialization needs enough evidence for each target to learn a real pattern.** With limited data, excessive splitting can increase variance and fragility.\n\nThe third criterion is the decision. If H1 and H9 support different actions, direct forecasting makes specialization easier. If the full trajectory feeds one simulation and temporal coherence is critical, recursive or multi-output approaches may be more attractive.\n\nA proper comparison should show error by horizon, temporal stability, maintenance cost and trajectory coherence. **Multi-step strategy is part of the decision system, not a minor implementation detail.** Choosing it well means deciding how error should behave as the forecast moves further into the future.\n\nIt is also useful to test sensitivity to early errors explicitly. Perturb H1 within plausible ranges and observe how the recursive path changes. **That test reveals whether the architecture amplifies small deviations.** For direct forecasting, the equivalent check is consistency between neighbouring horizons. These diagnostics complement average accuracy and expose systems that look strong in backtests but produce fragile trajectories when conditions move slightly away from historical patterns.",
+      "seo_title": "Direct vs Recursive Multi-Step Forecasting",
+      "seo_description": "Direct and recursive multi-step forecasting compared across error propagation, horizon specialization, data requirements and operational complexity.",
+      "seo_keywords": [
+        "direct vs recursive forecasting",
+        "multi step forecasting",
+        "recursive forecast",
+        "direct forecast"
+      ],
+      "tags": [
+        "Forecasting",
+        "Multi-Step",
+        "Model Architecture"
+      ]
+    },
+    "ca": {
+      "title": "Forecasting multi-step directe vs recursiu",
+      "excerpt": "L’enfocament recursiu reutilitza les seves prediccions; el directe aprèn cada horitzó per separat. L’elecció canvia error, complexitat i coherència.",
+      "quick": [
+        "Recursiu reutilitza prediccions",
+        "Directe especialitza horitzons",
+        "El trade-off és error vs complexitat"
+      ],
+      "section_titles": [
+        "Com funciona el recursiu",
+        "Què canvia amb el directe",
+        "On apareix l’error",
+        "Com triar"
+      ],
+      "business_title": "L’arquitectura multi-step s’ha de triar segons horitzó, dades i cost de propagació de l’error.",
+      "business_steps": [
+        "Estratègia multi-step",
+        "Perfil d’error",
+        "Decisió per horitzó"
+      ],
+      "body": "Quan un sistema ha de predir diversos passos endavant apareix una decisió d’arquitectura que no existeix en un únic horitzó: com construir H2, H3 o H9. Dos enfocaments clàssics són el recursiu i el directe. **El recursiu reutilitza les seves pròpies prediccions; el directe aprèn cada horitzó com un target específic.**\n\nCap és universalment superior. El recursiu ofereix una estructura compacta i coherent, però pot acumular error. El directe redueix aquesta propagació a canvi de més models i més manteniment. **L’elecció ha de seguir el comportament del problema i l’ús de cada horitzó.**\n\n**Com funciona el recursiu**\nEn una estratègia recursiva s’entrena normalment un model per predir el següent pas. Per obtenir H2, la predicció d’H1 entra com si fos informació disponible; per H3 es repeteix el procés, i així fins al final.\n\nL’avantatge operatiu és clar. **Un únic model pot generar tota la trajectòria**, simplificant entrenament, desplegament i manteniment. La seqüència també tendeix a mantenir una lògica temporal perquè cada pas depèn de l’anterior.\n\nEl risc és la diferència entre training i ús. Durant l’entrenament el model veu valors reals; durant inferència rep prediccions imperfectes. Errors inicials petits poden propagar-se.\n\n**Què canvia amb el directe**\nL’estratègia directa construeix una relació separada per horitzó. Un model aprèn H1, un altre H2 i un altre H9, o una arquitectura multi-output produeix targets diferenciats sense reutilitzar prediccions.\n\nAixò evita part de la propagació perquè **H9 no depèn explícitament del valor predit per H8**. Cada horitzó pot aprendre features i patrons adequats a la seva distància temporal.\n\nEl cost és complexitat. Més horitzons poden significar més models, hiperparàmetres, monitorització i menys coherència entre punts de la trajectòria. També cal prou informació perquè cada target aprengui de forma estable.\n\n**On apareix l’error**\nEn recursiu, l’error pot créixer acumulativament. Si H1 es desvia i aquest valor alimenta H2, el segon pas ja parteix d’una entrada imperfecta. En processos molt autoregressius, l’efecte pot ser important.\n\nEn directe, la propagació baixa, però apareix un altre problema: **cada horitzó s’optimitza de manera més independent**. La trajectòria pot ser menys suau i les relacions entre H3 i H4 poden costar d’explicar.\n\nTambé hi ha estratègies híbrides: direct-recursive, multi-output, models de seqüència o ensembles. Han de respondre a una limitació observada, no a la moda.\n\n**Com triar**\nEl primer criteri és la longitud de l’horitzó. En horitzons curts, el recursiu pot ser prou estable i molt més simple. Quan la cadena s’allarga, convé mesurar com creix l’error per propagació.\n\nEl segon criteri és la quantitat de dades. **Especialitzar horitzons necessita prou evidència perquè cada model aprengui alguna cosa real.** Amb datasets petits, dividir massa pot augmentar variància.\n\nEl tercer criteri és la decisió. Si H1 i H9 suporten accions diferents, el directe facilita l’especialització. Si tota la trajectòria alimenta una mateixa simulació i la coherència és crítica, recursiu o multi-output poden ser atractius.\n\nLa comparació correcta ha de mostrar error per horitzó, estabilitat, cost de manteniment i coherència de trajectòria. **L’estratègia multi-step forma part del sistema de decisió, no és un detall d’implementació.**\n\nTambé convé provar explícitament la sensibilitat als errors inicials. Es pot perturbar H1 dins de rangs plausibles i observar com canvia la trajectòria recursiva. **Aquesta prova revela si l’arquitectura amplifica desviacions petites.** En directe, l’equivalent és comprovar coherència entre horitzons veïns. Aquests diagnòstics complementen l’accuracy mitjana i detecten sistemes que semblen bons en backtesting però generen trajectòries fràgils quan les condicions s’allunyen una mica de l’històric.\n\nTambé cal considerar com es consumeix la trajectòria. Si la decisió utilitza només H9, una petita incoherència entre H4 i H5 pot ser irrellevant; si la trajectòria completa alimenta una simulació d’inventari, pot ser molt important. **La coherència necessària depèn de l’ús downstream.** Aquest criteri ajuda a evitar penalitzar el directe per una irregularitat visual que no afecta la decisió o, al contrari, ignorar una trajectòria recursiva aparentment suau però econòmicament esbiaixada.",
+      "seo_title": "Forecasting directe vs recursiu",
+      "seo_description": "Comparació de forecasting multi-step directe i recursiu segons propagació d’error, especialització, dades i complexitat operativa.",
+      "seo_keywords": [
+        "direct vs recursive forecasting",
+        "multi step forecasting",
+        "forecasting directe recursiu",
+        "multi horizon"
+      ],
+      "tags": [
+        "Forecasting",
+        "Multi-Step",
+        "Model Architecture"
+      ]
+    }
+  }
+}

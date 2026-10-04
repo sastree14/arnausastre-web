@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-089",
+  "sequence": 89,
+  "arc_id": "ARC-23",
+  "slug": "rag-is-not-a-knowledge-strategy",
+  "scheduled_at": "2027-05-15T09:00:00+02:00",
+  "knowledge_area": "ai_automation",
+  "cluster": "AI & Automation",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "point_of_view_contrarian",
+  "angle": "rag enterprise knowledge",
+  "primary_keyword": "rag enterprise knowledge",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-090",
+    "KB-091",
+    "KB-092"
+  ],
+  "variants": {
+    "es": {
+      "title": "RAG no es una estrategia de conocimiento",
+      "excerpt": "Conectar documentos a un LLM no resuelve automáticamente acceso, calidad, permisos ni ownership. RAG funciona cuando el sistema de conocimiento está diseñado antes del chat.",
+      "quick": [
+        "Retrieval no arregla fuentes pobres",
+        "Permisos importan tanto como embeddings",
+        "El valor aparece cuando la respuesta cambia una acción"
+      ],
+      "section_titles": [
+        "El problema suele estar antes del vector store",
+        "Retrieval necesita contexto y permisos",
+        "La respuesta debe poder verificarse",
+        "RAG solo crea valor si mejora una decisión"
+      ],
+      "business_title": "RAG es una capa de acceso; la estrategia de conocimiento define qué fuentes son fiables, quién puede verlas y cómo se convierten en decisiones útiles.",
+      "business_steps": [
+        "Fuentes gobernadas",
+        "Retrieval fiable",
+        "Acción informada"
+      ],
+      "body": "RAG se ha convertido en una de las arquitecturas más populares para llevar conocimiento empresarial a modelos generativos. El patrón parece simple: indexar documentos, recuperar fragmentos relevantes y pedir al LLM que responda con ese contexto. Pero **conectar documentos a un vector database no convierte automáticamente información dispersa en conocimiento operativo.**\n\nSi las fuentes están duplicadas, desactualizadas, mal autorizadas o estructuradas sin ownership, el sistema amplifica esos problemas. **RAG mejora acceso a información cuando la base documental ya tiene suficiente calidad y governance; no sustituye una estrategia de conocimiento.**\n\n**El problema suele estar antes del vector store**\nMuchas empresas creen que su problema es “encontrar mejor” información. A menudo el problema real es que no saben cuál es la versión válida.\n\nExisten políticas duplicadas, PDFs antiguos, documentos sin fecha, carpetas personales, Notion, SharePoint, Drive y wikis con contenido contradictorio.\n\n**Un retriever excelente puede recuperar con precisión** la fuente equivocada.\n\nAntes de embeddings, conviene definir fuentes autoritativas, lifecycle de documentos, owners, fechas de revisión y reglas de archivado.\n\nTambién hay que distinguir conocimiento estable de información transaccional. Una política puede vivir en documentación; el estado actual de un pedido debería consultarse desde el sistema operativo correspondiente.\n\nMezclar ambos tipos en un mismo índice puede generar respuestas obsoletas.\n\n**Retrieval necesita contexto y permisos**\nLa calidad de RAG depende de recuperar el contexto correcto para la pregunta correcta.\n\nChunk size, metadata, filtros, hybrid search, reranking y query rewriting pueden cambiar mucho el resultado.\n\nPero existe una capa todavía más crítica: permisos. **El sistema no debería recuperar información que el usuario no estaría autorizado a abrir directamente.**\n\nEsto exige propagar ACLs, roles, grupos o reglas de acceso hasta retrieval.\n\nTambién conviene utilizar metadata útil: departamento, país, fecha, tipo de documento, producto, cliente o estado de vigencia.\n\nUna búsqueda semántica sin filtros puede mezclar contratos de clientes, documentación interna y plantillas antiguas.\n\nEn algunos casos keyword search, SQL o APIs estructuradas son mejores que embeddings. RAG puede combinar varias estrategias en lugar de forzar vector search a todo.\n\n**La respuesta debe poder verificarse**\nUna respuesta convincente no es suficiente. El usuario necesita saber de dónde sale.\n\nCitas, enlaces a fuente, fecha y fragmentos relevantes permiten comprobar la respuesta. **La trazabilidad es parte del producto, no un elemento decorativo.**\n\nTambién hay que gestionar conflicto entre fuentes. Si dos documentos dicen cosas distintas, el sistema no debería inventar una síntesis silenciosa.\n\nPuede priorizar fuentes autoritativas, mostrar discrepancias o escalar la pregunta.\n\nLa ausencia de evidencia también es una respuesta válida. Un RAG maduro debe poder decir que no encuentra soporte suficiente.\n\nLa evaluación debería medir retrieval y generación por separado. Si la respuesta es mala, necesitamos saber si faltó el documento correcto o si el LLM interpretó mal un buen contexto.\n\nMétricas como recall@k, precision de contexto, faithfulness y answer correctness ayudan, pero deben acompañarse de casos reales.\n\n**RAG solo crea valor si mejora una decisión**\nEl objetivo final no debería ser que el chatbot “responda preguntas”.\n\nDebe reducir tiempo de búsqueda, mejorar calidad de soporte, acelerar onboarding, preparar propuestas, ayudar a resolver incidencias o reducir errores de interpretación.\n\n**La métrica útil es el workflow mejorado**, no el número de conversaciones.\n\nUn asistente que responde bien pero obliga al usuario a verificar manualmente todo puede ahorrar muy poco.\n\nEn cambio, un sistema que encuentra la política correcta, cita la fuente y prepara la siguiente acción puede integrarse realmente en operaciones.\n\nTambién conviene decidir si el output termina en conocimiento o en acción. Un RAG puede alimentar un agente, una automatización o un formulario, pero entonces los permisos y validaciones deben ser más estrictos.\n\nLa freshness es clave. Índices deben actualizarse cuando cambia la fuente, no solo mediante reindexados esporádicos.\n\nEl borrado también importa. Si un documento deja de estar autorizado, sus chunks deben desaparecer del índice.\n\nEl feedback puede revelar gaps de conocimiento: preguntas repetidas sin buena respuesta muestran documentación inexistente o difícil de encontrar.\n\nLa observabilidad debería registrar qué fuentes se recuperaron, cuál se usó y si el usuario abrió la evidencia.\n\nTambién conviene separar knowledge management de conversational UX. Una interfaz bonita no arregla mala información.\n\nLa estrategia de conocimiento puede incluir taxonomía, ownership, templates, procesos de revisión y fuentes estructuradas.\n\nRAG entra después como una capa flexible de acceso y síntesis.\n\n**RAG no es una estrategia de conocimiento porque no decide qué sabe la empresa ni qué información es válida.** Su valor aparece cuando se construye encima de fuentes gobernadas y convierte retrieval fiable en respuestas verificables que ayudan a trabajar mejor.",
+      "seo_title": "RAG empresarial: no es una estrategia de conocimiento",
+      "seo_description": "Por qué enterprise RAG necesita fuentes gobernadas, permisos, retrieval fiable, citas, freshness y conexión con workflows para crear valor.",
+      "seo_keywords": [
+        "rag enterprise knowledge",
+        "enterprise RAG",
+        "RAG knowledge management",
+        "retrieval augmented generation"
+      ],
+      "tags": [
+        "RAG",
+        "Enterprise AI",
+        "Knowledge Management"
+      ]
+    },
+    "en": {
+      "title": "RAG is not a knowledge strategy",
+      "excerpt": "Connecting documents to an LLM does not automatically solve access, quality, permissions or ownership. RAG works when the knowledge system is designed first.",
+      "quick": [
+        "Retrieval cannot fix poor sources",
+        "Permissions matter as much as embeddings",
+        "Value appears when answers improve action"
+      ],
+      "section_titles": [
+        "The problem often starts before the vector store",
+        "Retrieval needs context and permissions",
+        "Answers need to be verifiable",
+        "RAG creates value only when decisions improve"
+      ],
+      "business_title": "RAG is an access layer; knowledge strategy defines which sources are authoritative, who may see them and how information becomes useful decisions.",
+      "business_steps": [
+        "Governed sources",
+        "Reliable retrieval",
+        "Informed action"
+      ],
+      "body": "RAG has become one of the most popular architectures for connecting enterprise knowledge to generative models. The pattern looks simple: index documents, retrieve relevant passages and ask an LLM to answer using that context. But **connecting documents to a vector database does not automatically turn fragmented information into operational knowledge.**\n\nIf sources are duplicated, outdated, poorly permissioned or ownerless, the system amplifies those problems. **RAG improves access when the underlying knowledge base has enough quality and governance; it does not replace a knowledge strategy.**\n\n**The problem often starts before the vector store**\nMany organizations assume their problem is finding information more effectively. Often the deeper problem is not knowing which version is authoritative.\n\nPolicies are duplicated, PDFs remain outdated, documents lack dates, and information is spread across personal folders, Notion, SharePoint, Drive and internal wikis.\n\n**An excellent retriever can retrieve very accurately** the wrong source.\n\nBefore embeddings, define authoritative sources, document lifecycle, owners, review dates and archival rules.\n\nStable knowledge should also be separated from transactional state. A policy may belong in documentation; the current status of an order should come from the operational system of record.\n\nMixing both into one index can produce stale answers.\n\n**Retrieval needs context and permissions**\nRAG quality depends on retrieving the right context for the right question.\n\nChunk size, metadata, filters, hybrid search, reranking and query rewriting can materially change results.\n\nBut there is an even more critical layer: permissions. **The system should never retrieve information the user would not be allowed to open directly.**\n\nThat requires propagating ACLs, roles, groups or access rules into retrieval.\n\nUseful metadata matters too: department, country, date, document type, product, customer or validity status.\n\nSemantic search without filters can mix customer contracts, internal policies and obsolete templates.\n\nIn some cases keyword search, SQL or structured APIs are better than embeddings. RAG can combine retrieval strategies rather than forcing vector search onto every source.\n\n**Answers need to be verifiable**\nA convincing answer is not enough. Users need to know where it came from.\n\nCitations, source links, dates and relevant passages make verification possible. **Traceability is part of the product rather than decorative UI.**\n\nConflicting sources also need explicit handling. If two documents disagree, the system should not silently invent a compromise.\n\nIt can prioritize authoritative sources, surface the disagreement or escalate the question.\n\nLack of evidence is a valid answer too. A mature RAG system should be able to state that it has insufficient support.\n\nEvaluation should separate retrieval from generation. When an answer is poor, the team needs to know whether the right document was missing or the model misused good context.\n\nMetrics such as recall@k, context precision, faithfulness and answer correctness help, but they should be grounded in real task sets.\n\n**RAG creates value only when decisions improve**\nThe end goal should not be a chatbot that “answers questions”.\n\nThe system should reduce search time, improve support quality, accelerate onboarding, prepare proposals, resolve incidents faster or reduce interpretation errors.\n\n**The useful metric is the improved workflow**, not conversation volume.\n\nAn assistant that answers plausibly but forces users to manually verify everything may save very little.\n\nA system that finds the correct policy, cites it and prepares the next action can become part of real operations.\n\nIt also matters whether the output ends at knowledge or leads to action. RAG can feed an agent, automation or form, but permissions and validation then need to be stricter.\n\nFreshness is essential. Indexes should update when sources change rather than only through occasional re-indexing.\n\nDeletion matters too. If a document loses authorization, its chunks must disappear from retrieval.\n\nFeedback can expose knowledge gaps. Repeated questions with weak answers may indicate missing or poorly governed documentation.\n\nObservability should capture which sources were retrieved, which were used and whether users opened the evidence.\n\nKnowledge management should remain separate from conversational UX. A beautiful chat interface cannot repair poor information.\n\nKnowledge strategy may include taxonomy, ownership, templates, review processes and structured sources.\n\nRAG comes afterward as a flexible layer for access and synthesis.\n\n**RAG is not a knowledge strategy because it does not decide what the company knows or which information is valid.** It creates value when built on governed sources and when reliable retrieval becomes verifiable answers that improve real work.",
+      "seo_title": "Enterprise RAG Is Not a Knowledge Strategy",
+      "seo_description": "Why enterprise RAG needs governed sources, permissions, reliable retrieval, citations, freshness and workflow integration to create value.",
+      "seo_keywords": [
+        "rag enterprise knowledge",
+        "enterprise RAG",
+        "RAG knowledge management",
+        "retrieval augmented generation"
+      ],
+      "tags": [
+        "RAG",
+        "Enterprise AI",
+        "Knowledge Management"
+      ]
+    },
+    "ca": {
+      "title": "RAG no és una estratègia de coneixement",
+      "excerpt": "Connectar documents a un LLM no resol automàticament accés, qualitat, permisos ni ownership. RAG funciona quan el sistema de coneixement es dissenya primer.",
+      "quick": [
+        "Retrieval no arregla fonts pobres",
+        "Els permisos importen tant com embeddings",
+        "El valor apareix quan la resposta millora l’acció"
+      ],
+      "section_titles": [
+        "El problema sovint comença abans del vector store",
+        "Retrieval necessita context i permisos",
+        "La resposta s’ha de poder verificar",
+        "RAG només crea valor si millora una decisió"
+      ],
+      "business_title": "RAG és una capa d’accés; l’estratègia de coneixement defineix quines fonts són fiables, qui pot veure-les i com la informació es converteix en decisions útils.",
+      "business_steps": [
+        "Fonts governades",
+        "Retrieval fiable",
+        "Acció informada"
+      ],
+      "body": "RAG s’ha convertit en una de les arquitectures més populars per connectar coneixement empresarial amb models generatius. El patró sembla simple: indexar documents, recuperar fragments rellevants i demanar al LLM que respongui amb aquell context. Però **connectar documents a una vector database no converteix automàticament informació dispersa en coneixement operatiu.**\n\nSi les fonts estan duplicades, desactualitzades, mal autoritzades o sense ownership, el sistema amplifica aquests problemes. **RAG millora l’accés quan la base documental té prou qualitat i governance; no substitueix una estratègia de coneixement.**\n\n**El problema sovint comença abans del vector store**\nMoltes empreses pensen que el problema és “trobar millor” la informació. Sovint el problema real és no saber quina versió és vàlida.\n\nHi ha policies duplicades, PDFs antics, documents sense data i informació repartida entre carpetes personals, Notion, SharePoint, Drive i wikis.\n\n**Un retriever excel·lent pot recuperar amb precisió** la font equivocada.\n\nAbans d’embeddings, convé definir fonts autoritatives, lifecycle, owners, dates de revisió i regles d’arxiu.\n\nTambé cal separar coneixement estable d’estat transaccional. Una policy pot viure en documentació; l’estat actual d’una comanda s’hauria de consultar al sistema operatiu.\n\nBarrejar tots dos en un índex pot generar respostes obsoletes.\n\n**Retrieval necessita context i permisos**\nLa qualitat de RAG depèn de recuperar el context correcte per la pregunta correcta.\n\nChunk size, metadata, filtres, hybrid search, reranking i query rewriting poden canviar molt el resultat.\n\nPerò hi ha una capa encara més crítica: permisos. **El sistema no hauria de recuperar informació que l’usuari no podria obrir directament.**\n\nAixò exigeix propagar ACLs, rols, grups o regles d’accés fins al retrieval.\n\nLa metadata útil també importa: departament, país, data, tipus de document, producte, client o vigència.\n\nUna cerca semàntica sense filtres pot barrejar contractes de clients, policies internes i plantilles antigues.\n\nEn alguns casos keyword search, SQL o APIs estructurades són millors que embeddings. RAG pot combinar estratègies en lloc de forçar vector search.\n\n**La resposta s’ha de poder verificar**\nUna resposta convincent no és suficient. L’usuari necessita saber d’on surt.\n\nCites, links, dates i fragments rellevants permeten verificar. **La traçabilitat forma part del producte i no és decoració.**\n\nTambé cal gestionar conflictes entre fonts. Si dos documents discrepen, el sistema no hauria d’inventar una síntesi silenciosa.\n\nPot prioritzar fonts autoritatives, mostrar discrepàncies o escalar la pregunta.\n\nL’absència d’evidència també és una resposta vàlida. Un RAG madur ha de poder dir que no troba suport suficient.\n\nL’avaluació ha de separar retrieval de generació. Si una resposta és dolenta, necessitem saber si faltava el document correcte o si el LLM ha interpretat malament un bon context.\n\nRecall@k, context precision, faithfulness i answer correctness poden ajudar, però s’han de connectar a casos reals.\n\n**RAG només crea valor si millora una decisió**\nL’objectiu final no hauria de ser un chatbot que “respon preguntes”.\n\nHa de reduir temps de cerca, millorar suport, accelerar onboarding, preparar propostes, resoldre incidències o reduir errors d’interpretació.\n\n**La mètrica útil és el workflow millorat**, no el nombre de converses.\n\nUn assistent que respon de forma plausible però obliga a verificar-ho tot manualment pot estalviar molt poc.\n\nUn sistema que troba la policy correcta, la cita i prepara la següent acció pot integrar-se realment en operacions.\n\nTambé importa si l’output acaba en coneixement o porta a una acció. RAG pot alimentar un agent o automatització, però llavors permisos i validacions han de ser més estrictes.\n\nLa freshness és clau. Els índexs s’han d’actualitzar quan canvia la font.\n\nEl borrat també importa. Si un document deixa d’estar autoritzat, els seus chunks han de desaparèixer.\n\nEl feedback pot revelar gaps de coneixement: preguntes repetides sense bona resposta indiquen documentació absent o difícil de trobar.\n\nL’observabilitat ha de registrar quines fonts s’han recuperat, quines s’han utilitzat i si l’usuari ha obert l’evidència.\n\nKnowledge management s’ha de separar de la UX conversacional. Una interfície bonica no arregla mala informació.\n\nL’estratègia de coneixement pot incloure taxonomia, ownership, templates, revisions i fonts estructurades.\n\nRAG entra després com una capa flexible d’accés i síntesi.\n\n**RAG no és una estratègia de coneixement perquè no decideix què sap l’empresa ni quina informació és vàlida.** El seu valor apareix quan es construeix sobre fonts governades i converteix retrieval fiable en respostes verificables que ajuden a treballar millor.",
+      "seo_title": "RAG empresarial: no és una estratègia de coneixement",
+      "seo_description": "Per què enterprise RAG necessita fonts governades, permisos, retrieval fiable, cites, freshness i connexió amb workflows per crear valor.",
+      "seo_keywords": [
+        "rag enterprise knowledge",
+        "enterprise RAG",
+        "RAG knowledge management",
+        "retrieval augmented generation"
+      ],
+      "tags": [
+        "RAG",
+        "Enterprise AI",
+        "Knowledge Management"
+      ]
+    }
+  }
+}

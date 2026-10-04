@@ -1,0 +1,617 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sc-analytics.io/schemas/website_project.schema.json",
+  "title": "SC-Analytics Website Project",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "slug",
+    "projectId",
+    "evidenceMode",
+    "eyebrow",
+    "title",
+    "description",
+    "thesis",
+    "industry",
+    "capabilities",
+    "challenge",
+    "audience",
+    "proofUrl",
+    "proofLabel",
+    "heroFacts",
+    "businessProblem",
+    "horizonLogic",
+    "solution",
+    "architecture",
+    "decisions",
+    "evidence",
+    "technical",
+    "limitations",
+    "takeaway",
+    "cta",
+    "sourceNote",
+    "businessOutcome"
+  ],
+  "properties": {
+    "slug": {
+      "type": "string",
+      "minLength": 1
+    },
+    "projectId": {
+      "type": "string",
+      "pattern": "^SC-[0-9]+$"
+    },
+    "evidenceMode": {
+      "enum": [
+        "public_portfolio_implementation",
+        "client_case"
+      ]
+    },
+    "eyebrow": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "thesis": {
+      "type": "string",
+      "minLength": 1
+    },
+    "industry": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "challenge": {
+      "type": "string",
+      "minLength": 1
+    },
+    "audience": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "proofUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "proofLabel": {
+      "type": "string",
+      "minLength": 1
+    },
+    "heroFacts": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/labeledValue"
+      }
+    },
+    "businessProblem": {
+      "$ref": "#/$defs/businessProblem"
+    },
+    "horizonLogic": {
+      "$ref": "#/$defs/horizonLogic"
+    },
+    "solution": {
+      "$ref": "#/$defs/solution"
+    },
+    "architecture": {
+      "$ref": "#/$defs/architecture"
+    },
+    "decisions": {
+      "$ref": "#/$defs/decisions"
+    },
+    "evidence": {
+      "$ref": "#/$defs/evidence"
+    },
+    "technical": {
+      "$ref": "#/$defs/technical"
+    },
+    "limitations": {
+      "$ref": "#/$defs/limitations"
+    },
+    "takeaway": {
+      "$ref": "#/$defs/basicSection"
+    },
+    "cta": {
+      "$ref": "#/$defs/cta"
+    },
+    "sourceNote": {
+      "type": "string",
+      "minLength": 1
+    },
+    "businessOutcome": {
+      "$ref": "#/$defs/businessOutcome"
+    }
+  },
+  "$defs": {
+    "labeledValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label",
+        "value"
+      ],
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "basicSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eyebrow",
+        "title",
+        "body"
+      ],
+      "properties": {
+        "eyebrow": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    "businessProblem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eyebrow",
+        "title",
+        "body",
+        "consequences"
+      ],
+      "properties": {
+        "eyebrow": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "consequences": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "title",
+              "body"
+            ],
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "body": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "horizonLogic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eyebrow",
+        "title",
+        "body",
+        "horizons",
+        "takeaway"
+      ],
+      "properties": {
+        "eyebrow": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "takeaway": {
+          "type": "string"
+        },
+        "horizons": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "horizon",
+              "label",
+              "note"
+            ],
+            "properties": {
+              "horizon": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "solution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eyebrow",
+        "title",
+        "body",
+        "bullets"
+      ],
+      "properties": {
+        "eyebrow": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "bullets": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 8,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "architecture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eyebrow",
+        "title",
+        "body",
+        "steps",
+        "integrations"
+      ],
+      "properties": {
+        "eyebrow": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 9,
+          "items": {
+            "$ref": "#/$defs/titledDetail"
+          }
+        },
+        "integrations": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "items": {
+            "$ref": "#/$defs/titledDetail"
+          }
+        }
+      }
+    },
+    "titledBody": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "body"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    "decisions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eyebrow",
+        "title",
+        "body",
+        "items"
+      ],
+      "properties": {
+        "eyebrow": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
+          "items": {
+            "$ref": "#/$defs/titledBody"
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eyebrow",
+        "title",
+        "body",
+        "metrics",
+        "note"
+      ],
+      "properties": {
+        "eyebrow": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        },
+        "metrics": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label",
+              "value",
+              "note"
+            ],
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "technical": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eyebrow",
+        "title",
+        "body",
+        "technologies",
+        "highlights"
+      ],
+      "properties": {
+        "eyebrow": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "technologies": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "highlights": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "limitations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eyebrow",
+        "title",
+        "body",
+        "items"
+      ],
+      "properties": {
+        "eyebrow": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "cta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eyebrow",
+        "title",
+        "body",
+        "primaryLabel",
+        "primaryHref",
+        "secondaryLabel",
+        "secondaryHref"
+      ],
+      "properties": {
+        "eyebrow": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "primaryLabel": {
+          "type": "string"
+        },
+        "primaryHref": {
+          "type": "string"
+        },
+        "secondaryLabel": {
+          "type": "string"
+        },
+        "secondaryHref": {
+          "type": "string"
+        }
+      }
+    },
+    "titledDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "detail"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        }
+      }
+    },
+    "businessOutcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "label",
+        "headline",
+        "summary",
+        "metrics",
+        "disclaimer"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "verified",
+            "illustrative_scenario"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "headline": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metrics": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "value",
+              "label",
+              "note"
+            ],
+            "properties": {
+              "value": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "disclaimer": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

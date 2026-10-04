@@ -4,8 +4,6 @@ import Link from 'next/link'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import type { Article } from '@/lib/content'
 
-// ── Inline markdown renderer ───────────────────────────────────────────────────
-
 function renderInline(text: string): React.ReactNode {
   const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g)
   return parts.map((part, i) => {
@@ -16,8 +14,6 @@ function renderInline(text: string): React.ReactNode {
     return part
   })
 }
-
-// ── Body parser — splits into intro + named sections ──────────────────────────
 
 type BodySegment =
   | { type: 'intro'; paras: string[] }
@@ -40,30 +36,21 @@ function parseBody(body: string): BodySegment[] {
   return segments
 }
 
-// ── Paragraph renderer ────────────────────────────────────────────────────────
-
 function renderPara(para: string, i: number) {
   if (para.startsWith('- ')) {
-    const items = para.split('\n').filter((l) => l.startsWith('- '))
+    const items = para.split('\n').filter((line) => line.startsWith('- '))
     return (
-      <ul key={i} className="space-y-3">
+      <ul key={i} className="space-y-3 border-l-2 border-indigo-200 pl-5">
         {items.map((item, j) => (
-          <li key={j} className="flex items-start gap-3 text-slate-600 leading-7">
-            <span className="mt-2.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-indigo-400" />
-            <span>{renderInline(item.slice(2))}</span>
+          <li key={j} className="text-[17px] leading-8 text-slate-700">
+            {renderInline(item.slice(2))}
           </li>
         ))}
       </ul>
     )
   }
-  return (
-    <p key={i} className="text-base leading-8 text-slate-600">
-      {renderInline(para)}
-    </p>
-  )
+  return <p key={i} className="text-[17px] leading-8 text-slate-700">{renderInline(para)}</p>
 }
-
-// ── TOC headings extractor ────────────────────────────────────────────────────
 
 function extractHeadings(body: string): string[] {
   return body
@@ -72,149 +59,137 @@ function extractHeadings(body: string): string[] {
     .map((p) => p.trim().slice(2, -2))
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
+const COPY = {
+  en: {
+    back: 'Knowledge',
+    min: 'min read',
+    sections: 'sections',
+    toc: 'In this article',
+    explore: 'Keep exploring',
+    cases: 'Case studies',
+    work: 'How we work',
+    contact: 'Contact us',
+    detail: 'Read detail',
+  },
+  es: {
+    back: 'Conocimiento',
+    min: 'min de lectura',
+    sections: 'secciones',
+    toc: 'En este artículo',
+    explore: 'Sigue explorando',
+    cases: 'Casos',
+    work: 'Cómo trabajamos',
+    contact: 'Contacta con nosotros',
+    detail: 'Ver detalle',
+  },
+  ca: {
+    back: 'Coneixement',
+    min: 'min de lectura',
+    sections: 'seccions',
+    toc: 'En aquest article',
+    explore: 'Continua explorant',
+    cases: 'Casos',
+    work: 'Com treballem',
+    contact: 'Contacta amb nosaltres',
+    detail: 'Veure detall',
+  },
+} as const
 
 export default function ArticleContent({ article, forcedLanguage }: { article: Article; forcedLanguage?: 'en'|'es'|'ca' }) {
   const { lang: siteLang } = useSiteLanguage()
   const lang = forcedLanguage || siteLang
-  const labels={
-    en:{back:'← Knowledge',min:'min read',sections:'sections',toc:'In this article'},
-    es:{back:'← Conocimiento',min:'min de lectura',sections:'secciones',toc:'En este artículo'},
-    ca:{back:'← Coneixement',min:'min de lectura',sections:'seccions',toc:'En aquest article'},
-  } as const
-  const tc=labels[lang]
+  const t = COPY[lang]
   const title = lang === 'en' ? article.titleEn : lang === 'ca' ? (article.titleCa || article.titleEs) : article.titleEs
   const body = lang === 'en' ? article.bodyEn : lang === 'ca' ? (article.bodyCa || article.bodyEs) : article.bodyEs
   const tags = lang === 'en' ? article.tagsEn : lang === 'ca' ? (article.tagsCa || article.tagsEs) : article.tagsEs
-
   const segments = parseBody(body)
   const headings = extractHeadings(body)
-  let sectionCount = 0
 
   return (
-    <main className="bg-slate-50 text-slate-900 page-enter">
-
-      {/* ── Header ─────────────────────────────────────────────────── */}
-      <section className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-5xl px-6 pb-14 pt-14">
-          <Link
-            href="/knowledge"
-            className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 transition mb-10"
-          >
-            {tc.back}
+    <main className="bg-[#FAFAF7] text-slate-950">
+      <section className="border-b border-slate-300 bg-white">
+        <div className="mx-auto max-w-6xl px-6 pb-12 pt-10 md:pb-14 md:pt-12">
+          <Link href="/knowledge" className="inline-flex items-center gap-2 text-[15px] font-medium text-slate-500 transition hover:text-slate-950">
+            ← {t.back}
           </Link>
 
-          <div className="flex flex-wrap gap-2 mb-6">
-            {tags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-md bg-indigo-50 border border-indigo-100 px-2.5 py-1 text-xs font-medium text-indigo-700"
-              >
-                {tag}
-              </span>
-            ))}
+          <div className="mt-8 flex flex-wrap gap-x-4 gap-y-2 border-b border-slate-200 pb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+            {tags.map((tag) => <span key={tag}>{tag}</span>)}
           </div>
 
-          <h1
-            className="text-4xl leading-tight md:text-5xl text-slate-900 max-w-3xl"
-            style={{ fontFamily: 'var(--font-playfair)' }}
-          >
+          <h1 className="mt-6 max-w-4xl text-[46px] leading-[1.02] tracking-[-0.03em] sm:text-[58px] lg:text-[62px]" style={{ fontFamily: 'var(--font-playfair)' }}>
             {title}
           </h1>
 
-          <div className="mt-6 flex items-center gap-3 flex-wrap">
-            <span className="text-sm text-slate-400">{article.date}</span>
-            <span className="h-1 w-1 rounded-full bg-slate-300" />
-            <span className="text-sm text-slate-400">{article.readingTime} {tc.min}</span>
-            {headings.length > 0 && (
-              <>
-                <span className="h-1 w-1 rounded-full bg-slate-300" />
-                <span className="text-sm text-slate-400">{headings.length} {tc.sections}</span>
-              </>
-            )}
+          <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[12px] uppercase tracking-[0.08em] text-slate-500">
+            <span>{article.date}</span>
+            <span>·</span>
+            <span>{article.readingTime} {t.min}</span>
+            {headings.length > 0 && <><span>·</span><span>{headings.length} {t.sections}</span></>}
           </div>
         </div>
       </section>
 
-      {/* ── Article + sidebar ──────────────────────────────────────── */}
-      <div className="mx-auto max-w-5xl px-6 py-12">
-        <div className="lg:grid lg:grid-cols-[1fr_200px] lg:gap-14 lg:items-start">
-
-          {/* Article body — section cards */}
-          <article className="space-y-6">
-            {segments.map((seg, si) => {
-
-              if (seg.type === 'intro') {
+      <div className="mx-auto max-w-6xl px-6 py-10 md:py-12">
+        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-14 lg:items-start">
+          <article className="border-t border-slate-300">
+            {segments.map((segment, segmentIndex) => {
+              if (segment.type === 'intro') {
                 return (
-                  <div
-                    key={si}
-                    className="rounded-2xl border border-indigo-100 bg-indigo-50 px-8 py-8 md:px-10"
-                  >
-                    <div className="space-y-5">
-                      {seg.paras.map((para, i) => (
-                        <p key={i} className="text-lg leading-9 text-slate-700">
-                          {renderInline(para)}
-                        </p>
+                  <div key={segmentIndex} className="border-b border-slate-300 bg-[#F4F1EA] px-6 py-8 md:px-8 md:py-9">
+                    <div className="max-w-[72ch] space-y-5">
+                      {segment.paras.map((para, i) => (
+                        <p key={i} className="text-[20px] leading-9 text-[#1D2B44]">{renderInline(para)}</p>
                       ))}
                     </div>
                   </div>
                 )
               }
 
-              sectionCount++
-              const num = String(sectionCount).padStart(2, '0')
-
+              const sectionNumber = segments.slice(0, segmentIndex + 1).filter((item) => item.type === 'section').length
+              const num = String(sectionNumber).padStart(2, '0')
               return (
-                <div
-                  key={si}
-                  id={`section-${sectionCount}`}
-                  className="rounded-2xl border border-slate-200 bg-white px-8 py-8 md:px-10"
-                >
-                  {/* Section heading */}
-                  <div className="flex items-start gap-5 mb-7 pb-6 border-b border-slate-100">
-                    <span
-                      className="flex-shrink-0 text-4xl font-light text-slate-200 leading-none select-none"
-                      style={{ fontFamily: 'var(--font-playfair)' }}
-                    >
-                      {num}
-                    </span>
+                <section key={segmentIndex} id={`section-${sectionNumber}`} className="border-b border-slate-300 bg-white px-6 py-9 md:px-8 md:py-10">
+                  <div className="grid gap-5 md:grid-cols-[62px_1fr]">
+                    <span className="font-mono text-[13px] font-semibold text-indigo-700">{num}</span>
                     <div>
-                      <h2
-                        className="text-xl font-semibold text-slate-900 leading-snug"
-                        style={{ fontFamily: 'var(--font-playfair)' }}
-                      >
-                        {seg.heading}
-                      </h2>
-                      <div className="mt-2 h-0.5 w-8 rounded-full bg-indigo-400" />
+                      <h2 className="max-w-[26ch] text-[31px] leading-[1.08] text-slate-950 sm:text-[35px]" style={{ fontFamily: 'var(--font-playfair)' }}>{segment.heading}</h2>
+                      <div className="mt-6 max-w-[72ch]">
+                        <div className="space-y-5">
+                          {segment.paras.slice(0, 1).map((para, i) => renderPara(para, i))}
+                        </div>
+
+                        {segment.paras.length > 1 ? (
+                          <details className="group mt-5 border-t border-slate-200 pt-4">
+                            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[13px] font-semibold uppercase tracking-[0.1em] text-indigo-700">
+                              <span>{t.detail}</span>
+                              <span className="text-[18px] font-normal transition-transform group-open:rotate-45">+</span>
+                            </summary>
+                            <div className="mt-5 space-y-5">
+                              {segment.paras.slice(1).map((para, i) => renderPara(para, i + 1))}
+                            </div>
+                          </details>
+                        ) : null}
+                      </div>
                     </div>
                   </div>
-
-                  {/* Section body */}
-                  <div className="space-y-5">
-                    {seg.paras.map((para, i) => renderPara(para, i))}
-                  </div>
-                </div>
+                </section>
               )
             })}
           </article>
 
-          {/* TOC sidebar — desktop only */}
           {headings.length > 0 && (
-            <aside className="hidden lg:block sticky top-24 self-start">
-              <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.18em] text-slate-400">
-                {tc.toc}
-              </p>
-              <nav className="space-y-3 border-l border-slate-200 pl-4">
-                {headings.map((h, idx) => (
+            <aside className="sticky top-24 hidden self-start lg:block">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">{t.toc}</p>
+              <nav className="mt-4 border-l border-slate-300">
+                {headings.map((heading, index) => (
                   <a
-                    key={idx}
-                    href={`#section-${idx + 1}`}
-                    className="group flex items-start gap-2 text-xs leading-snug text-slate-400 hover:text-indigo-600 transition"
+                    key={heading}
+                    href={`#section-${index + 1}`}
+                    className="grid grid-cols-[30px_1fr] gap-2 border-b border-slate-200 py-3 pl-4 text-[13px] leading-6 text-slate-600 transition hover:text-indigo-700"
                   >
-                    <span className="flex-shrink-0 font-light text-slate-300 group-hover:text-indigo-400 transition">
-                      {String(idx + 1).padStart(2, '0')}
-                    </span>
-                    {h}
+                    <span className="font-mono text-slate-400">{String(index + 1).padStart(2, '0')}</span>
+                    <span>{heading}</span>
                   </a>
                 ))}
               </nav>
@@ -223,6 +198,18 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
         </div>
       </div>
 
+      <section className="border-y border-slate-300 bg-white">
+        <div className="mx-auto grid max-w-6xl gap-7 px-6 py-10 lg:grid-cols-[190px_1fr] lg:gap-10">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.explore}</p>
+          <div className="grid border-t border-slate-300 md:grid-cols-3 md:divide-x md:divide-slate-300">
+            {[[t.cases,'/projects'],[t.work,'/services'],[t.contact,'/contact?intent=discovery']].map(([label, href]) => (
+              <Link key={href} href={href} className="group flex items-center justify-between border-b border-slate-300 py-4 text-[15px] font-semibold text-slate-900 md:px-5 md:first:pl-0">
+                {label}<span className="text-indigo-700 transition group-hover:translate-x-1">→</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
     </main>
   )
 }

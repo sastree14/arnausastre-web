@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-107",
+  "sequence": 107,
+  "arc_id": "ARC-27",
+  "slug": "why-teams-hit-the-kpi-and-miss-the-outcome",
+  "scheduled_at": "2027-06-23T09:00:00+02:00",
+  "knowledge_area": "analytics",
+  "cluster": "Analytics & Decision Intelligence",
+  "editorial_pillar": "consulting_decision_insights",
+  "content_family": "failure_modes_mistakes",
+  "angle": "kpi gaming",
+  "primary_keyword": "kpi gaming",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-105",
+    "KB-106",
+    "KB-108"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué se cumple el KPI pero se falla el resultado",
+      "excerpt": "Los equipos pueden optimizar perfectamente la métrica equivocada. Gaming, proxies débiles y objetivos locales explican por qué el KPI sube mientras el outcome empeora.",
+      "quick": [
+        "El KPI puede convertirse en el objetivo",
+        "Los proxies se pueden romper",
+        "El sistema debe vigilar el outcome real"
+      ],
+      "section_titles": [
+        "Cuando la métrica sustituye al objetivo",
+        "Cómo aparece el gaming sin mala fe",
+        "Por qué los objetivos locales chocan",
+        "Cómo detectar que el KPI se ha roto"
+      ],
+      "business_title": "Cumplir un KPI no demuestra éxito si la métrica dejó de representar el outcome que debía mejorar.",
+      "business_steps": [
+        "Target",
+        "Comportamiento",
+        "Outcome"
+      ],
+      "body": "Una organización puede tener todos sus KPIs en verde y seguir decepcionada con el resultado final. No es una paradoja: **los equipos pueden optimizar muy bien una métrica que ya no representa suficientemente el objetivo empresarial**.\n\nCuando un KPI se convierte en target, la atención se desplaza hacia aquello que mejora el número. Si la relación entre métrica y outcome es imperfecta, esa optimización puede separarlos. **El problema no es necesariamente manipulación consciente; muchas veces es una respuesta racional a incentivos mal diseñados.**\n\n**Cuando la métrica sustituye al objetivo**\nUn KPI suele empezar como proxy.\n\nNúmero de llamadas representa actividad comercial. Tiempo de resolución representa eficiencia. Utilización representa productividad. Conversión representa calidad del funnel.\n\nEl problema aparece cuando el proxy se trata como si fuera el outcome.\n\n**La métrica deja de ser un indicador y se convierte en el objetivo operativo**.\nEntonces el equipo busca todas las formas legítimas de mejorarla.\n\nVentas puede priorizar leads fáciles que convierten rápido pero tienen menor margen.\n\nSoporte puede cerrar tickets antes de verificar una resolución definitiva.\n\nOperaciones puede aumentar utilización reduciendo buffers que protegían el sistema.\n\nCada acción mejora la métrica local y puede empeorar el resultado global.\n\n**Cómo aparece el gaming sin mala fe**\nGaming suena a fraude, pero muchas veces surge sin intención de engañar.\n\nSi un bonus depende de una cifra, las personas aprenden qué casos cuentan, qué timing favorece el cálculo y qué actividades no aportan al score.\n\n**El sistema enseña a la organización cómo optimizar la medición**.\nPor ejemplo, un equipo puede adelantar cierres al final de mes y dejar trabajo administrativo para después.\n\nUn centro de soporte puede dividir tickets para reducir tiempos.\n\nUn equipo comercial puede descartar oportunidades complejas para proteger conversión.\n\nNinguna de estas acciones tiene que violar una norma explícita.\n\nSimplemente explotan huecos entre la métrica y la realidad.\n\nLa respuesta no es desconfiar de los equipos, sino mejorar el diseño del sistema.\n\n**Por qué los objetivos locales chocan**\nCada departamento suele tener KPIs propios porque necesita accountability.\n\nEl problema aparece cuando esos KPIs optimizan funciones diferentes.\n\nCompras quiere coste unitario bajo; operaciones quiere disponibilidad; finanzas quiere poco working capital.\n\n**No existe una única métrica local que capture todos los trade-offs del sistema**.\nSi compras persigue únicamente precio, puede aumentar lotes y stock.\n\nSi operaciones persigue únicamente service level, puede inflar inventario.\n\nSi finanzas persigue solo inventario bajo, puede aumentar roturas.\n\nCada función puede cumplir su objetivo y el sistema empeorar.\n\nPor eso hacen falta métricas globales o guardrails compartidos.\n\nTambién conviene explicitar qué trade-offs son aceptables.\n\nUn KPI local debería estar conectado con una métrica de sistema y con límites que impidan destruir valor en otra parte.\n\n**Cómo detectar que el KPI se ha roto**\nLa primera señal es divergencia entre KPI y outcome.\n\nLa métrica mejora durante varios periodos, pero el resultado que debía anticipar o explicar no mejora.\n\n**Cuando KPI y outcome dejan de moverse juntos, el proxy necesita revisión**.\nLa segunda señal es comportamiento extraño alrededor de fechas de corte, thresholds o exclusiones.\n\nLa tercera es concentración en casos fáciles.\n\nLa cuarta es proliferación de excepciones y discusiones sobre cómo “contar” determinadas situaciones.\n\nLa quinta es que los usuarios empiezan a desconfiar de la métrica y mantienen cálculos paralelos.\n\nTambién conviene observar dispersiones. Una media puede mejorar porque se han sacrificado extremos.\n\nLos comentarios cualitativos son útiles. Si el equipo dice “esto mejora el KPI pero no el negocio”, hay que escucharlo.\n\nLa revisión debería empezar por la lógica causal.\n\n¿Por qué creíamos que esta métrica representaba el outcome?\n\n¿Sigue siendo cierto?\n\nDespués conviene comprobar si el proceso cambió.\n\nUna campaña, un nuevo canal o una nueva política puede romper una relación histórica.\n\nLos guardrails pueden reducir gaming.\n\nPor ejemplo, conversión junto a margen, resolución rápida junto a reopen rate, utilización junto a downtime.\n\nTambién pueden utilizarse ventanas más largas para reducir manipulación de timing.\n\nLos targets relativos pueden ser mejores que puntos absolutos en contextos variables.\n\nPero demasiados guardrails crean un scorecard imposible de entender.\n\nLa solución debe seguir siendo simple.\n\nTambién hay que revisar si las personas controlan realmente la métrica.\n\nResponsabilizar a alguien por algo dominado por factores externos genera comportamientos defensivos.\n\nLa transparencia de definición es crítica.\n\nSi existen dudas sobre numerador, denominador o población, habrá conflictos inevitables.\n\nEl sistema debería registrar cambios de definición y evitar comparar series incompatibles.\n\nFinalmente, algunos KPIs deben retirarse.\n\nUna métrica que funcionó durante años puede dejar de ser útil.\n\n**El objetivo no es proteger el KPI, sino proteger la decisión que el KPI debía mejorar**.\nCuando una organización cumple el número y falla el resultado, no debería pedir simplemente más disciplina.\n\nDebería revisar si está midiendo el comportamiento correcto.\n\n**El KPI está roto cuando mejorar la métrica ya no aumenta la probabilidad de conseguir el outcome.** En ese momento, insistir en el target solo perfecciona una optimización equivocada.",
+      "seo_title": "Por qué se cumple el KPI pero se falla el resultado",
+      "seo_description": "Cómo el KPI gaming, los proxies débiles y la optimización local hacen que una métrica mejore mientras el outcome empresarial empeora.",
+      "seo_keywords": [
+        "kpi gaming",
+        "KPI failure",
+        "Goodhart law KPI",
+        "performance metric gaming"
+      ],
+      "tags": [
+        "Analytics",
+        "KPIs",
+        "Performance Management"
+      ]
+    },
+    "en": {
+      "title": "Why teams hit the KPI and miss the outcome",
+      "excerpt": "Teams can optimize the wrong metric extremely well. Gaming, weak proxies and local objectives explain why KPIs rise while outcomes deteriorate.",
+      "quick": [
+        "The KPI can become the objective",
+        "Proxies can break",
+        "The system must watch the real outcome"
+      ],
+      "section_titles": [
+        "When the metric replaces the objective",
+        "How gaming appears without bad intent",
+        "Why local objectives collide",
+        "How to detect a broken KPI"
+      ],
+      "business_title": "Hitting a KPI does not prove success when the metric no longer represents the outcome it was meant to improve.",
+      "business_steps": [
+        "Target",
+        "Behaviour",
+        "Outcome"
+      ],
+      "body": "An organization can have every KPI green and still be disappointed by the final result. There is no paradox: **teams can optimize a metric extremely well after that metric has stopped representing the business objective sufficiently**.\n\nOnce a KPI becomes a target, attention moves toward actions that improve the number. If the link between metric and outcome is imperfect, optimization can separate them. **The problem is not necessarily deliberate manipulation; it is often a rational response to poorly designed incentives.**\n\n**When the metric replaces the objective**\nA KPI usually begins as a proxy.\n\nCall volume represents commercial activity. Resolution time represents efficiency. Utilization represents productivity. Conversion represents funnel quality.\n\nThe problem begins when the proxy is treated as the outcome itself.\n\n**The metric stops being an indicator and becomes the operating objective**.\nTeams then search for every legitimate way to improve it.\n\nSales can prioritize easy leads that convert quickly but generate lower margin.\n\nSupport can close tickets before confirming durable resolution.\n\nOperations can increase utilization by removing buffers that protected system resilience.\n\nEvery action can improve the local metric while damaging the broader result.\n\n**How gaming appears without bad intent**\nGaming sounds like fraud, but it often appears without intent to deceive.\n\nWhen a bonus depends on one number, people learn which cases count, which timing improves the calculation and which activities do not affect the score.\n\n**The system teaches the organization how to optimize the measurement**.\nA team may pull deals into month-end and postpone administrative work.\n\nA support centre may split tickets to reduce measured duration.\n\nA sales team may avoid difficult opportunities to protect conversion.\n\nNone of those actions needs to violate an explicit rule.\n\nThey exploit gaps between measurement and reality.\n\nThe response should not be distrust of teams. It should be better system design.\n\n**Why local objectives collide**\nDepartments need local KPIs for accountability.\n\nProblems appear when those KPIs optimize different objective functions.\n\nProcurement wants lower unit cost; operations wants availability; finance wants less working capital.\n\n**No single local metric captures every system trade-off**.\nIf procurement optimizes price alone, order sizes and inventory may rise.\n\nIf operations optimizes service level alone, stock may expand.\n\nIf finance optimizes inventory reduction alone, stockouts may increase.\n\nEvery function can meet its target while the system deteriorates.\n\nShared system-level outcomes or guardrails can reduce that risk.\n\nTrade-offs should also be explicit.\n\nA local KPI should connect to a global metric and to limits that prevent value destruction elsewhere.\n\n**How to detect a broken KPI**\nThe first signal is divergence between KPI and outcome.\n\nThe metric improves across several periods while the result it was meant to represent does not.\n\n**When KPI and outcome stop moving together, the proxy needs review**.\nThe second signal is strange behaviour around cutoff dates, thresholds or exclusions.\n\nThe third is concentration on easy cases.\n\nThe fourth is growing debate about how borderline cases should “count”.\n\nThe fifth is declining trust and parallel calculations outside the official system.\n\nDistributions matter too. An average can improve because extreme cases were sacrificed.\n\nQualitative feedback is valuable. When teams repeatedly say “this helps the KPI but hurts the business”, the system should listen.\n\nReview should begin with the causal logic.\n\nWhy did the organization believe this metric represented the outcome?\n\nIs that still true?\n\nThen check whether the process changed.\n\nNew channels, campaigns or policies can break historical relationships.\n\nGuardrails can reduce gaming.\n\nConversion can be paired with margin; resolution speed with reopen rate; utilization with downtime.\n\nLonger windows can reduce timing manipulation.\n\nRelative targets may be stronger than absolute points under variable conditions.\n\nBut too many guardrails create a scorecard nobody can interpret.\n\nThe system still needs clarity.\n\nIt is also important to ask whether teams actually control the metric.\n\nHolding people accountable for outcomes dominated by external factors creates defensive behaviour.\n\nDefinitions must be transparent.\n\nIf numerator, denominator or population are disputed, conflict becomes inevitable.\n\nMetric-definition changes should be versioned so incompatible periods are not compared.\n\nFinally, some KPIs should be retired.\n\nA metric that worked for years can stop being useful.\n\n**The objective is not to protect the KPI; it is to protect the decision the KPI was supposed to improve**.\nWhen an organization hits the number and misses the result, the answer is not simply more discipline.\n\nThe organization should question whether it is measuring the right behaviour.\n\n**A KPI is broken when improving it no longer increases the probability of achieving the outcome.** Beyond that point, pushing the target harder only perfects the wrong optimization.",
+      "seo_title": "Why Teams Hit the KPI and Miss the Outcome",
+      "seo_description": "How KPI gaming, weak proxies and local optimization cause performance metrics to improve while the underlying business outcome gets worse.",
+      "seo_keywords": [
+        "kpi gaming",
+        "KPI failure",
+        "Goodhart law KPI",
+        "performance metric gaming"
+      ],
+      "tags": [
+        "Analytics",
+        "KPIs",
+        "Performance Management"
+      ]
+    },
+    "ca": {
+      "title": "Per què es compleix el KPI però falla el resultat",
+      "excerpt": "Els equips poden optimitzar perfectament la mètrica equivocada. Gaming, proxies febles i objectius locals expliquen per què el KPI puja mentre l’outcome empitjora.",
+      "quick": [
+        "El KPI pot convertir-se en l’objectiu",
+        "Els proxies es poden trencar",
+        "El sistema ha de vigilar l’outcome real"
+      ],
+      "section_titles": [
+        "Quan la mètrica substitueix l’objectiu",
+        "Com apareix el gaming sense mala fe",
+        "Per què els objectius locals xoquen",
+        "Com detectar que el KPI s’ha trencat"
+      ],
+      "business_title": "Complir un KPI no demostra èxit si la mètrica ha deixat de representar l’outcome que havia de millorar.",
+      "business_steps": [
+        "Target",
+        "Comportament",
+        "Outcome"
+      ],
+      "body": "Una organització pot tenir tots els KPIs en verd i continuar decebuda amb el resultat final. No és una paradoxa: **els equips poden optimitzar molt bé una mètrica que ja no representa prou bé l’objectiu empresarial**.\n\nQuan un KPI es converteix en target, l’atenció es desplaça cap a allò que millora el número. Si la relació entre mètrica i outcome és imperfecta, l’optimització pot separar-los. **El problema no és necessàriament manipulació conscient; sovint és una resposta racional a incentius mal dissenyats.**\n\n**Quan la mètrica substitueix l’objectiu**\nUn KPI sol començar com a proxy.\n\nNombre de trucades representa activitat comercial. Temps de resolució representa eficiència. Utilització representa productivitat. Conversió representa qualitat del funnel.\n\nEl problema apareix quan el proxy es tracta com si fos l’outcome.\n\n**La mètrica deixa de ser un indicador i es converteix en l’objectiu operatiu**.\nL’equip busca llavors totes les maneres legítimes de millorar-la.\n\nVendes pot prioritzar leads fàcils que converteixen ràpid però tenen menys marge.\n\nSuport pot tancar tickets abans de confirmar una resolució definitiva.\n\nOperacions pot augmentar utilització eliminant buffers que protegien el sistema.\n\nCada acció pot millorar la mètrica local i empitjorar el resultat global.\n\n**Com apareix el gaming sense mala fe**\nGaming sona a frau, però sovint apareix sense intenció d’enganyar.\n\nSi un bonus depèn d’una xifra, les persones aprenen quins casos compten, quin timing afavoreix el càlcul i quines activitats no afecten el score.\n\n**El sistema ensenya a l’organització com optimitzar la mesura**.\nUn equip pot avançar tancaments a final de mes i deixar feina administrativa per després.\n\nUn centre de suport pot dividir tickets per reduir durada.\n\nUn equip comercial pot descartar oportunitats difícils per protegir conversió.\n\nCap d’aquestes accions ha de violar una norma explícita.\n\nSimplement exploten buits entre mesura i realitat.\n\nLa resposta no ha de ser desconfiar dels equips, sinó millorar el disseny.\n\n**Per què els objectius locals xoquen**\nCada departament necessita KPIs locals per accountability.\n\nEl problema apareix quan aquests KPIs optimitzen funcions diferents.\n\nCompres vol cost unitari baix; operacions vol disponibilitat; finances vol poc working capital.\n\n**Cap mètrica local única captura tots els trade-offs del sistema**.\nSi compres optimitza només preu, poden augmentar lots i inventari.\n\nSi operacions optimitza només service level, el stock pot pujar.\n\nSi finances optimitza només inventari baix, poden augmentar ruptures.\n\nCada funció pot complir el target i el sistema empitjorar.\n\nEls outcomes compartits o guardrails poden reduir aquest risc.\n\nTambé convé fer explícits els trade-offs.\n\nUn KPI local s’ha de connectar amb una mètrica global i amb límits que evitin destruir valor en una altra part.\n\n**Com detectar que el KPI s’ha trencat**\nLa primera senyal és divergència entre KPI i outcome.\n\nLa mètrica millora durant diversos períodes i el resultat que representava no.\n\n**Quan KPI i outcome deixen de moure’s junts, el proxy necessita revisió**.\nLa segona senyal és comportament estrany prop de dates de tall, thresholds o exclusions.\n\nLa tercera és concentració en casos fàcils.\n\nLa quarta és proliferació d’excepcions i discussions sobre com “comptar” situacions límit.\n\nLa cinquena és pèrdua de confiança i càlculs paral·lels fora del sistema oficial.\n\nTambé convé mirar distribucions. Una mitjana pot millorar sacrificant extrems.\n\nEl feedback qualitatiu és valuós. Si l’equip diu “això millora el KPI però empitjora el negoci”, cal escoltar-ho.\n\nLa revisió ha de començar per la lògica causal.\n\nPer què crèiem que aquesta mètrica representava l’outcome?\n\nEncara és cert?\n\nDesprés cal comprovar si el procés ha canviat.\n\nNous canals, campanyes o policies poden trencar relacions històriques.\n\nEls guardrails poden reduir gaming.\n\nConversió es pot combinar amb marge; velocitat de resolució amb reopen rate; utilització amb downtime.\n\nFinestres més llargues poden reduir manipulació de timing.\n\nTargets relatius poden ser millors que punts absoluts en contextos variables.\n\nPerò massa guardrails creen un scorecard impossible d’entendre.\n\nEl sistema ha de continuar sent clar.\n\nTambé cal preguntar si l’equip controla realment la mètrica.\n\nResponsabilitzar persones per outcomes dominats per factors externs genera comportament defensiu.\n\nLes definicions han de ser transparents.\n\nSi numerador, denominador o població són discutits, el conflicte és inevitable.\n\nEls canvis de definició s’han de versionar per no comparar períodes incompatibles.\n\nFinalment, alguns KPIs s’han de retirar.\n\nUna mètrica que ha funcionat anys pot deixar de ser útil.\n\n**L’objectiu no és protegir el KPI, sinó protegir la decisió que havia de millorar**.\nQuan una organització compleix el número i falla el resultat, la resposta no ha de ser simplement més disciplina.\n\nCal revisar si estem mesurant el comportament correcte.\n\n**Un KPI està trencat quan millorar-lo ja no augmenta la probabilitat d’aconseguir l’outcome.** A partir d’aquí, pressionar més el target només perfecciona una optimització equivocada.",
+      "seo_title": "Per què es compleix el KPI però falla el resultat",
+      "seo_description": "Com KPI gaming, proxies febles i optimització local fan que una mètrica millori mentre l’outcome empresarial empitjora.",
+      "seo_keywords": [
+        "kpi gaming",
+        "KPI failure",
+        "Goodhart law KPI",
+        "performance metric gaming"
+      ],
+      "tags": [
+        "Analytics",
+        "KPIs",
+        "Performance Management"
+      ]
+    }
+  }
+}

@@ -1,18 +1,19 @@
 import type { SiteLanguage } from '@/lib/public-copy'
 import type { Project } from '@/lib/projects'
+import { getPortfolioCaseProfile, localizePortfolioCase } from '@/lib/portfolio-case-registry'
 
 type LocalizedProject = { headline: string; description: string; industry: string; challenge: string }
 
 const localized: Record<string, Partial<Record<'es'|'ca', LocalizedProject>>> = {
   'ecommerce-demand-forecasting': {
     es: {
-      headline: 'Sistema de forecasting de demanda y planificación de inventario',
-      description: 'Sistema multi-horizonte a 30, 90, 180 y 270 días para mejorar decisiones de inventario, reducir roturas de stock y dar soporte a compras y planificación de capital circulante.',
+      headline: 'Forecasting de demanda para decidir cuánto comprar y cuánto stock mantener',
+      description: 'Sistema multi-horizonte a 1, 3, 6 y 9 meses para separar la calidad del forecast por horizonte y convertirla en mejores decisiones de compra, cobertura y nivel de servicio.',
       industry: 'E-commerce', challenge: 'Forecasting',
     },
     ca: {
-      headline: 'Sistema de forecasting de demanda i planificació d’inventari',
-      description: 'Sistema multi-horitzó a 30, 90, 180 i 270 dies per millorar decisions d’inventari, reduir ruptures d’estoc i donar suport a compres i planificació de capital circulant.',
+      headline: 'Forecasting de demanda per decidir quant comprar i quant estoc mantenir',
+      description: 'Sistema multi-horitzó a 1, 3, 6 i 9 mesos per separar la qualitat del forecast per horitzó i convertir-la en millors decisions de compra, cobertura i nivell de servei.',
       industry: 'E-commerce', challenge: 'Forecasting',
     },
   },
@@ -79,6 +80,19 @@ const localized: Record<string, Partial<Record<'es'|'ca', LocalizedProject>>> = 
 }
 
 export function publicProject(project: Project, lang: SiteLanguage) {
+  const profile = getPortfolioCaseProfile(project.slug)
+  if (profile) {
+    const local = localizePortfolioCase(profile, lang)
+    return {
+      ...project,
+      headline: local.title,
+      description: local.summary,
+      industry: local.industry,
+      challenge: local.challenge,
+      sourceLanguage: 'en' as const,
+    }
+  }
+
   if (lang === 'en') return { ...project, sourceLanguage: 'en' as const }
   const local = localized[project.slug]?.[lang]
   return {
@@ -93,18 +107,62 @@ export function publicProject(project: Project, lang: SiteLanguage) {
 
 export const projectUi = {
   en: {
-    label: 'PROJECTS', title: 'Real systems built around real decisions.', sub: 'Client cases, internal systems and technical builds across forecasting, optimisation, AI, automation, risk and decision systems. Sensitive information is anonymised where required.',
-    back: '← All projects', sourceNote: 'Detailed case documentation is currently maintained in English to preserve the original evidence record.',
+    label: 'SUCCESS STORIES', title: 'Problems, systems and decisions.', sub: 'Selected work across forecasting, optimisation, AI, automation, risk and decision systems. Start with the case closest to the problem you are trying to solve.',
+    back: '← All success stories', sourceNote: 'The public success story is localized here; technical repository evidence may remain in English when that is the implementation language.',
     detailCta: 'Have a similar decision or process to improve?', detailCtaSub: 'We can start by understanding the operating problem and decide whether an analytical system is justified.', contact: 'Discuss the problem',
   },
   es: {
-    label: 'PROYECTOS', title: 'Sistemas reales construidos alrededor de decisiones reales.', sub: 'Casos de cliente, sistemas internos y desarrollos técnicos de forecasting, optimización, IA, automatización, riesgo y sistemas de decisión. La información sensible se anonimiza cuando corresponde.',
-    back: '← Todos los proyectos', sourceNote: 'La documentación detallada de estos casos históricos se mantiene actualmente en inglés para conservar el registro original de evidencia.',
+    label: 'CASOS DE ÉXITO', title: 'Problemas, sistemas y decisiones.', sub: 'Una selección de trabajos de forecasting, optimización, IA, automatización, riesgo y sistemas de decisión. Empieza por el caso que más se parece al problema que quieres resolver.',
+    back: '← Todos los casos de éxito', sourceNote: 'El caso de éxito público está localizado aquí; la evidencia del repositorio técnico puede mantenerse en inglés cuando sea el idioma de implementación.',
     detailCta: '¿Tienes una decisión o proceso parecido que mejorar?', detailCtaSub: 'Podemos empezar por comprender el problema operativo y decidir si un sistema analítico está justificado.', contact: 'Hablar del problema',
   },
   ca: {
-    label: 'PROJECTES', title: 'Sistemes reals construïts al voltant de decisions reals.', sub: 'Casos de client, sistemes interns i desenvolupaments tècnics de forecasting, optimització, IA, automatització, risc i sistemes de decisió. La informació sensible s’anonimitza quan correspon.',
-    back: '← Tots els projectes', sourceNote: 'La documentació detallada d’aquests casos històrics es manté actualment en anglès per conservar el registre original d’evidència.',
+    label: 'CASOS D’ÈXIT', title: 'Problemes, sistemes i decisions.', sub: 'Una selecció de treballs de forecasting, optimització, IA, automatització, risc i sistemes de decisió. Comença pel cas que més s’assembla al problema que vols resoldre.',
+    back: '← Tots els casos d’èxit', sourceNote: 'El cas d’èxit públic està localitzat aquí; l’evidència del repositori tècnic es pot mantenir en anglès quan sigui l’idioma d’implementació.',
     detailCta: 'Tens una decisió o procés semblant que cal millorar?', detailCtaSub: 'Podem començar per comprendre el problema operatiu i decidir si un sistema analític està justificat.', contact: 'Parlar del problema',
   },
 } as const
+
+
+const caseIndexTitles: Record<SiteLanguage, Record<string, string>> = {
+  es: {
+    'ai-accounting-agents': 'Agentes de IA para operaciones contables',
+    'ai-knowledge-workflow': 'Automatización documental y knowledge workflows con IA',
+    'banking-risk-decision-system': 'Scoring y riesgo de crédito',
+    'business-operating-crm': 'CRM operativo y control comercial',
+    'ecommerce-demand-forecasting': 'Forecasting y planificación de inventario',
+    'erp-operations-control': 'ERP y control operativo',
+    'investment-analytics-platform': 'Modelización financiera y analytics de inversión',
+    'quantitative-trading-framework': 'Sistemas cuantitativos de trading',
+    'reinforcement-learning-decision-system': 'Optimización secuencial con reinforcement learning',
+    'r-shiny-decision-app': 'Aplicaciones analíticas y de decisión con R Shiny',
+  },
+  ca: {
+    'ai-accounting-agents': 'Agents d’IA per a operacions comptables',
+    'ai-knowledge-workflow': 'Automatització documental i knowledge workflows amb IA',
+    'banking-risk-decision-system': 'Scoring i risc de crèdit',
+    'business-operating-crm': 'CRM operatiu i control comercial',
+    'ecommerce-demand-forecasting': 'Forecasting i planificació d’inventari',
+    'erp-operations-control': 'ERP i control operatiu',
+    'investment-analytics-platform': 'Modelització financera i analytics d’inversió',
+    'quantitative-trading-framework': 'Sistemes quantitatius de trading',
+    'reinforcement-learning-decision-system': 'Optimització seqüencial amb reinforcement learning',
+    'r-shiny-decision-app': 'Aplicacions analítiques i de decisió amb R Shiny',
+  },
+  en: {
+    'ai-accounting-agents': 'AI agents for accounting operations',
+    'ai-knowledge-workflow': 'Document automation and AI knowledge workflows',
+    'banking-risk-decision-system': 'Credit scoring and risk',
+    'business-operating-crm': 'Operational CRM and commercial control',
+    'ecommerce-demand-forecasting': 'Demand forecasting and inventory planning',
+    'erp-operations-control': 'ERP and operational control',
+    'investment-analytics-platform': 'Financial modelling and investment analytics',
+    'quantitative-trading-framework': 'Quantitative trading systems',
+    'reinforcement-learning-decision-system': 'Sequential optimisation with reinforcement learning',
+    'r-shiny-decision-app': 'Analytical and decision applications with R Shiny',
+  },
+}
+
+export function projectCaseIndexTitle(project: Project, lang: SiteLanguage) {
+  return caseIndexTitles[lang]?.[project.slug] || publicProject(project, lang).headline
+}

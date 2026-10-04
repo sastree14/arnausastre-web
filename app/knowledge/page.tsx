@@ -2,22 +2,32 @@ import { getAllArticles } from '@/lib/content'
 import { getPublicGeneratedArticles } from '@/lib/public-growth'
 import KnowledgeHero from '@/components/KnowledgeHero'
 import KnowledgeContent from '@/components/KnowledgeContent'
-import NewsletterSignup from '@/components/NewsletterSignup'
+import type { Article } from '@/lib/content'
+import type { PublicGeneratedArticle } from '@/lib/public-growth'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function KnowledgePage() {
-  const [articles, generated] = await Promise.all([
-    Promise.resolve(getAllArticles()),
-    getPublicGeneratedArticles(),
-  ])
+  let articles: Article[] = []
+  let generated: PublicGeneratedArticle[] = []
+
+  try {
+    articles = getAllArticles()
+  } catch (error) {
+    console.error('Static knowledge content unavailable', error)
+  }
+
+  try {
+    generated = await getPublicGeneratedArticles()
+  } catch (error) {
+    console.error('Generated knowledge content unavailable', error)
+  }
 
   return (
-    <main className="bg-slate-50 text-slate-900 page-enter">
+    <main className="bg-[#FAFAF7] text-slate-900 page-enter">
       <KnowledgeHero />
       <KnowledgeContent articles={articles} generated={generated} />
-      <section className="mx-auto max-w-7xl px-6 pb-20"><NewsletterSignup /></section>
     </main>
   )
 }

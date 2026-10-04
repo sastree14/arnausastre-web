@@ -278,3 +278,37 @@ Reject or rewrite if any of the following are true:
 - it repeats a source without adding interpretation;
 - the language feels translated rather than naturally written;
 - the tone does not sound credible coming from Arnau or SC-Analytics.
+
+
+## First-impression rule
+
+Before asking the reader to understand the method, make the commercial reason to care concrete.
+
+For LinkedIn, case studies, marketplace pages and executive web content, the opening should make at least one of these immediately visible:
+
+- the buyer problem;
+- the business consequence;
+- the decision that changes;
+- a verified result;
+- a clearly labelled illustrative economic scenario.
+
+Technology is supporting evidence, not the hook.
+
+When measured impact is unavailable, do not leave the content commercially empty and do not fabricate a result. Use a transparent illustrative scenario only when the assumptions can be stated explicitly. Example:
+
+`€2.0M inventory × 5% illustrative reduction in excess stock = €100k working capital released`
+
+The output must say that this is an illustrative scenario rather than measured client impact.
+
+For project-led LinkedIn content, prefer:
+
+```text
+Concrete economic/operating problem
+→ consequence
+→ what changed in the decision process
+→ evidence or illustrative economics
+→ technical proof only if useful
+→ natural next step
+```
+
+A CEO should understand why the content matters before encountering model names.

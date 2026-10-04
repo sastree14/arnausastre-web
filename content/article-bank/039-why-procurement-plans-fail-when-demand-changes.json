@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-039",
+  "sequence": 39,
+  "arc_id": "ARC-10",
+  "slug": "why-procurement-plans-fail-when-demand-changes",
+  "scheduled_at": "2027-01-10T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Inventory & Supply Chain",
+  "editorial_pillar": "industries_use_cases",
+  "content_family": "failure_modes_mistakes",
+  "angle": "procurement demand planning",
+  "primary_keyword": "procurement demand planning",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-037",
+    "KB-038",
+    "KB-040"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué los planes de compra fallan cuando cambia la demanda",
+      "excerpt": "Un plan de compras puede quedar obsoleto antes de ejecutarse si no incorpora forecast actualizado, lead time, MOQ y capacidad de revisar compromisos.",
+      "quick": [
+        "El plan envejece",
+        "La compra compromete antes",
+        "La flexibilidad tiene valor"
+      ],
+      "section_titles": [
+        "Por qué el plan se queda atrás",
+        "El compromiso llega antes que la demanda",
+        "MOQ y contratos amplifican el error",
+        "Diseñar compras adaptativas"
+      ],
+      "business_title": "Purchase planning funciona cuando el plan puede absorber nueva información antes de que el compromiso sea irreversible.",
+      "business_steps": [
+        "Plan inicial",
+        "Nueva señal",
+        "Revisión de compromiso"
+      ],
+      "body": "Un plan de compras puede ser correcto el día que se aprueba y estar desactualizado semanas después. La demanda cambia, el forecast se revisa, el proveedor modifica lead time y el mix de productos se mueve. **El problema aparece cuando procurement sigue ejecutando compromisos diseñados para un futuro que ya no es el más probable.**\n\nComprar implica anticipación. Cuanto más largo es el lead time o mayor el MOQ, más temprano debe decidirse y más incertidumbre existe en ese momento. **La calidad de purchase planning depende tanto del forecast inicial como de la capacidad de revisar decisiones cuando llega nueva información.**\n\n**Por qué el plan se queda atrás**\nMuchos planes se construyen en ciclos mensuales o trimestrales y se traducen a órdenes casi mecánicamente. Esa estabilidad facilita coordinación, pero puede introducir retraso entre la nueva señal de demanda y la decisión de compra.\n\nSi ventas cae a mitad de ciclo, un plan rígido puede seguir comprando contra el número anterior. Si demanda sube, la reacción puede llegar tarde. **El desfase entre información y compromiso se convierte en sobrestock o stockout.**\n\nTambién hay problemas de granularidad. El plan puede estar bien a nivel de categoría y mal por SKU, proveedor o región. Cuando la orden se ejecuta en un nivel más fino, el agregado ya no protege la decisión.\n\n**El compromiso llega antes que la demanda**\nProcurement decide antes de observar la demanda real. El lead time determina cuánta incertidumbre debe asumir. Un pedido con seis meses de antelación expone más forecast risk que uno ajustable en una semana.\n\nPor eso el horizonte relevante no es el calendario del forecast, sino el punto de compromiso. **La empresa debería medir error en el momento en que la orden dejó de poder cambiar.**\n\nEsta perspectiva permite valorar flexibilidad. Un proveedor con lead time corto o capacidad de modificar cantidades más tarde puede tener un precio superior y seguir siendo económicamente atractivo.\n\n**MOQ y contratos amplifican el error**\nLos mínimos convierten pequeñas desviaciones de forecast en decisiones grandes. Si el MOQ es 10.000 unidades, una revisión de demanda de 1.500 unidades puede no cambiar la orden hoy y generar exceso después.\n\nLos contratos también pueden fijar volumen, ventanas o penalizaciones. **La compra deja de ser una decisión continua y se convierte en un conjunto de escalones.** Esta discreción debe aparecer en simulaciones y escenarios.\n\nDescuentos por volumen pueden agravar el sesgo. El equipo puede preferir alcanzar un tier de precio aunque el volumen incremental no tenga una demanda clara.\n\n**Diseñar compras adaptativas**\nUn plan adaptativo define puntos de revisión antes de ejecutar todo el compromiso. Parte del volumen puede quedar fijo y otra parte opcional, escalonada o reasignable. **La flexibilidad tiene valor porque compra tiempo para aprender sobre demanda.**\n\nTambién conviene conectar forecast y procurement en la misma cadencia. Cambios materiales deberían activar una revisión del plan, no esperar automáticamente al siguiente ciclo administrativo.\n\nLos escenarios ayudan cuando existe mucha incertidumbre. Procurement puede preparar cantidades base, upside y downside y definir qué señales activan cada rama.\n\nLa política debe mostrar el coste de cambiar. Cancelaciones, expediciones, pérdida de descuento y capital deben compararse con el coste de seguir un plan obsoleto.\n\nLos proveedores también pueden segmentarse por función. Algunos cubren volumen base a menor coste; otros ofrecen flexibilidad y tiempos cortos para absorber desviaciones. Esa cartera puede ser más robusta que buscar un único proveedor óptimo.\n\nLa gobernanza necesita ownership: quién puede modificar una orden, hasta qué fecha y con qué umbral de cambio. Sin reglas, la adaptabilidad puede convertirse en ruido y constantes replannings.\n\nFinalmente, hay que medir forecast error y purchase-plan error por separado. Un forecast puede haber mejorado y el plan seguir mal porque no reaccionó; o el forecast puede fallar y una compra flexible limitar el daño. **Separar ambas capas ayuda a saber dónde invertir.**\n\nPurchase planning no debería ser una fotografía congelada. **Es un proceso de comprometer recursos bajo incertidumbre y actualizar ese compromiso mientras todavía existe margen para actuar.**",
+      "seo_title": "Por qué fallan los planes de compra",
+      "seo_description": "Cómo forecast, lead time, MOQ, contratos y cadencia pueden hacer que un plan de compras quede obsoleto cuando cambia la demanda.",
+      "seo_keywords": [
+        "procurement demand planning",
+        "planificación compras demanda",
+        "purchase planning",
+        "procurement forecasting"
+      ],
+      "tags": [
+        "Procurement",
+        "Demand Planning",
+        "Purchasing"
+      ]
+    },
+    "en": {
+      "title": "Why procurement plans fail when demand changes",
+      "excerpt": "A purchasing plan can become obsolete before execution if it cannot absorb updated forecasts, lead time, MOQs and new demand information.",
+      "quick": [
+        "The plan ages",
+        "Purchasing commits early",
+        "Flexibility has value"
+      ],
+      "section_titles": [
+        "Why the plan falls behind",
+        "Commitment comes before demand",
+        "MOQ and contracts amplify error",
+        "Design adaptive purchasing"
+      ],
+      "business_title": "Purchase planning works when the plan can absorb new information before commitments become irreversible.",
+      "business_steps": [
+        "Initial plan",
+        "New signal",
+        "Commitment review"
+      ],
+      "body": "A procurement plan can be correct on the day it is approved and outdated weeks later. Demand moves, the forecast changes, suppliers update lead times and product mix shifts. **The problem begins when procurement continues executing commitments designed for a future that is no longer the most likely one.**\n\nPurchasing requires anticipation. The longer the lead time or larger the MOQ, the earlier the decision must be made and the more uncertainty exists at commitment. **Purchase-planning quality depends both on the initial forecast and on the ability to revise decisions as new information arrives.**\n\n**Why the plan falls behind**\nMany plans are built in monthly or quarterly cycles and translated into orders almost mechanically. That stability helps coordination, but it creates delay between new demand signals and purchasing decisions.\n\nIf sales fall midway through the cycle, a rigid plan can keep buying against the old number. If demand rises, reaction can arrive too late. **The gap between information and commitment becomes overstock or stockout.**\n\nGranularity creates another issue. A plan can be correct at category level and wrong by SKU, supplier or region. When the order is executed at the finer level, the aggregate no longer protects the decision.\n\n**Commitment comes before demand**\nProcurement acts before actual demand is known. Lead time determines how much uncertainty it must carry. An order placed six months ahead contains more forecast risk than one adjustable next week.\n\nThe relevant horizon is therefore the commitment point rather than the label on the forecast. **Forecast error should be measured at the moment the order could no longer be changed.**\n\nThis perspective also gives flexibility an economic value. A supplier offering shorter lead times or later quantity changes may be more expensive per unit and still reduce total cost.\n\n**MOQ and contracts amplify error**\nMinimum quantities convert small forecast deviations into large purchasing steps. If MOQ is 10,000 units, a demand revision of 1,500 units may not alter today’s order and can create excess later.\n\nContracts can also fix volume, windows or penalties. **Purchasing stops being a continuous decision and becomes a set of discrete steps.** Simulation should reflect that reality.\n\nVolume discounts can reinforce the bias. Teams may chase a price tier even when the incremental volume has no clear demand behind it.\n\n**Design adaptive purchasing**\nAn adaptive plan defines review points before the full commitment is executed. Some volume can be fixed while another portion remains optional, staged or reallocatable. **Flexibility creates value because it buys time to learn about demand.**\n\nForecasting and procurement cadence should also be connected. Material forecast changes should trigger plan review instead of waiting automatically for the next administrative cycle.\n\nScenarios are useful when uncertainty is high. Procurement can prepare base, upside and downside quantities and define which signals activate each branch.\n\nThe policy should make the cost of changing visible. Cancellation, expediting, lost discounts and capital should be compared with the cost of following an obsolete plan.\n\nSuppliers can also be segmented by role. One covers base volume efficiently while another offers short lead time and flexibility to absorb deviations. That portfolio can be more robust than selecting one apparent winner.\n\nGovernance needs clear ownership: who can change an order, until what date and above which threshold. Without those rules, adaptability can become constant replanning.\n\nForecast error and purchase-plan error should be measured separately. A forecast may improve while the plan fails to react; or the forecast may miss while a flexible purchase structure contains the damage. **Separating the layers reveals where investment is needed.**\n\nPurchase planning should not be a frozen snapshot. **It is the process of committing resources under uncertainty and updating that commitment while the business can still act.**\n\nA final check is to measure how much of the purchase plan remains changeable at each horizon. This creates a simple flexibility curve: committed volume versus optional volume over time. **The curve shows whether the organization is learning faster than it is committing.** If nearly all volume is fixed before forecast quality becomes useful, redesigning commercial terms may create more value than another forecasting improvement.",
+      "seo_title": "Why Procurement Plans Fail When Demand Changes",
+      "seo_description": "How forecasts, lead time, MOQ, contracts and planning cadence can make procurement plans obsolete as demand changes.",
+      "seo_keywords": [
+        "procurement demand planning",
+        "purchase planning",
+        "procurement forecasting",
+        "demand planning procurement"
+      ],
+      "tags": [
+        "Procurement",
+        "Demand Planning",
+        "Purchasing"
+      ]
+    },
+    "ca": {
+      "title": "Per què els plans de compra fallen quan canvia la demanda",
+      "excerpt": "Un pla de compres pot quedar obsolet abans d’executar-se si no incorpora forecast actualitzat, lead time, MOQ i capacitat de revisar compromisos.",
+      "quick": [
+        "El pla envelleix",
+        "La compra compromet abans",
+        "La flexibilitat té valor"
+      ],
+      "section_titles": [
+        "Per què el pla queda enrere",
+        "El compromís arriba abans que la demanda",
+        "MOQ i contractes amplifiquen l’error",
+        "Dissenyar compres adaptatives"
+      ],
+      "business_title": "Purchase planning funciona quan el pla pot absorbir informació nova abans que els compromisos siguin irreversibles.",
+      "business_steps": [
+        "Pla inicial",
+        "Nou senyal",
+        "Revisió de compromís"
+      ],
+      "body": "Un pla de compres pot ser correcte el dia que s’aprova i quedar desactualitzat setmanes després. La demanda canvia, el forecast es revisa, el proveïdor modifica lead time i el mix de productes es mou. **El problema apareix quan procurement continua executant compromisos dissenyats per un futur que ja no és el més probable.**\n\nComprar implica anticipació. Com més llarg és el lead time o més gran el MOQ, abans s’ha de decidir i més incertesa existeix en aquell moment. **La qualitat de purchase planning depèn tant del forecast inicial com de la capacitat de revisar decisions quan arriba informació nova.**\n\n**Per què el pla queda enrere**\nMolts plans es construeixen en cicles mensuals o trimestrals i es tradueixen a ordres gairebé mecànicament. Aquesta estabilitat facilita coordinació, però introdueix retard entre el nou senyal de demanda i la decisió de compra.\n\nSi vendes cau a mig cicle, un pla rígid pot continuar comprant contra el número anterior. Si la demanda puja, la reacció pot arribar tard. **El desfasament entre informació i compromís es converteix en sobreestoc o stockout.**\n\nTambé hi ha problemes de granularitat. El pla pot estar bé per categoria i malament per SKU, proveïdor o regió. Quan l’ordre s’executa en un nivell més fi, l’agregat deixa de protegir la decisió.\n\n**El compromís arriba abans que la demanda**\nProcurement decideix abans d’observar la demanda real. El lead time determina quanta incertesa ha d’assumir. Una ordre amb sis mesos d’antelació conté més forecast risk que una ajustable la setmana següent.\n\nPer això l’horitzó rellevant és el punt de compromís, no l’etiqueta del forecast. **L’error s’hauria de mesurar en el moment en què la comanda deixa de poder canviar.**\n\nAquesta perspectiva dona valor econòmic a la flexibilitat. Un proveïdor amb lead time curt o capacitat de modificar quantitats més tard pot ser més car i continuar sent atractiu.\n\n**MOQ i contractes amplifiquen l’error**\nEls mínims converteixen petites desviacions de forecast en decisions grans. Si el MOQ és 10.000 unitats, una revisió de demanda de 1.500 pot no canviar la comanda avui i generar excés després.\n\nEls contractes també poden fixar volum, finestres o penalitzacions. **La compra deixa de ser una decisió contínua i es converteix en un conjunt d’esglaons.** Les simulacions ho han de representar.\n\nEls descomptes per volum poden reforçar el biaix. L’equip pot voler arribar a un tier de preu encara que el volum incremental no tingui una demanda clara.\n\n**Dissenyar compres adaptatives**\nUn pla adaptatiu defineix punts de revisió abans d’executar tot el compromís. Una part del volum pot quedar fixa i una altra opcional, escalonada o reassignable. **La flexibilitat crea valor perquè compra temps per aprendre sobre demanda.**\n\nForecasting i procurement també han de compartir cadència. Canvis materials haurien d’activar revisió del pla, no esperar automàticament al següent cicle administratiu.\n\nEls escenaris són útils quan hi ha molta incertesa. Procurement pot preparar quantitats base, upside i downside i definir quins senyals activen cada branca.\n\nLa política ha de mostrar el cost de canviar. Cancel·lacions, urgències, pèrdua de descompte i capital s’han de comparar amb el cost de seguir un pla obsolet.\n\nEls proveïdors també poden segmentar-se per funció. Alguns cobreixen volum base a menor cost; altres ofereixen flexibilitat i temps curts per absorbir desviacions.\n\nLa governança necessita ownership: qui pot modificar una ordre, fins a quina data i amb quin llindar. Sense regles, l’adaptabilitat pot convertir-se en replanning constant.\n\nForecast error i purchase-plan error s’han de mesurar per separat. Un forecast pot millorar i el pla no reaccionar; o el forecast pot fallar i una estructura flexible limitar el dany. **Separar capes ajuda a saber on invertir.**\n\nPurchase planning no hauria de ser una fotografia congelada. **És el procés de comprometre recursos sota incertesa i actualitzar aquest compromís mentre encara hi ha marge per actuar.**",
+      "seo_title": "Per què fallen els plans de compra",
+      "seo_description": "Com forecast, lead time, MOQ, contractes i cadència poden fer que un pla de compres quedi obsolet quan canvia la demanda.",
+      "seo_keywords": [
+        "procurement demand planning",
+        "planificació compres demanda",
+        "purchase planning",
+        "procurement forecasting"
+      ],
+      "tags": [
+        "Procurement",
+        "Demand Planning",
+        "Purchasing"
+      ]
+    }
+  }
+}

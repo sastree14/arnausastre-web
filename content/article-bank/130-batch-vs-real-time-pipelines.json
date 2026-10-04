@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-130",
+  "sequence": 130,
+  "arc_id": "ARC-33",
+  "slug": "batch-vs-real-time-pipelines",
+  "scheduled_at": "2027-08-19T09:00:00+02:00",
+  "knowledge_area": "business_systems",
+  "cluster": "Data Engineering & Architecture",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "compare",
+  "angle": "batch vs real time pipelines",
+  "primary_keyword": "batch vs real time pipelines",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-129",
+    "KB-131",
+    "KB-132"
+  ],
+  "variants": {
+    "es": {
+      "title": "Pipelines batch vs tiempo real",
+      "excerpt": "Batch prioriza simplicidad y eficiencia; real time prioriza frescura y reacción rápida. La elección depende del coste de retraso, no de una preferencia técnica.",
+      "quick": [
+        "Batch compra simplicidad",
+        "Streaming compra rapidez",
+        "La decisión define el SLA"
+      ],
+      "section_titles": [
+        "Qué resuelve mejor batch",
+        "Qué resuelve mejor real time",
+        "Dónde aparece el coste oculto",
+        "Cómo elegir por caso de uso"
+      ],
+      "business_title": "Batch y real time son estrategias de latencia distintas; la mejor es la que entrega información a tiempo para actuar sin comprar complejidad innecesaria.",
+      "business_steps": [
+        "Latencia",
+        "Complejidad",
+        "Valor"
+      ],
+      "body": "Comparar pipelines batch con pipelines real time como si una fuese una versión más avanzada de la otra lleva a malas decisiones. **Batch y streaming optimizan objetivos distintos**: batch agrupa trabajo y prioriza eficiencia y simplicidad; real time procesa eventos a medida que ocurren y prioriza frescura.\n\nLa arquitectura correcta depende de cuánto valor pierde una decisión cuando los datos llegan tarde. **La pregunta no es qué pipeline es más rápida, sino qué retraso puede tolerar el negocio sin cambiar el resultado.**\n\n**Qué resuelve mejor batch**\nBatch funciona especialmente bien cuando la decisión puede esperar minutos, horas o un ciclo diario.\n\nCierre financiero, reporting ejecutivo, consolidación de ventas, muchos forecasts y cargas de dimensiones suelen encajar perfectamente.\n\nEl procesamiento agrupado simplifica orchestration, testing, retries y debugging.\n\n**Batch permite observar una ejecución** completa y repetirla con relativa facilidad.\n\nTambién suele tener economics favorables porque concentra compute en ventanas conocidas.\n\nLa consistencia es más sencilla de controlar. Podemos definir snapshots, cutoffs y estados completos.\n\nAdemás, muchas herramientas analíticas están optimizadas para procesar grandes bloques de datos.\n\nEl principal límite es la latencia. Si una decisión pierde valor antes de la siguiente ejecución, batch llega tarde aunque sea técnicamente perfecto.\n\n**Qué resuelve mejor real time**\nReal time encaja cuando la acción debe producirse poco después del evento.\n\nFraude, personalización durante una sesión, alertas operativas críticas o coordinación automática entre sistemas pueden necesitar segundos o minutos.\n\n**Streaming crea valor cuando reaccionar** antes cambia materialmente el outcome.\n\nTambién permite desacoplar productores y consumidores mediante eventos.\n\nUn mismo evento puede alimentar monitoring, automatización y analytics con tiempos distintos.\n\nLa arquitectura puede escalar bien para volúmenes continuos, aunque exige diseñar schemas, ordering y state.\n\nOtra ventaja es reducir acumulación. En lugar de esperar un gran batch, el sistema procesa trabajo de forma continua.\n\nPero esa capacidad solo merece la pena si alguien o algo utiliza la frescura adicional.\n\n**Dónde aparece el coste oculto**\nReal time introduce problemas que batch puede evitar.\n\nEventos duplicados, fuera de orden o tardíos necesitan reglas explícitas.\n\nEl estado distribuido complica recovery.\n\n**Una pipeline que responde en** segundos también necesita fallar y recuperarse en segundos sin corromper decisiones.\n\nObservability debe medir lag, throughput, errores y consumer health.\n\nLa operación puede requerir on-call más exigente.\n\nTambién aumenta el número de componentes y dependencias.\n\nBatch tiene otros costes ocultos. Grandes ventanas pueden crear picos de compute y retrasar feedback.\n\nUn fallo al final de una ejecución de dos horas puede obligar a repetir una parte importante.\n\nAdemás, los sistemas batch pueden generar dependencias temporales rígidas entre jobs.\n\nPor eso la comparación debe incluir coste operativo, no solo infraestructura.\n\n**Cómo elegir por caso de uso**\nEl primer paso es definir la ventana máxima de decisión.\n\n¿Cuánto tiempo puede pasar entre el evento y la acción sin pérdida material?\n\nSi son horas, batch probablemente basta. Si son segundos, streaming gana relevancia.\n\n**La latencia requerida debería escribirse** como un requisito de negocio antes de diseñar la pipeline.\n\nDespués hay que analizar volumen y patrón de llegada.\n\nEventos continuos con picos impredecibles pueden favorecer streaming; grandes snapshots periódicos pueden favorecer batch.\n\nLa necesidad de replay también importa. Ambos patrones pueden soportarlo, pero la complejidad cambia.\n\nLa consistencia requerida debe definirse. Algunas decisiones toleran eventual consistency; otras no.\n\nTambién hay que mirar consumidores. Un dashboard cada cinco minutos no necesita necesariamente procesamiento evento a evento.\n\nMicro-batching puede resolver gran parte de los casos intermedios.\n\nUna arquitectura híbrida es común: streaming para eventos críticos y batch para consolidación, backfills y reporting.\n\nTambién puede existir una capa de eventos real time que alimente tablas analíticas por ventanas.\n\nLa elección no debe duplicar lógica sin necesidad. Si batch y streaming calculan la misma métrica por caminos separados, mantener consistencia puede ser difícil.\n\nPatrones como Lambda architecture resolvían esto históricamente, pero muchas plataformas modernas permiten simplificar con un único motor o tablas incrementales.\n\nEl equipo importa. Una arquitectura streaming sofisticada sin experiencia operativa puede generar más downtime que un batch bien diseñado.\n\nLa gobernanza de schemas también es clave. Cambios en eventos pueden romper consumidores silenciosamente.\n\nEn batch, contratos de archivos y tablas cumplen una función equivalente.\n\nEl coste debe compararse con escenarios reales de volumen y SLA.\n\nLa decisión puede cambiar con el tiempo. Un proceso batch puede evolucionar a near real time cuando aparece un caso que lo justifica.\n\nNo hace falta rediseñar toda la plataforma porque un único workflow necesita menor latencia.\n\nTambién conviene distinguir datos frescos de decisiones frescas. Un dashboard actualizado cada segundo no aporta valor si el usuario revisa una vez al día.\n\nFinalmente, la fiabilidad debe pesar tanto como la velocidad.\n\n**Batch es mejor cuando el retraso es aceptable y la simplicidad tiene valor; real time cuando llegar tarde destruye valor antes de la siguiente ejecución.** Entre ambos existe una amplia zona near real time donde una solución más simple puede capturar casi todo el beneficio.",
+      "seo_title": "Batch vs real time pipelines: cómo elegir",
+      "seo_description": "Comparación entre pipelines batch y real time según latencia, complejidad, consistencia, coste operativo y valor de negocio.",
+      "seo_keywords": [
+        "batch vs real time pipelines",
+        "batch vs streaming",
+        "real time pipeline",
+        "data pipeline architecture"
+      ],
+      "tags": [
+        "Batch",
+        "Streaming",
+        "Data Pipelines"
+      ]
+    },
+    "en": {
+      "title": "Batch vs real-time pipelines",
+      "excerpt": "Batch prioritizes simplicity and efficiency; real time prioritizes freshness and rapid reaction. The choice depends on delay cost rather than technical preference.",
+      "quick": [
+        "Batch buys simplicity",
+        "Streaming buys speed",
+        "The decision defines the SLA"
+      ],
+      "section_titles": [
+        "What batch solves better",
+        "What real time solves better",
+        "Where hidden cost appears",
+        "How to choose by use case"
+      ],
+      "business_title": "Batch and real time are different latency strategies; the right one delivers information in time to act without purchasing unnecessary complexity.",
+      "business_steps": [
+        "Latency",
+        "Complexity",
+        "Value"
+      ],
+      "body": "Comparing batch and real-time pipelines as though one were simply a more advanced version of the other leads to weak architecture decisions. **Batch and streaming optimize different objectives**: batch groups work and prioritizes efficiency and simplicity; real time processes events as they occur and prioritizes freshness.\n\nThe right design depends on how quickly a decision loses value when information arrives late. **The question is not which pipeline is faster, but how much delay the business can tolerate without changing the outcome.**\n\n**What batch solves better**\nBatch works particularly well when a decision can wait minutes, hours or a daily cycle.\n\nFinancial close, executive reporting, sales consolidation, many forecasts and dimension loads fit naturally.\n\nGrouped processing simplifies orchestration, testing, retries and debugging.\n\n**Batch makes it easier to** observe and replay a complete execution.\n\nIt also often has attractive economics because compute is concentrated in known windows.\n\nConsistency can be easier to control through snapshots, cutoffs and complete states.\n\nMany analytical engines are optimized for large blocks of data as well.\n\nThe limitation is latency. If a decision loses value before the next run, batch is late even when everything else is correct.\n\n**What real time solves better**\nReal time fits when action must follow shortly after the event.\n\nFraud, in-session personalization, critical operational alerts and automated coordination between systems may require seconds or minutes.\n\n**Streaming creates value when earlier** reaction materially changes the outcome.\n\nEvents can also decouple producers and consumers.\n\nOne event can support monitoring, automation and analytics at different speeds.\n\nStreaming can scale well for continuous volume, although schemas, ordering and state require explicit design.\n\nAnother benefit is smoothing work over time instead of waiting for a large batch.\n\nThat capability matters only when the additional freshness is actually consumed.\n\n**Where hidden cost appears**\nReal time introduces problems that batch can often avoid.\n\nDuplicate, late or out-of-order events need explicit handling.\n\nDistributed state makes recovery harder.\n\n**A pipeline that responds in** seconds also needs to fail and recover in seconds without corrupting decisions.\n\nObservability must track lag, throughput, errors and consumer health.\n\nOperational support may require stronger on-call capability.\n\nThe number of components and dependencies also grows.\n\nBatch has hidden costs too. Large windows can create compute spikes and delay feedback.\n\nA failure near the end of a long run may require substantial reprocessing.\n\nBatch systems can also accumulate rigid temporal dependencies between jobs.\n\nThe comparison therefore needs operating cost, not infrastructure cost alone.\n\n**How to choose by use case**\nStart by defining the maximum useful decision window.\n\nHow much time can pass between event and action without material loss?\n\nIf the answer is hours, batch is likely sufficient. If it is seconds, streaming becomes more relevant.\n\n**Required latency should be written** as a business requirement before pipeline design begins.\n\nThen consider volume and arrival pattern.\n\nContinuous events with unpredictable bursts may favour streaming; large periodic snapshots may favour batch.\n\nReplay requirements matter too. Both can support replay, but implementation complexity differs.\n\nConsistency requirements should be explicit. Some decisions tolerate eventual consistency; others do not.\n\nConsumers matter as well. A dashboard refreshed every five minutes does not necessarily need event-by-event processing.\n\nMicro-batching can solve many intermediate cases.\n\nHybrid architecture is common: streaming for critical events and batch for consolidation, backfills and reporting.\n\nA real-time event layer can also feed analytical tables in windows.\n\nThe design should avoid duplicate logic. If batch and streaming calculate the same metric through separate paths, keeping them aligned becomes difficult.\n\nHistorical Lambda-style architectures addressed this with two paths, but modern platforms can often simplify through common engines or incremental tables.\n\nTeam capability is decisive. Sophisticated streaming operated by an inexperienced team can produce more downtime than a strong batch design.\n\nSchema governance matters too. Event changes can silently break consumers.\n\nBatch files and tables need equivalent contracts.\n\nCost should be modeled under real volumes and SLAs.\n\nThe decision can evolve. A batch process can move toward near real time when a business case appears.\n\nOne lower-latency workflow does not require redesigning the entire platform.\n\nFresh data should also be separated from fresh decisions. A dashboard updated every second creates little value when people review it once per day.\n\nReliability should ultimately carry as much weight as speed.\n\n**Batch is stronger when delay is acceptable and simplicity creates value; real time is stronger when arriving late destroys value before the next run.** Between them is a broad near-real-time zone where simpler architecture can capture almost all the benefit.",
+      "seo_title": "Batch vs Real-Time Pipelines: How to Choose",
+      "seo_description": "Batch and real-time pipelines compared across latency, complexity, consistency, operating cost and business value.",
+      "seo_keywords": [
+        "batch vs real time pipelines",
+        "batch vs streaming",
+        "real time pipeline",
+        "data pipeline architecture"
+      ],
+      "tags": [
+        "Batch",
+        "Streaming",
+        "Data Pipelines"
+      ]
+    },
+    "ca": {
+      "title": "Pipelines batch vs temps real",
+      "excerpt": "Batch prioritza simplicitat i eficiència; real time prioritza frescor i reacció ràpida. La tria depèn del cost del retard i no d’una preferència tècnica.",
+      "quick": [
+        "Batch compra simplicitat",
+        "Streaming compra rapidesa",
+        "La decisió defineix l’SLA"
+      ],
+      "section_titles": [
+        "Què resol millor batch",
+        "Què resol millor real time",
+        "On apareix el cost ocult",
+        "Com triar per cas d’ús"
+      ],
+      "business_title": "Batch i real time són estratègies de latència diferents; la millor entrega informació a temps per actuar sense comprar complexitat innecessària.",
+      "business_steps": [
+        "Latència",
+        "Complexitat",
+        "Valor"
+      ],
+      "body": "Comparar pipelines batch amb pipelines real time com si una fos simplement una versió més avançada de l’altra porta a males decisions. **Batch i streaming optimitzen objectius diferents**: batch agrupa feina i prioritza eficiència i simplicitat; real time processa events a mesura que passen i prioritza frescor.\n\nEl disseny correcte depèn de quant valor perd una decisió quan la informació arriba tard. **La pregunta no és quina pipeline és més ràpida, sinó quin retard pot tolerar el negoci sense canviar el resultat.**\n\n**Què resol millor batch**\nBatch funciona especialment bé quan una decisió pot esperar minuts, hores o un cicle diari.\n\nTancament financer, reporting executiu, consolidació de vendes, molts forecasts i càrregues de dimensions hi encaixen.\n\nEl processament agrupat simplifica orchestration, testing, retries i debugging.\n\n**Batch facilita observar i** repetir una execució completa.\n\nTambé acostuma a tenir economics favorables perquè concentra compute en finestres conegudes.\n\nLa consistència és més fàcil de controlar amb snapshots, cutoffs i estats complets.\n\nMolts engines analítics també estan optimitzats per grans blocs de dades.\n\nEl límit és la latència. Si una decisió perd valor abans de la següent execució, batch arriba tard encara que sigui perfecte.\n\n**Què resol millor real time**\nReal time encaixa quan l’acció ha de produir-se poc després de l’event.\n\nFrau, personalització durant una sessió, alertes operatives crítiques o coordinació automatitzada entre sistemes poden necessitar segons o minuts.\n\n**Streaming crea valor quan** reaccionar abans canvia materialment l’outcome.\n\nEls events també permeten desacoblar productors i consumidors.\n\nUn mateix event pot alimentar monitoring, automatització i analytics amb velocitats diferents.\n\nStreaming pot escalar bé per volum continu, encara que schemas, ordering i state necessiten disseny explícit.\n\nUn altre avantatge és repartir la feina en el temps en lloc d’esperar un batch gran.\n\nAquesta capacitat només té valor si algú utilitza la frescor addicional.\n\n**On apareix el cost ocult**\nReal time introdueix problemes que batch sovint evita.\n\nEvents duplicats, tardans o fora d’ordre necessiten tractament explícit.\n\nL’estat distribuït complica recovery.\n\n**Una pipeline que respon en** segons també ha de fallar i recuperar-se en segons sense corrompre decisions.\n\nL’observability ha de seguir lag, throughput, errors i salut dels consumers.\n\nLa operació pot requerir on-call més exigent.\n\nTambé creix el nombre de components i dependències.\n\nBatch té costos ocults igualment. Grans finestres poden crear pics de compute i retardar feedback.\n\nUna fallada al final d’una execució llarga pot obligar a reprocesar molt.\n\nEls sistemes batch també poden acumular dependències temporals rígides entre jobs.\n\nPer això la comparació ha d’incloure cost operatiu i no només infraestructura.\n\n**Com triar per cas d’ús**\nComença definint la finestra màxima útil per la decisió.\n\nQuant temps pot passar entre event i acció sense pèrdua material?\n\nSi són hores, batch probablement basta. Si són segons, streaming guanya rellevància.\n\n**La latència requerida s’hauria d’escriure** com a requisit de negoci abans de dissenyar la pipeline.\n\nDesprés cal analitzar volum i patró d’arribada.\n\nEvents continus amb pics imprevisibles poden afavorir streaming; snapshots periòdics grans poden afavorir batch.\n\nLa necessitat de replay també importa. Tots dos patrons poden suportar-lo, però la complexitat canvia.\n\nLa consistència requerida s’ha de definir. Algunes decisions toleren eventual consistency; altres no.\n\nTambé cal mirar els consumidors. Un dashboard cada cinc minuts no necessita necessàriament processament event a event.\n\nMicro-batching resol molts casos intermedis.\n\nUna arquitectura híbrida és habitual: streaming per events crítics i batch per consolidació, backfills i reporting.\n\nTambé pot existir una capa d’events real time que alimenti taules analítiques per finestres.\n\nCal evitar lògica duplicada. Si batch i streaming calculen la mateixa mètrica per camins separats, mantenir consistència es torna difícil.\n\nArquitectures Lambda històricament resolien això amb dos camins, però plataformes modernes sovint permeten simplificar.\n\nL’equip importa. Streaming sofisticat sense experiència operativa pot generar més downtime que un batch ben dissenyat.\n\nLa governança de schemas també és clau. Canvis en events poden trencar consumers silenciosament.\n\nEn batch, els contractes de fitxers i taules compleixen una funció equivalent.\n\nEl cost s’ha de comparar amb volums i SLAs reals.\n\nLa decisió pot evolucionar. Un procés batch pot passar a near real time quan apareix un cas que ho justifica.\n\nNo cal redissenyar tota la plataforma perquè un únic workflow necessita menys latència.\n\nTambé convé distingir dades fresques de decisions fresques. Un dashboard actualitzat cada segon aporta poc si l’usuari el mira una vegada al dia.\n\nFinalment, la fiabilitat ha de pesar tant com la velocitat.\n\n**Batch és millor quan el retard és acceptable i la simplicitat crea valor; real time quan arribar tard destrueix valor abans de la següent execució.** Entre tots dos hi ha una zona near real time on una arquitectura més simple pot capturar gairebé tot el benefici.",
+      "seo_title": "Batch vs real time pipelines: com triar",
+      "seo_description": "Comparació entre pipelines batch i real time segons latència, complexitat, consistència, cost operatiu i valor de negoci.",
+      "seo_keywords": [
+        "batch vs real time pipelines",
+        "batch vs streaming",
+        "real time pipeline",
+        "data pipeline architecture"
+      ],
+      "tags": [
+        "Batch",
+        "Streaming",
+        "Data Pipelines"
+      ]
+    }
+  }
+}

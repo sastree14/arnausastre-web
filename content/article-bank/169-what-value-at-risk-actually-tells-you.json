@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-169",
+  "sequence": 169,
+  "arc_id": "ARC-43",
+  "slug": "what-value-at-risk-actually-tells-you",
+  "scheduled_at": "2027-11-22T09:00:00+01:00",
+  "knowledge_area": "finance",
+  "cluster": "Finance, Risk & Pricing",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "explain_understand",
+  "angle": "value at risk explained",
+  "primary_keyword": "value at risk explained",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-170",
+    "KB-171",
+    "KB-172"
+  ],
+  "variants": {
+    "es": {
+      "title": "Qué te dice realmente Value at Risk",
+      "excerpt": "VaR resume un umbral de pérdida para un horizonte y nivel de confianza. No describe qué ocurre más allá de ese umbral ni sustituye escenarios y stress tests.",
+      "quick": [
+        "VaR es un cuantil",
+        "El horizonte cambia la lectura",
+        "La cola necesita métricas adicionales"
+      ],
+      "section_titles": [
+        "VaR responde una pregunta concreta",
+        "El horizonte y la confianza importan",
+        "VaR no describe la severidad de la cola",
+        "Úsalo dentro de un sistema de riesgo"
+      ],
+      "business_title": "VaR es útil como resumen de exposición probable, pero debe interpretarse como un umbral estadístico dentro de una arquitectura de riesgo más amplia.",
+      "business_steps": [
+        "Cuantil",
+        "Horizonte",
+        "Contexto de riesgo"
+      ],
+      "body": "Value at Risk suele resumirse en una frase sencilla: “con un 99 % de confianza, no esperamos perder más de X durante el próximo día”. La frase es útil, pero puede inducir a una lectura equivocada. **VaR no representa la peor pérdida posible ni el promedio de las pérdidas extremas; representa un cuantil de la distribución de pérdidas.**\n\nEso significa que la métrica responde una pregunta muy concreta. A cierto horizonte y nivel de confianza, ¿qué umbral separa la mayor parte de los resultados de la cola más extrema? **La utilidad aparece cuando entendemos exactamente qué mide y qué deja fuera.**\n\n**VaR responde una pregunta concreta**\nSupongamos un VaR diario al 99 % de 1 millón de euros.\n\nLa interpretación aproximada es que, bajo el modelo y las condiciones asumidas, el 99 % de los días la pérdida no superaría 1 millón. En el 1 % restante, sí podría superarlo.\n\n**VaR no dice cuánto perderíamos en ese 1 %**.\n\nTampoco garantiza que los eventos sean independientes ni que la distribución permanezca estable.\n\nLa métrica depende completamente del modelo utilizado para estimar la distribución: histórico, paramétrico, Monte Carlo o una combinación.\n\nUn VaR histórico hereda las condiciones del pasado. Si el periodo no contiene shocks relevantes, puede subestimar eventos futuros.\n\nUn enfoque paramétrico depende de supuestos sobre volatilidad, correlaciones y forma de la distribución.\n\nMonte Carlo permite más flexibilidad, pero la simulación solo es tan buena como los procesos y dependencias modelados.\n\n**El horizonte y la confianza importan**\nUn VaR al 95 % no es comparable directamente con uno al 99 % sin entender la diferencia en la cola.\n\nAumentar el nivel de confianza desplaza el umbral hacia pérdidas más extremas.\n\nEl horizonte también modifica la exposición. Un VaR diario no responde la misma pregunta que un VaR a diez días.\n\n**Cambiar horizonte y confianza cambia la decisión que la métrica puede soportar**.\n\nEn algunos modelos se escala el VaR con la raíz del tiempo, pero esa aproximación exige supuestos sobre independencia y estabilidad que pueden fallar precisamente en periodos de estrés.\n\nLa liquidez es otro problema. Una posición puede necesitar varios días para deshacerse y el horizonte teórico puede ser demasiado corto.\n\nTambién existen efectos no lineales en derivados y portfolios complejos que hacen difícil extrapolar el riesgo de un periodo a otro.\n\nPor eso el horizonte debe reflejar cómo puede actuar realmente la organización.\n\n**VaR no describe la severidad de la cola**\nEl mayor límite conceptual de VaR aparece después del cuantil.\n\nDos portfolios pueden tener el mismo VaR al 99 % y pérdidas muy distintas en el peor 1 %.\n\nUno puede superar el umbral ligeramente; otro puede tener una cola con pérdidas catastróficas.\n\n**VaR trata ambos casos como equivalentes en el punto de corte**.\n\nExpected Shortfall intenta cubrir esa limitación midiendo la pérdida media condicionada a estar más allá del VaR.\n\nEsto aporta información sobre severidad de cola, aunque también depende del modelo y de la calidad de datos extremos.\n\nVaR también puede comportarse de forma poco intuitiva con determinadas distribuciones y no siempre recompensa adecuadamente la diversificación bajo todas las formulaciones.\n\nPor eso no debería utilizarse como único número de riesgo.\n\nLas concentraciones, correlaciones inestables y riesgos de liquidez pueden permanecer ocultos detrás de una cifra agregada.\n\n**Úsalo dentro de un sistema de riesgo**\nVaR sigue siendo útil.\n\nPermite resumir exposición, comparar periodos, establecer límites y comunicar riesgo en una unidad consistente.\n\nPero debe convivir con Expected Shortfall, escenarios, sensitivities y stress tests.\n\n**La combinación es más informativa que cualquier métrica aislada**.\n\nLos escenarios permiten preguntar qué ocurre si tipos suben bruscamente, spreads se amplían, una moneda se mueve o varias correlaciones cambian a la vez.\n\nLos stress tests pueden diseñar eventos que nunca aparecieron en el histórico.\n\nTambién conviene mirar contribución al riesgo por posición, factor o desk.\n\nBacktesting es esencial. Si las excepciones observadas superan sistemáticamente lo esperado, el modelo puede estar mal calibrado.\n\nLa estabilidad de parámetros debe monitorizarse. Volatilidades y correlaciones cambian precisamente cuando aumenta el riesgo.\n\nTambién hay que distinguir market risk de credit, liquidity y operational risk.\n\nUn buen dashboard de riesgo debería mostrar el VaR junto con contexto: nivel de confianza, horizonte, método, fecha, principales drivers y stress scenarios.\n\nLa gobernanza necesita definir qué acción ocurre cuando se supera un límite.\n\nUna métrica sin policy de respuesta termina siendo descriptiva.\n\nFinalmente, hay que evitar lenguaje que sugiera certeza. Un VaR del 99 % no significa que exista solo un 1 % de probabilidad de “tener un problema”; significa algo mucho más específico sobre una distribución modelada.\n\n**Value at Risk es un umbral probabilístico, no una frontera de seguridad.** Su valor está en resumir una parte del riesgo de forma consistente, siempre que la organización mantenga visible lo que ocurre más allá del cuantil y lo combine con escenarios capaces de desafiar el modelo.",
+      "seo_title": "Value at Risk explicado: qué mide realmente",
+      "seo_description": "Qué mide VaR, cómo interpretar horizonte y confianza, cuáles son sus límites y por qué debe combinarse con Expected Shortfall y stress tests.",
+      "seo_keywords": [
+        "value at risk explained",
+        "VaR meaning",
+        "Value at Risk",
+        "financial risk"
+      ],
+      "tags": [
+        "Finance",
+        "Risk",
+        "Value at Risk"
+      ]
+    },
+    "en": {
+      "title": "What Value at Risk actually tells you",
+      "excerpt": "VaR summarizes a loss threshold for a chosen horizon and confidence level. It does not describe what happens beyond that threshold or replace stress testing.",
+      "quick": [
+        "VaR is a quantile",
+        "Horizon changes interpretation",
+        "The tail needs additional metrics"
+      ],
+      "section_titles": [
+        "VaR answers one specific question",
+        "Horizon and confidence matter",
+        "VaR does not describe tail severity",
+        "Use it inside a broader risk system"
+      ],
+      "business_title": "VaR is useful as a summary of probable exposure, but it should be interpreted as a statistical threshold inside a wider risk architecture.",
+      "business_steps": [
+        "Quantile",
+        "Horizon",
+        "Risk context"
+      ],
+      "body": "Value at Risk is often summarized in a simple sentence: “with 99% confidence, we do not expect to lose more than X over the next day.” The sentence is useful, but it can also be misleading. **VaR is not the worst possible loss and it is not the average extreme loss; it is a quantile of the loss distribution.**\n\nThat means the metric answers one specific question. At a chosen horizon and confidence level, which loss threshold separates most outcomes from the more extreme tail? **Its value depends on understanding exactly what it measures and what it leaves outside the number.**\n\n**VaR answers one specific question**\nSuppose one-day 99% VaR is €1 million.\n\nA practical interpretation is that, under the model and assumptions used, losses would not exceed €1 million on roughly 99% of days. On the remaining 1%, losses could be larger.\n\n**VaR does not tell us how large losses become inside that 1%**.\n\nIt also does not guarantee independence between events or stability of the underlying distribution.\n\nThe result depends on how the distribution is estimated: historical simulation, parametric methods, Monte Carlo or a hybrid.\n\nHistorical VaR inherits the conditions represented in its sample. If the period contains no relevant shock, the tail can look safer than it is.\n\nParametric approaches depend on assumptions about volatility, correlation and distribution shape.\n\nMonte Carlo offers flexibility, but simulations are only as credible as the processes and dependencies encoded.\n\n**Horizon and confidence matter**\nA 95% VaR and a 99% VaR answer different tail questions.\n\nRaising confidence moves the threshold deeper into adverse outcomes.\n\nThe horizon matters as well. One-day VaR and ten-day VaR do not describe the same exposure.\n\n**Changing horizon and confidence changes the decision the metric can support**.\n\nSome implementations scale risk using the square root of time, but that approximation assumes independence and stability that can fail precisely during stressed markets.\n\nLiquidity adds another complication. A position may require several days to exit, making a short theoretical horizon operationally unrealistic.\n\nDerivatives and nonlinear portfolios can also make simple scaling unreliable.\n\nThe horizon should therefore reflect how quickly the organization can actually respond.\n\n**VaR does not describe tail severity**\nThe central conceptual limitation appears beyond the quantile.\n\nTwo portfolios can have identical 99% VaR and very different losses in the worst 1% of cases.\n\nOne portfolio may exceed the threshold slightly. Another may have catastrophic tail outcomes.\n\n**VaR treats those cases as equivalent at the cutoff**.\n\nExpected Shortfall addresses that limitation by estimating average loss conditional on being beyond the VaR threshold.\n\nThat provides more information about tail severity, although it still depends on model assumptions and the quality of extreme observations.\n\nVaR can also behave unintuitively under some distributions and does not always reflect diversification consistently in every formulation.\n\nFor that reason, one aggregate VaR number should not become the entire risk view.\n\nConcentration, unstable correlation and liquidity risk can remain hidden behind the summary statistic.\n\n**Use it inside a broader risk system**\nVaR remains valuable.\n\nIt can summarize exposure, compare periods, support limits and communicate risk in a consistent unit.\n\nBut it should sit alongside Expected Shortfall, sensitivities, scenarios and stress tests.\n\n**The combination is more informative than any single metric**.\n\nScenarios can ask what happens if rates jump, spreads widen, a currency moves sharply or correlations shift together.\n\nStress tests can include events that never appeared in the historical sample.\n\nRisk contribution by position, factor or desk helps explain where the aggregate number comes from.\n\nBacktesting is essential. If observed exceptions occur much more often than expected, the model may be poorly calibrated.\n\nParameter stability should also be monitored because volatility and correlation often change exactly when risk rises.\n\nMarket risk should remain distinct from credit, liquidity and operational risk even when management views them together.\n\nA useful risk dashboard should display VaR with context: confidence level, horizon, method, date, main drivers and stress scenarios.\n\nGovernance should define what happens when a limit is breached.\n\nA metric with no response policy becomes descriptive rather than operational.\n\nFinally, language matters. A 99% VaR does not mean there is only a 1% probability of “something bad happening”; it is a much more specific statement about a modeled distribution.\n\n**Value at Risk is a probabilistic threshold, not a safety boundary.** It is useful when it consistently summarizes one dimension of risk while the organization keeps the tail visible through complementary metrics and stress scenarios.",
+      "seo_title": "Value at Risk Explained: What VaR Really Measures",
+      "seo_description": "What VaR measures, how horizon and confidence affect interpretation, its limitations and why Expected Shortfall and stress testing remain necessary.",
+      "seo_keywords": [
+        "value at risk explained",
+        "VaR meaning",
+        "Value at Risk",
+        "financial risk"
+      ],
+      "tags": [
+        "Finance",
+        "Risk",
+        "Value at Risk"
+      ]
+    },
+    "ca": {
+      "title": "Què et diu realment Value at Risk",
+      "excerpt": "VaR resumeix un llindar de pèrdua per un horitzó i nivell de confiança. No descriu què passa més enllà del llindar ni substitueix stress tests.",
+      "quick": [
+        "VaR és un quantil",
+        "L’horitzó canvia la lectura",
+        "La cua necessita mètriques addicionals"
+      ],
+      "section_titles": [
+        "VaR respon una pregunta concreta",
+        "L’horitzó i la confiança importen",
+        "VaR no descriu la severitat de la cua",
+        "Utilitza’l dins d’un sistema de risc"
+      ],
+      "business_title": "VaR és útil com a resum d’exposició probable, però s’ha d’interpretar com un llindar estadístic dins d’una arquitectura de risc més àmplia.",
+      "business_steps": [
+        "Quantil",
+        "Horitzó",
+        "Context de risc"
+      ],
+      "body": "Value at Risk sovint es resumeix amb una frase simple: “amb un 99 % de confiança, no esperem perdre més de X durant el pròxim dia”. La frase és útil, però pot induir a error. **VaR no representa la pitjor pèrdua possible ni la mitjana de les pèrdues extremes; és un quantil de la distribució de pèrdues.**\n\nAixò significa que respon una pregunta concreta. A un horitzó i nivell de confiança determinats, quin llindar separa la major part dels resultats de la cua més extrema? **El seu valor depèn d’entendre exactament què mesura i què deixa fora.**\n\n**VaR respon una pregunta concreta**\nSuposem un VaR diari al 99 % d’1 milió d’euros.\n\nUna interpretació pràctica és que, sota el model i els supòsits utilitzats, aproximadament el 99 % dels dies la pèrdua no superaria 1 milió. En l’1 % restant, podria ser superior.\n\n**VaR no diu quant podem perdre dins d’aquest 1 %**.\n\nTampoc garanteix independència entre esdeveniments ni estabilitat de la distribució.\n\nEl resultat depèn de com estimem la distribució: històric, paramètric, Monte Carlo o híbrid.\n\nEl VaR històric hereta les condicions de la mostra. Si el període no conté shocks rellevants, la cua pot semblar més segura del que és.\n\nEls mètodes paramètrics depenen de supòsits sobre volatilitat, correlacions i forma de la distribució.\n\nMonte Carlo ofereix flexibilitat, però la simulació només és tan bona com els processos i dependències modelats.\n\n**L’horitzó i la confiança importen**\nUn VaR al 95 % i un VaR al 99 % responen preguntes diferents sobre la cua.\n\nAugmentar confiança mou el llindar cap a outcomes més adversos.\n\nL’horitzó també modifica exposició. Un VaR diari i un a deu dies no descriuen el mateix risc.\n\n**Canviar horitzó i confiança canvia la decisió que la mètrica pot suportar**.\n\nAlguns enfocaments escalen amb l’arrel del temps, però aquesta aproximació assumeix independència i estabilitat que poden fallar precisament durant períodes d’estrès.\n\nLa liquiditat afegeix una altra dificultat. Una posició pot necessitar diversos dies per desfer-se i un horitzó teòric curt pot ser poc realista.\n\nDerivats i portfolios no lineals també poden fer poc fiable l’escalat simple.\n\nL’horitzó ha de reflectir com de ràpid pot reaccionar realment l’organització.\n\n**VaR no descriu la severitat de la cua**\nEl principal límit conceptual apareix després del quantil.\n\nDos portfolios poden tenir el mateix VaR al 99 % i pèrdues molt diferents en el pitjor 1 %.\n\nUn pot superar el llindar lleugerament; l’altre pot tenir una cua catastròfica.\n\n**VaR tracta els dos casos com equivalents al punt de tall**.\n\nExpected Shortfall cobreix part d’aquesta limitació estimant la pèrdua mitjana condicionada a estar més enllà del VaR.\n\nAixò aporta més informació sobre severitat de cua, tot i que continua depenent dels supòsits i de la qualitat dels extrems.\n\nVaR també pot comportar-se de manera poc intuïtiva amb algunes distribucions i no sempre reflecteix diversificació de forma consistent.\n\nPer això una única xifra de VaR no hauria de convertir-se en tota la visió de risc.\n\nConcentracions, correlacions inestables i risc de liquiditat poden quedar amagats.\n\n**Utilitza’l dins d’un sistema de risc**\nVaR continua sent útil.\n\nPermet resumir exposició, comparar períodes, suportar límits i comunicar risc amb una unitat consistent.\n\nPerò ha de conviure amb Expected Shortfall, sensitivities, escenaris i stress tests.\n\n**La combinació és més informativa que qualsevol mètrica aïllada**.\n\nEls escenaris permeten preguntar què passa si pugen tipus, s’amplien spreads, es mou una divisa o canvien diverses correlacions alhora.\n\nEls stress tests poden incloure esdeveniments que mai van aparèixer a l’històric.\n\nTambé convé revisar contribució al risc per posició, factor o desk.\n\nEl backtesting és essencial. Si les excepcions observades són molt més freqüents del que esperàvem, el model pot estar mal calibrat.\n\nTambé cal monitoritzar estabilitat de paràmetres perquè volatilitat i correlació canvien justament quan augmenta el risc.\n\nMarket risk s’ha de distingir de credit, liquidity i operational risk.\n\nUn bon dashboard hauria de mostrar VaR amb context: nivell de confiança, horitzó, mètode, data, drivers principals i stress scenarios.\n\nGovernance ha de definir què passa quan se supera un límit.\n\nUna mètrica sense policy de resposta és només descriptiva.\n\nFinalment, cal evitar llenguatge de falsa certesa. Un VaR del 99 % no significa que només hi hagi un 1 % de probabilitat de “tenir un problema”.\n\n**Value at Risk és un llindar probabilístic, no una frontera de seguretat.** El seu valor és resumir de forma consistent una dimensió del risc mentre l’organització manté visible la cua amb mètriques i escenaris complementaris.",
+      "seo_title": "Value at Risk explicat: què mesura realment",
+      "seo_description": "Què mesura VaR, com interpretar horitzó i confiança, quins límits té i per què cal combinar-lo amb Expected Shortfall i stress tests.",
+      "seo_keywords": [
+        "value at risk explained",
+        "VaR meaning",
+        "Value at Risk",
+        "financial risk"
+      ],
+      "tags": [
+        "Finance",
+        "Risk",
+        "Value at Risk"
+      ]
+    }
+  }
+}

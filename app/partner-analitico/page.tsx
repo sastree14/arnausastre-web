@@ -1,72 +1,277 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
-import FreeDiagnosticSection from '@/components/FreeDiagnosticSection'
-import NewsletterSignup from '@/components/NewsletterSignup'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
-const COPY={
-  es:{
-    eyebrow:'PARTNER ANALÍTICO',
-    title:'Una capa analítica externa que aprende tu negocio y vuelve a entrar cuando aparece una nueva decisión.',
-    intro:'No todas las empresas necesitan contratar un equipo interno completo de Data Science, IA, optimización y automatización. Sí pueden necesitar acceso continuo a esas capacidades cuando el negocio lo pide.',
-    whatTitle:'Qué significa en la práctica',
-    what:[
-      ['Empezamos por problemas reales','No partimos de una herramienta. Partimos de una decisión, una operación, un cuello de botella o una oportunidad.'],
-      ['Conservamos contexto','Cada proyecto aumenta el conocimiento del negocio y reduce el coste de volver a empezar desde cero.'],
-      ['Entramos con la especialidad necesaria','Forecasting, optimización, ML, agentes IA, BI, data engineering o simulación según el problema.'],
-      ['Podemos ser puntuales o recurrentes','Un único proyecto no obliga a una relación larga. La continuidad aparece solo si sigue creando valor.'],
+const COPY = {
+  es: {
+    eyebrow: 'PARTNER DATA E IA',
+    title: 'Capacidad analítica y tecnológica especializada, sin construir todo el equipo internamente.',
+    intro: 'Nos integramos como capacidad tecnológica y analítica externa, conservando contexto y activando la especialidad que necesitas en cada momento.',
+    primary: 'Hablar del modelo partner',
+    secondary: 'Ver cómo trabajamos',
+
+    valueLabel: 'LO QUE CAMBIA',
+    value: [
+      'Un partner. Una responsabilidad clara.',
+      'El contexto se conserva entre proyectos.',
+      'Activamos especialistas cuando realmente hacen falta.',
+      'Más capacidad especializada sin replicarla toda internamente.',
     ],
-    compareTitle:'No es externalizar un departamento entero.',
-    compareBody:'El objetivo es mantener una estructura ligera y acceder a capacidad especialista cuando tiene sentido. Algunas empresas nos utilizan para un proyecto; otras para acompañar decisiones, sistemas y automatizaciones a lo largo del tiempo.',
-    bestTitle:'Cuándo suele tener sentido',
-    best:['No tienes un equipo interno de Data Science completo.','Tienes analistas o perfiles técnicos, pero necesitas profundidad especialista.','Hay varios problemas de datos/IA dispersos y quieres una relación que conserve contexto.','Quieres validar oportunidades antes de invertir en una contratación o plataforma grande.'],
-    cta:'Hablar de vuestro caso',
+
+    fitLabel: 'PARA QUIÉN',
+    fitTitle: 'Tres formas de incorporar capacidad especializada.',
+    fits: [
+      ['Empresas que quieren ampliar capacidad', 'Especialización adicional para iniciativas concretas.'],
+      ['Equipos con retos técnicos específicos', 'Aportamos profundidad en datos, IA, modelado o automatización cuando el reto lo exige.'],
+      ['Agencias y consultoras', 'Complementamos vuestra propuesta con capacidad técnica especializada cuando el proyecto lo requiere.'],
+    ],
+
+    modelLabel: 'CÓMO FUNCIONA',
+    modelTitle: 'Capacidad especializada con continuidad y contexto.',
+    model: [
+      ['01', 'Entendemos vuestro contexto'],
+      ['02', 'Activamos la especialidad adecuada'],
+      ['03', 'Conservamos el conocimiento'],
+      ['04', 'Aportamos valor de forma continua'],
+    ],
+
+    exploreLabel: 'VALOREMOS EL ENCAJE',
+    exploreTitle: 'Comprueba si nuestras organizaciones pueden trabajar bien juntas.',
+    exploreLinks: [
+      ['Cómo trabajamos', 'Nuestro método, de problema a impacto.', '/services'],
+      ['Casos de éxito', 'Problemas y sistemas explicados con evidencia.', '/projects'],
+      ['Conocimiento', 'Cómo pensamos antes de construir.', '/knowledge'],
+    ],
+
+    ctaTitle: 'Valoremos cómo encajaría SC-Analytics en vuestra organización.',
+    ctaBody: 'Una primera conversación basta para definir necesidades, forma de colaboración y un posible siguiente paso.',
+    cta: 'Valorar el modelo de colaboración',
   },
-  ca:{
-    eyebrow:'PARTNER ANALÍTIC',
-    title:'Una capa analítica externa que aprèn el teu negoci i torna a entrar quan apareix una nova decisió.',
-    intro:'No totes les empreses necessiten contractar un equip intern complet de Data Science, IA, optimització i automatització. Sí que poden necessitar accés continu a aquestes capacitats quan el negoci ho demana.',
-    whatTitle:'Què significa a la pràctica',
-    what:[
-      ['Comencem per problemes reals','No partim d’una eina. Partim d’una decisió, una operació, un coll d’ampolla o una oportunitat.'],
-      ['Conservem context','Cada projecte augmenta el coneixement del negoci i redueix el cost de tornar a començar des de zero.'],
-      ['Entrem amb l’especialitat necessària','Forecasting, optimització, ML, agents IA, BI, data engineering o simulació segons el problema.'],
-      ['Podem ser puntuals o recurrents','Un únic projecte no obliga a una relació llarga. La continuïtat apareix només si continua creant valor.'],
+
+  ca: {
+    eyebrow: 'PARTNER DADES I IA',
+    title: 'Capacitat analítica i tecnològica especialitzada, sense construir tot l’equip internament.',
+    intro: 'Ens integrem com a capacitat tecnològica i analítica externa, conservant context i activant l’especialitat que necessites en cada moment.',
+    primary: 'Parlar del model partner',
+    secondary: 'Veure com treballem',
+
+    valueLabel: 'QUÈ CANVIA',
+    value: [
+      'Un partner. Una responsabilitat clara.',
+      'El context es conserva entre projectes.',
+      'Activem especialistes quan realment fan falta.',
+      'Més capacitat especialitzada sense replicar-la tota internament.',
     ],
-    compareTitle:'No és externalitzar un departament sencer.',
-    compareBody:'L’objectiu és mantenir una estructura lleugera i accedir a capacitat especialista quan té sentit. Algunes empreses ens utilitzen per a un projecte; altres per acompanyar decisions, sistemes i automatitzacions al llarg del temps.',
-    bestTitle:'Quan acostuma a tenir sentit',
-    best:['No tens un equip intern complet de Data Science.','Tens analistes o perfils tècnics, però necessites profunditat especialista.','Hi ha diversos problemes de dades/IA dispersos i vols una relació que conservi context.','Vols validar oportunitats abans d’invertir en una contractació o plataforma gran.'],
-    cta:'Parlar del vostre cas',
+
+    fitLabel: 'PER A QUI',
+    fitTitle: 'Tres maneres d’incorporar capacitat especialitzada.',
+    fits: [
+      ['Empreses que volen ampliar capacitat', 'Especialització addicional per a iniciatives concretes.'],
+      ['Equips amb reptes tècnics específics', 'Aportem profunditat en dades, IA, modelatge o automatització quan el repte ho exigeix.'],
+      ['Agències i consultores', 'Complementem la vostra proposta amb capacitat tècnica especialitzada quan el projecte ho requereix.'],
+    ],
+
+    modelLabel: 'COM FUNCIONA',
+    modelTitle: 'Capacitat especialitzada amb continuïtat i context.',
+    model: [
+      ['01', 'Entenem el vostre context'],
+      ['02', 'Activem l’especialitat adequada'],
+      ['03', 'Conservem el coneixement'],
+      ['04', 'Aportem valor de manera contínua'],
+    ],
+
+    exploreLabel: 'VALOREM L’ENCAIX',
+    exploreTitle: 'Comprova si les nostres organitzacions poden treballar bé juntes.',
+    exploreLinks: [
+      ['Com treballem', 'El nostre mètode, de problema a impacte.', '/services'],
+      ['Casos d’èxit', 'Problemes i sistemes explicats amb evidència.', '/projects'],
+      ['Coneixement', 'Com pensem abans de construir.', '/knowledge'],
+    ],
+
+    ctaTitle: 'Valorem com encaixaria SC-Analytics a la vostra organització.',
+    ctaBody: 'Una primera conversa és suficient per definir necessitats, forma de col·laboració i un possible següent pas.',
+    cta: 'Valorar el model de col·laboració',
   },
-  en:{
-    eyebrow:'ANALYTICAL PARTNER',
-    title:'An external analytical layer that learns the business and returns when a new decision appears.',
-    intro:'Not every company needs to hire a complete internal Data Science, AI, optimisation and automation team. Many do need continued access to those capabilities when the business requires them.',
-    whatTitle:'What it means in practice',
-    what:[
-      ['Start from real problems','We do not start with a tool. We start with a decision, an operation, a bottleneck or an opportunity.'],
-      ['Retain context','Every project increases business knowledge and reduces the cost of starting from zero again.'],
-      ['Bring the right specialism','Forecasting, optimisation, ML, AI agents, BI, data engineering or simulation according to the problem.'],
-      ['Project-based or ongoing','One project never commits you to a long relationship. Continuity exists only while it keeps creating value.'],
+
+  en: {
+    eyebrow: 'DATA AND AI PARTNER',
+    title: 'Specialist analytical and technology capability, without building the entire team in-house.',
+    intro: 'We integrate as external technology and analytical capability, retaining context and activating the right specialism when needed.',
+    primary: 'Discuss the partner model',
+    secondary: 'See how we work',
+
+    valueLabel: 'WHAT CHANGES',
+    value: [
+      'One partner. Clear accountability.',
+      'Context is retained between projects.',
+      'Specialists are activated when they are genuinely needed.',
+      'More specialist capability without replicating it all in-house.',
     ],
-    compareTitle:'It is not outsourcing an entire department.',
-    compareBody:'The objective is to keep your structure lean while accessing specialist capability when it makes sense. Some companies use us for one project; others involve us across decisions, systems and automations over time.',
-    bestTitle:'When it tends to make sense',
-    best:['You do not have a complete internal Data Science team.','You have analysts or technical profiles but need specialist depth.','Several Data/AI problems are emerging and you want one relationship that retains context.','You want to validate opportunities before committing to a large hire or platform.'],
-    cta:'Discuss your situation',
+
+    fitLabel: 'WHO IT IS FOR',
+    fitTitle: 'Three ways to bring in specialist capability.',
+    fits: [
+      ['Companies looking to extend capability', 'Additional specialist depth for concrete initiatives.'],
+      ['Teams facing specific technical challenges', 'We add depth in data, AI, modelling or automation when the challenge requires it.'],
+      ['Agencies and consultancies', 'We complement your offer with specialist technical capability when a project requires it.'],
+    ],
+
+    modelLabel: 'HOW IT WORKS',
+    modelTitle: 'Specialist capability with continuity and context.',
+    model: [
+      ['01', 'We understand your context'],
+      ['02', 'We activate the right specialism'],
+      ['03', 'We retain the knowledge'],
+      ['04', 'We keep creating value'],
+    ],
+
+    exploreLabel: 'ASSESS THE FIT',
+    exploreTitle: 'See whether our organisations are a strong fit for working together.',
+    exploreLinks: [
+      ['How we work', 'Our method, from problem to impact.', '/services'],
+      ['Success stories', 'Problems and systems explained with evidence.', '/projects'],
+      ['Knowledge', 'How we think before we build.', '/knowledge'],
+    ],
+
+    ctaTitle: 'Assess how SC-Analytics could fit into your organisation.',
+    ctaBody: 'One first conversation is enough to define the need, the collaboration model and a possible next step.',
+    cta: 'Assess the collaboration model',
   },
 } as const
 
-export default function AnalyticalPartnerPage(){
-  const {lang}=useSiteLanguage(),t=COPY[lang]
-  return <main className="bg-white text-slate-950">
-    <section className="border-b border-slate-800 bg-slate-950 text-white"><div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 md:py-28 lg:grid-cols-[1.15fr_.85fr] lg:items-center"><div><p className="text-xs font-semibold uppercase tracking-[.22em] text-indigo-300">{t.eyebrow}</p><h1 className="mt-5 max-w-4xl text-5xl leading-[1.07] md:text-6xl" style={{fontFamily:'var(--font-playfair)'}}>{t.title}</h1><p className="mt-7 max-w-3xl text-lg leading-8 text-slate-300">{t.intro}</p><Link href="/contact" className="mt-8 inline-flex rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-950">{t.cta}</Link></div><div className="relative hidden min-h-[300px] items-center justify-center lg:flex"><div className="absolute h-64 w-64 rounded-full border border-indigo-300/10"/><Image src="/brand/logo-horizontal-transparent.png" alt="SC-Analytics" width={620} height={320} className="relative z-10 w-full max-w-md object-contain"/></div></div></section>
-    <section className="mx-auto max-w-7xl px-6 py-20"><h2 className="text-4xl" style={{fontFamily:'var(--font-playfair)'}}>{t.whatTitle}</h2><div className="mt-10 divide-y divide-slate-200 border-y border-slate-200">{t.what.map(([title,body],i)=><article key={title} className="grid gap-3 py-6 md:grid-cols-[70px_260px_1fr]"><span className="text-xs font-semibold text-indigo-600">0{i+1}</span><h3 className="font-semibold">{title}</h3><p className="max-w-2xl text-sm leading-7 text-slate-600">{body}</p></article>)}</div></section>
-    <section className="border-y border-slate-200 bg-slate-50"><div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-2"><div><h2 className="text-4xl" style={{fontFamily:'var(--font-playfair)'}}>{t.compareTitle}</h2><p className="mt-5 max-w-xl text-base leading-8 text-slate-600">{t.compareBody}</p></div><div><p className="text-xs font-semibold uppercase tracking-[.2em] text-indigo-600">{t.bestTitle}</p><div className="mt-5 divide-y divide-slate-200 border-y border-slate-200">{t.best.map((item,i)=><div key={item} className="flex gap-4 py-4"><span className="text-xs font-semibold text-indigo-600">0{i+1}</span><p className="text-sm leading-6 text-slate-700">{item}</p></div>)}</div></div></div></section>
-    <FreeDiagnosticSection />
-    <section className="mx-auto max-w-7xl px-6 py-20"><NewsletterSignup /></section>
-  </main>
+const fitPalette = [
+  { bg: '#F8F3EA', border: '#DDCFBD' },
+  { bg: '#CADCEB', border: '#98B6CC' },
+  { bg: '#F1ECF5', border: '#D2C4DD' },
+]
+
+const modelPalette = [
+  { bg: '#EEEAE3', border: '#D0C5B6' },
+  { bg: '#D7E1E9', border: '#A7BBC9' },
+  { bg: '#DEE5E0', border: '#AFBDB2' },
+  { bg: '#E4E0E7', border: '#BAB2BF' },
+]
+
+export default function AnalyticalPartnerPage() {
+  const { lang } = useSiteLanguage()
+  const t = COPY[lang]
+
+  return (
+    <main className="bg-white text-slate-950">
+      <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
+        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:py-20 lg:grid-cols-[1.08fr_.92fr] lg:items-start">
+          <div>
+            <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
+            <h1 className="mt-5 max-w-5xl text-[44px] leading-[1.04] tracking-[-0.03em] sm:text-[56px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
+            <p className="mt-6 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/contact?intent=partner" className="bg-white px-5 py-3 text-[15px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">{t.primary}</Link>
+              <Link href="/services" className="border border-[#7F9BB5] px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-white/5">{t.secondary}</Link>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.valueLabel}</p>
+            <div className="mt-5 border-t border-[#496C8A]">
+              {t.value.map((item, index) => (
+                <div key={item} className="grid min-h-[78px] grid-cols-[48px_1fr] items-center gap-4 border-b border-[#496C8A] py-4">
+                  <span className="font-mono text-[13px] font-semibold text-[#8E91FF]">0{index + 1}</span>
+                  <p className="text-[17px] font-semibold leading-7 text-white">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-300 bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.fitLabel}</p>
+          <h2 className="mt-4 max-w-6xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.fitTitle}</h2>
+
+          <div className="mt-8 grid gap-3 lg:grid-cols-3">
+            {t.fits.map(([title, body], index) => {
+              const palette = fitPalette[index]
+              return (
+                <article
+                  key={title}
+                  className="flex min-h-[220px] flex-col border p-7"
+                  style={{ backgroundColor: palette.bg, borderColor: palette.border }}
+                >
+                  <p className="font-mono text-[13px] font-semibold text-indigo-700">0{index + 1}</p>
+                  <h3 className="mt-5 max-w-[24ch] text-[27px] font-semibold leading-[1.12] text-[#1D2B44]">{title}</h3>
+                  <p className="mt-auto max-w-[32ch] pt-8 text-[15px] leading-6 text-slate-700">{body}</p>
+                </article>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-300 bg-[#FAFAF7]">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
+          <div className="text-center">
+            <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.modelLabel}</p>
+            <h2 className="mx-auto mt-4 max-w-4xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.modelTitle}</h2>
+          </div>
+
+          <div className="mt-9 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+            {t.model.map(([number, title], index) => {
+              const palette = modelPalette[index]
+              return (
+                <article
+                  key={number}
+                  className="grid min-h-[180px] grid-rows-[auto_1fr] border p-6"
+                  style={{ backgroundColor: palette.bg, borderColor: palette.border }}
+                >
+                  <span className="font-mono text-[14px] font-semibold text-indigo-700">{number}</span>
+                  <div className="flex items-center justify-center px-2 text-center">
+                    <h3 className="max-w-[18ch] text-[22px] font-semibold leading-7 text-[#1D2B44]">{title}</h3>
+                  </div>
+                </article>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-300 bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
+          <div className="text-center">
+            <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.exploreLabel}</p>
+            <h2 className="mx-auto mt-3 max-w-4xl text-[34px] leading-[1.06] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
+          </div>
+
+          <div className="mt-8 grid border-l border-t border-slate-300 md:grid-cols-3">
+            {t.exploreLinks.map(([title, body, href], index) => (
+              <Link
+                key={href}
+                href={href}
+                className={`group flex min-h-[220px] flex-col justify-between border-b border-r border-slate-300 p-7 transition ${index === 0 ? 'bg-[#F8F3EA] hover:bg-[#F2EBDD]' : index === 1 ? 'bg-[#DDE8F2] hover:bg-[#D2E1ED]' : 'bg-[#F1ECF5] hover:bg-[#E9E1EF]'}`}
+              >
+                <div>
+                  <h3 className="text-[28px] leading-[1.1] text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
+                  <p className="mt-4 max-w-[30ch] text-[16px] leading-7 text-slate-600">{body}</p>
+                </div>
+                <span className="mt-8 inline-flex items-center gap-2 text-[16px] font-semibold text-indigo-700">
+                  {lang === 'es' ? 'Explorar' : lang === 'ca' ? 'Explorar' : 'Explore'} <span className="transition group-hover:translate-x-1">→</span>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-300 bg-[#F4F1EA]">
+        <div className="mx-auto flex max-w-7xl flex-col gap-7 px-6 py-11 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h2 className="max-w-4xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
+            <p className="mt-4 max-w-3xl text-[17px] leading-7 text-slate-700">{t.ctaBody}</p>
+          </div>
+          <Link href="/contact?intent=partner" className="inline-flex shrink-0 bg-slate-950 px-6 py-3.5 text-[15px] font-semibold text-white transition hover:bg-slate-800">{t.cta} →</Link>
+        </div>
+      </section>
+    </main>
+  )
 }

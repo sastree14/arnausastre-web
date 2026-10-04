@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-026",
+  "sequence": 26,
+  "arc_id": "ARC-07",
+  "slug": "reorder-point-vs-periodic-review",
+  "scheduled_at": "2026-12-08T09:00:00+01:00",
+  "knowledge_area": "operations",
+  "cluster": "Inventory & Supply Chain",
+  "editorial_pillar": "industries_use_cases",
+  "content_family": "compare",
+  "angle": "reorder point vs periodic review",
+  "primary_keyword": "reorder point vs periodic review",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-025",
+    "KB-027",
+    "KB-028"
+  ],
+  "variants": {
+    "es": {
+      "title": "Punto de pedido vs revisión periódica",
+      "excerpt": "Ambas políticas responden cuándo revisar y cuánto pedir, pero reaccionan de forma distinta a demanda, lead time, costes de pedido y cadencia operativa.",
+      "quick": [
+        "ROP reacciona por nivel",
+        "Revisión periódica reacciona por calendario",
+        "La cadencia cambia el buffer"
+      ],
+      "section_titles": [
+        "Cómo funciona cada política",
+        "Dónde gana el punto de pedido",
+        "Dónde gana la revisión periódica",
+        "Cómo elegir sin dogmas"
+      ],
+      "business_title": "La política correcta depende menos de la fórmula y más de cómo opera realmente la reposición.",
+      "business_steps": [
+        "Cadencia operativa",
+        "Riesgo durante espera",
+        "Política adecuada"
+      ],
+      "body": "Punto de pedido y revisión periódica son dos formas clásicas de convertir información de inventario en órdenes. Ambas pueden funcionar bien y ambas pueden fallar si se aplican fuera de contexto. **La diferencia principal está en cuándo se revisa la posición de inventario y cuánto tiempo de riesgo debe cubrir el sistema.**\n\nEn una política de reorder point, la posición se monitoriza de forma continua o muy frecuente y la orden se activa al cruzar un umbral. En revisión periódica, la posición se evalúa en fechas prefijadas y la cantidad suele llevar el inventario a un nivel objetivo. **La cadencia de revisión cambia directamente el buffer necesario.**\n\n**Cómo funciona cada política**\nEl punto de pedido intenta lanzar una orden cuando la posición de inventario cae hasta un nivel diseñado para cubrir demanda durante lead time más un margen de seguridad. Si la información es suficientemente frecuente, el sistema puede reaccionar poco después de cruzar el umbral.\n\nLa revisión periódica acepta que entre dos revisiones no se tomará una nueva decisión. Por eso el nivel objetivo debe proteger tanto el lead time como el tiempo hasta la próxima revisión. **La ventana de exposición suele ser mayor y, por tanto, el buffer requerido puede aumentar.**\n\nEn ambos casos, la posición correcta debe incluir stock disponible, tránsito, pedidos abiertos y demanda comprometida. Comparar solo inventario físico puede distorsionar la señal.\n\n**Dónde gana el punto de pedido**\nEl reorder point resulta atractivo cuando el inventario puede monitorizarse con frecuencia y el coste de lanzar una orden no obliga a agrupar decisiones. Permite reaccionar a cambios de consumo sin esperar al siguiente ciclo.\n\nTambién puede reducir buffer porque la revisión es más continua. **Cuanto antes detectamos que la posición cae, menos incertidumbre adicional necesitamos cubrir por espera administrativa.**\n\nSin embargo, esta ventaja exige datos actualizados. Un reorder point alimentado por stock con retraso puede generar falsa precisión. También puede aumentar frecuencia de pedidos y costes transaccionales si no existen mínimos o agrupaciones.\n\n**Dónde gana la revisión periódica**\nLa revisión periódica encaja bien cuando proveedores operan con ventanas fijas, cuando varias referencias se compran juntas o cuando el coste administrativo de ordenar es relevante. Centraliza decisiones y facilita consolidar transporte.\n\nTambién puede simplificar governance porque el planner revisa la cartera en momentos definidos. **La política sacrifica cierta capacidad de reacción a cambio de coordinación y eficiencia operativa.**\n\nEl coste es la exposición entre revisiones. Si la demanda cambia justo después de cerrar el ciclo, el sistema esperará hasta la próxima fecha salvo que exista una excepción. La frecuencia de revisión debe estar alineada con la volatilidad y el coste de ruptura.\n\n**Cómo elegir sin dogmas**\nLa elección debería empezar por cuatro preguntas: con qué frecuencia conocemos inventario fiable, con qué frecuencia podemos ordenar, cuánto cuesta cada pedido y cuánto riesgo existe durante lead time.\n\nSi los datos son casi en tiempo real, los pedidos pueden lanzarse con flexibilidad y el coste de reacción es bajo, reorder point puede aprovechar esa capacidad. Si compras necesita consolidar órdenes o proveedores trabajan con calendarios fijos, revisión periódica puede representar mejor la realidad.\n\nNo es necesario utilizar una única política para toda la empresa. **Una cartera puede mezclar reorder point para referencias críticas y revisión periódica para artículos estables o de compra consolidada.**\n\nTambién existen políticas híbridas: revisión frecuente con mínimos, min-max, order-up-to con calendarios o excepciones disparadas por riesgo. La combinación debe justificarse por la operación, no por sofisticación.\n\nEl backtesting debería comparar ambas políticas con la misma demanda, lead time y economics. Medir stock medio, servicio, frecuencia de pedido, transporte y urgencias permite ver el trade-off completo.\n\nLa pregunta final no es cuál política es “más moderna”. **La pregunta es cuál convierte mejor la información disponible en una decisión ejecutable con el menor coste total.** Punto de pedido y revisión periódica son mecanismos; el valor aparece cuando su cadencia coincide con la cadencia real del negocio.",
+      "seo_title": "Punto de pedido vs revisión periódica",
+      "seo_description": "Comparación entre reorder point y periodic review según cadencia, lead time, buffer, costes de pedido y restricciones operativas.",
+      "seo_keywords": [
+        "reorder point vs periodic review",
+        "punto de pedido",
+        "revisión periódica inventario",
+        "replenishment policy"
+      ],
+      "tags": [
+        "Inventory",
+        "Replenishment",
+        "Policy Comparison"
+      ]
+    },
+    "en": {
+      "title": "Reorder point vs periodic review",
+      "excerpt": "Both policies decide when and how much to order, but they react differently to demand, lead time, ordering cost and operating cadence.",
+      "quick": [
+        "ROP reacts to inventory level",
+        "Periodic review reacts to the calendar",
+        "Cadence changes the buffer"
+      ],
+      "section_titles": [
+        "How each policy works",
+        "Where reorder point wins",
+        "Where periodic review wins",
+        "How to choose without dogma"
+      ],
+      "business_title": "The right policy depends less on the formula than on how replenishment actually operates.",
+      "business_steps": [
+        "Operating cadence",
+        "Risk during delay",
+        "Appropriate policy"
+      ],
+      "body": "Reorder point and periodic review are two classic ways to convert inventory information into orders. Both can work well and both can fail when used outside their operating context. **The main difference is when the inventory position is reviewed and how much exposure the system must protect before it can react again.**\n\nWith a reorder-point policy, inventory position is monitored continuously or very frequently and an order is triggered when a threshold is crossed. With periodic review, inventory is evaluated on fixed dates and the order usually restores stock to a target level. **Review cadence directly changes the amount of buffer required.**\n\n**How each policy works**\nA reorder point triggers an order when inventory position falls to a level intended to cover lead-time demand plus safety stock. If information updates frequently, the system can react shortly after the threshold is crossed.\n\nPeriodic review accepts that no new replenishment decision will be taken between review dates. The target therefore needs to cover lead time plus the time until the next review. **The exposure window is usually longer, which can increase the required buffer.**\n\nIn both approaches, inventory position should include on-hand stock, goods in transit, open orders and committed demand. Looking only at physical stock can distort the signal.\n\n**Where reorder point wins**\nReorder point is attractive when inventory can be monitored frequently and ordering cost does not force decisions to be batched. It can react to consumption changes without waiting for the next cycle.\n\nIt may also reduce buffer because review is more continuous. **The sooner the system detects a lower inventory position, the less additional uncertainty it needs to cover because of administrative delay.**\n\nThat advantage depends on good data. A reorder point fed by stale inventory creates false responsiveness. It can also increase order frequency and transaction cost when minimum quantities, freight or supplier constraints are ignored.\n\n**Where periodic review wins**\nPeriodic review fits environments where suppliers operate on fixed windows, several items are purchased together or order administration is meaningful. It centralizes decisions and makes transport consolidation easier.\n\nIt can simplify governance as well because planners review the portfolio at defined times. **The policy gives up some responsiveness in exchange for coordination and operating efficiency.**\n\nThe cost is exposure between review dates. If demand changes immediately after a cycle closes, the system waits until the next review unless an exception process exists. Review frequency must therefore match volatility and shortage economics.\n\n**How to choose without dogma**\nThe decision can begin with four questions: how often reliable inventory is available, how often orders can actually be placed, what each order costs and how much risk accumulates during lead time.\n\nIf data is near real time, orders are flexible and reacting is cheap, reorder point can exploit that capability. If procurement must consolidate or suppliers run on calendars, periodic review may reflect reality more accurately.\n\nOne company does not need one universal policy. **A portfolio can use reorder point for critical items and periodic review for stable or consolidated-purchase items.**\n\nHybrid policies also exist: frequent review with minimum quantities, min-max logic, order-up-to schedules or risk-triggered exceptions. The combination should solve operating constraints rather than display sophistication.\n\nBacktesting should compare policies under the same demand, lead time and economics. Average stock, service level, order frequency, freight and emergency actions reveal the complete trade-off.\n\nThe final question is not which policy is “more modern”. **It is which policy converts available information into an executable decision at the lowest total cost.** Reorder point and periodic review are mechanisms; value appears when their cadence matches the cadence of the business.\n\nAnother practical consideration is supplier and transport consolidation. A theoretically responsive reorder-point policy can become expensive when every trigger creates a separate shipment. **The ordering mechanism should be evaluated together with freight economics, not in isolation.** In some networks, periodic review wins because coordination across SKUs and routes creates more value than the additional responsiveness of continuous review.",
+      "seo_title": "Reorder Point vs Periodic Review",
+      "seo_description": "Reorder point and periodic review compared across cadence, lead time, safety stock, ordering cost and operating constraints.",
+      "seo_keywords": [
+        "reorder point vs periodic review",
+        "replenishment policy",
+        "inventory review system",
+        "order point"
+      ],
+      "tags": [
+        "Inventory",
+        "Replenishment",
+        "Policy Comparison"
+      ]
+    },
+    "ca": {
+      "title": "Punt de comanda vs revisió periòdica",
+      "excerpt": "Totes dues polítiques decideixen quan i quant demanar, però reaccionen de manera diferent a demanda, lead time, costos de comanda i cadència operativa.",
+      "quick": [
+        "ROP reacciona per nivell",
+        "Revisió periòdica reacciona pel calendari",
+        "La cadència canvia el buffer"
+      ],
+      "section_titles": [
+        "Com funciona cada política",
+        "On guanya el punt de comanda",
+        "On guanya la revisió periòdica",
+        "Com triar sense dogmes"
+      ],
+      "business_title": "La política correcta depèn menys de la fórmula i més de com funciona realment la reposició.",
+      "business_steps": [
+        "Cadència operativa",
+        "Risc durant espera",
+        "Política adequada"
+      ],
+      "body": "Punt de comanda i revisió periòdica són dues formes clàssiques de convertir informació d’inventari en ordres. Totes dues poden funcionar bé i totes dues poden fallar fora de context. **La diferència principal és quan es revisa la posició d’inventari i quant temps de risc ha de cobrir el sistema.**\n\nEn una política de reorder point, la posició es monitoritza de manera contínua o molt freqüent i l’ordre s’activa quan es creua un llindar. En revisió periòdica, la posició s’avalua en dates fixades i la quantitat acostuma a portar l’inventari a un nivell objectiu. **La cadència de revisió canvia directament el buffer necessari.**\n\n**Com funciona cada política**\nEl punt de comanda llança una ordre quan la posició d’inventari baixa fins a un nivell dissenyat per cobrir demanda durant lead time més safety stock. Si la informació és freqüent, el sistema pot reaccionar poc després de creuar el llindar.\n\nLa revisió periòdica accepta que entre dues revisions no es prendrà una nova decisió. Per això el nivell objectiu ha de cobrir lead time i el temps fins a la pròxima revisió. **La finestra d’exposició acostuma a ser més gran i pot exigir més buffer.**\n\nEn tots dos casos, la posició correcta inclou stock disponible, trànsit, comandes obertes i demanda compromesa. Mirar només inventari físic pot distorsionar el senyal.\n\n**On guanya el punt de comanda**\nEl reorder point és atractiu quan l’inventari es pot monitoritzar sovint i el cost de llançar ordres no obliga a agrupar-les. Permet reaccionar a canvis de consum sense esperar el següent cicle.\n\nTambé pot reduir buffer perquè la revisió és més contínua. **Com més aviat detectem que baixa la posició, menys incertesa addicional cal cobrir per espera administrativa.**\n\nL’avantatge exigeix dades actualitzades. Un reorder point alimentat per stock amb retard crea falsa capacitat de reacció. També pot augmentar freqüència de comandes i cost transaccional.\n\n**On guanya la revisió periòdica**\nLa revisió periòdica encaixa quan proveïdors treballen amb finestres fixes, diverses referències es compren juntes o el cost administratiu és rellevant. Centralitza decisions i facilita consolidar transport.\n\nTambé simplifica governance perquè el planner revisa la cartera en moments definits. **La política sacrifica certa reacció a canvi de coordinació i eficiència operativa.**\n\nEl cost és l’exposició entre revisions. Si la demanda canvia just després de tancar el cicle, el sistema esperarà fins a la pròxima data llevat que existeixi una excepció. La freqüència ha d’estar alineada amb volatilitat i cost de ruptura.\n\n**Com triar sense dogmes**\nLa decisió pot començar amb quatre preguntes: amb quina freqüència tenim inventari fiable, amb quina freqüència podem ordenar, quant costa cada ordre i quant risc s’acumula durant lead time.\n\nSi les dades són gairebé en temps real, les ordres són flexibles i reaccionar és barat, reorder point pot aprofitar aquesta capacitat. Si compres ha de consolidar o els proveïdors funcionen amb calendaris, revisió periòdica pot representar millor la realitat.\n\nNo cal una sola política per a tota l’empresa. **Una cartera pot barrejar reorder point per referències crítiques i revisió periòdica per articles estables o de compra consolidada.**\n\nTambé hi ha polítiques híbrides: revisió freqüent amb mínims, min-max, order-up-to amb calendari o excepcions activades per risc. La combinació ha de respondre a restriccions reals.\n\nEl backtesting ha de comparar totes dues polítiques amb la mateixa demanda, lead time i economics. Estoc mitjà, servei, freqüència, transport i urgències mostren el trade-off complet.\n\nLa pregunta final no és quina política és “més moderna”. **És quina converteix millor la informació disponible en una decisió executable amb el menor cost total.** Punt de comanda i revisió periòdica són mecanismes; el valor apareix quan la seva cadència coincideix amb la del negoci.\n\nUna altra consideració pràctica és la consolidació amb proveïdor i transport. Un reorder point teòricament reactiu pot ser car si cada trigger crea un enviament separat. **El mecanisme de comanda s’ha d’avaluar juntament amb l’economia del transport, no de manera aïllada.** En algunes xarxes, la revisió periòdica guanya perquè coordinar SKUs i rutes crea més valor que la reactivitat extra de la revisió contínua.",
+      "seo_title": "Punt de comanda vs revisió periòdica",
+      "seo_description": "Comparació entre reorder point i periodic review segons cadència, lead time, buffer, costos de comanda i restriccions operatives.",
+      "seo_keywords": [
+        "reorder point vs periodic review",
+        "punt de comanda",
+        "revisió periòdica inventari",
+        "replenishment policy"
+      ],
+      "tags": [
+        "Inventory",
+        "Replenishment",
+        "Policy Comparison"
+      ]
+    }
+  }
+}

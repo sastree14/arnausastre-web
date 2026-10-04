@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-175",
+  "sequence": 175,
+  "arc_id": "ARC-44",
+  "slug": "why-a-good-credit-model-can-make-bad-lending-decisions",
+  "scheduled_at": "2027-12-07T09:00:00+01:00",
+  "knowledge_area": "risk_decision",
+  "cluster": "Finance, Risk & Pricing",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "failure_modes_mistakes",
+  "angle": "credit score threshold",
+  "primary_keyword": "credit score threshold",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-173",
+    "KB-174",
+    "KB-176"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué un buen modelo puede tomar malas decisiones de crédito",
+      "excerpt": "Un score fuerte puede generar una mala política si el cutoff ignora pérdida esperada, margen, capacidad, calibration o cambios en el portfolio.",
+      "quick": [
+        "Score y policy son capas distintas",
+        "El cutoff incorpora economics",
+        "La política debe monitorizarse"
+      ],
+      "section_titles": [
+        "Un buen ranking puede tener un mal cutoff",
+        "La calibration puede mover la economía",
+        "El portfolio cambia después del deployment",
+        "La policy necesita governance propia"
+      ],
+      "business_title": "Una buena predicción no garantiza una buena decisión de crédito; el valor aparece cuando score, cutoff, pricing y riesgo forman una policy coherente.",
+      "business_steps": [
+        "Score",
+        "Cutoff",
+        "Portfolio outcome"
+      ],
+      "body": "Un modelo puede distinguir muy bien entre clientes con mayor y menor riesgo y, aun así, generar una cartera peor. **La razón es que el score no decide por sí solo; la política convierte ese score en aprobación, rechazo, precio, límite o revisión.**\n\nCuando el cutoff se fija por costumbre, una métrica genérica o un valor heredado, el sistema puede desperdiciar gran parte del valor predictivo. **La calidad de la decisión depende tanto de cómo usamos el modelo como de cómo lo entrenamos.**\n\n**Un buen ranking puede tener un mal cutoff**\nAUC mide ranking a través de muchos thresholds, pero el lender opera en uno o en unos pocos puntos.\n\nUn modelo puede mejorar AUC y no mejorar la policy si el nuevo ranking no cambia de forma útil los casos alrededor del cutoff.\n\n**El cutoff debe elegirse sobre economics y restricciones, no sobre el valor 0,5 ni sobre una convención técnica**.\n\nAprobar una solicitud genera margen esperado, pero también exposición a default, consumo de capital y coste operativo.\n\nRechazar una solicitud mala evita pérdida; rechazar una buena destruye ingreso y puede deteriorar experiencia de cliente.\n\nPor eso el coste de false approval y false decline no es simétrico.\n\nTambién puede existir capacidad limitada para manual review.\n\nUna policy útil puede tener dos thresholds: aprobación automática, zona de revisión y rechazo.\n\n**La calibration puede mover la economía**\nImaginemos que el modelo ordena bien, pero sobreestima sistemáticamente el riesgo.\n\nLa AUC puede seguir igual y, sin embargo, demasiadas solicitudes pueden quedar por encima del cutoff de riesgo.\n\n**Un error de calibration puede convertirse directamente en un error de pricing o de aprobación**.\n\nLo contrario también es peligroso. Subestimar PD puede aumentar volumen a costa de pérdidas inesperadas.\n\nCambios en base rate, macroeconomía o mix de solicitantes pueden descalibrar el modelo sin destruir su ranking.\n\nPor eso expected versus observed debe revisarse por score bands y cohortes.\n\nLa calibration puede necesitar actualización más frecuente que el modelo base.\n\nTambién hay que comprobar si las PD significan lo mismo entre productos y segmentos.\n\nUna probabilidad sin horizonte claro no sirve para una decisión económica consistente.\n\n**El portfolio cambia después del deployment**\nEl modelo altera qué clientes entran en cartera.\n\nSi cambiamos el cutoff, cambia la población aprobada y también la distribución futura de outcomes.\n\n**La policy crea selection effects que deben considerarse al evaluar performance**.\n\nAdemás, las decisiones de hoy modifican los datos con los que entrenaremos mañana.\n\nLos clientes rechazados no generan la misma información de repayment que los aprobados.\n\nEsto complica comparación entre políticas y puede introducir sesgo si se ignora el proceso de selección.\n\nEl entorno también cambia. Tipos de interés, desempleo, competencia y comportamiento de clientes alteran losses y take-up.\n\nUna policy rentable en un periodo puede dejar de serlo sin que el modelo pierda mucha AUC.\n\nEl pricing también afecta selección: clientes de menor riesgo pueden rechazar una oferta cara y clientes de mayor riesgo aceptarla.\n\nEse efecto debe incorporarse cuando sea material.\n\n**La policy necesita governance propia**\nModelo y policy deberían versionarse por separado.\n\nUn cambio de cutoff, precio o límite puede transformar el portfolio aunque los parámetros del modelo sean idénticos.\n\n**La decisión necesita su propio backtesting, monitoring y ownership**.\n\nConviene medir approval rate, bad rate, expected loss, realized loss, margin, take-up y capital consumption.\n\nTambién deben monitorizarse overrides y manual-review outcomes.\n\nStress testing puede simular cómo responde la policy bajo deterioro macroeconómico.\n\nLa sensibilidad del portfolio al cutoff ayuda a entender si estamos en una zona estable o frágil.\n\nUna pequeña variación que cambia miles de decisiones exige más control.\n\nLos segmentos deberían revisarse para evitar que una policy global produzca economics muy distintos.\n\nLas reglas duras también necesitan trazabilidad: límites regulatorios, exclusiones, affordability o documentación mínima.\n\nEl proceso de change management debe definir quién puede modificar cutoffs y bajo qué evidencia.\n\nLos experimentos pueden ayudar cuando son viables y compatibles con las restricciones del negocio.\n\nChampion y challenger deberían compararse en términos de policy outcomes, no solo métricas offline.\n\nTambién conviene mantener un baseline simple para saber si la complejidad sigue aportando valor.\n\nLos reason codes deben reflejar la decisión real y no convertirse en una explicación decorativa.\n\nFinalmente, el sistema necesita una regla de revisión. Si cambia la calibration, el mix o los economics, la policy debe poder ajustarse sin esperar necesariamente a un retraining completo.\n\n**Un buen modelo puede tomar malas decisiones cuando se utiliza con una mala política.** El objetivo de credit scoring no es producir un score elegante, sino construir una decisión que equilibre crecimiento, pérdida, margen y riesgo de forma sostenible.",
+      "seo_title": "Por qué un buen credit score puede tomar malas decisiones",
+      "seo_description": "Cómo un mal cutoff puede arruinar un buen modelo de crédito al ignorar calibration, expected loss, approval rate, pricing y cambios de portfolio.",
+      "seo_keywords": [
+        "credit score threshold",
+        "credit cutoff",
+        "credit scoring policy",
+        "credit risk decision"
+      ],
+      "tags": [
+        "Credit Risk",
+        "Threshold",
+        "Credit Policy"
+      ]
+    },
+    "en": {
+      "title": "Why a good credit model can make bad lending decisions",
+      "excerpt": "A strong score can produce a weak policy when the cutoff ignores expected loss, margin, capacity, calibration or portfolio change.",
+      "quick": [
+        "Score and policy are different layers",
+        "Cutoff embeds economics",
+        "Policy needs monitoring"
+      ],
+      "section_titles": [
+        "A strong ranking can have a poor cutoff",
+        "Calibration can change the economics",
+        "The portfolio changes after deployment",
+        "Policy needs its own governance"
+      ],
+      "business_title": "A strong prediction does not guarantee a strong lending decision; value appears when score, cutoff, pricing and risk form one coherent policy.",
+      "business_steps": [
+        "Score",
+        "Cutoff",
+        "Portfolio outcome"
+      ],
+      "body": "A model can distinguish high-risk and low-risk borrowers very well and still create a worse loan portfolio. **The reason is that the score does not decide by itself; policy turns the score into approval, decline, pricing, limit or review.**\n\nWhen the cutoff is chosen by habit, a generic metric or an inherited value, much of the predictive value can be lost. **Decision quality depends as much on how the model is used as on how it was trained.**\n\n**A strong ranking can have a poor cutoff**\nAUC measures ranking across many thresholds, but the lender operates at one or a few points.\n\nA model can improve AUC without improving policy if the new ranking does not change the economically relevant cases around the cutoff.\n\n**The cutoff should be chosen from economics and constraints, not from 0.5 or another technical convention**.\n\nApproving an application creates expected margin but also default exposure, capital consumption and operating cost.\n\nDeclining a bad application avoids loss; declining a good one destroys revenue and may damage customer experience.\n\nFalse approval and false decline therefore carry asymmetric costs.\n\nManual-review capacity can also be limited.\n\nA useful policy may use two thresholds: auto-approve, review zone and decline.\n\n**Calibration can change the economics**\nImagine the model ranks borrowers well but systematically overstates risk.\n\nAUC may remain unchanged while too many applications move above the risk cutoff.\n\n**A calibration error can become a pricing or approval error directly**.\n\nUnderestimating PD is equally dangerous because volume can grow at the expense of unexpected loss.\n\nBase-rate shifts, macro conditions and applicant mix can change calibration without destroying ranking.\n\nExpected-versus-observed performance should therefore be reviewed by score band and cohort.\n\nCalibration may need updating more often than the ranking model.\n\nIt is also important to verify that PDs have consistent meaning across products and segments.\n\nA probability with no explicit horizon cannot support consistent economic decisions.\n\n**The portfolio changes after deployment**\nThe model changes who enters the portfolio.\n\nIf the cutoff changes, the approved population changes, which alters the future outcome distribution.\n\n**Policy creates selection effects that must be considered when performance is evaluated**.\n\nToday's lending decisions also affect tomorrow's training data.\n\nRejected applicants do not generate the same repayment outcomes as approved borrowers.\n\nThat complicates policy comparison and can introduce bias when the selection mechanism is ignored.\n\nThe environment moves too. Rates, unemployment, competition and customer behaviour change losses and take-up.\n\nA policy that was profitable in one period can become weaker even if model AUC barely moves.\n\nPricing can also affect selection: lower-risk customers may reject an expensive offer while higher-risk customers accept it.\n\nThat effect should be included when material.\n\n**Policy needs its own governance**\nModel and policy should be versioned separately.\n\nA cutoff, price or limit change can transform the portfolio while model parameters remain identical.\n\n**The decision policy needs its own backtesting, monitoring and ownership**.\n\nTrack approval rate, bad rate, expected loss, realized loss, margin, take-up and capital consumption.\n\nHuman overrides and manual-review outcomes should be monitored too.\n\nStress tests can simulate policy behaviour under macro deterioration.\n\nPortfolio sensitivity to cutoff is useful for identifying stable and fragile operating regions.\n\nA small threshold movement that changes thousands of decisions deserves stronger control.\n\nSegments should be reviewed so that one global policy does not create materially different economics.\n\nHard rules also need traceability: regulatory limits, exclusions, affordability or minimum documentation.\n\nChange management should define who may modify cutoffs and what evidence is required.\n\nExperiments can help where feasible and compatible with lending constraints.\n\nChampion and challenger comparisons should focus on policy outcomes rather than only offline metrics.\n\nA simple baseline is useful for checking whether complexity continues to add value.\n\nReason codes should reflect the real decision rather than becoming decorative explanation.\n\nFinally, the system needs a review rule. If calibration, mix or economics change, policy should be adjustable without always waiting for a full model retrain.\n\n**A good model can make bad lending decisions when it is wrapped in a poor policy.** Credit scoring succeeds when it creates a sustainable balance between growth, loss, margin and risk rather than merely producing an elegant score.",
+      "seo_title": "Why a Good Credit Score Can Make Bad Decisions",
+      "seo_description": "How the wrong credit cutoff can undermine a strong model by ignoring calibration, expected loss, approval rate, pricing and portfolio change.",
+      "seo_keywords": [
+        "credit score threshold",
+        "credit cutoff",
+        "credit scoring policy",
+        "credit risk decision"
+      ],
+      "tags": [
+        "Credit Risk",
+        "Threshold",
+        "Credit Policy"
+      ]
+    },
+    "ca": {
+      "title": "Per què un bon model pot prendre males decisions de crèdit",
+      "excerpt": "Un score fort pot generar una mala policy si el cutoff ignora expected loss, marge, capacitat, calibration o canvis al portfolio.",
+      "quick": [
+        "Score i policy són capes diferents",
+        "El cutoff incorpora economics",
+        "La policy necessita monitoring"
+      ],
+      "section_titles": [
+        "Un bon ranking pot tenir un mal cutoff",
+        "Calibration pot moure els economics",
+        "El portfolio canvia després del deployment",
+        "La policy necessita governance pròpia"
+      ],
+      "business_title": "Una bona predicció no garanteix una bona decisió de crèdit; el valor apareix quan score, cutoff, pricing i risc formen una policy coherent.",
+      "business_steps": [
+        "Score",
+        "Cutoff",
+        "Portfolio outcome"
+      ],
+      "body": "Un model pot distingir molt bé entre clients de risc alt i baix i, tot i així, generar una cartera pitjor. **La raó és que el score no decideix per si sol; la policy converteix el score en aprovació, rebuig, pricing, límit o revisió.**\n\nQuan el cutoff es fixa per costum, una mètrica genèrica o un valor heretat, podem perdre gran part del valor predictiu. **La qualitat de la decisió depèn tant de com utilitzem el model com de com l’hem entrenat.**\n\n**Un bon ranking pot tenir un mal cutoff**\nAUC mesura ranking a través de molts thresholds, però el lender opera en un o pocs punts.\n\nUn model pot millorar AUC i no millorar la policy si el nou ranking no canvia de forma útil els casos al voltant del cutoff.\n\n**El cutoff s’ha de triar segons economics i restriccions, no pel 0,5 o una convenció tècnica**.\n\nAprovar una sol·licitud genera marge esperat, però també exposició a default, consum de capital i cost operatiu.\n\nRebutjar una sol·licitud dolenta evita pèrdua; rebutjar-ne una de bona elimina ingrés i pot empitjorar experiència de client.\n\nFalse approval i false decline tenen costos asimètrics.\n\nTambé pot existir capacitat limitada per manual review.\n\nUna policy útil pot tenir dos thresholds: auto-approve, zona de revisió i rebuig.\n\n**Calibration pot moure els economics**\nImaginem que el model ordena bé però sobreestima sistemàticament el risc.\n\nAUC pot continuar igual mentre massa sol·licituds queden per sobre del cutoff.\n\n**Un error de calibration pot convertir-se directament en un error de pricing o aprovació**.\n\nSubestimar PD és igualment perillós perquè pot augmentar volum a costa de pèrdues inesperades.\n\nCanvis de base rate, macro o mix de sol·licitants poden descalibrar el model sense destruir ranking.\n\nPer això expected versus observed s’ha de revisar per score bands i cohorts.\n\nLa calibration pot necessitar actualització més freqüent que el model base.\n\nTambé cal comprovar si les PD tenen significat consistent entre productes i segments.\n\nUna probabilitat sense horitzó explícit no permet decisions econòmiques coherents.\n\n**El portfolio canvia després del deployment**\nEl model modifica qui entra en cartera.\n\nSi canviem cutoff, canvia la població aprovada i la distribució futura d’outcomes.\n\n**La policy crea selection effects que s’han de considerar quan avaluem performance**.\n\nLes decisions d’avui també modifiquen les dades d’entrenament de demà.\n\nEls rebutjats no generen els mateixos outcomes de repayment que els aprovats.\n\nAixò complica comparar policies i pot introduir biaix si ignorem el mecanisme de selecció.\n\nL’entorn també canvia. Tipus, atur, competència i comportament modifiquen losses i take-up.\n\nUna policy rendible en un període pot deixar de ser-ho encara que AUC canviï poc.\n\nPricing també afecta selecció: clients de risc baix poden rebutjar una oferta cara i clients de risc més alt acceptar-la.\n\nAquest efecte s’ha d’incorporar quan sigui material.\n\n**La policy necessita governance pròpia**\nModel i policy s’haurien de versionar per separat.\n\nCanviar cutoff, preu o límit pot transformar el portfolio encara que el model sigui idèntic.\n\n**La decisió necessita el seu propi backtesting, monitoring i ownership**.\n\nCal seguir approval rate, bad rate, expected loss, realized loss, marge, take-up i capital consumption.\n\nTambé s’han de monitoritzar overrides i outcomes de manual review.\n\nStress testing pot simular com respon la policy sota deteriorament macro.\n\nLa sensibilitat del portfolio al cutoff ajuda a identificar zones estables o fràgils.\n\nUna petita variació que canvia milers de decisions exigeix més control.\n\nEls segments s’han de revisar perquè una policy global pot generar economics molt diferents.\n\nLes regles dures també necessiten traçabilitat: límits regulatoris, exclusions, affordability o documentació mínima.\n\nChange management ha de definir qui pot modificar cutoffs i amb quina evidència.\n\nEls experiments poden ajudar quan són viables.\n\nChampion i challenger s’han de comparar per policy outcomes, no només mètriques offline.\n\nUn baseline simple ajuda a saber si la complexitat continua aportant valor.\n\nEls reason codes han de reflectir la decisió real i no ser explicació decorativa.\n\nFinalment, el sistema necessita una regla de revisió. Si canvien calibration, mix o economics, la policy s’ha de poder ajustar sense esperar necessàriament un retraining complet.\n\n**Un bon model pot prendre males decisions quan s’utilitza amb una mala policy.** Credit scoring funciona quan equilibra creixement, pèrdua, marge i risc de manera sostenible, no simplement quan produeix un score elegant.",
+      "seo_title": "Per què un bon credit score pot prendre males decisions",
+      "seo_description": "Com un mal cutoff pot arruïnar un bon model de crèdit si ignora calibration, expected loss, approval rate, pricing i canvis de portfolio.",
+      "seo_keywords": [
+        "credit score threshold",
+        "credit cutoff",
+        "credit scoring policy",
+        "credit risk decision"
+      ],
+      "tags": [
+        "Credit Risk",
+        "Threshold",
+        "Credit Policy"
+      ]
+    }
+  }
+}

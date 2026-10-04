@@ -219,3 +219,39 @@ Canonical documentation:
 - `growth/brain/content/visual_engine.md`
 
 Do not embed pixel rules or style implementation inside the Canonical Content Object or channel contract.
+
+
+## First-impression commercial rule
+
+Public editorial outputs must earn attention before explaining the method.
+
+For LinkedIn, website projects and marketplace projects, the first visible layer should make at least one of these concrete:
+- a buyer problem;
+- a business consequence;
+- a verified result;
+- a decision that changes;
+- a clearly labelled illustrative economic scenario.
+
+Do not lead with model names, frameworks, APIs or implementation architecture unless the target audience explicitly requires it.
+
+### Quantification policy
+
+Use numbers only according to evidence class:
+
+- measured client result → may be stated as impact when verified and approved;
+- documented project KPI → may be stated as project evidence;
+- illustrative scenario → may use explicit assumptions and arithmetic, but must be labelled illustrative;
+- unsupported number → prohibited.
+
+This rule applies equally to LinkedIn hooks. A post may use a clearly labelled scenario such as “On a €2M inventory position, 5% less excess stock would release €100k” to explain business economics, but it must never imply that SC-Analytics achieved that result for a client unless evidence permits the claim.
+
+The preferred opening logic is:
+
+```text
+Concrete buyer problem / economic consequence
+→ why current decision logic fails
+→ SC-Analytics judgement
+→ solution or visual mechanism
+→ proof / evidence mode
+→ next step
+```

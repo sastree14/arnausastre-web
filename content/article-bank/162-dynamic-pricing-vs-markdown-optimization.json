@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-162",
+  "sequence": 162,
+  "arc_id": "ARC-41",
+  "slug": "dynamic-pricing-vs-markdown-optimization",
+  "scheduled_at": "2027-11-05T09:00:00+01:00",
+  "knowledge_area": "finance",
+  "cluster": "Finance, Risk & Pricing",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "compare",
+  "angle": "pricing approach comparison",
+  "primary_keyword": "dynamic pricing vs markdown optimization",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-161",
+    "KB-163",
+    "KB-164"
+  ],
+  "variants": {
+    "es": {
+      "title": "Dynamic pricing vs optimización de markdown",
+      "excerpt": "Dynamic pricing ajusta precio de forma continua ante cambios de demanda; markdown optimization gestiona liquidación de inventario finito a lo largo del tiempo. No resuelven el mismo problema.",
+      "quick": [
+        "Dynamic pricing responde al mercado",
+        "Markdown gestiona inventario finito",
+        "El horizonte cambia la función objetivo"
+      ],
+      "section_titles": [
+        "Dynamic pricing optimiza una respuesta continua",
+        "Markdown optimization gestiona una carrera contra el tiempo",
+        "Inventario y horizonte separan ambos problemas",
+        "La elección depende de la decisión comercial"
+      ],
+      "business_title": "Dynamic pricing y markdown optimization son problemas distintos porque el segundo incorpora explícitamente inventario finito, horizonte y coste de quedarse con stock.",
+      "business_steps": [
+        "Demanda cambiante",
+        "Inventario restante",
+        "Horizonte de venta"
+      ],
+      "body": "Dynamic pricing y markdown optimization suelen agruparse bajo “pricing optimization”, pero **la estructura económica de ambos problemas es distinta**. Dynamic pricing decide cómo ajustar precios a medida que cambia demanda, competencia o capacidad. Markdown optimization decide cómo liquidar un inventario finito antes de que pierda valor o termine la temporada.\n\nLa diferencia parece semántica hasta que construimos el modelo. **En markdown, vender una unidad hoy cambia cuántas unidades quedan para mañana y el tiempo restante tiene valor económico explícito.**\n\n**Dynamic pricing optimiza una respuesta continua**\nDynamic pricing aparece cuando el precio puede revisarse con frecuencia y el negocio observa cambios rápidos de demanda o contexto.\n\nEs habitual en movilidad, hospitality, marketplaces, tickets, delivery, e-commerce o servicios con capacidad limitada.\n\nEl sistema puede reaccionar a ocupación, competencia, hora, eventos, demanda prevista y elasticidad.\n\n**El objetivo suele ser ajustar la** relación entre precio y demanda mientras el mercado evoluciona.\nEso puede incluir revenue, margin, utilization o contribution.\n\nLa frecuencia de cambio depende del negocio. “Dynamic” no significa necesariamente cada minuto; puede ser diario, semanal o por evento.\n\nTambién necesita guardrails. Límites de variación, coherencia entre canales, reglas comerciales y percepción del cliente pueden restringir el óptimo matemático.\n\n**Markdown optimization gestiona una carrera contra el tiempo**\nMarkdown aparece en moda, retail estacional, perecederos o cualquier producto cuyo valor cae con el tiempo.\n\nAquí existe una cantidad finita de stock y una fecha o fase donde quedarnos con inventario tiene coste.\n\n**La decisión no es solo qué** precio maximiza demanda hoy, sino cuánto inventario queremos reservar para vender más adelante.\nBajar demasiado pronto puede destruir margen. Esperar demasiado puede terminar en descuentos extremos o stock residual.\n\nEl modelo debe balancear sell-through y margen a través de un horizonte.\n\nPor eso el estado del sistema importa: unidades restantes, semanas restantes, demanda futura y posibles reposiciones.\n\nIncluso con la misma elasticidad, dos tiendas con inventario distinto deberían tomar decisiones diferentes.\n\n**Inventario y horizonte separan ambos problemas**\nDynamic pricing puede trabajar en entornos donde la capacidad se renueva cada periodo: una habitación de hotel de mañana no puede venderse pasado mañana, pero existe nueva capacidad cada día.\n\nMarkdown trabaja típicamente con stock acumulado que se consume y no se repone dentro del horizonte.\n\n**El shadow price del inventario cambia** a medida que se acerca el final de temporada.\nAl principio puede valer la pena proteger margen. Cerca del final, vender una unidad adicional puede ser más valioso que mantener precio.\n\nLa incertidumbre de demanda también afecta. Si esperamos una semana fuerte, podemos retrasar markdown; si la demanda se deteriora, adelantamos.\n\nLa reposición cambia completamente el problema. Si hay replenishment frecuente, la lógica se acerca más a pricing-inventory conjunto.\n\nTambién importan sustitutos. Rebajar un SKU puede canibalizar otros o liberar espacio para nueva colección.\n\n**La elección depende de la decisión comercial**\nLa pregunta inicial debería ser qué activo estamos gestionando.\n\nSi el recurso principal es capacidad que cambia rápidamente y necesitamos reaccionar al mercado, dynamic pricing puede ser el framing adecuado.\n\nSi tenemos inventario finito y un deadline económico, markdown optimization representa mejor la decisión.\n\n**Elegir el framing correcto evita optimizar** una métrica local que perjudica el resultado del horizonte completo.\nUn sistema de markdown evaluado solo por revenue diario puede recomendar descuentos demasiado agresivos.\n\nUn sistema dynamic evaluado solo por margen unitario puede dejar capacidad sin vender.\n\nPor eso la función objetivo debe incorporar economics reales.\n\nTambién conviene modelar restricciones de precio: pasos permitidos, frecuencia de cambios, MAP, coherencia de marca y stock mínimo.\n\nLa estimación de demanda debe reflejar censura por stockout. No podemos interpretar cero ventas como cero demanda si no había inventario.\n\nLos experimentos ayudan a estimar elasticidad, pero en markdown son más difíciles porque cada temporada es finita.\n\nSe pueden utilizar modelos jerárquicos y pooling entre productos para compartir información.\n\nLa simulación es útil para evaluar políticas antes de desplegar.\n\nTambién se puede combinar forecasting con dynamic programming, optimization o heuristics según complejidad.\n\nLa frecuencia de decisión debe ser proporcional a la velocidad del negocio. Actualizar cada hora no aporta nada si la demanda y operación solo cambian semanalmente.\n\nLa adopción comercial también importa. Buyers y pricing managers necesitan entender por qué cambia la recomendación.\n\nConviene mostrar drivers: demanda, stock restante, semanas a fin de temporada y expected sell-through.\n\nLos override deben registrarse para mejorar el sistema.\n\nFinalmente, la mejor solución puede combinar ambos enfoques: pricing dinámico durante la temporada y markdown policy cuando entra la fase de liquidación.\n\n**Dynamic pricing responde a un mercado que cambia; markdown optimization gestiona inventario que se agota dentro de un horizonte.** Tratar ambos como el mismo problema puede producir un precio “óptimo” para hoy y una decisión mediocre para el negocio completo.",
+      "seo_title": "Dynamic pricing vs markdown optimization",
+      "seo_description": "Diferencias entre dynamic pricing y markdown optimization según inventario, horizonte, demanda, sell-through y función objetivo.",
+      "seo_keywords": [
+        "dynamic pricing vs markdown optimization",
+        "markdown optimization",
+        "dynamic pricing",
+        "pricing optimization"
+      ],
+      "tags": [
+        "Pricing",
+        "Markdown Optimization",
+        "Revenue Management"
+      ]
+    },
+    "en": {
+      "title": "Dynamic pricing vs markdown optimization",
+      "excerpt": "Dynamic pricing adjusts prices as demand changes; markdown optimization manages finite inventory through a selling horizon. They solve different economic problems.",
+      "quick": [
+        "Dynamic pricing responds to the market",
+        "Markdown manages finite inventory",
+        "The horizon changes the objective"
+      ],
+      "section_titles": [
+        "Dynamic pricing optimizes a continuous response",
+        "Markdown optimization manages a race against time",
+        "Inventory and horizon separate the problems",
+        "The choice depends on the commercial decision"
+      ],
+      "business_title": "Dynamic pricing and markdown optimization are different problems because markdown explicitly includes finite inventory, time horizon and the cost of leftover stock.",
+      "business_steps": [
+        "Changing demand",
+        "Remaining inventory",
+        "Selling horizon"
+      ],
+      "body": "Dynamic pricing and markdown optimization are often grouped under “pricing optimization”, but **their economic structures are different**. Dynamic pricing decides how prices should react as demand, competition or capacity changes. Markdown optimization decides how to sell finite inventory before it loses value or the season ends.\n\nThe distinction looks semantic until the model is built. **In markdown, selling one unit today changes the inventory available tomorrow, and remaining time has explicit economic value.**\n\n**Dynamic pricing optimizes a continuous response**\nDynamic pricing is useful when prices can be revised frequently and the business observes fast changes in demand or context.\n\nIt appears in mobility, hospitality, marketplaces, tickets, delivery, e-commerce and services with constrained capacity.\n\nThe system may react to occupancy, competitors, time, events, forecast demand and elasticity.\n\n**The objective is usually to** adjust the price-demand relationship as the market evolves.\nThat can mean revenue, margin, utilization or contribution.\n\nChange frequency depends on the business. Dynamic does not necessarily mean every minute; it can mean daily, weekly or event-driven.\n\nGuardrails matter too. Price limits, channel consistency, commercial rules and customer perception can constrain the mathematical optimum.\n\n**Markdown optimization manages a race against time**\nMarkdown is common in fashion, seasonal retail, perishables and products whose value declines with time.\n\nThere is a finite amount of stock and a date or phase after which leftover inventory becomes costly.\n\n**The decision is not simply which** price maximizes demand today, but how much inventory should be preserved for later selling periods.\nDiscounting too early destroys margin. Waiting too long can lead to extreme discounts or residual stock.\n\nThe model therefore balances sell-through and margin across a horizon.\n\nSystem state matters: remaining units, remaining weeks, future demand and replenishment expectations.\n\nEven with identical elasticity, two stores with different inventory positions should make different decisions.\n\n**Inventory and horizon separate the problems**\nDynamic pricing can operate where capacity renews every period: tomorrow’s hotel room cannot be sold later, but new capacity appears each day.\n\nMarkdown usually deals with accumulated stock that is consumed and not replenished within the horizon.\n\n**The shadow value of inventory** changes as the end of the season approaches.\nEarly in the horizon, protecting margin may be sensible. Near the end, selling one extra unit can be more valuable than maintaining price.\n\nDemand uncertainty matters too. Strong expected future demand can justify waiting; deterioration can justify earlier markdown.\n\nReplenishment changes the structure. With frequent replenishment, the problem moves closer to joint pricing and inventory optimization.\n\nSubstitution matters as well. Discounting one SKU may cannibalize another or free space for a new collection.\n\n**The choice depends on the commercial decision**\nThe first question should be which economic asset is being managed.\n\nIf the main resource is capacity that changes quickly and the business needs to react to market conditions, dynamic pricing may be the right framing.\n\nIf the business owns finite inventory with an economic deadline, markdown optimization represents the decision more accurately.\n\n**Choosing the right framing prevents** a locally optimal metric from damaging the full-horizon outcome.\nA markdown system evaluated only on daily revenue may recommend discounts too early.\n\nA dynamic system evaluated only on unit margin may leave valuable capacity unused.\n\nThe objective therefore needs real economics.\n\nPrice constraints should also be modeled: permitted steps, change frequency, minimum advertised price, brand consistency and minimum stock.\n\nDemand estimation needs to handle stockout censoring. Zero sales do not mean zero demand when no inventory was available.\n\nExperiments help estimate elasticity, although markdown experiments are harder because every season is finite.\n\nHierarchical models and pooling across products can share information where individual SKUs have little history.\n\nSimulation can evaluate policies before deployment.\n\nForecasting can be combined with dynamic programming, optimization or heuristics depending on scale.\n\nDecision frequency should match business speed. Hourly updates add little when demand and operations move weekly.\n\nCommercial adoption matters as well. Buyers and pricing managers need to understand why a recommendation changed.\n\nUseful explanations include demand, remaining stock, weeks to season end and expected sell-through.\n\nOverrides should be captured for learning.\n\nA mature system may combine approaches: dynamic pricing through the main season and markdown policy during clearance.\n\n**Dynamic pricing responds to a changing market; markdown optimization manages inventory that disappears through a finite horizon.** Treating them as one problem can generate a price that looks optimal today and performs poorly across the commercial lifecycle.",
+      "seo_title": "Dynamic Pricing vs Markdown Optimization",
+      "seo_description": "How dynamic pricing and markdown optimization differ across inventory, horizon, demand, sell-through and objective design.",
+      "seo_keywords": [
+        "dynamic pricing vs markdown optimization",
+        "markdown optimization",
+        "dynamic pricing",
+        "pricing optimization"
+      ],
+      "tags": [
+        "Pricing",
+        "Markdown Optimization",
+        "Revenue Management"
+      ]
+    },
+    "ca": {
+      "title": "Dynamic pricing vs optimització de markdown",
+      "excerpt": "Dynamic pricing ajusta preu davant canvis de demanda; markdown optimization gestiona inventari finit al llarg d’un horitzó de venda. No resolen el mateix problema.",
+      "quick": [
+        "Dynamic pricing respon al mercat",
+        "Markdown gestiona inventari finit",
+        "L’horitzó canvia l’objectiu"
+      ],
+      "section_titles": [
+        "Dynamic pricing optimitza una resposta contínua",
+        "Markdown optimization gestiona una cursa contra el temps",
+        "Inventari i horitzó separen els problemes",
+        "La tria depèn de la decisió comercial"
+      ],
+      "business_title": "Dynamic pricing i markdown optimization són problemes diferents perquè markdown incorpora inventari finit, horitzó i cost de stock residual.",
+      "business_steps": [
+        "Demanda canviant",
+        "Inventari restant",
+        "Horitzó de venda"
+      ],
+      "body": "Dynamic pricing i markdown optimization sovint s’agrupen sota “pricing optimization”, però **l’estructura econòmica dels dos problemes és diferent**. Dynamic pricing decideix com ajustar preus quan canvien demanda, competència o capacitat. Markdown optimization decideix com liquidar inventari finit abans que perdi valor o acabi la temporada.\n\nLa diferència sembla semàntica fins que construïm el model. **En markdown, vendre una unitat avui canvia quantes unitats queden per demà i el temps restant té valor econòmic explícit.**\n\n**Dynamic pricing optimitza una resposta contínua**\nDynamic pricing apareix quan el preu es pot revisar freqüentment i el negoci observa canvis ràpids de demanda o context.\n\nÉs habitual en mobilitat, hospitality, marketplaces, tickets, delivery, e-commerce o serveis amb capacitat limitada.\n\nEl sistema pot reaccionar a ocupació, competència, hora, events, demanda prevista i elasticitat.\n\n**L’objectiu acostuma a ser ajustar la** relació entre preu i demanda mentre el mercat evoluciona.\nAixò pot incloure revenue, margin, utilization o contribution.\n\nLa freqüència de canvi depèn del negoci. Dynamic no vol dir necessàriament cada minut; pot ser diari, setmanal o per event.\n\nTambé necessita guardrails. Límits de variació, coherència entre canals, regles comercials i percepció del client poden restringir l’òptim matemàtic.\n\n**Markdown optimization gestiona una cursa contra el temps**\nMarkdown apareix en moda, retail estacional, peribles o productes que perden valor amb el temps.\n\nExisteix una quantitat finita de stock i una data o fase on quedar-se amb inventari té cost.\n\n**La decisió no és només quin** preu maximitza demanda avui, sinó quant inventari volem reservar per vendre més endavant.\nBaixar massa aviat pot destruir marge. Esperar massa pot acabar en descomptes extrems o stock residual.\n\nEl model ha de balancejar sell-through i marge al llarg d’un horitzó.\n\nL’estat del sistema importa: unitats restants, setmanes restants, demanda futura i possibles reposicions.\n\nFins i tot amb la mateixa elasticitat, dues botigues amb inventari diferent haurien de decidir diferent.\n\n**Inventari i horitzó separen els problemes**\nDynamic pricing pot treballar en entorns on la capacitat es renova cada període: l’habitació de demà no es pot vendre passat demà, però apareix nova capacitat cada dia.\n\nMarkdown acostuma a gestionar stock acumulat que es consumeix i no es reposa dins de l’horitzó.\n\n**El shadow value de** l’inventari canvia quan s’acosta el final de temporada.\nAl principi pot convenir protegir marge. Prop del final, vendre una unitat addicional pot ser més valuós que mantenir preu.\n\nLa incertesa de demanda també afecta. Si esperem una setmana forta, podem esperar; si la demanda empitjora, avancem markdown.\n\nLa reposició canvia l’estructura. Amb replenishment freqüent, el problema s’apropa al pricing-inventory conjunt.\n\nTambé importen substituts. Rebaixar un SKU pot canibalitzar-ne un altre o alliberar espai per nova col·lecció.\n\n**La tria depèn de la decisió comercial**\nLa primera pregunta hauria de ser quin actiu econòmic estem gestionant.\n\nSi el recurs principal és capacitat que canvia ràpidament i necessitem reaccionar al mercat, dynamic pricing pot ser el framing correcte.\n\nSi tenim inventari finit amb un deadline econòmic, markdown optimization representa millor la decisió.\n\n**Escollir el framing correcte evita optimitzar** una mètrica local que perjudica el resultat de tot l’horitzó.\nUn sistema de markdown avaluat només per revenue diari pot recomanar descomptes massa agressius.\n\nUn sistema dynamic avaluat només per marge unitari pot deixar capacitat sense vendre.\n\nPer això la funció objectiu ha d’incorporar economics reals.\n\nTambé convé modelar restriccions: passos de preu, freqüència, MAP, coherència de marca i stock mínim.\n\nL’estimació de demanda ha de tractar censura per stockout. Zero vendes no significa zero demanda si no hi havia inventari.\n\nEls experiments ajuden a estimar elasticitat, però en markdown són més difícils perquè cada temporada és finita.\n\nModels jeràrquics i pooling entre productes poden compartir informació.\n\nLa simulació és útil per avaluar polítiques abans del deployment.\n\nForecasting es pot combinar amb dynamic programming, optimization o heuristics segons escala.\n\nLa freqüència de decisió ha de ser proporcional a la velocitat del negoci.\n\nL’adopció comercial també importa. Buyers i pricing managers han d’entendre per què canvia la recomanació.\n\nDrivers útils són demanda, stock restant, setmanes a fi de temporada i expected sell-through.\n\nEls overrides s’han de registrar.\n\nUna solució madura pot combinar els dos enfocaments: dynamic pricing durant temporada i markdown policy en liquidació.\n\n**Dynamic pricing respon a un mercat que canvia; markdown optimization gestiona inventari que s’esgota dins d’un horitzó finit.** Tractar-los com el mateix problema pot donar un preu “òptim” avui i una decisió mediocre per tot el cicle comercial.",
+      "seo_title": "Dynamic pricing vs optimització de markdown",
+      "seo_description": "Diferències entre dynamic pricing i markdown optimization segons inventari, horitzó, demanda, sell-through i funció objectiu.",
+      "seo_keywords": [
+        "dynamic pricing vs markdown optimization",
+        "markdown optimization",
+        "dynamic pricing",
+        "pricing optimization"
+      ],
+      "tags": [
+        "Pricing",
+        "Markdown Optimization",
+        "Revenue Management"
+      ]
+    }
+  }
+}

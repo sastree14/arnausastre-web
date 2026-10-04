@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-159",
+  "sequence": 159,
+  "arc_id": "ARC-40",
+  "slug": "why-a-fast-analytical-database-can-still-be-the-wrong-choice",
+  "scheduled_at": "2027-10-29T09:00:00+02:00",
+  "knowledge_area": "analytics",
+  "cluster": "Cloud & Platforms",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "point_of_view_contrarian",
+  "angle": "clickhouse limitations",
+  "primary_keyword": "clickhouse limitations",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-157",
+    "KB-158",
+    "KB-160"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué una base analítica rápida puede ser la elección equivocada",
+      "excerpt": "Una base OLAP especializada puede ser brillante en benchmarks y mala para el negocio si añade una segunda plataforma, duplica datos o resuelve una latencia que no importaba.",
+      "quick": [
+        "Velocidad no siempre crea valor",
+        "Otra base aumenta ownership",
+        "El workload debe justificar especialización"
+      ],
+      "section_titles": [
+        "La latencia puede no ser el problema real",
+        "La especialización añade una segunda operación",
+        "Los patrones de escritura pueden no encajar",
+        "La decisión debe justificar el coste de especializar"
+      ],
+      "business_title": "Una base analítica rápida es la elección correcta solo cuando la reducción de latencia y coste de consulta compensa de forma material la complejidad añadida.",
+      "business_steps": [
+        "Problema real",
+        "Coste adicional",
+        "Valor neto"
+      ],
+      "body": "Las bases analíticas especializadas son fáciles de justificar con benchmarks. Una consulta que tarda cuarenta segundos puede caer a uno; una agregación sobre cientos de millones de filas puede volverse interactiva. Pero **una mejora técnica espectacular puede seguir siendo una mala inversión si el negocio no necesitaba esa velocidad o si la nueva plataforma añade demasiado ownership.**\n\nClickHouse y otros motores OLAP tienen un lugar claro, pero el error aparece cuando la arquitectura se decide desde el benchmark y no desde la decisión. **Performance sin una restricción de negocio concreta puede convertirse en complejidad elegante pero innecesaria.**\n\n**La latencia puede no ser el problema real**\nUn dashboard lento puede tener muchas causas.\n\nPuede existir una query mal escrita, un índice ausente, una transformación duplicada o un modelo semántico deficiente.\n\nTambién puede ocurrir que el usuario solo consulte ese informe una vez al día y diez segundos de latencia no cambien ninguna decisión.\n\n**Antes de cambiar de motor, hay** que demostrar que la latencia actual tiene coste real.\nSi los usuarios abandonan el dashboard, si una operación necesita reaccionar antes o si el tiempo de consulta impide exploración, el problema es material.\n\nSi simplemente queremos que todo “se sienta más rápido”, el caso económico puede ser débil.\n\nTambién conviene optimizar el sistema actual primero. Particionamiento, índices, caching, materialized views o un mejor modelo de datos pueden resolver suficiente.\n\nLa arquitectura nueva debería competir contra una versión razonablemente optimizada del baseline.\n\n**La especialización añade una segunda operación**\nIntroducir ClickHouse junto a PostgreSQL, Snowflake o un warehouse existente significa operar otra plataforma.\n\nHay que mover datos, monitorizar freshness, gestionar permisos, mantener schemas y explicar qué sistema contiene qué versión.\n\n**Cada motor nuevo crea** una frontera operativa y esa frontera tiene coste.\nCDC puede fallar, los datos pueden llegar tarde y los equipos pueden confundir el source of truth.\n\nTambién aparecen nuevas decisiones de backup, retention, scaling y observabilidad.\n\nEl equipo necesita skills específicas para modelar y depurar el nuevo motor.\n\nSi la organización ya tiene poca capacidad de plataforma, una segunda base puede empeorar fiabilidad aunque mejore query latency.\n\nLa duplicación de datos tampoco es gratis en governance: lineage, acceso y borrado deben mantenerse consistentes.\n\n**Los patrones de escritura pueden no encajar**\nUna base columnar optimizada para analytics no tiene por qué ser la mejor para mutaciones frecuentes o workflows transaccionales.\n\nSi el dataset cambia continuamente fila a fila, el modelo de ingestión y actualización necesita atención.\n\n**Intentar utilizar una base especializada como** motor universal suele eliminar la ventaja de la especialización.\nTambién hay que revisar joins y relaciones complejas. Algunas cargas funcionan perfectamente; otras pueden necesitar rediseño.\n\nLa granularidad de los eventos importa. Guardar millones de pequeños cambios puede ser útil para análisis y generar un pipeline innecesariamente pesado si el negocio solo necesita snapshots diarios.\n\nLa consistencia también debe estar clara. Una capa analítica puede ser eventualmente consistente respecto al sistema operacional.\n\nSi la decisión exige el último estado exacto, quizá la query debe seguir yendo al source of truth.\n\n**La decisión debe justificar el coste de especializar**\nLa comparación correcta debe incluir cuatro cosas: performance, coste, complejidad operativa y valor empresarial.\n\nPodemos medir p50 y p95 de latencia, concurrencia, volumen escaneado y coste de infraestructura.\n\nDespués debemos traducir la mejora: ¿qué usuario actúa diferente? ¿qué SLA se desbloquea? ¿qué proceso se simplifica?\n\n**Si nadie cambia una decisión porque** la query ahora es veinte veces más rápida, el ROI puede ser mucho menor de lo que sugiere el benchmark.\nTambién conviene medir cuánto trabajo elimina. Si ClickHouse permite retirar decenas de agregaciones precomputadas y jobs complejos, el valor puede ser grande.\n\nSi obliga a añadir CDC, observabilidad y reconciliación para mejorar unos pocos dashboards, el balance puede ser negativo.\n\nUna PoC debería incluir la operación diaria, no solo consultas.\n\nHay que probar ingestión, fallos de pipeline, cambios de schema, permissions, backups y recuperación.\n\nTambién conviene estimar el crecimiento del volumen. Una arquitectura que hoy parece excesiva puede ser razonable si existe una trayectoria clara de escala.\n\nPero “algún día tendremos big data” no es una trayectoria; es una hipótesis.\n\nEl equipo puede establecer un trigger concreto: volumen, latencia, coste o concurrencia a partir del cual reevaluar.\n\nEso permite posponer complejidad sin cerrar la puerta a adoptarla.\n\nLa decisión también puede limitarse a un dominio. Solo logs, solo product events o solo métricas de alta frecuencia.\n\nEspecializar una parte pequeña reduce riesgo y permite demostrar valor antes de ampliar.\n\nOtra opción es usar un servicio gestionado para reducir ownership inicial.\n\nAun así, managed no elimina la complejidad conceptual de operar otra capa de datos.\n\n**Una base analítica rápida puede ser la elección equivocada cuando resuelve una restricción que el negocio no tenía.** La velocidad merece una nueva plataforma cuando cambia decisiones, experiencia o coste de forma suficientemente grande para pagar la complejidad de especializar la arquitectura.",
+      "seo_title": "Limitaciones de ClickHouse: cuándo no usarlo",
+      "seo_description": "Por qué una base analítica rápida puede no compensar si añade ownership, duplicación, CDC y complejidad sin resolver una latencia empresarial relevante.",
+      "seo_keywords": [
+        "clickhouse limitations",
+        "when not to use ClickHouse",
+        "analytical database tradeoffs",
+        "OLAP database"
+      ],
+      "tags": [
+        "ClickHouse",
+        "Data Architecture",
+        "OLAP"
+      ]
+    },
+    "en": {
+      "title": "Why a fast analytical database can still be the wrong choice",
+      "excerpt": "A specialized OLAP database can look excellent in benchmarks and still be poor for the business if it adds a second platform, duplicates data or solves latency that did not matter.",
+      "quick": [
+        "Speed does not always create value",
+        "Another database increases ownership",
+        "Workload must justify specialization"
+      ],
+      "section_titles": [
+        "Latency may not be the real problem",
+        "Specialization creates a second operation",
+        "Write patterns may not fit",
+        "The decision must justify specialization cost"
+      ],
+      "business_title": "A fast analytical database is the right choice only when lower latency and query cost materially outweigh the additional complexity.",
+      "business_steps": [
+        "Real problem",
+        "Additional cost",
+        "Net value"
+      ],
+      "body": "Specialized analytical databases are easy to justify with benchmarks. A query taking forty seconds may fall to one; an aggregation over hundreds of millions of rows can become interactive. But **a spectacular technical improvement can still be a poor investment when the business did not need that speed or the new platform adds too much ownership.**\n\nClickHouse and other OLAP engines have a clear role, but architecture goes wrong when the benchmark drives the decision instead of the business constraint. **Performance without a concrete operating requirement can become elegant but unnecessary complexity.**\n\n**Latency may not be the real problem**\nA slow dashboard can have many causes.\n\nThere may be a poorly written query, a missing index, duplicated transformation or weak semantic model.\n\nThe user may also open the report once per day, in which case ten seconds of latency changes no decision.\n\n**Before changing engines, the team** should demonstrate that current latency has a real cost.\nIf users abandon exploration, operations need to react earlier or query time prevents interactive analysis, the constraint is material.\n\nIf the objective is simply to make everything feel faster, the economic case may be weak.\n\nThe current system should also be optimized first. Partitioning, indexes, caching, materialized views or better data modeling may be sufficient.\n\nAny new architecture should compete against a reasonably optimized baseline.\n\n**Specialization creates a second operation**\nAdding ClickHouse next to PostgreSQL, Snowflake or an existing warehouse means operating another platform.\n\nData must move, freshness must be monitored, permissions maintained, schemas aligned and users taught which system contains which version.\n\n**Every additional engine creates an** operating boundary, and that boundary has a cost.\nCDC can fail, data can lag and teams can confuse the analytical copy with the source of truth.\n\nNew backup, retention, scaling and observability decisions appear.\n\nThe team also needs skills for modeling and troubleshooting the new engine.\n\nIf platform capacity is already thin, a second database can reduce reliability even while improving query speed.\n\nDuplicated data also creates governance work because lineage, access and deletion need consistent handling.\n\n**Write patterns may not fit**\nA column-oriented analytical database is not automatically suitable for frequent mutations or transactional workflows.\n\nIf records change constantly one row at a time, ingestion and update design need specific attention.\n\n**Using a specialized database as** a universal engine usually removes the benefit of specialization.\nJoins and relational patterns should also be tested. Some workloads fit perfectly; others need redesign.\n\nEvent granularity matters too. Keeping millions of tiny state changes can be useful for analysis and unnecessarily heavy if the business only needs daily snapshots.\n\nConsistency requirements should be explicit. An analytical layer may be eventually consistent relative to the operational system.\n\nIf the decision needs the exact latest state, the query may still belong on the source of truth.\n\n**The decision must justify specialization cost**\nThe right comparison includes four dimensions: performance, cost, operating complexity and business value.\n\nMeasure p50 and p95 latency, concurrency, scanned volume and infrastructure cost.\n\nThen translate the improvement: which user acts differently, which SLA becomes possible and which process becomes simpler?\n\n**If nobody changes a decision because** the query is twenty times faster, ROI may be far smaller than the benchmark suggests.\nThe amount of engineering removed matters too. If ClickHouse replaces dozens of precomputed aggregates and complex jobs, value can be substantial.\n\nIf it requires CDC, extra observability and reconciliation to improve a handful of dashboards, the balance may be negative.\n\nA proof of concept should include daily operations rather than queries alone.\n\nTest ingestion, pipeline failure, schema changes, permissions, backup and recovery.\n\nExpected growth matters as well. An architecture that looks excessive today may be justified by a clear scale trajectory.\n\nBut “we may have big data someday” is not a trajectory; it is a hypothesis.\n\nTeams can define concrete adoption triggers such as volume, latency, cost or concurrency.\n\nThat allows complexity to be delayed without ruling it out.\n\nThe rollout can also be limited to one domain: logs, product events or high-frequency metrics.\n\nSpecializing a small area reduces risk and allows value to be proven before expansion.\n\nA managed service can reduce some infrastructure ownership.\n\nEven then, managed delivery does not remove the conceptual complexity of another data layer.\n\n**A fast analytical database is the wrong choice when it solves a constraint the business did not actually have.** Speed deserves a new platform when it changes decisions, experience or cost enough to pay for the complexity of specialized architecture.",
+      "seo_title": "ClickHouse Limitations: When Not to Use It",
+      "seo_description": "Why a fast analytical database may not pay off when it adds ownership, duplication, CDC and complexity without solving material business latency.",
+      "seo_keywords": [
+        "clickhouse limitations",
+        "when not to use ClickHouse",
+        "analytical database tradeoffs",
+        "OLAP database"
+      ],
+      "tags": [
+        "ClickHouse",
+        "Data Architecture",
+        "OLAP"
+      ]
+    },
+    "ca": {
+      "title": "Per què una base analítica ràpida pot ser l’elecció equivocada",
+      "excerpt": "Una base OLAP especialitzada pot ser brillant en benchmarks i dolenta pel negoci si afegeix una segona plataforma, duplica dades o resol una latència que no importava.",
+      "quick": [
+        "Velocitat no sempre crea valor",
+        "Una altra base augmenta ownership",
+        "El workload ha de justificar especialització"
+      ],
+      "section_titles": [
+        "La latència pot no ser el problema real",
+        "L’especialització afegeix una segona operació",
+        "Els patrons d’escriptura poden no encaixar",
+        "La decisió ha de justificar el cost d’especialitzar"
+      ],
+      "business_title": "Una base analítica ràpida és la tria correcta només quan la reducció de latència i cost de consulta compensa materialment la complexitat afegida.",
+      "business_steps": [
+        "Problema real",
+        "Cost addicional",
+        "Valor net"
+      ],
+      "body": "Les bases analítiques especialitzades són fàcils de justificar amb benchmarks. Una consulta que tarda quaranta segons pot baixar a un; una agregació sobre centenars de milions de files pot tornar-se interactiva. Però **una millora tècnica espectacular pot continuar sent una mala inversió si el negoci no necessitava aquella velocitat o la nova plataforma afegeix massa ownership.**\n\nClickHouse i altres motors OLAP tenen un paper clar, però l’arquitectura falla quan el benchmark dirigeix la decisió en lloc de la restricció empresarial. **Performance sense un requisit operatiu concret pot convertir-se en complexitat elegant però innecessària.**\n\n**La latència pot no ser el problema real**\nUn dashboard lent pot tenir moltes causes.\n\nPot existir una query mal escrita, un índex absent, una transformació duplicada o un model semàntic deficient.\n\nTambé pot passar que l’usuari només obri el report una vegada al dia i deu segons de latència no canviïn cap decisió.\n\n**Abans de canviar de motor, cal** demostrar que la latència actual té un cost real.\nSi els usuaris abandonen exploració, operacions necessiten reaccionar abans o el temps de consulta impedeix anàlisi interactiva, la restricció és material.\n\nSi només volem que tot “se senti més ràpid”, el cas econòmic pot ser feble.\n\nTambé convé optimitzar primer el sistema actual. Particionament, índexs, caching, materialized views o millor model de dades poden ser suficients.\n\nL’arquitectura nova ha de competir contra un baseline raonablement optimitzat.\n\n**L’especialització afegeix una segona operació**\nIntroduir ClickHouse al costat de PostgreSQL, Snowflake o un warehouse existent significa operar una altra plataforma.\n\nCal moure dades, monitoritzar freshness, gestionar permisos, mantenir schemas i explicar quin sistema conté quina versió.\n\n**Cada motor nou crea** una frontera operativa i aquesta frontera té cost.\nCDC pot fallar, les dades poden arribar tard i els equips poden confondre la còpia analítica amb el source of truth.\n\nTambé apareixen decisions noves de backup, retention, scaling i observabilitat.\n\nL’equip necessita skills específiques per modelar i depurar el motor nou.\n\nSi la capacitat de plataforma ja és limitada, una segona base pot empitjorar fiabilitat encara que millori query speed.\n\nLa duplicació de dades també crea feina de governance: lineage, accés i esborrat han de mantenir-se coherents.\n\n**Els patrons d’escriptura poden no encaixar**\nUna base columnar analítica no és automàticament adequada per mutacions freqüents o workflows transaccionals.\n\nSi els registres canvien constantment fila a fila, ingestió i updates necessiten disseny específic.\n\n**Utilitzar una base especialitzada com a** motor universal acostuma a eliminar el benefici de l’especialització.\nTambé cal provar joins i patrons relacionals. Alguns workloads encaixen perfectament; altres necessiten redisseny.\n\nLa granularitat dels events importa. Guardar milions de petits canvis pot ser útil per analytics i excessiu si el negoci només necessita snapshots diaris.\n\nEls requisits de consistència han d’estar clars. Una capa analítica pot ser eventually consistent respecte al sistema operatiu.\n\nSi la decisió necessita l’estat exacte més recent, la query pot continuar pertanyent al source of truth.\n\n**La decisió ha de justificar el cost d’especialitzar**\nLa comparació correcta inclou performance, cost, complexitat operativa i valor empresarial.\n\nPodem mesurar p50 i p95 de latència, concurrència, volum escanejat i cost d’infraestructura.\n\nDesprés cal traduir la millora: quin usuari actua diferent, quin SLA es desbloqueja i quin procés es simplifica?\n\n**Si ningú canvia una decisió perquè** la query ara és vint vegades més ràpida, el ROI pot ser molt menor del que suggereix el benchmark.\nTambé importa quanta enginyeria elimina. Si ClickHouse permet retirar moltes preagregacions i jobs complexos, el valor pot ser gran.\n\nSi obliga a afegir CDC, observabilitat i reconciliació per millorar pocs dashboards, el balanç pot ser negatiu.\n\nUna PoC ha d’incloure l’operació diària i no només queries.\n\nCal provar ingestió, fallades de pipeline, canvis de schema, permisos, backup i recuperació.\n\nEl creixement esperat també importa. Una arquitectura que avui sembla excessiva pot ser raonable amb una trajectòria clara d’escala.\n\nPerò “algun dia tindrem big data” no és una trajectòria; és una hipòtesi.\n\nL’equip pot definir triggers concrets de volum, latència, cost o concurrència.\n\nAixò permet ajornar complexitat sense descartar-la.\n\nEl rollout també pot limitar-se a un domini: logs, product events o mètriques d’alta freqüència.\n\nEspecialitzar una part petita redueix risc i permet demostrar valor abans d’ampliar.\n\nUn servei gestionat pot reduir ownership d’infraestructura.\n\nTot i així, managed no elimina la complexitat conceptual d’una altra capa de dades.\n\n**Una base analítica ràpida pot ser l’elecció equivocada quan resol una restricció que el negoci no tenia.** La velocitat mereix una nova plataforma quan canvia decisions, experiència o cost prou per pagar la complexitat d’una arquitectura especialitzada.",
+      "seo_title": "Limitacions de ClickHouse: quan no utilitzar-lo",
+      "seo_description": "Per què una base analítica ràpida pot no compensar si afegeix ownership, duplicació, CDC i complexitat sense resoldre latència empresarial real.",
+      "seo_keywords": [
+        "clickhouse limitations",
+        "when not to use ClickHouse",
+        "analytical database tradeoffs",
+        "OLAP database"
+      ],
+      "tags": [
+        "ClickHouse",
+        "Data Architecture",
+        "OLAP"
+      ]
+    }
+  }
+}

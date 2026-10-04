@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-178",
+  "sequence": 178,
+  "arc_id": "ARC-45",
+  "slug": "monte-carlo-vs-stress-testing",
+  "scheduled_at": "2027-12-15T09:00:00+01:00",
+  "knowledge_area": "finance",
+  "cluster": "Finance, Risk & Pricing",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "compare",
+  "angle": "monte carlo vs stress testing",
+  "primary_keyword": "monte carlo vs stress testing",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-177",
+    "KB-179",
+    "KB-180"
+  ],
+  "variants": {
+    "es": {
+      "title": "Monte Carlo vs stress testing",
+      "excerpt": "Monte Carlo explora una distribución de outcomes bajo supuestos probabilísticos; stress testing fuerza escenarios adversos concretos para descubrir fragilidad.",
+      "quick": [
+        "Monte Carlo explora frecuencia",
+        "Stress testing explora ruptura",
+        "Ambos dependen de supuestos"
+      ],
+      "section_titles": [
+        "Monte Carlo pregunta por distribución",
+        "Stress testing pregunta por fragilidad",
+        "Las dos técnicas fallan de maneras distintas",
+        "Combínalas alrededor de una decisión"
+      ],
+      "business_title": "Monte Carlo ayuda a entender la distribución de resultados; stress testing ayuda a entender qué puede romper el sistema y cómo responder.",
+      "business_steps": [
+        "Distribución",
+        "Shock",
+        "Decisión"
+      ],
+      "body": "Monte Carlo y stress testing suelen aparecer juntos porque ambos trabajan con incertidumbre, pero **no persiguen exactamente el mismo objetivo**. Monte Carlo genera muchos posibles outcomes a partir de distribuciones y dependencias modeladas. Stress testing selecciona condiciones adversas concretas y pregunta cómo responde el sistema.\n\nLa diferencia importa porque una técnica puede dar tranquilidad donde la otra revela vulnerabilidad. **Monte Carlo responde mejor a “qué rango de resultados podemos esperar bajo estos supuestos”; stress testing responde mejor a “qué ocurre si una parte crítica de esos supuestos deja de cumplirse”.**\n\n**Monte Carlo pregunta por distribución**\nUna simulación Monte Carlo define variables inciertas y genera muchas realizaciones posibles.\n\nVentas, precios, default rates, tipos, costes o tiempos pueden representarse mediante distribuciones.\n\nA partir de miles de simulaciones podemos observar percentiles, probabilidad de pérdida, cash shortfall o expected value.\n\n**La fuerza de Monte Carlo está en representar una distribución completa en lugar de unos pocos escenarios discretos**.\n\nEsto permite comparar decisiones bajo incertidumbre y cuantificar trade-offs.\n\nTambién ayuda cuando varias variables interactúan y el resultado no puede calcularse con una fórmula simple.\n\nPero el resultado depende de las distribuciones elegidas y de las correlaciones modeladas.\n\nSi esas entradas subestiman la cola, la simulación producirá una distribución demasiado tranquilizadora.\n\n**Stress testing pregunta por fragilidad**\nStress testing no necesita representar una distribución completa.\n\nPuede construir un escenario específico: caída brusca de demanda, pérdida de un proveedor crítico, widening de spreads o cierre de financiación.\n\n**El objetivo es observar el mecanismo de fallo, no estimar cuántas veces ocurrirá exactamente**.\n\nEsto permite explorar eventos raros o nunca observados.\n\nTambién hace más visible la narrativa: qué cambia primero, qué variables reaccionan después y qué restricciones se activan.\n\nReverse stress testing puede empezar por un outcome crítico y buscar qué combinación de drivers podría producirlo.\n\nEsa capacidad es especialmente útil cuando la preocupación principal es resiliencia y no probabilidad central.\n\n**Las dos técnicas fallan de maneras distintas**\nMonte Carlo puede crear falsa precisión si utilizamos distribuciones poco defendibles.\n\nMiles de simulaciones no compensan un input mal especificado.\n\n**La cantidad de draws no reduce la incertidumbre del modelo si el modelo de incertidumbre es incorrecto**.\n\nStress testing puede fallar por el problema contrario: escenarios arbitrarios que no representan mecanismos económicos coherentes.\n\nUn “-20 % a todo” puede producir un número severo sin enseñar nada sobre cómo se propaga el shock.\n\nMonte Carlo también puede ocultar eventos muy extremos si las distribuciones truncadas o normales no los generan.\n\nStress testing puede ignorar frecuencia y hacer que un escenario remotísimo reciba demasiado peso de management.\n\nPor eso ninguna de las dos técnicas debería interpretarse sin contexto.\n\n**Combínalas alrededor de una decisión**\nUna buena arquitectura puede utilizar Monte Carlo para entender distribución y stress tests para desafiarla.\n\nPor ejemplo, una simulación de caja puede estimar probabilidad de caer bajo cierto buffer.\n\nDespués un stress test puede preguntar qué ocurre si el mayor cliente deja de pagar durante tres meses.\n\n**La combinación permite distinguir incertidumbre habitual de vulnerabilidad estructural**.\n\nTambién puede utilizarse Monte Carlo dentro de un stress test, simulando incertidumbre residual alrededor de un shock concreto.\n\nLa elección depende de la pregunta.\n\nSi queremos comparar dos inversiones bajo variabilidad normal, Monte Carlo puede ser suficiente.\n\nSi queremos saber si sobrevivimos a una ruptura de funding, el stress test es más directo.\n\nEn ambos casos, las variables deben tener ownership y fuentes claras.\n\nLas dependencias necesitan justificación económica, no solo ajuste estadístico.\n\nLa salida debe conectarse con decisiones: buffer, hedge, capital, inventario, financiación o contingency plans.\n\nTambién conviene analizar sensibilidad para saber qué inputs dominan la incertidumbre.\n\nSi una variable explica casi todo el resultado, quizá no necesitamos un modelo muy complejo.\n\nLa validación puede utilizar backtesting cuando existen outcomes observables.\n\nLos escenarios deben versionarse y las distribuciones también.\n\nCambiar una correlación o una cola puede mover mucho el resultado.\n\nLa comunicación debería separar probabilidad estimada de severidad condicional.\n\nUn percentil 95 de Monte Carlo y un escenario stress no son directamente comparables si responden preguntas diferentes.\n\nFinalmente, ninguna técnica elimina la necesidad de juicio.\n\n**Monte Carlo es mejor para explorar una distribución plausible; stress testing es mejor para explorar un mecanismo de ruptura.** Juntos permiten comprender tanto la incertidumbre que esperamos como los escenarios que no queremos ignorar.",
+      "seo_title": "Monte Carlo vs stress testing",
+      "seo_description": "Diferencias entre Monte Carlo y stress testing, qué pregunta responde cada técnica, sus limitaciones y cómo combinarlas en decisiones de riesgo.",
+      "seo_keywords": [
+        "monte carlo vs stress testing",
+        "Monte Carlo simulation",
+        "stress testing",
+        "risk simulation"
+      ],
+      "tags": [
+        "Finance",
+        "Monte Carlo",
+        "Stress Testing"
+      ]
+    },
+    "en": {
+      "title": "Monte Carlo vs stress testing",
+      "excerpt": "Monte Carlo explores a distribution of outcomes under probabilistic assumptions; stress testing forces specific adverse scenarios to reveal fragility.",
+      "quick": [
+        "Monte Carlo explores frequency",
+        "Stress testing explores failure",
+        "Both depend on assumptions"
+      ],
+      "section_titles": [
+        "Monte Carlo asks about distribution",
+        "Stress testing asks about fragility",
+        "The two techniques fail differently",
+        "Combine them around a decision"
+      ],
+      "business_title": "Monte Carlo helps explain the distribution of outcomes; stress testing helps explain what can break the system and how to respond.",
+      "business_steps": [
+        "Distribution",
+        "Shock",
+        "Decision"
+      ],
+      "body": "Monte Carlo and stress testing are often discussed together because both deal with uncertainty, but **they do not pursue exactly the same objective**. Monte Carlo generates many possible outcomes from modeled distributions and dependencies. Stress testing selects adverse conditions and asks how the system behaves.\n\nThe distinction matters because one technique can provide reassurance where the other reveals vulnerability. **Monte Carlo is better at asking “what range of outcomes should we expect under these assumptions”; stress testing is better at asking “what happens if a critical assumption stops holding”.**\n\n**Monte Carlo asks about distribution**\nA Monte Carlo model defines uncertain variables and generates many possible realizations.\n\nSales, prices, default rates, interest rates, costs or lead times can be represented through distributions.\n\nThousands of simulations can then produce percentiles, loss probability, cash shortfall probability or expected value.\n\n**The strength of Monte Carlo is representing a full distribution rather than a few discrete cases**.\n\nThat supports comparison of decisions under uncertainty and quantifies trade-offs.\n\nIt is also useful when several variables interact and no simple closed-form answer exists.\n\nBut the result depends on the chosen distributions and correlations.\n\nIf those inputs understate tail behaviour, the simulation will produce an unrealistically comfortable risk profile.\n\n**Stress testing asks about fragility**\nStress testing does not need to represent a complete distribution.\n\nIt can define one explicit scenario: severe demand decline, loss of a critical supplier, spread widening or closure of funding markets.\n\n**The objective is to understand the failure mechanism rather than estimate its exact frequency**.\n\nThat allows the organization to explore rare or unprecedented events.\n\nIt also makes the narrative visible: what moves first, what reacts next and which constraints activate.\n\nReverse stress testing can start from a critical outcome and work backward to identify driver combinations that could create it.\n\nThat is particularly useful when resilience matters more than central probability.\n\n**The two techniques fail differently**\nMonte Carlo can create false precision when input distributions are weakly justified.\n\nThousands of simulations do not repair poor assumptions.\n\n**More draws do not reduce model uncertainty when the uncertainty model itself is wrong**.\n\nStress testing can fail in the opposite direction through arbitrary scenarios with no coherent economic mechanism.\n\nA blanket “minus 20% everywhere” may produce a severe number without teaching how the shock propagates.\n\nMonte Carlo can also miss extreme events when distributions are too thin-tailed or truncated.\n\nStress testing can ignore frequency and cause management to overweight an implausible scenario.\n\nNeither approach should therefore be interpreted without context.\n\n**Combine them around a decision**\nA strong architecture can use Monte Carlo to understand the distribution and stress tests to challenge it.\n\nA cash simulation, for example, can estimate the probability of falling below a liquidity buffer.\n\nA stress scenario can then ask what happens if the largest customer stops paying for three months.\n\n**The combination separates ordinary uncertainty from structural vulnerability**.\n\nMonte Carlo can also operate inside a stress test by simulating residual uncertainty around a fixed adverse shock.\n\nThe right method depends on the question.\n\nIf the goal is comparing investments under normal variability, Monte Carlo may be sufficient.\n\nIf the goal is understanding survival under a funding freeze, stress testing is more direct.\n\nBoth approaches need clear data ownership and input definitions.\n\nDependencies should be justified economically rather than only statistically.\n\nOutputs must connect to actions: buffer, hedge, capital, inventory, funding or contingency plans.\n\nSensitivity analysis helps identify which variables dominate uncertainty.\n\nIf one variable explains most of the result, a very complex simulation may be unnecessary.\n\nBacktesting can support validation when outcomes become observable.\n\nScenarios need versioning, and distributions do too.\n\nA correlation change or different tail assumption can materially alter results.\n\nCommunication should separate estimated probability from conditional severity.\n\nA 95th Monte Carlo percentile and a named stress scenario are not directly comparable when they answer different questions.\n\nNeither technique removes the need for judgment.\n\n**Monte Carlo is stronger for exploring a plausible distribution; stress testing is stronger for exploring a failure mechanism.** Together they provide a view of both the uncertainty we expect and the shocks we cannot afford to ignore.",
+      "seo_title": "Monte Carlo vs Stress Testing",
+      "seo_description": "How Monte Carlo and stress testing differ, which question each method answers, their limitations and how to combine them for risk decisions.",
+      "seo_keywords": [
+        "monte carlo vs stress testing",
+        "Monte Carlo simulation",
+        "stress testing",
+        "risk simulation"
+      ],
+      "tags": [
+        "Finance",
+        "Monte Carlo",
+        "Stress Testing"
+      ]
+    },
+    "ca": {
+      "title": "Monte Carlo vs stress testing",
+      "excerpt": "Monte Carlo explora una distribució d’outcomes sota supòsits probabilístics; stress testing força escenaris adversos concrets per descobrir fragilitat.",
+      "quick": [
+        "Monte Carlo explora freqüència",
+        "Stress testing explora ruptura",
+        "Tots dos depenen de supòsits"
+      ],
+      "section_titles": [
+        "Monte Carlo pregunta per distribució",
+        "Stress testing pregunta per fragilitat",
+        "Les dues tècniques fallen de maneres diferents",
+        "Combina-les al voltant d’una decisió"
+      ],
+      "business_title": "Monte Carlo ajuda a entendre la distribució de resultats; stress testing ajuda a entendre què pot trencar el sistema i com respondre.",
+      "business_steps": [
+        "Distribució",
+        "Shock",
+        "Decisió"
+      ],
+      "body": "Monte Carlo i stress testing apareixen sovint junts perquè tots dos treballen amb incertesa, però **no persegueixen exactament el mateix objectiu**. Monte Carlo genera molts outcomes a partir de distribucions i dependències modelades. Stress testing selecciona condicions adverses concretes i pregunta com respon el sistema.\n\nLa diferència importa perquè una tècnica pot donar tranquil·litat on l’altra revela vulnerabilitat. **Monte Carlo respon millor “quin rang de resultats podem esperar sota aquests supòsits”; stress testing respon millor “què passa si un supòsit crític deixa de complir-se”.**\n\n**Monte Carlo pregunta per distribució**\nUna simulació Monte Carlo defineix variables incertes i genera moltes realitzacions.\n\nVendes, preus, default rates, tipus, costos o lead times poden representar-se mitjançant distribucions.\n\nA partir de milers de simulacions podem obtenir percentils, probabilitat de pèrdua, cash shortfall o expected value.\n\n**La força de Monte Carlo és representar una distribució completa i no només uns pocs escenaris**.\n\nAixò permet comparar decisions sota incertesa i quantificar trade-offs.\n\nTambé és útil quan diverses variables interactuen i no existeix una fórmula simple.\n\nPerò el resultat depèn de les distribucions i correlacions escollides.\n\nSi aquestes entrades infraestimen la cua, la simulació produirà un perfil massa tranquil.\n\n**Stress testing pregunta per fragilitat**\nStress testing no necessita representar una distribució completa.\n\nPot definir un escenari explícit: caiguda severa de demanda, pèrdua d’un proveïdor crític, widening de spreads o tancament de funding.\n\n**L’objectiu és entendre el mecanisme de fallada i no estimar-ne la freqüència exacta**.\n\nAixò permet explorar events rars o mai observats.\n\nTambé fa visible la narrativa: què canvia primer, què reacciona després i quines restriccions s’activen.\n\nReverse stress testing pot començar per un outcome crític i treballar enrere per trobar combinacions de drivers.\n\nAixò és útil quan la resiliència importa més que la probabilitat central.\n\n**Les dues tècniques fallen de maneres diferents**\nMonte Carlo pot crear falsa precisió si les distribucions d’entrada estan poc justificades.\n\nMilers de simulacions no arreglen mals supòsits.\n\n**Més draws no redueixen model uncertainty si el model d’incertesa és incorrecte**.\n\nStress testing pot fallar pel costat contrari: escenaris arbitraris sense mecanisme econòmic coherent.\n\nUn “-20 % a tot” pot generar una xifra severa sense explicar com es propaga el shock.\n\nMonte Carlo també pot ignorar extrems si les distribucions tenen cues massa primes o estan truncades.\n\nStress testing pot ignorar freqüència i donar massa pes a un escenari remot.\n\nPer això cap enfocament s’ha d’interpretar sense context.\n\n**Combina-les al voltant d’una decisió**\nUna arquitectura sòlida pot utilitzar Monte Carlo per entendre la distribució i stress tests per desafiar-la.\n\nUna simulació de caixa, per exemple, pot estimar probabilitat de caure sota un buffer.\n\nDesprés un stress pot preguntar què passa si el principal client deixa de pagar durant tres mesos.\n\n**La combinació separa incertesa habitual de vulnerabilitat estructural**.\n\nMonte Carlo també pot executar-se dins d’un stress test per simular incertesa residual al voltant d’un shock fix.\n\nEl mètode adequat depèn de la pregunta.\n\nSi volem comparar inversions sota variabilitat normal, Monte Carlo pot ser suficient.\n\nSi volem saber si sobrevivim a un tancament de funding, stress testing és més directe.\n\nTots dos necessiten ownership clar de dades i inputs.\n\nLes dependències s’han de justificar econòmicament i no només estadísticament.\n\nEls outputs s’han de connectar amb accions: buffer, hedge, capital, inventari, finançament o contingency plans.\n\nSensitivity analysis ajuda a veure quines variables dominen la incertesa.\n\nSi una variable explica gairebé tot el resultat, una simulació molt complexa pot no ser necessària.\n\nBacktesting pot ajudar quan existeixen outcomes observables.\n\nEls escenaris s’han de versionar i les distribucions també.\n\nUn canvi de correlació o de cua pot moure molt el resultat.\n\nLa comunicació ha de separar probabilitat estimada de severitat condicional.\n\nUn percentil 95 de Monte Carlo i un stress scenario no són directament comparables si responen preguntes diferents.\n\nCap tècnica elimina la necessitat de judici.\n\n**Monte Carlo és millor per explorar una distribució plausible; stress testing és millor per explorar un mecanisme de ruptura.** Juntes permeten entendre tant la incertesa esperada com els shocks que no ens podem permetre ignorar.",
+      "seo_title": "Monte Carlo vs stress testing",
+      "seo_description": "Diferències entre Monte Carlo i stress testing, quina pregunta respon cada tècnica, les seves limitacions i com combinar-les en decisions de risc.",
+      "seo_keywords": [
+        "monte carlo vs stress testing",
+        "Monte Carlo simulation",
+        "stress testing",
+        "risk simulation"
+      ],
+      "tags": [
+        "Finance",
+        "Monte Carlo",
+        "Stress Testing"
+      ]
+    }
+  }
+}

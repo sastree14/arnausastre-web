@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-200",
+  "sequence": 200,
+  "arc_id": "ARC-50",
+  "slug": "a-framework-for-sizing-a-data-or-ai-project",
+  "scheduled_at": "2028-02-08T09:00:00+01:00",
+  "knowledge_area": "business_systems",
+  "cluster": "Simulation & Business Systems",
+  "editorial_pillar": "consulting_decision_insights",
+  "content_family": "framework_playbook",
+  "angle": "data ai project roi framework",
+  "primary_keyword": "data ai project roi framework",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-197",
+    "KB-198",
+    "KB-199"
+  ],
+  "variants": {
+    "es": {
+      "title": "Un framework para dimensionar un proyecto de datos o IA",
+      "excerpt": "Dimensionar bien significa alinear valor esperado, incertidumbre, complejidad, riesgo y ownership antes de decidir cuánto construir.",
+      "quick": [
+        "Empieza por el valor",
+        "Compra evidencia por fases",
+        "Escala solo lo que funciona"
+      ],
+      "section_titles": [
+        "Define la decisión y su valor",
+        "Separa incertidumbre de complejidad",
+        "Dimensiona por fases y gates",
+        "Mide ROI durante todo el ciclo"
+      ],
+      "business_title": "Un proyecto de datos o IA debe crecer en proporción al valor que demuestra y a la incertidumbre que consigue reducir.",
+      "business_steps": [
+        "Valor esperado",
+        "Evidencia progresiva",
+        "Escala proporcional"
+      ],
+      "body": "Dimensionar un proyecto de datos o IA no consiste en estimar cuántas semanas necesita un equipo para construir una solución. La pregunta anterior es más importante: **cuánta inversión merece el problema antes de que exista evidencia suficiente de que la tecnología generará valor**.\n\nMuchos proyectos se sobredimensionan porque mezclan discovery, prototipo, integración, producción y escala en una única promesa. Otros se quedan cortos porque presupuestan únicamente el modelo y descubren tarde todo lo que exige operar el sistema. **Un buen framework separa aprendizaje, construcción y ownership para que la inversión crezca a medida que disminuye la incertidumbre.**\n\n**Define la decisión y su valor**\nEl primer paso es describir la decisión que queremos mejorar.\n\nNo “crear un sistema de forecasting”, sino decidir cuánto comprar por SKU y semana. No “hacer un agente comercial”, sino reducir el tiempo de preparación y aumentar la calidad de priorización antes de una llamada.\n\nDespués define el baseline actual: tiempo, coste, error, capacidad y outcome.\n\n**El valor potencial debe existir antes del proyecto**, aunque todavía sea una estimación.\n\nPodemos construir un rango económico: conservador, probable y alto.\n\nSi reducir stockouts puede ahorrar entre 100.000 y 300.000 euros al año, ese rango ayuda a decidir cuánto sentido tiene invertir.\n\nTambién debemos separar valor teórico de valor capturable. Una mejora solo importa si el negocio puede actuar sobre ella.\n\nLa frecuencia multiplica impacto. Una pequeña mejora en una decisión diaria puede superar una gran mejora en una decisión anual.\n\nEl coste del error también entra. Un sistema que recomienda contenido tiene un perfil de riesgo distinto a uno que afecta crédito, pagos o contratación.\n\n**Separa incertidumbre de complejidad**\nAntes de construir, identifica qué no sabemos.\n\nPuede existir incertidumbre de datos: no sabemos si hay señal suficiente.\n\nIncertidumbre de producto: no sabemos si los usuarios utilizarán el output.\n\nIncertidumbre técnica: no sabemos si la latencia, integración o escala son viables.\n\nIncertidumbre económica: no sabemos si la mejora pagará el coste.\n\n**Cada fase debería responder una incertidumbre concreta** i no acumular trabajo sin una pregunta clara.\n\nEsto evita construir infraestructura para preguntas que podían resolverse con un análisis pequeño.\n\nLa complejidad también debe descomponerse. Datos, modelos, integración, UX, seguridad, observabilidad, compliance y soporte tienen costes distintos.\n\nNo todos los casos necesitan todas las capas con la misma profundidad.\n\nUn prototipo interno puede aceptar revisión humana y procesos manuales. Un sistema crítico necesita controles más fuertes.\n\nTambién conviene identificar dependencias. Si el proyecto exige primero limpiar master data o cambiar un proceso upstream, esa inversión forma parte del alcance real.\n\n**Dimensiona por fases y gates**\nUn buen proyecto puede estructurarse en cuatro fases.\n\nFase uno: discovery. Definir decisión, datos, baseline, economics y riesgos.\n\nFase dos: proof of value. Probar que existe señal o que el workflow mejora con un prototipo limitado.\n\n**El objetivo es comprar evidencia** al menor coste razonable.\n\nFase tres: productionization. Integrar fuentes, asegurar permisos, añadir observabilidad, fallback, testing y ownership.\n\nFase cuatro: scale. Expandir usuarios, regiones, procesos o automatización cuando la solución ya ha demostrado valor.\n\nEntre fases deben existir gates.\n\nPara pasar de discovery a PoV necesitamos un caso claro y datos suficientes.\n\nPara pasar a producción necesitamos una mejora material frente al baseline.\n\nPara escalar necesitamos adopción, estabilidad y economics reales.\n\nCada gate debería tener un criterio de stop. Cerrar un proyecto antes de producción puede ser una buena decisión si la evidencia no justifica más inversión.\n\nTambién conviene establecer presupuestos máximos por fase.\n\nEsto limita el sunk cost y evita que el equipo siga invirtiendo únicamente porque ya ha invertido.\n\n**Mide ROI durante todo el ciclo**\nEl ROI no debe calcularse una vez al principio y olvidarse.\n\nDurante discovery se utiliza valor esperado.\n\nDurante el prototipo se actualiza con performance observada.\n\nEn producción se incorporan coste real de infraestructura, soporte, revisiones humanas y fallos.\n\n**El business case debe madurar al mismo ritmo** que el sistema.\n\nTambién hay que medir valor realizado, no solo valor modelado.\n\nSi el modelo mejora forecasting pero compras no cambia pedidos, el beneficio todavía no existe.\n\nLa adopción forma parte del ROI.\n\nLos overrides pueden mostrar si el sistema no encaja con la decisión real.\n\nEl coste por caso resuelto, por predicción utilizada o por hora ahorrada puede ser más útil que mirar gasto mensual agregado.\n\nTambién conviene incluir mantenimiento futuro. Models, APIs y pipelines cambian.\n\nUn proyecto con ROI positivo el primer año puede volverse caro si necesita retraining constante o depende de un vendor que aumenta precios.\n\nLa alternativa debe mantenerse visible. Compare el sistema no solo contra “no hacer nada”, sino contra reglas, SaaS, automatización simple o un proceso rediseñado.\n\nEl opportunity cost también importa. Capital y equipo dedicados aquí no están disponibles para otro proyecto.\n\nPor eso un portfolio debe comparar ROI ajustado por complejidad y riesgo.\n\nPuede utilizarse una matriz sencilla con cinco dimensiones: valor esperado, confianza en la evidencia, coste de construcción, coste de operación y riesgo.\n\nLos proyectos con alto valor, alta evidencia y complejidad razonable deberían avanzar antes.\n\nLos de alto valor pero baja evidencia necesitan experimentos baratos.\n\nLos de bajo valor y alta complejidad deberían detenerse.\n\nTambién conviene revisar el caso después del lanzamiento. Si el beneficio no aparece, el sistema debe simplificarse, rediseñarse o retirarse.\n\nUna arquitectura no merece existir por el hecho de estar desplegada.\n\nLa documentación final debería dejar claro qué hipótesis justificó cada fase y qué métricas deben seguir confirmándola.\n\nEl framework protege tanto de construir demasiado como de construir demasiado poco.\n\n**Dimensionar bien significa que cada euro adicional de complejidad llega después de una evidencia adicional de valor.** El mejor proyecto no es el más grande ni el más sofisticado: es el que compra suficiente información para decidir cuándo detenerse, cuándo producir y cuándo escalar.",
+      "seo_title": "Framework para dimensionar proyectos de datos o IA",
+      "seo_description": "Cómo dimensionar un proyecto de datos o IA mediante valor esperado, incertidumbre, fases, gates, coste total, riesgo y ROI actualizado.",
+      "seo_keywords": [
+        "data ai project roi framework",
+        "AI project sizing",
+        "data project ROI",
+        "AI investment framework"
+      ],
+      "tags": [
+        "AI Strategy",
+        "Analytics Strategy",
+        "ROI Framework"
+      ]
+    },
+    "en": {
+      "title": "A framework for sizing a data or AI project",
+      "excerpt": "Good sizing aligns expected value, uncertainty, complexity, risk and ownership before deciding how much to build.",
+      "quick": [
+        "Start from value",
+        "Buy evidence in stages",
+        "Scale only what works"
+      ],
+      "section_titles": [
+        "Define the decision and its value",
+        "Separate uncertainty from complexity",
+        "Size through phases and gates",
+        "Measure ROI across the lifecycle"
+      ],
+      "business_title": "A data or AI project should grow in proportion to the value it proves and the uncertainty it removes.",
+      "business_steps": [
+        "Expected value",
+        "Progressive evidence",
+        "Proportional scale"
+      ],
+      "body": "Sizing a data or AI project is not simply estimating how many weeks a team needs to build a solution. A more important question comes first: **how much investment does the problem deserve before there is enough evidence that the technology will create value**.\n\nMany projects are oversized because discovery, prototype, integration, production and scale are bundled into one promise. Others are undersized because the budget covers only the model and ignores everything required to operate the system. **A strong framework separates learning, building and ownership so investment grows as uncertainty falls.**\n\n**Define the decision and its value**\nThe first step is describing the decision to improve.\n\nNot “build a forecasting system”, but decide how much to purchase by SKU and week. Not “create a sales agent”, but reduce preparation time and improve account prioritization before a call.\n\nThen define the current baseline: time, cost, error, capacity and outcome.\n\n**Potential value must exist before the project**, even if the estimate is still rough.\n\nA simple economic range can be enough: conservative, likely and high.\n\nIf reducing stockouts could save between €100,000 and €300,000 per year, that range helps determine a rational investment level.\n\nTheoretical value should also be separated from capturable value. Improvement matters only if the business can act on it.\n\nFrequency multiplies impact. A small improvement in a daily decision can be worth more than a large improvement in an annual one.\n\nError cost matters too. A content recommender has a different risk profile from a system influencing credit, payments or hiring.\n\n**Separate uncertainty from complexity**\nBefore building, identify what is unknown.\n\nThere may be data uncertainty: we do not know whether sufficient signal exists.\n\nProduct uncertainty: we do not know whether users will act on the output.\n\nTechnical uncertainty: latency, integration or scale may not be feasible.\n\nEconomic uncertainty: we do not know whether improvement will exceed cost.\n\n**Each phase should answer a specific uncertainty** rather than accumulate work without a clear question.\n\nThat prevents teams from building infrastructure for questions that a small analysis could answer.\n\nComplexity should also be decomposed. Data, modeling, integration, UX, security, observability, compliance and support have different cost profiles.\n\nNot every use case needs every layer at the same depth.\n\nAn internal prototype may tolerate human review and manual steps. A critical production system requires stronger controls.\n\nDependencies should also be explicit. If the project first requires master-data cleanup or an upstream process redesign, that work belongs inside the real scope.\n\n**Size through phases and gates**\nA strong project can be structured into four phases.\n\nPhase one: discovery. Define decision, data, baseline, economics and risk.\n\nPhase two: proof of value. Test whether signal exists or the workflow improves using a limited prototype.\n\n**The objective is to buy evidence** at the lowest reasonable cost.\n\nPhase three: productionization. Integrate sources, secure permissions, add observability, fallback, testing and ownership.\n\nPhase four: scale. Expand users, geographies, processes or automation after value has been demonstrated.\n\nGates should exist between phases.\n\nMoving from discovery to PoV requires a clear case and enough data.\n\nMoving to production requires material improvement over the baseline.\n\nScaling requires adoption, stability and real economics.\n\nEvery gate should include a stop criterion. Ending a project before production can be a good outcome when evidence does not justify further investment.\n\nPhase budgets can also have ceilings.\n\nThat limits sunk cost and prevents teams from continuing only because money has already been spent.\n\n**Measure ROI across the lifecycle**\nROI should not be calculated once at the beginning and then forgotten.\n\nDuring discovery, use expected value.\n\nDuring the prototype, update assumptions using observed performance.\n\nIn production, include actual infrastructure, support, human review and failure cost.\n\n**The business case should mature at the same speed** as the system.\n\nRealized value matters more than modeled value.\n\nIf forecasting improves but purchasing decisions never change, the benefit has not been captured.\n\nAdoption therefore belongs inside ROI.\n\nOverrides can reveal whether the system fails to represent the real decision.\n\nCost per resolved case, used prediction or hour saved can be more informative than aggregate monthly spend.\n\nFuture maintenance should be included too. Models, APIs and pipelines evolve.\n\nA project that looks attractive in year one can become expensive if it needs constant retraining or relies on a vendor whose prices rise.\n\nAlternatives should remain visible. Compare the system not only with “do nothing” but also with rules, SaaS, simple automation or process redesign.\n\nOpportunity cost matters as well. Team and capital committed here cannot be used elsewhere.\n\nA portfolio should therefore compare ROI adjusted for complexity and risk.\n\nA simple five-dimension matrix can help: expected value, evidence confidence, build cost, run cost and risk.\n\nHigh-value, high-evidence projects with manageable complexity should move first.\n\nHigh-value projects with weak evidence need cheap experiments.\n\nLow-value, high-complexity projects should usually stop.\n\nThe business case should be reviewed after launch. If benefit does not materialize, the system should be simplified, redesigned or retired.\n\nArchitecture does not deserve permanence simply because it has been deployed.\n\nFinal documentation should record which hypothesis justified each phase and which metrics must continue validating it.\n\nThe framework protects against both overbuilding and underbuilding.\n\n**Good sizing means every additional unit of complexity arrives after additional evidence of value.** The strongest project is not the largest or most sophisticated; it is the one that buys enough information to know when to stop, when to productionize and when to scale.",
+      "seo_title": "A Framework for Sizing Data or AI Projects",
+      "seo_description": "How to size a data or AI project using expected value, uncertainty, phases, evidence gates, total cost, risk and continuously updated ROI.",
+      "seo_keywords": [
+        "data ai project roi framework",
+        "AI project sizing",
+        "data project ROI",
+        "AI investment framework"
+      ],
+      "tags": [
+        "AI Strategy",
+        "Analytics Strategy",
+        "ROI Framework"
+      ]
+    },
+    "ca": {
+      "title": "Un framework per dimensionar un projecte de dades o IA",
+      "excerpt": "Dimensionar bé significa alinear valor esperat, incertesa, complexitat, risc i ownership abans de decidir quant construir.",
+      "quick": [
+        "Comença pel valor",
+        "Compra evidència per fases",
+        "Escala només el que funciona"
+      ],
+      "section_titles": [
+        "Defineix la decisió i el seu valor",
+        "Separa incertesa de complexitat",
+        "Dimensiona per fases i gates",
+        "Mesura ROI durant tot el cicle"
+      ],
+      "business_title": "Un projecte de dades o IA ha de créixer en proporció al valor que demostra i a la incertesa que aconsegueix reduir.",
+      "business_steps": [
+        "Valor esperat",
+        "Evidència progressiva",
+        "Escala proporcional"
+      ],
+      "body": "Dimensionar un projecte de dades o IA no consisteix simplement a estimar quantes setmanes necessita un equip per construir una solució. Abans hi ha una pregunta més important: **quanta inversió mereix el problema abans que existeixi prou evidència que la tecnologia generarà valor**.\n\nMolts projectes es sobredimensionen perquè barregen discovery, prototip, integració, producció i escala en una única promesa. Altres es queden curts perquè pressuposten només el model i descobreixen tard tot el que exigeix operar el sistema. **Un bon framework separa aprenentatge, construcció i ownership perquè la inversió creixi a mesura que baixa la incertesa.**\n\n**Defineix la decisió i el seu valor**\nEl primer pas és descriure la decisió que volem millorar.\n\nNo “crear un sistema de forecasting”, sinó decidir quant comprar per SKU i setmana. No “fer un agent comercial”, sinó reduir temps de preparació i millorar la priorització abans d’una trucada.\n\nDesprés defineix el baseline actual: temps, cost, error, capacitat i outcome.\n\n**El valor potencial ha d’existir abans del projecte**, encara que l’estimació sigui aproximada.\n\nPodem construir un rang econòmic: conservador, probable i alt.\n\nSi reduir stockouts pot estalviar entre 100.000 i 300.000 euros anuals, aquest rang ajuda a decidir quina inversió és raonable.\n\nTambé cal separar valor teòric de valor capturable. Una millora només importa si el negoci pot actuar-hi.\n\nLa freqüència multiplica impacte. Una petita millora en una decisió diària pot valer més que una gran millora en una decisió anual.\n\nEl cost de l’error també entra. Un recommender de contingut té un perfil de risc diferent d’un sistema que afecta crèdit, pagaments o contractació.\n\n**Separa incertesa de complexitat**\nAbans de construir, identifica què no sabem.\n\nPot existir incertesa de dades: no sabem si hi ha prou senyal.\n\nIncertesa de producte: no sabem si els usuaris utilitzaran l’output.\n\nIncertesa tècnica: no sabem si latència, integració o escala són viables.\n\nIncertesa econòmica: no sabem si la millora pagarà el cost.\n\n**Cada fase hauria de respondre una incertesa concreta** i no acumular feina sense una pregunta clara.\n\nAixò evita construir infraestructura per preguntes que un petit anàlisi podia resoldre.\n\nLa complexitat també s’ha de descompondre. Dades, models, integració, UX, seguretat, observabilitat, compliance i suport tenen costos diferents.\n\nNo tots els casos necessiten totes les capes amb la mateixa profunditat.\n\nUn prototip intern pot tolerar revisió humana i passos manuals. Un sistema crític necessita controls molt més forts.\n\nTambé convé identificar dependències. Si el projecte exigeix primer netejar master data o redissenyar un procés upstream, aquesta inversió forma part de l’abast real.\n\n**Dimensiona per fases i gates**\nUn bon projecte es pot estructurar en quatre fases.\n\nFase u: discovery. Definir decisió, dades, baseline, economics i risc.\n\nFase dos: proof of value. Provar si existeix senyal o si el workflow millora amb un prototip limitat.\n\n**L’objectiu és comprar evidència** al menor cost raonable.\n\nFase tres: productionization. Integrar fonts, assegurar permisos, afegir observabilitat, fallback, testing i ownership.\n\nFase quatre: scale. Expandir usuaris, regions, processos o automatització després de demostrar valor.\n\nEntre fases han d’existir gates.\n\nPer passar de discovery a PoV necessitem un cas clar i prou dades.\n\nPer passar a producció necessitem una millora material respecte al baseline.\n\nPer escalar necessitem adopció, estabilitat i economics reals.\n\nCada gate ha de tenir criteri de stop. Tancar un projecte abans de producció pot ser una bona conclusió si l’evidència no justifica més inversió.\n\nTambé es poden definir pressupostos màxims per fase.\n\nAixò limita sunk cost i evita continuar només perquè ja s’ha gastat.\n\n**Mesura ROI durant tot el cicle**\nEl ROI no s’hauria de calcular una sola vegada al principi.\n\nDurant discovery utilitzem valor esperat.\n\nDurant el prototip actualitzem amb performance observada.\n\nEn producció incorporem cost real d’infraestructura, suport, revisió humana i fallades.\n\n**El business case ha de madurar al mateix ritme** que el sistema.\n\nCal mesurar valor realitzat i no només modelat.\n\nSi el forecasting millora però compres no modifica comandes, el benefici encara no existeix.\n\nL’adopció forma part del ROI.\n\nEls overrides poden mostrar si el sistema no representa la decisió real.\n\nCost per cas resolt, predicció utilitzada o hora estalviada pot ser més útil que despesa mensual agregada.\n\nTambé cal incloure manteniment futur. Models, APIs i pipelines evolucionen.\n\nUn projecte amb bon ROI el primer any pot tornar-se car si necessita retraining constant o depèn d’un vendor que puja preus.\n\nL’alternativa ha de continuar visible. Compara el sistema no només amb “no fer res”, sinó amb regles, SaaS, automatització simple o redisseny de procés.\n\nOpportunity cost també importa. Equip i capital dedicats aquí no estan disponibles per un altre projecte.\n\nPer això un portfolio ha de comparar ROI ajustat per complexitat i risc.\n\nUna matriu simple de cinc dimensions pot ajudar: valor esperat, confiança en evidència, cost de build, cost d’operació i risc.\n\nProjectes d’alt valor, alta evidència i complexitat raonable haurien d’avançar abans.\n\nProjectes d’alt valor però baixa evidència necessiten experiments barats.\n\nProjectes de baix valor i alta complexitat haurien d’aturar-se.\n\nEl business case s’ha de revisar després del llançament. Si el benefici no apareix, el sistema s’ha de simplificar, redissenyar o retirar.\n\nUna arquitectura no mereix permanència només perquè estigui desplegada.\n\nLa documentació final ha de deixar clar quina hipòtesi justificava cada fase i quines mètriques han de continuar validant-la.\n\nEl framework protegeix tant de construir massa com de construir massa poc.\n\n**Dimensionar bé significa que cada unitat addicional de complexitat arriba després d’una unitat addicional d’evidència de valor.** El millor projecte no és el més gran ni el més sofisticat: és el que compra prou informació per saber quan aturar-se, quan produir i quan escalar.",
+      "seo_title": "Framework per dimensionar projectes de dades o IA",
+      "seo_description": "Com dimensionar un projecte de dades o IA amb valor esperat, incertesa, fases, gates, cost total, risc i ROI actualitzat.",
+      "seo_keywords": [
+        "data ai project roi framework",
+        "AI project sizing",
+        "data project ROI",
+        "AI investment framework"
+      ],
+      "tags": [
+        "AI Strategy",
+        "Analytics Strategy",
+        "ROI Framework"
+      ]
+    }
+  }
+}

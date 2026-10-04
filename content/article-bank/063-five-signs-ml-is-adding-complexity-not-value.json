@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-063",
+  "sequence": 63,
+  "arc_id": "ARC-16",
+  "slug": "five-signs-ml-is-adding-complexity-not-value",
+  "scheduled_at": "2027-03-11T09:00:00+01:00",
+  "knowledge_area": "risk_decision",
+  "cluster": "Machine Learning",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "diagnose",
+  "angle": "machine learning value",
+  "primary_keyword": "machine learning value",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-061",
+    "KB-062",
+    "KB-064"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cinco señales de que ML añade complejidad, no valor",
+      "excerpt": "Un modelo puede parecer sofisticado y aportar poco. Baseline débil, mejora marginal, baja adopción, drift y costes operativos son señales claras.",
+      "quick": [
+        "La mejora debe ser material",
+        "La operación debe usar el modelo",
+        "El coste total importa"
+      ],
+      "section_titles": [
+        "La mejora frente al baseline es mínima",
+        "El modelo no cambia decisiones reales",
+        "Producción consume más de lo que devuelve",
+        "La complejidad crece más rápido que el valor"
+      ],
+      "business_title": "Machine learning deja de aportar valor cuando su mejora incremental no compensa complejidad, mantenimiento, riesgo y fricción operativa.",
+      "business_steps": [
+        "Mejora incremental",
+        "Uso real",
+        "Coste total"
+      ],
+      "body": "Un proyecto de machine learning puede verse técnicamente sólido y, aun así, aportar muy poco al negocio. El modelo tiene buenas métricas, una arquitectura moderna y una pipeline bien construida, pero **la decisión final apenas cambia o el coste de operar el sistema consume gran parte del beneficio**.\n\nEl problema no es utilizar ML. El problema es asumir que más complejidad implica más valor. **Hay señales bastante claras de que el sistema está resolviendo una mejora técnica que no merece su coste empresarial.**\n\n**La mejora frente al baseline es mínima**\nLa primera señal es una ganancia pequeña frente a una alternativa sencilla. Un modelo avanzado puede mejorar AUC, RMSE o F1 unas décimas respecto a una regla o modelo interpretable.\n\nEsa mejora puede ser estadísticamente real y económicamente irrelevante. **La pregunta correcta es cuánto cambia la decisión y cuánto valor adicional genera.**\n\nSi el ranking de top casos apenas cambia, si la política de acción es la misma o si el beneficio esperado aumenta muy poco, la complejidad quizá no se justifica.\n\nTambién conviene observar la robustez. Una mejora que desaparece en otro periodo, región o segmento no debería financiar una arquitectura permanente.\n\nEl baseline debe ser fuerte. Comparar un modelo sofisticado contra una alternativa deliberadamente débil infla el valor aparente.\n\n**El modelo no cambia decisiones reales**\nLa segunda señal es baja utilización. El score existe, pero usuarios lo ignoran, lo revisan manualmente siempre o continúan usando criterios anteriores.\n\nEsto puede indicar falta de confianza, mala integración o que el output no está conectado con la capacidad operativa. **Un modelo no crea valor por producir una predicción; crea valor cuando cambia una acción de forma útil.**\n\nTambién puede ocurrir que el modelo prediga algo que nadie puede modificar. Saber que un cliente tiene alta probabilidad de churn aporta poco si no existe una intervención disponible.\n\nLos overrides son información importante. Si la mayoría de recomendaciones se corrigen por razones recurrentes, puede faltar contexto o una regla empresarial no modelada.\n\nUna señal especialmente clara es que retirar temporalmente el modelo no cambia los resultados operativos.\n\n**Producción consume más de lo que devuelve**\nLa tercera señal es un coste operativo alto: pipelines frágiles, features difíciles, retraining frecuente, incidencias, latencia y muchas horas de soporte.\n\nUn modelo puede ser mejor en laboratorio y peor como producto. **La comparación correcta incluye total cost of ownership, no solo performance predictiva.**\n\nTambién hay coste de dependencia. Si solo una persona entiende el sistema, cada cambio genera riesgo.\n\nLa monitorización puede revelar drift constante. Si el modelo necesita recalibrarse muy a menudo para mantener una mejora pequeña, quizá la relación que intenta aprender no es suficientemente estable.\n\nOtro coste es governance. Documentación, aprobación, explicabilidad o controles regulatorios pueden hacer que una ganancia marginal deje de compensar.\n\n**La complejidad crece más rápido que el valor**\nLa cuarta señal es que cada nueva mejora requiere más capas: más features, más reglas especiales, más modelos por segmento o más infraestructura.\n\nEsto puede indicar que el sistema está luchando contra un proceso mal definido. **Cuando el modelo necesita excepciones constantes, quizá el problema está en los datos o en la política, no en la capacidad predictiva.**\n\nLa quinta señal es que nadie puede explicar qué decisión está optimizando el sistema. El equipo habla de métricas de modelo, pero no de economics, capacidad o coste de errores.\n\nEn ese punto, la sofisticación técnica ha separado el modelo del negocio.\n\nLa respuesta no siempre es eliminar ML. Puede ser simplificar. Reducir features, volver a un modelo interpretable, combinar reglas y ML o limitar el modelo a una parte donde sí aporta lift.\n\nTambién conviene revisar el target. Un objetivo mal definido puede obligar al modelo a capturar ruido. Cambiar la decisión o el label puede generar más valor que probar otro algoritmo.\n\nOtra opción es cambiar la frecuencia. Un modelo que no justifica scoring en tiempo real puede tener sentido semanalmente.\n\nEl sistema debería compararse periódicamente contra el baseline. **Si deja de superarlo de forma material, la complejidad debe volver a justificarse desde cero.**\n\nTambién es útil calcular valor por unidad de coste: beneficio incremental frente a infraestructura, horas de equipo y riesgo operacional.\n\nLa adopción debe medirse. Porcentaje de recomendaciones utilizadas, overrides y outcomes posteriores muestran si el sistema realmente participa en la decisión.\n\nFinalmente, hay que aceptar que simplificar puede ser una mejora. Una solución menos sofisticada puede ser más estable, auditable y barata, generando mayor valor neto.\n\nLa señal definitiva es esta: **si el modelo mejora métricas pero no mejora una decisión suficientemente como para pagar su complejidad, ML se ha convertido en coste técnico en lugar de ventaja operativa.**",
+      "seo_title": "Cinco señales de que ML no aporta valor",
+      "seo_description": "Cómo detectar cuándo machine learning añade complejidad sin suficiente valor mediante baseline, adopción, drift, costes y mejora incremental.",
+      "seo_keywords": [
+        "machine learning value",
+        "ML complexity",
+        "machine learning ROI",
+        "ML business value"
+      ],
+      "tags": [
+        "Machine Learning",
+        "ML Value",
+        "Diagnostics"
+      ]
+    },
+    "en": {
+      "title": "Five signs ML is adding complexity, not value",
+      "excerpt": "A model can look sophisticated and add little. Weak baseline gains, low adoption, drift and operating cost are clear warning signs.",
+      "quick": [
+        "Improvement must be material",
+        "Operations must use the model",
+        "Total cost matters"
+      ],
+      "section_titles": [
+        "Improvement over baseline is marginal",
+        "The model does not change real decisions",
+        "Production costs more than it returns",
+        "Complexity grows faster than value"
+      ],
+      "business_title": "Machine learning stops creating value when incremental improvement no longer compensates for complexity, maintenance, risk and operating friction.",
+      "business_steps": [
+        "Incremental lift",
+        "Real use",
+        "Total cost"
+      ],
+      "body": "A machine-learning project can be technically strong and still contribute very little to the business. Metrics look good, the architecture is modern and the pipeline is well engineered, but **the final decision barely changes or the cost of operating the system consumes much of the benefit**.\n\nThe problem is not ML itself. The problem is assuming that more complexity automatically means more value. **There are clear signals that a system is solving a technical improvement that does not justify its business cost.**\n\n**Improvement over baseline is marginal**\nThe first sign is a small gain over a simple alternative. An advanced model may improve AUC, RMSE or F1 by a few points relative to a rule or interpretable baseline.\n\nThat gain can be statistically real and economically irrelevant. **The right question is how much the decision changes and how much incremental value appears.**\n\nIf the top-ranked cases barely change, the action policy remains the same or expected profit improves only slightly, the complexity may not be justified.\n\nRobustness matters too. A gain that disappears in another period, region or segment should not finance a permanent architecture.\n\nThe baseline must be strong. Comparing a sophisticated model against an intentionally weak alternative exaggerates apparent value.\n\n**The model does not change real decisions**\nThe second sign is low usage. The score exists, but users ignore it, review everything manually or continue relying on previous criteria.\n\nThat may indicate low trust, poor integration or an output disconnected from operational capacity. **A model creates value only when its prediction changes an action in a useful way.**\n\nThe model may also predict something nobody can influence. Knowing that a customer is likely to churn adds little when no intervention exists.\n\nOverrides provide important evidence. If most recommendations are changed for recurring reasons, context or business policy may be missing.\n\nA particularly strong signal is that temporarily removing the model has almost no effect on operational outcomes.\n\n**Production costs more than it returns**\nThe third sign is high operating cost: fragile pipelines, expensive features, frequent retraining, incidents, latency and continuous support.\n\nA model can be better in the lab and worse as a product. **The right comparison includes total cost of ownership, not only predictive performance.**\n\nDependency matters too. If only one person understands the system, every change introduces operational risk.\n\nMonitoring may reveal constant drift. If the model requires frequent recalibration to preserve a small advantage, the relationship may not be stable enough to justify ML.\n\nGovernance also has cost. Documentation, approval, explainability and regulatory controls can make marginal lift unattractive.\n\n**Complexity grows faster than value**\nThe fourth sign is that every new improvement requires another layer: more features, more special rules, more segment-specific models or more infrastructure.\n\nThat may indicate the system is compensating for a poorly defined process. **When a model needs constant exceptions, the problem may sit in data or policy rather than predictive capability.**\n\nThe fifth sign is that nobody can explain which business decision the system is optimizing. The team talks about model metrics but not economics, capacity or error cost.\n\nAt that point technical sophistication has become detached from the operating decision.\n\nThe answer is not always to remove ML. Simplification may be enough: fewer features, a more interpretable model, hybrid rules plus ML or narrowing the model to the part of the problem where it produces clear lift.\n\nTarget definition should also be reviewed. A poor label can force the model to learn noise. Redesigning the decision or target may create more value than testing another algorithm.\n\nFrequency can change too. A model that does not justify real-time scoring may still be valuable weekly.\n\nThe system should be compared periodically with the baseline. **If it stops outperforming the baseline materially, complexity should be justified again from first principles.**\n\nValue per unit of cost is useful: incremental benefit divided by infrastructure, team time and operating risk.\n\nAdoption should be monitored through recommendation usage, overrides and downstream outcomes.\n\nIt is also important to accept that simplification can be progress. A less sophisticated solution may be more stable, auditable and cheaper, creating higher net value.\n\nThe decisive signal is straightforward: **if the model improves metrics but does not improve the decision enough to pay for its complexity, ML has become technical cost rather than operating advantage.**",
+      "seo_title": "Five Signs Machine Learning Is Not Adding Value",
+      "seo_description": "How to detect when machine learning adds complexity without enough value using baselines, adoption, drift, operating cost and incremental lift.",
+      "seo_keywords": [
+        "machine learning value",
+        "ML complexity",
+        "machine learning ROI",
+        "ML business value"
+      ],
+      "tags": [
+        "Machine Learning",
+        "ML Value",
+        "Diagnostics"
+      ]
+    },
+    "ca": {
+      "title": "Cinc senyals que ML afegeix complexitat, no valor",
+      "excerpt": "Un model pot semblar sofisticat i aportar poc. Millora marginal, baixa adopció, drift i costos operatius són senyals clars.",
+      "quick": [
+        "La millora ha de ser material",
+        "L’operació ha d’utilitzar el model",
+        "El cost total importa"
+      ],
+      "section_titles": [
+        "La millora respecte al baseline és mínima",
+        "El model no canvia decisions reals",
+        "Producció costa més del que retorna",
+        "La complexitat creix més ràpid que el valor"
+      ],
+      "business_title": "Machine learning deixa de crear valor quan la millora incremental no compensa complexitat, manteniment, risc i fricció operativa.",
+      "business_steps": [
+        "Millora incremental",
+        "Ús real",
+        "Cost total"
+      ],
+      "body": "Un projecte de machine learning pot ser tècnicament sòlid i, tot i així, aportar molt poc al negoci. Les mètriques són bones, l’arquitectura és moderna i la pipeline està ben construïda, però **la decisió final gairebé no canvia o el cost d’operar el sistema consumeix gran part del benefici**.\n\nEl problema no és utilitzar ML. El problema és assumir que més complexitat implica més valor. **Hi ha senyals bastant clars que el sistema està resolent una millora tècnica que no mereix el seu cost empresarial.**\n\n**La millora respecte al baseline és mínima**\nEl primer senyal és un guany petit respecte a una alternativa senzilla. Un model avançat pot millorar AUC, RMSE o F1 unes dècimes davant una regla o baseline interpretable.\n\nAquesta millora pot ser estadísticament real i econòmicament irrellevant. **La pregunta correcta és quant canvia la decisió i quant valor addicional genera.**\n\nSi el ranking de casos gairebé no canvia, la política d’acció és la mateixa o el benefici esperat puja molt poc, la complexitat pot no justificar-se.\n\nTambé importa la robustesa. Una millora que desapareix en un altre període, regió o segment no hauria de finançar una arquitectura permanent.\n\nEl baseline ha de ser fort. Comparar un model sofisticat contra una alternativa deliberadament feble infla el valor aparent.\n\n**El model no canvia decisions reals**\nEl segon senyal és baixa utilització. El score existeix, però els usuaris l’ignoren, revisen tot manualment o continuen amb criteris anteriors.\n\nAixò pot indicar poca confiança, mala integració o un output desconnectat de la capacitat operativa. **Un model només crea valor quan la predicció modifica una acció de forma útil.**\n\nTambé pot predir alguna cosa que ningú pot canviar. Saber que un client té risc de churn aporta poc si no existeix cap intervenció.\n\nEls overrides són evidència important. Si la majoria de recomanacions es canvien per motius recurrents, pot faltar context o política empresarial.\n\nUn senyal especialment clar és que retirar temporalment el model gairebé no canvia els resultats.\n\n**Producció costa més del que retorna**\nEl tercer senyal és cost operatiu alt: pipelines fràgils, features cares, retraining freqüent, incidències, latència i suport continu.\n\nUn model pot ser millor al laboratori i pitjor com a producte. **La comparació correcta inclou total cost of ownership, no només performance predictiva.**\n\nTambé hi ha cost de dependència. Si només una persona entén el sistema, cada canvi genera risc.\n\nLa monitorització pot revelar drift constant. Si cal recalibrar sovint per mantenir una millora petita, la relació pot no ser prou estable.\n\nGovernance també té cost. Documentació, aprovació, explicabilitat i controls regulatoris poden fer que un lift marginal deixi de compensar.\n\n**La complexitat creix més ràpid que el valor**\nEl quart senyal és que cada millora necessita més capes: més features, més regles especials, més models per segment o més infraestructura.\n\nAixò pot indicar que el sistema compensa un procés mal definit. **Quan el model necessita excepcions constants, el problema pot estar en dades o policy i no en capacitat predictiva.**\n\nEl cinquè senyal és que ningú sap explicar quina decisió empresarial optimitza el sistema. L’equip parla de mètriques de model però no d’economics, capacitat o cost d’error.\n\nEn aquest punt la sofisticació tècnica s’ha separat del negoci.\n\nLa resposta no sempre és eliminar ML. Pot ser simplificar: menys features, un model més interpretable, combinar regles i ML o limitar-lo a la part on sí aporta lift.\n\nTambé convé revisar el target. Un label mal definit pot obligar el model a aprendre soroll. Redissenyar la decisió pot aportar més valor que provar un altre algoritme.\n\nLa freqüència també pot canviar. Un model que no justifica scoring en temps real pot tenir sentit setmanalment.\n\nEl sistema s’ha de comparar periòdicament amb el baseline. **Si deixa de superar-lo de manera material, la complexitat s’ha de tornar a justificar des de zero.**\n\nTambé és útil calcular valor per unitat de cost: benefici incremental davant infraestructura, hores d’equip i risc operacional.\n\nL’adopció s’ha de mesurar amb ús de recomanacions, overrides i outcomes posteriors.\n\nFinalment, simplificar pot ser una millora. Una solució menys sofisticada pot ser més estable, auditable i barata, generant més valor net.\n\nEl senyal definitiu és simple: **si el model millora mètriques però no millora la decisió prou per pagar la seva complexitat, ML s’ha convertit en cost tècnic en lloc d’avantatge operatiu.**",
+      "seo_title": "Cinc senyals que ML no aporta valor",
+      "seo_description": "Com detectar quan machine learning afegeix complexitat sense prou valor mitjançant baseline, adopció, drift, costos i millora incremental.",
+      "seo_keywords": [
+        "machine learning value",
+        "ML complexity",
+        "machine learning ROI",
+        "ML business value"
+      ],
+      "tags": [
+        "Machine Learning",
+        "ML Value",
+        "Diagnostics"
+      ]
+    }
+  }
+}

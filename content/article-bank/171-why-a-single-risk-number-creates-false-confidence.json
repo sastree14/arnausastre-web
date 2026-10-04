@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-171",
+  "sequence": 171,
+  "arc_id": "ARC-43",
+  "slug": "why-a-single-risk-number-creates-false-confidence",
+  "scheduled_at": "2027-11-27T09:00:00+01:00",
+  "knowledge_area": "finance",
+  "cluster": "Finance, Risk & Pricing",
+  "editorial_pillar": "models_methods_decision_science",
+  "content_family": "point_of_view_contrarian",
+  "angle": "var limitations",
+  "primary_keyword": "var limitations",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-169",
+    "KB-170",
+    "KB-172"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué un único número de riesgo crea falsa confianza",
+      "excerpt": "Un solo indicador puede resumir exposición, pero también ocultar colas, concentración, liquidez, correlaciones inestables y riesgo de modelo.",
+      "quick": [
+        "Un número no describe toda la distribución",
+        "La agregación puede ocultar concentración",
+        "El contexto importa tanto como la métrica"
+      ],
+      "section_titles": [
+        "La simplicidad comunica, pero también oculta",
+        "La cola no cabe en un único punto",
+        "La agregación puede esconder el verdadero driver",
+        "Construye una vista de riesgo por capas"
+      ],
+      "business_title": "Los números agregados sirven para resumir, pero una decisión de riesgo necesita entender qué mueve la cifra, qué escenarios la rompen y qué acciones existen.",
+      "business_steps": [
+        "Resumen",
+        "Descomposición",
+        "Escenarios"
+      ],
+      "body": "Los equipos de riesgo necesitan resumir información compleja. VaR, Expected Shortfall, volatility, probability of default o un score agregado permiten comunicar rápidamente exposición. El problema aparece cuando **una métrica de resumen empieza a tratarse como si fuera una descripción completa del riesgo**.\n\nUn único número puede ser consistente, comparable y útil para límites. También puede generar una sensación de precisión que el sistema no merece. **La compresión de información siempre elimina contexto; la pregunta es si estamos eliminando precisamente el contexto que importa para decidir.**\n\n**La simplicidad comunica, pero también oculta**\nUn comité necesita cifras que puedan entenderse y comparar entre periodos.\n\nEse requisito es legítimo. Sin agregación, la discusión puede perderse entre miles de posiciones, factores y escenarios.\n\nPero una cifra puede parecer más estable de lo que realmente es porque resume múltiples fuentes de incertidumbre.\n\n**El número final no muestra cuánto depende de supuestos, datos o metodología**.\n\nUn VaR puede cambiar por exposición real, pero también por volatilidad estimada, correlaciones o ventana histórica.\n\nUna probability of default puede variar por comportamiento del cliente o por recalibración del modelo.\n\nSi management observa solo el output, puede atribuir un cambio a la causa equivocada.\n\nPor eso el resumen necesita metadatos: método, horizonte, confianza, fecha, versión y principales drivers.\n\n**La cola no cabe en un único punto**\nUna métrica puntual rara vez describe completamente los outcomes extremos.\n\nVaR muestra un cuantil, pero no cuánto se pierde más allá. Expected Shortfall resume la cola, pero tampoco identifica la forma exacta de todos los escenarios.\n\n**Diferentes distribuciones pueden producir el mismo número agregado y riesgos económicamente distintos**.\n\nLas colas pueden ser gruesas, asimétricas o multimodales.\n\nTambién pueden existir discontinuidades por opciones, garantías, covenants o triggers contractuales.\n\nLa liquidez puede amplificar pérdidas cuando muchas posiciones necesitan venderse al mismo tiempo.\n\nLas correlaciones también pueden aumentar bajo estrés y romper relaciones observadas en periodos normales.\n\nPor eso el tail risk necesita escenarios explícitos y no solo una estadística resumen.\n\n**La agregación puede esconder el verdadero driver**\nUn portfolio diversificado a nivel agregado puede esconder una concentración crítica en un factor común.\n\nDos líneas de negocio diferentes pueden depender de la misma variable macroeconómica.\n\nUn modelo puede mostrar riesgo estable mientras una posición individual crece y otra compensa temporalmente.\n\n**La compensación matemática no siempre equivale a diversificación económica**.\n\nTambién puede haber concentración por cliente, sector, geografía, vencimiento o proveedor de liquidez.\n\nEl desglose por contribución al riesgo permite localizar qué posiciones explican la cifra agregada.\n\nLas sensitivities ayudan a entender cómo cambia el valor ante movimientos pequeños en factores.\n\nLos stress scenarios muestran qué ocurre cuando varios factores se mueven a la vez de manera adversa.\n\nSin esa descomposición, un límite agregado puede cumplirse y seguir existiendo vulnerabilidad estructural.\n\n**Construye una vista de riesgo por capas**\nUna arquitectura útil puede empezar con un indicador ejecutivo, pero debe permitir drill-down.\n\nPrimera capa: exposición agregada y límites.\n\nSegunda: distribución y métricas de cola.\n\nTercera: contribución por posición, segmento o factor.\n\nCuarta: escenarios históricos e hipotéticos.\n\nQuinta: riesgos no capturados directamente por el modelo, como liquidez, operación o dependencia de datos.\n\n**La vista ejecutiva debe ser simple; la arquitectura de riesgo no tiene por qué serlo**.\n\nTambién conviene mostrar incertidumbre de modelo. Ranges, confidence intervals o comparación entre metodologías pueden revelar cuánto depende la cifra de supuestos.\n\nBacktesting aporta evidencia sobre calibration.\n\nLos cambios metodológicos deben versionarse para evitar confundir una mejora de modelo con una reducción real de exposición.\n\nEl dashboard puede incluir drivers principales y explainers breves para no obligar al usuario a interpretar números aislados.\n\nLos límites deben conectarse con acciones. Superar un nivel puede activar revisión, reducción de exposición, hedge o aumento de capital.\n\nEl stress testing necesita escenarios relevantes para el negocio, no solo shocks genéricos.\n\nTambién conviene revisar reverse stress testing: qué combinación de eventos llevaría al sistema a una pérdida o incumplimiento crítico.\n\nEsto ayuda a descubrir vulnerabilidades que ninguna métrica central estaba buscando.\n\nLa frecuencia debe adaptarse a la velocidad del riesgo. Algunas exposiciones cambian intradía; otras, trimestralmente.\n\nLa gobernanza debe definir quién puede cambiar modelos, límites y supuestos.\n\nFinalmente, la comunicación debería evitar frases como “el riesgo es 5 millones” sin explicar qué significa exactamente.\n\n**Un número de riesgo es una interfaz, no la realidad subyacente.** Sirve para resumir una parte del problema, pero la confianza debe venir de la capacidad de descomponerlo, estresarlo y entender qué ocurre cuando los supuestos dejan de funcionar.",
+      "seo_title": "Limitaciones de VaR y métricas únicas de riesgo",
+      "seo_description": "Por qué un único número de riesgo puede ocultar colas, concentración, liquidez, correlaciones y riesgo de modelo, y cómo construir una vista más robusta.",
+      "seo_keywords": [
+        "var limitations",
+        "single risk metric",
+        "risk aggregation",
+        "tail risk"
+      ],
+      "tags": [
+        "Finance",
+        "Risk",
+        "Risk Management"
+      ]
+    },
+    "en": {
+      "title": "Why a single risk number creates false confidence",
+      "excerpt": "One metric can summarize exposure while hiding tails, concentration, liquidity, unstable correlations and model risk.",
+      "quick": [
+        "One number cannot describe the whole distribution",
+        "Aggregation can hide concentration",
+        "Context matters as much as the metric"
+      ],
+      "section_titles": [
+        "Simplicity communicates and conceals",
+        "The tail does not fit into one point",
+        "Aggregation can hide the real driver",
+        "Build a layered risk view"
+      ],
+      "business_title": "Aggregate numbers are useful summaries, but risk decisions require understanding what drives the number, which scenarios break it and which actions are available.",
+      "business_steps": [
+        "Summary",
+        "Decomposition",
+        "Scenarios"
+      ],
+      "body": "Risk teams need to compress complex information. VaR, Expected Shortfall, volatility, probability of default and other aggregate measures make exposure easier to communicate. The problem begins when **a summary metric is treated as though it were a complete description of risk**.\n\nOne number can be consistent, comparable and useful for limits. It can also create a sense of precision the underlying system does not deserve. **Compression always removes context; the key question is whether the removed context is exactly what matters for the decision.**\n\n**Simplicity communicates and conceals**\nCommittees need numbers that can be understood and compared through time.\n\nThat is a legitimate requirement. Without aggregation, discussion can disappear into thousands of positions, factors and scenarios.\n\nBut one figure can appear more stable than the system behind it because several sources of uncertainty are compressed together.\n\n**The final number does not reveal how much it depends on assumptions, data or methodology**.\n\nVaR can move because exposure changes, but also because estimated volatility, correlation or the historical window changes.\n\nA probability of default can move because customer behaviour changes or because the model is recalibrated.\n\nIf management sees only the output, it may attribute a change to the wrong cause.\n\nThat is why the summary needs metadata: method, horizon, confidence, date, version and major drivers.\n\n**The tail does not fit into one point**\nA point metric rarely describes extreme outcomes completely.\n\nVaR identifies a quantile but not the severity beyond it. Expected Shortfall summarizes average tail loss but still does not show every scenario shape.\n\n**Different distributions can generate the same aggregate metric while representing economically different risks**.\n\nTails can be heavy, skewed or multimodal.\n\nDiscontinuities may come from options, guarantees, covenants or contractual triggers.\n\nLiquidity can amplify losses when many positions need to be exited simultaneously.\n\nCorrelations can also rise under stress and break relationships observed during normal periods.\n\nTail risk therefore needs explicit scenarios rather than a single summary statistic.\n\n**Aggregation can hide the real driver**\nA portfolio that looks diversified at aggregate level may still contain a critical common-factor concentration.\n\nTwo business lines can appear separate while depending on the same macroeconomic variable.\n\nA risk metric may remain stable because one position grows while another temporarily offsets it.\n\n**Mathematical offset is not always economic diversification**.\n\nConcentration can also exist by customer, sector, geography, maturity or liquidity provider.\n\nRisk-contribution analysis helps identify which positions drive the aggregate number.\n\nSensitivities show how value changes under small movements in underlying factors.\n\nStress scenarios reveal what happens when several factors move adversely at the same time.\n\nWithout decomposition, an aggregate limit can be respected while structural vulnerability remains.\n\n**Build a layered risk view**\nA useful architecture can begin with an executive metric and still allow drill-down.\n\nLayer one: aggregate exposure and limits.\n\nLayer two: distribution and tail measures.\n\nLayer three: contribution by position, segment or factor.\n\nLayer four: historical and hypothetical scenarios.\n\nLayer five: risks not fully represented by the core model, such as liquidity, operations or data dependency.\n\n**The executive view should be simple; the risk architecture does not need to be**.\n\nModel uncertainty should also be visible. Ranges, confidence intervals or comparison across methodologies can show sensitivity to assumptions.\n\nBacktesting provides evidence about calibration.\n\nMethodology changes should be versioned so that model changes are not confused with genuine exposure reduction.\n\nDashboards can include main drivers and short explainers rather than forcing users to interpret isolated numbers.\n\nLimits should connect to action. A breach can trigger review, exposure reduction, hedging or additional capital.\n\nStress testing should use scenarios relevant to the business rather than generic shocks alone.\n\nReverse stress testing can ask which combination of events would create a critical loss or breach.\n\nThat can reveal vulnerabilities a central metric was never designed to search for.\n\nMonitoring frequency should match the speed of risk. Some exposures change intraday; others move quarterly.\n\nGovernance should define who may change models, limits and assumptions.\n\nCommunication should avoid statements such as “risk is €5 million” without explaining exactly what that means.\n\n**A risk number is an interface, not the underlying reality.** It is valuable for summarizing part of the problem, but confidence should come from the ability to decompose, stress and understand the system when assumptions stop holding.",
+      "seo_title": "VaR Limitations and the Risk of One Number",
+      "seo_description": "Why a single risk number can hide tails, concentration, liquidity, unstable correlation and model risk, and how to build a layered risk view.",
+      "seo_keywords": [
+        "var limitations",
+        "single risk metric",
+        "risk aggregation",
+        "tail risk"
+      ],
+      "tags": [
+        "Finance",
+        "Risk",
+        "Risk Management"
+      ]
+    },
+    "ca": {
+      "title": "Per què un únic número de risc crea falsa confiança",
+      "excerpt": "Un sol indicador pot resumir exposició, però també ocultar cues, concentració, liquiditat, correlacions inestables i risc de model.",
+      "quick": [
+        "Un número no descriu tota la distribució",
+        "L’agregació pot ocultar concentració",
+        "El context importa tant com la mètrica"
+      ],
+      "section_titles": [
+        "La simplicitat comunica, però també oculta",
+        "La cua no cap en un únic punt",
+        "L’agregació pot amagar el driver real",
+        "Construeix una vista de risc per capes"
+      ],
+      "business_title": "Els números agregats serveixen per resumir, però una decisió de risc necessita entendre què mou la xifra, quins escenaris la trenquen i quines accions existeixen.",
+      "business_steps": [
+        "Resum",
+        "Descomposició",
+        "Escenaris"
+      ],
+      "body": "Els equips de risc necessiten comprimir informació complexa. VaR, Expected Shortfall, volatility, probability of default o altres mesures agregades faciliten comunicar exposició. El problema apareix quan **una mètrica de resum es tracta com si fos una descripció completa del risc**.\n\nUn únic número pot ser consistent, comparable i útil per límits. També pot generar una sensació de precisió que el sistema no mereix. **Comprimir informació sempre elimina context; la pregunta és si estem eliminant justament el context que importa per decidir.**\n\n**La simplicitat comunica, però també oculta**\nEls comitès necessiten xifres que es puguin entendre i comparar al llarg del temps.\n\nÉs un requisit legítim. Sense agregació, la discussió es pot perdre entre milers de posicions, factors i escenaris.\n\nPerò una xifra pot semblar més estable del que realment és perquè resumeix diverses fonts d’incertesa.\n\n**El número final no mostra quant depèn de supòsits, dades o metodologia**.\n\nUn VaR pot canviar perquè canvia l’exposició, però també per volatilitat estimada, correlacions o finestra històrica.\n\nUna probability of default pot variar per comportament del client o per recalibració.\n\nSi management veu només l’output, pot atribuir el canvi a una causa equivocada.\n\nPer això el resum necessita metadades: mètode, horitzó, confiança, data, versió i drivers principals.\n\n**La cua no cap en un únic punt**\nUna mètrica puntual rarament descriu completament els outcomes extrems.\n\nVaR mostra un quantil, però no quant es perd més enllà. Expected Shortfall resumeix la cua, però tampoc mostra la forma exacta de tots els escenaris.\n\n**Distribucions diferents poden produir el mateix número agregat i riscos econòmicament diferents**.\n\nLes cues poden ser gruixudes, asimètriques o multimodals.\n\nTambé poden existir discontinuïtats per opcions, garanties, covenants o triggers contractuals.\n\nLa liquiditat pot amplificar pèrdues quan moltes posicions s’han de vendre al mateix temps.\n\nLes correlacions poden augmentar sota estrès i trencar relacions observades en períodes normals.\n\nPer això el tail risk necessita escenaris explícits i no només una estadística resum.\n\n**L’agregació pot amagar el driver real**\nUn portfolio que sembla diversificat pot contenir una concentració crítica en un factor comú.\n\nDues línies de negoci diferents poden dependre de la mateixa variable macroeconòmica.\n\nUna mètrica pot quedar estable mentre una posició creix i una altra la compensa temporalment.\n\n**La compensació matemàtica no sempre és diversificació econòmica**.\n\nTambé hi pot haver concentració per client, sector, geografia, venciment o proveïdor de liquiditat.\n\nLa contribució al risc permet localitzar quines posicions expliquen la xifra agregada.\n\nLes sensitivities mostren com canvia el valor davant petits moviments.\n\nEls stress scenarios mostren què passa quan diversos factors es mouen alhora de forma adversa.\n\nSense descomposició, es pot complir un límit agregat i continuar existint vulnerabilitat estructural.\n\n**Construeix una vista de risc per capes**\nUna arquitectura útil pot començar amb un indicador executiu i permetre drill-down.\n\nPrimera capa: exposició agregada i límits.\n\nSegona: distribució i mètriques de cua.\n\nTercera: contribució per posició, segment o factor.\n\nQuarta: escenaris històrics i hipotètics.\n\nCinquena: riscos no capturats completament pel model, com liquiditat, operació o dependència de dades.\n\n**La vista executiva ha de ser simple; l’arquitectura de risc no cal que ho sigui**.\n\nTambé convé mostrar incertesa de model. Rangs, confidence intervals o comparacions metodològiques revelen sensibilitat als supòsits.\n\nBacktesting aporta evidència sobre calibration.\n\nEls canvis de metodologia s’han de versionar per no confondre una modificació del model amb una reducció real d’exposició.\n\nEl dashboard pot incloure drivers principals i explicacions breus.\n\nEls límits han d’estar connectats amb accions: revisió, reducció d’exposició, hedge o capital.\n\nStress testing necessita escenaris rellevants pel negoci, no només shocks genèrics.\n\nReverse stress testing pot preguntar quina combinació d’events portaria a una pèrdua o breach crític.\n\nAixò ajuda a descobrir vulnerabilitats que cap mètrica central estava buscant.\n\nLa freqüència s’ha d’adaptar a la velocitat del risc. Algunes exposicions canvien intradia; altres, trimestralment.\n\nGovernance ha de definir qui pot canviar models, límits i supòsits.\n\nLa comunicació ha d’evitar frases com “el risc és 5 milions” sense explicar què significa exactament.\n\n**Un número de risc és una interfície, no la realitat subjacent.** Serveix per resumir una part del problema, però la confiança ha de venir de poder descompondre, estressar i entendre el sistema quan els supòsits deixen de funcionar.",
+      "seo_title": "Limitacions de VaR i mètriques úniques de risc",
+      "seo_description": "Per què un únic número de risc pot ocultar cues, concentració, liquiditat, correlacions i risc de model, i com construir una vista robusta.",
+      "seo_keywords": [
+        "var limitations",
+        "single risk metric",
+        "risk aggregation",
+        "tail risk"
+      ],
+      "tags": [
+        "Finance",
+        "Risk",
+        "Risk Management"
+      ]
+    }
+  }
+}

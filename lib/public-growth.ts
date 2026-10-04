@@ -27,6 +27,7 @@ export interface PublicGeneratedArticle {
   cta_type?: string | null
   cta_url?: string | null
   hashtags?: string[] | null
+  critique?: Record<string, unknown> | null
 }
 
 export function isPublicGeneratedArticleNow(article: PublicGeneratedArticle) {
@@ -45,7 +46,7 @@ export async function getPublicGeneratedArticles(): Promise<PublicGeneratedArtic
     const rows = await queryGrowthTable<PublicGeneratedArticle>('content_items', {
       content_type: 'eq.article',
       order: 'published_at.desc.nullslast,created_at.desc',
-      limit: '200',
+      limit: '1000',
     })
     return rows.filter(isPublicGeneratedArticleNow)
   } catch (error) {

@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-104",
+  "sequence": 104,
+  "arc_id": "ARC-26",
+  "slug": "when-to-move-beyond-dashboards",
+  "scheduled_at": "2027-06-15T09:00:00+02:00",
+  "knowledge_area": "analytics",
+  "cluster": "Analytics & Decision Intelligence",
+  "editorial_pillar": "consulting_decision_insights",
+  "content_family": "decision_guide",
+  "angle": "when dashboard not enough",
+  "primary_keyword": "when dashboard not enough",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-101",
+    "KB-102",
+    "KB-103"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cuándo ir más allá de un dashboard",
+      "excerpt": "Un dashboard deja de ser suficiente cuando la decisión sigue siendo lenta, inconsistente o manual después de ver los datos.",
+      "quick": [
+        "Si ver no cambia la acción, falta una capa",
+        "La repetición favorece formalizar decisiones",
+        "La complejidad debe comprar impacto"
+      ],
+      "section_titles": [
+        "Detecta si el problema es visibilidad o decisión",
+        "Busca trabajo manual después del dashboard",
+        "Evalúa frecuencia, impacto y variabilidad",
+        "Escala por niveles, no de golpe"
+      ],
+      "business_title": "Hay que ir más allá del dashboard cuando el principal cuello de botella ya no es ver la información, sino convertirla en una decisión mejor.",
+      "business_steps": [
+        "Diagnóstico",
+        "Formalización",
+        "Evolución"
+      ],
+      "body": "No todas las empresas necesitan convertir cada dashboard en un sistema de decisión. A veces el problema es simplemente no disponer de una visión común y fiable. En ese caso, un buen dashboard puede ser suficiente. Pero **cuando los datos ya están visibles y la decisión sigue siendo lenta, inconsistente o manual, probablemente falta otra capa**.\n\nLa pregunta no es si podemos añadir IA, simulación u optimización. Es si hacerlo resolvería un cuello de botella real. **Ir más allá del dashboard tiene sentido cuando el coste principal está entre entender la señal y ejecutar una respuesta.**\n\n**Detecta si el problema es visibilidad o decisión**\nEl primer diagnóstico es muy simple: ¿qué ocurre después de que el usuario ve el dashboard?\n\nSi la visualización responde la pregunta y el usuario puede actuar con criterio suficiente, quizá no necesitamos más.\n\nSi, en cambio, empieza una cadena de exports, reuniones, cálculos y consultas adicionales, **el dashboard está mostrando el problema pero no soportando la decisión completa**.\n\nTambién conviene observar qué preguntas se repiten. “¿Qué debería priorizar?”, “¿qué pasaría si cambiamos este parámetro?”, “¿qué opción tiene más impacto?”.\n\nEse tipo de preguntas indican una necesidad de simulación, recomendación o policy.\n\nOtra señal es la ambigüedad entre usuarios. Si cada persona interpreta la misma señal de forma distinta, puede faltar lógica explícita.\n\n**Busca trabajo manual después del dashboard**\nEl mejor indicador suele estar fuera de la herramienta.\n\n¿Los usuarios descargan CSVs? ¿Abren Excel? ¿Cruzan información con el ERP? ¿Calculan escenarios manualmente? ¿Envían emails para decidir?\n\n**Cada paso manual recurrente después del dashboard es una pista** sobre la siguiente capa de valor.\n\nNo significa que todo deba automatizarse.\n\nQuizá basta con incorporar una calculadora, una comparación de escenarios o una recomendación simple.\n\nEn otros casos, puede tener sentido integrar el botón de acción directamente con el sistema operativo.\n\nTambién debemos distinguir trabajo manual valioso de trabajo manual mecánico. Pensar estratégicamente puede seguir siendo humano; copiar datos entre sistemas no suele merecerlo.\n\nEl diseño debe eliminar fricción sin eliminar juicio donde aporta valor.\n\n**Evalúa frecuencia, impacto y variabilidad**\nNo todas las decisiones justifican el mismo nivel de inversión.\n\nUna decisión diaria sobre miles de casos puede beneficiarse mucho de formalización.\n\nUna decisión anual de alta complejidad puede requerir análisis personalizado en lugar de automatización.\n\n**Frecuencia multiplica el valor de una mejora pequeña**; impacto justifica control y variabilidad determina cuánto puede estandarizarse.\n\nTambién importa el coste del error.\n\nSi una mala decisión cuesta poco, una recomendación aproximada puede ser suficiente.\n\nSi una mala decisión afecta crédito, seguridad, contratos o grandes importes, necesitaremos más trazabilidad, validación y aprobación.\n\nLa capacidad operativa también debe entrar. Un sistema puede detectar 5.000 oportunidades, pero si el equipo solo procesa 100, la recomendación debe priorizar.\n\nOtro criterio es estabilidad. Si la policy cambia cada semana por negociación o contexto, automatizar demasiado pronto puede ser contraproducente.\n\n**Escala por niveles, no de golpe**\nLa evolución desde reporting puede hacerse por capas.\n\nPrimer nivel: mejores alertas y excepciones.\n\nSegundo: diagnóstico guiado y drill-down.\n\nTercero: escenarios what-if.\n\nCuarto: recomendaciones.\n\nQuinto: acciones asistidas.\n\nSexto: automatización parcial o total donde el riesgo lo permite.\n\n**No hace falta saltar de un dashboard a un agente autónomo** para mejorar una decisión.\n\nCada nivel debería demostrar valor antes de añadir el siguiente.\n\nPor ejemplo, un sistema de inventario puede empezar mostrando riesgo de stockout, después simular pedidos, luego recomendar cantidades y finalmente automatizar casos de bajo riesgo.\n\nEl feedback debe capturarse desde el principio.\n\nSi el usuario ignora recomendaciones, necesitamos saber por qué.\n\nLos overrides pueden revelar restricciones ausentes o reglas que todavía no están formalizadas.\n\nLa trazabilidad debe aumentar con la autonomía.\n\nTambién conviene mantener un baseline. ¿La nueva capa mejora realmente tiempo, calidad o resultado frente al proceso anterior?\n\nEl éxito no debería medirse por clicks ni por número de features.\n\nMejor medir reducción de tiempo hasta decisión, menor error, mayor margen, menor stock, mejor conversión o el outcome correspondiente.\n\nLa adopción importa, pero como medio. Un sistema muy usado que no cambia outcomes sigue teniendo un problema de valor.\n\nLa arquitectura debe conservar reversibilidad. Si una recomendación falla, el usuario necesita entenderla, rechazarla y continuar.\n\nLas excepciones deben ser explícitas.\n\nTambién debemos diseñar para uncertainty. No todas las decisiones tendrán una opción claramente dominante.\n\nEn esos casos, mostrar escenarios y trade-offs puede ser mejor que producir una recomendación falsa de precisión.\n\nEl diseño comercial también importa. Una interfaz clara debe mostrar qué merece atención y qué puede esperar.\n\nFinalmente, la siguiente capa no tiene por qué ser IA. Puede ser optimización, reglas, simulación o simplemente una mejor integración entre sistemas.\n\n**Hay que ir más allá de un dashboard cuando el principal problema ya no es saber qué está pasando, sino decidir qué hacer a continuación de forma consistente y con menos fricción.** Ahí es donde analytics empieza a convertirse en infraestructura de decisión.",
+      "seo_title": "Cuándo un dashboard deja de ser suficiente",
+      "seo_description": "Cómo detectar cuándo una empresa necesita ir más allá de reporting hacia simulación, recomendación, integración o automatización de decisiones.",
+      "seo_keywords": [
+        "when dashboard not enough",
+        "beyond dashboards",
+        "decision intelligence",
+        "decision support"
+      ],
+      "tags": [
+        "Analytics",
+        "Decision Intelligence",
+        "Dashboards"
+      ]
+    },
+    "en": {
+      "title": "When to move beyond dashboards",
+      "excerpt": "A dashboard stops being enough when the decision remains slow, inconsistent or manual after the data is already visible.",
+      "quick": [
+        "If seeing does not change action, a layer is missing",
+        "Repetition favours formalization",
+        "Complexity must buy impact"
+      ],
+      "section_titles": [
+        "Detect whether the problem is visibility or decision",
+        "Look for manual work after the dashboard",
+        "Evaluate frequency, impact and variability",
+        "Scale by levels rather than all at once"
+      ],
+      "business_title": "Move beyond dashboards when the main bottleneck is no longer seeing information but turning it into a better decision.",
+      "business_steps": [
+        "Diagnosis",
+        "Formalization",
+        "Evolution"
+      ],
+      "body": "Not every company needs to turn every dashboard into a decision system. Sometimes the problem is simply the absence of a shared and trusted view. In that situation, a strong dashboard may be enough. But **when data is already visible and the decision remains slow, inconsistent or manual, another layer is probably missing**.\n\nThe question is not whether AI, simulation or optimization can be added. It is whether doing so solves a real bottleneck. **Moving beyond the dashboard makes sense when the main cost sits between understanding the signal and executing a response.**\n\n**Detect whether the problem is visibility or decision**\nThe first diagnostic is simple: what happens after the user views the dashboard?\n\nIf the visualization answers the question and the user can act with sufficient judgement, more complexity may not be needed.\n\nIf instead a chain of exports, meetings, calculations and additional queries begins, **the dashboard is showing the problem without supporting the complete decision.**\n\nRepeated questions are another signal. “What should we prioritize?”, “what happens if this parameter changes?”, “which option creates more value?”.\n\nThose questions point toward simulation, recommendation or explicit policy.\n\nVariation between users matters too. If people interpret the same signal very differently, decision logic may not be explicit enough.\n\n**Look for manual work after the dashboard**\nThe strongest evidence often sits outside the tool.\n\nDo users download CSVs? Open Excel? Cross-reference ERP data? Calculate scenarios manually? Send email threads to decide?\n\n**Every recurring manual step after the dashboard is a clue** about the next layer of value.\n\nThat does not mean everything should be automated.\n\nA calculator, scenario comparison or simple recommendation may be enough.\n\nIn other cases, it may be valuable to integrate a direct action into the operating system.\n\nManual work should also be separated into valuable judgement and mechanical work. Strategic reasoning may remain human; copying data between systems usually should not.\n\nThe design should remove friction without removing judgement where judgement adds value.\n\n**Evaluate frequency, impact and variability**\nNot every decision justifies the same investment.\n\nA daily decision applied to thousands of cases may gain significant value from formalization.\n\nAn annual, highly complex decision may still require bespoke analysis rather than automation.\n\n**Frequency multiplies the value of small improvements**; impact justifies control and variability determines how much can be standardized.\n\nError cost matters too.\n\nIf a poor decision is cheap, an approximate recommendation may be sufficient.\n\nIf it affects credit, safety, contracts or large amounts, stronger validation, traceability and approval become necessary.\n\nOperating capacity should also be included. A system may identify 5,000 opportunities, but if the team can process only 100, the recommendation must prioritize.\n\nStability is another criterion. If policy changes every week through negotiation or context, automating too early can be counterproductive.\n\n**Scale by levels rather than all at once**\nThe evolution from reporting can happen in layers.\n\nFirst: better alerts and exception handling.\n\nSecond: guided diagnosis and drill-down.\n\nThird: what-if scenarios.\n\nFourth: recommendations.\n\nFifth: assisted actions.\n\nSixth: partial or full automation where risk allows it.\n\n**There is no need to jump directly from a dashboard to an autonomous agent** to improve a decision.\n\nEach level should demonstrate value before the next is added.\n\nAn inventory system, for example, might begin by highlighting stockout risk, then simulate orders, then recommend quantities and finally automate low-risk cases.\n\nFeedback should be captured from the beginning.\n\nIf users reject recommendations, the system needs to know why.\n\nOverrides can reveal missing constraints or rules that have not yet been formalized.\n\nTraceability should increase as autonomy increases.\n\nA baseline should remain. Does the new layer actually improve time, quality or outcome relative to the previous process?\n\nSuccess should not be measured through clicks or feature count.\n\nBetter metrics include time-to-decision, error reduction, margin improvement, stock reduction, conversion or the relevant outcome.\n\nAdoption matters, but as a means. A heavily used system that does not improve outcomes still has a value problem.\n\nArchitecture should preserve reversibility. If a recommendation is wrong, users need to understand it, reject it and continue.\n\nExceptions should be explicit.\n\nUncertainty also needs design. Some decisions will not have one clearly dominant action.\n\nIn those cases, showing scenarios and trade-offs may be better than forcing a falsely precise recommendation.\n\nCommercial UX matters too. A clear interface should show what needs attention now and what can wait.\n\nFinally, the next layer does not need to be AI. It may be optimization, rules, simulation or simply stronger integration.\n\n**Move beyond dashboards when the core problem is no longer knowing what is happening, but deciding what to do next consistently and with less friction.** That is where analytics begins to become decision infrastructure.",
+      "seo_title": "When a Dashboard Is Not Enough",
+      "seo_description": "How to identify when a business should move beyond reporting toward simulation, recommendations, integration or decision automation.",
+      "seo_keywords": [
+        "when dashboard not enough",
+        "beyond dashboards",
+        "decision intelligence",
+        "decision support"
+      ],
+      "tags": [
+        "Analytics",
+        "Decision Intelligence",
+        "Dashboards"
+      ]
+    },
+    "ca": {
+      "title": "Quan anar més enllà d’un dashboard",
+      "excerpt": "Un dashboard deixa de ser suficient quan la decisió continua sent lenta, inconsistent o manual després de veure les dades.",
+      "quick": [
+        "Si veure no canvia l’acció, falta una capa",
+        "La repetició afavoreix formalitzar",
+        "La complexitat ha de comprar impacte"
+      ],
+      "section_titles": [
+        "Detecta si el problema és visibilitat o decisió",
+        "Busca feina manual després del dashboard",
+        "Avalua freqüència, impacte i variabilitat",
+        "Escala per nivells, no de cop"
+      ],
+      "business_title": "Cal anar més enllà del dashboard quan el coll d’ampolla principal ja no és veure la informació, sinó convertir-la en una decisió millor.",
+      "business_steps": [
+        "Diagnòstic",
+        "Formalització",
+        "Evolució"
+      ],
+      "body": "No totes les empreses necessiten convertir cada dashboard en un sistema de decisió. A vegades el problema és simplement no tenir una visió comuna i fiable. En aquest cas, un bon dashboard pot ser suficient. Però **quan les dades ja són visibles i la decisió continua sent lenta, inconsistent o manual, probablement falta una altra capa**.\n\nLa pregunta no és si podem afegir IA, simulació o optimització. És si fer-ho resol un coll d’ampolla real. **Anar més enllà del dashboard té sentit quan el cost principal està entre entendre la senyal i executar una resposta.**\n\n**Detecta si el problema és visibilitat o decisió**\nEl primer diagnòstic és simple: què passa després que l’usuari veu el dashboard?\n\nSi la visualització respon la pregunta i l’usuari pot actuar amb criteri suficient, potser no cal més.\n\nSi, en canvi, comença una cadena d’exports, reunions, càlculs i consultes, **el dashboard mostra el problema però no suporta la decisió completa.**\n\nTambé convé observar preguntes repetides: “què hauríem de prioritzar?”, “què passa si canviem aquest paràmetre?”, “quina opció té més impacte?”.\n\nAquestes preguntes indiquen necessitat de simulació, recomanació o policy.\n\nUna altra senyal és la diferència entre usuaris. Si cadascú interpreta la mateixa senyal de manera molt diferent, pot faltar lògica explícita.\n\n**Busca feina manual després del dashboard**\nEl millor indicador acostuma a estar fora de l’eina.\n\nEls usuaris descarreguen CSV? Obren Excel? Creuen dades amb l’ERP? Calculen escenaris manualment? Envien emails per decidir?\n\n**Cada pas manual recurrent després del dashboard és una pista** sobre la següent capa de valor.\n\nAixò no significa automatitzar-ho tot.\n\nPotser basta una calculadora, comparació d’escenaris o recomanació simple.\n\nEn altres casos, pot tenir sentit integrar l’acció directament amb el sistema operatiu.\n\nTambé hem de distingir treball manual valuós de treball mecànic. Pensar estratègicament pot continuar sent humà; copiar dades entre sistemes no acostuma a merèixer-ho.\n\nEl disseny ha d’eliminar fricció sense eliminar judici allà on aporta valor.\n\n**Avalua freqüència, impacte i variabilitat**\nNo totes les decisions justifiquen el mateix nivell d’inversió.\n\nUna decisió diària sobre milers de casos pot guanyar molt amb formalització.\n\nUna decisió anual molt complexa pot requerir anàlisi a mida i no automatització.\n\n**La freqüència multiplica el valor d’una millora petita**; l’impacte justifica control i la variabilitat determina quant es pot estandarditzar.\n\nTambé importa el cost de l’error.\n\nSi una mala decisió costa poc, una recomanació aproximada pot ser suficient.\n\nSi afecta crèdit, seguretat, contractes o grans imports, necessitarem més validació, traçabilitat i aprovació.\n\nLa capacitat operativa també ha d’entrar. Un sistema pot detectar 5.000 oportunitats, però si l’equip només en processa 100, la recomanació ha de prioritzar.\n\nUn altre criteri és estabilitat. Si la policy canvia cada setmana per negociació o context, automatitzar massa aviat pot ser contraproduent.\n\n**Escala per nivells, no de cop**\nL’evolució des de reporting pot fer-se per capes.\n\nPrimer: millors alertes i excepcions.\n\nSegon: diagnòstic guiat i drill-down.\n\nTercer: escenaris what-if.\n\nQuart: recomanacions.\n\nCinquè: accions assistides.\n\nSisè: automatització parcial o total quan el risc ho permet.\n\n**No cal saltar directament d’un dashboard a un agent autònom** per millorar una decisió.\n\nCada nivell ha de demostrar valor abans d’afegir el següent.\n\nUn sistema d’inventari pot començar mostrant risc de stockout, després simular comandes, recomanar quantitats i finalment automatitzar casos de baix risc.\n\nEl feedback s’ha de capturar des del principi.\n\nSi l’usuari ignora recomanacions, necessitem saber per què.\n\nEls overrides poden revelar restriccions absents o regles encara no formalitzades.\n\nLa traçabilitat ha d’augmentar amb l’autonomia.\n\nTambé convé mantenir un baseline. La nova capa millora realment temps, qualitat o outcome respecte al procés anterior?\n\nL’èxit no s’hauria de mesurar per clicks ni nombre de features.\n\nMillor mesurar reducció de temps fins a decisió, menys errors, més marge, menys stock, més conversió o l’outcome corresponent.\n\nL’adopció importa, però com a mitjà. Un sistema molt utilitzat que no millora outcomes continua tenint un problema de valor.\n\nL’arquitectura ha de conservar reversibilitat. Si una recomanació falla, l’usuari ha de poder entendre-la, rebutjar-la i continuar.\n\nLes excepcions han de ser explícites.\n\nTambé hem de dissenyar per uncertainty. No totes les decisions tindran una opció clarament dominant.\n\nEn aquests casos, mostrar escenaris i trade-offs pot ser millor que forçar una recomanació falsament precisa.\n\nEl disseny comercial també importa. Una interfície clara ha de mostrar què necessita atenció i què pot esperar.\n\nFinalment, la següent capa no ha de ser IA. Pot ser optimització, regles, simulació o millor integració.\n\n**Cal anar més enllà d’un dashboard quan el problema principal ja no és saber què està passant, sinó decidir què fer després de manera consistent i amb menys fricció.** Aquí és on analytics comença a convertir-se en infraestructura de decisió.",
+      "seo_title": "Quan un dashboard deixa de ser suficient",
+      "seo_description": "Com detectar quan una empresa necessita anar més enllà de reporting cap a simulació, recomanació, integració o automatització de decisions.",
+      "seo_keywords": [
+        "when dashboard not enough",
+        "beyond dashboards",
+        "decision intelligence",
+        "decision support"
+      ],
+      "tags": [
+        "Analytics",
+        "Decision Intelligence",
+        "Dashboards"
+      ]
+    }
+  }
+}

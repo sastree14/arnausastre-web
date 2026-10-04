@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-131",
+  "sequence": 131,
+  "arc_id": "ARC-33",
+  "slug": "why-real-time-projects-overbuild-the-problem",
+  "scheduled_at": "2027-08-22T09:00:00+02:00",
+  "knowledge_area": "business_systems",
+  "cluster": "Data Engineering & Architecture",
+  "editorial_pillar": "technology_platforms_business_systems",
+  "content_family": "failure_modes_mistakes",
+  "angle": "real time architecture overengineering",
+  "primary_keyword": "real time architecture overengineering",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-129",
+    "KB-130",
+    "KB-132"
+  ],
+  "variants": {
+    "es": {
+      "title": "Por qué muchos proyectos real time sobredimensionan el problema",
+      "excerpt": "Streaming se sobredimensiona cuando se diseña para latencias que el negocio no necesita, se duplican caminos de datos y se añade operación antes de validar el caso de uso.",
+      "quick": [
+        "Menos latencia no siempre crea más valor",
+        "Streaming introduce nuevas fallas",
+        "Near real time suele capturar gran parte del beneficio"
+      ],
+      "section_titles": [
+        "Se confunde frescura con valor",
+        "La arquitectura se diseña para el peor caso",
+        "La operación se vuelve más difícil de lo necesario",
+        "La solución empieza antes de medir el problema"
+      ],
+      "business_title": "Un proyecto real time está sobredimensionado cuando la complejidad añadida supera el valor económico de reaccionar antes.",
+      "business_steps": [
+        "Latencia",
+        "Complejidad",
+        "Valor"
+      ],
+      "body": "Muchos proyectos real time empiezan con una conclusión antes que con una pregunta. El objetivo se formula como “necesitamos streaming”, “queremos datos al segundo” o “todo debe actualizarse en tiempo real”. Pero **la arquitectura puede acabar optimizando una latencia que el negocio nunca necesitó**.\n\nEl resultado es una plataforma técnicamente sofisticada con brokers, consumers, schemas, observability y on-call, mientras la decisión real podría haberse resuelto con micro-batch o actualizaciones cada pocos minutos. **Sobredimensionar no significa que la tecnología esté mal; significa que el nivel de complejidad no está respaldado por el valor del caso de uso.**\n\n**Se confunde frescura con valor**\nVer un dato antes no garantiza actuar mejor.\n\nUn dashboard comercial puede actualizarse cada diez segundos y aun así ser revisado dos veces al día.\n\nUna alerta puede llegar en tiempo real y quedarse veinte minutos en una cola humana.\n\n**La latencia útil termina en** la acción, no en la pantalla.\n\nEl error aparece cuando se mide freshness del dato sin medir business lag.\n\nBusiness lag incluye ingestión, procesamiento, interpretación, decisión y ejecución.\n\nSi la mayor parte del retraso está después de la pipeline, acelerar ingestión apenas cambia el resultado.\n\nTambién conviene preguntar qué ocurre si el dato llega cinco minutos tarde.\n\nSi la respuesta es “prácticamente nada”, quizá la arquitectura no necesita streaming continuo.\n\n**La arquitectura se diseña para el peor caso**\nOtro patrón frecuente es diseñar toda la plataforma para el requisito más exigente.\n\nUn único caso necesita segundos y, por comodidad arquitectónica, todos los datasets pasan a una infraestructura real time.\n\n**El requisito más estricto no** debería convertirse automáticamente en el estándar para todo.\n\nCada capa de garantía cuesta.\n\nOrdering, exactly-once semantics, stateful processing, replay, schema evolution y high availability añaden diseño y operación.\n\nNo todos los eventos necesitan el mismo nivel de consistencia.\n\nTampoco todos los consumers necesitan la misma latencia.\n\nUna arquitectura más eficiente clasifica workloads por SLA y aplica el nivel adecuado a cada uno.\n\nPuede existir streaming en la entrada y procesamiento por ventanas para analytics.\n\nO batch para la mayoría y una pequeña ruta real time para decisiones críticas.\n\n**La operación se vuelve más difícil de lo necesario**\nStreaming cambia la naturaleza de los fallos.\n\nEn batch, una ejecución fallida puede reintentarse desde un punto conocido.\n\nEn tiempo real, debemos entender eventos duplicados, fuera de orden, consumidores atrasados, lag y estado parcialmente procesado.\n\n**La complejidad operativa también** es una forma de coste.\n\nEso exige observability más sofisticada, runbooks, capacidad de replay y equipos preparados para incidentes.\n\nUn sistema puede reducir latencia técnica y aumentar tiempo de recuperación cuando algo falla.\n\nTambién puede aparecer fatiga de alertas si cada consumer genera sus propias señales.\n\nLa seguridad se complica cuando eventos atraviesan múltiples sistemas.\n\nLos cambios de schema requieren coordinación para no romper consumers.\n\nSi el equipo todavía está resolviendo problemas básicos de data quality, añadir streaming puede multiplicar ruido en lugar de crear valor.\n\n**La solución empieza antes de medir el problema**\nEl mayor error es construir antes de cuantificar la ventana de decisión.\n\nPrimero debería medirse cuánto valor se pierde por minuto, hora o día de retraso.\n\n**Sin una curva de coste** de latencia, no existe una base sólida para decidir cuánto real time comprar.\n\nDespués conviene probar una solución mínima.\n\nTal vez un batch cada quince minutos resuelve el 90 % del problema.\n\nSi no, reducimos a cinco minutos. Después a uno.\n\nSolo cuando la mejora adicional siga generando valor merece la pena avanzar hacia streaming continuo.\n\nEste enfoque permite descubrir el punto donde la complejidad deja de compensar.\n\nTambién reduce riesgo de construir infraestructura para una hipótesis no validada.\n\nLa frecuencia de decisión debe compararse con la frecuencia de datos.\n\nNo tiene sentido recalcular un score cada segundo si la variable principal cambia una vez al día.\n\nLa capacidad de respuesta también debe estar alineada. Un equipo que solo puede atender cien casos por hora no necesita millones de señales por minuto sin priorización.\n\nPuede ser más útil invertir en ranking, triage o automatización de acciones.\n\nOtra señal de sobredimensionamiento es duplicar lógica batch y streaming.\n\nMantener dos implementaciones de la misma regla aumenta riesgo de inconsistencias.\n\nSi la plataforma moderna permite incremental processing con un único código, conviene aprovecharlo.\n\nEl coste también debe incluir personas. Streaming suele exigir perfiles más especializados y soporte operativo continuo.\n\nUna arquitectura menos sofisticada puede liberar capacidad para mejorar calidad de datos o lógica de decisión, generando más valor.\n\nTambién conviene revisar si real time es un requisito del usuario o una suposición del equipo técnico.\n\nEn muchos productos, usuarios prefieren datos fiables y consistentes a una pantalla que cambia constantemente.\n\nLa resiliencia importa. Si una interrupción de cinco minutos destruye la operación, el sistema necesita un nivel de ingeniería mucho mayor.\n\nEse requisito también debe justificarse con impacto.\n\nFinalmente, la arquitectura debería poder degradarse. Un fallback a datos recientes o batch evita que una incidencia streaming paralice el negocio.\n\n**Los proyectos real time se sobredimensionan cuando empiezan por la velocidad en lugar de empezar por el coste de llegar tarde.** La mejor arquitectura no minimiza latencia absoluta; minimiza la distancia entre complejidad técnica y valor operativo.",
+      "seo_title": "Por qué los proyectos real time se sobredimensionan",
+      "seo_description": "Cómo detectar overengineering en arquitecturas real time cuando latencia, streaming y complejidad superan el valor real del caso de uso.",
+      "seo_keywords": [
+        "real time architecture overengineering",
+        "streaming overengineering",
+        "real time data architecture",
+        "data latency"
+      ],
+      "tags": [
+        "Real Time Data",
+        "Streaming",
+        "Architecture"
+      ]
+    },
+    "en": {
+      "title": "Why real-time projects overbuild the problem",
+      "excerpt": "Streaming is overbuilt when architecture targets latency the business does not need, duplicates data paths and adds operations before the use case is validated.",
+      "quick": [
+        "Lower latency does not always create more value",
+        "Streaming introduces new failure modes",
+        "Near real time often captures most of the benefit"
+      ],
+      "section_titles": [
+        "Freshness is confused with value",
+        "Architecture is designed for the worst case",
+        "Operations become harder than necessary",
+        "The solution starts before the problem is measured"
+      ],
+      "business_title": "A real-time project is overbuilt when added complexity exceeds the economic value of reacting sooner.",
+      "business_steps": [
+        "Latency",
+        "Complexity",
+        "Value"
+      ],
+      "body": "Many real-time projects begin with a conclusion rather than a question. The objective is framed as “we need streaming”, “we want second-level freshness” or “everything should update in real time”. But **architecture can end up optimizing latency the business never needed**.\n\nThe result is a technically sophisticated platform with brokers, consumers, schemas, observability and on-call responsibility while the real decision could have been served by micro-batch or updates every few minutes. **Overbuilding does not mean the technology is wrong; it means complexity is not supported by use-case value.**\n\n**Freshness is confused with value**\nSeeing data sooner does not guarantee better action.\n\nA commercial dashboard can refresh every ten seconds and still be reviewed twice per day.\n\nAn alert can arrive instantly and remain in a human queue for twenty minutes.\n\n**Useful latency ends at the** action, not at the screen.\n\nThe mistake is measuring data freshness without measuring business lag.\n\nBusiness lag includes ingestion, processing, interpretation, decision and execution.\n\nIf most delay occurs after the pipeline, faster ingestion barely changes the result.\n\nA useful question is what happens if data arrives five minutes late.\n\nIf the answer is “almost nothing”, continuous streaming may not be necessary.\n\n**Architecture is designed for the worst case**\nAnother common pattern is designing the whole platform around the strictest requirement.\n\nOne workflow needs seconds, and every dataset is pushed into real-time infrastructure for architectural consistency.\n\n**The strictest requirement should not** automatically become the standard for everything.\n\nEvery guarantee has a cost.\n\nOrdering, exactly-once semantics, stateful processing, replay, schema evolution and high availability add design and operating burden.\n\nNot every event needs the same consistency level.\n\nNot every consumer needs the same latency.\n\nA more efficient architecture classifies workloads by SLA and applies the appropriate level to each.\n\nStreaming may exist at ingestion while analytics processes data in windows.\n\nOr batch can handle most workloads with a small real-time path for critical decisions.\n\n**Operations become harder than necessary**\nStreaming changes the nature of failure.\n\nIn batch, a failed execution can often restart from a known point.\n\nIn real time, teams must understand duplicates, out-of-order events, lagging consumers and partially processed state.\n\n**Operating complexity is also** a form of cost.\n\nThat requires stronger observability, runbooks, replay capability and incident readiness.\n\nA system can reduce technical latency while increasing recovery time when it fails.\n\nAlert fatigue can also appear when every consumer emits its own signals.\n\nSecurity becomes more complex as events move across several systems.\n\nSchema changes need coordination so downstream consumers do not break.\n\nIf the team is still solving basic data-quality problems, streaming can multiply noise rather than create value.\n\n**The solution starts before the problem is measured**\nThe biggest mistake is building before quantifying the decision window.\n\nThe team should first estimate how much value is lost per minute, hour or day of delay.\n\n**Without a latency-cost curve, there** is no strong basis for deciding how much real time to buy.\n\nThen test the smallest viable solution.\n\nPerhaps a fifteen-minute batch solves 90% of the problem.\n\nIf not, reduce it to five minutes, then one.\n\nOnly when additional reduction continues to create value is continuous streaming justified.\n\nThis approach reveals the point at which complexity stops paying.\n\nIt also reduces the risk of building infrastructure for an unvalidated assumption.\n\nDecision frequency should be compared with data frequency.\n\nThere is little value in recalculating a score every second when the main driver changes once per day.\n\nResponse capacity should also align. A team able to review one hundred cases per hour does not need millions of unprioritized signals per minute.\n\nInvestment in ranking, triage or automated action may create more value.\n\nAnother sign of overbuilding is duplicated batch and streaming logic.\n\nMaintaining two implementations of one rule increases inconsistency risk.\n\nIf the platform supports incremental processing from common logic, that can simplify the architecture.\n\nPeople cost belongs in the calculation too. Streaming often requires more specialized skills and continuous operational support.\n\nA simpler architecture may free capacity to improve data quality or decision logic instead.\n\nIt is also worth checking whether real time is a user requirement or a technical assumption.\n\nMany users prefer reliable, consistent information over a screen that constantly changes.\n\nResilience matters as well. If a five-minute outage destroys business value, engineering requirements become much higher.\n\nThat requirement should be justified economically too.\n\nFinally, architecture should degrade safely. A fallback to recent data or batch processing can prevent streaming incidents from stopping the business.\n\n**Real-time projects overbuild the problem when they begin with speed instead of the cost of being late.** The best architecture does not minimize absolute latency; it minimizes the gap between technical complexity and operating value.",
+      "seo_title": "Why Real-Time Architectures Become Overengineered",
+      "seo_description": "How to detect overengineering when real-time latency, streaming complexity and operating burden exceed the actual value of the use case.",
+      "seo_keywords": [
+        "real time architecture overengineering",
+        "streaming overengineering",
+        "real time data architecture",
+        "data latency"
+      ],
+      "tags": [
+        "Real Time Data",
+        "Streaming",
+        "Architecture"
+      ]
+    },
+    "ca": {
+      "title": "Per què molts projectes real time sobredimensionen el problema",
+      "excerpt": "Streaming es sobredimensiona quan es dissenya per latències que el negoci no necessita, duplica camins de dades i afegeix operació abans de validar el cas.",
+      "quick": [
+        "Menys latència no sempre crea més valor",
+        "Streaming introdueix noves fallades",
+        "Near real time captura sovint gran part del benefici"
+      ],
+      "section_titles": [
+        "Es confon frescor amb valor",
+        "L’arquitectura es dissenya pel pitjor cas",
+        "L’operació es torna més difícil del necessari",
+        "La solució comença abans de mesurar el problema"
+      ],
+      "business_title": "Un projecte real time està sobredimensionat quan la complexitat afegida supera el valor econòmic de reaccionar abans.",
+      "business_steps": [
+        "Latència",
+        "Complexitat",
+        "Valor"
+      ],
+      "body": "Molts projectes real time comencen amb una conclusió abans que amb una pregunta. L’objectiu es formula com “necessitem streaming”, “volem dades al segon” o “tot s’ha d’actualitzar en temps real”. Però **l’arquitectura pot acabar optimitzant una latència que el negoci mai ha necessitat**.\n\nEl resultat és una plataforma tècnicament sofisticada amb brokers, consumers, schemas, observability i on-call, mentre la decisió real es podria haver resolt amb micro-batch o actualitzacions cada pocs minuts. **Sobredimensionar no significa que la tecnologia sigui incorrecta; significa que la complexitat no està respaldada pel valor del cas d’ús.**\n\n**Es confon frescor amb valor**\nVeure una dada abans no garanteix actuar millor.\n\nUn dashboard comercial pot actualitzar-se cada deu segons i ser revisat dues vegades al dia.\n\nUna alerta pot arribar en temps real i quedar vint minuts en una cua humana.\n\n**La latència útil acaba a** l’acció, no a la pantalla.\n\nL’error és mesurar freshness sense mesurar business lag.\n\nBusiness lag inclou ingestió, processament, interpretació, decisió i execució.\n\nSi la major part del retard és després de la pipeline, accelerar ingestió canvia poc el resultat.\n\nTambé convé preguntar què passa si la dada arriba cinc minuts tard.\n\nSi la resposta és “gairebé res”, potser no cal streaming continu.\n\n**L’arquitectura es dissenya pel pitjor cas**\nUn altre patró freqüent és dissenyar tota la plataforma pel requisit més exigent.\n\nUn únic cas necessita segons i, per consistència arquitectònica, tots els datasets passen a infraestructura real time.\n\n**El requisit més estricte no** hauria de convertir-se automàticament en l’estàndard per tot.\n\nCada garantia té un cost.\n\nOrdering, exactly-once semantics, stateful processing, replay, schema evolution i high availability afegeixen disseny i operació.\n\nNo tots els events necessiten el mateix nivell de consistència.\n\nTampoc tots els consumers necessiten la mateixa latència.\n\nUna arquitectura eficient classifica workloads per SLA i aplica el nivell adequat a cadascun.\n\nPot existir streaming a ingestió i processament per finestres per analytics.\n\nO batch per la majoria i una ruta real time petita per decisions crítiques.\n\n**L’operació es torna més difícil del necessari**\nStreaming canvia la naturalesa de les fallades.\n\nEn batch, una execució fallida es pot reintentar sovint des d’un punt conegut.\n\nEn temps real, cal entendre events duplicats, fora d’ordre, consumers endarrerits i estat parcial.\n\n**La complexitat operativa també** és una forma de cost.\n\nAixò exigeix observability més sofisticada, runbooks, replay i equips preparats per incidents.\n\nUn sistema pot reduir latència tècnica i augmentar temps de recovery quan falla.\n\nTambé pot aparèixer fatiga d’alertes si cada consumer emet les seves pròpies senyals.\n\nLa seguretat es complica quan events passen per múltiples sistemes.\n\nEls canvis de schema requereixen coordinació per no trencar consumers.\n\nSi l’equip encara resol problemes bàsics de data quality, streaming pot multiplicar soroll en lloc de crear valor.\n\n**La solució comença abans de mesurar el problema**\nEl major error és construir abans de quantificar la finestra de decisió.\n\nPrimer s’hauria de mesurar quant valor es perd per minut, hora o dia de retard.\n\n**Sense una corba de cost** de latència, no hi ha una base sòlida per decidir quant real time comprar.\n\nDesprés convé provar la solució mínima.\n\nPotser un batch cada quinze minuts resol el 90 % del problema.\n\nSi no, reduïm a cinc minuts, després a un.\n\nNomés quan la millora addicional continua generant valor es justifica streaming continu.\n\nAquest enfocament mostra el punt on la complexitat deixa de compensar.\n\nTambé redueix el risc de construir infraestructura per una hipòtesi no validada.\n\nLa freqüència de decisió s’ha de comparar amb la freqüència de dades.\n\nNo té sentit recalcular un score cada segon si la variable principal canvia una vegada al dia.\n\nLa capacitat de resposta també s’ha d’alinear. Un equip que només pot revisar cent casos per hora no necessita milions de senyals per minut sense priorització.\n\nPot ser més útil invertir en ranking, triage o automatització d’accions.\n\nUn altre senyal de sobredimensionament és duplicar lògica batch i streaming.\n\nMantenir dues implementacions de la mateixa regla augmenta risc d’inconsistències.\n\nSi la plataforma permet incremental processing amb lògica comuna, convé aprofitar-ho.\n\nEl cost de persones també entra al càlcul. Streaming sol exigir skills més especialitzats i suport operatiu continu.\n\nUna arquitectura més simple pot alliberar capacitat per millorar data quality o lògica de decisió.\n\nTambé convé revisar si real time és un requisit d’usuari o una suposició tècnica.\n\nMolts usuaris prefereixen dades fiables i consistents a una pantalla que canvia constantment.\n\nLa resiliència importa. Si una interrupció de cinc minuts destrueix valor, el nivell d’enginyeria necessari puja molt.\n\nAquest requisit també s’ha de justificar econòmicament.\n\nFinalment, l’arquitectura ha de poder degradar-se. Un fallback a dades recents o batch evita que una incidència streaming pari el negoci.\n\n**Els projectes real time se sobredimensionen quan comencen per la velocitat en lloc de començar pel cost d’arribar tard.** La millor arquitectura no minimitza latència absoluta; minimitza la distància entre complexitat tècnica i valor operatiu.",
+      "seo_title": "Per què els projectes real time es sobredimensionen",
+      "seo_description": "Com detectar overengineering en arquitectures real time quan latència, streaming i complexitat superen el valor real del cas d’ús.",
+      "seo_keywords": [
+        "real time architecture overengineering",
+        "streaming overengineering",
+        "real time data architecture",
+        "data latency"
+      ],
+      "tags": [
+        "Real Time Data",
+        "Streaming",
+        "Architecture"
+      ]
+    }
+  }
+}

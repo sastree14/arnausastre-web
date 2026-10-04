@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-029",
+  "sequence": 29,
+  "arc_id": "ARC-08",
+  "slug": "supplier-averages-hide-reliability-risk",
+  "scheduled_at": "2026-12-16T09:00:00+01:00",
+  "knowledge_area": "risk_decision",
+  "cluster": "Inventory & Supply Chain",
+  "editorial_pillar": "industries_use_cases",
+  "content_family": "point_of_view_contrarian",
+  "angle": "supplier reliability variability",
+  "primary_keyword": "supplier reliability analytics",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-030",
+    "KB-031",
+    "KB-032"
+  ],
+  "variants": {
+    "es": {
+      "title": "Los promedios del proveedor ocultan el riesgo de fiabilidad",
+      "excerpt": "Un lead time medio puede parecer correcto mientras la variabilidad obliga a financiar buffers, urgencias y stock extra. La fiabilidad vive en la dispersión.",
+      "quick": [
+        "Promedio ≠ fiabilidad",
+        "La variabilidad crea buffer",
+        "La dependencia amplifica el riesgo"
+      ],
+      "section_titles": [
+        "Por qué el promedio engaña",
+        "La variabilidad se convierte en inventario",
+        "Dependencia y concentración",
+        "Medir fiabilidad para decidir"
+      ],
+      "business_title": "Un proveedor fiable no es el que entrega bien de media, sino el que permite planificar con poca sorpresa.",
+      "business_steps": [
+        "Promedio aparente",
+        "Variabilidad real",
+        "Coste operativo"
+      ],
+      "body": "Un proveedor puede mostrar un lead time medio de diez días y seguir siendo difícil de gestionar. Si algunas entregas llegan en seis y otras en veinte, el promedio describe el centro pero oculta la incertidumbre que la operación debe absorber. **La fiabilidad no se entiende con una media; se entiende con la distribución del desempeño.**\n\nEsta diferencia tiene coste directo. Variabilidad de lead time y cumplimiento obliga a mantener safety stock, pedir antes, expedir de urgencia o aceptar roturas. **Un proveedor “correcto de media” puede ser caro precisamente porque obliga a financiar la sorpresa.**\n\n**Por qué el promedio engaña**\nLa media comprime observaciones diferentes en una cifra. Dos proveedores pueden tener diez días de lead time medio: uno entrega casi siempre entre nueve y once; el otro alterna entre cinco y quince. Para planificación no son equivalentes.\n\nEl mismo problema aparece con porcentaje de entregas a tiempo. Un 90 % puede parecer sólido, pero no dice cuánto se retrasan las entregas que fallan. **Diez retrasos de un día y diez retrasos de tres semanas generan el mismo porcentaje y riesgos muy distintos.**\n\nTambién importa la estabilidad en el tiempo. Un proveedor puede mantener el promedio mientras su dispersión aumenta. Si el dashboard solo muestra la media mensual, el deterioro queda invisible hasta que aparecen urgencias.\n\n**La variabilidad se convierte en inventario**\nCuando el lead time es incierto, la empresa necesita proteger una ventana más amplia. Ese riesgo suele terminar en safety stock o en pedidos adelantados. **La variabilidad del proveedor se transforma en working capital dentro de nuestra empresa.**\n\nEl coste no aparece necesariamente en la factura del proveedor. Puede esconderse en espacio de almacén, capital inmovilizado, expediciones premium, tiempo de planners y pérdida de servicio.\n\nPor eso comparar proveedores solo por precio unitario puede ser incompleto. Un proveedor ligeramente más caro pero estable puede tener menor coste total que otro barato y volátil.\n\nLa relación también depende del producto. Un retraso en un componente crítico sin sustituto tiene más impacto que el mismo retraso en un artículo flexible. La fiabilidad debe leerse junto a criticidad.\n\n**Dependencia y concentración**\nLa variabilidad se vuelve más peligrosa cuando existe dependencia. Si un único proveedor concentra una familia crítica, un episodio de retraso afecta muchas referencias simultáneamente.\n\nTambién puede haber dependencias ocultas. Dos proveedores aparentemente distintos pueden compartir puerto, transportista, país o subproveedor. **Diversificar nombres no siempre diversifica riesgo operativo.**\n\nEsto cambia la forma de medir. No basta con mirar rendimiento proveedor por proveedor; conviene entender qué parte de la operación depende de cada nodo y qué alternativas existen.\n\nLa concentración también altera el valor del buffer. Mantener más inventario puede ser razonable ante una dependencia difícil de reducir, pero debe reconocerse como coste de esa arquitectura de suministro.\n\n**Medir fiabilidad para decidir**\nUn score útil debería mostrar al menos nivel y variabilidad: lead time mediano o medio, dispersión, percentiles altos, OTIF, frecuencia y severidad de retrasos. Después hay que conectar esas métricas con decisiones.\n\nSi la variabilidad aumenta, puede cambiar safety stock. Si los retrasos extremos se concentran, puede cambiar sourcing. Si una dependencia se vuelve crítica, puede justificar dual sourcing o contratos alternativos. **La métrica tiene valor cuando activa una política.**\n\nTambién conviene segmentar por ruta, producto o periodo. Un proveedor puede ser fiable en una familia y débil en otra, o deteriorarse solo en temporadas concretas.\n\nLa revisión debería distinguir ruido puntual de cambio persistente. Castigar una excepción aislada puede ser tan malo como ignorar un deterioro estructural. Rolling windows y tendencias ayudan a ver ambos.\n\nEl objetivo final no es construir un scorecard más grande. Es responder cuánto riesgo introduce cada proveedor en nuestras decisiones de inventario y servicio. **La media explica qué suele pasar; la variabilidad explica cuánto debemos pagar para protegernos cuando no pasa.**",
+      "seo_title": "Fiabilidad de proveedores más allá del promedio",
+      "seo_description": "Por qué el lead time medio y los promedios pueden ocultar variabilidad, dependencia y costes de inventario en la gestión de proveedores.",
+      "seo_keywords": [
+        "supplier reliability analytics",
+        "fiabilidad proveedores",
+        "lead time variability",
+        "supplier performance"
+      ],
+      "tags": [
+        "Supply Chain",
+        "Supplier Reliability",
+        "Risk"
+      ]
+    },
+    "en": {
+      "title": "Supplier averages hide reliability risk",
+      "excerpt": "Average lead time can look acceptable while variability forces the business to fund buffers, expediting and extra stock. Reliability lives in dispersion.",
+      "quick": [
+        "Average ≠ reliability",
+        "Variability creates buffer",
+        "Dependency amplifies risk"
+      ],
+      "section_titles": [
+        "Why the average misleads",
+        "Variability becomes inventory",
+        "Dependency and concentration",
+        "Measure reliability to decide"
+      ],
+      "business_title": "A reliable supplier is not one that performs well on average, but one that lets the business plan with limited surprise.",
+      "business_steps": [
+        "Acceptable average",
+        "Real variability",
+        "Operating cost"
+      ],
+      "body": "A supplier can show an average lead time of ten days and still be difficult to manage. If some deliveries arrive in six days and others in twenty, the average describes the centre while hiding the uncertainty operations must absorb. **Reliability is not understood through one mean; it is understood through the distribution of performance.**\n\nThat distinction has direct cost. Lead-time and delivery variability force the business to carry safety stock, order earlier, expedite freight or accept shortages. **A supplier that is “fine on average” can be expensive precisely because it forces the buyer to finance surprise.**\n\n**Why the average misleads**\nAn average compresses different observations into one number. Two suppliers can both show ten-day average lead time: one delivers almost always between nine and eleven days; the other alternates between five and fifteen. They are not equivalent for planning.\n\nThe same issue appears with on-time percentages. A 90% result may look strong, but it does not describe how late the failed deliveries are. **Ten delays of one day and ten delays of three weeks can create the same headline percentage and very different risk.**\n\nStability over time matters too. A supplier can preserve its mean while dispersion grows. If the dashboard displays only monthly averages, deterioration remains invisible until operating emergencies appear.\n\n**Variability becomes inventory**\nWhen lead time is uncertain, the company has to protect a wider exposure window. That risk usually becomes safety stock or earlier orders. **Supplier variability turns into working capital inside the customer’s business.**\n\nThe cost is not necessarily visible in supplier price. It can appear through warehouse space, inventory financing, premium freight, planner time and lost service.\n\nThat is why comparing suppliers only on unit price is incomplete. A slightly more expensive but stable supplier can have a lower total cost than a cheaper volatile one.\n\nProduct context matters as well. A delay on a critical component without substitutes carries more impact than the same delay on a flexible item. Reliability should therefore be read together with criticality.\n\n**Dependency and concentration**\nVariability becomes more dangerous when dependency is high. If one supplier serves an entire critical family, a disruption affects many items at once.\n\nHidden dependencies matter too. Two apparently independent suppliers may use the same port, carrier, geography or upstream producer. **Diversifying supplier names does not automatically diversify operational risk.**\n\nThat changes measurement. Performance should not be reviewed only supplier by supplier; the company should understand how much of the operation depends on each node and which alternatives are real.\n\nConcentration also changes the economics of buffer. Carrying additional inventory may be rational when dependency is difficult to reduce, but it should be recognized as a cost of the supply architecture.\n\n**Measure reliability to decide**\nA useful reliability view should include both level and variability: average or median lead time, dispersion, high percentiles, OTIF, delay frequency and delay severity. Those metrics then need to connect to decisions.\n\nIf variability increases, safety stock may change. If extreme delays concentrate, sourcing may change. If dependency becomes critical, dual sourcing or contractual alternatives may be justified. **A metric creates value when it activates a policy.**\n\nSegmentation helps as well. A supplier can be reliable for one product family and weak for another, or deteriorate only during specific seasons.\n\nReview should distinguish one-off noise from persistent change. Punishing one exception can be as unhelpful as ignoring structural deterioration. Rolling windows and trends make both visible.\n\nThe objective is not a larger scorecard. It is to answer how much risk each supplier introduces into inventory and service decisions. **The average explains what usually happens; variability explains how much the business must pay to protect itself when it does not.**\n\nA final useful measure is predictability of commitment changes. A supplier that frequently moves confirmed dates creates planning work even when the final delivery lands close to the original average. **Date instability is itself an operating cost.** Tracking how often commitments are revised, and how late those revisions occur, captures a form of unreliability that average lead time and even final OTIF can miss.",
+      "seo_title": "Supplier Reliability Beyond Averages",
+      "seo_description": "Why average lead time and headline supplier metrics can hide variability, dependency and inventory cost in supply-chain decisions.",
+      "seo_keywords": [
+        "supplier reliability analytics",
+        "supplier reliability",
+        "lead time variability",
+        "supplier performance"
+      ],
+      "tags": [
+        "Supply Chain",
+        "Supplier Reliability",
+        "Risk"
+      ]
+    },
+    "ca": {
+      "title": "Les mitjanes del proveïdor amaguen el risc de fiabilitat",
+      "excerpt": "Un lead time mitjà pot semblar correcte mentre la variabilitat obliga a finançar buffers, urgències i estoc extra. La fiabilitat viu en la dispersió.",
+      "quick": [
+        "Mitjana ≠ fiabilitat",
+        "La variabilitat crea buffer",
+        "La dependència amplifica el risc"
+      ],
+      "section_titles": [
+        "Per què la mitjana enganya",
+        "La variabilitat es converteix en inventari",
+        "Dependència i concentració",
+        "Mesurar fiabilitat per decidir"
+      ],
+      "business_title": "Un proveïdor fiable no és el que entrega bé de mitjana, sinó el que permet planificar amb poca sorpresa.",
+      "business_steps": [
+        "Mitjana aparent",
+        "Variabilitat real",
+        "Cost operatiu"
+      ],
+      "body": "Un proveïdor pot mostrar un lead time mitjà de deu dies i continuar sent difícil de gestionar. Si algunes entregues arriben en sis dies i altres en vint, la mitjana descriu el centre però amaga la incertesa que l’operació ha d’absorbir. **La fiabilitat no s’entén amb una mitjana; s’entén amb la distribució del rendiment.**\n\nAquesta diferència té cost directe. La variabilitat de lead time i compliment obliga a mantenir safety stock, demanar abans, expedir d’urgència o acceptar ruptures. **Un proveïdor “correcte de mitjana” pot ser car precisament perquè obliga a finançar la sorpresa.**\n\n**Per què la mitjana enganya**\nLa mitjana comprimeix observacions diferents en una xifra. Dos proveïdors poden tenir deu dies de lead time mitjà: un entrega gairebé sempre entre nou i onze; l’altre alterna entre cinc i quinze. Per planning no són equivalents.\n\nEl mateix problema apareix amb percentatge d’entregues a temps. Un 90 % pot semblar sòlid, però no diu quant es retarden les entregues que fallen. **Deu retards d’un dia i deu retards de tres setmanes generen el mateix percentatge i riscos molt diferents.**\n\nTambé importa l’estabilitat temporal. Un proveïdor pot mantenir la mitjana mentre augmenta la dispersió. Si el dashboard només mostra mitjanes mensuals, el deteriorament queda invisible fins que apareixen urgències.\n\n**La variabilitat es converteix en inventari**\nQuan el lead time és incert, l’empresa necessita protegir una finestra més àmplia. Aquest risc acostuma a acabar en safety stock o en comandes avançades. **La variabilitat del proveïdor es transforma en working capital dins de la nostra empresa.**\n\nEl cost no apareix necessàriament a la factura del proveïdor. Pot estar en espai de magatzem, capital immobilitzat, transport premium, temps de planners i pèrdua de servei.\n\nPer això comparar proveïdors només per preu unitari és incomplet. Un proveïdor una mica més car però estable pot tenir menys cost total que un altre barat i volàtil.\n\nEl context de producte també importa. Un retard en un component crític sense substitut té més impacte que el mateix retard en un article flexible. La fiabilitat s’ha de llegir amb la criticitat.\n\n**Dependència i concentració**\nLa variabilitat es torna més perillosa quan hi ha dependència. Si un únic proveïdor concentra una família crítica, un episodi de retard afecta moltes referències alhora.\n\nTambé hi ha dependències ocultes. Dos proveïdors aparentment independents poden compartir port, transportista, país o subproveïdor. **Diversificar noms no sempre diversifica risc operatiu.**\n\nAixò canvia la mesura. No basta mirar rendiment proveïdor per proveïdor; cal entendre quina part de l’operació depèn de cada node i quines alternatives existeixen.\n\nLa concentració també canvia el valor del buffer. Mantenir més inventari pot ser raonable davant una dependència difícil de reduir, però s’ha de reconèixer com a cost de l’arquitectura de subministrament.\n\n**Mesurar fiabilitat per decidir**\nUna vista útil hauria de mostrar nivell i variabilitat: lead time mitjà o mediana, dispersió, percentils alts, OTIF, freqüència i severitat de retards. Després cal connectar aquestes mètriques amb decisions.\n\nSi augmenta la variabilitat, pot canviar safety stock. Si els retards extrems es concentren, pot canviar sourcing. Si una dependència és crítica, pot justificar dual sourcing. **La mètrica té valor quan activa una política.**\n\nTambé convé segmentar per ruta, producte o període. Un proveïdor pot ser fiable en una família i feble en una altra, o deteriorar-se en temporades concretes.\n\nLa revisió ha de distingir soroll puntual de canvi persistent. Castigar una excepció aïllada pot ser tan dolent com ignorar deteriorament estructural. Rolling windows i tendències ajuden a veure tots dos.\n\nL’objectiu final no és construir un scorecard més gran. És respondre quant risc introdueix cada proveïdor en decisions d’inventari i servei. **La mitjana explica què sol passar; la variabilitat explica quant hem de pagar per protegir-nos quan no passa.**\n\nUna mesura addicional útil és la predictibilitat dels canvis de compromís. Un proveïdor que mou sovint dates confirmades crea feina de planning encara que l’entrega final quedi prop de la mitjana original. **La inestabilitat de dates és també un cost operatiu.** Mesurar quantes vegades es revisen compromisos i amb quanta antelació captura una forma de poca fiabilitat que la mitjana i fins i tot OTIF poden amagar.",
+      "seo_title": "Fiabilitat de proveïdors més enllà de la mitjana",
+      "seo_description": "Per què el lead time mitjà pot amagar variabilitat, dependència i costos d’inventari en la gestió de proveïdors.",
+      "seo_keywords": [
+        "supplier reliability analytics",
+        "fiabilitat proveïdors",
+        "lead time variability",
+        "supplier performance"
+      ],
+      "tags": [
+        "Supply Chain",
+        "Supplier Reliability",
+        "Risk"
+      ]
+    }
+  }
+}

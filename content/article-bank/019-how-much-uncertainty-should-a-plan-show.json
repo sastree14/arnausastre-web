@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-019",
+  "sequence": 19,
+  "arc_id": "ARC-05",
+  "slug": "how-much-uncertainty-should-a-plan-show",
+  "scheduled_at": "2026-11-21T09:00:00+01:00",
+  "knowledge_area": "planning",
+  "cluster": "Forecasting & Planning",
+  "editorial_pillar": "consulting_decision_insights",
+  "content_family": "decision_guide",
+  "angle": "forecast uncertainty intervals",
+  "primary_keyword": "forecast uncertainty intervals",
+  "search_intent": "commercial_investigation",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-017",
+    "KB-018",
+    "KB-020"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cuánta incertidumbre debería mostrar un plan",
+      "excerpt": "Mostrar demasiada incertidumbre paraliza; mostrar demasiado poca crea falsa precisión. El nivel correcto depende de la decisión, el horizonte y la reversibilidad.",
+      "quick": [
+        "El rango debe cambiar la acción",
+        "Más detalle no siempre ayuda",
+        "La calibración importa"
+      ],
+      "section_titles": [
+        "La incertidumbre tiene una función",
+        "El nivel depende de la decisión",
+        "Cómo elegir la representación",
+        "Evitar falsa precisión"
+      ],
+      "business_title": "Un plan debe mostrar tanta incertidumbre como sea necesaria para cambiar una decisión, y no más.",
+      "business_steps": [
+        "Decisión",
+        "Rango relevante",
+        "Acción proporcional"
+      ],
+      "body": "Un plan puede fallar por dos extremos opuestos. Puede mostrar un único número con una precisión que no existe o puede presentar tantos intervalos, percentiles y escenarios que nadie sabe qué decisión tomar. **La incertidumbre útil no es la máxima cantidad de información; es la cantidad que cambia una acción de forma razonable.**\n\nEl nivel adecuado depende del horizonte, del coste de error y de la reversibilidad. Una decisión táctica de bajo coste puede necesitar poco más que un punto y un buffer. Una inversión difícil de deshacer puede requerir varios escenarios. **La representación de incertidumbre debería diseñarse desde la decisión, no desde todo lo que el modelo es capaz de producir.**\n\n**La incertidumbre tiene una función**\nMostrar incertidumbre sirve para evitar que una estimación se interprete como certeza. También permite cuantificar cuánto riesgo queremos aceptar. En inventario puede orientar safety stock; en capacidad puede definir reserva; en finanzas puede determinar liquidez mínima.\n\nPero el rango solo tiene valor si está conectado con una política. Un intervalo del 80 % no dice por sí mismo qué hacer. **La empresa debe traducir probabilidad en una regla de decisión.** Puede planificar para la mediana, un percentil alto o un escenario adverso según el coste de quedarse corto.\n\nSin esa traducción, el intervalo se convierte en decoración analítica.\n\n**El nivel depende de la decisión**\nCuanto más reversible sea la acción, menos información probabilística suele necesitarse. Si mañana podemos corregir una compra pequeña, un error moderado no justifica un sistema complejo. Si una decisión compromete caja o capacidad durante meses, el rango es mucho más importante.\n\nEl horizonte también cambia la lectura. **La incertidumbre que importa es la que existe en el momento de compromiso.** Un forecast puede estrecharse al acercarse la fecha, pero si el pedido ya se cerró antes, esa mejora llega tarde.\n\nTambién importa la asimetría. Cuando un lado de la distribución es mucho más costoso, puede ser más útil mostrar percentiles específicos que un intervalo simétrico.\n\n**Cómo elegir la representación**\nHay varias opciones: intervalos predictivos, cuantiles, escenarios discretos o distribuciones completas. La elección debería seguir cómo decide el usuario.\n\nLos intervalos son útiles para comunicar rango. Los cuantiles son especialmente prácticos cuando una política se conecta directamente a un nivel de servicio. Los escenarios funcionan mejor cuando la incertidumbre depende de supuestos estructurales, como entrada en mercado o cambio de precio. **Una distribución completa solo aporta valor si downstream existe una decisión capaz de utilizarla.**\n\nTambién conviene limitar la cantidad de niveles. Mostrar P10, P25, P50, P75 y P90 puede ser útil para simulación, pero excesivo para un comité que necesita decidir entre tres alternativas.\n\n**Evitar falsa precisión**\nUn rango solo es creíble si está calibrado. Si decimos “90 %”, aproximadamente esa proporción de resultados debería quedar dentro del intervalo bajo condiciones comparables. **Un intervalo estrecho y mal calibrado es peor que admitir incertidumbre.**\n\nLa comunicación debe evitar decimales innecesarios y explicar qué variables podrían mover el resultado fuera del rango. También es importante separar incertidumbre modelada de riesgos no representados, como un cambio regulatorio extraordinario.\n\nUna práctica útil es acompañar cada rango con una acción: “por debajo de X hacemos A; entre X e Y hacemos B; por encima de Y hacemos C”. Así la incertidumbre deja de ser una nota al pie y se integra en planning.\n\nEl objetivo no es convertir a todos los managers en estadísticos. Es permitir que sepan cuándo el plan es robusto y cuándo depende de una expectativa frágil.\n\nLa regla final es sencilla: **si mostrar un rango más amplio no cambia ninguna decisión, probablemente no necesitamos más detalle; si sí la cambia, ocultarlo detrás de un único punto sería una pérdida de información.**\n\nLa misma lógica debería mantenerse en los dashboards. Si el usuario solo ve una banda sombreada sin conocer qué decisión cambia al cruzarla, el visual comunica incertidumbre pero no facilita acción. **Una buena visualización de riesgo debe incluir contexto operativo.** Etiquetar umbrales, mostrar el punto de compromiso y separar rangos “normal”, “vigilancia” y “acción” puede ser más útil que añadir más percentiles.",
+      "seo_title": "Cuánta incertidumbre mostrar en un plan",
+      "seo_description": "Cómo decidir entre point forecast, intervalos, cuantiles y escenarios según horizonte, reversibilidad, coste de error y acción empresarial.",
+      "seo_keywords": [
+        "forecast uncertainty intervals",
+        "intervalos de forecast",
+        "probabilistic forecasting",
+        "planificación incertidumbre"
+      ],
+      "tags": [
+        "Forecasting",
+        "Uncertainty",
+        "Planning"
+      ]
+    },
+    "en": {
+      "title": "How much uncertainty should a plan show?",
+      "excerpt": "Too much uncertainty can paralyze; too little creates false precision. The right level depends on the decision, horizon and reversibility.",
+      "quick": [
+        "The range should change action",
+        "More detail is not always better",
+        "Calibration matters"
+      ],
+      "section_titles": [
+        "Uncertainty has a function",
+        "The level depends on the decision",
+        "Choose the representation",
+        "Avoid false precision"
+      ],
+      "business_title": "A plan should show as much uncertainty as needed to change a decision, and no more.",
+      "business_steps": [
+        "Decision",
+        "Relevant range",
+        "Proportional action"
+      ],
+      "body": "A plan can fail in two opposite ways. It can present one number with precision that does not exist, or it can display so many intervals, percentiles and scenarios that nobody knows what decision to make. **Useful uncertainty is not the maximum amount of information; it is the amount that changes an action in a sensible way.**\n\nThe right level depends on horizon, error cost and reversibility. A low-cost tactical decision may need little more than a point estimate and buffer. A difficult-to-reverse investment may require several scenarios. **Uncertainty representation should be designed from the decision, not from everything the model is capable of producing.**\n\n**Uncertainty has a function**\nShowing uncertainty prevents an estimate from being mistaken for certainty. It also allows the business to quantify how much risk it intends to accept. In inventory it can inform safety stock; in capacity it can determine reserved headroom; in finance it can support a liquidity buffer.\n\nThe range only creates value when connected to a policy. An 80% interval does not say what to do. **The organization still has to translate probability into a decision rule.** It may plan around the median, an upper quantile or an adverse scenario depending on shortage cost.\n\nWithout that translation, the interval becomes analytical decoration.\n\n**The level depends on the decision**\nThe more reversible the action, the less probabilistic information is usually required. If a small purchase can be corrected tomorrow, a moderate forecast error may not justify complexity. If a decision commits cash or capacity for months, the range matters much more.\n\nHorizon changes the interpretation as well. **The uncertainty that matters is the uncertainty present at the commitment point.** A forecast may become tighter close to the date, but if the order was locked weeks earlier that later improvement has little value.\n\nAsymmetry matters too. When one side of the distribution is much more expensive, specific quantiles can be more useful than a symmetric interval.\n\n**Choose the representation**\nOptions include prediction intervals, quantiles, discrete scenarios and complete probability distributions. The choice should follow how the user makes the decision.\n\nIntervals communicate range well. Quantiles work naturally when a policy connects to a service level. Scenarios are stronger when uncertainty comes from structural assumptions such as market entry or a pricing change. **A full distribution adds value only when a downstream decision can actually use it.**\n\nThe number of levels should also be limited. P10, P25, P50, P75 and P90 may help simulation but overwhelm a management meeting that needs to choose between three actions.\n\n**Avoid false precision**\nA range is credible only when it is calibrated. If an interval is labelled 90%, roughly that share of comparable outcomes should fall inside it. **A narrow but badly calibrated interval is worse than openly admitting uncertainty.**\n\nCommunication should avoid unnecessary decimals and explain which variables could move the outcome beyond the range. It is also important to separate modeled uncertainty from unrepresented risks such as an extraordinary regulatory change.\n\nA practical technique is to attach an action to each band: “below X do A; between X and Y do B; above Y do C”. Uncertainty then becomes part of planning rather than a footnote.\n\nThe objective is not to turn every manager into a statistician. It is to make clear when the plan is robust and when it rests on a fragile expectation.\n\nThe final rule is simple: **if a wider range would not change any decision, more detail is probably unnecessary; if it would change the action, hiding it behind one point forecast discards useful information.**\n\nThe same logic should carry into dashboards. If users only see a shaded band without knowing what decision changes when the range is crossed, the chart communicates uncertainty but does not enable action. **Good risk visualization needs operating context.** Labelling thresholds, showing the commitment point and separating normal, watch and action ranges can be more useful than adding more percentiles.",
+      "seo_title": "How Much Forecast Uncertainty to Show",
+      "seo_description": "How to choose between point forecasts, intervals, quantiles and scenarios by horizon, reversibility, error cost and business action.",
+      "seo_keywords": [
+        "forecast uncertainty intervals",
+        "prediction intervals",
+        "probabilistic forecasting",
+        "planning uncertainty"
+      ],
+      "tags": [
+        "Forecasting",
+        "Uncertainty",
+        "Planning"
+      ]
+    },
+    "ca": {
+      "title": "Quanta incertesa hauria de mostrar un pla",
+      "excerpt": "Massa incertesa pot paralitzar; massa poca crea falsa precisió. El nivell correcte depèn de decisió, horitzó i reversibilitat.",
+      "quick": [
+        "El rang ha de canviar l’acció",
+        "Més detall no sempre ajuda",
+        "El calibratge importa"
+      ],
+      "section_titles": [
+        "La incertesa té una funció",
+        "El nivell depèn de la decisió",
+        "Triar la representació",
+        "Evitar falsa precisió"
+      ],
+      "business_title": "Un pla ha de mostrar tanta incertesa com calgui per canviar una decisió, i no més.",
+      "business_steps": [
+        "Decisió",
+        "Rang rellevant",
+        "Acció proporcional"
+      ],
+      "body": "Un pla pot fallar per dos extrems oposats. Pot mostrar un únic número amb una precisió que no existeix o pot presentar tants intervals, percentils i escenaris que ningú sap què decidir. **La incertesa útil no és la màxima quantitat d’informació; és la quantitat que canvia una acció de manera raonable.**\n\nEl nivell adequat depèn de l’horitzó, el cost d’error i la reversibilitat. Una decisió tàctica de baix cost pot necessitar poc més que un punt i un buffer. Una inversió difícil de desfer pot requerir diversos escenaris. **La representació d’incertesa s’ha de dissenyar des de la decisió, no des de tot el que el model pot produir.**\n\n**La incertesa té una funció**\nMostrar incertesa evita confondre una estimació amb certesa. També permet quantificar quant risc volem acceptar. En inventari pot orientar safety stock; en capacitat pot definir reserva; en finances pot determinar liquiditat mínima.\n\nPerò el rang només té valor si està connectat amb una política. Un interval del 80 % no diu per si mateix què fer. **L’empresa ha de traduir probabilitat a una regla de decisió.** Pot planificar per mediana, percentil alt o escenari advers segons el cost de quedar curt.\n\nSense aquesta traducció, l’interval es converteix en decoració analítica.\n\n**El nivell depèn de la decisió**\nCom més reversible és l’acció, menys informació probabilística acostuma a ser necessària. Si demà podem corregir una compra petita, un error moderat no justifica un sistema complex. Si una decisió compromet caixa o capacitat durant mesos, el rang és molt més important.\n\nL’horitzó també canvia la lectura. **La incertesa que importa és la que existeix en el moment de compromís.** Un forecast pot estrènyer-se quan s’acosta la data, però si la comanda ja estava tancada, aquesta millora arriba tard.\n\nTambé importa l’asimetria. Quan un costat de la distribució és molt més costós, percentils específics poden ser més útils que un interval simètric.\n\n**Triar la representació**\nHi ha intervals predictius, quantils, escenaris discrets i distribucions completes. L’elecció ha de seguir com decideix l’usuari.\n\nEls intervals comuniquen rang. Els quantils encaixen bé quan una política es vincula a un nivell de servei. Els escenaris funcionen millor quan la incertesa depèn de supòsits estructurals com entrada en mercat o canvi de preu. **Una distribució completa només aporta valor si downstream existeix una decisió capaç d’utilitzar-la.**\n\nTambé convé limitar la quantitat de nivells. Mostrar P10, P25, P50, P75 i P90 pot ser útil per simulació però excessiu per un comitè que ha de triar entre tres alternatives.\n\n**Evitar falsa precisió**\nUn rang només és creïble si està calibrat. Si diem “90 %”, aproximadament aquesta proporció de resultats comparables hauria de quedar dins. **Un interval estret i mal calibrat és pitjor que admetre incertesa.**\n\nLa comunicació ha d’evitar decimals innecessaris i explicar quines variables podrien moure el resultat fora del rang. També cal separar incertesa modelada de riscos no representats.\n\nUna pràctica útil és associar una acció a cada banda: “per sota d’X fem A; entre X i Y fem B; per sobre d’Y fem C”. Així la incertesa passa a formar part del planning.\n\nL’objectiu no és convertir tothom en estadístic, sinó fer visible quan el pla és robust i quan depèn d’una expectativa fràgil.\n\nLa regla final és simple: **si un rang més ampli no canvia cap decisió, probablement no necessitem més detall; si sí la canvia, ocultar-lo darrere d’un únic punt és perdre informació útil.**\n\nLa mateixa lògica s’ha de mantenir als dashboards. Si l’usuari només veu una banda ombrejada sense saber quina decisió canvia quan es creua, el visual comunica incertesa però no facilita acció. **Una bona visualització de risc necessita context operatiu.** Etiquetar llindars, mostrar el punt de compromís i separar rangs normal, vigilància i acció pot ser més útil que afegir més percentils.",
+      "seo_title": "Quanta incertesa mostrar en un pla",
+      "seo_description": "Com triar entre point forecast, intervals, quantils i escenaris segons horitzó, reversibilitat, cost d’error i acció empresarial.",
+      "seo_keywords": [
+        "forecast uncertainty intervals",
+        "intervals forecast",
+        "probabilistic forecasting",
+        "planificació incertesa"
+      ],
+      "tags": [
+        "Forecasting",
+        "Uncertainty",
+        "Planning"
+      ]
+    }
+  }
+}

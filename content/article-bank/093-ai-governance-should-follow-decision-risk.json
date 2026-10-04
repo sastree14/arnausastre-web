@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-093",
+  "sequence": 93,
+  "arc_id": "ARC-24",
+  "slug": "ai-governance-should-follow-decision-risk",
+  "scheduled_at": "2027-05-25T09:00:00+02:00",
+  "knowledge_area": "ai_automation",
+  "cluster": "AI & Automation",
+  "editorial_pillar": "consulting_decision_insights",
+  "content_family": "framework_playbook",
+  "angle": "ai governance risk based",
+  "primary_keyword": "ai governance risk based",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "",
+  "related_specs": [
+    "KB-094",
+    "KB-095",
+    "KB-096"
+  ],
+  "variants": {
+    "es": {
+      "title": "La gobernanza de IA debería seguir el riesgo de la decisión",
+      "excerpt": "No todos los sistemas de IA necesitan el mismo control. La gobernanza debería crecer con impacto, irreversibilidad, sensibilidad y autonomía.",
+      "quick": [
+        "Más impacto exige más control",
+        "La reversibilidad reduce riesgo",
+        "Gobernar no significa bloquear"
+      ],
+      "section_titles": [
+        "Clasifica el riesgo antes de diseñar controles",
+        "Aumenta control según consecuencia e irreversibilidad",
+        "Exige evidencia proporcional al impacto",
+        "Mantén trazabilidad sin convertirla en burocracia"
+      ],
+      "business_title": "La gobernanza útil concentra controles donde una mala decisión puede causar daño real y mantiene ligeros los workflows de bajo riesgo.",
+      "business_steps": [
+        "Riesgo",
+        "Control proporcional",
+        "Evidencia"
+      ],
+      "body": "Muchas organizaciones empiezan la gobernanza de IA preguntando qué comité debe aprobar cada caso, qué documentos completar o qué herramientas están permitidas. Ese enfoque puede crear control aparente y poca seguridad real. **La gobernanza debería empezar por la decisión que el sistema influye y por la consecuencia de equivocarse.**\n\nNo es lo mismo resumir una reunión que rechazar una solicitud de crédito, recomendar una respuesta comercial que ejecutar un pago o priorizar tickets internos que modificar datos sensibles. **Aplicar el mismo nivel de control a todos los casos genera burocracia en los pequeños y puede seguir siendo insuficiente en los críticos.**\n\n**Clasifica el riesgo antes de diseñar controles**\nEl primer paso es definir qué hace realmente el sistema.\n\n¿Solo genera información? ¿Recomienda una acción? ¿Ejecuta algo reversible? ¿Toma una decisión con efectos sobre clientes, dinero, derechos o seguridad?\n\n**La unidad de governance debería ser la decisión y su impacto**, no la etiqueta genérica “IA”.\n\nUn modelo sencillo puede requerir mucho control si decide algo crítico. Un LLM complejo puede necesitar poco si solo ayuda a redactar borradores internos.\n\nTambién hay que considerar a quién afecta: empleados, clientes, proveedores, público general o sistemas internos.\n\nLa escala importa. Un error poco grave repetido millones de veces puede convertirse en un riesgo material.\n\nLa sensibilidad de datos, exposición regulatoria y dependencia del sistema también deben formar parte de la clasificación.\n\n**Aumenta control según consecuencia e irreversibilidad**\nUna forma práctica es pensar en niveles.\n\nBajo riesgo: outputs informativos, drafts, brainstorming o búsqueda interna. Aquí puede bastar logging básico, acceso controlado y revisión ocasional.\n\nRiesgo medio: recomendaciones que influyen decisiones operativas o comerciales. Aquí necesitamos evaluación, límites de uso, ownership y mecanismos de override.\n\nAlto riesgo: decisiones con impacto financiero, contractual, regulatorio o sobre personas. **Cuanto más difícil sea revertir una acción, mayor debería ser el control previo y la supervisión posterior.**\n\nLa reversibilidad es una variable poderosa. Publicar una respuesta que puede corregirse no es igual que borrar datos o mover dinero.\n\nTambién importa la velocidad. Una acción instantánea y masiva puede necesitar límites automáticos incluso si cada caso individual parece pequeño.\n\nPermisos, thresholds, rate limits, approval gates y fallbacks pueden diseñarse según este perfil.\n\nEl objetivo no es eliminar autonomía, sino acotarla de forma coherente.\n\n**Exige evidencia proporcional al impacto**\nLos sistemas de bajo riesgo no necesitan meses de validación.\n\nEn cambio, un sistema crítico debería demostrar performance, estabilidad, comportamiento en edge cases, seguridad y calidad de datos.\n\n**La cantidad de evidencia exigida debería aumentar** con el coste potencial del error.\n\nLa evaluación debe medir la tarea real. Para un agente, no basta con evaluar texto bonito; necesitamos task success, tool use, errores y escalados.\n\nPara modelos predictivos, debemos medir performance en el punto operativo, calibration y comportamiento por segmentos relevantes.\n\nTambién conviene documentar qué casos están fuera de alcance.\n\nLa monitorización posterior importa tanto como la validación inicial. Un sistema puede ser seguro en lanzamiento y degradarse después.\n\nLos cambios de modelo, prompt, tool o fuente de datos deberían tener un nivel de revisión proporcional al riesgo del workflow.\n\n**Mantén trazabilidad sin convertirla en burocracia**\nGobernar bien significa poder reconstruir qué ocurrió cuando importa.\n\nEso puede requerir versión del modelo, prompt, herramientas utilizadas, fuentes consultadas, usuario, permisos, acción ejecutada y resultado.\n\nPero **registrar todo no significa que todas las personas necesiten revisar todo**.\n\nLa información puede capturarse automáticamente y utilizarse solo en auditoría, incidente o muestreo.\n\nLos controles deberían estar embebidos en el producto. Un schema que impide parámetros inválidos es mejor que un documento diciendo que no deben enviarse.\n\nUn límite monetario en la tool es más sólido que una instrucción textual al modelo.\n\nLos approvals también pueden ser selectivos. Un agente puede ejecutar acciones reversibles y escalar solo excepciones o operaciones por encima de cierto riesgo.\n\nLa revisión humana debe tener capacidad real de intervenir. Si una persona aprueba cientos de decisiones por minuto sin entenderlas, el control es nominal.\n\nTambién conviene definir owner para negocio, tecnología y riesgo.\n\nLa documentación mínima debería incluir propósito, datos, límites, métricas, permisos y respuesta ante fallo.\n\nLos sistemas de bajo riesgo pueden utilizar plantillas ligeras y autoaprobación dentro de políticas definidas.\n\nLos de alto riesgo necesitan evidencia más profunda, pruebas de escenarios y revisión independiente cuando corresponda.\n\nLa periodicidad de revisión también puede variar. Un workflow estable y de bajo riesgo no necesita el mismo ciclo que un sistema que cambia semanalmente.\n\nLa gobernanza debe incluir criterios de retirada. Si el sistema deja de superar el baseline, cambia la regulación o aparecen riesgos no controlados, debe poder pausarse.\n\nTambién necesita excepciones bien gestionadas. Bloquear un caso urgente porque el proceso de aprobación tarda meses puede empujar a equipos a crear shadow AI fuera de control.\n\nPor eso la velocidad forma parte de una buena governance.\n\nUn catálogo de casos con nivel de riesgo, owner y controles puede ofrecer visibilidad sin crear un comité para cada cambio.\n\nFinalmente, las métricas de governance deberían medir incidentes, tiempo de resolución, cobertura de evaluación, overrides y eficacia de controles, no solo documentos completados.\n\n**La gobernanza de IA funciona cuando el nivel de control refleja el riesgo real de la decisión.** Concentrar evidencia, permisos y supervisión en los puntos de mayor consecuencia permite proteger la empresa sin convertir cualquier uso de IA en un proceso burocrático.",
+      "seo_title": "Gobernanza de IA basada en riesgo de decisión",
+      "seo_description": "Cómo diseñar gobernanza de IA proporcional al impacto, irreversibilidad, autonomía, evidencia, permisos y trazabilidad de cada decisión.",
+      "seo_keywords": [
+        "ai governance risk based",
+        "AI governance framework",
+        "risk based AI governance",
+        "AI controls"
+      ],
+      "tags": [
+        "AI Governance",
+        "Risk",
+        "AI Strategy"
+      ]
+    },
+    "en": {
+      "title": "AI governance should follow decision risk",
+      "excerpt": "Not every AI system needs the same control. Governance should increase with impact, irreversibility, sensitivity and autonomy.",
+      "quick": [
+        "Higher impact needs stronger control",
+        "Reversibility reduces risk",
+        "Governance should not mean blockage"
+      ],
+      "section_titles": [
+        "Classify risk before designing controls",
+        "Increase control with consequence and irreversibility",
+        "Require evidence proportional to impact",
+        "Preserve traceability without creating bureaucracy"
+      ],
+      "business_title": "Useful governance concentrates controls where a bad decision can create material harm while keeping low-risk workflows lightweight.",
+      "business_steps": [
+        "Risk",
+        "Proportional control",
+        "Evidence"
+      ],
+      "body": "Many organizations begin AI governance by asking which committee should approve each use case, which forms need completion or which tools are allowed. That can create visible process without much real safety. **Governance should begin with the decision the system influences and the consequence of getting it wrong.**\n\nSummarizing a meeting is not equivalent to rejecting a credit application, drafting a commercial response is not equivalent to issuing a payment, and prioritizing internal tickets is not equivalent to modifying sensitive records. **Applying the same control level everywhere creates bureaucracy for small cases and may still be insufficient for critical ones.**\n\n**Classify risk before designing controls**\nThe first step is defining what the system actually does.\n\nDoes it only generate information? Recommend an action? Execute something reversible? Make a decision affecting customers, money, rights or safety?\n\n**The unit of governance should be the decision and its impact**, not the generic label “AI”.\n\nA simple model can need strong control when it makes a critical decision. A complex LLM may need little when it only supports internal drafting.\n\nWho is affected matters too: employees, customers, suppliers, the public or internal systems.\n\nScale also matters. A low-severity error repeated millions of times can become material.\n\nData sensitivity, regulatory exposure and dependency on the system should be included in risk classification.\n\n**Increase control with consequence and irreversibility**\nA practical approach is to use risk tiers.\n\nLow risk: informational outputs, drafts, brainstorming or internal search. Basic logging, access control and occasional review may be enough.\n\nMedium risk: recommendations influencing operating or commercial decisions. Evaluation, use limits, ownership and override mechanisms become more important.\n\nHigh risk: decisions with financial, contractual, regulatory or human impact. **The harder an action is to reverse, the stronger pre-action controls and post-action supervision should become.**\n\nReversibility is a powerful variable. Publishing a correctable response is different from deleting data or moving money.\n\nSpeed matters as well. An instantaneous action applied at scale may need automated limits even if each individual case appears small.\n\nPermissions, thresholds, rate limits, approval gates and fallbacks can be matched to this profile.\n\nThe objective is not to eliminate autonomy but to bound it coherently.\n\n**Require evidence proportional to impact**\nLow-risk systems should not need months of validation.\n\nCritical systems, however, should demonstrate performance, stability, edge-case behaviour, security and data quality.\n\n**The evidence burden should increase** with the potential cost of failure.\n\nEvaluation must represent the real task. For an agent, polished language is not enough; task success, tool use, errors and escalation need measurement.\n\nFor predictive models, performance should be measured at the operating point, including calibration and relevant segment behaviour.\n\nOut-of-scope cases should be documented as well.\n\nPost-launch monitoring matters as much as initial validation. A safe system can degrade later.\n\nChanges to model, prompt, tool or data source should receive review proportional to workflow risk.\n\n**Preserve traceability without creating bureaucracy**\nGood governance means being able to reconstruct what happened when it matters.\n\nThat may include model version, prompt, tools used, sources consulted, user, permissions, action and outcome.\n\nBut **recording everything does not mean every person needs to review everything**.\n\nEvidence can be captured automatically and inspected only during audit, incidents or sampling.\n\nControls should be embedded into the product. A schema preventing invalid parameters is stronger than a policy document saying they should not be sent.\n\nA monetary tool limit is stronger than a textual instruction to the model.\n\nApprovals can also be selective. An agent can execute reversible actions and escalate only exceptions or operations above a defined risk.\n\nHuman review must have real intervention capacity. A person approving hundreds of decisions per minute without understanding them is not meaningful control.\n\nBusiness, technology and risk ownership should all be explicit.\n\nMinimum documentation may include purpose, data, boundaries, metrics, permissions and failure response.\n\nLow-risk systems can use lightweight templates and policy-based self-approval.\n\nHigh-risk systems need deeper evidence, scenario testing and independent review where appropriate.\n\nReview frequency can vary too. A stable low-risk workflow does not need the same cycle as a system changing every week.\n\nGovernance should define retirement criteria. If the system stops beating a baseline, regulation changes or uncontrolled risks emerge, it should be possible to pause it.\n\nExceptions also need practical handling. Blocking an urgent case because approval takes months can push teams toward uncontrolled shadow AI.\n\nSpeed is therefore part of good governance.\n\nA registry of use cases with risk level, owner and controls can create visibility without requiring a committee for every change.\n\nGovernance metrics should track incidents, resolution time, evaluation coverage, overrides and control effectiveness rather than only completed documents.\n\n**AI governance works when control intensity reflects the actual risk of the decision.** Concentrating evidence, permissions and supervision on high-consequence points protects the organization without turning every AI use case into bureaucracy.",
+      "seo_title": "Risk-Based AI Governance for Business Decisions",
+      "seo_description": "How to design AI governance proportional to impact, irreversibility, autonomy, evidence, permissions and traceability for each decision.",
+      "seo_keywords": [
+        "ai governance risk based",
+        "AI governance framework",
+        "risk based AI governance",
+        "AI controls"
+      ],
+      "tags": [
+        "AI Governance",
+        "Risk",
+        "AI Strategy"
+      ]
+    },
+    "ca": {
+      "title": "La governança d’IA hauria de seguir el risc de la decisió",
+      "excerpt": "No tots els sistemes d’IA necessiten el mateix control. La governança hauria de créixer amb impacte, irreversibilitat, sensibilitat i autonomia.",
+      "quick": [
+        "Més impacte exigeix més control",
+        "La reversibilitat redueix risc",
+        "Governar no significa bloquejar"
+      ],
+      "section_titles": [
+        "Classifica el risc abans de dissenyar controls",
+        "Augmenta control segons conseqüència i irreversibilitat",
+        "Exigeix evidència proporcional a l’impacte",
+        "Mantén traçabilitat sense convertir-la en burocràcia"
+      ],
+      "business_title": "La governança útil concentra controls on una mala decisió pot causar dany real i manté lleugers els workflows de baix risc.",
+      "business_steps": [
+        "Risc",
+        "Control proporcional",
+        "Evidència"
+      ],
+      "body": "Moltes organitzacions comencen la governança d’IA preguntant quin comitè ha d’aprovar cada cas, quins documents cal completar o quines eines estan permeses. Aquest enfocament pot crear control aparent i poca seguretat real. **La governança hauria de començar per la decisió que el sistema influeix i per la conseqüència d’equivocar-se.**\n\nNo és el mateix resumir una reunió que rebutjar una sol·licitud de crèdit, redactar una resposta comercial que executar un pagament o prioritzar tickets interns que modificar dades sensibles. **Aplicar el mateix nivell de control a tots els casos genera burocràcia en els petits i pot continuar sent insuficient en els crítics.**\n\n**Classifica el risc abans de dissenyar controls**\nEl primer pas és definir què fa realment el sistema.\n\nNomés genera informació? Recomana una acció? Executa alguna cosa reversible? Pren una decisió amb efectes sobre clients, diners, drets o seguretat?\n\n**La unitat de governance hauria de ser la decisió i el seu impacte**, no l’etiqueta genèrica “IA”.\n\nUn model senzill pot necessitar molt control si pren una decisió crítica. Un LLM complex pot necessitar-ne poc si només ajuda a redactar drafts interns.\n\nTambé cal considerar qui queda afectat: empleats, clients, proveïdors, públic o sistemes interns.\n\nL’escala importa. Un error poc greu repetit milions de vegades pot esdevenir material.\n\nLa sensibilitat de dades, exposició regulatòria i dependència del sistema també han de formar part de la classificació.\n\n**Augmenta control segons conseqüència i irreversibilitat**\nUna forma pràctica és treballar amb nivells.\n\nBaix risc: outputs informatius, drafts, brainstorming o cerca interna. Logging bàsic, control d’accés i revisió ocasional poden ser suficients.\n\nRisc mitjà: recomanacions que influeixen decisions operatives o comercials. Necessitem més avaluació, límits d’ús, ownership i mecanismes d’override.\n\nAlt risc: decisions amb impacte financer, contractual, regulatori o humà. **Com més difícil sigui revertir una acció, més forts haurien de ser els controls previs i la supervisió posterior.**\n\nLa reversibilitat és una variable potent. Publicar una resposta corregible no és igual que esborrar dades o moure diners.\n\nLa velocitat també importa. Una acció instantània i massiva pot necessitar límits automàtics encara que cada cas individual sembli petit.\n\nPermisos, thresholds, rate limits, approval gates i fallbacks poden adaptar-se a aquest perfil.\n\nL’objectiu no és eliminar autonomia, sinó acotar-la coherentment.\n\n**Exigeix evidència proporcional a l’impacte**\nEls sistemes de baix risc no necessiten mesos de validació.\n\nEn canvi, un sistema crític hauria de demostrar performance, estabilitat, edge cases, seguretat i qualitat de dades.\n\n**La quantitat d’evidència exigida hauria d’augmentar** amb el cost potencial de l’error.\n\nL’avaluació ha de mesurar la tasca real. Per un agent, no basta text bonic; cal task success, tool use, errors i escalats.\n\nPer models predictius, performance s’ha de mesurar al punt operatiu, incloent calibration i comportament per segments rellevants.\n\nTambé convé documentar casos fora d’abast.\n\nLa monitorització posterior importa tant com la validació inicial. Un sistema segur al llançament pot degradar-se després.\n\nCanvis de model, prompt, tool o font de dades haurien de rebre revisió proporcional al risc del workflow.\n\n**Mantén traçabilitat sense convertir-la en burocràcia**\nGovernar bé significa poder reconstruir què va passar quan importa.\n\nAixò pot incloure versió del model, prompt, tools utilitzades, fonts consultades, usuari, permisos, acció i outcome.\n\nPerò **registrar-ho tot no significa que totes les persones hagin de revisar-ho tot**.\n\nL’evidència es pot capturar automàticament i consultar només en auditoria, incident o mostreig.\n\nEls controls haurien d’estar dins del producte. Un schema que impedeix paràmetres invàlids és millor que un document dient que no s’han d’enviar.\n\nUn límit monetari a la tool és més sòlid que una instrucció textual al model.\n\nEls approvals també poden ser selectius. Un agent pot executar accions reversibles i escalar només excepcions o operacions per sobre de cert risc.\n\nLa revisió humana ha de tenir capacitat real d’intervenir. Una persona aprovant centenars de decisions per minut sense entendre-les no és control real.\n\nTambé convé definir owners de negoci, tecnologia i risc.\n\nLa documentació mínima hauria d’incloure propòsit, dades, límits, mètriques, permisos i resposta davant fallada.\n\nEls sistemes de baix risc poden utilitzar plantilles lleugeres i autoaprovació sota policy.\n\nEls d’alt risc necessiten evidència més profunda, scenario testing i revisió independent quan correspongui.\n\nLa periodicitat també pot variar. Un workflow estable i de baix risc no necessita el mateix cicle que un sistema que canvia cada setmana.\n\nLa governança ha d’incloure criteris de retirada. Si el sistema deixa de superar el baseline, canvia la regulació o apareixen riscos no controlats, s’ha de poder pausar.\n\nTambé necessita excepcions ben gestionades. Bloquejar un cas urgent perquè l’aprovació tarda mesos pot empènyer equips cap a shadow AI sense control.\n\nPer això la velocitat forma part d’una bona governance.\n\nUn catàleg de casos amb nivell de risc, owner i controls pot donar visibilitat sense crear un comitè per cada canvi.\n\nFinalment, les mètriques de governance haurien de mesurar incidents, temps de resolució, cobertura d’avaluació, overrides i eficàcia dels controls, no només documents completats.\n\n**La governança d’IA funciona quan el nivell de control reflecteix el risc real de la decisió.** Concentrar evidència, permisos i supervisió als punts de més conseqüència protegeix l’organització sense convertir qualsevol ús d’IA en burocràcia.",
+      "seo_title": "Governança d’IA basada en risc de decisió",
+      "seo_description": "Com dissenyar governança d’IA proporcional a impacte, irreversibilitat, autonomia, evidència, permisos i traçabilitat de cada decisió.",
+      "seo_keywords": [
+        "ai governance risk based",
+        "AI governance framework",
+        "risk based AI governance",
+        "AI controls"
+      ],
+      "tags": [
+        "AI Governance",
+        "Risk",
+        "AI Strategy"
+      ]
+    }
+  }
+}

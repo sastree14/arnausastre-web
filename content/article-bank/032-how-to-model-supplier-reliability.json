@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "spec_id": "KB-032",
+  "sequence": 32,
+  "arc_id": "ARC-08",
+  "slug": "how-to-model-supplier-reliability",
+  "scheduled_at": "2026-12-23T09:00:00+01:00",
+  "knowledge_area": "risk_decision",
+  "cluster": "Inventory & Supply Chain",
+  "editorial_pillar": "industries_use_cases",
+  "content_family": "framework_playbook",
+  "angle": "supplier reliability decision framework",
+  "primary_keyword": "supplier reliability model",
+  "search_intent": "informational",
+  "freshness": "evergreen",
+  "related_case": "/projects/ecommerce-demand-forecasting",
+  "related_specs": [
+    "KB-029",
+    "KB-030",
+    "KB-031"
+  ],
+  "variants": {
+    "es": {
+      "title": "Cómo modelar la fiabilidad de proveedores",
+      "excerpt": "Un modelo útil de proveedores combina cumplimiento, variabilidad, severidad, dependencia y coste para activar decisiones de sourcing, buffer y escalado.",
+      "quick": [
+        "Mide nivel y dispersión",
+        "Añade exposición y dependencia",
+        "Conecta el score con una acción"
+      ],
+      "section_titles": [
+        "Construye la capa de rendimiento",
+        "Añade exposición y dependencia",
+        "Convierte métricas en decisiones",
+        "Gobierna el modelo"
+      ],
+      "business_title": "El modelo de fiabilidad sirve cuando traduce comportamiento del proveedor a una política operativa distinta.",
+      "business_steps": [
+        "Rendimiento observado",
+        "Exposición empresarial",
+        "Decisión de riesgo"
+      ],
+      "body": "Modelar la fiabilidad de proveedores no consiste en construir un ranking más sofisticado. El objetivo debería ser responder una pregunta operativa: **qué riesgo introduce cada proveedor en nuestras decisiones y qué deberíamos hacer de forma diferente como consecuencia**.\n\nPara ello, un modelo útil necesita combinar al menos cuatro capas: rendimiento observado, variabilidad, exposición empresarial y capacidad de respuesta. Un proveedor puede tener métricas aceptables y seguir siendo crítico si concentra demasiado volumen o no existe alternativa. **El riesgo aparece cuando performance y dependencia se leen juntos.**\n\n**Construye la capa de rendimiento**\nLa primera capa describe lo que ocurre. OTIF, lead time, calidad, fill rate y cumplimiento de cantidad son puntos de partida razonables. Pero cada métrica debe conservar suficiente detalle para no esconder la distribución.\n\nPara lead time, conviene medir centro y dispersión: mediana, media, percentiles altos y variabilidad. Para entregas tardías, frecuencia y severidad. **Un modelo de fiabilidad necesita saber no solo cuántas veces falla un proveedor, sino cuánto duele cuando falla.**\n\nLa segmentación es importante. Rendimiento por planta, ruta, familia de producto o periodo puede revelar patrones que desaparecen al agregar. También conviene observar tendencia y no solo el nivel actual.\n\n**Añade exposición y dependencia**\nPerformance histórico no es igual a riesgo empresarial. Si un proveedor entrega una pieza no crítica con múltiples alternativas, incluso un rendimiento mediocre puede tener impacto limitado. Si sirve un componente esencial sin sustituto, pequeñas desviaciones pueden ser costosas.\n\nLa exposición puede medirse con gasto, volumen, margen afectado, número de SKUs críticos, tiempo de sustitución y concentración por planta. **La pregunta es cuánto negocio queda expuesto si el proveedor deja de comportarse como esperamos.**\n\nTambién hay dependencia compartida. Proveedores diferentes pueden usar la misma región, puerto, transportista o fabricante upstream. Un modelo maduro debería registrar estas concentraciones para evitar falsa diversificación.\n\nLa capacidad de recuperación importa igualmente. Dual sourcing, inventario de contingencia, alternativas homologadas y flexibilidad contractual reducen el riesgo incluso si el performance bruto no cambia.\n\n**Convierte métricas en decisiones**\nLa capa más importante es traducir señales a políticas. Una subida de variabilidad puede ajustar safety stock. Un deterioro persistente de OTIF puede activar una revisión contractual. Alta dependencia con colas severas puede justificar un segundo proveedor.\n\nEstas reglas no tienen que ser completamente automáticas. **El modelo puede priorizar casos y recomendar la respuesta, mientras procurement conserva la decisión final en situaciones de alto impacto.**\n\nEs útil definir estados como estable, vigilancia y acción, pero basados en criterios explícitos. Un proveedor no debería entrar en rojo solo por una incidencia aislada ni permanecer en verde porque la media anual todavía es buena.\n\nTambién conviene calcular coste esperado de la variabilidad cuando sea posible. Inventario adicional, urgencias, producción parada y tiempo administrativo hacen que el riesgo sea comparable con diferencias de precio.\n\n**Gobierna el modelo**\nCualquier modelo de proveedores necesita definiciones estables. Qué significa on time, qué ventana se utiliza, cómo se tratan entregas parciales y qué fecha sirve como referencia deben estar documentados. **Sin governance, el score cambia cuando cambia la definición y no cuando cambia el proveedor.**\n\nLos datos deben tener ownership. Procurement puede conocer compromisos contractuales; logística, fechas reales; planning, impacto en inventario. Integrar esas perspectivas reduce discusiones sobre qué dato es correcto.\n\nLa recalibración debe ser periódica. Pesos, umbrales y criticidad cambian con el negocio. Un proveedor que antes era secundario puede convertirse en crítico por crecimiento o consolidación de sourcing.\n\nTambién es importante revisar decisiones pasadas. Si el modelo activó un buffer, una renegociación o una segunda fuente, ¿redujo realmente el coste o el riesgo? Esa retroalimentación permite mejorar la política.\n\nEl output final debería ser simple: qué proveedor necesita atención, por qué, qué parte del negocio está expuesta y qué acción proponemos. **Un modelo de fiabilidad no vale por lo bien que puntúa proveedores; vale por lo pronto que convierte señales débiles en decisiones que protegen servicio y capital.**",
+      "seo_title": "Cómo modelar la fiabilidad de proveedores",
+      "seo_description": "Framework para combinar OTIF, variabilidad, severidad, dependencia y exposición en un modelo de supplier reliability orientado a decisiones.",
+      "seo_keywords": [
+        "supplier reliability model",
+        "modelo fiabilidad proveedores",
+        "supplier risk model",
+        "lead time variability"
+      ],
+      "tags": [
+        "Supply Chain",
+        "Supplier Reliability",
+        "Framework"
+      ]
+    },
+    "en": {
+      "title": "How to model supplier reliability",
+      "excerpt": "A useful supplier model combines fulfilment, variability, severity, dependency and cost to trigger sourcing, buffer and escalation decisions.",
+      "quick": [
+        "Measure level and dispersion",
+        "Add exposure and dependency",
+        "Connect the score to action"
+      ],
+      "section_titles": [
+        "Build the performance layer",
+        "Add exposure and dependency",
+        "Turn metrics into decisions",
+        "Govern the model"
+      ],
+      "business_title": "A reliability model creates value when supplier behaviour leads to a different operating policy.",
+      "business_steps": [
+        "Observed performance",
+        "Business exposure",
+        "Risk decision"
+      ],
+      "body": "Modeling supplier reliability is not about building a more sophisticated ranking. The objective should be to answer an operating question: **which risk does each supplier introduce into the business and what should change because of it?**\n\nA useful model therefore needs at least four layers: observed performance, variability, business exposure and response capacity. A supplier can post acceptable metrics and still be critical when it concentrates too much volume or has no practical alternative. **Risk emerges when performance and dependency are read together.**\n\n**Build the performance layer**\nThe first layer describes what happens. OTIF, lead time, quality, fill rate and quantity compliance are reasonable starting points. Each metric should retain enough detail to preserve the underlying distribution.\n\nFor lead time, measure both centre and dispersion: median, mean, high percentiles and variability. For late deliveries, track frequency and severity. **A reliability model needs to know not only how often a supplier fails, but how painful the failure is when it occurs.**\n\nSegmentation matters. Performance by plant, route, product family or season can reveal patterns that disappear in aggregation. Trend should be monitored as well as the current level.\n\n**Add exposure and dependency**\nHistorical performance is not the same as business risk. A supplier serving a non-critical item with several substitutes may have limited impact despite mediocre performance. A supplier serving an essential component with no substitute can be costly even with small deviations.\n\nExposure can include spend, volume, affected margin, critical-SKU count, replacement time and plant concentration. **The question is how much of the business is exposed when the supplier stops behaving as expected.**\n\nShared dependency matters too. Different suppliers may rely on the same geography, port, carrier or upstream producer. A mature model should record those concentrations to avoid false diversification.\n\nRecovery capacity should also be represented. Dual sourcing, contingency inventory, approved alternatives and contractual flexibility reduce risk even when raw supplier performance stays unchanged.\n\n**Turn metrics into decisions**\nThe most important layer translates signals into policy. Higher variability can trigger a safety-stock review. Persistent OTIF deterioration can trigger contract review. High dependency combined with severe tails can justify a second source.\n\nThose rules do not need to be fully automatic. **The model can prioritize cases and recommend responses while procurement retains final judgment for high-impact situations.**\n\nStates such as stable, watch and action can be useful when their criteria are explicit. A supplier should not move to red after one isolated incident, nor remain green because the annual average still looks healthy.\n\nWhere possible, convert variability into expected cost. Additional inventory, premium freight, production downtime and administrative effort make supplier risk comparable with unit-price differences.\n\n**Govern the model**\nSupplier models need stable definitions. What counts as on time, which tolerance window applies, how partial deliveries are treated and which date is used as the reference should be documented. **Without governance, the score changes when the definition changes rather than when the supplier changes.**\n\nData needs ownership as well. Procurement may own contractual commitments; logistics, actual delivery timestamps; planning, inventory impact. Combining those perspectives reduces arguments about which number is correct.\n\nRecalibration should be periodic. Weights, thresholds and criticality evolve with the business. A supplier that was once secondary can become critical after growth or sourcing consolidation.\n\nPast decisions should be reviewed too. If the model triggered more buffer, renegotiation or a second source, did cost or risk actually fall? That feedback improves the policy.\n\nThe final output should remain simple: which supplier needs attention, why, which part of the business is exposed and which response is proposed. **A reliability model is valuable not because it scores suppliers elegantly, but because it turns weak signals into earlier decisions that protect service and capital.**\n\nThe model should also distinguish a supplier problem from a network problem. Delays caused by the customer’s own booking process, customs documentation or receiving capacity should not automatically be attributed to supplier reliability. **Good attribution matters because the corrective action depends on the owner of the cause.** Root-cause fields and exception coding keep the model from penalizing the wrong party and make improvement discussions more credible.",
+      "seo_title": "How to Model Supplier Reliability",
+      "seo_description": "A framework combining OTIF, variability, severity, dependency and business exposure into a supplier reliability model built for decisions.",
+      "seo_keywords": [
+        "supplier reliability model",
+        "supplier risk model",
+        "lead time variability",
+        "supplier analytics"
+      ],
+      "tags": [
+        "Supply Chain",
+        "Supplier Reliability",
+        "Framework"
+      ]
+    },
+    "ca": {
+      "title": "Com modelar la fiabilitat de proveïdors",
+      "excerpt": "Un model útil combina compliment, variabilitat, severitat, dependència i cost per activar decisions de sourcing, buffer i escalat.",
+      "quick": [
+        "Mesura nivell i dispersió",
+        "Afegeix exposició i dependència",
+        "Connecta el score amb una acció"
+      ],
+      "section_titles": [
+        "Construeix la capa de rendiment",
+        "Afegeix exposició i dependència",
+        "Converteix mètriques en decisions",
+        "Governa el model"
+      ],
+      "business_title": "El model de fiabilitat crea valor quan el comportament del proveïdor porta a una política operativa diferent.",
+      "business_steps": [
+        "Rendiment observat",
+        "Exposició empresarial",
+        "Decisió de risc"
+      ],
+      "body": "Modelar la fiabilitat de proveïdors no consisteix a construir un rànquing més sofisticat. L’objectiu hauria de ser respondre una pregunta operativa: **quin risc introdueix cada proveïdor al negoci i què hauríem de fer diferent com a conseqüència?**\n\nPer això un model útil necessita com a mínim quatre capes: rendiment observat, variabilitat, exposició empresarial i capacitat de resposta. Un proveïdor pot tenir mètriques acceptables i continuar sent crític si concentra massa volum o no existeix alternativa. **El risc apareix quan performance i dependència es llegeixen junts.**\n\n**Construeix la capa de rendiment**\nLa primera capa descriu què passa. OTIF, lead time, qualitat, fill rate i compliment de quantitat són bons punts de partida. Cada mètrica ha de conservar prou detall per no perdre la distribució.\n\nPer lead time, convé mesurar centre i dispersió: mediana, mitjana, percentils alts i variabilitat. Per entregues tardanes, freqüència i severitat. **Un model de fiabilitat ha de saber no només quantes vegades falla un proveïdor, sinó quant fa mal quan falla.**\n\nLa segmentació importa. Rendiment per planta, ruta, família o temporada pot revelar patrons que desapareixen en agregar. També cal observar tendència i no només nivell actual.\n\n**Afegeix exposició i dependència**\nPerformance històric no és el mateix que risc empresarial. Un proveïdor que serveix un article no crític amb diverses alternatives pot tenir impacte limitat malgrat un rendiment mediocre. Un que serveix un component essencial sense substitut pot ser costós amb desviacions petites.\n\nL’exposició pot incloure despesa, volum, marge afectat, nombre de SKUs crítics, temps de substitució i concentració per planta. **La pregunta és quina part del negoci queda exposada quan el proveïdor deixa de comportar-se com esperem.**\n\nTambé importa la dependència compartida. Proveïdors diferents poden utilitzar la mateixa geografia, port, transportista o fabricant upstream. Un model madur ha de registrar aquestes concentracions.\n\nLa capacitat de recuperació també compta. Dual sourcing, inventari de contingència, alternatives homologades i flexibilitat contractual redueixen risc encara que el performance brut no canviï.\n\n**Converteix mètriques en decisions**\nLa capa més important tradueix senyals a polítiques. Més variabilitat pot activar revisió de safety stock. Deteriorament persistent d’OTIF pot activar revisió contractual. Dependència alta amb cues severes pot justificar una segona font.\n\nAquestes regles no han de ser completament automàtiques. **El model pot prioritzar casos i recomanar resposta mentre procurement manté la decisió final en situacions d’alt impacte.**\n\nEstats com estable, vigilància i acció poden ser útils si els criteris són explícits. Un proveïdor no hauria d’entrar en vermell per una incidència aïllada ni quedar-se en verd perquè la mitjana anual encara és bona.\n\nQuan sigui possible, convé convertir variabilitat en cost esperat. Inventari addicional, transport premium, parada de producció i temps administratiu fan el risc comparable amb diferències de preu.\n\n**Governa el model**\nQualsevol model necessita definicions estables. Què significa on time, quina finestra s’utilitza, com es tracten entregues parcials i quina data serveix de referència han d’estar documentats. **Sense governance, el score canvia quan canvia la definició i no quan canvia el proveïdor.**\n\nLes dades necessiten ownership. Procurement pot conèixer compromisos contractuals; logística, timestamps reals; planning, impacte en inventari. Integrar perspectives redueix discussions sobre quin número és correcte.\n\nLa recalibració ha de ser periòdica. Pesos, llindars i criticitat evolucionen. Un proveïdor abans secundari pot convertir-se en crític per creixement o consolidació de sourcing.\n\nTambé cal revisar decisions passades. Si el model va activar més buffer, renegociació o una segona font, va baixar realment el cost o el risc? Aquesta retroalimentació millora la política.\n\nL’output final ha de ser simple: quin proveïdor necessita atenció, per què, quina part del negoci està exposada i quina acció proposem. **Un model de fiabilitat val perquè converteix senyals febles en decisions més primerenques que protegeixen servei i capital, no perquè puntuï proveïdors de manera elegant.**\n\nEl model també ha de distingir un problema de proveïdor d’un problema de xarxa. Retards causats pel nostre procés de booking, documentació de duana o capacitat de recepció no s’haurien d’atribuir automàticament a la fiabilitat del proveïdor. **Una bona atribució importa perquè l’acció correctiva depèn del propietari de la causa.** Camps de root cause i codificació d’excepcions eviten penalitzar la part equivocada.",
+      "seo_title": "Com modelar la fiabilitat de proveïdors",
+      "seo_description": "Framework per combinar OTIF, variabilitat, severitat, dependència i exposició en un model de supplier reliability orientat a decisions.",
+      "seo_keywords": [
+        "supplier reliability model",
+        "model fiabilitat proveïdors",
+        "supplier risk model",
+        "lead time variability"
+      ],
+      "tags": [
+        "Supply Chain",
+        "Supplier Reliability",
+        "Framework"
+      ]
+    }
+  }
+}
