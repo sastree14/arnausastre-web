@@ -31,17 +31,18 @@ const COPY = {
 
     modelLabel: 'MODELO DE TRABAJO',
     modelTitle: 'Confianza, especialización y responsabilidad.',
-    modelBody: 'SC-Analytics trabaja cerca del cliente, con comunicación directa, criterio técnico y responsabilidad clara. Aportamos especialización cuando hace falta, explicamos límites y decisiones con transparencia y priorizamos soluciones útiles que puedan sostenerse en el tiempo.',
     values: [
-      ['Confianza', 'Relaciones construidas sobre consistencia y responsabilidad.'],
-      ['Transparencia', 'Supuestos, límites y decisiones explicados con claridad.'],
-      ['Especialización', 'Profundidad técnica cuando el problema realmente la requiere.'],
-      ['Utilidad', 'Sistemas pensados para operar y mejorar decisiones reales.'],
+      ['Confianza', 'Cumplimos lo acordado.'],
+      ['Transparencia', 'Decisiones y límites claros.'],
+      ['Especialización', 'Profundidad técnica cuando aporta valor.'],
+      ['Responsabilidad', 'Respondemos por el trabajo y el resultado.'],
     ],
+    pathsLabel: 'SIGUIENTE PASO',
+    pathsTitle: 'Elige cómo quieres avanzar.',
     paths: [
-      ['Casos de éxito', 'Ver cómo aplicamos este criterio en proyectos concretos.', '/projects'],
-      ['Partner Data & AI', 'Conocer el modelo de colaboración continuada.', '/partner-analitico'],
-      ['Proyecto individualizado', 'Hablar de una necesidad concreta y definir un alcance específico.', '/contact?intent=problem'],
+      ['Casos de éxito', 'Verlo aplicado.', '/projects'],
+      ['Partner Data e IA', 'Conocer el modelo partner.', '/partner-analitico'],
+      ['Proyecto individualizado', 'Hablar de una necesidad concreta.', '/contact?intent=problem'],
     ],
 
     ctaTitle: 'Si existe encaje entre vuestra forma de trabajar y la nuestra, definamos el primer paso.',
@@ -76,17 +77,18 @@ const COPY = {
 
     modelLabel: 'MODEL DE TREBALL',
     modelTitle: 'Confiança, especialització i responsabilitat.',
-    modelBody: 'SC-Analytics treballa a prop del client, amb comunicació directa, criteri tècnic i responsabilitat clara. Aportem especialització quan cal, expliquem límits i decisions amb transparència i prioritzem solucions útils que es puguin sostenir en el temps.',
     values: [
-      ['Confiança', 'Relacions construïdes sobre consistència i responsabilitat.'],
-      ['Transparència', 'Supòsits, límits i decisions explicats amb claredat.'],
-      ['Especialització', 'Profunditat tècnica quan el problema realment la requereix.'],
-      ['Utilitat', 'Sistemes pensats per operar i millorar decisions reals.'],
+      ['Confiança', 'Complim allò acordat.'],
+      ['Transparència', 'Decisions i límits clars.'],
+      ['Especialització', 'Profunditat tècnica quan aporta valor.'],
+      ['Responsabilitat', 'Responem pel treball i pel resultat.'],
     ],
+    pathsLabel: 'SEGÜENT PAS',
+    pathsTitle: 'Tria com vols avançar.',
     paths: [
-      ['Casos d’èxit', 'Veure com apliquem aquest criteri en projectes concrets.', '/projects'],
-      ['Partner Data & AI', 'Conèixer el model de col·laboració continuada.', '/partner-analitico'],
-      ['Projecte individualitzat', 'Parlar d’una necessitat concreta i definir un abast específic.', '/contact?intent=problem'],
+      ['Casos d’èxit', 'Veure-ho aplicat.', '/projects'],
+      ['Partner Dades i IA', 'Conèixer el model partner.', '/partner-analitico'],
+      ['Projecte individualitzat', 'Parlar d’una necessitat concreta.', '/contact?intent=problem'],
     ],
 
     ctaTitle: 'Si hi ha encaix entre la vostra manera de treballar i la nostra, definim el primer pas.',
@@ -121,17 +123,18 @@ const COPY = {
 
     modelLabel: 'WORKING MODEL',
     modelTitle: 'Trust, specialist depth and accountability.',
-    modelBody: 'SC-Analytics stays close to the client, with direct communication, technical judgment and clear accountability. We bring specialist depth when it is needed, explain limits and decisions transparently, and prioritise useful systems that can endure.',
     values: [
-      ['Trust', 'Relationships built on consistency and accountability.'],
-      ['Transparency', 'Assumptions, limits and decisions explained clearly.'],
-      ['Specialist depth', 'Technical depth when the problem genuinely requires it.'],
-      ['Utility', 'Systems designed to operate and improve real decisions.'],
+      ['Trust', 'We do what we agree.'],
+      ['Transparency', 'Clear decisions and clear limits.'],
+      ['Specialist depth', 'Technical depth when it creates value.'],
+      ['Accountability', 'We own the work and the outcome.'],
     ],
+    pathsLabel: 'NEXT STEP',
+    pathsTitle: 'Choose how you want to move forward.',
     paths: [
-      ['Success stories', 'See how this standard is applied in concrete projects.', '/projects'],
-      ['Data & AI Partner', 'Explore the ongoing collaboration model.', '/partner-analitico'],
-      ['Defined project', 'Discuss one concrete need and define a specific scope.', '/contact?intent=problem'],
+      ['Success stories', 'See it applied.', '/projects'],
+      ['Data and AI Partner', 'Explore the partner model.', '/partner-analitico'],
+      ['Defined project', 'Discuss one concrete need.', '/contact?intent=problem'],
     ],
 
     ctaTitle: 'If there is a fit between the way you work and the way we work, define the first step with us.',
@@ -205,7 +208,6 @@ export default function AboutPage() {
             <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.modelLabel}</p>
             <div>
               <h2 className="max-w-4xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.modelTitle}</h2>
-              <p className="mt-5 max-w-4xl text-[18px] leading-8 text-slate-700">{t.modelBody}</p>
             </div>
           </div>
 
@@ -226,7 +228,12 @@ export default function AboutPage() {
             })}
           </div>
 
-          <div className="mt-9 grid border-l border-t border-slate-300 md:grid-cols-3">
+          <div className="mt-10 border-t border-slate-300 pt-8 text-center">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.pathsLabel}</p>
+            <h3 className="mx-auto mt-3 max-w-3xl text-[30px] leading-[1.08] text-slate-950 sm:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.pathsTitle}</h3>
+          </div>
+
+          <div className="mt-7 grid border-l border-t border-slate-300 md:grid-cols-3">
             {t.paths.map(([title, body, href], index) => (
               <Link
                 key={href}
