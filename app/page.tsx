@@ -84,7 +84,6 @@ const COPY = {
 
     ctaKicker: 'SIN COMPROMISO',
     ctaTitle: 'Cuéntanos qué quieres mejorar en tu empresa y valoremos cómo podemos aportar.',
-    ctaBody: 'Explícanos la prioridad, la oportunidad o el reto. Te diremos con claridad si vemos una forma razonable de generar valor.',
     cta: 'Cuéntanos tu caso',
     ctaAlt: 'Casos de éxito',
   },
@@ -169,7 +168,6 @@ const COPY = {
 
     ctaKicker: 'SENSE COMPROMÍS',
     ctaTitle: 'Explica’ns què vols millorar a la teva empresa i valorem com hi podem aportar.',
-    ctaBody: 'Explica’ns la prioritat, l’oportunitat o el repte. Et direm amb claredat si veiem una manera raonable de generar valor.',
     cta: 'Explica’ns el teu cas',
     ctaAlt: 'Casos d’èxit',
   },
@@ -254,7 +252,6 @@ const COPY = {
 
     ctaKicker: 'NO COMMITMENT',
     ctaTitle: 'Tell us what you want to improve in your business and let us assess where we can contribute.',
-    ctaBody: 'Share the priority, opportunity or challenge. We will tell you clearly whether we see a sensible path to create value.',
     cta: 'Tell us about your case',
     ctaAlt: 'Success stories',
   },
@@ -376,8 +373,6 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-6 py-10 md:py-12">
           <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.ctaKicker}</p>
           <h2 className="mt-3 max-w-6xl text-[34px] font-medium leading-tight text-slate-950 sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
-          <p className="mt-4 max-w-3xl text-[17px] leading-7 text-slate-700">{t.ctaBody}</p>
-
           <div className="mt-7 flex flex-col gap-4 border-t border-slate-300 pt-6 sm:flex-row sm:items-center sm:justify-between">
             <Link href="/projects" className="text-[16px] font-semibold text-indigo-700 transition hover:text-indigo-900">
               {t.ctaAlt} →
