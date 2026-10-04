@@ -144,10 +144,10 @@ const COPY = {
 } as const
 
 const valuePalette = [
-  { bg: '#F7F1E8', border: '#DDCFBD' },
-  { bg: '#F2ECF7', border: '#D7C8E3' },
-  { bg: '#EAF3F8', border: '#C8DCE8' },
-  { bg: '#EDF4EE', border: '#C9D9CD' },
+  { bg: '#F7F1E8', border: '#DDCFBD', text: '#1D2B44', number: '#4338CA' },
+  { bg: '#EEE6F4', border: '#CCBBDD', text: '#1D2B44', number: '#4338CA' },
+  { bg: '#31536B', border: '#27465B', text: '#FFFFFF', number: '#B7C9FF' },
+  { bg: '#E3EEE6', border: '#B7CCBC', text: '#1D2B44', number: '#4338CA' },
 ]
 
 export default function AboutPage() {
@@ -212,37 +212,42 @@ export default function AboutPage() {
           </div>
 
           <div className="mt-8 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-            {t.values.map(([title, body], index) => {
+            {t.values.map(([title], index) => {
               const palette = valuePalette[index]
               return (
                 <article
                   key={title}
-                  className="min-h-[180px] border p-6"
+                  className="grid min-h-[155px] grid-rows-[auto_1fr] border p-6"
                   style={{ backgroundColor: palette.bg, borderColor: palette.border }}
                 >
-                  <span className="font-mono text-[12px] font-semibold text-indigo-700">0{index + 1}</span>
-                  <h3 className="mt-5 text-[23px] font-semibold text-[#1D2B44]">{title}</h3>
-                  <p className="mt-3 text-[16px] leading-7 text-slate-700">{body}</p>
+                  <span className="font-mono text-[12px] font-semibold" style={{ color: palette.number }}>0{index + 1}</span>
+                  <div className="flex items-center">
+                    <h3 className="text-[24px] font-semibold leading-7" style={{ color: palette.text }}>{title}</h3>
+                  </div>
                 </article>
               )
             })}
           </div>
+        </div>
+      </section>
 
-          <div className="mt-10 border-t border-slate-300 pt-8 text-center">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.pathsLabel}</p>
-            <h3 className="mx-auto mt-3 max-w-3xl text-[30px] leading-[1.08] text-slate-950 sm:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.pathsTitle}</h3>
+      <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
+        <div className="mx-auto max-w-7xl px-6 py-12 md:py-14">
+          <div className="max-w-4xl">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#8E91FF]">{t.pathsLabel}</p>
+            <h3 className="mt-3 max-w-3xl text-[32px] leading-[1.08] text-white sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.pathsTitle}</h3>
           </div>
 
-          <div className="mt-7 grid border-l border-t border-slate-300 md:grid-cols-3">
+          <div className="mt-8 grid gap-3 md:grid-cols-3">
             {t.paths.map(([title, body, href], index) => (
               <Link
                 key={href}
                 href={href}
-                className={`group flex min-h-[215px] flex-col justify-between border-b border-r border-slate-300 p-7 transition ${index === 1 ? 'bg-[#F4F1EA]' : index === 2 ? 'bg-[#EAF0F6]' : 'bg-white'} hover:bg-[#F7F7F3]`}
+                className={`group relative flex min-h-[205px] flex-col justify-between border p-7 text-[#1D2B44] transition duration-200 hover:-translate-y-1 hover:scale-[1.015] hover:shadow-xl active:scale-[1.005] ${index === 0 ? 'border-[#DDCFBD] bg-[#F8F3EA]' : index === 1 ? 'border-[#A9C2D6] bg-[#DDE8F2]' : 'border-[#D2C4DD] bg-[#F1ECF5]'}`}
               >
                 <div>
-                  <h3 className="text-[28px] leading-[1.1] text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
-                  <p className="mt-4 max-w-[30ch] text-[16px] leading-7 text-slate-600">{body}</p>
+                  <h3 className="text-[28px] leading-[1.1]" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
+                  <p className="mt-4 max-w-[28ch] text-[15px] leading-6 text-slate-700">{body}</p>
                 </div>
                 <span className="mt-8 text-[16px] font-semibold text-indigo-700">
                   {lang === 'es' ? 'Explorar' : lang === 'ca' ? 'Explorar' : 'Explore'} <span className="inline-block transition group-hover:translate-x-1">→</span>
