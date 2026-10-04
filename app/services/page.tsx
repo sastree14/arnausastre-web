@@ -42,7 +42,7 @@ const COPY = {
       },
       {
         title: 'Partner Data e IA',
-        hook: 'Añade capacidad especializada cuando la necesites, sin perder contexto.',
+        hook: 'Refuerza tu equipo con capacidad especializada, manteniendo continuidad y contexto.',
         primary: 'Explorar modelo partner',
         primaryHref: '/partner-analitico',
       },
@@ -106,7 +106,7 @@ const COPY = {
       },
       {
         title: 'Partner Dades i IA',
-        hook: 'Afegeix capacitat especialitzada quan la necessitis, sense perdre context.',
+        hook: 'Reforça el teu equip amb capacitat especialitzada, mantenint continuïtat i context.',
         primary: 'Explorar model partner',
         primaryHref: '/partner-analitico',
       },
@@ -170,7 +170,7 @@ const COPY = {
       },
       {
         title: 'Data and AI Partner',
-        hook: 'Add specialist capability when you need it, without losing context.',
+        hook: 'Strengthen your team with specialist capability while keeping continuity and context.',
         primary: 'Explore the partner model',
         primaryHref: '/partner-analitico',
       },
@@ -307,10 +307,10 @@ export default function ServicesPage() {
                 <Link
                   key={href}
                   href={href}
-                  className={`group relative flex min-h-[220px] flex-col justify-between border p-7 text-left transition duration-200 hover:z-10 hover:-translate-y-1 hover:scale-[1.015] hover:shadow-lg active:scale-[1.005] ${middle ? 'border-[#31536B] bg-[#31536B] text-white' : index === 0 ? 'border-[#DDCFBD] bg-[#F8F3EA] text-slate-950' : 'border-[#D2C4DD] bg-[#F1ECF5] text-slate-950'}`}
+                  className={`group relative flex min-h-[220px] flex-col justify-between border p-7 text-left transition duration-200 hover:z-10 hover:-translate-y-1 hover:scale-[1.015] hover:shadow-lg active:scale-[1.005] ${middle ? 'border-[#A8C1D3] bg-[#D7E4ED] text-slate-950' : index === 0 ? 'border-[#DDCFBD] bg-[#F8F3EA] text-slate-950' : 'border-[#D2C4DD] bg-[#F1ECF5] text-slate-950'}`}
                 >
-                  <h3 className={`max-w-[270px] text-[26px] font-semibold leading-8 ${middle ? 'text-white' : 'text-slate-950'}`}>{title}</h3>
-                  <p className={`mt-8 text-[16px] font-semibold ${middle ? 'text-white' : 'text-indigo-700'}`}>
+                  <h3 className="max-w-[270px] text-[26px] font-semibold leading-8 text-slate-950">{title}</h3>
+                  <p className="mt-8 text-[16px] font-semibold text-indigo-700">
                     {cta} <span className="inline-block transition group-hover:translate-x-1">→</span>
                   </p>
                 </Link>
