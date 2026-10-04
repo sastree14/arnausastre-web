@@ -27,21 +27,21 @@ const COPY = {
       problem: {
         label: 'CUÉNTANOS EL PROBLEMA',
         title: 'Danos el contexto para entender qué debe cambiar.',
-        message: 'Problema o situación actual',
+        message: 'Cuéntanoslo',
         placeholder: '¿Qué está ocurriendo hoy? ¿Qué debería funcionar mejor? ¿Qué impacto está teniendo en el negocio?',
         prompts: ['Qué ocurre hoy', 'Qué decisión, proceso o sistema está afectado', 'Qué resultado debería mejorar'],
       },
       opportunity: {
         label: 'CUÉNTANOS LA OPORTUNIDAD',
         title: 'Explícanos dónde ves potencial y qué quieres valorar.',
-        message: 'Oportunidad a explorar',
+        message: 'Cuéntanoslo',
         placeholder: '¿Dónde ves una oportunidad? ¿Qué objetivo empresarial te gustaría mejorar? ¿Qué datos, procesos o capacidades existen hoy?',
         prompts: ['Dónde está la oportunidad', 'Qué objetivo quieres mejorar', 'Qué datos o capacidades existen hoy'],
       },
       partner: {
         label: 'CUÉNTANOS EL CONTEXTO DE COLABORACIÓN',
         title: 'Cuéntanos qué capacidad quieres reforzar.',
-        message: 'Contexto del modelo partner',
+        message: 'Cuéntanoslo',
         placeholder: '¿Qué equipo tenéis hoy? ¿Qué capacidades queréis reforzar? ¿Qué tipo de necesidades aparecen de forma recurrente?',
         prompts: ['Qué capacidades tenéis hoy', 'Qué especialidad queréis reforzar', 'Qué necesidades aparecen de forma recurrente'],
       },
@@ -92,21 +92,21 @@ const COPY = {
       problem: {
         label: 'EXPLICA’NS EL PROBLEMA',
         title: 'Dona’ns el context per entendre què ha de canviar.',
-        message: 'Problema o situació actual',
+        message: 'Explica’ns-ho',
         placeholder: 'Què està passant avui? Què hauria de funcionar millor? Quin impacte està tenint en el negoci?',
         prompts: ['Què passa avui', 'Quina decisió, procés o sistema està afectat', 'Quin resultat hauria de millorar'],
       },
       opportunity: {
         label: 'EXPLICA’NS L’OPORTUNITAT',
         title: 'Explica’ns on veus potencial i què vols valorar.',
-        message: 'Oportunitat a explorar',
+        message: 'Explica’ns-ho',
         placeholder: 'On veus una oportunitat? Quin objectiu empresarial t’agradaria millorar? Quines dades, processos o capacitats existeixen avui?',
         prompts: ['On és l’oportunitat', 'Quin objectiu vols millorar', 'Quines dades o capacitats existeixen avui'],
       },
       partner: {
         label: 'EXPLICA’NS EL CONTEXT DE COL·LABORACIÓ',
         title: 'Explica’ns quina capacitat vols reforçar.',
-        message: 'Context del model partner',
+        message: 'Explica’ns-ho',
         placeholder: 'Quin equip teniu avui? Quines capacitats voleu reforçar? Quin tipus de necessitats apareixen de manera recurrent?',
         prompts: ['Quines capacitats teniu avui', 'Quina especialitat voleu reforçar', 'Quines necessitats apareixen de manera recurrent'],
       },
@@ -157,21 +157,21 @@ const COPY = {
       problem: {
         label: 'TELL US ABOUT THE PROBLEM',
         title: 'Give us the context to understand what needs to change.',
-        message: 'Problem or current situation',
+        message: 'Tell us about it',
         placeholder: 'What is happening today? What should work better? What business impact is it creating?',
         prompts: ['What is happening today', 'Which decision, process or system is affected', 'Which outcome should improve'],
       },
       opportunity: {
         label: 'TELL US ABOUT THE OPPORTUNITY',
         title: 'Tell us where you see potential and what you want to assess.',
-        message: 'Opportunity to explore',
+        message: 'Tell us about it',
         placeholder: 'Where do you see an opportunity? Which business objective would you like to improve? What data, processes or capabilities exist today?',
         prompts: ['Where the opportunity is', 'Which objective should improve', 'What data or capabilities exist today'],
       },
       partner: {
         label: 'TELL US ABOUT THE COLLABORATION CONTEXT',
         title: 'Tell us which capability you want to strengthen.',
-        message: 'Partner-model context',
+        message: 'Tell us about it',
         placeholder: 'What team do you have today? Which capabilities do you want to strengthen? What needs recur over time?',
         prompts: ['Which capabilities you have today', 'Which specialism you want to strengthen', 'Which needs recur over time'],
       },
@@ -353,23 +353,14 @@ export default function ContactPage() {
                   />
                 </label>
 
-                <div className="border-y border-slate-300 bg-[#FAFAF7]">
-                  {selectedForm.prompts.map((prompt, index) => (
-                    <div key={prompt} className="grid min-h-[52px] grid-cols-[44px_1fr] items-center gap-4 border-b border-slate-200 px-4 py-3 last:border-b-0">
-                      <span className="font-mono text-[12px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
-                      <p className="text-[15px] font-medium leading-6 text-slate-700">{prompt}</p>
-                    </div>
-                  ))}
-                </div>
-
                 <label className="block text-[15px] font-semibold text-slate-700">
                   {selectedForm.message}
                   <textarea
                     required
-                    rows={6}
+                    rows={7}
                     value={form.message}
                     onChange={(event) => setForm({ ...form, message: event.target.value })}
-                    placeholder={selectedForm.placeholder}
+                    placeholder={selectedForm.prompts.map((prompt, index) => `${String(index + 1).padStart(2, '0')} · ${prompt}`).join('\n')}
                     className="mt-2 w-full resize-none border border-slate-300 bg-white px-4 py-3 font-normal leading-7 text-slate-950 outline-none transition focus:border-indigo-500"
                   />
                 </label>
