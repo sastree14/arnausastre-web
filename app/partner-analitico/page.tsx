@@ -5,7 +5,7 @@ import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
 const COPY = {
   es: {
-    eyebrow: 'PARTNER DATA & AI',
+    eyebrow: 'PARTNER DATA E IA',
     title: 'Capacidad analítica y tecnológica especializada, sin construir todo el equipo internamente.',
     intro: 'Nos integramos como capacidad tecnológica y analítica externa, conservando contexto y activando la especialidad que necesitas en cada momento.',
     primary: 'Hablar del modelo partner',
@@ -20,20 +20,20 @@ const COPY = {
     ],
 
     fitLabel: 'PARA QUIÉN',
-    fitTitle: 'Para empresas que quieren llegar más lejos con sus equipos, sin incorporar cada especialidad de Data & AI de forma permanente.',
+    fitTitle: 'Para empresas que quieren reforzar sus equipos con capacidad especializada cuando la necesitan.',
     fits: [
-      ['Empresas que quieren ampliar capacidad', 'Complementamos el equipo existente con especialización avanzada cuando aparece una necesidad concreta.'],
-      ['Equipos de datos, tecnología u operaciones', 'Aportamos profundidad adicional en problemas que exigen capacidades específicas o experiencia especializada.'],
-      ['Agencias y consultoras', 'Reforzamos la entrega técnica detrás de vuestra propuesta, manteniendo intacta la relación con el cliente final.'],
+      ['Empresas que quieren ampliar capacidad', 'Añadimos especialización a iniciativas concretas sin alterar cómo ya trabaja el equipo.'],
+      ['Equipos con retos técnicos específicos', 'Entramos cuando un problema exige más profundidad en datos, IA, modelado o automatización.'],
+      ['Agencias y consultoras', 'Complementamos vuestra propuesta con capacidad técnica especializada cuando el proyecto lo requiere.'],
     ],
 
     modelLabel: 'CÓMO FUNCIONA',
     modelTitle: 'Aprendemos el contexto y aportamos valor donde más se necesita.',
     model: [
       ['01', 'Aprendemos el contexto', 'Entendemos negocio, sistemas y prioridades.'],
-      ['02', 'Entramos donde hace falta', 'Activamos la capacidad adecuada para cada reto.'],
+      ['02', 'Entramos donde hace falta', 'Activamos la especialidad adecuada.'],
       ['03', 'Conservamos conocimiento', 'Cada proyecto acelera el siguiente.'],
-      ['04', 'Seguimos aportando valor', 'La continuidad existe mientras siga siendo útil.'],
+      ['04', 'Seguimos aportando valor', 'Seguimos mientras aporte valor.'],
     ],
 
     exploreLabel: 'VALOREMOS EL ENCAJE',
@@ -50,7 +50,7 @@ const COPY = {
   },
 
   ca: {
-    eyebrow: 'PARTNER DATA & AI',
+    eyebrow: 'PARTNER DADES I IA',
     title: 'Capacitat analítica i tecnològica especialitzada, sense construir tot l’equip internament.',
     intro: 'Ens integrem com a capacitat tecnològica i analítica externa, conservant context i activant l’especialitat que necessites en cada moment.',
     primary: 'Parlar del model partner',
@@ -65,20 +65,20 @@ const COPY = {
     ],
 
     fitLabel: 'PER A QUI',
-    fitTitle: 'Per a empreses que volen arribar més lluny amb els seus equips, sense incorporar cada especialitat de Data & AI de manera permanent.',
+    fitTitle: 'Per a empreses que volen reforçar els seus equips amb capacitat especialitzada quan la necessiten.',
     fits: [
-      ['Empreses que volen ampliar capacitat', 'Complementem l’equip existent amb especialització avançada quan apareix una necessitat concreta.'],
-      ['Equips de dades, tecnologia o operacions', 'Aportem profunditat addicional en problemes que exigeixen capacitats específiques o experiència especialitzada.'],
-      ['Agències i consultores', 'Reforcem l’entrega tècnica darrere de la vostra proposta, mantenint intacta la relació amb el client final.'],
+      ['Empreses que volen ampliar capacitat', 'Afegim especialització a iniciatives concretes sense alterar com ja treballa l’equip.'],
+      ['Equips amb reptes tècnics específics', 'Entrem quan un problema exigeix més profunditat en dades, IA, modelatge o automatització.'],
+      ['Agències i consultores', 'Complementem la vostra proposta amb capacitat tècnica especialitzada quan el projecte ho requereix.'],
     ],
 
     modelLabel: 'COM FUNCIONA',
     modelTitle: 'Aprenem el context i aportem valor on més es necessita.',
     model: [
       ['01', 'Aprenem el context', 'Entenem negoci, sistemes i prioritats.'],
-      ['02', 'Entrem on cal', 'Activem la capacitat adequada per a cada repte.'],
+      ['02', 'Entrem on cal', 'Activem l’especialitat adequada.'],
       ['03', 'Conservem coneixement', 'Cada projecte accelera el següent.'],
-      ['04', 'Seguim aportant valor', 'La continuïtat existeix mentre segueixi sent útil.'],
+      ['04', 'Seguim aportant valor', 'Seguim mentre aporti valor.'],
     ],
 
     exploreLabel: 'VALOREM L’ENCAIX',
@@ -95,7 +95,7 @@ const COPY = {
   },
 
   en: {
-    eyebrow: 'DATA & AI PARTNER',
+    eyebrow: 'DATA AND AI PARTNER',
     title: 'Specialist analytical and technology capability, without building the entire team in-house.',
     intro: 'We integrate as external technology and analytical capability, retaining context and activating the right specialism when needed.',
     primary: 'Discuss the partner model',
@@ -110,20 +110,20 @@ const COPY = {
     ],
 
     fitLabel: 'WHO IT IS FOR',
-    fitTitle: 'For companies that want to take their teams further without permanently hiring every Data & AI specialism.',
+    fitTitle: 'For companies that want to strengthen their teams with specialist capability when they need it.',
     fits: [
-      ['Companies looking to extend capability', 'We complement the existing team with advanced specialist depth when a concrete need appears.'],
-      ['Data, technology or operations teams', 'We add depth when a problem requires specific capabilities or specialist experience.'],
-      ['Agencies and consultancies', 'We strengthen the technical delivery behind your offer while preserving your client relationship.'],
+      ['Companies looking to extend capability', 'We add specialist depth to concrete initiatives without changing how the existing team works.'],
+      ['Teams facing specific technical challenges', 'We step in when a problem needs deeper expertise in data, AI, modelling or automation.'],
+      ['Agencies and consultancies', 'We complement your offer with specialist technical capability when a project requires it.'],
     ],
 
     modelLabel: 'HOW IT WORKS',
     modelTitle: 'We learn the context and create value where it matters most.',
     model: [
       ['01', 'We learn the context', 'We understand the business, systems and priorities.'],
-      ['02', 'We step in where needed', 'We activate the right capability for each challenge.'],
+      ['02', 'We step in where needed', 'We activate the right specialist capability.'],
       ['03', 'We retain knowledge', 'Every project makes the next one faster.'],
-      ['04', 'We keep creating value', 'Continuity exists only while it remains useful.'],
+      ['04', 'We keep creating value', 'We stay involved while it adds value.'],
     ],
 
     exploreLabel: 'ASSESS THE FIT',
@@ -140,11 +140,17 @@ const COPY = {
   },
 } as const
 
+const fitPalette = [
+  { bg: '#F8F3EA', border: '#DDCFBD' },
+  { bg: '#DDE8F2', border: '#A9C2D6' },
+  { bg: '#F1ECF5', border: '#D2C4DD' },
+]
+
 const modelPalette = [
-  { bg: '#F7F1E8', border: '#DDCFBD' },
-  { bg: '#F2ECF7', border: '#D7C8E3' },
-  { bg: '#EAF3F8', border: '#C8DCE8' },
-  { bg: '#EDF4EE', border: '#C9D9CD' },
+  { bg: '#F6EBDD', border: '#D7C2A8' },
+  { bg: '#DFEAF4', border: '#9FBBD0' },
+  { bg: '#E2EFE6', border: '#A9C7B0' },
+  { bg: '#ECE4F4', border: '#C2ADD5' },
 ]
 
 export default function AnalyticalPartnerPage() {
@@ -184,45 +190,50 @@ export default function AnalyticalPartnerPage() {
           <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.fitLabel}</p>
           <h2 className="mt-4 max-w-6xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.fitTitle}</h2>
 
-          <div className="mt-8 grid border-l border-t border-slate-300 lg:grid-cols-3">
-            {t.fits.map(([title, body], index) => (
-              <article key={title} className={`min-h-[245px] border-b border-r border-slate-300 p-7 ${index === 1 ? 'bg-[#F4F1EA]' : 'bg-white'}`}>
-                <p className="font-mono text-[13px] font-semibold text-indigo-700">0{index + 1}</p>
-                <h3 className="mt-5 text-[25px] font-semibold leading-8 text-slate-950">{title}</h3>
-                <p className="mt-4 text-[17px] leading-7 text-slate-700">{body}</p>
-              </article>
-            ))}
+          <div className="mt-8 grid gap-3 lg:grid-cols-3">
+            {t.fits.map(([title, body], index) => {
+              const palette = fitPalette[index]
+              return (
+                <article
+                  key={title}
+                  className="min-h-[220px] border p-7"
+                  style={{ backgroundColor: palette.bg, borderColor: palette.border }}
+                >
+                  <p className="font-mono text-[13px] font-semibold text-indigo-700">0{index + 1}</p>
+                  <h3 className="mt-5 max-w-[24ch] text-[22px] font-semibold leading-7 text-[#1D2B44]">{title}</h3>
+                  <p className="mt-4 max-w-[34ch] text-[16px] leading-7 text-slate-700">{body}</p>
+                </article>
+              )
+            })}
           </div>
         </div>
       </section>
 
       <section className="border-b border-slate-300 bg-[#FAFAF7]">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-          <div className="grid gap-8 lg:grid-cols-[230px_1fr] lg:gap-12">
-            <div>
-              <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.modelLabel}</p>
-              <h2 className="mt-4 text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.modelTitle}</h2>
-            </div>
+          <div className="text-center">
+            <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.modelLabel}</p>
+            <h2 className="mx-auto mt-4 max-w-4xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.modelTitle}</h2>
+          </div>
 
-            <div className="grid gap-3 md:grid-cols-2">
-              {t.model.map(([number, title, body], index) => {
-                const palette = modelPalette[index]
-                return (
-                  <article
-                    key={number}
-                    className="min-h-[185px] border p-6"
-                    style={{ backgroundColor: palette.bg, borderColor: palette.border }}
-                  >
-                    <div className="flex items-center gap-4">
-                      <span className="font-mono text-[14px] font-semibold text-indigo-700">{number}</span>
-                      <span className="h-px flex-1" style={{ backgroundColor: palette.border }} />
-                    </div>
-                    <h3 className="mt-6 text-[24px] font-semibold leading-8 text-[#1D2B44]">{title}</h3>
-                    <p className="mt-3 text-[17px] leading-7 text-slate-700">{body}</p>
-                  </article>
-                )
-              })}
-            </div>
+          <div className="mt-9 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+            {t.model.map(([number, title, body], index) => {
+              const palette = modelPalette[index]
+              return (
+                <article
+                  key={number}
+                  className="min-h-[200px] border p-6"
+                  style={{ backgroundColor: palette.bg, borderColor: palette.border }}
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="font-mono text-[14px] font-semibold text-indigo-700">{number}</span>
+                    <span className="h-px flex-1" style={{ backgroundColor: palette.border }} />
+                  </div>
+                  <h3 className="mt-6 text-[21px] font-semibold leading-7 text-[#1D2B44]">{title}</h3>
+                  <p className="mt-3 text-[16px] leading-7 text-slate-700">{body}</p>
+                </article>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -239,7 +250,7 @@ export default function AnalyticalPartnerPage() {
               <Link
                 key={href}
                 href={href}
-                className={`group flex min-h-[220px] flex-col justify-between border-b border-r border-slate-300 p-7 transition ${index === 1 ? 'bg-[#F4F1EA]' : index === 2 ? 'bg-[#EAF0F6]' : 'bg-white'} hover:bg-[#F7F7F3]`}
+                className={`group flex min-h-[220px] flex-col justify-between border-b border-r border-slate-300 p-7 transition ${index === 0 ? 'bg-[#F8F3EA] hover:bg-[#F2EBDD]' : index === 1 ? 'bg-[#DDE8F2] hover:bg-[#D2E1ED]' : 'bg-[#F1ECF5] hover:bg-[#E9E1EF]'}`}
               >
                 <div>
                   <h3 className="text-[28px] leading-[1.1] text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
