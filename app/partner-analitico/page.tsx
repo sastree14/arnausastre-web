@@ -20,9 +20,7 @@ const COPY = {
     ],
 
     fitLabel: 'PARA QUIÉN',
-    fitTitle: 'Tres formas de sumar capacidad especializada.',
-    fitMore: 'Saber más',
-    fitLess: 'Ver menos',
+    fitTitle: 'Tres formas de incorporar capacidad especializada.',
     fits: [
       ['Empresas que quieren ampliar capacidad', 'Especialización adicional para iniciativas concretas.'],
       ['Equipos con retos técnicos específicos', 'Aportamos profundidad en datos, IA, modelado o automatización cuando el reto lo exige.'],
@@ -30,7 +28,7 @@ const COPY = {
     ],
 
     modelLabel: 'CÓMO FUNCIONA',
-    modelTitle: 'Un modelo que suma capacidad sin perder contexto.',
+    modelTitle: 'Capacidad especializada con continuidad y contexto.',
     model: [
       ['01', 'Entendemos vuestro contexto'],
       ['02', 'Activamos la especialidad adecuada'],
@@ -67,9 +65,7 @@ const COPY = {
     ],
 
     fitLabel: 'PER A QUI',
-    fitTitle: 'Tres maneres de sumar capacitat especialitzada.',
-    fitMore: 'Saber-ne més',
-    fitLess: 'Veure menys',
+    fitTitle: 'Tres maneres d’incorporar capacitat especialitzada.',
     fits: [
       ['Empreses que volen ampliar capacitat', 'Especialització addicional per a iniciatives concretes.'],
       ['Equips amb reptes tècnics específics', 'Aportem profunditat en dades, IA, modelatge o automatització quan el repte ho exigeix.'],
@@ -77,7 +73,7 @@ const COPY = {
     ],
 
     modelLabel: 'COM FUNCIONA',
-    modelTitle: 'Un model que suma capacitat sense perdre context.',
+    modelTitle: 'Capacitat especialitzada amb continuïtat i context.',
     model: [
       ['01', 'Entenem el vostre context'],
       ['02', 'Activem l’especialitat adequada'],
@@ -114,9 +110,7 @@ const COPY = {
     ],
 
     fitLabel: 'WHO IT IS FOR',
-    fitTitle: 'Three ways to add specialist capability.',
-    fitMore: 'Learn more',
-    fitLess: 'Show less',
+    fitTitle: 'Three ways to bring in specialist capability.',
     fits: [
       ['Companies looking to extend capability', 'Additional specialist depth for concrete initiatives.'],
       ['Teams facing specific technical challenges', 'We add depth in data, AI, modelling or automation when the challenge requires it.'],
@@ -124,7 +118,7 @@ const COPY = {
     ],
 
     modelLabel: 'HOW IT WORKS',
-    modelTitle: 'A model that adds capability without losing context.',
+    modelTitle: 'Specialist capability with continuity and context.',
     model: [
       ['01', 'We understand your context'],
       ['02', 'We activate the right specialism'],
@@ -153,10 +147,10 @@ const fitPalette = [
 ]
 
 const modelPalette = [
-  { bg: '#F6EBDD', border: '#D7C2A8' },
-  { bg: '#DFEAF4', border: '#9FBBD0' },
-  { bg: '#E2EFE6', border: '#A9C7B0' },
-  { bg: '#ECE4F4', border: '#C2ADD5' },
+  { bg: '#F4E5D2', border: '#CEB38E' },
+  { bg: '#D4E2EE', border: '#8EACC3' },
+  { bg: '#DCEADF', border: '#95B69D' },
+  { bg: '#E7DCF0', border: '#B49AC9' },
 ]
 
 export default function AnalyticalPartnerPage() {
@@ -199,7 +193,6 @@ export default function AnalyticalPartnerPage() {
           <div className="mt-8 grid gap-3 lg:grid-cols-3">
             {t.fits.map(([title, body], index) => {
               const palette = fitPalette[index]
-              const expandable = index === 1
               return (
                 <article
                   key={title}
@@ -208,20 +201,7 @@ export default function AnalyticalPartnerPage() {
                 >
                   <p className="font-mono text-[13px] font-semibold text-indigo-700">0{index + 1}</p>
                   <h3 className="mt-5 max-w-[24ch] text-[27px] font-semibold leading-[1.12] text-[#1D2B44]">{title}</h3>
-
-                  {expandable ? (
-                    <details className="group mt-auto pt-8">
-                      <summary className="cursor-pointer list-none text-[15px] font-semibold text-indigo-700">
-                        <span className="group-open:hidden">{t.fitMore} →</span>
-                        <span className="hidden group-open:inline">{t.fitLess} ↑</span>
-                      </summary>
-                      <p className="mt-4 max-w-[34ch] border-t pt-4 text-[15px] leading-6 text-slate-700" style={{ borderColor: palette.border }}>
-                        {body}
-                      </p>
-                    </details>
-                  ) : (
-                    <p className="mt-auto max-w-[31ch] pt-8 text-[15px] leading-6 text-slate-700">{body}</p>
-                  )}
+                  <p className="mt-auto max-w-[32ch] pt-8 text-[15px] leading-6 text-slate-700">{body}</p>
                 </article>
               )
             })}
@@ -242,14 +222,13 @@ export default function AnalyticalPartnerPage() {
               return (
                 <article
                   key={number}
-                  className="flex min-h-[180px] flex-col border p-6"
+                  className="grid min-h-[180px] grid-rows-[auto_1fr] border p-6"
                   style={{ backgroundColor: palette.bg, borderColor: palette.border }}
                 >
-                  <div className="flex items-center gap-4">
-                    <span className="font-mono text-[14px] font-semibold text-indigo-700">{number}</span>
-                    <span className="h-px flex-1" style={{ backgroundColor: palette.border }} />
+                  <span className="font-mono text-[14px] font-semibold text-indigo-700">{number}</span>
+                  <div className="flex items-center justify-center px-2 text-center">
+                    <h3 className="max-w-[18ch] text-[22px] font-semibold leading-7 text-[#1D2B44]">{title}</h3>
                   </div>
-                  <h3 className="mt-auto max-w-[18ch] pt-8 text-[23px] font-semibold leading-7 text-[#1D2B44]">{title}</h3>
                 </article>
               )
             })}
