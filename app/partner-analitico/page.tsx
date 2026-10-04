@@ -142,15 +142,15 @@ const COPY = {
 
 const fitPalette = [
   { bg: '#F8F3EA', border: '#DDCFBD' },
-  { bg: '#DDE8F2', border: '#A9C2D6' },
+  { bg: '#CADCEB', border: '#98B6CC' },
   { bg: '#F1ECF5', border: '#D2C4DD' },
 ]
 
 const modelPalette = [
-  { bg: '#F4E5D2', border: '#CEB38E' },
-  { bg: '#D4E2EE', border: '#8EACC3' },
-  { bg: '#DCEADF', border: '#95B69D' },
-  { bg: '#E7DCF0', border: '#B49AC9' },
+  { bg: '#EEEAE3', border: '#D0C5B6' },
+  { bg: '#D7E1E9', border: '#A7BBC9' },
+  { bg: '#DEE5E0', border: '#AFBDB2' },
+  { bg: '#E4E0E7', border: '#BAB2BF' },
 ]
 
 export default function AnalyticalPartnerPage() {
