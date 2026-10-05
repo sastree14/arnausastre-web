@@ -3,23 +3,27 @@ name: commercial-research
 description: Research markets, competitors, companies, partners, courses or other external opportunities for SC-Analytics. Use when the user asks to find, compare, shortlist or investigate external entities, or to refresh competitive or commercial intelligence.
 ---
 
-Research is conversational by default. Only persist results that have future operational value.
+Research is conversational by default. Persist only results with future operational value.
+
+SC-Analytics MCP tools:
+- `search_companies`: check whether a company already exists in the CRM.
+- `update_company`: update selected fields of an existing CRM company.
+- `list_opportunities`: inspect current commercial opportunities.
+- `update_opportunity`: update selected fields of an existing opportunity.
+- `list_mcp_actions`: inspect recent business-state changes.
 
 Workflow:
-1. Clarify the actual decision the research should support from the user's request.
-2. Search current public information and, when relevant, existing persisted records so prior work is not needlessly repeated.
-3. Rank or shortlist using criteria that matter to the requested decision.
-4. Distinguish evidence from inference.
-5. Persist only selected or operationally useful results when appropriate:
-   - qualified companies/prospects;
-   - relevant competitors and material changes;
-   - chosen partners;
-   - a course/resource the user explicitly wants to keep.
-6. Keep discarded candidates and exploratory search detail in the conversation unless they are needed for auditability.
-7. Return a concise recommendation and the reason for it.
+1. Identify the decision the research should support.
+2. Use current public information and check existing CRM state when duplication matters.
+3. Rank/shortlist using criteria relevant to the decision and separate evidence from inference.
+4. Keep exploratory/discarded results in conversation by default.
+5. When the user wants an existing company/opportunity updated, use the corresponding MCP write tool.
+6. Do not claim that a newly researched company has been saved unless an explicit create tool exists and succeeds. V1 intentionally exposes update, not generic insert.
+7. Return a concise recommendation and why it matters.
 
 Do not:
-- create a new CRM module for every research category;
+- create a CRM module for every research category;
 - store every search result by default;
-- reuse outdated competitive facts without checking current public information;
-- initiate outreach or external contact unless explicitly requested.
+- reuse outdated competitive facts without checking current information;
+- initiate outreach unless explicitly requested;
+- bypass the MCP with arbitrary SQL for normal agent workflows.
