@@ -34,8 +34,9 @@ export type OperatingModule =
 const PRIMARY_NAV = [
   { key: 'home', href: '/growth-admin', label: 'Revisión', description: 'Qué sale después' },
   { key: 'calendar', href: '/growth-admin/calendar', label: 'Calendario', description: 'Cuándo se publica' },
-  { key: 'content', href: '/growth-admin/content?publication=all#publications', label: 'Biblioteca', description: 'Todo el contenido' },
-  { key: 'agents', href: '/growth-admin/agents', label: 'Agentes', description: 'Automatizaciones IA' },
+  { key: 'content', href: '/growth-admin/content?publication=all', label: 'Biblioteca', description: 'Todo el contenido' },
+  { key: 'metrics', href: '/growth-admin/metrics', label: 'Métricas', description: 'Web y LinkedIn' },
+  { key: 'agents', href: '/growth-admin/agents', label: 'Agentes', description: 'Registro de agentes IA' },
 ] as const
 
 export default function AdminShell({
@@ -75,9 +76,9 @@ export default function AdminShell({
             </Link>
           </div>
 
-          <nav className="grid flex-1 grid-cols-2 gap-2 xl:mx-10 xl:max-w-3xl xl:grid-cols-4">
+          <nav className="grid flex-1 grid-cols-2 gap-2 xl:mx-10 xl:max-w-4xl xl:grid-cols-5">
             {PRIMARY_NAV.map((item) => {
-              const selected = active === item.key
+              const selected = item.key === 'metrics' ? ['metrics', 'analytics', 'seo'].includes(active) : active === item.key
               return (
                 <Link
                   key={item.key}
