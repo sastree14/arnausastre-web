@@ -3,7 +3,7 @@ import AdminShell from '@/components/growth-admin/AdminShell'
 import { Badge, EmptyState, PageHeader, SectionHeading, adminButtonPrimary, adminButtonSecondary, adminInput, adminPanel, formatDate, publicationLabel, scheduleInputValue } from '@/components/growth-admin/AdminUi'
 import { controlCenterDateKey } from '@/lib/control-center-time'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
-import { collapseWebsiteArticleFamilies, getWorkspaceContent } from '@/lib/editorial-workspace'
+import { collapseWebsiteArticleFamilies, getWorkspaceContent, isCanonicalEditorialItem } from '@/lib/editorial-workspace'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -31,7 +31,7 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
   const monthsRaw = typeof params.months === 'string' ? Number(params.months) : 1
   const months = [1,3,6].includes(monthsRaw) ? monthsRaw : 1
   const rawContent = await getWorkspaceContent()
-  const content = collapseWebsiteArticleFamilies(rawContent)
+  const content = collapseWebsiteArticleFamilies(rawContent.filter(isCanonicalEditorialItem))
   const scheduled = content.filter((item) => item.scheduled_at && ['approved','scheduled'].includes(item.status)).sort((a,b)=>String(a.scheduled_at).localeCompare(String(b.scheduled_at)))
   const published = content.filter((item) => item.status==='published' && item.published_at).slice(0,20)
   const byDate = new Map<string, typeof scheduled>()
