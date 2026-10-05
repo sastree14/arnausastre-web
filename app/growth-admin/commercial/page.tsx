@@ -1,49 +1,78 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
-import { Badge, EmptyState, SectionHeading, adminPanel } from '@/components/growth-admin/AdminUi'
-import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
-import { getCommercialIntelligenceBundle, getCommercialSummary, getCrmBundle } from '@/lib/growth-admin-performance'
-import { getCompetitors } from '@/lib/competition-admin'
-import { serverNowMs } from '@/lib/server-clock'
+import { Badge, EmptyState, PageHeader, SectionHeading, adminPanel, formatDate } from '@/components/growth-admin/AdminUi'
+import { getMeetings, getOpportunities, isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 
-function ModuleCard({href,title,description,status='Disponible',tone='violet'}:{href?:string;title:string;description:string;status?:string;tone?:'violet'|'blue'|'green'|'amber'|'slate'}){
-  const body=<div className={`${adminPanel} h-full p-5 transition ${href?'hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md':''}`}><div className="flex items-start justify-between gap-3"><h3 className="text-lg font-semibold text-slate-950">{title}</h3><Badge tone={tone}>{status}</Badge></div><p className="mt-3 text-sm leading-6 text-slate-600">{description}</p>{href&&<p className="mt-5 text-xs font-semibold text-indigo-600">Abrir módulo →</p>}</div>
-  return href?<a href={href}>{body}</a>:body
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
+function stageTone(stage?: string): 'slate'|'blue'|'amber'|'green'|'violet'|'rose' {
+  if (stage === 'won') return 'green'
+  if (stage === 'lost') return 'rose'
+  if (stage === 'proposal' || stage === 'negotiation') return 'violet'
+  if (stage === 'discovery' || stage === 'discovery_booked') return 'blue'
+  return 'slate'
 }
 
-export default async function CommercialPage(){
-  if(!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
-  const [summary,intelligence,competitors,crm]=await Promise.all([getCommercialSummary(),getCommercialIntelligenceBundle(),getCompetitors(),getCrmBundle()])
-  const strongSignals=intelligence.signals.filter((signal)=>Number(signal.strength||0)>=8).length
-  const monitoredCompetitors=competitors.filter((item)=>item.is_monitored).length
-  const now=serverNowMs()
-  const companyById=new Map(crm.companies.map((company)=>[company.company_id,company]))
-  const personById=new Map(crm.people.map((person)=>[person.person_id,person]))
-  const opportunityMilestones=new Set(['discovery_proposed','discovery_booked','proposal_sent','negotiation','won','lost'])
-  const opportunityActions=(crm.opportunities as Array<Record<string,any>>).filter((item)=>item.next_action_at&&new Date(String(item.next_action_at)).getTime()>=now).map((item)=>({kind:'Oportunidad',title:String(item.name||'Siguiente acción'),date:String(item.next_action_at),href:`/growth-admin/deal-desk?opportunity=${encodeURIComponent(String(item.opportunity_id))}`}))
-  const meetings=(crm.meetings as Array<Record<string,any>>).filter((item)=>item.starts_at&&new Date(String(item.starts_at)).getTime()>=now&&String(item.status||'')!=='cancelled').map((item)=>({kind:'Reunión',title:String(item.metadata?.event_name||item.metadata?.name||'Discovery / reunión'),date:String(item.starts_at),href:item.opportunity_id?`/growth-admin/deal-desk?opportunity=${encodeURIComponent(String(item.opportunity_id))}`:'/growth-admin/crm'}))
-  const followUps=crm.interactions.filter((item)=>item.next_action_at&&new Date(String(item.next_action_at)).getTime()>=now&&!opportunityMilestones.has(String(item.kind||''))).map((item)=>{
-    const person=item.person_id?personById.get(item.person_id):undefined
-    const companyId=item.company_id||person?.company_id||''
-    const company=companyId?companyById.get(companyId):undefined
-    const partner=company?.fit_type==='partner'
-    const context=[person?.name,company?.name].filter(Boolean).join(' · ')
-    const action=String(item.content||'').trim()||String(item.kind||'follow_up').replaceAll('_',' ')
-    return {kind:'Follow-up',title:context?`${action} · ${context}`:action,date:String(item.next_action_at),href:partner?'/growth-admin/partners':'/growth-admin/crm'}
-  })
-  const agenda=[...opportunityActions,...meetings,...followUps].sort((a,b)=>new Date(a.date).getTime()-new Date(b.date).getTime()).slice(0,12)
+export default async function CommercialPage() {
+  if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
+
+  const [opportunities, meetings] = await Promise.all([getOpportunities(), getMeetings()])
+  const activeOpportunities = opportunities
+    .filter((item) => !['lost', 'won', 'archived'].includes(String(item.stage || '').toLowerCase()))
+    .sort((a,b) => String(b.updated_at || '').localeCompare(String(a.updated_at || '')))
+
+  const upcomingMeetings = meetings
+    .filter((item) => item.starts_at && new Date(item.starts_at).getTime() >= Date.now() && item.status !== 'cancelled')
+    .sort((a,b) => String(a.starts_at).localeCompare(String(b.starts_at)))
 
   return <AdminShell active="commercial">
-    <header className="overflow-hidden rounded-[2rem] border border-indigo-950 bg-indigo-950 text-white shadow-sm"><div className="grid gap-8 px-6 py-9 md:px-10 md:py-12 xl:grid-cols-[1fr_auto] xl:items-end"><div className="max-w-4xl"><p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-indigo-300">Cuadro de Mando Integral · Comercial</p><h1 className="mt-4 text-4xl md:text-6xl" style={{fontFamily:'var(--font-playfair)'}}>Comercial</h1><p className="mt-5 max-w-3xl text-sm leading-7 text-indigo-100/80 md:text-base">Adquisición, inteligencia, conversión y seguimiento sobre una única fuente de verdad. Cada bloque tiene una función operativa y evita duplicar información.</p></div><div className="grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-indigo-200/70">Oportunidades</p><p className="mt-1 text-2xl font-semibold">{summary.opportunities}</p></div><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-indigo-200/70">Reuniones</p><p className="mt-1 text-2xl font-semibold">{summary.meetings}</p></div></div></div></header>
+    <PageHeader
+      eyebrow="CMI · Oportunidades"
+      title="Oportunidades"
+      description="Aquí solo guardamos lo que merece seguimiento: proyectos de Upwork, oportunidades encontradas fuera, conversaciones reales y reuniones. La búsqueda ocurre en ChatGPT; el CMI conserva el resultado."
+      actions={<a href="/growth-admin/calendar#nuevo-evento" className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">Añadir reunión</a>}
+    />
 
-    {(summary.degraded||intelligence.degraded||crm.degraded)&&<div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">Alguna lectura ha entrado en modo ligero. Los módulos siguen operativos, pero conviene refrescar antes de tomar una decisión.</div>}
+    <div className="grid gap-4 md:grid-cols-2">
+      <div className={adminPanel + ' p-5'}>
+        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">Oportunidades activas</p>
+        <p className="mt-3 text-4xl font-semibold text-slate-950">{activeOpportunities.length}</p>
+        <p className="mt-2 text-sm leading-6 text-slate-500">Solo elementos seleccionados para seguir. No guardamos cada resultado de búsqueda.</p>
+      </div>
+      <div className={adminPanel + ' p-5'}>
+        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">Próximas reuniones</p>
+        <p className="mt-3 text-4xl font-semibold text-slate-950">{upcomingMeetings.length}</p>
+        <p className="mt-2 text-sm leading-6 text-slate-500">Reuniones manuales, Calendly o citas asociadas a oportunidades.</p>
+      </div>
+    </div>
 
-    <section className="mt-8"><SectionHeading eyebrow="Motores comerciales y de autoridad" title="Seis trabajos distintos" description="Clientes, partners, red profesional, audiencia propia, señales y competencia tienen objetivos diferentes. La newsletter construye una relación editorial y no convierte automáticamente a nadie en lead."/><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3"><ModuleCard href="/growth-admin/crm" title="Clientes potenciales" description={`${summary.lead_companies} empresas objetivo · ${summary.lead_people} decisores. Empresas finales a las que SC-Analytics puede vender directamente.`}/><ModuleCard href="/growth-admin/partners" title="Partners & canales" description={`${summary.partner_companies} partners · ${summary.partner_people} contactos. Referral, white-label, overflow y delivery complementario.`} tone="blue"/><ModuleCard href="/growth-admin/network" title="Red profesional" description="Data, AI, analytics, optimización y founders técnicos. Seguir, conectar, conversar y después invitar a seguir SC-Analytics cuando exista contexto." tone="violet"/><ModuleCard href="/growth-admin/audience" title="Audiencia propia" description="Suscriptores del Briefing + inbound de la web. Relación editorial, captación orgánica y consultas con intención explícita." tone="green"/><ModuleCard href="/growth-admin/intelligence" title="Inteligencia comercial" description={`${intelligence.signals.length} señales · ${strongSignals} de alta prioridad · ${intelligence.offers.length} ofertas. Por qué contactar ahora, con qué oferta y por qué canal.`} tone="amber"/><ModuleCard href="/growth-admin/competition" title="Competencia" description={`${competitors.length} firmas visibles · ${monitoredCompetitors} monitorizadas. Comparables reales, movimientos públicos, huecos y respuesta para SC-Analytics.`} tone="green"/></div></section>
+    <section className="mt-10">
+      <SectionHeading eyebrow="Seguimiento" title="Oportunidades guardadas" description="El plugin puede añadir aquí únicamente las oportunidades que decidas conservar." count={activeOpportunities.length}/>
+      {activeOpportunities.length===0 ? <EmptyState>No hay oportunidades activas. Cuando encuentres una interesante desde ChatGPT, podremos guardarla aquí.</EmptyState> : <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {activeOpportunities.map((item) => <article key={item.opportunity_id} className={adminPanel + ' p-5'}>
+          <div className="flex flex-wrap gap-2">
+            <Badge tone={stageTone(item.stage)}>{item.stage || 'nueva'}</Badge>
+            {item.source && <Badge>{item.source}</Badge>}
+          </div>
+          <h2 className="mt-3 text-lg font-semibold text-slate-950">{item.name}</h2>
+          <div className="mt-4 grid grid-cols-2 gap-2 text-xs text-slate-500">
+            <div><p className="text-slate-400">Valor</p><p className="mt-1 font-semibold text-slate-800">{Number(item.value||0).toLocaleString('es-ES')} {item.currency||'EUR'}</p></div>
+            <div><p className="text-slate-400">Probabilidad</p><p className="mt-1 font-semibold text-slate-800">{Number(item.probability||0)}%</p></div>
+          </div>
+          {item.next_action_at && <p className="mt-4 text-xs text-slate-500">Siguiente acción: <strong>{formatDate(item.next_action_at,true)}</strong></p>}
+        </article>)}
+      </div>}
+    </section>
 
-    <section className="mt-10"><SectionHeading eyebrow="Conversión" title="Deal Desk: un expediente, cuatro vistas" description="Qualification, Discovery, Proposal y Budget pertenecen al mismo deal. Entra una sola vez y elige la vista que necesitas trabajar."/><div className={`${adminPanel} max-w-4xl p-6`}><div className="grid gap-5 lg:grid-cols-[1fr_320px] lg:items-end"><div><div className="flex items-center gap-2"><h3 className="text-xl font-semibold text-slate-950">Deal Desk</h3><Badge tone="violet">Operativo</Badge></div><p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">Un único expediente por oportunidad. Cambia de fase sin salir del deal y conserva empresa, contacto, contexto, timeline, propuesta y presupuesto en la misma ficha.</p></div><form action="/growth-admin/deal-desk" method="get" className="grid gap-2"><label className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">Abrir vista<select name="step" defaultValue="qualification" className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm font-semibold text-slate-800 outline-none focus:border-indigo-300"><option value="qualification">1 · Qualification</option><option value="discovery">2 · Discovery Call</option><option value="proposal">3 · Proposal Builder</option><option value="budget">4 · Budget Helper</option></select></label><button className="rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700">Abrir Deal Desk →</button></form></div></div></section>
-
-    <section className="mt-10"><SectionHeading eyebrow="Conversión y autoridad" title="Soporte comercial" description="Contenido, calendario y research apoyan adquisición y conversión; no duplican los motores comerciales."/><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3"><ModuleCard href="/growth-admin/content" title="Editorial & contenido" description={`${summary.active_content} piezas en el workspace activo. Generación, revisión, artículos, LinkedIn, CTA y visuales.`} tone="green"/><ModuleCard href="/growth-admin/calendar" title="Calendario y distribución" description="Planificación, reprogramación, publicación inmediata e histórico del workspace editorial activo." tone="blue"/><ModuleCard href="/growth-admin/research" title="Research editorial" description="Señales, evidencia, briefs e ideas que alimentan contenido con criterio de negocio."/></div></section>
-
-    <section className="mt-12 pb-12"><SectionHeading eyebrow="Agenda comercial" title="Siguientes acciones reales" description="No es una checklist fija. Reúne reuniones, siguientes acciones de oportunidades y follow-ups con fecha guardados en CRM; al cambiarlos en su módulo, esta agenda cambia sola." count={agenda.length}/>{agenda.length===0?<EmptyState>No hay acciones comerciales planificadas. Cuando guardes una próxima acción en un contacto, una oportunidad o Calendly cree una reunión futura, aparecerá automáticamente aquí.</EmptyState>:<div className={`${adminPanel} divide-y divide-slate-100`}>{agenda.map((item,index)=><a key={`${item.kind}-${item.date}-${index}`} href={item.href} className="flex flex-col gap-2 p-5 transition hover:bg-slate-50 sm:flex-row sm:items-center sm:justify-between"><div><Badge tone={item.kind==='Reunión'?'green':item.kind==='Follow-up'?'amber':'blue'}>{item.kind}</Badge><p className="mt-2 text-sm font-semibold text-slate-900">{item.title}</p></div><p className="text-xs font-semibold text-slate-500">{new Date(item.date).toLocaleString('es-ES',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Madrid'})}</p></a>)}</div>}</section>
+    <section className="mt-12 pb-12">
+      <SectionHeading eyebrow="Agenda" title="Próximas reuniones" description="La agenda comercial también aparece en Calendario junto a las publicaciones." count={upcomingMeetings.length}/>
+      {upcomingMeetings.length===0 ? <EmptyState>No hay reuniones futuras guardadas.</EmptyState> : <div className={adminPanel + ' divide-y divide-slate-100'}>
+        {upcomingMeetings.map((item) => <div key={item.meeting_id} className="flex flex-col gap-2 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div><Badge tone="green">{item.provider || 'manual'}</Badge><p className="mt-2 font-semibold text-slate-950">{String(item.metadata?.event_name || item.metadata?.name || 'Reunión')}</p></div>
+          <p className="text-xs font-semibold text-slate-500">{formatDate(item.starts_at,true)}</p>
+        </div>)}
+      </div>}
+    </section>
   </AdminShell>
 }
