@@ -5,6 +5,10 @@ description: Research markets, competitors, companies, partners, courses or othe
 
 Research is conversational by default. Persist only results with future operational value.
 
+Connected research tools:
+- Web search: current market and competitor evidence.
+- LinkedIn connector: enrich a known person when first/last name are available; do not use it as a generic discovery engine.
+
 SC-Analytics MCP tools:
 - `search_companies`: check whether a company already exists in the CRM.
 - `update_company`: update selected fields of an existing CRM company.
