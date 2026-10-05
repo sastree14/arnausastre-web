@@ -13,6 +13,10 @@ type ChannelFilter = 'all' | 'linkedin' | 'website'
 
 const textParam = (value: string | string[] | undefined, fallback = '') => typeof value === 'string' ? value : fallback
 
+function isFigmaManual(item: GrowthContentItem) {
+  return String(item.visual_strategy?.source || '') === 'figma_manual'
+}
+
 function visualUrl(item: GrowthContentItem) {
   const internal = assetUrl(item)
   if (internal) return internal
@@ -144,6 +148,12 @@ export default async function ContentPage({
                 <div className="aspect-[4/3] overflow-hidden border-b border-slate-100 bg-slate-50">
                   {image ? (
                     <img src={image} alt={item.title} className="h-full w-full object-contain" />
+                  ) : isFigmaManual(item) ? (
+                    <div className="flex h-full flex-col items-center justify-center px-5 text-center">
+                      <span className="rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-indigo-700">Figma vinculado</span>
+                      <p className="mt-3 text-lg font-semibold text-slate-950">{item.content_id}</p>
+                      <p className="mt-1 text-xs text-slate-500">Diseño manual disponible en el preview.</p>
+                    </div>
                   ) : (
                     <div className="flex h-full items-center justify-center text-xs text-slate-400">Sin visual adjunto</div>
                   )}
