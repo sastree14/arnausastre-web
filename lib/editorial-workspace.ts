@@ -55,6 +55,13 @@ export async function getWorkspaceEditorialTasks(): Promise<GrowthTask[]> {
 }
 
 
+export function isCanonicalEditorialItem(item: GrowthContentItem): boolean {
+  if (item.status === 'published' || Boolean(item.published_at)) return true
+  if (item.channel === 'sc_analytics_linkedin') return true
+  if (item.channel === 'website' && item.content_id.startsWith('knowledge_kb_')) return true
+  return false
+}
+
 export function collapseWebsiteArticleFamilies(items: GrowthContentItem[]): GrowthContentItem[] {
   const result: GrowthContentItem[] = []
   const articleFamilies = new Map<string, GrowthContentItem[]>()
