@@ -52,3 +52,19 @@ Expected behavior:
 Expected behavior:
 - answer in conversation;
 - do not create a permanent CRM surface unless a repeated operational need is demonstrated.
+
+
+## Opportunities — should activate opportunity-scout
+
+- Búscame los mejores trabajos de Upwork que encajen conmigo hoy.
+- Busca oportunidades fuera de Upwork donde estén buscando Data Science, AI, forecasting u optimización.
+- Guarda la segunda oportunidad para seguirla.
+- Añádeme una reunión mañana a las 16:00 para revisar esa oportunidad.
+
+Expected behavior:
+- use the Upwork connector for Upwork jobs and current web search outside Upwork;
+- avoid duplicates against saved opportunities;
+- do not persist rejected/exploratory results;
+- save only after the user explicitly asks;
+- use create_opportunity / create_meeting when persistence is requested;
+- use LinkedIn only to enrich a known person when the connector has enough identifying information.
