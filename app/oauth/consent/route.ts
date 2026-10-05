@@ -6,7 +6,7 @@ function js(value: string) {
 }
 
 export async function GET(request: Request) {
-  const supabaseUrl = (process.env.SUPABASE_URL || '').trim()
+  const supabaseUrl = (process.env.SUPABASE_URL || 'https://iviggrsbwrgrtqvbqepq.supabase.co').trim()
   const publishableKey = (process.env.SUPABASE_PUBLISHABLE_KEY || '').trim()
   const authorizationId = new URL(request.url).searchParams.get('authorization_id') || ''
 
