@@ -33,9 +33,8 @@ const PRIMARY_NAV = [
   { key: 'home', href: '/growth-admin', label: 'Revisión', description: 'Qué sale después' },
   { key: 'calendar', href: '/growth-admin/calendar', label: 'Calendario', description: 'Cuándo se publica' },
   { key: 'content', href: '/growth-admin/content?publication=all', label: 'Biblioteca', description: 'Todo el contenido' },
-  { key: 'commercial', href: '/growth-admin/commercial', label: 'Comercial', description: 'Empresas y oportunidades' },
-  { key: 'metrics', href: '/growth-admin/metrics', label: 'Métricas', description: 'Web, LinkedIn y negocio' },
-  { key: 'operations', href: '/growth-admin/operations', label: 'Operaciones', description: 'Delivery y procesos' },
+  { key: 'commercial', href: '/growth-admin/commercial', label: 'Oportunidades', description: 'Trabajo y negocio' },
+  { key: 'metrics', href: '/growth-admin/metrics', label: 'Métricas', description: 'Web, LinkedIn y SEO' },
 ] as const
 
 export default function AdminShell({
@@ -75,7 +74,7 @@ export default function AdminShell({
             </Link>
           </div>
 
-          <nav className="grid flex-1 grid-cols-2 gap-2 xl:mx-10 xl:max-w-5xl xl:grid-cols-6">
+          <nav className="grid flex-1 grid-cols-2 gap-2 xl:mx-10 xl:max-w-4xl xl:grid-cols-5">
             {PRIMARY_NAV.map((item) => {
               const selected = item.key === 'metrics' ? ['metrics', 'analytics', 'seo'].includes(active) : active === item.key
               return (
