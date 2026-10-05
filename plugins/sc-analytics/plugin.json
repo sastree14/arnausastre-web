@@ -3,7 +3,6 @@
   "name": "sc-analytics",
   "version": "0.1.0",
   "description": "SC-Analytics operating workflows for editorial operations, performance analysis and commercial research.",
-  "skills": "./skills/",
   "author": {
     "name": "SC-Analytics",
     "url": "https://sc-analytics.io"
