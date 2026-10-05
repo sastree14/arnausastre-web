@@ -1,0 +1,29 @@
+/* Shared outer edges for the original public layouts. Inner reading widths stay local. */
+.site-container {
+  width: calc(100% - 32px);
+  max-width: 1232px;
+  margin-inline: auto;
+}
+@media (min-width: 640px) {
+  .site-container { width: calc(100% - 48px); }
+}
+.site-public :is(h1, h2, h3) { text-wrap: balance; }
+.site-public :is(a, button, summary, input, textarea, select):focus-visible {
+  outline: 2px solid #496C8A;
+  outline-offset: 4px;
+}
+.service-detail summary { list-style: none; }
+.service-detail summary::-webkit-details-marker { display: none; }
+.service-detail summary .detail-symbol { transition: transform 150ms ease; }
+.service-detail[open] summary .detail-symbol { transform: rotate(45deg); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .site-public *, .site-public *::before, .site-public *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .site-public :is(.reveal, .animate-in-delay-1, .animate-in-delay-2,
+    .animate-in-delay-3, .animate-in-delay-4, .animate-in-delay-5) {
+    opacity: 1; transform: none;
+  }
+}

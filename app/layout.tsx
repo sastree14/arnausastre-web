@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
+import './public-polish.css'
 import { LanguageProvider } from '@/components/LanguageProvider'
 import { SiteLanguageProvider } from '@/components/SiteLanguageProvider'
 import SiteChrome from '@/components/SiteChrome'
