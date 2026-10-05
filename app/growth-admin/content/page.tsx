@@ -3,7 +3,7 @@ import AdminShell from '@/components/growth-admin/AdminShell'
 import PublicationFilterBar from '@/components/growth-admin/PublicationFilterBar'
 import { Badge, EmptyState, PageHeader, adminPanel, assetUrl, formatDate, publicationLabel, statusTone } from '@/components/growth-admin/AdminUi'
 import { isGrowthAdminAuthenticated, type GrowthContentItem } from '@/lib/growth-admin'
-import { collapseWebsiteArticleFamilies, getWorkspaceContent } from '@/lib/editorial-workspace'
+import { collapseWebsiteArticleFamilies, getWorkspaceContent, isCanonicalEditorialItem } from '@/lib/editorial-workspace'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -58,7 +58,7 @@ export default async function ContentPage({
 
   const params = await searchParams
   const rawContent = await getWorkspaceContent()
-  const content = collapseWebsiteArticleFamilies(rawContent)
+  const content = collapseWebsiteArticleFamilies(rawContent.filter(isCanonicalEditorialItem))
     .filter((item) => !['rejected', 'failed', 'superseded_test', 'alternate'].includes(item.status))
 
   const publication = textParam(params.publication, 'all') as PublicationFilter
