@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import GeneratedKnowledgeArticleGoldStandard from '@/components/GeneratedKnowledgeArticleGoldStandard'
 import KnowledgeArticleGoldStandard from '@/components/KnowledgeArticleGoldStandard'
 import { getArticleBySlug } from '@/lib/content'
@@ -15,6 +15,7 @@ function summary(value:string,max=158){const valueClean=clean(value);return valu
 function staticVariant(article:ReturnType<typeof getArticleBySlug>,locale:Locale){
   if(!article)return null
   if(locale==='en')return{title:article.titleEn,description:article.excerptEn||summary(article.bodyEn),body:article.bodyEn,tags:article.tagsEn}
+  if(locale==='ca'&&!article.bodyCa)return null
   if(locale==='ca')return{title:article.titleCa||article.titleEs,description:article.excerptCa||article.excerptEs||summary(article.bodyCa||article.bodyEs),body:article.bodyCa||article.bodyEs,tags:article.tagsCa||article.tagsEs}
   return{title:article.titleEs,description:article.excerptEs||summary(article.bodyEs),body:article.bodyEs,tags:article.tagsEs}
 }
@@ -32,18 +33,20 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
 
   const staticArticle=getArticleBySlug(slug)
   if(staticArticle){
-    const local=staticVariant(staticArticle,locale)!
+    const local=staticVariant(staticArticle,locale)
+    if(!local)redirect(`/knowledge/${slug}/es`)
     return{
       title:local.title,
       description:local.description,
       keywords:local.tags,
-      alternates:{canonical,languages:{en:'/knowledge/'+slug+'/en',es:'/knowledge/'+slug+'/es',ca:'/knowledge/'+slug+'/ca'}},
-      openGraph:{title:local.title,description:local.description,url:'https://sc-analytics.io'+canonical,type:'article',locale:locale==='es'?'es_ES':locale==='ca'?'ca_ES':'en_GB',publishedTime:staticArticle.date},
+      alternates:{canonical,languages:{en:'/knowledge/'+slug+'/en',es:'/knowledge/'+slug+'/es',...(staticArticle.bodyCa?{ca:'/knowledge/'+slug+'/ca'}:{})}},
+      openGraph:{images:[{url:`/api/og?lang=${locale}`,width:1200,height:630}],title:local.title,description:local.description,url:'https://www.sc-analytics.io'+canonical,type:'article',locale:locale==='es'?'es_ES':locale==='ca'?'ca_ES':'en_GB',publishedTime:staticArticle.date},
     }
   }
 
   const variants=await getPublicGeneratedArticleVariants(slug)
-  const article=variants.find(item=>item.language===locale)||variants.find(item=>item.language==='es')||variants.find(item=>item.language==='en')||variants[0]
+  const article=variants.find(item=>item.language===locale)
+  if(!article && variants[0])redirect(`/knowledge/${slug}/${variants[0].language}`)
   if(!article)return{}
   const articleMeta=(article.critique && typeof article.critique==='object' ? (article.critique as Record<string,unknown>).article_meta : null) as Record<string,unknown>|null
   const title=clean(String(articleMeta?.seo_title||article.title)),description=summary(String(articleMeta?.seo_description||articleMeta?.excerpt||article.body))
@@ -58,7 +61,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
     description,
     keywords:seoKeywords.filter(Boolean) as string[],
     alternates:{canonical,languages:available},
-    openGraph:{title,description,url:'https://sc-analytics.io'+canonical,type:'article',locale:locale==='es'?'es_ES':locale==='ca'?'ca_ES':'en_GB',publishedTime:article.published_at||undefined},
+    openGraph:{title,description,url:'https://www.sc-analytics.io'+canonical,type:'article',locale:locale==='es'?'es_ES':locale==='ca'?'ca_ES':'en_GB',publishedTime:article.published_at||undefined},
   }
 }
 
@@ -71,7 +74,8 @@ export default async function LocalizedArticle({params}:Props){
 
   const staticArticle=getArticleBySlug(slug)
   if(staticArticle){
-    const local=staticVariant(staticArticle,locale)!
+    const local=staticVariant(staticArticle,locale)
+    if(!local)redirect(`/knowledge/${slug}/es`)
     const schema={
       '@context':'https://schema.org',
       '@type':'Article',
@@ -80,14 +84,15 @@ export default async function LocalizedArticle({params}:Props){
       inLanguage:locale,
       datePublished:staticArticle.date,
       author:{'@type':'Organization',name:'SC-Analytics'},
-      publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://sc-analytics.io'},
-      mainEntityOfPage:'https://sc-analytics.io/knowledge/'+slug+'/'+locale,
+      publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://www.sc-analytics.io'},
+      mainEntityOfPage:'https://www.sc-analytics.io/knowledge/'+slug+'/'+locale,
     }
-    return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><KnowledgeArticleGoldStandard article={staticArticle} forcedLanguage={locale}/></>
+    return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema).replace(/</g,'\\u003c')}}/><KnowledgeArticleGoldStandard article={staticArticle} forcedLanguage={locale}/></>
   }
 
   const variants=await getPublicGeneratedArticleVariants(slug)
-  const article=variants.find(item=>item.language===locale)||variants.find(item=>item.language==='es')||variants.find(item=>item.language==='en')||variants[0]
+  const article=variants.find(item=>item.language===locale)
+  if(!article && variants[0])redirect(`/knowledge/${slug}/${variants[0].language}`)
   if(!article)notFound()
   const schema={
     '@context':'https://schema.org',
@@ -97,8 +102,8 @@ export default async function LocalizedArticle({params}:Props){
     inLanguage:locale,
     datePublished:article.published_at||undefined,
     author:{'@type':'Organization',name:'SC-Analytics'},
-    publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://sc-analytics.io'},
-    mainEntityOfPage:'https://sc-analytics.io/knowledge/'+slug+'/'+locale,
+    publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://www.sc-analytics.io'},
+    mainEntityOfPage:'https://www.sc-analytics.io/knowledge/'+slug+'/'+locale,
   }
-  return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><GeneratedKnowledgeArticleGoldStandard variants={variants} forcedLanguage={locale}/></>
+  return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema).replace(/</g,'\\u003c')}}/><GeneratedKnowledgeArticleGoldStandard variants={variants} forcedLanguage={locale}/></>
 }

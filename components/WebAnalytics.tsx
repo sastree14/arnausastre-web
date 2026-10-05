@@ -1,86 +1,80 @@
-'use client'
-
-import { useEffect, useRef } from 'react'
-import { usePathname } from 'next/navigation'
-
+"use client";
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { stripLocale } from "@/lib/site-routing";
 declare global {
   interface Window {
-    gtag?: (...args: unknown[]) => void
+    gtag?: (...args: unknown[]) => void;
   }
 }
-
-function track(name: string, params: Record<string, unknown> = {}) {
-  window.gtag?.('event', name, params)
-}
-
+const allowed = () =>
+  localStorage.getItem("sc-analytics-consent") === "accepted";
+const track = (name: string, params: Record<string, unknown>) => {
+  if (allowed()) window.gtag?.("event", name, params);
+};
 export default function WebAnalytics() {
-  const pathname = usePathname()
-  const sentDepth = useRef(new Set<number>())
-
+  const pathname = usePathname();
   useEffect(() => {
-    if (!pathname || pathname.startsWith('/growth-admin')) return
-    sentDepth.current = new Set()
-    if (pathname.startsWith('/knowledge/')) {
-      const parts=pathname.split('/').filter(Boolean)
-      const maybeLocale=parts.at(-1)||''
-      const localized=['es','ca','en'].includes(maybeLocale)
-      track('article_view', {
+    if (pathname.startsWith("/growth-admin")) return;
+    const clean = stripLocale(pathname);
+    const depths = new Set<number>();
+    const page = () => {
+      if (!allowed()) return;
+      track("page_view", {
         page_path: pathname,
-        content_slug: localized?(parts.at(-2)||''):maybeLocale,
-        content_language: localized?maybeLocale:undefined,
-      })
-    }
-
-    const onScroll = () => {
-      if (!pathname.startsWith('/knowledge/')) return
-      const documentHeight = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1)
-      const depth = Math.min(100, Math.round((window.scrollY / documentHeight) * 100))
-      for (const threshold of [50, 90]) {
-        if (depth >= threshold && !sentDepth.current.has(threshold)) {
-          sentDepth.current.add(threshold)
-          track(`article_${threshold}_percent`, { page_path: pathname })
+        page_location: location.origin + pathname,
+      });
+      if (clean.startsWith("/knowledge/"))
+        track("article_view", {
+          content_slug: clean.split("/")[2],
+          content_language: document.documentElement.lang,
+        });
+    };
+    page();
+    window.addEventListener("sc-analytics-ready", page);
+    const scroll = () => {
+      if (!allowed() || !clean.startsWith("/knowledge/")) return;
+      const depth =
+        (100 * scrollY) /
+        Math.max(document.documentElement.scrollHeight - innerHeight, 1);
+      for (const n of [50, 90])
+        if (depth >= n && !depths.has(n)) {
+          depths.add(n);
+          track(`article_${n}_percent`, { page_path: pathname });
         }
-      }
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [pathname])
-
-  useEffect(() => {
-    const onClick = (event: MouseEvent) => {
-      if (pathname?.startsWith('/growth-admin')) return
-      const target = event.target as HTMLElement | null
-      const anchor = target?.closest('a') as HTMLAnchorElement | null
-      if (!anchor) return
-      const href = anchor.href || ''
-      const explicit = anchor.dataset.analyticsEvent
-      if (explicit) {
-        track(explicit, { link_url: href, link_text: anchor.textContent?.trim() || '' })
-        return
-      }
-      if (/calendly\.com/i.test(href)) {
-        track('calendly_open', { link_url: href, link_text: anchor.textContent?.trim() || '' })
-      } else if (/linkedin\.com/i.test(href)) {
-        track('linkedin_outbound', { link_url: href, link_text: anchor.textContent?.trim() || '' })
-      } else {
-        try {
-          const url = new URL(href)
-          if (url.origin === window.location.origin && url.pathname.startsWith('/contact')) {
-            const intent = url.searchParams.get('intent') || ''
-            track(intent === 'discovery' ? 'discovery_call_click' : 'contact_click', {
-              link_url: href,
-              link_text: anchor.textContent?.trim() || '',
-              intent,
-            })
-          }
-        } catch {
-          // Ignore malformed/non-URL hrefs.
-        }
-      }
-    }
-    document.addEventListener('click', onClick, true)
-    return () => document.removeEventListener('click', onClick, true)
-  }, [pathname])
-
-  return null
+    };
+    const click = (event: MouseEvent) => {
+      const anchor = (event.target as HTMLElement)?.closest("a");
+      if (!anchor) return;
+      try {
+        const url = new URL(anchor.href);
+        if (
+          url.origin === location.origin &&
+          stripLocale(url.pathname) === "/contact"
+        ) {
+          // Keep only a public content path; never query strings or personal data.
+          sessionStorage.setItem("sc-contact-origin", pathname);
+          track("contact_click", {
+            source_path: pathname,
+            contact_intent: ["problem", "opportunity", "partner"].includes(
+              url.searchParams.get("intent") || "",
+            )
+              ? url.searchParams.get("intent")
+              : "general",
+          });
+        } else if (url.hostname === "calendly.com")
+          track("calendly_open", { source_path: pathname });
+        else if (url.hostname.endsWith("linkedin.com"))
+          track("linkedin_outbound", { source_path: pathname });
+      } catch {}
+    };
+    window.addEventListener("scroll", scroll, { passive: true });
+    document.addEventListener("click", click, true);
+    return () => {
+      window.removeEventListener("sc-analytics-ready", page);
+      window.removeEventListener("scroll", scroll);
+      document.removeEventListener("click", click, true);
+    };
+  }, [pathname]);
+  return null;
 }

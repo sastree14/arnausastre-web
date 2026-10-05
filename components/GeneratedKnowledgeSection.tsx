@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { useMemo } from 'react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import { publicCopy } from '@/lib/public-copy'

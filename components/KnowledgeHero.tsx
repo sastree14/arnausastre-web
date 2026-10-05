@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
 const COPY = {
@@ -9,21 +9,21 @@ const COPY = {
     title: 'Ideas que conectan datos, tecnología y decisiones de negocio.',
     sub: 'Análisis directos sobre lo que funciona, lo que falla y qué merece la pena hacer diferente.',
     primary: 'Leer análisis destacado',
-    secondary: 'Ver casos de éxito',
+    secondary: 'Ver proyectos demostrativos',
   },
   ca: {
     label: 'CONEIXEMENT',
     title: 'Idees que connecten dades, tecnologia i decisions de negoci.',
     sub: 'Anàlisis directes sobre què funciona, què falla i què val la pena fer diferent.',
     primary: 'Llegir anàlisi destacada',
-    secondary: 'Veure casos d’èxit',
+    secondary: 'Veure projectes demostratius',
   },
   en: {
     label: 'KNOWLEDGE',
     title: 'Ideas connecting data, technology and business decisions.',
     sub: 'Direct analysis on what works, what fails and what is worth doing differently.',
     primary: 'Read featured analysis',
-    secondary: 'See success stories',
+    secondary: 'See demonstration projects',
   },
 } as const
 
@@ -35,7 +35,7 @@ export default function KnowledgeHero() {
 
   return (
     <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-      <div className="mx-auto grid w-[calc(100%_-_32px)] max-w-[1800px] gap-9 py-14 sm:w-[calc(100%_-_48px)] md:py-16 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+      <div className="mx-auto grid w-[calc(100%_-_32px)] max-w-7xl gap-9 py-14 sm:w-[calc(100%_-_48px)] md:py-16 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
         <div className="max-w-5xl">
           <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.label}</p>
           <h1 className="mt-5 max-w-5xl text-[44px] leading-[1.02] tracking-[-0.03em] sm:text-[54px] lg:text-[62px]" style={{ fontFamily: 'var(--font-playfair)' }}>

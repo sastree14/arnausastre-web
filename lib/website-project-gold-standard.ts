@@ -289,10 +289,10 @@ export const SC12_WEBSITE_GOLD_STANDARD: WebsiteProjectGoldStandard = {
     label: 'Illustrative business economics',
     headline: 'Better forecasting only matters when it changes stock, service or cash.',
     summary:
-      'For an illustrative €2.0M inventory position, a 5% reduction in excess inventory would release €100k of working capital. The arithmetic is explicit so the commercial relevance can be understood without presenting a hypothetical scenario as a measured client result.',
+      'For an illustrative €2.0M inventory position, a 5% reduction in total inventory would release €100k of working capital. The arithmetic is explicit so the commercial relevance can be understood without presenting a hypothetical scenario as a measured client result.',
     metrics: [
       { value: '€2.0M', label: 'Scenario inventory', note: 'Illustrative operating base.' },
-      { value: '5%', label: 'Scenario reduction', note: 'Assumed reduction in excess inventory.' },
+      { value: '5%', label: 'Scenario reduction', note: 'Assumed reduction in total inventory; not profit.' },
       { value: '€100k', label: 'Capital released', note: '€2.0M × 5%; illustrative arithmetic.' },
     ],
     disclaimer:

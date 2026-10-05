@@ -1,0 +1,3 @@
+import {pageMetadata} from '@/lib/site-metadata'
+export async function generateMetadata(){return pageMetadata('/projects',{"es": "Proyectos y casos demostrativos", "ca": "Projectes i casos demostratius", "en": "Projects and technical demonstrations"},{"es": "Portfolio público con datos sintéticos. Inspecciona el código, el método, la evidencia y sus límites.", "ca": "Portafolis públic amb dades sintètiques. Inspecciona el codi, el mètode, l’evidència i els límits.", "en": "Public portfolio with synthetic data. Inspect the code, method, evidence and limits."})}
+export default function Layout({children}:{children:React.ReactNode}){return <>{children}</>}

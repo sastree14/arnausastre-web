@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { useLanguage } from '@/components/LanguageProvider'
 import { translations } from '@/lib/translations'
 import { articles } from '@/lib/articles'

@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import ProjectCover from '@/components/ProjectCover'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import { projectUi, publicProject } from '@/lib/project-public-copy'

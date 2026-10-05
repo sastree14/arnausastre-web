@@ -1,0 +1,3 @@
+import {pageMetadata} from '@/lib/site-metadata'
+export async function generateMetadata(){return pageMetadata('/partner-analitico',{"es": "Partner externo de datos e IA", "ca": "Partner extern de dades i IA", "en": "External data and AI partner"},{"es": "Capacidad especializada junto a tu equipo. Prioridades compartidas, responsabilidades y entregas revisables.", "ca": "Capacitat especialitzada amb el teu equip. Prioritats compartides, responsabilitats i lliuraments revisables.", "en": "Specialist capacity alongside your team. Shared priorities, ownership and reviewable deliverables."})}
+export default function Layout({children}:{children:React.ReactNode}){return <>{children}</>}

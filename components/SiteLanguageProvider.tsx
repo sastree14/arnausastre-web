@@ -1,54 +1,39 @@
-'use client'
-
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import type { SiteLanguage } from '@/lib/public-copy'
-
-interface SiteLanguageContextType {
-  lang: SiteLanguage
-  setLang: (lang: SiteLanguage) => void
-}
-
-const SiteLanguageContext = createContext<SiteLanguageContextType>({
-  lang: 'en',
-  setLang: () => {},
-})
-
-export function SiteLanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<SiteLanguage>('en')
-
+"use client";
+import { createContext, useContext, useEffect, ReactNode } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import type { SiteLanguage } from "@/lib/public-copy";
+import { localizedHref } from "@/lib/site-routing";
+const Context = createContext<{
+  lang: SiteLanguage;
+  setLang: (lang: SiteLanguage) => void;
+}>({ lang: "es", setLang: () => {} });
+export function SiteLanguageProvider({
+  children,
+  initialLanguage = "es",
+}: {
+  children: ReactNode;
+  initialLanguage?: SiteLanguage;
+}) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const pathLanguage =
+    pathname.match(/^\/(es|ca|en)(?:\/|$)/)?.[1] ||
+    pathname.match(/^\/knowledge\/[^/]+\/(es|ca|en)$/)?.[1];
+  const lang = (pathLanguage || initialLanguage) as SiteLanguage;
   useEffect(() => {
-    const stored = localStorage.getItem('sc_site_lang') as SiteLanguage | null
-    if (stored === 'en' || stored === 'es' || stored === 'ca') {
-      // Hydrate the persisted preference after mount; browser storage is unavailable during SSR.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setLangState(stored)
-      return
-    }
-    const browser = navigator.language.toLowerCase()
-    if (browser.startsWith('ca')) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setLangState('ca')
-    } else if (browser.startsWith('es')) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setLangState('es')
-    }
-  }, [])
-
-  useEffect(() => {
-    document.documentElement.lang = lang
-  }, [lang])
-
-  const setLang = (newLang: SiteLanguage) => {
-    setLangState(newLang)
-    localStorage.setItem('sc_site_lang', newLang)
-    // Legacy project/article collections are still EN/ES; Catalan falls back to Spanish there
-    // until those individual historical records are migrated.
-    localStorage.setItem('lang', newLang === 'ca' ? 'es' : newLang)
-  }
-
-  return <SiteLanguageContext.Provider value={{ lang, setLang }}>{children}</SiteLanguageContext.Provider>
+    document.documentElement.lang = lang;
+  }, [lang]);
+  const setLang = (lang: SiteLanguage) =>
+    router.push(
+      localizedHref(
+        pathname.replace(/^(\/knowledge\/[^/]+)\/(es|ca|en)$/, "$1"),
+        lang,
+      ) + window.location.search,
+    );
+  return (
+    <Context.Provider value={{ lang, setLang }}>{children}</Context.Provider>
+  );
 }
-
 export function useSiteLanguage() {
-  return useContext(SiteLanguageContext)
+  return useContext(Context);
 }

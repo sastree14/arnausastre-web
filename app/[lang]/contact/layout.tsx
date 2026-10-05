@@ -1,0 +1,3 @@
+import {pageMetadata} from '@/lib/site-metadata'
+export async function generateMetadata(){return pageMetadata('/contact',{"es": "Contacta con SC-Analytics", "ca": "Contacta amb SC-Analytics", "en": "Contact SC-Analytics"},{"es": "Cuéntanos qué quieres mejorar o reserva una llamada gratuita de 30 minutos con Arnau Sastre.", "ca": "Explica’ns què vols millorar o reserva una trucada gratuïta de 30 minuts amb l’Arnau Sastre.", "en": "Tell us what needs to improve or book a free 30-minute call with Arnau Sastre."})}
+export default function Layout({children}:{children:React.ReactNode}){return <>{children}</>}

@@ -12,8 +12,10 @@ export default function SiteChrome({ children }: { children: React.ReactNode }) 
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
+      <a href="#main-content" className="skip-link">Skip to content / Ir al contenido</a>
       <Navbar />
-      {children}
+      <div id="main-content" tabIndex={-1}>
+      {children}</div>
       <Footer />
     </div>
   )

@@ -1,6 +1,8 @@
 'use client'
 
-import Link from 'next/link'
+import ForecastExample from '@/components/projects/ForecastExample'
+import {portfolioEvidence} from '@/lib/portfolio-evidence'
+import Link from '@/components/SiteLink'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import CaseStudySidebar from '@/components/projects/CaseStudySidebar'
@@ -101,7 +103,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] pb-12 pt-9 lg:pb-14">
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-7xl sm:w-[calc(100%_-_48px)] pb-12 pt-9 lg:pb-14">
           <Link href={`/projects/${project.slug}`} className="inline-flex items-center gap-2 text-[14px] text-[#A8BACB] transition hover:text-white">
             <span aria-hidden="true">←</span>
             {c.back}
@@ -137,13 +139,13 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
                 style={{ fontFamily: 'var(--font-playfair)' }}
               >
                 {presentation.scenarioHeadline}
-              </p>
+              </p><p className="mt-4 text-sm leading-6 text-[#C2D2E0]">{presentation.scenarioSummary} {lang === 'en' ? 'Capital released is not profit or a guaranteed saving.' : lang === 'ca' ? 'El capital alliberat no és benefici ni estalvi garantit.' : 'El capital liberado no es beneficio ni ahorro garantizado.'}</p>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-3">
                 {presentation.businessMetrics.map((metric) => (
                   <div key={metric.label} className="border border-[#5E86A8] bg-[#0D1B2A] px-4 py-4">
                     <p className="text-[30px] font-semibold leading-none tracking-[-0.02em] text-white">{metric.value}</p>
-                    <p className="mt-3 text-[11px] font-semibold uppercase leading-5 tracking-[0.08em] text-[#DCE6EF]">{metric.label}</p>
+                    <p className="mt-3 text-[11px] font-semibold uppercase leading-5 tracking-[0.08em] text-[#DCE6EF]">{metric.label}</p>{metric.note && <p className="mt-2 text-xs leading-5 text-[#C2D2E0]">{metric.note}</p>}
                   </div>
                 ))}
               </div>
@@ -172,7 +174,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
       </section>
 
       <div className="border-b border-slate-300 bg-[#FAFAF7]">
-        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] lg:grid lg:grid-cols-[clamp(230px,16vw,310px)_minmax(0,1fr)] lg:gap-[clamp(24px,2.6vw,48px)]">
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-7xl sm:w-[calc(100%_-_48px)] lg:grid lg:grid-cols-[clamp(230px,16vw,310px)_minmax(0,1fr)] lg:gap-[clamp(24px,2.6vw,48px)]">
           <CaseStudySidebar items={items} repositoryUrl={project.proofUrl} contactHref={project.cta.primaryHref} />
 
           <div className="min-w-0">
@@ -225,7 +227,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
             </Section>
 
             <Section id="evidence" label={c.evidenceLabel} title={c.evidenceTitle} body={c.evidenceBody}>
-              <EvidenceFrameworkVisual data={evidenceData} lang={lang} groupLabels={c.evidenceGroupLabels} />
+              <EvidenceFrameworkVisual data={evidenceData} lang={lang} groupLabels={c.evidenceGroupLabels} />{portfolioEvidence[project.projectId] && <a className="mt-5 inline-block text-sm font-semibold underline underline-offset-4" href={portfolioEvidence[project.projectId].source} target="_blank" rel="noreferrer">{lang === 'en' ? 'Inspect the committed example output' : lang === 'ca' ? 'Consultar la sortida d’exemple versionada' : 'Consultar la salida de ejemplo versionada'} ↗</a>}{project.projectId === 'SC-12' && <ForecastExample/>}
 
               <div className="mt-5 overflow-hidden border border-[#DCCFBC] bg-[#F7F1E8]">
                 <div className="border-b border-[#DCCFBC] bg-[#EEE4D6] px-6 py-4">
@@ -235,7 +237,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
                   {presentation.businessMetrics.map((metric) => (
                     <div key={metric.label} className="flex min-h-[128px] flex-col justify-center px-5 py-5">
                       <p className="text-[31px] font-semibold leading-none tracking-[-0.02em] text-[#1D2B44]">{metric.value}</p>
-                      <p className="mt-3 text-[13px] font-semibold uppercase leading-5 tracking-[0.1em] text-slate-600">{metric.label}</p>
+                      <p className="mt-3 text-[13px] font-semibold uppercase leading-5 tracking-[0.1em] text-slate-600">{metric.label}</p>{metric.note && <p className="mt-2 text-xs leading-5 text-[#C2D2E0]">{metric.note}</p>}
                     </div>
                   ))}
                 </div>

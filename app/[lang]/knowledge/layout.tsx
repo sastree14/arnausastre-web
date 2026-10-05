@@ -1,0 +1,3 @@
+import {pageMetadata} from '@/lib/site-metadata'
+export async function generateMetadata(){return pageMetadata('/knowledge',{"es": "Conocimiento: datos, IA y decisiones de negocio", "ca": "Coneixement: dades, IA i decisions de negoci", "en": "Knowledge: data, AI and business decisions"},{"es": "Análisis sobre planificación, operaciones, riesgo y datos para comprender qué merece la pena mejorar.", "ca": "Anàlisis sobre planificació, operacions, risc i dades per comprendre què val la pena millorar.", "en": "Analysis on planning, operations, risk and data to understand what is worth improving."})}
+export default function Layout({children}:{children:React.ReactNode}){return <>{children}</>}

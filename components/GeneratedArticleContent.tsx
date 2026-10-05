@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import type { PublicGeneratedArticle } from '@/lib/public-growth'
 

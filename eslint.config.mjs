@@ -30,6 +30,12 @@ const eslintConfig = defineConfig([
       "prefer-const": "off",
     },
   },
+  {
+    // Admin navigation deliberately performs full document loads; OAuth/API
+    // links must never be prefetched. Public navigation still enforces Link.
+    files: ["app/growth-admin/**/*.tsx", "components/growth-admin/**/*.tsx", "components/control-center/**/*.tsx", "components/visual-studio/**/*.tsx"],
+    rules: { "@next/next/no-html-link-for-pages": "off" },
+  },
   globalIgnores([
     ".next/**",
     "out/**",

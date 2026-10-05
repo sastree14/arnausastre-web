@@ -11,7 +11,7 @@ export default function BusinessScenarioStrip({
 }) {
   return (
     <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-      <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] py-8 sm:w-[calc(100%_-_48px)] lg:py-10">
+      <div className="mx-auto w-[calc(100%_-_32px)] max-w-7xl py-8 sm:w-[calc(100%_-_48px)] lg:py-10">
         <div className="grid gap-[clamp(28px,4vw,64px)] lg:grid-cols-[minmax(0,.78fr)_minmax(520px,1.22fr)] lg:items-center">
           <div>
             <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{label}</p>
@@ -33,7 +33,7 @@ export default function BusinessScenarioStrip({
                 <p className="text-[34px] font-semibold leading-none tracking-[-0.02em] text-white">{metric.value}</p>
                 <p className="mt-3 text-[12px] font-semibold uppercase leading-5 tracking-[0.1em] text-[#DCE6EF]">
                   {metric.label}
-                </p>
+                </p>{metric.note && <p className="mt-3 text-xs leading-5 text-[#C2D2E0]">{metric.note}</p>}
               </div>
             ))}
           </div>

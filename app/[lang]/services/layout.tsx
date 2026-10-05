@@ -1,0 +1,3 @@
+import {pageMetadata} from '@/lib/site-metadata'
+export async function generateMetadata(){return pageMetadata('/services',{"es": "Servicios de datos, matemáticas e IA", "ca": "Serveis de dades, matemàtiques i IA", "en": "Data, mathematics and AI services"},{"es": "Previsión, optimización, automatización y sistemas de decisión con entregables y criterios de éxito claros.", "ca": "Previsió, optimització, automatització i sistemes de decisió amb lliurables i criteris d’èxit clars.", "en": "Forecasting, optimization, automation and decision systems with clear deliverables and success criteria."})}
+export default function Layout({children}:{children:React.ReactNode}){return <>{children}</>}

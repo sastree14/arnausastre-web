@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, ReactNode } from 'react'
 import { Language } from '@/lib/translations'
 
 interface LanguageContextType {
@@ -13,17 +13,8 @@ const LanguageContext = createContext<LanguageContextType>({
   setLang: () => {},
 })
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Language>('en')
-
-  useEffect(() => {
-    const stored = localStorage.getItem('lang') as Language | null
-    if (stored === 'en' || stored === 'es') {
-      // Hydrate the user's persisted preference after mount to avoid reading browser storage during SSR.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setLangState(stored)
-    }
-  }, [])
+export function LanguageProvider({ children, initialLanguage = 'es' }: { children: ReactNode; initialLanguage?: Language }) {
+  const [lang, setLangState] = useState<Language>(initialLanguage)
 
   const setLang = (newLang: Language) => {
     setLangState(newLang)

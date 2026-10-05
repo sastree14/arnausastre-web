@@ -1,0 +1,3 @@
+import {pageMetadata} from '@/lib/site-metadata'
+export async function generateMetadata(){return pageMetadata('/about',{"es": "Quiénes somos y cómo trabajamos", "ca": "Qui som i com treballem", "en": "Who we are and how we work"},{"es": "Conoce a SC-Analytics: rigor técnico, responsabilidad, evidencia y transferencia al equipo.", "ca": "Coneix SC-Analytics: rigor tècnic, responsabilitat, evidència i transferència a l’equip.", "en": "Meet SC-Analytics: technical rigor, responsibility, evidence and handover to your team."})}
+export default function Layout({children}:{children:React.ReactNode}){return <>{children}</>}

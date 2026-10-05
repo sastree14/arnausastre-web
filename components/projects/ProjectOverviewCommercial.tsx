@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import BusinessScenarioStrip from '@/components/projects/BusinessScenarioStrip'
@@ -39,7 +39,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-slate-300">
-        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] pb-10 pt-9 lg:pb-12 lg:pt-10">
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-7xl sm:w-[calc(100%_-_48px)] pb-10 pt-9 lg:pb-12 lg:pt-10">
           <Link href="/projects" className="inline-flex items-center gap-2 text-[14px] text-slate-500 transition hover:text-slate-950">
             <span aria-hidden="true">←</span>
             {ui.back}
@@ -64,7 +64,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
                 style={{ fontFamily: 'var(--font-playfair)' }}
               >
                 {project.headline}
-              </h1>
+              </h1><p className="mt-5 max-w-2xl text-sm leading-6 text-slate-600">{lang === 'en' ? 'Public technical demonstration · synthetic data · not a measured client outcome.' : lang === 'ca' ? 'Demostració tècnica pública · dades sintètiques · no és un resultat mesurat de client.' : 'Demostración técnica pública · datos sintéticos · no es un resultado medido de cliente.'}</p>
             </div>
 
             <div className="border-l border-slate-300 pl-6 lg:pl-9">
@@ -87,7 +87,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
       ) : null}
 
       <section className="border-b border-slate-300 bg-white">
-        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] pb-7 pt-10 lg:pb-8 lg:pt-12">
+        <div className="mx-auto w-[calc(100%_-_32px)] max-w-7xl sm:w-[calc(100%_-_48px)] pb-7 pt-10 lg:pb-8 lg:pt-12">
           <div className="border-b border-slate-400 pb-4">
             <p className="text-[13px] font-semibold uppercase tracking-[0.15em] text-indigo-700">{ui.snapshot}</p>
           </div>
@@ -120,7 +120,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
 
       {goldStandard ? (
         <section className="border-y border-slate-300 bg-[#F4F1EA]">
-          <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] py-7 sm:w-[calc(100%_-_48px)] lg:py-9">
+          <div className="mx-auto w-[calc(100%_-_32px)] max-w-7xl py-7 sm:w-[calc(100%_-_48px)] lg:py-9">
             <p className="text-center text-[14px] font-semibold uppercase tracking-[0.17em] text-indigo-700">{ui.evidence}</p>
 
             <div className="mt-5 grid gap-3 lg:grid-cols-3">
@@ -131,7 +131,7 @@ export default function ProjectOverviewCommercial({ project: raw, goldStandard }
                 <div className="flex items-start gap-4">
                   <p className="pt-1 font-mono text-[13px] font-semibold text-indigo-700">01</p>
                   <p className="max-w-[20ch] text-[24px] leading-[1.08] text-[#1D2B44]" style={{ fontFamily: 'var(--font-playfair)' }}>
-                    {lang === 'es' ? '¿Quieres saber más de este caso de éxito?' : lang === 'ca' ? 'Vols saber més d’aquest cas d’èxit?' : 'Want to know more about this success story?'}
+                    {lang === 'es' ? '¿Quieres saber más de este proyecto demostrativo?' : lang === 'ca' ? 'Vols saber més d’aquest projecte demostratiu?' : 'Want to know more about this demonstration project?'}
                   </p>
                   <ArrowRight className="ml-auto mt-1 h-5 w-5 shrink-0 text-indigo-700 transition group-hover:translate-x-1" />
                 </div>

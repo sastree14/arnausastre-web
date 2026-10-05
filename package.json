@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node --test tests/public-contracts.test.mjs",
+    "test:smoke": "node tests/smoke-public.mjs"
   },
   "dependencies": {
     "exceljs": "^4.4.0",
@@ -15,6 +17,8 @@
     "nodemailer": "9.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
     "yaml": "^2.8.1"
   },
   "devDependencies": {

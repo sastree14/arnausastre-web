@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import Link from '@/components/SiteLink'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
