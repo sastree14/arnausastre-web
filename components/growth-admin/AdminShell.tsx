@@ -4,7 +4,6 @@ import Link from 'next/link'
 import EditorialBackgroundRefresh from '@/components/growth-admin/EditorialBackgroundRefresh'
 import GrowthActionFeedback from '@/components/growth-admin/GrowthActionFeedback'
 import LiveAdminForms from '@/components/growth-admin/LiveAdminForms'
-import OperatorRunTracker from '@/components/growth-admin/OperatorRunTracker'
 import SupabaseRealtimeInvalidator from '@/components/growth-admin/SupabaseRealtimeInvalidator'
 
 export type OperatingModule =
@@ -29,14 +28,14 @@ export type OperatingModule =
   | 'operations'
   | 'inbox'
   | 'system'
-  | 'agents'
 
 const PRIMARY_NAV = [
   { key: 'home', href: '/growth-admin', label: 'Revisión', description: 'Qué sale después' },
   { key: 'calendar', href: '/growth-admin/calendar', label: 'Calendario', description: 'Cuándo se publica' },
   { key: 'content', href: '/growth-admin/content?publication=all', label: 'Biblioteca', description: 'Todo el contenido' },
-  { key: 'metrics', href: '/growth-admin/metrics', label: 'Métricas', description: 'Web y LinkedIn' },
-  { key: 'agents', href: '/growth-admin/agents', label: 'Agentes', description: 'Registro de agentes IA' },
+  { key: 'commercial', href: '/growth-admin/commercial', label: 'Comercial', description: 'Empresas y oportunidades' },
+  { key: 'metrics', href: '/growth-admin/metrics', label: 'Métricas', description: 'Web, LinkedIn y negocio' },
+  { key: 'operations', href: '/growth-admin/operations', label: 'Operaciones', description: 'Delivery y procesos' },
 ] as const
 
 export default function AdminShell({
@@ -70,13 +69,13 @@ export default function AdminShell({
               <span>
                 <span className="block text-sm font-semibold">SC-Analytics</span>
                 <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
-                  Editorial Control
+                  CMI
                 </span>
               </span>
             </Link>
           </div>
 
-          <nav className="grid flex-1 grid-cols-2 gap-2 xl:mx-10 xl:max-w-4xl xl:grid-cols-5">
+          <nav className="grid flex-1 grid-cols-2 gap-2 xl:mx-10 xl:max-w-5xl xl:grid-cols-6">
             {PRIMARY_NAV.map((item) => {
               const selected = item.key === 'metrics' ? ['metrics', 'analytics', 'seo'].includes(active) : active === item.key
               return (
@@ -115,9 +114,6 @@ export default function AdminShell({
         </div>
       </header>
 
-      <Suspense fallback={null}>
-        <OperatorRunTracker />
-      </Suspense>
       <Suspense fallback={null}>
         <GrowthActionFeedback />
       </Suspense>
