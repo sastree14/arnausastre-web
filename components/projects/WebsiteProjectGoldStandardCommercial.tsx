@@ -108,15 +108,15 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
           </Link>
 
           <div className="mt-9 grid gap-[clamp(36px,4vw,72px)] lg:grid-cols-[minmax(0,1.08fr)_minmax(440px,.92fr)]">
-            <div>
+            <div className="text-center">
               <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.eyebrow}</p>
               <h1
-                className="mt-5 max-w-4xl text-[44px] leading-[1.02] tracking-[-0.03em] text-white sm:text-[54px] lg:text-[62px]"
+                className="mx-auto mt-5 max-w-4xl text-[44px] leading-[1.02] tracking-[-0.03em] text-white sm:text-[54px] lg:text-[62px]"
                 style={{ fontFamily: 'var(--font-playfair)' }}
               >
                 {c.title}
               </h1>
-              <p className="mt-6 max-w-3xl text-[17px] leading-8 text-[#EAF0F6]">{c.intro}</p>
+              <p className="mx-auto mt-6 max-w-3xl text-[17px] leading-8 text-[#EAF0F6]">{c.intro}</p>
 
               <div className="mt-7 border-t border-[#496C8A] pt-5">
                 <p className="text-[14px] font-semibold uppercase tracking-[0.13em] text-[#A8BACB]">{c.thesisLabel}</p>

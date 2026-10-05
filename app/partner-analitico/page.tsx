@@ -161,11 +161,11 @@ export default function AnalyticalPartnerPage() {
     <main className="bg-white text-slate-950">
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
         <div className="site-container grid gap-12 py-16 md:py-20 lg:grid-cols-[1.08fr_.92fr] lg:items-start">
-          <div>
+          <div className="text-center">
             <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
-            <h1 className="mt-5 max-w-5xl text-[44px] leading-[1.04] tracking-[-0.03em] sm:text-[56px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-            <p className="mt-6 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <h1 className="mx-auto mt-5 max-w-5xl text-[44px] leading-[1.04] tracking-[-0.03em] sm:text-[56px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
+            <p className="mx-auto mt-6 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link href="/contact?intent=partner" className="bg-white px-5 py-3 text-[15px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">{t.primary}</Link>
               <Link href="/services" className="border border-[#7F9BB5] px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-white/5">{t.secondary}</Link>
             </div>

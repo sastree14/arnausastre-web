@@ -260,10 +260,10 @@ export default function ContactPage() {
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
         <div className="site-container grid gap-12 py-14 md:py-16 lg:grid-cols-[1.08fr_.92fr] lg:items-start">
-          <div>
+          <div className="text-center">
             <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
             <h1 className="mt-4 text-[46px] leading-[1.04] tracking-[-0.03em] sm:text-[58px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-            <p className="mt-5 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
+            <p className="mx-auto mt-5 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
           </div>
 
           <aside>
