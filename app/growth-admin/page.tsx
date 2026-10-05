@@ -22,6 +22,15 @@ function nextDate(item: GrowthContentItem) {
   return Number.isFinite(parsed) ? parsed : Number.MAX_SAFE_INTEGER
 }
 
+function isFigmaManual(item: GrowthContentItem) {
+  return String(item.visual_strategy?.source || '') === 'figma_manual'
+}
+
+function canonicalOrder(item: GrowthContentItem) {
+  const value = Number(item.visual_strategy?.publication_order)
+  return Number.isFinite(value) && value > 0 ? value : Number.MAX_SAFE_INTEGER
+}
+
 function visualUrl(item: GrowthContentItem) {
   const internal = assetUrl(item)
   if (internal) return internal
@@ -49,6 +58,14 @@ function PublicationCard({ item }: { item: GrowthContentItem }) {
             alt={item.title}
             className="h-full w-full object-contain transition duration-300 group-hover:scale-[1.01]"
           />
+        ) : isFigmaManual(item) ? (
+          <div className="flex h-full flex-col items-center justify-center px-6 text-center">
+            <span className="rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-indigo-700">Figma vinculado</span>
+            <p className="mt-4 text-2xl font-semibold text-slate-950">{item.content_id}</p>
+            <p className="mt-2 max-w-xs text-sm leading-6 text-slate-500">
+              El preview abre el diseño manual exacto junto al copy final.
+            </p>
+          </div>
         ) : (
           <div className="flex h-full flex-col items-center justify-center px-6 text-center">
             <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">Sin visual</span>
@@ -87,6 +104,10 @@ export default async function GrowthAdminPage() {
   const upcoming = content
     .filter((item) => !blockedStatuses.has(item.status))
     .sort((a, b) => {
+      const aCanonical = isFigmaManual(a)
+      const bCanonical = isFigmaManual(b)
+      if (aCanonical !== bCanonical) return aCanonical ? -1 : 1
+      if (aCanonical && bCanonical) return canonicalOrder(a) - canonicalOrder(b)
       const priority = reviewPriority(a) - reviewPriority(b)
       if (priority !== 0) return priority
       if (a.scheduled_at || b.scheduled_at) return nextDate(a) - nextDate(b)
@@ -117,7 +138,7 @@ export default async function GrowthAdminPage() {
             <a href="/growth-admin/calendar" className="rounded-lg border border-white/15 bg-white/[0.04] px-4 py-2.5 text-sm font-semibold text-white">
               Ver calendario
             </a>
-            <a href="/growth-admin/content?publication=all#publications" className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">
+            <a href="/growth-admin/content?publication=all" className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">
               Abrir biblioteca
             </a>
           </div>
@@ -168,7 +189,7 @@ export default async function GrowthAdminPage() {
 
         {upcoming.length > visible.length && (
           <div className="mt-6 text-center">
-            <a href="/growth-admin/content?publication=all#publications" className="text-sm font-semibold text-indigo-700">
+            <a href="/growth-admin/content?publication=all" className="text-sm font-semibold text-indigo-700">
               Ver las {upcoming.length} piezas en la biblioteca →
             </a>
           </div>
