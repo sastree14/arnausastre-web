@@ -3,6 +3,7 @@ import AdminShell from '@/components/growth-admin/AdminShell'
 import {Badge,PageHeader,adminButtonPrimary,adminButtonSecondary,adminInput,assetUrl,publicationLabel} from '@/components/growth-admin/AdminUi'
 import ConfirmFormButton from '@/components/growth-admin/ConfirmFormButton'
 import LinkedInPreview from '@/components/growth-admin/LinkedInPreview'
+import FigmaVisualPreview, { hasFigmaManualVisual } from '@/components/growth-admin/FigmaVisualPreview'
 import GeneratedArticleContent from '@/components/GeneratedArticleContent'
 import {getContentItem,isGrowthAdminAuthenticated,type GrowthContentItem} from '@/lib/growth-admin'
 import {queryGrowthTable} from '@/lib/supabase-growth'
@@ -27,6 +28,7 @@ export default async function PublicationPreviewPage({params,searchParams}:Props
   const articleLanguages=new Set(articleFamily.map(row=>String(row.language||'')))
   const articleFamilyComplete=['es','ca','en'].every(language=>articleLanguages.has(language))
   const image=assetUrl(item)
+  const figmaManual=hasFigmaManualVisual(item)
   const gate=await getContentPublicationReadiness(contentId)
   const issues=gate?.readiness.issues||[]
   const published=item.status==='published'
@@ -36,13 +38,14 @@ export default async function PublicationPreviewPage({params,searchParams}:Props
   const tags=item.hashtags||[]
 
   return <AdminShell active="content">
-    <PageHeader eyebrow="Preview de destino" title={item.title} description="Primero comprueba cómo quedará publicada. Después, si hace falta, ajusta el texto, aprueba o programa." actions={<><a href="/growth-admin" className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm text-slate-300">Volver a revisión</a><a href={`/growth-admin/visual-studio?content=${encodeURIComponent(item.content_id)}`} className="rounded-lg border border-sky-800 px-4 py-2.5 text-sm text-sky-300">Visual Studio</a></>}/>
+    <PageHeader eyebrow="Preview de destino" title={item.title} description="Primero comprueba cómo quedará publicada. Después, si hace falta, ajusta el texto, aprueba o programa." actions={<><a href="/growth-admin" className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm text-slate-300">Volver a revisión</a>{figmaManual&&item.source_url&&<a href={item.source_url} target="_blank" rel="noreferrer" className="rounded-lg border border-indigo-700 px-4 py-2.5 text-sm font-semibold text-indigo-200">Abrir Figma ↗</a>}</>}/>
 
     {(query.approved||query.edited||query.linkedin_article_published||query.linkedin_article_unpublished)&&<div className="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">Cambios guardados correctamente.</div>}
     {query.manual_unpublish&&isLinkedInArticle&&published&&<div className="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"><strong>Retirada manual necesaria.</strong> Abre el artículo en LinkedIn, elimínalo allí y después confirma la retirada en este CRM. No marcaremos la pieza como retirada antes de que tú lo confirmes.</div>}
 
     <div className="mb-5 flex flex-wrap gap-2"><Badge tone={isLinkedInPost?'blue':'violet'}>{publicationLabel(item)}</Badge><Badge>{(item.language||'—').toUpperCase()}</Badge><Badge>{item.publication_mode||'text_only'}</Badge>{item.visual_path&&<Badge tone="green">visual adjunto</Badge>}<Badge>{item.status}</Badge>{Boolean((item.critique as Record<string,unknown>|null)?.manual_edited_at)&&<Badge tone="violet">editado manualmente</Badge>}</div>
 
+    {isLinkedInPost&&figmaManual&&<FigmaVisualPreview item={item}/>}
     {isLinkedInPost?<section className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 md:p-8"><div className="mb-5 flex flex-wrap items-center justify-between gap-3"><p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Así se enviará al feed</p>{Boolean(strategy.visual_headline)&&<p className="text-xs text-indigo-700"><strong>Hook visual:</strong> {String(strategy.visual_headline)}</p>}</div><LinkedInPreview item={item}/></section>:<section className="mb-6 overflow-hidden rounded-2xl border border-slate-200 bg-white"><div className="border-b border-amber-200 bg-amber-50 px-5 py-3 text-center text-xs font-semibold uppercase text-amber-800">{isLinkedInArticle?'Preview de Artículo LinkedIn':'Preview privada web'}</div><GeneratedArticleContent variants={[{...item,body:item.body||'',status:item.status,visual_path:item.visual_path,published_at:item.published_at,created_at:item.created_at}]}/></section>}
     {!isLinkedInPost&&image&&<p className="mt-4 text-xs text-slate-600">El hero mostrado usa el mismo asset adjunto a la publicación.</p>}
 
@@ -54,14 +57,9 @@ export default async function PublicationPreviewPage({params,searchParams}:Props
         <p className="text-sm font-semibold text-slate-950">Edición manual</p>
         <label className="mt-3 block text-xs font-semibold text-slate-600">Título de la publicación<input name="title" defaultValue={item.title} className={`mt-1 w-full ${adminInput}`}/></label>
         <label className="mt-3 block text-xs font-semibold text-slate-600">Texto<textarea name="body" defaultValue={item.body||''} className={`mt-1 min-h-64 w-full ${adminInput}`}/></label>
-        {isLinkedInPost&&<div className="mt-4 grid gap-3 md:grid-cols-2">
-          <label className="text-xs font-semibold text-slate-600">Pregunta abierta<input name="engagement_question" defaultValue={String(strategy.engagement_question||'')} placeholder="¿Cómo lo estáis resolviendo vosotros?" className={`mt-1 w-full ${adminInput}`}/></label>
+        {isLinkedInPost&&<div className="mt-4">
           <label className="text-xs font-semibold text-slate-600">Hashtags<input name="hashtags" defaultValue={tags.join(' ')} placeholder="#DemandForecasting #SupplyChain" className={`mt-1 w-full ${adminInput}`}/></label>
-          <label className="text-xs font-semibold text-slate-600 md:col-span-2">Hook visual<input name="visual_headline" defaultValue={String(strategy.visual_headline||'')} placeholder="Frase corta para detener el scroll" className={`mt-1 w-full ${adminInput}`}/></label>
-          <label className="text-xs font-semibold text-slate-600">Apoyo visual<input name="visual_support" defaultValue={String(strategy.visual_support||'')} className={`mt-1 w-full ${adminInput}`}/></label>
-          <label className="text-xs font-semibold text-slate-600">Tipo<select name="visual_type" defaultValue={String(strategy.visual_type||'statement')} className={`mt-1 w-full ${adminInput}`}><option value="statement">Statement</option><option value="metric">Métrica</option><option value="question">Pregunta</option><option value="comparison">Comparación</option><option value="process">Proceso</option><option value="illustration">Ilustración contextual</option></select></label>
-          <label className="text-xs font-semibold text-slate-600 md:col-span-2">Concepto para ilustración<input name="illustration_concept" defaultValue={String(strategy.illustration_concept||'')} placeholder="Escena u objeto concreto; el generador no añadirá texto ni logos" className={`mt-1 w-full ${adminInput}`}/><span className="mt-1 block text-[10px] font-normal leading-4 text-slate-400">Puedes generar la ilustración directamente desde Visual Studio.</span></label>
-          <label className="text-xs font-semibold text-slate-600">Tema<select name="visual_theme" defaultValue={String(strategy.theme||'dark')} className={`mt-1 w-full ${adminInput}`}><option value="dark">Oscuro · logo blanco</option><option value="light">Claro · logo oscuro</option></select></label>
+          {figmaManual&&<p className="mt-2 text-[11px] leading-5 text-slate-500">El visual se gestiona en Figma y permanece vinculado a {item.content_id}. Desde el CRM solo se edita el copy y sus metadatos de publicación.</p>}
         </div>}
         <button className={`mt-4 ${adminButtonSecondary}`}>Guardar cambios</button>
       </form>
@@ -73,7 +71,6 @@ export default async function PublicationPreviewPage({params,searchParams}:Props
           isLinkedInArticle?<div className="rounded-2xl border border-amber-200 bg-amber-50 p-4"><p className="text-xs font-semibold text-amber-900">Artículo LinkedIn · publicación manual</p><p className="mt-1 text-[11px] leading-5 text-amber-800">Copia el contenido en el editor de artículos de LinkedIn. Cuando esté publicado, pega aquí la URL final para cerrar el ciclo sin fingir una automatización que LinkedIn no ofrece.</p><form action="/api/growth-admin/linkedin-article-published" method="post" className="mt-3"><input type="hidden" name="content_id" value={item.content_id}/><input type="hidden" name="return_to" value={returnTo}/><input required type="url" name="external_post_url" placeholder="https://www.linkedin.com/..." className={`w-full ${adminInput}`}/><button className={`mt-2 w-full ${adminButtonPrimary}`}>Registrar como publicado</button></form></div>:
           <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4"><p className="text-xs font-semibold text-emerald-900">Aprobada</p><p className="mt-1 text-[11px] text-emerald-800">Puedes publicarla ahora sin salir de esta pieza.</p><form action="/api/growth-admin/publish-now" method="post" className="mt-3"><input type="hidden" name="content_id" value={item.content_id}/><input type="hidden" name="return_to" value={returnTo}/><button className={`w-full ${adminButtonPrimary}`}>Publicar ahora</button></form></div>}
 
-        <form action="/api/growth-admin/operator-task" method="post"><input type="hidden" name="action" value="rewrite_content"/><input type="hidden" name="content_id" value={item.content_id}/><input type="hidden" name="return_to" value={returnTo}/><button className="w-full rounded-lg border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-sm font-semibold text-indigo-700">Proponer nueva versión con IA</button></form>
         <ConfirmFormButton action="/api/growth-admin/content-delete" fields={{content_id:item.content_id,return_to:'/growth-admin/content?filter=review'}} label="Eliminar borrador" message="¿Eliminar esta pieza del CRM? Esta acción elimina también relaciones editoriales asociadas a la pieza."/>
       </div>
     </section>}
