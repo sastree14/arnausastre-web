@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
 import { Badge, assetUrl, formatDate, publicationLabel, statusTone } from '@/components/growth-admin/AdminUi'
 import { isGrowthAdminAuthenticated, type GrowthContentItem } from '@/lib/growth-admin'
-import { collapseWebsiteArticleFamilies, getWorkspaceContent } from '@/lib/editorial-workspace'
+import { collapseWebsiteArticleFamilies, getWorkspaceContent, isCanonicalEditorialItem } from '@/lib/editorial-workspace'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -100,7 +100,7 @@ export default async function GrowthAdminPage() {
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
 
   const rawContent = await getWorkspaceContent()
-  const content = collapseWebsiteArticleFamilies(rawContent)
+  const content = collapseWebsiteArticleFamilies(rawContent.filter(isCanonicalEditorialItem))
   const upcoming = content
     .filter((item) => !blockedStatuses.has(item.status))
     .sort((a, b) => {
