@@ -127,7 +127,7 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
             <div className="flex flex-wrap gap-2"><Badge tone="green">Reunión</Badge><Badge>{item.provider || 'manual'}</Badge></div>
             <p className="mt-3 font-semibold text-slate-950">{String(item.metadata?.event_name || item.metadata?.name || 'Reunión')}</p>
             <p className="mt-1 text-xs text-slate-500">{formatDate(item.starts_at,true)}</p>
-            {item.metadata?.notes && <p className="mt-3 text-sm leading-6 text-slate-600">{String(item.metadata.notes)}</p>}
+            {Boolean(item.metadata?.notes) && <p className="mt-3 text-sm leading-6 text-slate-600">{String(item.metadata?.notes || '')}</p>}
           </div>)}
         </div>
       </section>
