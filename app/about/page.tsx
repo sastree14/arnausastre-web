@@ -157,24 +157,24 @@ export default function AboutPage() {
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
-          <h1 className="mt-5 max-w-5xl text-[44px] leading-[1.04] tracking-[-0.03em] sm:text-[56px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-          <p className="mt-6 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
+        <div className="site-container py-16 text-center md:py-20">
+          <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
+          <h1 className="mx-auto mt-5 max-w-5xl text-[44px] leading-[1.04] tracking-[-0.03em] sm:text-[56px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
+          <p className="mx-auto mt-6 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
         </div>
       </section>
 
       <section className="border-b border-slate-300 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
+        <div className="site-container py-14 md:py-16">
           <div className="grid gap-7 lg:grid-cols-[190px_1fr] lg:gap-10">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.reasonsLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.reasonsLabel}</p>
             <h2 className="max-w-3xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.reasonsTitle}</h2>
           </div>
 
           <div className="mt-8 grid border-l border-t border-slate-300 md:grid-cols-2">
             {t.reasons.map(([title, body], index) => (
               <article key={title} className={`min-h-[210px] border-b border-r border-slate-300 p-7 ${index === 0 || index === 3 ? 'bg-[#F4F1EA]' : 'bg-white'}`}>
-                <p className="font-mono text-[11px] text-indigo-700">0{index + 1}</p>
+                <p className="font-mono text-[14px] text-[#4F46E5]">0{index + 1}</p>
                 <h3 className="mt-4 text-[24px] font-semibold text-slate-950">{title}</h3>
                 <p className="mt-3 max-w-xl text-[17px] leading-7 text-slate-700">{body}</p>
               </article>
@@ -184,9 +184,9 @@ export default function AboutPage() {
       </section>
 
       <section className="border-b border-slate-300 bg-[#FAFAF7]">
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:py-16 lg:grid-cols-[.9fr_1.1fr] lg:items-start">
+        <div className="site-container grid gap-10 py-14 md:py-16 lg:grid-cols-[.9fr_1.1fr] lg:items-start">
           <div>
-            <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.proofLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.proofLabel}</p>
             <h2 className="mt-4 max-w-xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.proofTitle}</h2>
             <p className="mt-5 max-w-xl text-[17px] leading-7 text-slate-700">{t.proofBody}</p>
           </div>
@@ -194,7 +194,7 @@ export default function AboutPage() {
           <div className="border-y border-slate-400">
             {t.principles.map((item, index) => (
               <div key={item} className="grid min-h-[76px] grid-cols-[66px_1fr] items-center gap-5 border-b border-slate-300 py-4 last:border-b-0">
-                <span className="font-mono text-[16px] font-semibold text-indigo-700">0{index + 1}</span>
+                <span className="font-mono text-[16px] font-semibold text-[#4F46E5]">0{index + 1}</span>
                 <p className="text-[19px] font-semibold leading-7 text-slate-900">{item}</p>
               </div>
             ))}
@@ -203,9 +203,9 @@ export default function AboutPage() {
       </section>
 
       <section className="border-b border-slate-300 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
+        <div className="site-container py-14 md:py-16">
           <div className="grid gap-7 lg:grid-cols-[190px_1fr] lg:gap-10">
-            <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.modelLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.modelLabel}</p>
             <div>
               <h2 className="max-w-4xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.modelTitle}</h2>
             </div>
@@ -220,7 +220,7 @@ export default function AboutPage() {
                   className="grid min-h-[155px] grid-rows-[auto_1fr] border p-6"
                   style={{ backgroundColor: palette.bg, borderColor: palette.border }}
                 >
-                  <span className="font-mono text-[12px] font-semibold" style={{ color: palette.number }}>0{index + 1}</span>
+                  <span className="font-mono text-[14px] font-semibold" style={{ color: palette.number }}>0{index + 1}</span>
                   <div className="flex items-center">
                     <h3 className="text-[24px] font-semibold leading-7" style={{ color: palette.text }}>{title}</h3>
                   </div>
@@ -232,9 +232,9 @@ export default function AboutPage() {
       </section>
 
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-        <div className="mx-auto max-w-7xl px-6 py-12 md:py-14">
+        <div className="site-container py-12 md:py-14">
           <div className="max-w-4xl">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#8E91FF]">{t.pathsLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#8E91FF]">{t.pathsLabel}</p>
             <h3 className="mt-3 max-w-3xl text-[32px] leading-[1.08] text-white sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.pathsTitle}</h3>
           </div>
 
@@ -243,13 +243,13 @@ export default function AboutPage() {
               <Link
                 key={href}
                 href={href}
-                className={`group relative flex min-h-[205px] flex-col justify-between border p-7 text-[#1D2B44] transition duration-200 hover:-translate-y-1 hover:scale-[1.015] hover:shadow-xl active:scale-[1.005] ${index === 0 ? 'border-[#DDCFBD] bg-[#F8F3EA]' : index === 1 ? 'border-[#A9C2D6] bg-[#DDE8F2]' : 'border-[#D2C4DD] bg-[#F1ECF5]'}`}
+                className={`group relative flex min-h-[205px] flex-col justify-between border p-7 text-[#1D2B44] transition duration-200 hover:-translate-y-1 hover:scale-[1.015] hover:shadow-xl active:scale-[1.005] ${index === 0 ? 'border-[#DDCFBD] bg-[#F4F1EA]' : index === 1 ? 'border-[#A9C2D6] bg-[#EAF0F6]' : 'border-[#D2C4DD] bg-[#F4F1EA]'}`}
               >
                 <div>
                   <h3 className="text-[28px] leading-[1.1]" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
                   <p className="mt-4 max-w-[28ch] text-[15px] leading-6 text-slate-700">{body}</p>
                 </div>
-                <span className="mt-8 text-[16px] font-semibold text-indigo-700">
+                <span className="mt-8 text-[16px] font-semibold text-[#4F46E5]">
                   {lang === 'es' ? 'Explorar' : lang === 'ca' ? 'Explorar' : 'Explore'} <span className="inline-block transition group-hover:translate-x-1">→</span>
                 </span>
               </Link>
@@ -259,12 +259,12 @@ export default function AboutPage() {
       </section>
 
       <section className="border-b border-slate-300 bg-[#F4F1EA]">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-11 md:flex-row md:items-center md:justify-between">
+        <div className="site-container flex flex-col gap-6 py-11 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="max-w-4xl text-[32px] leading-[1.08] sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
             <p className="mt-4 max-w-3xl text-[17px] leading-7 text-slate-700">{t.ctaBody}</p>
           </div>
-          <Link href="/contact?intent=discovery" className="inline-flex shrink-0 bg-slate-950 px-6 py-3.5 text-[15px] font-semibold text-white transition hover:bg-slate-800">{t.cta} →</Link>
+          <Link href="/contact?intent=discovery" className="inline-flex shrink-0 bg-[#0D1B2A] px-6 py-3.5 text-[15px] font-semibold text-white transition hover:bg-[#254A66]">{t.cta} →</Link>
         </div>
       </section>
     </main>

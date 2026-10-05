@@ -259,7 +259,7 @@ export default function ContactPage() {
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-14 md:py-16 lg:grid-cols-[1.08fr_.92fr] lg:items-start">
+        <div className="site-container grid gap-12 py-14 md:py-16 lg:grid-cols-[1.08fr_.92fr] lg:items-start">
           <div>
             <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
             <h1 className="mt-4 text-[46px] leading-[1.04] tracking-[-0.03em] sm:text-[58px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
@@ -284,8 +284,8 @@ export default function ContactPage() {
       </section>
 
       <section className="border-b border-slate-300 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-10 md:py-12">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.intentLabel}</p>
+        <div className="site-container py-10 md:py-12">
+          <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.intentLabel}</p>
           <div className="mt-5 grid border-l border-t border-slate-300 lg:grid-cols-3">
             {t.intents.map(([key, title, body], index) => {
               const active = intent === key
@@ -294,11 +294,11 @@ export default function ContactPage() {
                   key={key}
                   type="button"
                   onClick={() => setIntent(key as IntentKey)}
-                  className={`min-h-[165px] border-b border-r border-slate-300 p-5 text-left transition ${active ? 'bg-[#0D1B2A] text-white' : index === 1 ? 'bg-[#F4F1EA] text-slate-950 hover:bg-[#EEEAE1]' : 'bg-white text-slate-950 hover:bg-slate-50'}`}
+                  className={`min-h-[165px] border-b border-r border-slate-300 p-5 text-left transition ${active ? 'bg-[#0D1B2A] text-white' : index === 1 ? 'bg-[#F4F1EA] text-slate-950 hover:bg-[#F4F1EA]' : 'bg-white text-slate-950 hover:bg-slate-50'}`}
                 >
                   <div className="flex items-start justify-between gap-4">
-                    <p className={`font-mono text-[12px] ${active ? 'text-[#7A7DFF]' : 'text-indigo-700'}`}>0{index + 1}</p>
-                    <span className={`text-[12px] font-semibold ${active ? 'text-[#A8BACB]' : 'text-slate-300'}`}>{active ? '✓' : '→'}</span>
+                    <p className={`font-mono text-[14px] ${active ? 'text-[#7A7DFF]' : 'text-[#4F46E5]'}`}>0{index + 1}</p>
+                    <span className={`text-[14px] font-semibold ${active ? 'text-[#A8BACB]' : 'text-slate-300'}`}>{active ? '✓' : '→'}</span>
                   </div>
                   <h2 className={`mt-5 text-[22px] font-semibold ${active ? 'text-white' : 'text-slate-950'}`}>{title}</h2>
                   <p className={`mt-3 text-[16px] leading-7 ${active ? 'text-[#A8BACB]' : 'text-slate-600'}`}>{body}</p>
@@ -310,9 +310,9 @@ export default function ContactPage() {
       </section>
 
       <section className="border-b border-slate-300 bg-[#FAFAF7]">
-        <div className="mx-auto grid max-w-7xl gap-6 px-6 py-12 md:py-16 lg:grid-cols-[1.1fr_.9fr]">
+        <div className="site-container grid gap-6 py-12 md:py-16 lg:grid-cols-[1.1fr_.9fr]">
           <div className="border border-slate-300 bg-white p-6 md:p-8">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{selectedForm.label}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{selectedForm.label}</p>
             <h2 className="mt-3 text-[32px] leading-[1.08] sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{selectedForm.title}</h2>
 
             {submitted ? (
@@ -368,7 +368,7 @@ export default function ContactPage() {
                 <div className="flex justify-end border-t border-slate-200 pt-5">
                   <button
                     disabled={sending}
-                    className="bg-slate-950 px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-slate-800 disabled:opacity-60"
+                    className="bg-[#0D1B2A] px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-[#254A66] disabled:opacity-60"
                   >
                     {sending ? t.sending : t.send}
                   </button>
@@ -380,7 +380,7 @@ export default function ContactPage() {
 
           <aside className="space-y-5">
             <div className="border border-[#496C8A] bg-[#0D1B2A] p-6 text-white md:p-8">
-              <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{t.callLabel}</p>
+              <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{t.callLabel}</p>
               <h2 className="mt-3 text-[30px] leading-[1.08]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.callTitle}</h2>
               <p className="mt-4 text-[16px] leading-7 text-[#D5E1EB]">{t.callBody}</p>
               <a
@@ -394,14 +394,14 @@ export default function ContactPage() {
             </div>
 
             <div className="border border-slate-300 bg-[#F4F1EA] p-6 md:p-8">
-              <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.nextLabel}</p>
+              <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.nextLabel}</p>
               <div className="mt-5 border-y border-slate-300">
                 {t.next.map(([number, title, body], index) => (
                   <div
                     key={number}
                     className={`grid min-h-[118px] grid-cols-[56px_1fr] items-center gap-4 py-5 ${index < t.next.length - 1 ? 'border-b border-slate-300' : ''}`}
                   >
-                    <span className="font-mono text-[20px] font-semibold text-indigo-700">{number}</span>
+                    <span className="font-mono text-[20px] font-semibold text-[#4F46E5]">{number}</span>
                     <div>
                       <p className="text-[18px] font-semibold text-slate-950">{title}</p>
                       <p className="mt-2 text-[16px] leading-7 text-slate-600">{body}</p>

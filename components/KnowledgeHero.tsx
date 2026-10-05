@@ -35,16 +35,16 @@ export default function KnowledgeHero() {
 
   return (
     <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-      <div className="mx-auto grid w-[calc(100%_-_32px)] max-w-[1800px] gap-9 py-14 sm:w-[calc(100%_-_48px)] md:py-16 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+      <div className="site-container flex flex-col items-center gap-9 py-14 text-center md:py-16">
         <div className="max-w-5xl">
-          <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.label}</p>
+          <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.label}</p>
           <h1 className="mt-5 max-w-5xl text-[44px] leading-[1.02] tracking-[-0.03em] sm:text-[54px] lg:text-[62px]" style={{ fontFamily: 'var(--font-playfair)' }}>
             {t.title}
           </h1>
-          <p className="mt-5 max-w-3xl text-[18px] leading-8 text-[#EAF0F6]">{t.sub}</p>
+          <p className="mx-auto mt-5 max-w-3xl text-[18px] leading-8 text-[#EAF0F6]">{t.sub}</p>
         </div>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap justify-center gap-3">
           <Link href={FEATURED} className="bg-white px-5 py-3.5 text-[15px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">
             {t.primary} →
           </Link>

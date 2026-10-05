@@ -28,7 +28,7 @@ function Section({
       <div className="border border-slate-300 bg-white">
         <div className="grid border-b border-slate-300 lg:grid-cols-[clamp(165px,13vw,210px)_minmax(0,1fr)]">
           <div className="bg-[#F4F1EA] px-5 py-6 lg:px-6 lg:py-7">
-            <p className="text-[13px] font-semibold uppercase leading-5 tracking-[0.14em] text-indigo-700">{label}</p>
+            <p className="text-[14px] font-semibold uppercase leading-5 tracking-[0.14em] text-[#4F46E5]">{label}</p>
           </div>
 
           <div className="px-6 py-6 lg:px-[clamp(28px,3vw,52px)] lg:py-7">
@@ -101,7 +101,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] pb-12 pt-9 lg:pb-14">
+        <div className="site-container pb-12 pt-9 lg:pb-14">
           <Link href={`/projects/${project.slug}`} className="inline-flex items-center gap-2 text-[14px] text-[#A8BACB] transition hover:text-white">
             <span aria-hidden="true">←</span>
             {c.back}
@@ -109,7 +109,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
 
           <div className="mt-9 grid gap-[clamp(36px,4vw,72px)] lg:grid-cols-[minmax(0,1.08fr)_minmax(440px,.92fr)]">
             <div>
-              <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.eyebrow}</p>
+              <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.eyebrow}</p>
               <h1
                 className="mt-5 max-w-4xl text-[44px] leading-[1.02] tracking-[-0.03em] text-white sm:text-[54px] lg:text-[62px]"
                 style={{ fontFamily: 'var(--font-playfair)' }}
@@ -119,15 +119,15 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
               <p className="mt-6 max-w-3xl text-[17px] leading-8 text-[#EAF0F6]">{c.intro}</p>
 
               <div className="mt-7 border-t border-[#496C8A] pt-5">
-                <p className="text-[13px] font-semibold uppercase tracking-[0.13em] text-[#A8BACB]">{c.thesisLabel}</p>
+                <p className="text-[14px] font-semibold uppercase tracking-[0.13em] text-[#A8BACB]">{c.thesisLabel}</p>
                 <p className="mt-3 max-w-3xl text-[16px] leading-7 text-white">{c.thesis}</p>
               </div>
             </div>
 
-            <aside className="border border-[#496C8A] bg-[#102033] p-6 lg:p-7">
+            <aside className="border border-[#496C8A] bg-[#0D1B2A] p-6 lg:p-7">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.referenceEconomics}</p>
-                <span className="border border-[#496C8A] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#B9C9D8]">
+                <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.referenceEconomics}</p>
+                <span className="border border-[#496C8A] px-2.5 py-1 text-[14px] font-semibold uppercase tracking-[0.1em] text-[#B9C9D8]">
                   {project.projectId}
                 </span>
               </div>
@@ -143,7 +143,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
                 {presentation.businessMetrics.map((metric) => (
                   <div key={metric.label} className="border border-[#5E86A8] bg-[#0D1B2A] px-4 py-4">
                     <p className="text-[30px] font-semibold leading-none tracking-[-0.02em] text-white">{metric.value}</p>
-                    <p className="mt-3 text-[11px] font-semibold uppercase leading-5 tracking-[0.08em] text-[#DCE6EF]">{metric.label}</p>
+                    <p className="mt-3 text-[14px] font-semibold uppercase leading-5 tracking-[0.08em] text-[#DCE6EF]">{metric.label}</p>
                   </div>
                 ))}
               </div>
@@ -172,7 +172,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
       </section>
 
       <div className="border-b border-slate-300 bg-[#FAFAF7]">
-        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] lg:grid lg:grid-cols-[clamp(230px,16vw,310px)_minmax(0,1fr)] lg:gap-[clamp(24px,2.6vw,48px)]">
+        <div className="site-container lg:grid lg:grid-cols-[clamp(230px,16vw,310px)_minmax(0,1fr)] lg:gap-[clamp(24px,2.6vw,48px)]">
           <CaseStudySidebar items={items} repositoryUrl={project.proofUrl} contactHref={project.cta.primaryHref} />
 
           <div className="min-w-0">
@@ -187,7 +187,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
                       style={{ backgroundColor: palette.bg, borderColor: palette.border }}
                     >
                       <div className="flex items-center justify-between gap-4">
-                        <span className="font-mono text-[14px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
+                        <span className="font-mono text-[14px] font-semibold text-[#4F46E5]">{String(index + 1).padStart(2, '0')}</span>
                         <span className="h-px flex-1" style={{ backgroundColor: palette.border }} />
                       </div>
                       <p className="mt-6 text-[22px] font-semibold leading-[1.15] text-[#1D2B44]">{row.title}</p>
@@ -212,7 +212,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
                       className="grid min-h-[132px] grid-cols-[48px_1fr] gap-4 border p-5 sm:p-6"
                       style={{ backgroundColor: palette.bg, borderColor: palette.border }}
                     >
-                      <span className="font-mono text-[14px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
+                      <span className="font-mono text-[14px] font-semibold text-[#4F46E5]">{String(index + 1).padStart(2, '0')}</span>
                       <p className="text-[18px] font-medium leading-8 text-slate-900">{row}</p>
                     </div>
                   )
@@ -227,15 +227,15 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
             <Section id="evidence" label={c.evidenceLabel} title={c.evidenceTitle} body={c.evidenceBody}>
               <EvidenceFrameworkVisual data={evidenceData} lang={lang} groupLabels={c.evidenceGroupLabels} />
 
-              <div className="mt-5 overflow-hidden border border-[#DCCFBC] bg-[#F7F1E8]">
-                <div className="border-b border-[#DCCFBC] bg-[#EEE4D6] px-6 py-4">
+              <div className="mt-5 overflow-hidden border border-[#DCCFBC] bg-[#F4F1EA]">
+                <div className="border-b border-[#DCCFBC] bg-[#F4F1EA] px-6 py-4">
                   <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#66533C]">{c.referenceEconomics}</p>
                 </div>
-                <div className="grid divide-y divide-[#DCCFBC] bg-[#FCF9F4] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                <div className="grid divide-y divide-[#DCCFBC] bg-[#F4F1EA] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
                   {presentation.businessMetrics.map((metric) => (
                     <div key={metric.label} className="flex min-h-[128px] flex-col justify-center px-5 py-5">
                       <p className="text-[31px] font-semibold leading-none tracking-[-0.02em] text-[#1D2B44]">{metric.value}</p>
-                      <p className="mt-3 text-[13px] font-semibold uppercase leading-5 tracking-[0.1em] text-slate-600">{metric.label}</p>
+                      <p className="mt-3 text-[14px] font-semibold uppercase leading-5 tracking-[0.1em] text-slate-600">{metric.label}</p>
                     </div>
                   ))}
                 </div>
@@ -251,7 +251,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
                   href={project.proofUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex min-h-[50px] items-center gap-2 bg-slate-950 px-5 py-3 text-[14px] font-semibold text-white transition hover:bg-slate-800"
+                  className="inline-flex min-h-[50px] items-center gap-2 bg-[#0D1B2A] px-5 py-3 text-[14px] font-semibold text-white transition hover:bg-[#254A66]"
                 >
                   {c.repository}
                   <ArrowUpRight className="h-4 w-4" />
@@ -259,7 +259,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
               }
             >
               <div>
-                <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{toolsLabel}</p>
+                <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{toolsLabel}</p>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                   {c.technicalProof.split(' · ').map((technology, index) => {
                     const diagonalGroup = [0, 2, 4].includes(index) ? 0 : 1
@@ -271,7 +271,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
                         style={{ backgroundColor: palette.bg, borderColor: palette.border }}
                       >
                         <span className="text-[19px] font-semibold text-[#1D2B44]">{technology}</span>
-                        <span className="font-mono text-[12px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
+                        <span className="font-mono text-[14px] font-semibold text-[#4F46E5]">{String(index + 1).padStart(2, '0')}</span>
                       </div>
                     )
                   })}
@@ -283,7 +283,7 @@ export default function WebsiteProjectGoldStandardCommercial({ project }: { proj
               <div className="border border-[#496C8A] bg-[#0D1B2A] px-6 py-8 text-white lg:px-9 lg:py-10">
                 <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
                   <div>
-                    <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.takeawayLabel}</p>
+                    <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{c.takeawayLabel}</p>
                     <h2 className="mt-3 max-w-4xl text-[34px] leading-[1.06] text-white sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>
                       {c.takeawayTitle}
                     </h2>

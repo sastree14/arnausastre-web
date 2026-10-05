@@ -21,8 +21,8 @@ export function HorizonDecisionVisual({ data, lang }: { data: HorizonLogic; lang
 
   return (
     <div className="border border-[#D8DDE3] bg-white">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D8DDE3] bg-[#F6F2EA] px-6 py-4">
-        <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-slate-700">{labels.title}</p>
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D8DDE3] bg-[#F4F1EA] px-6 py-4">
+        <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-slate-700">{labels.title}</p>
         <p className="text-[14px] font-medium text-slate-600">{labels.note}</p>
       </div>
 
@@ -42,7 +42,7 @@ export function HorizonDecisionVisual({ data, lang }: { data: HorizonLogic; lang
                 >
                   {item.horizon}
                 </span>
-                <span className="mt-3 block text-[13px] font-semibold uppercase tracking-[0.1em] text-slate-600">
+                <span className="mt-3 block text-[14px] font-semibold uppercase tracking-[0.1em] text-slate-600">
                   {item.label}
                 </span>
               </div>
@@ -92,7 +92,7 @@ function ArchitectureNode({ index, title, detail }: { index: number; title: stri
   return (
     <div className="min-w-0 border-t border-white/15 bg-black/5 first:border-t-0">
       <div className="flex items-center gap-3 border-b border-white/10 px-5 py-2.5">
-        <span className="font-mono text-[12px] font-semibold text-[#A4A5FF]">{String(index).padStart(2, '0')}</span>
+        <span className="font-mono text-[14px] font-semibold text-[#A4A5FF]">{String(index).padStart(2, '0')}</span>
       </div>
       <div className="min-h-[124px] px-5 py-4">
         <h3 className="break-words text-[16px] font-semibold leading-7 text-[#E4ECF3] xl:text-[17px]">{title}</h3>
@@ -120,10 +120,10 @@ export function ArchitectureSystemVisual({ data, lang }: { data: Architecture; l
     <div className="min-w-0 border border-[#5E86A8] bg-[#0D1B2A] text-white">
       <div className="grid gap-3 border-b border-[#5E86A8] px-5 py-5 sm:px-6 md:grid-cols-[1fr_auto] md:items-end">
         <div>
-          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{data.eyebrow}</p>
+          <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{data.eyebrow}</p>
           <p className="mt-2 text-[16px] leading-7 text-[#C2D2E0]">{data.body}</p>
         </div>
-        <p className="text-[13px] leading-6 text-[#9DB3C7]">{labels.provenance}</p>
+        <p className="text-[14px] leading-6 text-[#9DB3C7]">{labels.provenance}</p>
       </div>
 
       <div className="min-w-0 px-5 py-7 sm:px-6 lg:px-7 xl:px-8">
@@ -184,28 +184,28 @@ export function EvidenceFrameworkVisual({
 
   const renderMetric = (metric: Evidence['metrics'][number]) => (
     <div key={`${metric.label}-${metric.value}`} className="flex min-h-[170px] flex-col px-5 py-5">
-      <p className="min-h-[30px] text-[12px] font-semibold uppercase leading-[1.25] tracking-[0.1em] text-indigo-700">{metric.label}</p>
+      <p className="min-h-[30px] text-[14px] font-semibold uppercase leading-[1.25] tracking-[0.1em] text-[#4F46E5]">{metric.label}</p>
       <p className="mt-3 text-[30px] font-semibold leading-none tracking-[-0.02em] text-[#1D2B44]">{metric.value}</p>
-      <p className="mt-auto pt-4 text-[13px] leading-5 text-slate-600">{metric.note}</p>
+      <p className="mt-auto pt-4 text-[14px] leading-5 text-slate-600">{metric.note}</p>
     </div>
   )
 
   return (
     <div className="grid gap-4 lg:grid-cols-[3fr_2fr]">
-      <section className="overflow-hidden border border-[#D8CBE5] bg-[#F4EFF8]">
-        <div className="border-b border-[#D8CBE5] bg-[#ECE3F3] px-6 py-4">
+      <section className="overflow-hidden border border-[#D8CBE5] bg-[#F4F1EA]">
+        <div className="border-b border-[#D8CBE5] bg-[#F4F1EA] px-6 py-4">
           <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#40385F]">{labels[0]}</p>
         </div>
-        <div className="grid divide-y divide-[#D8CBE5] bg-[#FBF9FC] md:grid-cols-3 md:divide-x md:divide-y-0">
+        <div className="grid divide-y divide-[#D8CBE5] bg-[#F4F1EA] md:grid-cols-3 md:divide-x md:divide-y-0">
           {evaluationMetrics.map(renderMetric)}
         </div>
       </section>
 
-      <section className="overflow-hidden border border-[#C6DCE8] bg-[#EAF3F8]">
-        <div className="border-b border-[#C6DCE8] bg-[#DDECF4] px-6 py-4">
+      <section className="overflow-hidden border border-[#C6DCE8] bg-[#EAF0F6]">
+        <div className="border-b border-[#C6DCE8] bg-[#EAF0F6] px-6 py-4">
           <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#31536B]">{labels[1]}</p>
         </div>
-        <div className="grid divide-y divide-[#C6DCE8] bg-[#F7FBFD] md:grid-cols-2 md:divide-x md:divide-y-0">
+        <div className="grid divide-y divide-[#C6DCE8] bg-[#EAF0F6] md:grid-cols-2 md:divide-x md:divide-y-0">
           {validationMetrics.map(renderMetric)}
         </div>
       </section>

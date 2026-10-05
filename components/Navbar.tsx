@@ -11,7 +11,7 @@ import type { SiteLanguage } from '@/lib/public-copy'
 const COPY = {
   es: {
     home: 'Inicio',
-    work: 'Cómo trabajamos',
+    work: 'Servicios',
     cases: 'Casos de éxito',
     knowledge: 'Conocimiento',
     partner: 'Partner Data e IA',
@@ -20,7 +20,7 @@ const COPY = {
   },
   ca: {
     home: 'Inici',
-    work: 'Com treballem',
+    work: 'Serveis',
     cases: 'Casos d’èxit',
     knowledge: 'Coneixement',
     partner: 'Partner Dades i IA',
@@ -29,7 +29,7 @@ const COPY = {
   },
   en: {
     home: 'Home',
-    work: 'How we work',
+    work: 'Services',
     cases: 'Success stories',
     knowledge: 'Knowledge',
     partner: 'Data and AI Partner',
@@ -63,7 +63,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 shadow-[0_1px_0_rgba(15,23,42,0.08)] backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:px-6">
+      <div className="site-container flex items-center justify-between py-3">
         <Link href="/" className="flex shrink-0 items-center" aria-label="SC-Analytics home">
           <Image src="/brand/logo-horizontal.png" alt="SC-Analytics" width={344} height={224} className="h-9 w-auto" priority />
         </Link>
@@ -78,17 +78,19 @@ export default function Navbar() {
               }`}
             >
               {label}
-              {active(href) && <span className="absolute inset-x-2.5 -bottom-[13px] h-px bg-slate-950" />}
+              {active(href) && <span className="absolute inset-x-2.5 -bottom-[13px] h-px bg-[#0D1B2A]" />}
             </Link>
           ))}
         </nav>
 
         <div className="hidden items-center gap-2.5 xl:flex">
-          <div className="flex border border-slate-200 bg-slate-50 p-0.5 text-[11px] font-medium">
+          <div className="flex border border-slate-200 bg-slate-50 p-0.5 text-[14px] font-medium">
             {(['en', 'es', 'ca'] as SiteLanguage[]).map((code) => (
               <button
                 key={code}
                 type="button"
+                aria-pressed={lang === code}
+                aria-label={code === 'es' ? 'Español' : code === 'ca' ? 'Català' : 'English'}
                 onClick={() => chooseLanguage(code)}
                 className={`px-2 py-1.5 uppercase transition ${
                   lang === code ? 'bg-white text-slate-950 shadow-sm' : 'text-slate-500 hover:text-slate-800'
@@ -98,7 +100,7 @@ export default function Navbar() {
               </button>
             ))}
           </div>
-          <Link href="/contact" className="bg-slate-950 px-4 py-2.5 text-[14px] font-semibold text-white transition hover:bg-slate-800">
+          <Link href="/contact" className="bg-[#0D1B2A] px-4 py-2.5 text-[14px] font-semibold text-white transition hover:bg-[#254A66]">
             {t.contact}
           </Link>
         </div>
@@ -107,7 +109,9 @@ export default function Navbar() {
           type="button"
           onClick={() => setOpen((value) => !value)}
           className="border border-slate-200 p-2 text-slate-700 xl:hidden"
-          aria-label="Toggle navigation"
+          aria-label={lang === 'es' ? 'Abrir o cerrar menú' : lang === 'ca' ? 'Obrir o tancar menú' : 'Toggle navigation'}
+          aria-expanded={open}
+          aria-controls="mobile-navigation"
         >
           <span className="block h-0.5 w-5 bg-current" />
           <span className="mt-1.5 block h-0.5 w-5 bg-current" />
@@ -116,7 +120,7 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <div className="border-t border-slate-200 bg-white px-5 py-4 xl:hidden">
+        <div id="mobile-navigation" className="border-t border-slate-200 bg-white px-5 py-4 xl:hidden">
           <nav className="grid">
             {nav.map(([href, label]) => (
               <Link
@@ -128,7 +132,7 @@ export default function Navbar() {
                 {label}<span className="text-slate-300">→</span>
               </Link>
             ))}
-            <Link href="/contact" onClick={() => setOpen(false)} className="mt-3 bg-slate-950 px-3 py-3 text-center text-[15px] font-semibold text-white">
+            <Link href="/contact" onClick={() => setOpen(false)} className="mt-3 bg-[#0D1B2A] px-3 py-3 text-center text-[15px] font-semibold text-white">
               {t.contact}
             </Link>
           </nav>
@@ -138,8 +142,10 @@ export default function Navbar() {
               <button
                 key={code}
                 type="button"
+                aria-pressed={lang === code}
+                aria-label={code === 'es' ? 'Español' : code === 'ca' ? 'Català' : 'English'}
                 onClick={() => chooseLanguage(code)}
-                className={`px-3 py-2 text-xs font-medium uppercase ${lang === code ? 'bg-slate-950 text-white' : 'bg-slate-100 text-slate-600'}`}
+                className={`px-3 py-2 text-xs font-medium uppercase ${lang === code ? 'bg-[#0D1B2A] text-white' : 'bg-slate-100 text-slate-600'}`}
               >
                 {code}
               </button>

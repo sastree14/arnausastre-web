@@ -26,7 +26,7 @@ const COPY = {
     routes: [
       {
         number: '01',
-        title: 'Cómo trabajamos',
+        title: 'Servicios',
         hook: 'De un problema concreto a una solución que mejora una decisión.',
         href: '/services',
         cta: 'Ver cómo trabajamos',
@@ -110,7 +110,7 @@ const COPY = {
     routes: [
       {
         number: '01',
-        title: 'Com treballem',
+        title: 'Serveis',
         hook: 'D’un problema concret a una solució que millora una decisió.',
         href: '/services',
         cta: 'Veure com treballem',
@@ -194,7 +194,7 @@ const COPY = {
     routes: [
       {
         number: '01',
-        title: 'How we work',
+        title: 'Services',
         hook: 'From a concrete problem to a system that improves a decision.',
         href: '/services',
         cta: 'See how we work',
@@ -258,10 +258,10 @@ const COPY = {
 } as const
 
 const toneClasses = {
-  paper: 'bg-[#F4F1EA] text-slate-950 hover:bg-[#EEEAE1]',
-  lavender: 'bg-[#EEEAF4] text-slate-950 hover:bg-[#E5DFED]',
+  paper: 'bg-[#F4F1EA] text-slate-950 hover:bg-[#F4F1EA]',
+  lavender: 'bg-[#F4F1EA] text-slate-950 hover:bg-[#F4F1EA]',
   white: 'bg-white text-slate-950 hover:bg-slate-50',
-  blue: 'bg-[#EAF0F6] text-slate-950 hover:bg-[#DFE8F0]',
+  blue: 'bg-[#EAF0F6] text-slate-950 hover:bg-[#EAF0F6]',
 } as const
 
 export default function HomePage() {
@@ -271,27 +271,27 @@ export default function HomePage() {
   return (
     <main className="bg-white text-slate-950">
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:py-20 lg:grid-cols-[1.08fr_.92fr] lg:items-stretch">
-          <div className="flex flex-col justify-end">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
+        <div className="site-container grid gap-12 py-16 md:py-20 lg:grid-cols-[1.08fr_.92fr] lg:items-stretch">
+          <div className="flex flex-col items-center justify-center text-center">
+            <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
             <h1 className="mt-5 max-w-4xl text-[46px] leading-[1.02] tracking-[-0.03em] text-white sm:text-[58px] lg:text-[68px]" style={{ fontFamily: 'var(--font-playfair)' }}>
               {t.title}
             </h1>
             <p className="mt-6 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link href="/contact?intent=discovery" className="bg-white px-5 py-3 text-[15px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">{t.primary}</Link>
               <Link href="/services" className="border border-[#7F9BB5] px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-white/5">{t.secondary}</Link>
             </div>
-            <p className="mt-5 text-[11px] font-medium uppercase tracking-[0.12em] text-[#7F9BB5]">{t.note}</p>
+            <p className="mt-5 text-[14px] font-medium uppercase tracking-[0.12em] text-[#7F9BB5]">{t.note}</p>
           </div>
 
           <aside className="flex h-full flex-col border-t border-[#5E86A8] pt-5">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{t.snapshotLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{t.snapshotLabel}</p>
             <h2 className="mt-3 max-w-xl text-[30px] leading-[1.1] text-white sm:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.snapshotTitle}</h2>
             <div className="mt-5 grid flex-1 grid-rows-4 border-t border-[#496C8A]">
               {t.snapshotRows.map(([title, body], index) => (
                 <div key={title} className="grid min-h-[74px] grid-cols-[34px_112px_1fr] items-center gap-3 border-b border-[#496C8A] py-3.5">
-                  <span className="font-mono text-[12px] text-[#7F9BB5]">0{index + 1}</span>
+                  <span className="font-mono text-[14px] text-[#7F9BB5]">0{index + 1}</span>
                   <p className="text-[16px] font-semibold text-white">{title}</p>
                   <p className="text-[16px] leading-6 text-[#D5E1EB]">{body}</p>
                 </div>
@@ -302,9 +302,9 @@ export default function HomePage() {
       </section>
 
       <section className="border-b border-slate-300 bg-[#FAFAF7]">
-        <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
+        <div className="site-container py-14 md:py-16">
           <div className="text-center">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.exploreLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.exploreLabel}</p>
             <h2 className="mx-auto mt-2 max-w-5xl text-[34px] leading-[1.05] tracking-[-0.02em] text-slate-950 sm:text-[40px] xl:text-[42px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
           </div>
 
@@ -318,12 +318,12 @@ export default function HomePage() {
                   className={`group flex min-h-[250px] flex-col border-b border-r border-slate-300 p-6 transition md:p-7 ${span} ${toneClasses[route.tone as keyof typeof toneClasses]}`}
                 >
                   <div className="flex items-start justify-between gap-4">
-                    <span className="font-mono text-[15px] font-semibold text-indigo-700">{route.number}</span>
+                    <span className="font-mono text-[15px] font-semibold text-[#4F46E5]">{route.number}</span>
                     <span className="text-lg text-slate-400 transition group-hover:translate-x-1">→</span>
                   </div>
-                  <h3 className="mt-6 text-[31px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{route.title}</h3>
+                  <h3 className="mt-6 min-h-[78px] text-[31px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{route.title}</h3>
                   <p className="mt-4 flex-1 text-[19px] font-semibold leading-7 text-slate-900">{route.hook}</p>
-                  <p className="mt-7 text-[18px] font-semibold text-indigo-700">{route.cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
+                  <p className="mt-7 text-[18px] font-semibold text-[#4F46E5]">{route.cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
                 </Link>
               )
             })}
@@ -331,7 +331,7 @@ export default function HomePage() {
 
           <div className="grid border-x border-b border-slate-300 bg-white lg:grid-cols-[1fr_auto] lg:items-center">
             <div className="px-6 py-5 md:px-7">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.stayLabel}</p>
+              <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.stayLabel}</p>
               <h3 className="mt-1 text-[24px] font-semibold text-slate-950">{t.stayTitle}</h3>
             </div>
             <div className="flex flex-wrap border-t border-slate-300 lg:border-l lg:border-t-0">
@@ -346,9 +346,9 @@ export default function HomePage() {
       </section>
 
       <section className="border-b border-slate-300 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
+        <div className="site-container py-14 md:py-16">
           <div className="text-center">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.flowLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.flowLabel}</p>
             <h2 className="mx-auto mt-3 max-w-4xl text-[34px] leading-[1.07] tracking-[-0.02em] text-slate-950 sm:text-[42px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.flowTitle}</h2>
           </div>
 
@@ -358,9 +358,9 @@ export default function HomePage() {
               return (
                 <div
                   key={title}
-                  className={`flex min-h-[230px] flex-col items-center justify-center border-b border-r p-7 text-center ${system ? 'border-[#254A66] bg-[#254A66]' : 'border-slate-300 bg-white'}`}
+                  className={`flex min-h-[230px] flex-col items-center justify-start border-b border-r p-7 text-center ${system ? 'border-[#254A66] bg-[#254A66]' : 'border-slate-300 bg-white'}`}
                 >
-                  <h3 className={`text-[31px] leading-tight ${system ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
+                  <h3 className={`min-h-[40px] text-[31px] leading-tight ${system ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
                   <p className={`mt-4 max-w-[270px] text-[17px] font-medium leading-7 ${system ? 'text-[#EAF0F6]' : 'text-slate-800'}`}>{body}</p>
                 </div>
               )
@@ -370,14 +370,14 @@ export default function HomePage() {
       </section>
 
       <section className="border-b border-slate-300 bg-[#F4F1EA]">
-        <div className="mx-auto max-w-7xl px-6 py-10 md:py-12">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.ctaKicker}</p>
+        <div className="site-container py-10 md:py-12">
+          <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.ctaKicker}</p>
           <h2 className="mt-3 max-w-6xl text-[34px] font-medium leading-tight text-slate-950 sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
           <div className="mt-7 flex flex-col gap-4 border-t border-slate-300 pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <Link href="/projects" className="text-[16px] font-semibold text-indigo-700 transition hover:text-indigo-900">
+            <Link href="/projects" className="text-[16px] font-semibold text-[#4F46E5] transition hover:text-[#4F46E5]">
               {t.ctaAlt} →
             </Link>
-            <Link href="/contact?intent=discovery" className="inline-flex bg-slate-950 px-6 py-3.5 text-[16px] font-semibold text-white transition hover:bg-slate-800">
+            <Link href="/contact?intent=discovery" className="inline-flex bg-[#0D1B2A] px-6 py-3.5 text-[16px] font-semibold text-white transition hover:bg-[#254A66]">
               {t.cta} →
             </Link>
           </div>

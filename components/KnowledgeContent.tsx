@@ -228,9 +228,9 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
   return (
     <>
       <section className="border-b border-slate-300 bg-white">
-        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] py-9 sm:w-[calc(100%_-_48px)] lg:py-11">
+        <div className="site-container py-9 lg:py-11">
           <div className="mx-auto max-w-[760px] border-y border-slate-300 py-6 text-center">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-indigo-700">{t.featuredLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#4F46E5]">{t.featuredLabel}</p>
             <h2 className="mt-3 text-[34px] leading-tight text-slate-950 sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.featuredTitle}</h2>
           </div>
 
@@ -241,15 +241,15 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
                   key={item.key}
                   href={item.href}
                   className={`group flex min-h-[215px] flex-col border-b border-r border-slate-300 p-6 transition ${
-                    index === 1 ? 'bg-[#F4F1EA] hover:bg-[#EEEAE1]' : index === 2 ? 'bg-[#EDF2F6] hover:bg-[#E5EDF3]' : 'bg-white hover:bg-[#FAFAF7]'
+                    index === 1 ? 'bg-[#F4F1EA] hover:bg-[#F4F1EA]' : index === 2 ? 'bg-[#EAF0F6] hover:bg-[#E5EDF3]' : 'bg-white hover:bg-[#FAFAF7]'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
-                    <span className="font-mono text-[13px] font-semibold text-indigo-700">0{index + 1}</span>
+                    <span className="font-mono text-[14px] font-semibold text-[#4F46E5]">0{index + 1}</span>
                     <ArrowRight className="h-5 w-5 text-slate-400 transition-transform group-hover:translate-x-1" />
                   </div>
                   <h3 className="mt-6 max-w-[24ch] flex-1 text-[27px] leading-[1.06] text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{item.title}</h3>
-                  <p className="mt-7 text-[16px] font-semibold text-indigo-700">{t.read} →</p>
+                  <p className="mt-7 text-[16px] font-semibold text-[#4F46E5]">{t.read} →</p>
                 </Link>
               )
             })}
@@ -258,10 +258,10 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
       </section>
 
       <section className="border-b border-slate-300 bg-[#F4F1EA]">
-        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] py-6 sm:w-[calc(100%_-_48px)]">
+        <div className="site-container py-6">
           <div className="mb-4 flex items-center justify-between gap-4">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t.filterLabel}</p>
-            <p className="font-mono text-[12px] text-slate-500">{String(filtered.length).padStart(2, '0')} {t.count}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t.filterLabel}</p>
+            <p className="font-mono text-[14px] text-slate-500">{String(filtered.length).padStart(2, '0')} {t.count}</p>
           </div>
           <div className="grid grid-cols-2 border-l border-t border-slate-300 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-8">
             {FILTER_ORDER.map((filter) => {
@@ -272,7 +272,7 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
                   type="button"
                   aria-pressed={active}
                   onClick={() => setActiveFilter(filter)}
-                  className={`flex min-h-[66px] items-center justify-center border-b border-r px-4 py-3 text-center text-[13px] font-medium leading-[1.2] transition-colors ${
+                  className={`flex min-h-[66px] items-center justify-center border-b border-r px-4 py-3 text-center text-[14px] font-medium leading-[1.2] transition-colors ${
                     active
                       ? 'border-slate-300 bg-white font-semibold text-slate-950 shadow-[inset_0_-3px_0_#0f172a]'
                       : 'border-slate-300 bg-[#F4F1EA] text-slate-600 hover:bg-white hover:text-slate-950'
@@ -286,9 +286,9 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
         </div>
       </section>
 
-      <section className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] py-8 sm:w-[calc(100%_-_48px)] lg:py-10">
+      <section className="site-container py-8 lg:py-10">
         <div className="flex items-center justify-between border-b border-slate-400 pb-3">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.15em] text-indigo-700">{t.library}</p>
+          <p className="text-[14px] font-semibold uppercase tracking-[0.15em] text-[#4F46E5]">{t.library}</p>
         </div>
 
         {filtered.length ? (
@@ -302,28 +302,28 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
                 }`}
               >
                 <div className="flex items-start justify-between gap-4">
-                  <span className="font-mono text-[12px] text-slate-400">{String(index + 1).padStart(2, '0')}</span>
+                  <span className="font-mono text-[14px] text-slate-400">{String(index + 1).padStart(2, '0')}</span>
                   <ArrowRight className="h-4 w-4 text-slate-400 transition-transform group-hover:translate-x-1" />
                 </div>
-                <h3 className="mt-5 max-w-[26ch] text-[25px] leading-[1.08] text-slate-950 transition-colors group-hover:text-indigo-800" style={{ fontFamily: 'var(--font-playfair)' }}>
+                <h3 className="mt-5 max-w-[26ch] text-[25px] leading-[1.08] text-slate-950 transition-colors group-hover:text-[#4F46E5]" style={{ fontFamily: 'var(--font-playfair)' }}>
                   {item.title}
                 </h3>
-                <p className="mt-auto pt-7 text-[16px] font-semibold text-indigo-700">{t.read} →</p>
+                <p className="mt-auto pt-7 text-[16px] font-semibold text-[#4F46E5]">{t.read} →</p>
               </Link>
             ))}
           </div>
         ) : (
           <div className="border-b border-slate-300 py-10">
             <p className="text-[17px] text-slate-600">{t.empty}</p>
-            <button onClick={() => setActiveFilter('all')} className="mt-4 text-[15px] font-semibold text-indigo-700">{t.emptyCta} →</button>
+            <button onClick={() => setActiveFilter('all')} className="mt-4 text-[15px] font-semibold text-[#4F46E5]">{t.emptyCta} →</button>
           </div>
         )}
       </section>
 
       <section className="border-y border-[#496C8A] bg-[#0D1B2A] text-white">
-        <div className="mx-auto grid w-[calc(100%_-_32px)] max-w-[1800px] gap-8 py-10 sm:w-[calc(100%_-_48px)] lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:py-12">
+        <div className="site-container grid gap-8 py-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:py-12">
           <div>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#7A7DFF]">{t.finalLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.15em] text-[#7A7DFF]">{t.finalLabel}</p>
             <h2 className="mt-3 max-w-4xl text-[36px] leading-[1.03] text-white sm:text-[44px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.finalTitle}</h2>
             <p className="mt-4 max-w-3xl text-[17px] leading-7 text-[#D5E1EB]">{t.finalBody}</p>
           </div>

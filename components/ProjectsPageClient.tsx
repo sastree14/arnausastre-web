@@ -133,11 +133,11 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-slate-300">
-        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] pb-9 pt-11 lg:pb-10 lg:pt-12">
+        <div className="site-container pb-9 pt-11 lg:pb-10 lg:pt-12">
           <div className="grid gap-6 lg:grid-cols-[clamp(150px,11vw,190px)_minmax(0,1fr)] lg:items-end">
             <div>
-              <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-indigo-700">{t.label}</p>
-              <p className="mt-4 font-mono text-[13px] text-slate-500">
+              <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#4F46E5]">{t.label}</p>
+              <p className="mt-4 font-mono text-[14px] text-slate-500">
                 {String(projects.length).padStart(2, '0')} {c.count}
               </p>
             </div>
@@ -155,8 +155,8 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
       </section>
 
       <section className="border-b border-slate-300 bg-[#F4F1EA]">
-        <div className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] py-5 sm:w-[calc(100%_-_48px)]">
-          <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.14em] text-slate-500">{c.filterLabel}</p>
+        <div className="site-container py-5">
+          <p className="mb-3 text-[14px] font-semibold uppercase tracking-[0.14em] text-slate-500">{c.filterLabel}</p>
           <div className="grid grid-cols-2 border-l border-t border-slate-300 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-8">
             {filterOrder.map((filter) => {
               const active = activeFilter === filter
@@ -166,7 +166,7 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
                   type="button"
                   aria-pressed={active}
                   onClick={() => setActiveFilter(filter)}
-                  className={`flex min-h-[66px] items-center justify-center border-b border-r px-4 py-3 text-center text-[13px] font-medium leading-[1.2] transition-colors ${
+                  className={`flex min-h-[66px] items-center justify-center border-b border-r px-4 py-3 text-center text-[14px] font-medium leading-[1.2] transition-colors ${
                     active
                       ? 'border-slate-300 bg-white font-semibold text-slate-950 shadow-[inset_0_-3px_0_#0f172a]'
                       : 'border-slate-300 bg-[#F4F1EA] text-slate-600 hover:bg-white hover:text-slate-950'
@@ -180,7 +180,7 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
         </div>
       </section>
 
-      <section className="mx-auto w-[calc(100%_-_32px)] max-w-[1800px] sm:w-[calc(100%_-_48px)] py-5 lg:py-6">
+      <section className="site-container py-5 lg:py-6">
         <div className="border-t border-slate-400">
           {filteredProjects.map(({ project: raw, index }) => {
             const caseTitle = projectCaseIndexTitle(raw, lang)
@@ -191,16 +191,16 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
                 href={`/projects/${raw.slug}`}
                 className="group grid gap-3 border-b border-slate-300 py-4 transition-colors hover:bg-white/80 sm:grid-cols-[54px_minmax(0,1fr)_110px] sm:items-center sm:gap-5 lg:py-[17px]"
               >
-                <span className="font-mono text-[12px] text-slate-400">{String(index + 1).padStart(2, '0')}</span>
+                <span className="font-mono text-[14px] text-slate-400">{String(index + 1).padStart(2, '0')}</span>
 
                 <h2
-                  className="min-w-0 max-w-5xl text-[21px] leading-[1.12] tracking-[-0.01em] text-slate-950 transition-colors group-hover:text-indigo-800 sm:text-[22px] lg:text-[24px]"
+                  className="min-w-0 max-w-5xl text-[21px] leading-[1.12] tracking-[-0.01em] text-slate-950 transition-colors group-hover:text-[#4F46E5] sm:text-[22px] lg:text-[24px]"
                   style={{ fontFamily: 'var(--font-playfair)' }}
                 >
                   {caseTitle}
                 </h2>
 
-                <span className="inline-flex items-center gap-2 text-[13px] font-semibold text-slate-600 transition group-hover:text-slate-950 sm:justify-end">
+                <span className="inline-flex items-center gap-2 text-[14px] font-semibold text-slate-600 transition group-hover:text-slate-950 sm:justify-end">
                   {c.view}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </span>
@@ -214,7 +214,7 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
         ) : null}
 
         {lang !== 'en' && projects.length > 0 ? (
-          <p className="mt-6 max-w-3xl text-[12px] leading-6 text-slate-400">{t.sourceNote}</p>
+          <p className="mt-6 max-w-3xl text-[14px] leading-6 text-slate-400">{t.sourceNote}</p>
         ) : null}
       </section>
     </main>

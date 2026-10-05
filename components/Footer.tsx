@@ -7,7 +7,7 @@ import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 const COPY = {
   es: {
     statement: 'Consultoría de datos, matemáticas e inteligencia artificial aplicada a decisiones de negocio.',
-    work: 'Cómo trabajamos',
+    work: 'Servicios',
     cases: 'Casos de éxito',
     knowledge: 'Conocimiento',
     partner: 'Partner Data e IA',
@@ -17,7 +17,7 @@ const COPY = {
   },
   ca: {
     statement: 'Consultoria de dades, matemàtiques i intel·ligència artificial aplicada a decisions de negoci.',
-    work: 'Com treballem',
+    work: 'Serveis',
     cases: 'Casos d’èxit',
     knowledge: 'Coneixement',
     partner: 'Partner Dades i IA',
@@ -27,7 +27,7 @@ const COPY = {
   },
   en: {
     statement: 'Data, mathematics and artificial intelligence consulting applied to business decisions.',
-    work: 'How we work',
+    work: 'Services',
     cases: 'Success stories',
     knowledge: 'Knowledge',
     partner: 'Data and AI Partner',
@@ -43,7 +43,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-[#496C8A] bg-[#0D1B2A] text-white">
-      <div className="mx-auto max-w-7xl px-6 py-8">
+      <div className="site-container py-8">
         <div className="grid gap-7 lg:grid-cols-[.8fr_1.2fr_auto] lg:items-center">
           <div>
             <Image src="/brand/logo-horizontal-transparent.png" alt="SC-Analytics" width={344} height={224} className="h-9 w-auto" />
@@ -63,7 +63,7 @@ export default function Footer() {
           </Link>
         </div>
 
-        <div className="mt-7 flex flex-col gap-2 border-t border-[#496C8A] pt-4 text-[12px] text-[#718AA1] sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-7 flex flex-col gap-2 border-t border-[#496C8A] pt-4 text-[14px] text-[#718AA1] sm:flex-row sm:items-center sm:justify-between">
           <p>{t.rights}</p>
           <a href="https://linkedin.com/in/arnausastre" target="_blank" rel="noreferrer" className="transition hover:text-[#A8BACB]">LinkedIn ↗</a>
         </div>
