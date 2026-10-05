@@ -292,6 +292,7 @@ Deno.serve(
               .from('companies')
               .select('*')
               .eq('tenant_id', 'sc-analytics')
+              .neq('status', 'archived')
               .ilike('name', `%${query}%`)
               .order('score', { ascending: false })
               .limit(limit)
@@ -326,6 +327,39 @@ Deno.serve(
               p_recommended_offer: args.recommended_offer ?? null,
               p_score: args.score ?? null,
               p_score_reason: args.score_reason ?? null,
+            })
+            if (error) throw new Error(error.message)
+            return result(data)
+          },
+        )
+
+
+        server.registerTool(
+          'create_opportunity',
+          {
+            title: 'Create CRM Opportunity',
+            description: 'Save a selected Upwork, web, referral or other opportunity to the SC-Analytics CMI. Use this only when the user wants the opportunity persisted for follow-up.',
+            inputSchema: z.object({
+              name: z.string().min(1),
+              source: z.string().default('manual'),
+              value: z.number().min(0).default(0),
+              currency: z.string().min(3).max(3).default('EUR'),
+              probability: z.number().min(0).max(100).default(0),
+              next_action_at: z.string().datetime({ offset: true }).optional(),
+              metadata: z.record(z.string(), z.unknown()).optional(),
+            }),
+            annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
+          },
+          async (args) => {
+            await ensureAuthorized()
+            const { data, error } = await supabase.rpc('mcp_create_opportunity', {
+              p_name: args.name,
+              p_source: args.source,
+              p_value: args.value,
+              p_currency: args.currency,
+              p_probability: args.probability,
+              p_next_action_at: args.next_action_at ?? null,
+              p_metadata: args.metadata ?? {},
             })
             if (error) throw new Error(error.message)
             return result(data)
@@ -384,6 +418,57 @@ Deno.serve(
               p_next_action_at: args.next_action_at ?? null,
               p_name: args.name ?? null,
               p_metadata: args.metadata ?? null,
+            })
+            if (error) throw new Error(error.message)
+            return result(data)
+          },
+        )
+
+
+        server.registerTool(
+          'list_meetings',
+          {
+            title: 'List CRM Meetings',
+            description: 'List upcoming SC-Analytics meetings and manual calendar events.',
+            inputSchema: z.object({
+              limit: z.number().int().min(1).max(100).default(25),
+            }),
+            annotations: { readOnlyHint: true, openWorldHint: false },
+          },
+          async ({ limit }) => {
+            await ensureAuthorized()
+            const { data, error } = await supabase
+              .from('crm_meetings')
+              .select('*')
+              .eq('tenant_id', 'sc-analytics')
+              .neq('status', 'cancelled')
+              .order('starts_at', { ascending: true })
+              .limit(limit)
+            if (error) throw new Error(error.message)
+            return result({ meetings: data })
+          },
+        )
+
+        server.registerTool(
+          'create_meeting',
+          {
+            title: 'Create CRM Meeting',
+            description: 'Add a meeting or calendar event to the SC-Analytics CMI.',
+            inputSchema: z.object({
+              title: z.string().min(1),
+              starts_at: z.string().datetime({ offset: true }),
+              notes: z.string().optional(),
+              provider: z.string().default('manual'),
+            }),
+            annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
+          },
+          async (args) => {
+            await ensureAuthorized()
+            const { data, error } = await supabase.rpc('mcp_create_meeting', {
+              p_title: args.title,
+              p_starts_at: args.starts_at,
+              p_notes: args.notes ?? null,
+              p_provider: args.provider,
             })
             if (error) throw new Error(error.message)
             return result(data)
