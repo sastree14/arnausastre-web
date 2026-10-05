@@ -3,11 +3,18 @@
   "name": "sc-analytics",
   "version": "0.1.0",
   "description": "SC-Analytics operating workflows for editorial operations, performance analysis and commercial research.",
+  "skills": "./skills/",
   "author": {
     "name": "SC-Analytics",
     "url": "https://sc-analytics.io"
   },
   "homepage": "https://sc-analytics.io",
   "repository": "https://github.com/sastree14/arnausastre-web",
-  "keywords": ["sc-analytics", "editorial", "analytics", "crm", "research"]
+  "keywords": [
+    "sc-analytics",
+    "editorial",
+    "analytics",
+    "crm",
+    "research"
+  ]
 }
