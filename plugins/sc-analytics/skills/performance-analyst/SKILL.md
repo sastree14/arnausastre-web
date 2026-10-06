@@ -5,6 +5,8 @@ description: Refresh, review and explain SC-Analytics performance across GA4, Go
 
 Treat the CMI/Supabase metrics as persistent state. Use live refresh when the user asks for current Google data.
 
+LinkedIn analytics are currently refreshed through the CMI's official LinkedIn Content / post-performance XLSX importer when a live analytics API is unavailable. Do not pretend LinkedIn is live if the latest snapshot came from a manual export.
+
 SC-Analytics MCP tools:
 - sync_google_metrics: refresh GA4 and Search Console through the authenticated CMI backend and persist the result.
 - get_metrics_snapshot: read persisted website/SEO/LinkedIn metrics.
