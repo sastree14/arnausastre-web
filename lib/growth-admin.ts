@@ -271,6 +271,42 @@ export interface GrowthMeeting {
   created_at?: string
 }
 
+export interface GrowthOperationalActivity {
+  activity_id: string
+  tenant_id?: string
+  user_id?: string
+  occurred_at: string
+  activity_type: string
+  channel?: string | null
+  entity_type?: string | null
+  entity_id?: string | null
+  title: string
+  summary?: string | null
+  status?: string | null
+  source_url?: string | null
+  next_action_at?: string | null
+  metadata?: Record<string, unknown> | null
+  created_at?: string
+}
+
+export interface GrowthFollowup {
+  followup_id: string
+  tenant_id?: string
+  user_id?: string
+  entity_type?: string | null
+  entity_id?: string | null
+  title: string
+  due_at?: string | null
+  status: 'open' | 'completed' | 'cancelled'
+  priority: 'low' | 'normal' | 'high' | 'urgent'
+  notes?: string | null
+  completed_at?: string | null
+  resolution?: string | null
+  metadata?: Record<string, unknown> | null
+  created_at?: string
+  updated_at?: string
+}
+
 export interface GrowthWeeklyPlan {
   plan_id: string
   week_start: string
@@ -382,6 +418,22 @@ export function getOpportunities() {
 
 export function getMeetings() {
   return queryGrowthTable<GrowthMeeting>('crm_meetings', { order: 'starts_at.desc', limit: '250' })
+}
+
+export function getOperationalActivities() {
+  return queryGrowthTable<GrowthOperationalActivity>('sc_operational_activities', {
+    tenant_id: 'eq.sc-analytics',
+    order: 'occurred_at.desc',
+    limit: '500',
+  }, { cacheSeconds: 0 })
+}
+
+export function getFollowups() {
+  return queryGrowthTable<GrowthFollowup>('sc_followups', {
+    tenant_id: 'eq.sc-analytics',
+    order: 'due_at.asc',
+    limit: '500',
+  }, { cacheSeconds: 0 })
 }
 
 export function getRecentPlans() {
