@@ -255,7 +255,7 @@ Deno.serve(
           },
           async ({ limit_per_source }) => {
             await ensureAuthorized()
-            const [linkedin, web] = await Promise.all([
+            const [linkedin, web, searchConsole] = await Promise.all([
               supabase
                 .from('linkedin_post_metrics')
                 .select('*')
@@ -266,13 +266,20 @@ Deno.serve(
                 .select('*')
                 .order('metric_date', { ascending: false })
                 .limit(limit_per_source),
+              supabase
+                .from('search_console_daily')
+                .select('*')
+                .order('metric_date', { ascending: false })
+                .limit(limit_per_source),
             ])
             if (linkedin.error) throw new Error(linkedin.error.message)
             if (web.error) throw new Error(web.error.message)
+            if (searchConsole.error) throw new Error(searchConsole.error.message)
             return result({
               linkedin: linkedin.data,
               website: web.data,
-              note: 'These are persisted CRM metrics. External sources are not refreshed by this tool.',
+              search_console: searchConsole.data,
+              note: 'These are persisted CMI metrics. Use sync_google_metrics when a fresh GA4/Search Console refresh is requested.',
             })
           },
         )
