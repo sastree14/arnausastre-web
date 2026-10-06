@@ -197,7 +197,7 @@ const COPY = {
       {
         number: '05',
         title: 'Why SC-Analytics',
-        hook: 'Rigor, clarity, specialist depth and accountability for the outcome.',
+        hook: 'Rigour, clarity, specialist depth and accountability for the outcome.',
         href: '/about',
         cta: 'Get to know SC-Analytics',
       },

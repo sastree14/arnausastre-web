@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { queryGrowthTable } from '@/lib/supabase-growth'
+import { withReviewedArticleLocalizations } from '@/lib/generated-article-localizations'
 
 export interface PublicGeneratedArticle {
   content_id: string
@@ -48,7 +49,7 @@ export async function getPublicGeneratedArticles(): Promise<PublicGeneratedArtic
       order: 'published_at.desc.nullslast,created_at.desc',
       limit: '1000',
     })
-    return rows.filter(isPublicGeneratedArticleNow)
+    return withReviewedArticleLocalizations(rows.filter(isPublicGeneratedArticleNow))
   } catch (error) {
     console.error('Public Growth content unavailable', error)
     return []

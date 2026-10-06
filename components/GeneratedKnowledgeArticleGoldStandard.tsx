@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import ArticleText from '@/components/ArticleText'
 import { ArrowRight } from 'lucide-react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import type { PublicGeneratedArticle } from '@/lib/public-growth'
@@ -38,38 +39,11 @@ function metaFor(article: PublicGeneratedArticle): ArticleMeta {
   return raw && typeof raw === 'object' ? raw as ArticleMeta : {}
 }
 
-function renderInline(text: string) {
-  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g)
-  return parts.map((part, index) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={index} className="font-semibold text-slate-950">{part.slice(2, -2)}</strong>
-    }
-    if (part.startsWith('*') && part.endsWith('*')) {
-      return <em key={index}>{part.slice(1, -1)}</em>
-    }
-    return part
-  })
-}
 
 function splitReadableParagraph(text: string) {
-  const clean = text.replace(/\s+/g, ' ').trim()
-  if (!clean) return []
-  const sentences = clean.match(/[^.!?]+[.!?]+(?:["'”’])?|[^.!?]+$/g)?.map((sentence) => sentence.trim()).filter(Boolean) || [clean]
-  if (sentences.length <= 2) return [clean]
-
-  const paragraphs: string[] = []
-  let current: string[] = []
-  for (const sentence of sentences) {
-    const candidate = [...current, sentence].join(' ')
-    if (current.length >= 2 || candidate.length > 430) {
-      paragraphs.push(current.join(' '))
-      current = [sentence]
-    } else {
-      current.push(sentence)
-    }
-  }
-  if (current.length) paragraphs.push(current.join(' '))
-  return paragraphs
+  // Preserve author paragraph boundaries, URLs, lists and Markdown tables.
+  const clean = text.trim()
+  return clean ? [clean] : []
 }
 
 function parseBody(body: string): Segment[] {
@@ -80,7 +54,7 @@ function parseBody(body: string): Segment[] {
 
   const flushParagraph = () => {
     if (!buffer.length) return
-    current.paragraphs.push(...splitReadableParagraph(buffer.join(' ')))
+    current.paragraphs.push(...splitReadableParagraph(buffer.join('\n')))
     buffer = []
   }
   const flushSegment = () => {
@@ -94,9 +68,9 @@ function parseBody(body: string): Segment[] {
       flushParagraph()
       continue
     }
-    if (/^\*\*[^*]+\*\*$/.test(line) || /^##\s+/.test(line)) {
+    if (/^\*\*[^*]+\*\*$/.test(line) || /^#{2,3}\s+/.test(line)) {
       flushSegment()
-      const heading = line.startsWith('## ') ? line.slice(3).trim() : line.slice(2, -2)
+      const heading = line.startsWith('#') ? line.replace(/^#{2,3}\s+/, '').trim() : line.slice(2, -2)
       current = { type: 'section', heading, paragraphs: [] }
       continue
     }
@@ -281,7 +255,7 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
                   <div key={segmentIndex} id="article-context" className="scroll-mt-28 border-b border-slate-300 bg-white px-6 py-8 md:px-8 md:py-9">
                     <div className="space-y-6">
                       {segment.paragraphs.map((paragraph, index) => (
-                        <p key={index} className="hyphens-auto text-justify text-[19px] leading-9 text-[#1D2B44]">{renderInline(paragraph)}</p>
+                        <ArticleText key={index} text={paragraph} className="hyphens-auto text-justify text-[19px] leading-9 text-[#1D2B44]" />
                       ))}
                     </div>
                   </div>
@@ -295,7 +269,7 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
                   <h2 className="max-w-[24ch] text-[29px] leading-[1.08] text-slate-950 sm:text-[33px]" style={{ fontFamily: 'var(--font-playfair)' }}>{displayHeading}</h2>
                   <div className="mt-6 space-y-6">
                     {segment.paragraphs.map((paragraph, index) => (
-                      <p key={index} className="hyphens-auto text-justify text-[18px] leading-9 text-slate-700">{renderInline(paragraph)}</p>
+                      <ArticleText key={index} text={paragraph} className="hyphens-auto text-justify text-[18px] leading-9 text-slate-700" />
                     ))}
                   </div>
                 </section>

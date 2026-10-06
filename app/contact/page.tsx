@@ -22,7 +22,7 @@ const COPY = {
     intents: [
       ['problem', 'Tengo un problema concreto', 'Hay una decisión, proceso o sistema que debería funcionar mejor.'],
       ['opportunity', 'Quiero explorar una oportunidad', 'Veo potencial en datos o IA, pero todavía no está claro dónde capturar más valor.'],
-      ['partner', 'Busco un Partner Data & AI', 'Quiero ampliar capacidad especializada con un modelo de colaboración continuada.'],
+      ['partner', 'Busco un Partner Data e IA', 'Quiero ampliar capacidad especializada con un modelo de colaboración continuada.'],
     ],
 
     intentForms: {
@@ -61,7 +61,7 @@ const COPY = {
     callLabel: '¿PREFIERES HABLARLO?',
     callTitle: 'Reserva directamente 30 minutos.',
     callBody: 'Si prefieres explicarlo hablando, reserva 30 minutos. No necesitas llegar con una solución definida.',
-    calendly: 'Reservar discovery',
+    calendly: 'Reservar llamada de 30 minutos',
 
     nextLabel: 'PRÓXIMOS PASOS',
     next: [
@@ -88,7 +88,7 @@ const COPY = {
     intents: [
       ['problem', 'Tinc un problema concret', 'Hi ha una decisió, procés o sistema que hauria de funcionar millor.'],
       ['opportunity', 'Vull explorar una oportunitat', 'Veig potencial en dades o IA, però encara no és clar on capturar més valor.'],
-      ['partner', 'Busco un Partner Data & AI', 'Vull ampliar capacitat especialitzada amb un model de col·laboració continuada.'],
+      ['partner', 'Busco un Partner Dades i IA', 'Vull ampliar capacitat especialitzada amb un model de col·laboració continuada.'],
     ],
 
     intentForms: {
@@ -127,7 +127,7 @@ const COPY = {
     callLabel: 'PREFEREIXES PARLAR-NE?',
     callTitle: 'Reserva directament 30 minuts.',
     callBody: 'Si prefereixes explicar-ho parlant, reserva 30 minuts. No cal arribar amb una solució definida.',
-    calendly: 'Reservar discovery',
+    calendly: 'Reservar trucada de 30 minuts',
 
     nextLabel: 'PRÒXIMS PASSOS',
     next: [
@@ -154,7 +154,7 @@ const COPY = {
     intents: [
       ['problem', 'I have a concrete problem', 'A decision, process or system should work better than it does today.'],
       ['opportunity', 'I want to explore an opportunity', 'I see potential in data or AI, but the highest-value opportunity is not yet clear.'],
-      ['partner', 'I need a Data & AI Partner', 'I want to extend specialist capability through an ongoing collaboration model.'],
+      ['partner', 'I need a Data and AI Partner', 'I want to extend specialist capability through an ongoing collaboration model.'],
     ],
 
     intentForms: {
@@ -193,7 +193,7 @@ const COPY = {
     callLabel: 'PREFER TO TALK?',
     callTitle: 'Book 30 minutes directly.',
     callBody: 'If you would rather explain it in conversation, book 30 minutes. You do not need a predefined solution.',
-    calendly: 'Book discovery',
+    calendly: 'Book a 30-minute call',
 
     nextLabel: 'NEXT STEPS',
     next: [

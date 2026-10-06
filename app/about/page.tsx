@@ -15,7 +15,7 @@ const COPY = {
     reasons: [
       ['Comprender antes de construir', 'Empezamos por la decisión y el negocio. La tecnología viene después.'],
       ['La solución adecuada', 'Usamos la complejidad que aporta valor, no la que impresiona.'],
-      ['Comunicación directa', 'Menos capas. Más claridad, contexto y responsabilidad.'],
+      ['Comunicación directa', 'Hablas directamente con quienes entienden y desarrollan el proyecto.'],
       ['Contexto que se acumula', 'Cada proyecto hace que la siguiente decisión pueda resolverse mejor y más rápido.'],
     ],
 
@@ -61,7 +61,7 @@ const COPY = {
     reasons: [
       ['Comprendre abans de construir', 'Comencem per la decisió i el negoci. La tecnologia ve després.'],
       ['La solució adequada', 'Utilitzem la complexitat que aporta valor, no la que impressiona.'],
-      ['Comunicació directa', 'Menys capes. Més claredat, context i responsabilitat.'],
+      ['Comunicació directa', 'Parles directament amb qui entén i desenvolupa el projecte.'],
       ['Context que s’acumula', 'Cada projecte fa que la següent decisió es pugui resoldre millor i més ràpid.'],
     ],
 
@@ -107,16 +107,16 @@ const COPY = {
     reasons: [
       ['Understand before building', 'We start with the decision and the business. Technology comes afterwards.'],
       ['The right solution', 'We use the complexity that creates value, not the complexity that impresses.'],
-      ['Direct communication', 'Fewer layers. More clarity, context and accountability.'],
+      ['Direct communication', 'Speak directly with the people who understand and deliver the project.'],
       ['Context compounds', 'Every project makes the next decision faster and better informed.'],
     ],
 
     proofLabel: 'OUR STANDARD',
-    proofTitle: 'Rigor also means knowing when not to proceed.',
+    proofTitle: 'Rigour also means knowing when not to proceed.',
     proofBody: 'If we do not see a sensible case, we will say so. We prefer a useful relationship to an unnecessarily large project.',
     principles: [
       'Value before technology',
-      'Quantitative rigor',
+      'Quantitative rigour',
       'Transparency about limits and risks',
       'Systems built for real operations',
       'Measurable and traceable business impact',

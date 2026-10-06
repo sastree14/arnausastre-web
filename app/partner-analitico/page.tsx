@@ -16,7 +16,7 @@ const COPY = {
 
     valueLabel: 'Lo que cambia al trabajar juntos.',
     value: [
-      'Un partner. Una responsabilidad clara.',
+      'Un único partner que asume la responsabilidad del trabajo.',
       'El contexto se conserva entre proyectos.',
       'Activamos especialistas cuando realmente hacen falta.',
       'Más capacidad especializada sin replicarla toda internamente.',
@@ -62,7 +62,7 @@ const COPY = {
 
     valueLabel: 'Què canvia quan treballem junts.',
     value: [
-      'Un partner. Una responsabilitat clara.',
+      'Un únic partner que assumeix la responsabilitat del treball.',
       'El context es conserva entre projectes.',
       'Activem especialistes quan realment fan falta.',
       'Més capacitat especialitzada sense replicar-la tota internament.',
@@ -108,7 +108,7 @@ const COPY = {
 
     valueLabel: 'What changes when we work together.',
     value: [
-      'One partner. Clear accountability.',
+      'One partner accountable for the work.',
       'Context is retained between projects.',
       'Specialists are activated when they are genuinely needed.',
       'More specialist capability without replicating it all in-house.',
