@@ -7,6 +7,7 @@ import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 const COPY = {
   es: {
     eyebrow: 'HABLEMOS',
+    linkedin: 'Conoce SC-Analytics en LinkedIn',
     title: 'Empecemos por lo que debería funcionar mejor.',
     intro: 'Cuéntanos qué necesitas. Revisaremos tu caso y acordaremos el siguiente paso.',
 
@@ -72,6 +73,7 @@ const COPY = {
 
   ca: {
     eyebrow: 'PARLEM',
+    linkedin: 'Coneix SC-Analytics a LinkedIn',
     title: 'Comencem pel que hauria de funcionar millor.',
     intro: 'Explica’ns què necessites. Revisarem el teu cas i acordarem el següent pas.',
 
@@ -137,6 +139,7 @@ const COPY = {
 
   en: {
     eyebrow: 'LET’S TALK',
+    linkedin: 'Meet SC-Analytics on LinkedIn',
     title: 'Start with what should work better.',
     intro: 'Tell us what you need. We will review your case and agree the next step.',
 
@@ -266,6 +269,14 @@ export default function ContactPage() {
             <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
             <h1 className="mt-4 text-[46px] leading-[1.04] tracking-[-0.03em] sm:text-[58px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
             <p className="mx-auto mt-5 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
+            <a
+              href="https://www.linkedin.com/company/sc-analytics/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex min-h-11 items-center gap-2 text-[15px] font-medium text-[#EAF0F6] underline decoration-[#A8BACB] underline-offset-4 transition hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            >
+              {t.linkedin} <span aria-hidden="true">↗</span>
+            </a>
           </div>
 
 
