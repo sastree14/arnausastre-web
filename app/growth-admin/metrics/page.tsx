@@ -13,7 +13,7 @@ const euro=(value:unknown)=>n(value).toLocaleString('es-ES',{minimumFractionDigi
 const date=(value:unknown)=>value?new Date(String(value)).toLocaleString('es-ES',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Madrid'}):'Nunca'
 const show=(ready:boolean,value:unknown,format:(v:unknown)=>string=(v)=>n(v).toLocaleString('es-ES'))=>ready?format(value):'—'
 
-export default async function MetricsPage({searchParams}:{searchParams:Promise<{period_kind?:string;period_a?:string;period_b?:string;trend_metric?:string}>}){
+export default async function MetricsPage({searchParams}:{searchParams:Promise<{period_kind?:string;period_a?:string;period_b?:string;trend_metric?:string;synced?:string;ga4_error?:string;gsc_error?:string}>}){
   if(!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
   const params=await searchParams
   const kind=normalizePeriodKind(params.period_kind)
@@ -36,9 +36,30 @@ export default async function MetricsPage({searchParams}:{searchParams:Promise<{
     <PageHeader
       eyebrow="CMI · Métricas"
       title="Métricas"
-      description="Una vista de lectura para saber qué está pasando en web, SEO, LinkedIn y negocio. Las actualizaciones se ejecutan desde ChatGPT o integraciones, no desde botones del CMI."
-      actions={<><a href="/growth-admin/metrics/dictionary" className="rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white">Diccionario KPI</a><a href="/growth-admin/analytics" className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">Detalle por fuente</a></>}
+      description="Una vista sencilla para saber qué está pasando en web, SEO, LinkedIn y negocio. Actualizar Google solo sincroniza datos; no consume API de OpenAI."
+      actions={<>
+        <form action="/api/growth-admin/metrics/sync" method="post">
+          <input type="hidden" name="days" value="365"/>
+          <input type="hidden" name="return_to" value="/growth-admin/metrics"/>
+          <button className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">Actualizar Google</button>
+        </form>
+        <a href="/growth-admin/metrics/dictionary" className="rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white">Diccionario KPI</a>
+        <a href="/growth-admin/analytics" className="rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white">Detalle por fuente</a>
+      </>}
     />
+
+    {params.synced === '1' && !params.ga4_error && !params.gsc_error && (
+      <div className="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+        Google Analytics y Search Console se han actualizado correctamente.
+      </div>
+    )}
+    {(params.ga4_error || params.gsc_error) && (
+      <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+        <p className="font-semibold">La sincronización ha terminado con incidencias.</p>
+        {params.ga4_error && <p className="mt-1">GA4: {params.ga4_error}</p>}
+        {params.gsc_error && <p className="mt-1">Search Console: {params.gsc_error}</p>}
+      </div>
+    )}
 
     <MetricsPeriodComparison bundle={comparison} options={options}/>
 
@@ -65,7 +86,7 @@ export default async function MetricsPage({searchParams}:{searchParams:Promise<{
         <StatCard label="Discovery intent" value={show(webReady,metrics.website.discovery_clicks)} tone="amber"/>
         <StatCard label="Bookings" value={show(webReady,metrics.website.bookings)} tone="green"/>
       </div>
-      {!webReady&&<div className="mt-4"><EmptyState>Puedes pedir a @SC-Analytics que revise o actualice las métricas cuando tengamos el flujo de Google conectado al plugin.</EmptyState></div>}
+      {!webReady&&<div className="mt-4"><EmptyState>Pulsa “Actualizar Google” para traer GA4 y Search Console. Después podrás pedir a @SC-Analytics que analice los resultados.</EmptyState></div>}
     </section>
 
     <section className="mt-12">
