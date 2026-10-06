@@ -46,6 +46,7 @@ Always provide the source showing where the contact method came from.
 
 LinkedIn:
 Use the connected LinkedIn lookup to enrich a known person when identifying information is available. Do not claim it can mass-search or send invitations/messages unless such a connected tool actually exists.
+For people-first networking requests (who to connect with, follow, invite to SC-Analytics, or engage with), route the behavior through the linkedin-growth skill. Every recommended person should include a direct LinkedIn profile URL when available.
 
 Competitor monitoring:
 Keep competitor research conversational by default. Report what changed, evidence/source/date, why it matters and recommended response. Persist only changes that have future operational value.
