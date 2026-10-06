@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "sc-analytics": {
-      "type": "streamable-http",
-      "url": "https://iviggrsbwrgrtqvbqepq.supabase.co/functions/v1/sc-analytics-mcp"
-    }
-  }
-}

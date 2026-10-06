@@ -1,200 +1,30 @@
-import { redirect } from 'next/navigation'
+import {redirect} from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
+import EditorialPlanner from '@/components/growth-admin/EditorialPlanner'
 import PublicationFilterBar from '@/components/growth-admin/PublicationFilterBar'
-import { Badge, EmptyState, PageHeader, adminPanel, assetUrl, formatDate, publicationLabel, statusTone } from '@/components/growth-admin/AdminUi'
-import { isGrowthAdminAuthenticated, type GrowthContentItem } from '@/lib/growth-admin'
-import { collapseWebsiteArticleFamilies, getWorkspaceContent, isCanonicalEditorialItem } from '@/lib/editorial-workspace'
-
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
-type PublicationFilter = 'upcoming' | 'scheduled' | 'published' | 'all'
-type ChannelFilter = 'all' | 'linkedin' | 'website'
-
-const textParam = (value: string | string[] | undefined, fallback = '') => typeof value === 'string' ? value : fallback
-
-function isFigmaManual(item: GrowthContentItem) {
-  return String(item.visual_strategy?.source || '') === 'figma_manual'
-}
-
-function visualUrl(item: GrowthContentItem) {
-  const internal = assetUrl(item)
-  if (internal) return internal
-  return item.visual_path?.startsWith('http') ? item.visual_path : null
-}
-
-function isPublished(item: GrowthContentItem) {
-  return item.status === 'published' || Boolean(item.published_at)
-}
-
-function isScheduled(item: GrowthContentItem) {
-  return !isPublished(item) && (item.status === 'scheduled' || Boolean(item.scheduled_at))
-}
-
-function channelOf(item: GrowthContentItem): 'linkedin' | 'website' {
-  return item.content_type === 'article' && item.channel === 'website' ? 'website' : 'linkedin'
-}
-
-function statusLabel(item: GrowthContentItem) {
-  if (isPublished(item)) return 'Publicada'
-  if (isScheduled(item)) return 'Programada'
-  if (item.status === 'approved') return 'Lista'
-  if (item.status === 'needs_review' || item.status === 'draft') return 'Por revisar'
-  return item.status || 'Borrador'
-}
-
-function sortDate(item: GrowthContentItem) {
-  const value = item.scheduled_at || item.published_at || item.created_at || ''
-  const parsed = Date.parse(value)
-  return Number.isFinite(parsed) ? parsed : Number.MAX_SAFE_INTEGER
-}
-
-export default async function ContentPage({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>
-}) {
-  if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
-
-  const params = await searchParams
-  const rawContent = await getWorkspaceContent()
-  const content = collapseWebsiteArticleFamilies(rawContent.filter(isCanonicalEditorialItem))
-    .filter((item) => !['rejected', 'failed', 'superseded_test', 'alternate'].includes(item.status))
-
-  const publication = textParam(params.publication, 'all') as PublicationFilter
-  const channel = textParam(params.channel, 'all') as ChannelFilter
-  const q = textParam(params.q).trim().toLowerCase()
-
-  const counts = {
-    total: content.length,
-    upcoming: content.filter((item) => !isPublished(item)).length,
-    scheduled: content.filter(isScheduled).length,
-    published: content.filter(isPublished).length,
-  }
-
-  const filtered = content
-    .filter((item) => {
-      const publicationOk =
-        publication === 'all'
-        || (publication === 'upcoming' && !isPublished(item))
-        || (publication === 'scheduled' && isScheduled(item))
-        || (publication === 'published' && isPublished(item))
-
-      const channelOk = channel === 'all' || channelOf(item) === channel
-      const queryOk = !q || `${item.title} ${item.body || ''}`.toLowerCase().includes(q)
-      return publicationOk && channelOk && queryOk
-    })
-    .sort((a, b) => {
-      if (isPublished(a) && isPublished(b)) {
-        return String(b.published_at || b.created_at || '').localeCompare(String(a.published_at || a.created_at || ''))
-      }
-      if (isPublished(a) !== isPublished(b)) return isPublished(a) ? 1 : -1
-      if (a.scheduled_at || b.scheduled_at) return sortDate(a) - sortDate(b)
-      return String(b.created_at || '').localeCompare(String(a.created_at || ''))
-    })
-
-  return (
-    <AdminShell active="content">
-      <PageHeader
-        eyebrow="CRM · Contenido"
-        title="Biblioteca"
-        description="Todas las publicaciones quedan guardadas aquí. El CRM no busca temas ni genera propuestas: conserva la pieza final, su fecha, su destino y su preview."
-        actions={
-          <>
-            <a href="/growth-admin" className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-semibold text-white">
-              Revisión
-            </a>
-            <a href="/growth-admin/calendar" className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">
-              Calendario
-            </a>
-          </>
-        }
-      />
-
-      <section className="mb-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {[
-          ['Total', counts.total, 'Archivo editorial completo'],
-          ['Pendientes', counts.upcoming, 'Aún no publicadas'],
-          ['Programadas', counts.scheduled, 'Con fecha asignada'],
-          ['Publicadas', counts.published, 'Histórico y métricas'],
-        ].map(([label, value, note]) => (
-          <div key={String(label)} className={`${adminPanel} p-5`}>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">{label}</p>
-            <p className="mt-2 text-3xl font-semibold text-slate-950">{value}</p>
-            <p className="mt-1 text-xs text-slate-500">{note}</p>
-          </div>
-        ))}
-      </section>
-
-      <PublicationFilterBar
-        publication={publication}
-        channel={channel}
-        query={textParam(params.q)}
-        total={filtered.length}
-      />
-
-      {filtered.length === 0 ? (
-        <EmptyState>No hay publicaciones que coincidan con estos filtros.</EmptyState>
-      ) : (
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((item) => {
-            const image = visualUrl(item)
-            const published = isPublished(item)
-            const scheduled = isScheduled(item)
-            const date = published ? item.published_at : item.scheduled_at
-
-            return (
-              <article key={item.content_id} className="overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
-                <div className="aspect-[4/3] overflow-hidden border-b border-slate-100 bg-slate-50">
-                  {image ? (
-                    <img src={image} alt={item.title} className="h-full w-full object-contain" />
-                  ) : isFigmaManual(item) ? (
-                    <div className="flex h-full flex-col items-center justify-center px-5 text-center">
-                      <span className="rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-indigo-700">Figma vinculado</span>
-                      <p className="mt-3 text-lg font-semibold text-slate-950">{item.content_id}</p>
-                      <p className="mt-1 text-xs text-slate-500">Diseño manual disponible en el preview.</p>
-                    </div>
-                  ) : (
-                    <div className="flex h-full items-center justify-center text-xs text-slate-400">Sin visual adjunto</div>
-                  )}
-                </div>
-
-                <div className="p-5">
-                  <div className="flex flex-wrap gap-2">
-                    <Badge tone={statusTone(item.status)}>{statusLabel(item)}</Badge>
-                    <Badge tone={channelOf(item) === 'website' ? 'violet' : 'blue'}>{publicationLabel(item)}</Badge>
-                    {item.language && <Badge>{item.language.toUpperCase()}</Badge>}
-                  </div>
-
-                  <h2 className="mt-4 line-clamp-2 text-lg font-semibold leading-6 text-slate-950">{item.title}</h2>
-                  <p className="mt-3 line-clamp-4 whitespace-pre-wrap text-sm leading-6 text-slate-600">{item.body || 'Sin texto guardado.'}</p>
-
-                  <div className="mt-5 border-t border-slate-100 pt-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="text-[11px] text-slate-400">
-                        {date
-                          ? <span>{scheduled ? 'Programada' : 'Publicada'} · {formatDate(date, true)}</span>
-                          : <span>Sin fecha asignada</span>}
-                      </div>
-                      <a
-                        href={`/growth-admin/preview/${encodeURIComponent(item.content_id)}`}
-                        className="rounded-lg bg-slate-950 px-3 py-2 text-xs font-semibold text-white"
-                      >
-                        Ver preview
-                      </a>
-                    </div>
-                    {published && item.external_post_url && (
-                      <a href={item.external_post_url} target="_blank" rel="noreferrer" className="mt-3 inline-block text-xs font-semibold text-emerald-700">
-                        Ver publicado ↗
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </article>
-            )
-          })}
-        </div>
-      )}
-    </AdminShell>
-  )
-}
+import ConfirmFormButton from '@/components/growth-admin/ConfirmFormButton'
+import {Badge,EmptyState,PageHeader,SectionHeading,adminButtonPrimary,adminButtonSecondary,adminInput,adminPanel,assetUrl,formatDate,publicationLabel,scheduleInputValue,statusTone} from '@/components/growth-admin/AdminUi'
+import {evaluatePublicationReadiness} from '@/lib/growth-approval'
+import {getPendingApprovals,isGrowthAdminAuthenticated,type GrowthEditorialBrief,type GrowthContentItem,type GrowthTask} from '@/lib/growth-admin'
+import {collapseWebsiteArticleFamilies,getEditorialWorkspaceResetAt,getWorkspaceContent,getWorkspaceEditorialBriefs,getWorkspaceEditorialTasks} from '@/lib/editorial-workspace'
+export const dynamic='force-dynamic';export const revalidate=0
+type Stage='review'|'visual'|'ready'|'scheduled'|'published'
+const textParam=(value:string|string[]|undefined,fallback='')=>typeof value==='string'?value:fallback
+function criticWarnings(critique?:Record<string,unknown>|null){if(!critique)return[];const rows:string[]=[];if(critique.rewrite_required===true)rows.push('La revisión automática recomienda reescritura');if(critique.contract_valid===false)rows.push('La revisión automática detecta un problema de contrato editorial');const risk=Number(critique.generic_ai_risk||0);if(risk>=6)rows.push(`Riesgo de estilo genérico ${risk.toFixed(1)}/10`);return rows}
+function stageFor(item:GrowthContentItem,readiness:ReturnType<typeof evaluatePublicationReadiness>):Stage{if(item.status==='published')return'published';if(item.status==='scheduled'||Boolean(item.scheduled_at))return'scheduled';if(item.status==='approved')return'ready';if(readiness.visualRequired&&!readiness.hasVisual)return'visual';return'review'}
+const gateTone=(ok:boolean)=>ok?'border-emerald-200 bg-emerald-50 text-emerald-700':'border-amber-200 bg-amber-50 text-amber-700'
+const stageLabel=(stage:Stage)=>stage==='review'?'Revisión':stage==='visual'?'Visual pendiente':stage==='ready'?'Lista':stage==='scheduled'?'Programada':'Publicada'
+export default async function ContentPage({searchParams}:{searchParams:Promise<Record<string,string|string[]|undefined>>}){if(!(await isGrowthAdminAuthenticated()))redirect('/growth-admin/login');const params=await searchParams;const[rawContent,briefs,approvals,tasks,resetAt]=await Promise.all([getWorkspaceContent(),getWorkspaceEditorialBriefs(),getPendingApprovals(),getWorkspaceEditorialTasks(),getEditorialWorkspaceResetAt()]);const content=collapseWebsiteArticleFamilies(rawContent);const briefById=new Map(briefs.map(row=>[row.brief_id,row])),approvalByTarget=new Map(approvals.filter(row=>['publish_post','publish_article','publish_linkedin_article'].includes(row.action_type)).map(row=>[row.target_id,row])),publication=textParam(params.publication,'unpublished'),reviewFilter=textParam(params.review,'all'),approvalFilter=textParam(params.approval,'all'),q=textParam(params.q).trim().toLowerCase(),show=textParam(params.show),queued=textParam(params.queued),proposalTasks=tasks.filter(task=>task.type==='OPERATOR_EDITORIAL_PROPOSALS'&&task.status==='completed'&&Array.isArray(task.outputs?.proposals)),runTasks=tasks.filter(task=>task.type==='OPERATOR_EDITORIAL_RUN'),currentTask=queued?tasks.find(task=>task.task_id===queued):tasks.find(task=>task.type==='OPERATOR_EDITORIAL_PROPOSALS'&&['queued','pending','running'].includes(task.status));const rewriteRunning=new Set(tasks.filter(task=>task.type==='OPERATOR_REWRITE_CONTENT'&&['queued','pending','running'].includes(task.status)).map(task=>String(task.inputs?.content_id||''))),rewriteDone=new Set(tasks.filter(task=>task.type==='OPERATOR_REWRITE_CONTENT'&&task.status==='completed').map(task=>String(task.inputs?.content_id||''))),publishDone=new Set(tasks.filter(task=>['OPERATOR_PUBLISH_LINKEDIN','OPERATOR_PUBLISH_ARTICLE'].includes(task.type)&&task.status==='completed').map(task=>String(task.inputs?.content_id||'')))
+  const rows=content.filter(item=>!['rejected','failed','superseded_test','alternate'].includes(item.status)).map(item=>{const brief=item.brief_id?briefById.get(item.brief_id) as GrowthEditorialBrief|undefined:undefined,readiness=evaluatePublicationReadiness(item,brief),warnings=[...new Set([...criticWarnings(item.critique),...readiness.issues])],stage=stageFor(item,readiness),approved=['ready','scheduled','published'].includes(stage),reviewed=Boolean(item.critique)&&warnings.length===0,delivered=['scheduled','published'].includes(stage);return{item,brief,readiness,warnings,stage,approved,reviewed,delivered,approval:approvalByTarget.get(item.content_id)}})
+  const counts={unpublished:rows.filter(r=>!r.delivered).length,scheduled:rows.filter(r=>r.stage==='scheduled').length,published:rows.filter(r=>r.stage==='published').length}
+  const filtered=rows.filter(row=>(publication==='all'||(publication==='delivered'?row.delivered:!row.delivered))&&(reviewFilter==='all'||(reviewFilter==='reviewed'?row.reviewed:!row.reviewed))&&(approvalFilter==='all'||(approvalFilter==='approved'?row.approved:!row.approved))&&(!q||`${row.item.title} ${row.item.body||''}`.toLowerCase().includes(q))),visible=q||show==='all'?filtered:filtered.slice(0,6)
+  return <AdminShell active="content"><PageHeader eyebrow="CRM · Editorial" title="Editorial" description="Propuestas y publicaciones en un flujo reactivo. Los procesos se actualizan solos y Publicaciones concentra revisión, aprobación, calendario y distribución." actions={<><form action="/api/growth-admin/operator-task" method="post"><input type="hidden" name="action" value="editorial_run"/><input type="hidden" name="max_briefs" value="1"/><input type="hidden" name="max_signals" value="30"/><input type="hidden" name="force_new" value="1"/><input type="hidden" name="return_to" value="/growth-admin/content"/><button className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">Generación directa</button></form><a href="/growth-admin/visual-studio" className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-semibold text-white">Visual Studio</a><a href="/growth-admin/calendar" className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-semibold text-white">Calendario</a></>}/>
+    {resetAt&&<div className="mb-4 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs text-slate-500">Workspace activo desde <strong>{formatDate(resetAt,true)}</strong>.</div>}{params.blocked&&<div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">La revisión automática ha detectado alertas. Puedes corregirlas o aprobar manualmente igualmente.</div>}{(params.approved||params.edited||params.deleted||params.proposal_discarded||params.linkedin_article_published)&&<div className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">Acción guardada correctamente.</div>}
+    <EditorialPlanner content={content} proposalTasks={proposalTasks} runTasks={runTasks} currentTask={currentTask}/>
+    <section id="publications" className="scroll-mt-32"><div className="mb-5 grid gap-3 md:grid-cols-3"><div className={`${adminPanel} px-4 py-4`}><p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">No publicadas</p><p className="mt-1 text-2xl font-semibold">{counts.unpublished}</p><p className="mt-1 text-xs text-slate-500">En trabajo, revisión o listas para programar.</p></div><div className={`${adminPanel} px-4 py-4`}><p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Programadas</p><p className="mt-1 text-2xl font-semibold">{counts.scheduled}</p><p className="mt-1 text-xs text-slate-500">Con fecha de salida asignada.</p></div><div className={`${adminPanel} px-4 py-4`}><p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Publicadas</p><p className="mt-1 text-2xl font-semibold">{counts.published}</p><p className="mt-1 text-xs text-slate-500">Distribuidas y conservadas para métricas.</p></div></div>
+    <SectionHeading eyebrow="Editorial workspace" title="Publicaciones" description="Una única bandeja. Filtra por publicación, revisión y aprobación sin saltar entre fases." count={filtered.length}/>
+    <PublicationFilterBar publication={publication} review={reviewFilter} approval={approvalFilter} query={textParam(params.q)} total={filtered.length}/>
+    <div className="space-y-3">{!visible.length&&<EmptyState>No hay publicaciones que coincidan con estos filtros.</EmptyState>}{visible.map(({item,readiness,warnings,stage,approval,approved,reviewed})=>{const image=assetUrl(item),rewriting=rewriteRunning.has(item.content_id),visualOk=!readiness.visualRequired||readiness.hasVisual,rewritten=rewriteDone.has(item.content_id),publishedProcess=publishDone.has(item.content_id),manualLinkedInArticle=item.content_type==='linkedin_article';return <details key={item.content_id} className={`${adminPanel} group overflow-hidden`}><summary className="cursor-pointer list-none px-5 py-4"><div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between"><div className="min-w-0"><div className="flex flex-wrap gap-2"><Badge tone={statusTone(item.status)}>{stageLabel(stage)}</Badge><Badge tone={item.content_type==='article'||manualLinkedInArticle?'violet':'blue'}>{publicationLabel(item)}</Badge><Badge>{(item.language||'—').toUpperCase()}</Badge>{manualLinkedInArticle&&<Badge tone="amber">Publicación manual</Badge>}</div><h2 className="mt-2 truncate text-base font-semibold">{item.title}</h2><div className="mt-2 flex flex-wrap gap-1.5 text-[9px] font-semibold"><span className={`rounded-full border px-2 py-1 ${gateTone(reviewed)}`}>{reviewed?'Revisión hecha':'Por revisar'}</span><span className={`rounded-full border px-2 py-1 ${gateTone(approved)}`}>{approved?'Aprobada':'No aprobada'}</span>{rewritten&&<span className="rounded-full border border-indigo-200 bg-indigo-50 px-2 py-1 text-indigo-700">Reescritura IA ejecutada</span>}{item.scheduled_at&&<span className="rounded-full border border-sky-200 bg-sky-50 px-2 py-1 text-sky-700">Calendario asignado</span>}{publishedProcess&&<span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-1 text-emerald-700">Publicación ejecutada</span>}</div></div><div className="flex flex-wrap gap-2"><span className={`rounded-full border px-2 py-1 text-[10px] font-semibold ${gateTone(visualOk)}`}>{visualOk?'Visual OK':'Visual pendiente'}</span><span className="px-2 text-slate-400">⌄</span></div></div></summary><div className="border-t border-slate-200 bg-slate-50/50 p-5"><div className="grid gap-5 xl:grid-cols-[160px_minmax(0,1fr)_340px]"><div>{image?<img src={image} alt={item.title} className="h-28 w-full rounded-xl border border-slate-200 bg-white object-contain"/>:<div className="flex h-28 items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white text-xs text-slate-400">Sin visual</div>}<a href={`/growth-admin/visual-studio?content=${encodeURIComponent(item.content_id)}`} className="mt-2 block rounded-lg border border-indigo-200 bg-white px-3 py-2 text-center text-xs font-semibold text-indigo-700">{image?'Editar visual':'Diseñar visual'}</a></div><div><p className="line-clamp-5 whitespace-pre-wrap text-sm leading-6 text-slate-600">{item.body}</p>{warnings.length>0&&<div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3"><p className="text-xs font-semibold text-amber-900">Revisión automática (orientativa)</p><p className="mt-1 text-[11px] text-amber-800">No bloquea tu decisión. Puedes editar, pedir otra versión o aprobar manualmente.</p><ul className="mt-2 list-disc space-y-1 pl-4 text-[10px] text-amber-800">{warnings.map(w=><li key={w}>{w}</li>)}</ul></div>}<details className="mt-3 rounded-xl border border-slate-200 bg-white p-3"><summary className="cursor-pointer text-xs font-semibold text-slate-700">Editar texto manualmente</summary><form action="/api/growth-admin/content-edit" method="post" data-live-form="1" className="mt-3"><input type="hidden" name="content_id" value={item.content_id}/><input type="hidden" name="return_to" value="/growth-admin/content#publications"/><input name="title" defaultValue={item.title} className={`w-full ${adminInput}`}/><textarea name="body" defaultValue={item.body||''} className={`mt-2 min-h-48 w-full ${adminInput}`}/><button className={`mt-2 ${adminButtonSecondary}`}>Guardar cambios</button></form></details><div className="mt-3 flex flex-wrap gap-2"><a href={`/growth-admin/preview/${item.content_id}`} className={adminButtonSecondary}>Preview final</a>{!approved&&<form action="/api/growth-admin/operator-task" method="post"><input type="hidden" name="action" value="rewrite_content"/><input type="hidden" name="content_id" value={item.content_id}/><input type="hidden" name="return_to" value="/growth-admin/content#publications"/><button disabled={rewriting} className="rounded-lg border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-sm font-semibold text-indigo-700 disabled:opacity-50">{rewriting?'Generando otra versión…':'Proponer nueva versión con IA'}</button></form>}</div></div><div className="space-y-3">{!approved&&<form action="/api/growth-admin/decide" method="post" data-live-form="1" className="rounded-xl border border-indigo-200 bg-indigo-50 p-4"><input type="hidden" name="content_id" value={item.content_id}/>{approval&&<input type="hidden" name="approval_id" value={approval.approval_id}/>}<input type="hidden" name="decision" value="approved"/><input type="hidden" name="manual_override" value="1"/><input type="hidden" name="return_to" value="/growth-admin/content#publications"/><p className="text-xs font-semibold text-indigo-900">Decisión humana</p><p className="mt-1 text-[11px] leading-5 text-indigo-700">{manualLinkedInArticle?'Aprueba el artículo para dejarlo listo para copiar y publicar manualmente en LinkedIn.':'Puedes aprobar aunque existan alertas automáticas. La decisión queda registrada.'}</p><button className={`mt-3 w-full ${adminButtonPrimary}`}>{manualLinkedInArticle?'Aprobar para publicación manual':'Aprobar manualmente'}</button></form>}{manualLinkedInArticle&&stage==='ready'&&<div className="rounded-xl border border-amber-200 bg-amber-50 p-4"><p className="text-xs font-semibold text-amber-900">LinkedIn Article · salida manual</p><p className="mt-1 text-[11px] leading-5 text-amber-800">Este formato no se programa ni se envía por el publisher de posts. Abre el preview, copia el contenido en el editor de artículos de LinkedIn y, cuando esté publicado, pega aquí la URL final.</p><a href={`/growth-admin/preview/${item.content_id}`} className={`mt-3 inline-block ${adminButtonSecondary}`}>Abrir contenido final</a><form action="/api/growth-admin/linkedin-article-published" method="post" data-live-form="1" className="mt-3"><input type="hidden" name="content_id" value={item.content_id}/><input type="hidden" name="return_to" value="/growth-admin/content#publications"/><label className="text-[11px] font-medium text-amber-900">URL del artículo publicado<input required type="url" name="external_post_url" placeholder="https://www.linkedin.com/..." className={`mt-2 w-full ${adminInput}`}/></label><button className={`mt-2 w-full ${adminButtonPrimary}`}>Registrar como publicado</button></form></div>}{!manualLinkedInArticle&&(stage==='ready'||stage==='scheduled')&&<form action="/api/growth-admin/schedule" method="post" data-live-form="1" className="rounded-xl border border-slate-200 bg-white p-4"><input type="hidden" name="content_id" value={item.content_id}/><input type="hidden" name="return_to" value="/growth-admin/content#publications"/><label className="text-[11px] font-medium text-slate-500">Añadir al calendario<input name="scheduled_at" type="datetime-local" defaultValue={scheduleInputValue(item.scheduled_at)} className={`mt-2 w-full ${adminInput}`}/></label><div className="mt-2 flex flex-wrap gap-2"><button className={adminButtonSecondary}>Guardar fecha</button>{item.status==='approved'&&<button formAction="/api/growth-admin/publish-now" className={adminButtonPrimary}>Publicar ahora</button>}</div></form>}<ConfirmFormButton action="/api/growth-admin/content-delete" fields={{content_id:item.content_id,return_to:'/growth-admin/content#publications'}} label="Eliminar publicación" message="¿Eliminar esta publicación del CRM?"/></div></div></div></details>})}</div>
+    {!q&&filtered.length>6&&<div className="mt-4"><a href={`/growth-admin/content?publication=${encodeURIComponent(publication)}&review=${encodeURIComponent(reviewFilter)}&approval=${encodeURIComponent(approvalFilter)}&show=${show==='all'?'6':'all'}#publications`} className="text-xs font-semibold text-indigo-700">{show==='all'?'Mostrar solo 6':`Ver ${filtered.length-6} más`}</a></div>}
+    </section>
+  </AdminShell>}
