@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts'
 
 import { createMcpHandler, McpServer } from 'npm:@modelcontextprotocol/server@^2.0.0'
