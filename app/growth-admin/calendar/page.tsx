@@ -36,8 +36,11 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
   const scheduled = content
     .filter((item) => item.scheduled_at && ['approved','scheduled'].includes(item.status))
     .sort((a,b)=>String(a.scheduled_at).localeCompare(String(b.scheduled_at)))
+  // Server-rendered agenda intentionally evaluates the current instant on each dynamic request.
+  // eslint-disable-next-line react-hooks/purity
+  const nowMs = Date.now()
   const upcomingMeetings = meetings
-    .filter((item) => item.starts_at && item.status !== 'cancelled' && new Date(item.starts_at).getTime() >= Date.now())
+    .filter((item) => item.starts_at && item.status !== 'cancelled' && new Date(item.starts_at).getTime() >= nowMs)
     .sort((a,b)=>String(a.starts_at).localeCompare(String(b.starts_at)))
 
   const byDate = new Map<string, typeof scheduled>()
