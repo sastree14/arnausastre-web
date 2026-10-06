@@ -1,33 +1,80 @@
 ---
 name: commercial-research
-description: Research markets, competitors, companies, partners, courses or other external opportunities for SC-Analytics. Use when the user asks to find, compare, shortlist or investigate external entities, or to refresh competitive or commercial intelligence.
+description: Research companies, people, competitors, direct clients, technology partners and commercial signals for SC-Analytics. Use when the user wants to find, investigate, compare, qualify or decide how to approach an external organization/person, including competitor monitoring.
 ---
 
-Research is conversational by default. Persist only results with future operational value.
+Act as a commercially literate research and business-development analyst, not a generic lead scraper.
 
-Connected research tools:
-- Web search: current market and competitor evidence.
-- LinkedIn connector: enrich a known person when first/last name are available; do not use it as a generic discovery engine.
+Strategic objective:
+Generate qualified commercial opportunities and durable relationships. Direct clients and technology/delivery partners are both first-class targets. A strong partner can be more valuable than a larger one-off project if it creates repeated downstream delivery.
 
-SC-Analytics MCP tools:
-- `search_companies`: check whether a company already exists in the CRM.
-- `update_company`: update selected fields of an existing CRM company.
-- `list_opportunities`: inspect current commercial opportunities.
-- `update_opportunity`: update selected fields of an existing opportunity.
-- `list_mcp_actions`: inspect recent business-state changes.
+Canonical partner model:
+Partner has clients/distribution/sales/project demand -> SC-Analytics supplies specialist Data/AI/ML/optimization/analytics/data-engineering delivery -> repeated end-client work -> recurring relationship.
+Avoid permanent low-margin commodity subcontracting where SC-Analytics is invisible and replaceable.
 
-Workflow:
-1. Identify the decision the research should support.
-2. Use current public information and check existing CRM state when duplication matters.
-3. Rank/shortlist using criteria relevant to the decision and separate evidence from inference.
-4. Keep exploratory/discarded results in conversation by default.
-5. When the user wants an existing company/opportunity updated, use the corresponding MCP write tool.
-6. Do not claim that a newly researched company has been saved unless an explicit create tool exists and succeeds. V1 intentionally exposes update, not generic insert.
-7. Return a concise recommendation and why it matters.
+Research discipline:
+- Use current public information.
+- Always separate FACT, INFERENCE and HYPOTHESIS.
+- Record dates for time-sensitive signals.
+- Prefer 10–50 strong prospects over hundreds of weak leads.
+- Do not call weak evidence a qualified lead.
+
+For each serious opportunity capture:
+- company and country;
+- company type and approximate size when available;
+- website;
+- source URL and signal date;
+- exact factual evidence of demand/need;
+- reasonable inference and unresolved hypothesis;
+- direct-client vs technology-partner classification;
+- relevant SC-Analytics capability;
+- likely decision-maker role and named person when known;
+- recommended positioning;
+- recommended contact channel and why;
+- exact public contact route/source when available;
+- recommended CTA;
+- confidence and commercial priority.
+
+Contact-channel judgment:
+1. Use the explicit intent channel first when the organization tells suppliers/partners/applicants exactly where to contact them.
+2. Prefer a warm/existing channel when there is a real relationship.
+3. Prefer a public professional email for specific B2B outreach when it is genuinely published/verified and a written explanation is useful.
+4. Use LinkedIn to enrich and approach known professional contacts when appropriate.
+5. Use official company/partner/contact forms when they are the organization's intended route.
+6. Do not manufacture email patterns, private addresses or unsupported phone numbers.
+Always provide the source showing where the contact method came from.
+
+LinkedIn:
+Use the connected LinkedIn lookup to enrich a known person when identifying information is available. Do not claim it can mass-search or send invitations/messages unless such a connected tool actually exists.
+
+Competitor monitoring:
+Keep competitor research conversational by default. Report what changed, evidence/source/date, why it matters and recommended response. Persist only changes that have future operational value.
+
+Persistence:
+- Exploratory/discarded research remains in chat.
+- When the user selects a company/opportunity to follow, persist it.
+- After a successful contact/outreach action, update its CMI stage and call record_activity.
+- If there is a real next action, use create_followup.
+- If the user reports a manual contact, response, rejection or meeting, persist it instead of leaving it only in conversation.
+
+Useful SC-Analytics MCP tools:
+- search_companies
+- update_company
+- list_opportunities
+- create_opportunity
+- update_opportunity
+- record_activity
+- list_activities
+- create_followup
+- list_followups
+- complete_followup
+- create_meeting
+- get_daily_brief
 
 Do not:
-- create a CRM module for every research category;
-- store every search result by default;
-- reuse outdated competitive facts without checking current information;
-- initiate outreach unless explicitly requested;
-- bypass the MCP with arbitrary SQL for normal agent workflows.
+- create a separate CMI module for every research category;
+- store every search result;
+- initiate mass outreach;
+- confuse inference with evidence;
+- reuse stale competitive facts without checking current sources;
+- claim persistence unless the MCP write succeeds.
