@@ -57,3 +57,11 @@
 
 .site-public .section-heading { text-align: center; }
 .site-public .section-heading h2 { margin: 14px auto 0; }
+
+/* Six equal destinations share one hover/focus treatment. */
+.site-public .home-route-grid { display: grid; grid-template-columns: 1fr; gap: 1px; border: 1px solid #CBD5E1; background: #CBD5E1; overflow: hidden; }
+.site-public .home-route-card { min-width: 0; background: #FFFFFF; }
+.site-public .home-route-card:nth-child(odd) { background: #EAF0F6; }
+.site-public .home-route-card:is(:hover, :focus-visible) { background: #DCE7F0; }
+@media (min-width: 768px) { .site-public .home-route-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .site-public .home-route-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

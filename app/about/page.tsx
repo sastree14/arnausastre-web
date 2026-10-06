@@ -216,19 +216,19 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
+      <section className="border-b border-slate-300 bg-white">
         <div className="site-container py-12 md:py-14">
-          <div className="max-w-4xl">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#C7D9E8]">{t.pathsLabel}</p>
-            <h3 className="mt-3 max-w-3xl text-[32px] leading-[1.08] text-white sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.pathsTitle}</h3>
+          <div className="text-center">
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.pathsLabel}</p>
+            <h3 className="mx-auto mt-3 max-w-3xl text-[32px] leading-[1.08] text-[#0D1B2A] sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.pathsTitle}</h3>
           </div>
 
-          <div className="mt-8 grid gap-3 md:grid-cols-3">
+          <div className="mt-8 grid border-l border-t border-slate-300 md:grid-cols-3">
             {t.paths.map(([title, body, href], index) => (
               <Link
                 key={href}
                 href={href}
-                className={`group relative flex min-h-[205px] flex-col justify-between border p-7 text-[#0D1B2A] transition duration-200 hover:-translate-y-1 hover:scale-[1.015] hover:shadow-xl active:scale-[1.005] ${index === 0 ? 'border-[#CBD5E1] bg-[#FFFFFF]' : index === 1 ? 'border-[#CBD5E1] bg-[#EAF0F6]' : 'border-[#CBD5E1] bg-[#FFFFFF]'}`}
+                className={`group flex min-h-[220px] flex-col justify-between border-b border-r border-slate-300 p-7 text-[#0D1B2A] transition hover:bg-[#DCE7F0] ${index === 0 ? 'border-[#CBD5E1] bg-[#FFFFFF]' : index === 1 ? 'border-[#CBD5E1] bg-[#EAF0F6]' : 'border-[#CBD5E1] bg-[#FFFFFF]'}`}
               >
                 <div>
                   <h3 className="text-[28px] leading-[1.1]" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>

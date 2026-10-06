@@ -18,11 +18,11 @@ const COPY = {
     capabilitiesLabel: 'EN QUÉ NOS ESPECIALIZAMOS',
     capabilitiesTitle: 'Nuestras especialidades.',
     capabilities: [
-      ['Forecasting & planning', 'Previsiones de variables y escenarios para anticipar su evolución.'],
+      ['Forecasting y planning', 'Previsiones de variables y escenarios para anticipar su evolución.'],
       ['Optimización', 'Modelos para elegir la mejor alternativa según objetivos y restricciones.'],
       ['Machine learning', 'Modelos que aprenden de los datos para predecir y detectar patrones.'],
       ['Inteligencia artificial y automatización', 'Soluciones de IA y automatización adaptadas a tus procesos y herramientas.'],
-      ['Analytics & BI', 'Visibilidad clara para seguir operaciones, rendimiento y decisiones.'],
+      ['Analytics y BI', 'Visibilidad clara para seguir operaciones, rendimiento y decisiones.'],
       ['Simulación y modelización', 'Escenarios y modelos para decidir antes de cambiar una operación real.'],
     ],
 
@@ -75,11 +75,11 @@ const COPY = {
     capabilitiesLabel: 'EN QUÈ ENS ESPECIALITZEM',
     capabilitiesTitle: 'Les nostres especialitats.',
     capabilities: [
-      ['Forecasting & planning', 'Previsions de variables i escenaris per anticipar-ne l’evolució.'],
+      ['Forecasting i planning', 'Previsions de variables i escenaris per anticipar-ne l’evolució.'],
       ['Optimització', 'Models per escollir la millor alternativa segons objectius i restriccions.'],
       ['Machine learning', 'Models que aprenen de les dades per predir i detectar patrons.'],
       ['Intel·ligència artificial i automatització', 'Solucions d’IA i automatització adaptades als teus processos i eines.'],
-      ['Analytics & BI', 'Visibilitat clara per seguir operacions, rendiment i decisions.'],
+      ['Analytics i BI', 'Visibilitat clara per seguir operacions, rendiment i decisions.'],
       ['Simulació i modelització', 'Escenaris i models per decidir abans de canviar una operació real.'],
     ],
 
@@ -132,11 +132,11 @@ const COPY = {
     capabilitiesLabel: 'WHAT WE SPECIALISE IN',
     capabilitiesTitle: 'Our specialisms.',
     capabilities: [
-      ['Forecasting & planning', 'Forecasts of variables and scenarios to anticipate how they evolve.'],
+      ['Forecasting and planning', 'Forecasts of variables and scenarios to anticipate how they evolve.'],
       ['Optimisation', 'Models for selecting the best alternative given objectives and constraints.'],
       ['Machine learning', 'Models that learn from data to predict outcomes and detect patterns.'],
       ['Artificial intelligence & automation', 'AI and automation solutions tailored to your processes and tools.'],
-      ['Analytics & BI', 'Clear visibility into operations, performance and decisions.'],
+      ['Analytics and BI', 'Clear visibility into operations, performance and decisions.'],
       ['Simulation & modelling', 'Scenarios and models for deciding before changing a real operation.'],
     ],
 

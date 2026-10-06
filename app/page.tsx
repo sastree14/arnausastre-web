@@ -23,7 +23,7 @@ const COPY = {
     ],
 
     exploreLabel: 'EXPLORA SC-ANALYTICS',
-    exploreTitle: 'Cinco formas de descubrir cómo podemos ayudarte.',
+    exploreTitle: 'Seis formas de descubrir cómo podemos ayudarte.',
     routes: [
       {
         number: '01',
@@ -31,7 +31,6 @@ const COPY = {
         hook: 'Previsión, optimización, datos e inteligencia artificial.',
         href: '/services',
         cta: 'Ver cómo trabajamos',
-        tone: 'paper',
       },
       {
         number: '02',
@@ -39,7 +38,6 @@ const COPY = {
         hook: 'Proyectos explicados con resultados y evidencia técnica.',
         href: '/projects',
         cta: 'Explorar casos de éxito',
-        tone: 'lavender',
       },
       {
         number: '03',
@@ -47,7 +45,6 @@ const COPY = {
         hook: 'Ideas y análisis sobre decisiones, operaciones, datos e inteligencia artificial.',
         href: '/knowledge',
         cta: 'Leer nuestros análisis',
-        tone: 'white',
       },
       {
         number: '04',
@@ -55,7 +52,6 @@ const COPY = {
         hook: 'Capacidad especializada que se integra con tu organización cuando la necesitas.',
         href: '/partner-analitico',
         cta: 'Explorar el modelo partner',
-        tone: 'blue',
       },
       {
         number: '05',
@@ -63,16 +59,14 @@ const COPY = {
         hook: 'Rigor, claridad, especialización y responsabilidad sobre el resultado.',
         href: '/about',
         cta: 'Conocer SC-Analytics',
-        tone: 'paper',
       },
-    ],
-
-    stayLabel: 'SIGUE EXPLORANDO',
-    stayTitle: '¿Quieres saber más?',
-    stayLinks: [
-      ['LinkedIn', 'https://linkedin.com/in/arnausastre', true],
-      ['Ver artículos', '/knowledge', false],
-      ['Hablar con nosotros', '/contact', false],
+      {
+        number: '06',
+        title: 'Contacto',
+        hook: 'Cuéntanos qué quieres mejorar en una primera llamada sin compromiso.',
+        href: '/contact?intent=discovery',
+        cta: 'Hablar con nosotros',
+      },
     ],
 
     ctaKicker: 'SIN COMPROMISO',
@@ -99,7 +93,7 @@ const COPY = {
     ],
 
     exploreLabel: 'EXPLORA SC-ANALYTICS',
-    exploreTitle: 'Cinc maneres de descobrir com et podem ajudar.',
+    exploreTitle: 'Sis maneres de descobrir com et podem ajudar.',
     routes: [
       {
         number: '01',
@@ -107,7 +101,6 @@ const COPY = {
         hook: 'Previsió, optimització, dades i intel·ligència artificial.',
         href: '/services',
         cta: 'Veure com treballem',
-        tone: 'paper',
       },
       {
         number: '02',
@@ -115,7 +108,6 @@ const COPY = {
         hook: 'Projectes explicats amb resultats i evidència tècnica.',
         href: '/projects',
         cta: 'Explorar casos d’èxit',
-        tone: 'lavender',
       },
       {
         number: '03',
@@ -123,7 +115,6 @@ const COPY = {
         hook: 'Idees i anàlisis sobre decisions, operacions, dades i intel·ligència artificial.',
         href: '/knowledge',
         cta: 'Llegir les nostres anàlisis',
-        tone: 'white',
       },
       {
         number: '04',
@@ -131,7 +122,6 @@ const COPY = {
         hook: 'Capacitat especialitzada que s’integra amb la teva organització quan la necessites.',
         href: '/partner-analitico',
         cta: 'Explorar el model partner',
-        tone: 'blue',
       },
       {
         number: '05',
@@ -139,16 +129,14 @@ const COPY = {
         hook: 'Rigor, claredat, especialització i responsabilitat sobre el resultat.',
         href: '/about',
         cta: 'Conèixer SC-Analytics',
-        tone: 'paper',
       },
-    ],
-
-    stayLabel: 'CONTINUA EXPLORANT',
-    stayTitle: 'Vols saber-ne més?',
-    stayLinks: [
-      ['LinkedIn', 'https://linkedin.com/in/arnausastre', true],
-      ['Veure articles', '/knowledge', false],
-      ['Parlar amb nosaltres', '/contact', false],
+      {
+        number: '06',
+        title: 'Contacte',
+        hook: 'Explica’ns què vols millorar en una primera trucada sense compromís.',
+        href: '/contact?intent=discovery',
+        cta: 'Parlar amb nosaltres',
+      },
     ],
 
     ctaKicker: 'SENSE COMPROMÍS',
@@ -175,7 +163,7 @@ const COPY = {
     ],
 
     exploreLabel: 'EXPLORE SC-ANALYTICS',
-    exploreTitle: 'Five ways to discover how we can help.',
+    exploreTitle: 'Six ways to discover how we can help.',
     routes: [
       {
         number: '01',
@@ -183,7 +171,6 @@ const COPY = {
         hook: 'Forecasting, optimisation, data and artificial intelligence.',
         href: '/services',
         cta: 'See how we work',
-        tone: 'paper',
       },
       {
         number: '02',
@@ -191,7 +178,6 @@ const COPY = {
         hook: 'Projects explained through results and technical evidence.',
         href: '/projects',
         cta: 'Explore success stories',
-        tone: 'lavender',
       },
       {
         number: '03',
@@ -199,7 +185,6 @@ const COPY = {
         hook: 'Ideas and analysis on decisions, operations, data and artificial intelligence.',
         href: '/knowledge',
         cta: 'Read our analysis',
-        tone: 'white',
       },
       {
         number: '04',
@@ -207,7 +192,6 @@ const COPY = {
         hook: 'Specialist capability that integrates with your organisation when you need it.',
         href: '/partner-analitico',
         cta: 'Explore the partner model',
-        tone: 'blue',
       },
       {
         number: '05',
@@ -215,16 +199,14 @@ const COPY = {
         hook: 'Rigor, clarity, specialist depth and accountability for the outcome.',
         href: '/about',
         cta: 'Get to know SC-Analytics',
-        tone: 'paper',
       },
-    ],
-
-    stayLabel: 'KEEP EXPLORING',
-    stayTitle: 'Want to know more?',
-    stayLinks: [
-      ['LinkedIn', 'https://linkedin.com/in/arnausastre', true],
-      ['Read articles', '/knowledge', false],
-      ['Talk to us', '/contact', false],
+      {
+        number: '06',
+        title: 'Contact',
+        hook: 'Tell us what you want to improve in a first call with no obligation.',
+        href: '/contact?intent=discovery',
+        cta: 'Talk to us',
+      },
     ],
 
     ctaKicker: 'NO COMMITMENT',
@@ -232,13 +214,6 @@ const COPY = {
     cta: 'Tell us about your case',
     ctaAlt: 'Success stories',
   },
-} as const
-
-const toneClasses = {
-  paper: 'bg-[#EAF0F6] text-slate-950 hover:bg-[#DCE7F0]',
-  lavender: 'bg-white text-slate-950 hover:bg-[#EAF0F6]',
-  white: 'bg-white text-slate-950 hover:bg-slate-50',
-  blue: 'bg-[#EAF0F6] text-slate-950 hover:bg-[#EAF0F6]',
 } as const
 
 export default function HomePage() {
@@ -285,14 +260,13 @@ export default function HomePage() {
             <h2 className="mx-auto mt-2 max-w-5xl text-[34px] leading-[1.05] tracking-[-0.02em] text-slate-950 sm:text-[40px] xl:text-[42px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 border-l border-t border-slate-300 md:grid-cols-12">
-            {t.routes.map((route, index) => {
-              const span = index < 2 ? 'md:col-span-6' : 'md:col-span-4'
+          <div className="home-route-grid mt-8">
+            {t.routes.map((route) => {
               return (
                 <Link
                   key={route.href}
                   href={route.href}
-                  className={`group flex min-h-[250px] flex-col border-b border-r border-slate-300 p-6 transition md:p-7 ${span} ${toneClasses[route.tone as keyof typeof toneClasses]}`}
+                  className="home-route-card group flex min-h-[300px] flex-col p-6 transition md:p-7"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <span className="font-mono text-[15px] font-semibold text-[#254A66]">{route.number}</span>
@@ -306,19 +280,7 @@ export default function HomePage() {
             })}
           </div>
 
-          <div className="grid border-x border-b border-slate-300 bg-white lg:grid-cols-[1fr_auto] lg:items-center">
-            <div className="px-6 py-5 md:px-7">
-              <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.stayLabel}</p>
-              <h3 className="mt-1 text-[24px] font-semibold text-slate-950">{t.stayTitle}</h3>
-            </div>
-            <div className="flex flex-wrap border-t border-slate-300 lg:border-l lg:border-t-0">
-              {t.stayLinks.map(([label, href, external]) => (
-                external
-                  ? <a key={href} href={href} target="_blank" rel="noreferrer" className="border-r border-slate-300 px-5 py-5 text-[14px] font-semibold text-slate-800 transition hover:bg-[#F7F9FC]">{label} ↗</a>
-                  : <Link key={href} href={href} className="border-r border-slate-300 px-5 py-5 text-[14px] font-semibold text-slate-800 transition hover:bg-[#F7F9FC]">{label} →</Link>
-              ))}
-            </div>
-          </div>
+
         </div>
       </section>
 

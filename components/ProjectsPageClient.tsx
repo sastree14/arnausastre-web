@@ -52,6 +52,8 @@ function filtersForProject(slug: string): CaseFilter[] {
 
 const copy = {
   es: {
+    explore: 'Explorar casos de éxito',
+    contact: 'Cuéntanos tu caso',
     count: 'casos de éxito disponibles',
     instruction: 'Explora nuestros casos de éxito por el tipo de reto empresarial que quieres resolver.',
     view: 'Abrir caso de éxito',
@@ -69,6 +71,8 @@ const copy = {
     },
   },
   ca: {
+    explore: 'Explorar casos d’èxit',
+    contact: 'Explica’ns el teu cas',
     count: 'casos d’èxit disponibles',
     instruction: 'Explora els nostres casos d’èxit pel tipus de repte empresarial que vols resoldre.',
     view: 'Obrir cas d’èxit',
@@ -86,6 +90,8 @@ const copy = {
     },
   },
   en: {
+    explore: 'Explore success stories',
+    contact: 'Tell us about your case',
     count: 'available success stories',
     instruction: 'Explore our success stories by the kind of business challenge you want to solve.',
     view: 'Open success story',
@@ -132,18 +138,22 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
 
   return (
     <main className="bg-[#F7F9FC] text-slate-950">
-      <section className="border-b border-slate-300">
-        <div className="site-container pb-9 pt-11 lg:pb-10 lg:pt-12">
-          <div className="public-hero text-center">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#254A66]">{t.label}</p>
-            <h1 className="mx-auto mt-5 text-slate-950 tracking-[-0.025em]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-            <p className="mx-auto mt-5 max-w-4xl text-[19px] leading-8 text-slate-600">{c.instruction}</p>
-            <p className="mt-5 font-mono text-[14px] text-[#254A66]">{String(projects.length).padStart(2, '0')} {c.count}</p>
+      <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
+        <div className="site-container flex flex-col items-center gap-8 py-14 text-center md:py-16">
+          <div className="max-w-5xl">
+            <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#C7D9E8]">{t.label}</p>
+            <h1 className="mt-5 text-[44px] leading-[1.02] tracking-[-0.03em] sm:text-[54px] lg:text-[62px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
+            <p className="mx-auto mt-5 max-w-3xl text-[18px] leading-8 text-[#EAF0F6]">{c.instruction}</p>
           </div>
+          <div className="flex flex-wrap justify-center gap-3">
+            <a href="#case-filters" className="bg-white px-5 py-3.5 text-[15px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]">{c.explore} →</a>
+            <Link href="/contact?intent=problem" className="border border-[#7F9BB5] px-5 py-3.5 text-[15px] font-semibold text-white transition hover:bg-white/5">{c.contact}</Link>
+          </div>
+          <p className="font-mono text-[14px] text-[#C7D9E8]">{String(projects.length).padStart(2, '0')} {c.count}</p>
         </div>
       </section>
 
-      <section className="border-b border-slate-300 bg-[#FFFFFF]">
+      <section id="case-filters" className="scroll-mt-24 border-b border-slate-300 bg-[#FFFFFF]">
         <div className="site-container py-5">
           <p className="mb-3 text-[14px] font-semibold uppercase tracking-[0.14em] text-slate-500">{c.filterLabel}</p>
           <div className="grid grid-cols-2 border-l border-t border-slate-300 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-8">
