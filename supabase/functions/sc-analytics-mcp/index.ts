@@ -5,6 +5,8 @@ import { pipeline } from 'npm:@supabase/middleware@1'
 import { withOAuthProtectedResource, withSupabase } from 'npm:@supabase/server@^1.6.0'
 import { z } from 'npm:zod@^4.3.6'
 
+const CMI_BASE_URL = (Deno.env.get('SC_ANALYTICS_CMI_URL') || 'https://arnausastre-web-git-feat-editorial-r-c0f1cd-sastree14s-projects.vercel.app').replace(/\/$/, '')
+
 function result(data: unknown) {
   return {
     content: [{ type: 'text' as const, text: JSON.stringify(data, null, 2) }],
@@ -472,6 +474,281 @@ Deno.serve(
             })
             if (error) throw new Error(error.message)
             return result(data)
+          },
+        )
+
+
+        server.registerTool(
+          'record_activity',
+          {
+            title: 'Record Operational Activity',
+            description: 'Persist a meaningful SC-Analytics action or outcome so later chats and daily briefs know what happened. Use after successful external actions such as an Upwork application, outreach, a manual contact, or another business-state change that is not already persisted by another MCP write.',
+            inputSchema: z.object({
+              activity_type: z.string().min(1),
+              title: z.string().min(1),
+              summary: z.string().optional(),
+              channel: z.string().optional(),
+              entity_type: z.string().optional(),
+              entity_id: z.string().optional(),
+              status: z.string().optional(),
+              source_url: z.string().url().optional(),
+              next_action_at: z.string().datetime({ offset: true }).optional(),
+              metadata: z.record(z.string(), z.unknown()).optional(),
+            }),
+            annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
+          },
+          async (args) => {
+            await ensureAuthorized()
+            const { data, error } = await supabase.rpc('mcp_record_activity', {
+              p_activity_type: args.activity_type,
+              p_title: args.title,
+              p_summary: args.summary ?? null,
+              p_channel: args.channel ?? null,
+              p_entity_type: args.entity_type ?? null,
+              p_entity_id: args.entity_id ?? null,
+              p_status: args.status ?? null,
+              p_source_url: args.source_url ?? null,
+              p_next_action_at: args.next_action_at ?? null,
+              p_metadata: args.metadata ?? {},
+            })
+            if (error) throw new Error(error.message)
+            return result(data)
+          },
+        )
+
+        server.registerTool(
+          'list_activities',
+          {
+            title: 'List Operational Activities',
+            description: 'Read the persistent SC-Analytics activity timeline across chats and external actions.',
+            inputSchema: z.object({
+              start_at: z.string().datetime({ offset: true }).optional(),
+              end_at: z.string().datetime({ offset: true }).optional(),
+              entity_type: z.string().optional(),
+              entity_id: z.string().optional(),
+              limit: z.number().int().min(1).max(200).default(50),
+            }),
+            annotations: { readOnlyHint: true, openWorldHint: false },
+          },
+          async ({ start_at, end_at, entity_type, entity_id, limit }) => {
+            await ensureAuthorized()
+            let query = supabase
+              .from('sc_operational_activities')
+              .select('*')
+              .eq('tenant_id', 'sc-analytics')
+              .order('occurred_at', { ascending: false })
+              .limit(limit)
+            if (start_at) query = query.gte('occurred_at', start_at)
+            if (end_at) query = query.lt('occurred_at', end_at)
+            if (entity_type) query = query.eq('entity_type', entity_type)
+            if (entity_id) query = query.eq('entity_id', entity_id)
+            const { data, error } = await query
+            if (error) throw new Error(error.message)
+            return result({ activities: data })
+          },
+        )
+
+        server.registerTool(
+          'create_followup',
+          {
+            title: 'Create Follow-up',
+            description: 'Create a persistent SC-Analytics follow-up or next action tied to a person, company, opportunity, Upwork job, publication or other entity.',
+            inputSchema: z.object({
+              title: z.string().min(1),
+              due_at: z.string().datetime({ offset: true }).optional(),
+              entity_type: z.string().optional(),
+              entity_id: z.string().optional(),
+              priority: z.enum(['low', 'normal', 'high', 'urgent']).default('normal'),
+              notes: z.string().optional(),
+              source_activity_id: z.string().uuid().optional(),
+              metadata: z.record(z.string(), z.unknown()).optional(),
+            }),
+            annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
+          },
+          async (args) => {
+            await ensureAuthorized()
+            const { data, error } = await supabase.rpc('mcp_create_followup', {
+              p_title: args.title,
+              p_due_at: args.due_at ?? null,
+              p_entity_type: args.entity_type ?? null,
+              p_entity_id: args.entity_id ?? null,
+              p_priority: args.priority,
+              p_notes: args.notes ?? null,
+              p_source_activity_id: args.source_activity_id ?? null,
+              p_metadata: args.metadata ?? {},
+            })
+            if (error) throw new Error(error.message)
+            return result(data)
+          },
+        )
+
+        server.registerTool(
+          'list_followups',
+          {
+            title: 'List Follow-ups',
+            description: 'List persistent SC-Analytics follow-ups so the assistant can surface what is pending, overdue or coming next.',
+            inputSchema: z.object({
+              status: z.enum(['open', 'completed', 'cancelled']).default('open'),
+              due_before: z.string().datetime({ offset: true }).optional(),
+              entity_type: z.string().optional(),
+              limit: z.number().int().min(1).max(200).default(50),
+            }),
+            annotations: { readOnlyHint: true, openWorldHint: false },
+          },
+          async ({ status, due_before, entity_type, limit }) => {
+            await ensureAuthorized()
+            let query = supabase
+              .from('sc_followups')
+              .select('*')
+              .eq('tenant_id', 'sc-analytics')
+              .eq('status', status)
+              .order('due_at', { ascending: true, nullsFirst: false })
+              .limit(limit)
+            if (due_before) query = query.lte('due_at', due_before)
+            if (entity_type) query = query.eq('entity_type', entity_type)
+            const { data, error } = await query
+            if (error) throw new Error(error.message)
+            return result({ followups: data })
+          },
+        )
+
+        server.registerTool(
+          'complete_followup',
+          {
+            title: 'Complete Follow-up',
+            description: 'Mark one persistent SC-Analytics follow-up as completed and optionally record the resolution.',
+            inputSchema: z.object({
+              followup_id: z.string().uuid(),
+              resolution: z.string().optional(),
+            }),
+            annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
+          },
+          async ({ followup_id, resolution }) => {
+            await ensureAuthorized()
+            const { data, error } = await supabase.rpc('mcp_complete_followup', {
+              p_followup_id: followup_id,
+              p_resolution: resolution ?? null,
+            })
+            if (error) throw new Error(error.message)
+            return result(data)
+          },
+        )
+
+        server.registerTool(
+          'get_daily_brief',
+          {
+            title: 'Get SC-Analytics Daily Brief',
+            description: 'Collect the persistent state needed for an executive daily brief: what happened in the requested day window, pending follow-ups, upcoming meetings, scheduled publications, active opportunities and recent MCP writes.',
+            inputSchema: z.object({
+              day_start: z.string().datetime({ offset: true }),
+              day_end: z.string().datetime({ offset: true }),
+              upcoming_until: z.string().datetime({ offset: true }),
+              limit: z.number().int().min(1).max(100).default(50),
+            }),
+            annotations: { readOnlyHint: true, openWorldHint: false },
+          },
+          async ({ day_start, day_end, upcoming_until, limit }) => {
+            await ensureAuthorized()
+
+            const [
+              activitiesResult,
+              followupsResult,
+              meetingsResult,
+              publicationsResult,
+              opportunitiesResult,
+              actionsResult,
+            ] = await Promise.all([
+              supabase
+                .from('sc_operational_activities')
+                .select('*')
+                .eq('tenant_id', 'sc-analytics')
+                .gte('occurred_at', day_start)
+                .lt('occurred_at', day_end)
+                .order('occurred_at', { ascending: false })
+                .limit(limit),
+              supabase
+                .from('sc_followups')
+                .select('*')
+                .eq('tenant_id', 'sc-analytics')
+                .eq('status', 'open')
+                .or(`due_at.is.null,due_at.lte.${upcoming_until}`)
+                .order('due_at', { ascending: true, nullsFirst: false })
+                .limit(limit),
+              supabase
+                .from('crm_meetings')
+                .select('*')
+                .eq('tenant_id', 'sc-analytics')
+                .neq('status', 'cancelled')
+                .gte('starts_at', day_start)
+                .lte('starts_at', upcoming_until)
+                .order('starts_at', { ascending: true })
+                .limit(limit),
+              supabase
+                .from('content_items')
+                .select('content_id,title,status,channel,content_type,scheduled_at,published_at')
+                .eq('tenant_id', 'sc-analytics')
+                .in('status', ['approved', 'scheduled'])
+                .gte('scheduled_at', day_start)
+                .lte('scheduled_at', upcoming_until)
+                .order('scheduled_at', { ascending: true })
+                .limit(limit),
+              supabase
+                .from('crm_opportunities')
+                .select('*')
+                .eq('tenant_id', 'sc-analytics')
+                .not('stage', 'in', '("lost","won","archived")')
+                .order('updated_at', { ascending: false })
+                .limit(limit),
+              supabase
+                .from('mcp_action_log')
+                .select('action_id,tool_name,action,target_type,target_id,metadata,created_at')
+                .gte('created_at', day_start)
+                .lt('created_at', day_end)
+                .order('created_at', { ascending: false })
+                .limit(limit),
+            ])
+
+            for (const item of [activitiesResult, followupsResult, meetingsResult, publicationsResult, opportunitiesResult, actionsResult]) {
+              if (item.error) throw new Error(item.error.message)
+            }
+
+            return result({
+              window: { day_start, day_end, upcoming_until },
+              activities: activitiesResult.data,
+              followups: followupsResult.data,
+              meetings: meetingsResult.data,
+              publications: publicationsResult.data,
+              opportunities: opportunitiesResult.data,
+              mcp_actions: actionsResult.data,
+            })
+          },
+        )
+
+        server.registerTool(
+          'sync_google_metrics',
+          {
+            title: 'Sync GA4 and Search Console',
+            description: 'Refresh SC-Analytics GA4 and Google Search Console data through the authenticated CMI backend, persist the new metrics, and return the sync result.',
+            inputSchema: z.object({
+              days: z.number().int().min(7).max(730).default(365),
+            }),
+            annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: true },
+          },
+          async ({ days }) => {
+            await ensureAuthorized()
+            const authorization = req.headers.get('authorization') || ''
+            if (!authorization) throw new Error('Authenticated MCP bearer token is not available')
+            const response = await fetch(`${CMI_BASE_URL}/api/growth-admin/metrics/sync-mcp`, {
+              method: 'POST',
+              headers: {
+                Authorization: authorization,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ days }),
+            })
+            const body = await response.json().catch(() => ({}))
+            if (!response.ok) throw new Error(String((body as any)?.error || `CMI metrics sync failed: ${response.status}`))
+            return result(body)
           },
         )
 
