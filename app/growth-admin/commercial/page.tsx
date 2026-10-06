@@ -28,8 +28,11 @@ export default async function CommercialPage() {
     .filter((item) => !['lost', 'won', 'archived'].includes(String(item.stage || '').toLowerCase()))
     .sort((a,b) => String(b.updated_at || '').localeCompare(String(a.updated_at || '')))
 
+  // Server-rendered opportunity view intentionally evaluates the current instant on each dynamic request.
+  // eslint-disable-next-line react-hooks/purity
+  const nowMs = Date.now()
   const upcomingMeetings = meetings
-    .filter((item) => item.starts_at && new Date(item.starts_at).getTime() >= Date.now() && item.status !== 'cancelled')
+    .filter((item) => item.starts_at && new Date(item.starts_at).getTime() >= nowMs && item.status !== 'cancelled')
     .sort((a,b) => String(a.starts_at).localeCompare(String(b.starts_at)))
 
   const latestActivityByOpportunity = new Map<string, (typeof activities)[number]>()
