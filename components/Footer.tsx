@@ -58,14 +58,19 @@ export default function Footer() {
             <Link href="/about" className="transition hover:text-white">{t.why}</Link>
           </nav>
 
-          <Link href="/contact" className="inline-flex justify-center border border-[#A8BACB] px-4 py-2.5 text-[14px] font-semibold text-white transition hover:bg-white/5">
-            {t.contact} →
-          </Link>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-3 lg:flex-col lg:items-stretch">
+            <a href="https://www.linkedin.com/company/sc-analytics/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 text-[14px] font-medium text-white underline-offset-4 hover:underline">
+              <span aria-hidden="true" className="inline-flex h-5 w-5 items-center justify-center rounded-sm border border-current text-xs font-bold">in</span>
+              SC-Analytics · LinkedIn ↗
+            </a>
+            <Link href="/contact" className="inline-flex justify-center border border-[#A8BACB] px-4 py-2.5 text-[14px] font-semibold text-white transition hover:bg-white/5">
+              {t.contact} →
+            </Link>
+          </div>
         </div>
 
         <div className="mt-4 flex flex-col gap-2 border-t border-[#496C8A] pt-3 text-[12px] text-[#A8BACB] sm:flex-row sm:items-center sm:justify-between">
           <p>{t.rights}</p>
-          <a href="https://linkedin.com/in/arnausastre" target="_blank" rel="noopener noreferrer" className="font-medium text-[#EAF0F6] underline-offset-4 hover:underline">Arnau Sastre · LinkedIn ↗</a>
         </div>
       </div>
     </footer>
