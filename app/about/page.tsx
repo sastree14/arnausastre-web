@@ -1,5 +1,6 @@
 'use client'
 
+import HeroBrandSeal from '@/components/HeroBrandSeal'
 import Link from 'next/link'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
@@ -149,7 +150,8 @@ export default function AboutPage() {
 
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
-      <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
+      <section className="branded-hero border-b border-[#496C8A] bg-[#0D1B2A] text-white">
+        <HeroBrandSeal />
         <div className="site-container py-16 text-center md:py-20">
           <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#C7D9E8]">{t.eyebrow}</p>
           <h1 className="mx-auto mt-5 max-w-5xl text-[44px] leading-[1.04] tracking-[-0.03em] sm:text-[56px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>

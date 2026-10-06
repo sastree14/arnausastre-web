@@ -1,5 +1,6 @@
 'use client'
 
+import HeroBrandSeal from '@/components/HeroBrandSeal'
 import { useEffect, useMemo, useState } from 'react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
@@ -258,7 +259,8 @@ export default function ContactPage() {
 
   return (
     <main className="bg-[#F7F9FC] text-slate-950">
-      <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
+      <section className="branded-hero border-b border-[#496C8A] bg-[#0D1B2A] text-white">
+        <HeroBrandSeal />
         <div className="site-container public-hero py-14 md:py-16">
           <div className="text-center">
             <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>

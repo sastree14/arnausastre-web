@@ -1,5 +1,6 @@
 'use client'
 
+import HeroBrandSeal from '@/components/HeroBrandSeal'
 import Link from 'next/link'
 import ProcessSequence from '@/components/ProcessSequence'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
@@ -222,7 +223,8 @@ export default function HomePage() {
 
   return (
     <main className="bg-white text-slate-950">
-      <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
+      <section className="branded-hero border-b border-[#496C8A] bg-[#0D1B2A] text-white">
+        <HeroBrandSeal />
         <div className="site-container public-hero py-16 md:py-20">
           <div className="flex flex-col items-center justify-center text-center">
             <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#C7D9E8]">{t.eyebrow}</p>

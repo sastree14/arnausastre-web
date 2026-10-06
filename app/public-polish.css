@@ -65,3 +65,12 @@
 .site-public .home-route-card:is(:hover, :focus-visible) { background: #DCE7F0; }
 @media (min-width: 768px) { .site-public .home-route-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1024px) { .site-public .home-route-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Brand signature has its own space above every main public hero. */
+.site-public .branded-hero { position: relative; }
+.site-public .branded-hero > .site-container:not(.hero-brand-seal) { padding-top: 146px; }
+.site-public .hero-brand-seal { position: absolute; inset-inline: 0; top: 22px; display: flex; justify-content: center; pointer-events: none; }
+.site-public .hero-brand-signature { width: 116px; display: flex; flex-direction: column; align-items: center; gap: 6px; color: #EAF0F6; }
+.site-public .hero-brand-monogram { width: 66px; height: auto; mix-blend-mode: screen; }
+.site-public .hero-brand-signature span { font: 500 12px var(--font-inter), sans-serif; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+@media (min-width: 768px) { .site-public .hero-brand-seal { justify-content: flex-start; } }

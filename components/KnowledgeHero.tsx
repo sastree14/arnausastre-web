@@ -1,5 +1,6 @@
 'use client'
 
+import HeroBrandSeal from '@/components/HeroBrandSeal'
 import Link from 'next/link'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
@@ -34,7 +35,8 @@ export default function KnowledgeHero() {
   const t = COPY[lang]
 
   return (
-    <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
+    <section className="branded-hero border-b border-[#496C8A] bg-[#0D1B2A] text-white">
+        <HeroBrandSeal />
       <div className="site-container flex flex-col items-center gap-9 py-14 text-center md:py-16">
         <div className="max-w-5xl">
           <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.label}</p>
