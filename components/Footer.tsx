@@ -43,11 +43,11 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-[#496C8A] bg-[#0D1B2A] text-white">
-      <div className="site-container py-8">
-        <div className="grid gap-7 lg:grid-cols-[.8fr_1.2fr_auto] lg:items-center">
+      <div className="site-container py-5">
+        <div className="grid gap-4 lg:grid-cols-[.8fr_1.2fr_auto] lg:items-center">
           <div>
-            <Image src="/brand/logo-horizontal-transparent.png" alt="SC-Analytics" width={344} height={224} className="h-9 w-auto" />
-            <p className="mt-3 max-w-sm text-[15px] leading-6 text-[#A8BACB]">{t.statement}</p>
+            <Image src="/brand/logo-white.png" alt="SC-Analytics" width={1536} height={1024} className="h-16 w-auto" />
+            <p className="mt-1 max-w-sm text-[14px] leading-5 text-[#A8BACB]">{t.statement}</p>
           </div>
 
           <nav className="flex flex-wrap gap-x-5 gap-y-2 text-[14px] text-[#A8BACB]">
@@ -63,9 +63,9 @@ export default function Footer() {
           </Link>
         </div>
 
-        <div className="mt-7 flex flex-col gap-2 border-t border-[#496C8A] pt-4 text-[14px] text-[#718AA1] sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-4 flex flex-col gap-2 border-t border-[#496C8A] pt-3 text-[12px] text-[#A8BACB] sm:flex-row sm:items-center sm:justify-between">
           <p>{t.rights}</p>
-          <a href="https://linkedin.com/in/arnausastre" target="_blank" rel="noreferrer" className="transition hover:text-[#A8BACB]">LinkedIn ↗</a>
+          <a href="https://linkedin.com/in/arnausastre" target="_blank" rel="noopener noreferrer" className="font-medium text-[#EAF0F6] underline-offset-4 hover:underline">Arnau Sastre · LinkedIn ↗</a>
         </div>
       </div>
     </footer>

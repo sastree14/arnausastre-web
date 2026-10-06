@@ -1,13 +1,10 @@
 import Image from 'next/image'
 
-/** A restrained signature shared by the main public page introductions. */
+/** Use the repository's transparent white brand lockup on dark introductions. */
 export default function HeroBrandSeal() {
   return (
     <div className="hero-brand-seal site-container">
-      <div className="hero-brand-signature" aria-label="SC-Analytics">
-        <Image src="/brand/Monograma-transparent.png" alt="" width={254} height={227} className="hero-brand-monogram" />
-        <span>SC-Analytics</span>
-      </div>
+      <Image src="/brand/logo-white.png" alt="SC-Analytics" width={1536} height={1024} className="hero-brand-logo" />
     </div>
   )
 }

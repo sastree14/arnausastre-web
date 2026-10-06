@@ -65,7 +65,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-white/95 shadow-[0_1px_0_rgba(15,23,42,0.08)] backdrop-blur">
       <div className="site-container flex items-center justify-between py-3">
         <Link href="/" className="flex shrink-0 items-center" aria-label="SC-Analytics home">
-          <Image src="/brand/logo-horizontal.png" alt="SC-Analytics" width={344} height={224} className="h-9 w-auto" priority />
+          <Image src="/brand/logo-white.png" alt="SC-Analytics" width={1536} height={1024} className="h-14 w-auto brightness-0" priority />
         </Link>
 
         <nav className="hidden items-center xl:flex">
