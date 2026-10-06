@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import ProcessSequence from '@/components/ProcessSequence'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
 const COPY = {
@@ -146,12 +147,6 @@ const fitPalette = [
   { bg: '#EAF0F6', border: '#CBD5E1' },
 ]
 
-const modelPalette = [
-  { bg: '#F4F1EA', border: '#CBD5E1' },
-  { bg: '#EAF0F6', border: '#CBD5E1' },
-  { bg: '#F4F1EA', border: '#CBD5E1' },
-  { bg: '#EAF0F6', border: '#CBD5E1' },
-]
 
 export default function AnalyticalPartnerPage() {
   const { lang } = useSiteLanguage()
@@ -160,7 +155,7 @@ export default function AnalyticalPartnerPage() {
   return (
     <main className="bg-white text-slate-950">
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-        <div className="site-container grid gap-12 py-16 md:py-20 lg:grid-cols-[1.08fr_.92fr] lg:items-start">
+        <div className="site-container public-hero py-16 md:py-20">
           <div className="text-center">
             <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
             <h1 className="mx-auto mt-5 max-w-5xl text-[44px] leading-[1.04] tracking-[-0.03em] sm:text-[56px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
@@ -171,17 +166,21 @@ export default function AnalyticalPartnerPage() {
             </div>
           </div>
 
-          <div>
-            <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.valueLabel}</p>
-            <div className="mt-5 border-t border-[#496C8A]">
-              {t.value.map((item, index) => (
-                <div key={item} className="grid min-h-[78px] grid-cols-[48px_1fr] items-center gap-4 border-b border-[#496C8A] py-4">
-                  <span className="font-mono text-[14px] font-semibold text-[#7A7DFF]">0{index + 1}</span>
-                  <p className="text-[17px] font-semibold leading-7 text-white">{item}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+
+        </div>
+      </section>
+
+      <section className="border-b border-slate-300 bg-[#F7F9FC]">
+        <div className="site-container py-12 md:py-14">
+          <h2 className="text-center text-[32px] leading-tight sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.valueLabel}</h2>
+          <ul className="mt-8 grid border-l border-t border-slate-300 md:grid-cols-2 lg:grid-cols-4">
+            {t.value.map((item, index) => (
+              <li key={item} className="border-b border-r border-slate-300 bg-white p-7">
+                <span aria-hidden="true" className="font-mono text-[14px] font-semibold text-[#254A66]">0{index + 1}</span>
+                <p className="mt-5 text-[19px] font-semibold leading-7 text-[#0D1B2A]">{item}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -216,22 +215,8 @@ export default function AnalyticalPartnerPage() {
             <h2 className="mx-auto mt-4 max-w-4xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.modelTitle}</h2>
           </div>
 
-          <div className="mt-9 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-            {t.model.map(([number, title], index) => {
-              const palette = modelPalette[index]
-              return (
-                <article
-                  key={number}
-                  className="grid min-h-[180px] grid-rows-[auto_1fr] border p-6"
-                  style={{ backgroundColor: palette.bg, borderColor: palette.border }}
-                >
-                  <span className="font-mono text-[14px] font-semibold text-[#254A66]">{number}</span>
-                  <div className="flex items-center justify-center px-2 text-center">
-                    <h3 className="max-w-[18ch] text-[22px] font-semibold leading-7 text-[#0D1B2A]">{title}</h3>
-                  </div>
-                </article>
-              )
-            })}
+          <div className="mt-9">
+            <ProcessSequence steps={t.model.map(([number, title]) => [number, title, ''] as const)} />
           </div>
         </div>
       </section>

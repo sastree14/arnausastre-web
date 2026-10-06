@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import ProcessSequence from '@/components/ProcessSequence'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
 const COPY = {
@@ -72,14 +73,6 @@ const COPY = {
       ['LinkedIn', 'https://linkedin.com/in/arnausastre', true],
       ['Ver artículos', '/knowledge', false],
       ['Hablar con nosotros', '/contact', false],
-    ],
-
-    flowLabel: 'DE PROBLEMA A IMPACTO',
-    flowTitle: 'Del problema al impacto.',
-    flow: [
-      ['Problema', 'Definimos el objetivo, las restricciones y los datos disponibles.'],
-      ['Sistema', 'Construimos e integramos los modelos y las herramientas necesarios.'],
-      ['Impacto', 'Validamos los resultados y seguimos su evolución en la operación.'],
     ],
 
     ctaKicker: 'SIN COMPROMISO',
@@ -158,14 +151,6 @@ const COPY = {
       ['Parlar amb nosaltres', '/contact', false],
     ],
 
-    flowLabel: 'DE PROBLEMA A IMPACTE',
-    flowTitle: 'Del problema a l’impacte.',
-    flow: [
-      ['Problema', 'Definim l’objectiu, les restriccions i les dades disponibles.'],
-      ['Sistema', 'Construïm i integrem els models i les eines necessaris.'],
-      ['Impacte', 'Validem els resultats i en seguim l’evolució en l’operació.'],
-    ],
-
     ctaKicker: 'SENSE COMPROMÍS',
     ctaTitle: 'Explica’ns la teva empresa i veiem com et podem ajudar.',
     cta: 'Explica’ns el teu cas',
@@ -242,14 +227,6 @@ const COPY = {
       ['Talk to us', '/contact', false],
     ],
 
-    flowLabel: 'FROM PROBLEM TO IMPACT',
-    flowTitle: 'From problem to impact.',
-    flow: [
-      ['Problem', 'We define the objective, constraints and available data.'],
-      ['System', 'We build and integrate the models and tools required.'],
-      ['Impact', 'We validate results and monitor their performance in operation.'],
-    ],
-
     ctaKicker: 'NO COMMITMENT',
     ctaTitle: 'Tell us about your business and explore how we can help.',
     cta: 'Tell us about your case',
@@ -258,8 +235,8 @@ const COPY = {
 } as const
 
 const toneClasses = {
-  paper: 'bg-[#F4F1EA] text-slate-950 hover:bg-[#F4F1EA]',
-  lavender: 'bg-[#F4F1EA] text-slate-950 hover:bg-[#F4F1EA]',
+  paper: 'bg-[#EAF0F6] text-slate-950 hover:bg-[#DCE7F0]',
+  lavender: 'bg-white text-slate-950 hover:bg-[#EAF0F6]',
   white: 'bg-white text-slate-950 hover:bg-slate-50',
   blue: 'bg-[#EAF0F6] text-slate-950 hover:bg-[#EAF0F6]',
 } as const
@@ -271,10 +248,10 @@ export default function HomePage() {
   return (
     <main className="bg-white text-slate-950">
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-        <div className="site-container grid gap-12 py-16 md:py-20 lg:grid-cols-[1.08fr_.92fr] lg:items-stretch">
+        <div className="site-container public-hero py-16 md:py-20">
           <div className="flex flex-col items-center justify-center text-center">
             <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
-            <h1 className="mt-5 max-w-4xl text-[46px] leading-[1.02] tracking-[-0.03em] text-white sm:text-[58px] lg:text-[68px]" style={{ fontFamily: 'var(--font-playfair)' }}>
+            <h1 className="mt-5 max-w-6xl text-[46px] leading-[1.02] tracking-[-0.03em] text-white sm:text-[58px] lg:text-[68px]" style={{ fontFamily: 'var(--font-playfair)' }}>
               {t.title}
             </h1>
             <p className="mt-6 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
@@ -285,23 +262,23 @@ export default function HomePage() {
             <p className="mt-5 text-[14px] font-medium uppercase tracking-[0.12em] text-[#7F9BB5]">{t.note}</p>
           </div>
 
-          <aside className="flex h-full flex-col border-t border-[#5E86A8] pt-5">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{t.snapshotLabel}</p>
-            <h2 className="mt-3 max-w-xl text-[30px] leading-[1.1] text-white sm:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.snapshotTitle}</h2>
-            <div className="mt-5 grid flex-1 grid-rows-4 border-t border-[#496C8A]">
-              {t.snapshotRows.map(([title, body], index) => (
-                <div key={title} className="grid min-h-[74px] grid-cols-[34px_112px_1fr] items-center gap-3 border-b border-[#496C8A] py-3.5">
-                  <span className="font-mono text-[14px] text-[#7F9BB5]">0{index + 1}</span>
-                  <p className="text-[16px] font-semibold text-white">{title}</p>
-                  <p className="text-[16px] leading-6 text-[#D5E1EB]">{body}</p>
-                </div>
-              ))}
-            </div>
-          </aside>
+
         </div>
       </section>
 
-      <section className="border-b border-slate-300 bg-[#FAFAF7]">
+      <section className="border-b border-slate-300 bg-white">
+        <div className="site-container py-14 md:py-16">
+          <div className="text-center">
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.snapshotLabel}</p>
+            <h2 className="mx-auto mt-3 max-w-5xl text-[36px] leading-tight sm:text-[44px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.snapshotTitle}</h2>
+          </div>
+          <div className="mt-9">
+            <ProcessSequence steps={t.snapshotRows.map(([title, body], index) => [String(index + 1).padStart(2, '0'), title, body] as const)} />
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-300 bg-[#F7F9FC]">
         <div className="site-container py-14 md:py-16">
           <div className="text-center">
             <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.exploreLabel}</p>
@@ -337,39 +314,15 @@ export default function HomePage() {
             <div className="flex flex-wrap border-t border-slate-300 lg:border-l lg:border-t-0">
               {t.stayLinks.map(([label, href, external]) => (
                 external
-                  ? <a key={href} href={href} target="_blank" rel="noreferrer" className="border-r border-slate-300 px-5 py-5 text-[14px] font-semibold text-slate-800 transition hover:bg-[#FAFAF7]">{label} ↗</a>
-                  : <Link key={href} href={href} className="border-r border-slate-300 px-5 py-5 text-[14px] font-semibold text-slate-800 transition hover:bg-[#FAFAF7]">{label} →</Link>
+                  ? <a key={href} href={href} target="_blank" rel="noreferrer" className="border-r border-slate-300 px-5 py-5 text-[14px] font-semibold text-slate-800 transition hover:bg-[#F7F9FC]">{label} ↗</a>
+                  : <Link key={href} href={href} className="border-r border-slate-300 px-5 py-5 text-[14px] font-semibold text-slate-800 transition hover:bg-[#F7F9FC]">{label} →</Link>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section className="border-b border-slate-300 bg-white">
-        <div className="site-container py-14 md:py-16">
-          <div className="text-center">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.flowLabel}</p>
-            <h2 className="mx-auto mt-3 max-w-4xl text-[34px] leading-[1.07] tracking-[-0.02em] text-slate-950 sm:text-[42px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.flowTitle}</h2>
-          </div>
-
-          <div className="mx-auto mt-8 grid max-w-5xl border-l border-t border-slate-300 lg:grid-cols-3">
-            {t.flow.map(([title, body], index) => {
-              const system = index === 1
-              return (
-                <div
-                  key={title}
-                  className={`flex min-h-[230px] flex-col items-center justify-start border-b border-r p-7 text-center ${system ? 'border-[#254A66] bg-[#254A66]' : 'border-slate-300 bg-white'}`}
-                >
-                  <h3 className={`min-h-[40px] text-[31px] leading-tight ${system ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
-                  <p className={`mt-4 max-w-[270px] text-[17px] font-medium leading-7 ${system ? 'text-[#EAF0F6]' : 'text-slate-800'}`}>{body}</p>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-slate-300 bg-[#F4F1EA]">
+      <section className="border-b border-slate-300 bg-[#EAF0F6]">
         <div className="site-container py-10 md:py-12">
           <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.ctaKicker}</p>
           <h2 className="mt-3 max-w-6xl text-[34px] font-medium leading-tight text-slate-950 sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import ProcessSequence from '@/components/ProcessSequence'
 import { SERVICES_PROCESS } from '@/lib/services-process'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
@@ -17,10 +18,10 @@ const COPY = {
     capabilitiesLabel: 'EN QUÉ NOS ESPECIALIZAMOS',
     capabilitiesTitle: 'Nuestras especialidades.',
     capabilities: [
-      ['Forecasting & planning', 'Previsión y planificación para decidir con más anticipación.'],
-      ['Optimización', 'Modelos para asignar mejor recursos, rutas, capacidad o presupuesto.'],
-      ['Machine learning', 'Predicción, clasificación y priorización cuando el error puede medirse.'],
-      ['Inteligencia artificial y automatización', 'Procesos más ágiles, menos trabajo manual y sistemas más escalables.'],
+      ['Forecasting & planning', 'Previsiones de variables y escenarios para anticipar su evolución.'],
+      ['Optimización', 'Modelos para elegir la mejor alternativa según objetivos y restricciones.'],
+      ['Machine learning', 'Modelos que aprenden de los datos para predecir y detectar patrones.'],
+      ['Inteligencia artificial y automatización', 'Soluciones de IA y automatización adaptadas a tus procesos y herramientas.'],
       ['Analytics & BI', 'Visibilidad clara para seguir operaciones, rendimiento y decisiones.'],
       ['Simulación y modelización', 'Escenarios y modelos para decidir antes de cambiar una operación real.'],
     ],
@@ -74,10 +75,10 @@ const COPY = {
     capabilitiesLabel: 'EN QUÈ ENS ESPECIALITZEM',
     capabilitiesTitle: 'Les nostres especialitats.',
     capabilities: [
-      ['Forecasting & planning', 'Previsió i planificació per decidir amb més anticipació.'],
-      ['Optimització', 'Models per assignar millor recursos, rutes, capacitat o pressupost.'],
-      ['Machine learning', 'Predicció, classificació i priorització quan l’error es pot mesurar.'],
-      ['Intel·ligència artificial i automatització', 'Processos més àgils, menys feina manual i sistemes més escalables.'],
+      ['Forecasting & planning', 'Previsions de variables i escenaris per anticipar-ne l’evolució.'],
+      ['Optimització', 'Models per escollir la millor alternativa segons objectius i restriccions.'],
+      ['Machine learning', 'Models que aprenen de les dades per predir i detectar patrons.'],
+      ['Intel·ligència artificial i automatització', 'Solucions d’IA i automatització adaptades als teus processos i eines.'],
       ['Analytics & BI', 'Visibilitat clara per seguir operacions, rendiment i decisions.'],
       ['Simulació i modelització', 'Escenaris i models per decidir abans de canviar una operació real.'],
     ],
@@ -131,10 +132,10 @@ const COPY = {
     capabilitiesLabel: 'WHAT WE SPECIALISE IN',
     capabilitiesTitle: 'Our specialisms.',
     capabilities: [
-      ['Forecasting & planning', 'Forecasting and planning for earlier, better-informed decisions.'],
-      ['Optimisation', 'Models for allocating resources, routes, capacity or budget more effectively.'],
-      ['Machine learning', 'Prediction, classification and prioritisation when the cost of error can be measured.'],
-      ['Artificial intelligence & automation', 'Faster processes, less manual work and more scalable systems.'],
+      ['Forecasting & planning', 'Forecasts of variables and scenarios to anticipate how they evolve.'],
+      ['Optimisation', 'Models for selecting the best alternative given objectives and constraints.'],
+      ['Machine learning', 'Models that learn from data to predict outcomes and detect patterns.'],
+      ['Artificial intelligence & automation', 'AI and automation solutions tailored to your processes and tools.'],
       ['Analytics & BI', 'Clear visibility into operations, performance and decisions.'],
       ['Simulation & modelling', 'Scenarios and models for deciding before changing a real operation.'],
     ],
@@ -205,20 +206,7 @@ export default function ServicesPage() {
             <h2 className="mx-auto mt-3 max-w-4xl text-[36px] leading-[1.06] tracking-[-0.02em] sm:text-[44px]" style={{ fontFamily: 'var(--font-playfair)' }}>{process.title}</h2>
           </div>
 
-          <ol className="service-process mt-9">
-            {process.steps.map(([number, title, body], index) => (
-              <li key={number} className="service-step">
-                <p aria-hidden="true" className="font-mono text-[14px] font-semibold text-[#254A66]">{number}</p>
-                <h3 className="mt-4 text-[26px] leading-tight text-[#0D1B2A]" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
-                <p className="mx-auto mt-4 max-w-[34ch] text-[16px] leading-7 text-slate-700">{body}</p>
-                {index < process.steps.length - 1 && (
-                  <svg aria-hidden="true" focusable="false" className="service-connector" viewBox="0 0 24 12" fill="none">
-                    <path d="M0 6H23M18 1L23 6L18 11" stroke="currentColor" strokeWidth="1.5" />
-                  </svg>
-                )}
-              </li>
-            ))}
-          </ol>
+          <div className="mt-9"><ProcessSequence steps={process.steps} /></div>
         </div>
       </section>
 

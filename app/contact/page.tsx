@@ -259,27 +259,28 @@ export default function ContactPage() {
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
-        <div className="site-container grid gap-12 py-14 md:py-16 lg:grid-cols-[1.08fr_.92fr] lg:items-start">
+        <div className="site-container public-hero py-14 md:py-16">
           <div className="text-center">
             <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
             <h1 className="mt-4 text-[46px] leading-[1.04] tracking-[-0.03em] sm:text-[58px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
             <p className="mx-auto mt-5 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
           </div>
 
-          <aside>
-            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#7A7DFF]">{t.expectLabel}</p>
-            <div className="mt-4">
-              {t.expect.map(([value, body], index) => (
-                <div
-                  key={value}
-                  className={`grid min-h-[76px] grid-cols-[150px_1fr] items-center gap-5 border-t border-[#496C8A] py-4 ${index === t.expect.length - 1 ? 'border-b' : ''}`}
-                >
-                  <p className="whitespace-nowrap text-[17px] font-semibold text-white">{value}</p>
-                  <p className="text-[16px] leading-6 text-[#D5E1EB]">{body}</p>
-                </div>
-              ))}
-            </div>
-          </aside>
+
+        </div>
+      </section>
+
+      <section className="border-b border-slate-300 bg-[#F7F9FC]">
+        <div className="site-container py-10 md:py-12">
+          <h2 className="text-center text-[30px] leading-tight sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.expectLabel}</h2>
+          <div className="mt-7 grid border-l border-t border-slate-300 md:grid-cols-3">
+            {t.expect.map(([value, body]) => (
+              <div key={value} className="border-b border-r border-slate-300 bg-white p-7 text-center">
+                <h3 className="text-[24px] font-semibold text-[#0D1B2A]">{value}</h3>
+                <p className="mt-3 text-[17px] leading-7 text-slate-700">{body}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

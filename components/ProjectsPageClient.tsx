@@ -134,22 +134,11 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
     <main className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-slate-300">
         <div className="site-container pb-9 pt-11 lg:pb-10 lg:pt-12">
-          <div className="grid gap-6 lg:grid-cols-[clamp(150px,11vw,190px)_minmax(0,1fr)] lg:items-end">
-            <div>
-              <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#4F46E5]">{t.label}</p>
-              <p className="mt-4 font-mono text-[14px] text-slate-500">
-                {String(projects.length).padStart(2, '0')} {c.count}
-              </p>
-            </div>
-            <div>
-              <h1
-                className="max-w-5xl text-[38px] leading-[1.02] tracking-[-0.025em] text-slate-950 sm:text-[44px] lg:text-[clamp(44px,3vw,54px)]"
-                style={{ fontFamily: 'var(--font-playfair)' }}
-              >
-                {t.title}
-              </h1>
-              <p className="mt-3 max-w-4xl text-[15px] leading-7 text-slate-600">{c.instruction}</p>
-            </div>
+          <div className="public-hero text-center">
+            <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#254A66]">{t.label}</p>
+            <h1 className="mx-auto mt-5 text-slate-950 tracking-[-0.025em]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
+            <p className="mx-auto mt-5 max-w-4xl text-[19px] leading-8 text-slate-600">{c.instruction}</p>
+            <p className="mt-5 font-mono text-[14px] text-[#254A66]">{String(projects.length).padStart(2, '0')} {c.count}</p>
           </div>
         </div>
       </section>
