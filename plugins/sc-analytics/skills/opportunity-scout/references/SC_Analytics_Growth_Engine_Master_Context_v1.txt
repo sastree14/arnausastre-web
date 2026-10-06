@@ -1,0 +1,999 @@
+# SC-ANALYTICS — GROWTH ENGINE
+## Master Context v1
+### Contexto maestro para búsqueda de oportunidades, cualificación, aplicaciones, outreach y desarrollo comercial
+
+## 0. Propósito
+Este documento es la fuente de contexto maestra para cualquier chat, agente, tarea programada o flujo relacionado con crecimiento comercial, búsqueda de oportunidades, Upwork, partnerships, clientes directos, aplicaciones, outreach y seguimiento comercial de SC-Analytics.
+
+No es una descripción comercial breve. Debe funcionar como memoria operativa extensa de la empresa: qué es SC-Analytics, cómo piensa, qué sabe hacer, qué experiencia puede defender, qué no debe inventar, qué tipo de clientes busca, cómo se posiciona Arnau Sastre, qué papel juega el equipo, qué activos técnicos y comerciales existen, qué repositorios pueden consultarse y qué lógica debe seguirse al decidir si una oportunidad merece tiempo, Connects, preparación de una proposal, una llamada o contacto directo.
+
+Este contexto sirve como base, pero no sustituye la verificación de fuentes actuales. Cuando una oportunidad dependa de información reciente, debe revisarse la web, Upwork, GitHub, documentos del proyecto u otras fuentes disponibles antes de hacer afirmaciones concretas.
+
+Reglas de marca:
+- El nombre correcto es SC-Analytics.
+- No utilizar “Sales Analytics” como nombre de empresa salvo instrucción explícita de Arnau; normalmente es un error de dictado.
+- Arnau Sastre es fundador y responsable directo de SC-Analytics.
+
+## 1. Identidad de SC-Analytics
+SC-Analytics es una consultora de Data, Mathematics & AI orientada a mejorar decisiones empresariales, operaciones y sistemas mediante análisis de datos, modelos matemáticos, machine learning, optimización, automatización e inteligencia artificial.
+
+La empresa no se posiciona como una “agencia de IA” genérica ni como una fábrica de automatizaciones. La propuesta de valor parte de un principio central:
+
+**Understand before building.**
+
+Antes de seleccionar tecnología se debe entender:
+- qué decisión necesita mejorar;
+- qué proceso está fallando;
+- qué restricción existe;
+- qué información está disponible;
+- qué coste tiene el error;
+- qué solución es proporcional al problema;
+- qué impacto puede justificarse económicamente.
+
+La web pública de SC-Analytics utiliza actualmente como mensaje central:
+
+**Better decisions. Better business outcomes.**
+
+Y articula la filosofía alrededor de:
+- Value before technology.
+- Proportionate solutions.
+- Clear communication.
+- Long-term trust.
+- Understand before building.
+
+La empresa considera forecasting, optimization, machine learning, AI, BI y automation como capacidades, no como productos aislados.
+
+El objetivo no es vender una tecnología concreta. El objetivo es mejorar una decisión o proceso empresarial de forma técnicamente sólida y económicamente justificable.
+
+## 2. Activos digitales principales
+### 2.1 Web
+Sitio principal: https://sc-analytics.io
+
+La web debe considerarse una fuente pública actualizada para:
+- posicionamiento;
+- servicios;
+- metodología;
+- casos;
+- proyectos;
+- artículos;
+- messaging comercial;
+- conversiones y discovery calls.
+
+La web presenta SC-Analytics como consultora de Data & AI para mejores decisiones y mejores resultados empresariales.
+
+Antes de redactar outreach importante, propuestas de colaboración o mensajes de partnership, puede ser útil revisar la web actual para mantener consistencia con el posicionamiento vigente.
+
+### 2.2 GitHub principal
+Perfil: https://github.com/sastree14
+
+El GitHub debe entenderse como una fuente técnica primaria y como evidencia de capacidad.
+
+No se debe asumir que todo repositorio es comercialmente relevante. Deben distinguirse repositorios públicos de portfolio, repositorios de producto/empresa, proyectos académicos y repositorios privados o experimentales.
+
+### 2.3 Repositorios relevantes
+#### sastree14/arnausastre-web
+Repositorio público principal relacionado con la presencia web y el sistema operativo interno de SC-Analytics.
+
+Tecnologías y contexto conocidos:
+- Next.js;
+- React;
+- TypeScript;
+- Vercel;
+- Supabase / PostgreSQL;
+- integraciones y servicios auxiliares;
+- módulos internos de CRM, operaciones, finanzas, contenido, prospecting y automatización.
+
+El README público actual es todavía genérico de Next.js, por lo que para comprender la implementación real debe inspeccionarse el código del repositorio y no limitarse al README.
+
+Este repositorio ha sido utilizado para desarrollar:
+- la web pública;
+- el CRM interno;
+- flujos comerciales;
+- research;
+- content operations;
+- Visual Studio;
+- métricas;
+- automatizaciones;
+- integraciones;
+- approval gates.
+
+Cuando el Growth Engine necesite comprender cómo funciona un sistema interno, debe consultar el repositorio real antes de inventar detalles.
+
+#### sastree14/Portfolio_SC_Analytics
+Repositorio público de portfolio técnico.
+
+Actualmente contiene 30 proyectos completados organizados por áreas:
+1. AI Agents & Intelligent Automation
+2. Data Engineering & Platforms
+3. Forecasting & Planning
+4. BI & Decision Interfaces
+5. Machine Learning & Customer Analytics
+6. Machine Learning & Risk
+7. Optimization & Operations
+8. Finance & Quantitative Systems
+9. Specialized Business Systems
+10. Computer Vision & Edge AI
+
+El portfolio está diseñado para dos audiencias:
+- business stakeholders;
+- technical reviewers.
+
+Incluye:
+- README ejecutivo por proyecto;
+- arquitectura;
+- tecnologías;
+- SQL;
+- tests;
+- outputs;
+- entrypoints;
+- documentación de metodología;
+- documentación de confidencialidad;
+- catálogo técnico;
+- guías para exploración con coding agents.
+
+Importante: no presentar automáticamente los 30 proyectos como 30 implantaciones pagadas en clientes.
+
+El portfolio incluye proyectos profesionales, sistemas internos, controlled builds, demostradores y reconstrucciones técnicas con datos sintéticos. La naturaleza de cada proyecto debe verificarse antes de presentarlo externamente.
+
+El repositorio incluye una política explícita de confidencialidad:
+- no publicar nombres de clientes;
+- no publicar credenciales;
+- no publicar conexiones de producción;
+- no publicar registros confidenciales;
+- cuando un proyecto público deriva de trabajo confidencial se conserva la estructura necesaria y se sustituyen valores por datos sintéticos;
+- nombres e identificadores se anonimizan.
+
+#### sastree14/trading-automation
+Repositorio privado del proyecto de infraestructura financiera automatizada desarrollado originalmente como TFG.
+
+Contiene:
+- preprocessing;
+- training;
+- estrategias;
+- modelos de trading;
+- optimización genética;
+- ensemble;
+- machine learning;
+- deep learning;
+- reinforcement learning;
+- ejecución de señales;
+- GitHub Actions;
+- integración con Dropbox;
+- MetaTrader 5;
+- streaming y ejecución en cuentas demo.
+
+Métodos documentados:
+- momentum;
+- Bollinger Bands;
+- market making;
+- Random Forest;
+- XGBoost;
+- LSTM;
+- CNN;
+- PPO;
+- ensemble learning;
+- genetic optimization.
+
+Este activo puede utilizarse como evidencia técnica en oportunidades cuantitativas, trading, streaming, ML/RL o sistemas automatizados, pero debe respetarse su carácter privado y académico/proprietary. No revelar código o detalles sensibles sin autorización.
+
+#### sastree14/R-Studio-Shiny
+Repositorio público demostrativo.
+
+Proyecto: Indicadors Territorials de Salut i Demografia.
+
+Características:
+- R Shiny;
+- datos 100% sintéticos;
+- dashboards;
+- filtros;
+- KPIs;
+- leaflet;
+- sf;
+- plotly;
+- reactable;
+- tests;
+- renv;
+- GitHub Actions;
+- workflows de validación.
+
+Es útil como evidencia de:
+- R;
+- Shiny;
+- dashboard engineering;
+- geospatial analytics;
+- modularización;
+- reproducibilidad;
+- tests;
+- CI.
+
+### 2.4 Otros repositorios
+Existen repositorios privados, experimentales o auxiliares en la cuenta de Arnau. No deben citarse comercialmente solo porque existan.
+
+Regla: antes de utilizar un repositorio como evidencia en una candidatura, inspeccionarlo y confirmar que es relevante, presentable y no confidencial.
+
+## 3. Metodología de SC-Analytics
+La metodología oficial puede resumirse así:
+1. Understand the business process and the decision that needs to improve.
+2. Define the objective, constraints and success criteria.
+3. Assess available data, systems and operational limitations.
+4. Establish a baseline before adding unnecessary complexity.
+5. Design the analytical or technical approach.
+6. Build the smallest system that can properly validate the approach.
+7. Integrate it with the systems and people that will use the result.
+8. Validate technical performance and business usefulness separately.
+9. Deploy with appropriate environments, controls and observability.
+10. Monitor results and refine the system when evidence supports it.
+
+Principio central: **Technology follows the problem.**
+
+Una tecnología debe estar en una arquitectura porque tiene una responsabilidad clara, no porque sea popular.
+
+Cada solución debe responder:
+- por qué existe cada componente;
+- qué conecta;
+- qué inputs y outputs maneja;
+- qué permisos necesita;
+- qué limitaciones tiene;
+- qué alternativas más simples existen.
+
+SC-Analytics busca comunicar siempre a dos niveles:
+- executive/business layer;
+- technical layer.
+
+La capa ejecutiva debe explicar problema, decisión, impacto y trade-offs.
+La capa técnica debe permitir inspeccionar arquitectura, datos, integraciones, validación, despliegue y limitaciones.
+
+## 4. Forma de pensar
+SC-Analytics debe evitar el comportamiento típico de consultoras tecnológicas que empiezan por la herramienta.
+
+No empezar por:
+- “hagamos un agente”;
+- “metamos IA”;
+- “usemos LLMs”;
+- “hagamos deep learning”;
+- “automatizamos todo”;
+- “montamos microservicios”.
+
+Empezar por:
+- qué duele;
+- qué se decide;
+- qué cuesta;
+- qué información existe;
+- qué alternativa simple puede resolverlo;
+- dónde está el cuello de botella real.
+
+Preferencias de diseño:
+- código determinista cuando la lógica es determinista;
+- IA solo donde aporta flexibilidad o capacidad real;
+- estado persistente fuera del LLM;
+- outputs estructurados;
+- validaciones explícitas;
+- human-in-the-loop para acciones externas o de riesgo;
+- trazabilidad;
+- retries;
+- recuperación ante errores;
+- seguridad de credenciales;
+- arquitectura que permita sustituir providers.
+
+SC-Analytics no busca maximizar complejidad. Busca maximizar valor por unidad de complejidad.
+
+## 5. Problemas que resuelve
+### Planning under uncertainty
+- demand forecasting;
+- sales forecasting;
+- inventory planning;
+- cash flow;
+- workload;
+- demand for resources;
+- forecasting multi-horizon;
+- operational planning;
+- scenario planning;
+- forecast-to-decision systems.
+
+### Resource allocation
+- inventory;
+- capacity;
+- routing;
+- scheduling;
+- people allocation;
+- budget allocation;
+- capital allocation;
+- blending;
+- facility location;
+- supply chain.
+
+### Risk and prediction
+- default;
+- credit risk;
+- fraud;
+- churn;
+- CLV;
+- propensity;
+- ranking;
+- recommendation;
+- classification;
+- survival analysis.
+
+Principio: la métrica técnica debe estar vinculada al coste de error y a la decisión.
+
+### Manual or fragmented processes
+- repetitive administration;
+- fragmented commercial processes;
+- manual research;
+- content operations;
+- CRM;
+- reporting;
+- intake;
+- documents;
+- approvals;
+- systems coordination.
+
+### Analytics and decision support
+- management reporting;
+- KPIs;
+- workload;
+- profitability;
+- commercial performance;
+- operational performance;
+- forecasting visualization;
+- executive dashboards.
+
+## 6. Capacidades técnicas
+### Data Science / Statistics
+- Python;
+- Pandas;
+- NumPy;
+- Scikit-learn;
+- Statsmodels;
+- statistical modelling;
+- backtesting;
+- model evaluation.
+
+### Machine Learning
+- XGBoost;
+- LightGBM;
+- Random Forest;
+- ranking;
+- recommendation;
+- classification;
+- regression;
+- churn;
+- CLV;
+- survival;
+- credit risk;
+- fraud;
+- customer analytics;
+- SHAP;
+- Optuna.
+
+### Deep Learning / RL
+- TensorFlow / Keras;
+- neural collaborative filtering;
+- LSTM;
+- CNN;
+- PPO;
+- reinforcement learning.
+
+No vender RL o deep learning por moda. Utilizarlos solo cuando la oportunidad realmente lo justifique.
+
+### Forecasting
+- multi-horizon forecasting;
+- short-history series;
+- demand forecasting;
+- inventory planning;
+- time series;
+- forecast evaluation;
+- scenario modelling;
+- operational planning.
+
+### Optimization
+- OR-Tools;
+- Pyomo;
+- SciPy;
+- CVXPY;
+- resource allocation;
+- routing;
+- scheduling;
+- supply chain;
+- pricing;
+- capital allocation.
+
+### Simulation
+- SimPy;
+- Monte Carlo;
+- what-if engines;
+- scenario analysis.
+
+### AI / Agents
+- OpenAI APIs;
+- Anthropic;
+- long-running agents;
+- persistent state;
+- multi-agent flows;
+- tool use;
+- approval gates;
+- deterministic validation;
+- recoverable execution;
+- structured outputs;
+- RAG / document intelligence;
+- agentic business systems.
+
+### Automation
+- Python;
+- APIs;
+- GitHub Actions;
+- n8n;
+- workflow orchestration;
+- scheduled processes;
+- email / CRM / content / reporting integrations.
+
+### Data Engineering
+- SQL;
+- PostgreSQL;
+- Supabase;
+- ClickHouse;
+- DuckDB;
+- dbt;
+- Airflow;
+- APIs;
+- Parquet;
+- streaming concepts;
+- Kafka / Redpanda in portfolio systems;
+- cloud architecture in portfolio systems.
+
+### Web / Production Systems
+- Next.js;
+- React;
+- TypeScript;
+- FastAPI;
+- Fastify;
+- Vercel;
+- Supabase;
+- REST APIs;
+- WebSockets;
+- Docker.
+
+### BI / Decision Interfaces
+- Power BI;
+- DAX;
+- Power Query;
+- Tableau;
+- Excel;
+- Google Sheets;
+- R Shiny;
+- Plotly;
+- custom dashboards.
+
+### Finance / Quant
+- financial modelling;
+- P&L;
+- cash flow;
+- debt modelling;
+- unit economics;
+- risk;
+- Solvency II experience;
+- portfolio optimization;
+- trading systems;
+- market microstructure research.
+
+## 7. Arnau Sastre y equipo
+Arnau Sastre es Founder de SC-Analytics.
+
+Formación:
+- Mathematics;
+- Applied Statistics;
+- business/management training through MBA studies.
+
+Arnau debe presentarse como:
+- hands-on;
+- technical;
+- analytical;
+- business-aware;
+- capaz de liderar discovery y delivery;
+- founder que sigue programando y modelando directamente.
+
+No posicionarlo únicamente como manager.
+
+Su valor diferencial es combinar:
+- matemática;
+- estadística;
+- machine learning;
+- forecasting;
+- optimization;
+- finance;
+- systems thinking;
+- business decision-making.
+
+SC-Analytics se posiciona actualmente como un pequeño equipo técnico, no como una gran consultora.
+
+En aplicaciones recientes se ha utilizado una estructura aproximada de cinco personas a través de perfiles de Data Science, AI / Software Engineering y Data Engineering, con Arnau como founder y technical lead.
+
+Regla: no inventar nombres, CVs, certificaciones o experiencia individual del equipo. Cuando el detalle exacto no sea necesario, decir “small technical team across Data Science, AI/Software Engineering and Data Engineering.”
+
+Arnau debe seguir siendo visible: “I lead the company, but I remain personally hands-on in the work.”
+
+## 8. Cliente ideal
+### Prioridad geográfica
+Primera prioridad: **España**.
+
+El Growth Engine debe intentar primero encontrar:
+- empresas españolas;
+- consultoras españolas;
+- software studios españoles;
+- agencias españolas;
+- startups/scaleups consolidadas españolas;
+- SMEs y mid-market españolas;
+- empresas tradicionales españolas con necesidad de modernizar decisiones o procesos.
+
+Después:
+- Europa;
+- UK;
+- Netherlands;
+- Germany;
+- France;
+- Portugal;
+- resto de Europa;
+- USA cuando exista una oportunidad clara.
+
+La geografía no debe impedir aceptar buen trabajo internacional, pero la estrategia directa debe empezar por España para construir relaciones próximas, reputación y recurrencia.
+
+### Tipo de empresa
+Muy interesante:
+- SME;
+- mid-market;
+- established traditional business;
+- consolidated startup;
+- software company;
+- consultancy;
+- agency;
+- B2B service company;
+- e-commerce;
+- finance;
+- insurance;
+- operations-heavy businesses;
+- companies with complex planning;
+- businesses with fragmented workflows;
+- teams with data but without a mature internal Data Science function.
+
+Menos interesante:
+- empresas enormes donde SC-Analytics sea un proveedor irrelevante entre muchos;
+- proyectos extremadamente definidos como simple staff augmentation sin posibilidad de aportar criterio;
+- compradores que solo comparan precio.
+
+No excluir grandes empresas automáticamente, pero priorizar organizaciones donde SC-Analytics pueda tener impacto y relación directa.
+
+## 9. Modelo de relación buscado
+SC-Analytics no quiere vivir únicamente de proyectos aislados.
+
+Objetivo: **long-term client relationships.**
+
+Secuencia ideal:
+opportunity → discovery → first project → useful result → trust → recurring work → retained Data/AI partner → broader relationship.
+
+El primer proyecto puede ser pequeño. La relación posterior es lo importante.
+
+El Growth Engine debe valorar:
+- probabilidad de repeat work;
+- posibilidad de mantenimiento;
+- extensión a otros procesos;
+- cercanía al decision-maker;
+- posibilidad de convertirse en proveedor de confianza.
+
+## 10. Partnerships y technology-provider model
+Una prioridad estratégica es encontrar empresas que ya tengan:
+- clientes;
+- distribución;
+- proyectos;
+- demanda;
+- relaciones comerciales;
+
+pero que no tengan suficiente capacidad interna en:
+- Data Science;
+- ML;
+- AI;
+- optimization;
+- analytics;
+- data engineering;
+- intelligent automation.
+
+Modelo ideal:
+Agency / Consultancy / Software Studio → mantiene relación con end-client → SC-Analytics entra como technical delivery partner → Data/AI/ML/optimization layer → entrega conjunta → posibilidad de recurrencia.
+
+Términos relevantes:
+- technology partner;
+- delivery partner;
+- AI partner;
+- Data Science partner;
+- subcontractor;
+- embedded technical team;
+- external AI team;
+- white-label development;
+- specialist provider;
+- implementation partner;
+- delivery capacity.
+
+Sin embargo, SC-Analytics no quiere quedar atrapada permanentemente como commodity invisible.
+
+Cuando sea posible:
+- construir relación directa;
+- generar repeat work;
+- convertirse en partner reconocido;
+- evitar competir solo por precio.
+
+## 11. Señales comerciales a buscar
+Señales explícitas:
+- looking for AI partner;
+- seeking technology partner;
+- looking for development partner;
+- external AI team;
+- data science partner;
+- automation provider;
+- subcontractor machine learning;
+- white-label AI development;
+- delivery partner;
+- implementation partner;
+- freelance team for client projects;
+- long-term technology partner.
+
+Señales indirectas:
+- consultora gana proyectos pero publica múltiples vacantes técnicas;
+- software studio vende producto pero carece de AI/Data capability;
+- agencia busca freelancers recurrentes para entregar a clientes;
+- empresa abre nueva división de AI;
+- compañía anuncia transformación operacional;
+- empresa publica repetidamente roles temporales de analytics/AI;
+- procesos claramente manuales o fragmentados;
+- crecimiento rápido que exige forecasting/capacity;
+- operaciones donde el coste de una mala decisión sea alto;
+- stack fragmentado y necesidad de integración;
+- expansión internacional;
+- nuevos productos basados en datos.
+
+## 12. Calidad sobre volumen
+SC-Analytics no quiere 500 leads mediocres.
+
+Preferencia: 10–50 prospects de alta calidad antes que scraping masivo.
+
+Cada oportunidad debe tener evidencia.
+
+El Growth Engine debe separar:
+- hecho observado;
+- inferencia razonable;
+- hipótesis comercial.
+
+Ejemplo correcto: “Esta empresa ha publicado tres roles de ML en dos meses y vende proyectos a terceros. Esto sugiere una posible necesidad de delivery externo.”
+
+Ejemplo incorrecto: “Necesitan a SC-Analytics.”
+
+## 13. Upwork
+Upwork es un canal importante, pero no debe convertirse en un juego de volumen.
+
+Objetivo: encontrar oportunidades donde Arnau o SC-Analytics tengan fit real y margen comercial.
+
+### Perfil personal vs agency
+Por defecto:
+- candidaturas desde el perfil personal de Arnau cuando el cliente busca una persona;
+- reforzar SC-Analytics como capacidad adicional cuando aporta credibilidad;
+- utilizar Agency cuando el cliente busca proveedor, equipo o delivery capacity.
+
+Decidir caso por caso.
+
+### Formato
+Preferencia:
+- plain text / .txt;
+- natural;
+- corta;
+- específica;
+- no genérica;
+- no lenguaje con apariencia de IA;
+- no repetir job description;
+- hablar del problema real;
+- usar evidencia;
+- CTA hacia llamada cuando tenga sentido.
+
+Siempre decidir:
+- rate;
+- attachments;
+- portfolio highlights;
+- peso de SC-Analytics;
+- si conviene boost;
+- qué screening answers se necesitan.
+
+Preguntas de screening: separadas de la Cover Letter cuando Upwork las presenta separadas.
+
+### External links
+Si Upwork limita o penaliza enlaces externos, no incluir web/GitHub salvo decisión expresa.
+
+### Invitaciones
+Las invitaciones personales tienen prioridad de revisión. No significan automáticamente que el trabajo sea bueno.
+
+### Connects
+No gastar Connects por volumen. Priorizar expected value.
+
+## 14. Pricing
+No utilizar una única tarifa fija para todas las oportunidades.
+
+La lógica actual debe ser:
+- commodity BI / execution → analizar mercado y presupuesto;
+- strong Data Science / ML → precio medio-alto;
+- specialized consulting / decision science → alto;
+- senior advisory / specialist AI → puede llegar a 90–120 USD/h o más si la oportunidad lo soporta;
+- strategic partnership → puede ajustarse estructura de pricing si mejora la relación de largo plazo.
+
+No bajar automáticamente para “tener más opciones”.
+
+Analizar:
+- presupuesto del cliente;
+- nivel de especialización;
+- duración;
+- riesgo;
+- competencia;
+- acceso a decision-makers;
+- recurrencia;
+- strategic value.
+
+No presentar antiguos rates de proyectos pasados como tarifas actuales.
+
+## 15. Experiencia real utilizable
+### 15.1 E-commerce forecasting / decision support
+Proyecto real de forecasting para e-commerce.
+
+Características:
+- miles de ASINs;
+- multi-horizon forecasting;
+- horizontes 30 / 91 / 182 / 273 días;
+- history lengths muy diferentes;
+- ClickHouse;
+- Python;
+- model selection;
+- forecast validation;
+- WAPE;
+- inventory / purchasing decision support;
+- what-if / CFO scenario functionality.
+
+Escala documentada:
+- aproximadamente 3,058 ASINs;
+- en iteraciones también se manejaron más de 2,100 productos y cientos de miles de forecast records.
+
+Resultados observados en forecasting:
+- short-history cohort median WAPE: aproximadamente 0.44 → 0.17;
+- difficult cohort: aproximadamente 0.74 → 0.30.
+
+Regla: son resultados de accuracy/model performance. No presentarlos como mejora financiera realizada.
+
+Existen escenarios de negocio con cambios estimados en storage fees, lost sales y net profit. Deben describirse como scenario outputs, no como P&L realizado.
+
+### 15.2 Credit Risk / Banking
+Proyecto real de modelling de crédito.
+
+Métricas documentadas:
+- ROC-AUC: 0.8724;
+- PR-AUC: 0.6346;
+- R <= 6.5% en el contexto del proyecto.
+
+Capacidades:
+- risk modelling;
+- imbalanced classification;
+- model evaluation;
+- business constraints;
+- explainability / decision orientation.
+
+No revelar identidad del cliente si no corresponde.
+
+### 15.3 Insurance / Solvency
+Experiencia previa:
+- Catalana Occidente / GCO;
+- Solvency II;
+- Excel;
+- Python;
+- financial/risk analytics.
+
+### 15.4 Demand / Inventory / Operations
+Experiencia en Pasta Cuita:
+- demand forecasting;
+- inventory;
+- operational planning;
+- optimization;
+- simulation.
+
+### 15.5 Planning / Anaplan / Reporting
+Experiencia en SDG Group:
+- Data Analyst;
+- Anaplan;
+- reporting / planning context.
+
+### 15.6 Metrics / Automation
+Proyecto de métricas / reporting:
+- APIs;
+- automation;
+- GitHub Actions;
+- scheduled workflows;
+- Notion.
+
+### 15.7 Quantitative trading
+Proyecto técnico propio / académico:
+- market data;
+- Alpha Vantage;
+- GitHub Actions;
+- Dropbox;
+- MetaTrader;
+- ZeroMQ;
+- indicators;
+- ML;
+- DL;
+- RL;
+- genetic optimization;
+- automated execution architecture.
+
+No presentar testing como live institutional track record.
+
+### 15.8 Recommender / Ranking
+Proyecto controlado de e-commerce recommendation:
+- Neural Collaborative Filtering;
+- TensorFlow / Keras;
+- user and product embeddings;
+- 1,000 users;
+- 500 products;
+- 20,000 user-product interaction labels;
+- Top-K recommendations;
+- AUC;
+- Precision@10;
+- Recall@10;
+- PCA/K-Means sobre embeddings.
+
+También experiencia conceptual/técnica con candidate generation, ranking, reranking, Precision/Recall@K, NDCG y MRR.
+
+No afirmar ownership de un hyperscale production search engine si no existe.
+
+## 16. Power BI y BI
+SC-Analytics / Arnau dispone de experiencia real en Power BI.
+
+Ejemplos:
+- operations & commercial monitoring;
+- personnel;
+- hours;
+- FTE;
+- productivity;
+- billing;
+- margins;
+- project progress;
+- planned vs consumed hours;
+- workload;
+- customer operations;
+- service;
+- orders;
+- delays;
+- availability;
+- forecasting.
+
+Los archivos PBIX de empresas reales contienen información interna. No deben subirse directamente a clientes, Upwork o repositorios públicos.
+
+Para portfolio:
+- reconstruir dashboards;
+- anonimizar;
+- usar synthetic data;
+- eliminar logos;
+- eliminar employees/customers;
+- eliminar project names;
+- eliminar financial values reales.
+
+## 17. Portfolio técnico — 30 proyectos
+AI & Automation:
+- SC-01 Long-Running AI Agent Platform
+- SC-02 Multi-Agent Operations Orchestrator
+- SC-03 AI Sales & CRM Automation System
+- SC-04 AI Receptionist & Lead Qualification
+- SC-05 Document Intelligence & Due Diligence Agent
+- SC-06 AI Workflow Automation Hub
+- SC-07 Full-Stack LLM Business Copilot
+
+Data Engineering:
+- SC-08 Enterprise Data Integration & API Platform
+- SC-09 ETL / ELT & Data Quality Pipeline
+- SC-10 Real-Time Analytics & Monitoring Platform
+- SC-11 ML / AI Evaluation & Monitoring Platform
+
+Forecasting:
+- SC-12 Multi-Horizon Demand Forecasting & Inventory Planning
+- SC-13 R Shiny Forecasting & Scenario Planning Application
+
+BI:
+- SC-14 Power BI Executive Decision System
+- SC-15 Tableau Commercial Analytics & Drill-Down
+
+Customer / ML:
+- SC-16 Recommendation, Search & Ranking Engine
+- SC-17 Customer Intelligence: Churn, CLV & Segmentation
+
+Risk:
+- SC-18 Credit Risk & Profit Optimization Engine
+- SC-19 Fraud Detection & Explainability System
+
+Optimization:
+- SC-20 Supply Chain & Marketplace Optimization
+- SC-21 Pricing & Revenue Optimization Engine
+- SC-22 Resource, Capacity & Scheduling Optimization
+- SC-23 Operations Simulation & What-If Engine
+
+Finance:
+- SC-24 Financial Modelling & Scenario Engine
+- SC-25 Debt, Cash Flow & Investment Model
+- SC-26 Portfolio Risk & Capital Allocation Engine
+- SC-27 Quantitative Trading & Market Microstructure System
+
+Specialized Systems:
+- SC-28 AI Property Development Feasibility & Operations System
+- SC-29 Commercial Due Diligence & Market Intelligence System
+
+Computer Vision:
+- SC-30 Computer Vision Waste Detection & Sorting System
+
+Regla: elegir portfolio por relevancia. No mandar siempre los mismos cuatro proyectos. No convertir el portfolio en una lista de tecnologías sin conexión con el problema del cliente.
+
+## 18. Internal AI / CRM / Operating System
+SC-Analytics ha construido un sistema interno de CRM / operating system que sirve como evidencia especialmente fuerte para:
+- AI agent roles;
+- business automation;
+- sales automation;
+- CRM;
+- long-running agents;
+- approval systems;
+- business operations platforms;
+- full-stack AI.
+
+Arquitectura y principios conocidos:
+- Next.js 15;
+- React 19;
+- TypeScript;
+- Supabase / PostgreSQL;
+- Python agent and automation services;
+- OpenAI Responses API;
+- GitHub Actions workers / scheduling;
+- Vercel.
+
+Security / reliability:
+- encrypted OAuth/integration tokens using AES-256-GCM with environment-held key;
+- HMAC-signed admin session;
+- human approval before external/public actions;
+- persistent state outside the LLM;
+- recoverable jobs;
+- retry logic;
+- stale-running jobs can be requeued;
+- reliability sweeps;
+- auditability;
+- structured execution.
+
+Philosophy:
+- deterministic code over unnecessary agent chatter;
+- AI only where judgment/variation is useful;
+- provider replaceability;
+- no fabricated outcomes/sources;
+- multi-tenant-ready thinking;
+- explicit approval gates.
+
+Functional areas:
+- CRM / prospecting;
+- commercial;
+- finance;
+- metrics;
+- operations;
+- research;
+- content;
+- Visual Studio;
+- editorial workflows;
+- approvals;
+- analytics;
+- Gmail sync;
+- SEO;
+- LinkedIn / article publishing workflows;
+- deal / budget preparation;
+- competitor research;
+- commercial signals.
+
+Este sistema es una de las piezas de evidencia más fuertes cuando un cliente pregunta si Arnau ha construido realmente AI agents u operational automation.
+
+## 19. Prospecting engine
+Lógica interna:
+public search → companies → decision-makers → evidence → ICP scoring → recommended action → personalized message → CRM → next action → follow-up.
+
+Evitar masificación.
