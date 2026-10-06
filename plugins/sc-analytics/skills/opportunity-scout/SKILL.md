@@ -1,37 +1,109 @@
 ---
 name: opportunity-scout
-description: Find, evaluate and optionally save work and project opportunities for Arnau / SC-Analytics. Use when the user asks for Upwork jobs, freelance projects, consulting opportunities, remote roles, companies looking for Data/AI services, or other current opportunities found on the web.
+description: Find, qualify, prepare, apply to and persist commercial opportunities for Arnau / SC-Analytics. Use for Upwork jobs, marketplace work, direct client opportunities, consulting opportunities, technology-provider/partner opportunities, and any request to evaluate whether an opportunity is worth pursuing.
 ---
 
-The search happens in ChatGPT. The CMI stores only opportunities the user wants to keep.
+Operate from the canonical SC-Analytics Growth Engine logic, not from generic freelancer heuristics.
 
-Primary tools:
-- Upwork connector: use marketplace job search and job detail tools for Upwork opportunities.
-- Web search: use current public information for opportunities outside Upwork.
-- SC-Analytics MCP:
-  - `list_opportunities`: check what is already being followed.
-  - `create_opportunity`: save a selected opportunity.
-  - `update_opportunity`: update stage, value, probability, next action or metadata.
-- LinkedIn connector: use it to enrich a known person when first/last name are available. Do not treat it as a generic company/prospect discovery engine.
+Core objective:
+Build a predictable pipeline of high-quality Data / Mathematics / AI relationships. Optimize for quality, recurrence, strategic fit and trusted-provider potential rather than application volume.
 
-Fit criteria:
-- strong fit: data science, machine learning, AI/LLM systems, forecasting, optimization, analytics, decision systems, automation, Python, statistical modelling, data products and related consulting;
-- prefer work where Arnau can deliver personally or SC-Analytics can add team capacity;
-- penalize vague scope, unrealistic budgets, commodity low-value work, roles requiring credentials/location that clearly do not fit, or excessive competition when other evidence is weak;
-- distinguish personal employment/contract opportunities from SC-Analytics client opportunities.
+Source hierarchy:
+1. Current explicit user instruction.
+2. Current Upwork/job/market data.
+3. Current GitHub/website/project evidence.
+4. Canonical SC-Analytics Growth Engine criteria.
+5. Older conversation memory.
 
-Workflow:
-1. Search the requested source(s) using current data.
-2. Check existing saved opportunities to avoid duplicates.
-3. Shortlist only genuinely relevant opportunities and explain the fit briefly.
-4. Do not save every result. Persist only when the user explicitly asks to keep/follow an opportunity.
-5. When saving, use `create_opportunity` with source such as `upwork`, `web_job`, `consulting_lead` or another clear source and include useful metadata such as URL, external ID, client/company, budget/rate and fit rationale.
-6. For Upwork applications, use the Upwork proposal workflow. Any submission/write action must follow the connector's explicit confirmation requirements.
-7. If the user asks for recurring monitoring, use a scheduled/conditional task rather than pretending the plugin itself runs continuously.
+Commercial positioning:
+- Arnau individual: when the buyer clearly wants one hands-on specialist.
+- Arnau + SC-Analytics: preferred default for many personal applications where Arnau leads and the small technical team adds capacity/resilience.
+- SC-Analytics provider/team: when the buyer is purchasing end-to-end delivery or multidisciplinary capacity.
+- SC-Analytics technology/delivery partner: a first-class target when a consultancy, agency or software studio has clients/demand but lacks Data Science, ML, AI, optimization, analytics, data engineering or intelligent-automation capacity.
+Do not turn a personal application into an aggressive agency pitch.
+
+Canonical opportunity principles:
+- Understand before building.
+- Quality over volume.
+- Long-term relationships over isolated tasks.
+- Problem-first positioning; technology follows the problem.
+- Evidence over claims.
+- No commodity positioning.
+- Arnau remains hands-on.
+- Company capacity is scalable.
+- Human judgment remains final.
+- External actions follow connector confirmation rules.
+
+Priority capabilities:
+Forecasting/planning, optimization/OR, simulation/what-if/decision science, ML tied to decisions, AI systems/intelligent automation, integrated Data/AI decision systems. Data Engineering, financial/quant systems, BI/decision interfaces and full-stack Data/AI can be strong supporting capabilities.
+
+Commercial guardrails:
+- Normal hourly floor: $50/h effective, not a target.
+- $40–49/h: strategic exception only with documented upside.
+- Below $40/h: reject by default unless Arnau explicitly overrides.
+- Normal fixed-price minimum: €2,500, with legitimate bounded discovery/audit/pilot exceptions.
+- Do not reuse historical low rates as the current market rate.
+- Live user instructions and live profile/account state override stale assumptions.
+
+Upwork workflow:
+1. Use the Upwork connector for current marketplace data. Do not rely on web snippets when Upwork data is available.
+2. Search multiple relevant lanes when useful: best fit, recent, capability-specific and technology-partner/provider opportunities.
+3. Inspect promising jobs in detail before recommending them. Client analysis is mandatory when available: payment verification, spend, hires, reviews, historical paid rates, job history, proposal/interview/invite counts and hiring behavior.
+4. Apply hard filters before scoring.
+5. Evaluate business problem, buyer type, technical/proof fit, economics, company delivery capacity, client quality, recurrence, strategic value, competition, geography and timing.
+6. Return a focused shortlist, not a dump. For each relevant job include: title, client, date, job type, budget/rate, proposal/interview/invite/hire data when available, client quality, real problem, proof fit, Arnau vs SC-Analytics positioning, recommended rate/price, relevant portfolio items, attachment recommendation, boost recommendation, red flags, confidence and recommendation.
+7. When the user selects a job, inspect exact current status, whether it is still open/applicable, whether a proposal already exists, exact screening questions and Connects/boost implications before preparing the application.
+8. Draft application text naturally and specifically. Plain text is preferred. Start from the client's actual problem; use only real SC-Analytics/Arnau evidence; avoid generic AI language and unnecessary repetition.
+9. Screening answers stay separate when Upwork presents them separately.
+10. Select portfolio evidence by relevance, not by habit. Distinguish real client work, internal builds, portfolio demonstrations and academic/personal work. Never imply production/institutional outcomes that do not exist.
+11. Decide rate, personal vs agency positioning, attachments, portfolio highlights and boost case-by-case.
+12. Use the real Upwork proposal tool. The connector may require one explicit confirmation per write. Prepare everything first, present the exact action, then execute only after the required confirmation.
+13. After a successful submission, do not stop at “sent”. Immediately synchronize persistent SC-Analytics state:
+    - create the opportunity if it does not yet exist;
+    - update its stage to applied;
+    - store job URL/ID, account used, submitted rate/price, proposal ID when available, application timestamp, portfolio/attachment choices and relevant metadata;
+    - call record_activity with the successful application;
+    - create a follow-up only when there is a meaningful future check/action.
+14. If submission fails, do not mark the opportunity applied.
+
+External/direct opportunity workflow:
+1. Search current public sources for evidence of a real business need. Technology-provider/partner opportunities are a strategic priority, not a secondary category.
+2. Search for demand, not labels. Strong explicit signals include “technology partner”, “implementation partner”, “external AI team”, “Data Science partner”, “delivery partner”, “white-label”, “specialist provider” and similar. Indirect signals can include repeated specialist hiring, new Data/AI divisions, operational transformation, recurring temporary roles, rapid growth/capacity problems or fragmented workflows.
+3. Separate FACT, INFERENCE and HYPOTHESIS. Never present a commercial hypothesis as fact.
+4. For each worthwhile result provide the exact source URL and the evidence showing why the opportunity exists.
+5. Determine likely buyer/decision-maker and, when a named person is known, use the LinkedIn connector to enrich that person.
+6. Determine the best contact route commercially:
+   - use the channel where explicit buying intent already exists first (Upwork/job/partner/application page);
+   - use an existing/warm relationship channel when one exists;
+   - use a direct professional email when publicly provided and appropriate for a specific B2B approach;
+   - use LinkedIn for relevant professional connection/context when appropriate or when email is unavailable;
+   - use the company's official partnership/contact form when the company explicitly routes this type of enquiry there;
+   - do not invent email addresses or private contact details.
+7. Always explain why the recommended channel is best for that specific case and show where the contact route came from.
+8. Recommend a concise problem-led approach and CTA, normally a short call/discovery/technical discussion when fit is real.
+9. Persist only opportunities the user selects. Use create_opportunity with metadata for company/person, source URL, factual signal, inference, partner-vs-direct classification, recommended channel, contact route and positioning.
+10. After any successful external contact performed through an available connector, update the opportunity stage and call record_activity. If the user tells you they contacted someone manually, persist that state too.
+
+Persistent-state contract:
+A meaningful business action should survive the chat. After a successful state-changing action, update the CMI immediately rather than waiting for a separate “actualiza el CMI” instruction.
+
+Useful SC-Analytics MCP tools:
+- list_opportunities
+- create_opportunity
+- update_opportunity
+- record_activity
+- list_activities
+- create_followup
+- list_followups
+- complete_followup
+- create_meeting
+- get_daily_brief
 
 Do not:
-- store rejected or exploratory results by default;
-- claim an opportunity is saved unless the MCP write succeeds;
-- submit an Upwork proposal without the required explicit confirmation;
-- invent budget, client data or availability;
-- use LinkedIn search without a known person name when the connector requires one.
+- store every exploratory search result;
+- mass-apply or mass-outreach;
+- invent client facts, budgets, emails, experience or outcomes;
+- spend Connects merely because a job is new;
+- boost weak opportunities;
+- send an external action without the connector-required confirmation;
+- claim an action or CMI update succeeded unless the relevant tool confirms it.
