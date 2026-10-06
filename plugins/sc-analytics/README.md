@@ -19,6 +19,7 @@ A meaningful successful action should update persistent state automatically. The
 - opportunity-scout
 - commercial-research
 - performance-analyst
+- linkedin-growth
 - daily-operator
 
 ## What V1 should support
@@ -34,6 +35,9 @@ Review and update canonical content, preserve manual Figma visuals, approve/sche
 
 ### Metrics
 Refresh GA4 + Search Console when requested, read persisted metrics, compare periods and explain only changes that matter.
+
+### LinkedIn growth
+Find a small set of high-quality people to connect with, follow or later invite to follow SC-Analytics; always include direct LinkedIn profile URLs when available. Identify a few worthwhile posts where Arnau can add a substantive comment, with exact post links and suggested copy. Connect/Follow/Page Invite/Repost remain manual unless an official supported action is available. LinkedIn analytics are read from persisted CMI imports of the official LinkedIn Content / post-performance XLSX when no live analytics API is available.
 
 ### Daily operating assistant
 Answer questions such as “qué hemos hecho hoy”, “qué queda pendiente”, “cómo estamos” or “qué debería hacer ahora” from persistent state across chats. Surface follow-ups, meetings, scheduled publications, active opportunities, relevant metrics and the next 1–3 actions.
