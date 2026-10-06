@@ -7,7 +7,7 @@ const COPY = {
   es: {
     eyebrow: 'HABLEMOS',
     title: 'Empecemos por lo que debería funcionar mejor.',
-    intro: 'Cuéntanos qué quieres mejorar o qué oportunidad estás valorando. Nosotros vemos contigo si podemos aportar valor y cuál sería el siguiente paso.',
+    intro: 'Cuéntanos qué necesitas. Revisaremos tu caso y acordaremos el siguiente paso.',
 
     expectLabel: 'PRIMERA CONVERSACIÓN',
     expect: [
@@ -72,7 +72,7 @@ const COPY = {
   ca: {
     eyebrow: 'PARLEM',
     title: 'Comencem pel que hauria de funcionar millor.',
-    intro: 'Explica’ns què vols millorar o quina oportunitat estàs valorant. Nosaltres veiem amb tu si podem aportar valor i quin seria el següent pas.',
+    intro: 'Explica’ns què necessites. Revisarem el teu cas i acordarem el següent pas.',
 
     expectLabel: 'PRIMERA CONVERSA',
     expect: [
@@ -137,7 +137,7 @@ const COPY = {
   en: {
     eyebrow: 'LET’S TALK',
     title: 'Start with what should work better.',
-    intro: 'Tell us what you want to improve or which opportunity you are considering. We will assess whether we can create value and what the next step should be.',
+    intro: 'Tell us what you need. We will review your case and agree the next step.',
 
     expectLabel: 'FIRST CONVERSATION',
     expect: [
@@ -285,7 +285,7 @@ export default function ContactPage() {
 
       <section className="border-b border-slate-300 bg-white">
         <div className="site-container py-10 md:py-12">
-          <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.intentLabel}</p>
+          <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.intentLabel}</p>
           <div className="mt-5 grid border-l border-t border-slate-300 lg:grid-cols-3">
             {t.intents.map(([key, title, body], index) => {
               const active = intent === key
@@ -297,7 +297,7 @@ export default function ContactPage() {
                   className={`min-h-[165px] border-b border-r border-slate-300 p-5 text-left transition ${active ? 'bg-[#0D1B2A] text-white' : index === 1 ? 'bg-[#F4F1EA] text-slate-950 hover:bg-[#F4F1EA]' : 'bg-white text-slate-950 hover:bg-slate-50'}`}
                 >
                   <div className="flex items-start justify-between gap-4">
-                    <p className={`font-mono text-[14px] ${active ? 'text-[#7A7DFF]' : 'text-[#4F46E5]'}`}>0{index + 1}</p>
+                    <p className={`font-mono text-[14px] ${active ? 'text-[#7A7DFF]' : 'text-[#254A66]'}`}>0{index + 1}</p>
                     <span className={`text-[14px] font-semibold ${active ? 'text-[#A8BACB]' : 'text-slate-300'}`}>{active ? '✓' : '→'}</span>
                   </div>
                   <h2 className={`mt-5 text-[22px] font-semibold ${active ? 'text-white' : 'text-slate-950'}`}>{title}</h2>
@@ -312,7 +312,7 @@ export default function ContactPage() {
       <section className="border-b border-slate-300 bg-[#FAFAF7]">
         <div className="site-container grid gap-6 py-12 md:py-16 lg:grid-cols-[1.1fr_.9fr]">
           <div className="border border-slate-300 bg-white p-6 md:p-8">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{selectedForm.label}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{selectedForm.label}</p>
             <h2 className="mt-3 text-[32px] leading-[1.08] sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{selectedForm.title}</h2>
 
             {submitted ? (
@@ -394,14 +394,14 @@ export default function ContactPage() {
             </div>
 
             <div className="border border-slate-300 bg-[#F4F1EA] p-6 md:p-8">
-              <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.nextLabel}</p>
+              <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.nextLabel}</p>
               <div className="mt-5 border-y border-slate-300">
                 {t.next.map(([number, title, body], index) => (
                   <div
                     key={number}
                     className={`grid min-h-[118px] grid-cols-[56px_1fr] items-center gap-4 py-5 ${index < t.next.length - 1 ? 'border-b border-slate-300' : ''}`}
                   >
-                    <span className="font-mono text-[20px] font-semibold text-[#4F46E5]">{number}</span>
+                    <span className="font-mono text-[20px] font-semibold text-[#254A66]">{number}</span>
                     <div>
                       <p className="text-[18px] font-semibold text-slate-950">{title}</p>
                       <p className="mt-2 text-[16px] leading-7 text-slate-600">{body}</p>

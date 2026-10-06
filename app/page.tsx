@@ -13,7 +13,7 @@ const COPY = {
     note: 'Datos · Matemáticas · Inteligencia artificial · Automatización',
 
     snapshotLabel: 'QUÉ HACEMOS',
-    snapshotTitle: 'Convertimos necesidades de negocio en sistemas que ayudan a decidir mejor.',
+    snapshotTitle: 'De la necesidad a una solución operativa.',
     snapshotRows: [
       ['Comprender', 'Definimos qué debe mejorar.'],
       ['Diseñar', 'Elegimos el enfoque adecuado.'],
@@ -27,7 +27,7 @@ const COPY = {
       {
         number: '01',
         title: 'Servicios',
-        hook: 'De un problema concreto a una solución que mejora una decisión.',
+        hook: 'Previsión, optimización, datos e inteligencia artificial.',
         href: '/services',
         cta: 'Ver cómo trabajamos',
         tone: 'paper',
@@ -35,7 +35,7 @@ const COPY = {
       {
         number: '02',
         title: 'Casos de éxito',
-        hook: 'Problemas, sistemas y decisiones explicados con evidencia y contexto.',
+        hook: 'Proyectos explicados con resultados y evidencia técnica.',
         href: '/projects',
         cta: 'Explorar casos de éxito',
         tone: 'lavender',
@@ -77,13 +77,13 @@ const COPY = {
     flowLabel: 'DE PROBLEMA A IMPACTO',
     flowTitle: 'Del problema al impacto.',
     flow: [
-      ['Problema', 'Entendemos qué quieres mejorar, qué decisión está detrás y qué está limitando el resultado.'],
-      ['Sistema', 'Diseñamos la combinación adecuada de datos, modelos y automatización para resolverlo con criterio.'],
-      ['Impacto', 'Lo llevamos a una solución utilizable, medible y orientada a mejorar cómo opera tu empresa.'],
+      ['Problema', 'Definimos el objetivo, las restricciones y los datos disponibles.'],
+      ['Sistema', 'Construimos e integramos los modelos y las herramientas necesarios.'],
+      ['Impacto', 'Validamos los resultados y seguimos su evolución en la operación.'],
     ],
 
     ctaKicker: 'SIN COMPROMISO',
-    ctaTitle: 'Cuéntanos qué quieres mejorar en tu empresa y valoremos cómo podemos aportar.',
+    ctaTitle: 'Cuéntanos sobre tu empresa y vemos cómo podemos ayudarte.',
     cta: 'Cuéntanos tu caso',
     ctaAlt: 'Casos de éxito',
   },
@@ -97,7 +97,7 @@ const COPY = {
     note: 'Dades · Matemàtiques · Intel·ligència artificial · Automatització',
 
     snapshotLabel: 'QUÈ FEM',
-    snapshotTitle: 'Convertim necessitats de negoci en sistemes que ajuden a decidir millor.',
+    snapshotTitle: 'De la necessitat a una solució operativa.',
     snapshotRows: [
       ['Comprendre', 'Definim què ha de millorar.'],
       ['Dissenyar', 'Escollim l’enfocament adequat.'],
@@ -111,7 +111,7 @@ const COPY = {
       {
         number: '01',
         title: 'Serveis',
-        hook: 'D’un problema concret a una solució que millora una decisió.',
+        hook: 'Previsió, optimització, dades i intel·ligència artificial.',
         href: '/services',
         cta: 'Veure com treballem',
         tone: 'paper',
@@ -119,7 +119,7 @@ const COPY = {
       {
         number: '02',
         title: 'Casos d’èxit',
-        hook: 'Problemes, sistemes i decisions explicats amb evidència i context.',
+        hook: 'Projectes explicats amb resultats i evidència tècnica.',
         href: '/projects',
         cta: 'Explorar casos d’èxit',
         tone: 'lavender',
@@ -161,13 +161,13 @@ const COPY = {
     flowLabel: 'DE PROBLEMA A IMPACTE',
     flowTitle: 'Del problema a l’impacte.',
     flow: [
-      ['Problema', 'Entenem què vols millorar, quina decisió hi ha al darrere i què està limitant el resultat.'],
-      ['Sistema', 'Dissenyem la combinació adequada de dades, models i automatització per resoldre-ho amb criteri.'],
-      ['Impacte', 'Ho portem a una solució utilitzable, mesurable i orientada a millorar com opera la teva empresa.'],
+      ['Problema', 'Definim l’objectiu, les restriccions i les dades disponibles.'],
+      ['Sistema', 'Construïm i integrem els models i les eines necessaris.'],
+      ['Impacte', 'Validem els resultats i en seguim l’evolució en l’operació.'],
     ],
 
     ctaKicker: 'SENSE COMPROMÍS',
-    ctaTitle: 'Explica’ns què vols millorar a la teva empresa i valorem com hi podem aportar.',
+    ctaTitle: 'Explica’ns la teva empresa i veiem com et podem ajudar.',
     cta: 'Explica’ns el teu cas',
     ctaAlt: 'Casos d’èxit',
   },
@@ -181,7 +181,7 @@ const COPY = {
     note: 'Data · Mathematics · Artificial intelligence · Automation',
 
     snapshotLabel: 'WHAT WE DO',
-    snapshotTitle: 'We turn business needs into systems that help people make better decisions.',
+    snapshotTitle: 'From a business need to a working solution.',
     snapshotRows: [
       ['Understand', 'Define what needs to improve.'],
       ['Design', 'Choose the right approach.'],
@@ -195,7 +195,7 @@ const COPY = {
       {
         number: '01',
         title: 'Services',
-        hook: 'From a concrete problem to a system that improves a decision.',
+        hook: 'Forecasting, optimisation, data and artificial intelligence.',
         href: '/services',
         cta: 'See how we work',
         tone: 'paper',
@@ -203,7 +203,7 @@ const COPY = {
       {
         number: '02',
         title: 'Success stories',
-        hook: 'Problems, systems and decisions explained with evidence and context.',
+        hook: 'Projects explained through results and technical evidence.',
         href: '/projects',
         cta: 'Explore success stories',
         tone: 'lavender',
@@ -245,13 +245,13 @@ const COPY = {
     flowLabel: 'FROM PROBLEM TO IMPACT',
     flowTitle: 'From problem to impact.',
     flow: [
-      ['Problem', 'We understand what should improve, which decision sits behind it and what is limiting the outcome.'],
-      ['System', 'We design the right combination of data, models and automation to solve it with judgment.'],
-      ['Impact', 'We turn it into a usable, measurable solution designed to improve how the business operates.'],
+      ['Problem', 'We define the objective, constraints and available data.'],
+      ['System', 'We build and integrate the models and tools required.'],
+      ['Impact', 'We validate results and monitor their performance in operation.'],
     ],
 
     ctaKicker: 'NO COMMITMENT',
-    ctaTitle: 'Tell us what you want to improve in your business and let us assess where we can contribute.',
+    ctaTitle: 'Tell us about your business and explore how we can help.',
     cta: 'Tell us about your case',
     ctaAlt: 'Success stories',
   },
@@ -304,7 +304,7 @@ export default function HomePage() {
       <section className="border-b border-slate-300 bg-[#FAFAF7]">
         <div className="site-container py-14 md:py-16">
           <div className="text-center">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.exploreLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.exploreLabel}</p>
             <h2 className="mx-auto mt-2 max-w-5xl text-[34px] leading-[1.05] tracking-[-0.02em] text-slate-950 sm:text-[40px] xl:text-[42px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
           </div>
 
@@ -318,12 +318,12 @@ export default function HomePage() {
                   className={`group flex min-h-[250px] flex-col border-b border-r border-slate-300 p-6 transition md:p-7 ${span} ${toneClasses[route.tone as keyof typeof toneClasses]}`}
                 >
                   <div className="flex items-start justify-between gap-4">
-                    <span className="font-mono text-[15px] font-semibold text-[#4F46E5]">{route.number}</span>
+                    <span className="font-mono text-[15px] font-semibold text-[#254A66]">{route.number}</span>
                     <span className="text-lg text-slate-400 transition group-hover:translate-x-1">→</span>
                   </div>
                   <h3 className="mt-6 min-h-[78px] text-[31px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{route.title}</h3>
                   <p className="mt-4 flex-1 text-[19px] font-semibold leading-7 text-slate-900">{route.hook}</p>
-                  <p className="mt-7 text-[18px] font-semibold text-[#4F46E5]">{route.cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
+                  <p className="mt-7 text-[18px] font-semibold text-[#254A66]">{route.cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
                 </Link>
               )
             })}
@@ -331,7 +331,7 @@ export default function HomePage() {
 
           <div className="grid border-x border-b border-slate-300 bg-white lg:grid-cols-[1fr_auto] lg:items-center">
             <div className="px-6 py-5 md:px-7">
-              <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.stayLabel}</p>
+              <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.stayLabel}</p>
               <h3 className="mt-1 text-[24px] font-semibold text-slate-950">{t.stayTitle}</h3>
             </div>
             <div className="flex flex-wrap border-t border-slate-300 lg:border-l lg:border-t-0">
@@ -348,7 +348,7 @@ export default function HomePage() {
       <section className="border-b border-slate-300 bg-white">
         <div className="site-container py-14 md:py-16">
           <div className="text-center">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.flowLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.flowLabel}</p>
             <h2 className="mx-auto mt-3 max-w-4xl text-[34px] leading-[1.07] tracking-[-0.02em] text-slate-950 sm:text-[42px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.flowTitle}</h2>
           </div>
 
@@ -371,10 +371,10 @@ export default function HomePage() {
 
       <section className="border-b border-slate-300 bg-[#F4F1EA]">
         <div className="site-container py-10 md:py-12">
-          <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.ctaKicker}</p>
+          <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.ctaKicker}</p>
           <h2 className="mt-3 max-w-6xl text-[34px] font-medium leading-tight text-slate-950 sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
           <div className="mt-7 flex flex-col gap-4 border-t border-slate-300 pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <Link href="/projects" className="text-[16px] font-semibold text-[#4F46E5] transition hover:text-[#4F46E5]">
+            <Link href="/projects" className="text-[16px] font-semibold text-[#254A66] transition hover:text-[#254A66]">
               {t.ctaAlt} →
             </Link>
             <Link href="/contact?intent=discovery" className="inline-flex bg-[#0D1B2A] px-6 py-3.5 text-[16px] font-semibold text-white transition hover:bg-[#254A66]">

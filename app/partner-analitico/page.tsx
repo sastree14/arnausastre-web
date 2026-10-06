@@ -141,16 +141,16 @@ const COPY = {
 } as const
 
 const fitPalette = [
-  { bg: '#F8F3EA', border: '#DDCFBD' },
-  { bg: '#CADCEB', border: '#98B6CC' },
-  { bg: '#F1ECF5', border: '#D2C4DD' },
+  { bg: '#F4F1EA', border: '#CBD5E1' },
+  { bg: '#EAF0F6', border: '#CBD5E1' },
+  { bg: '#EAF0F6', border: '#CBD5E1' },
 ]
 
 const modelPalette = [
-  { bg: '#EEEAE3', border: '#D0C5B6' },
-  { bg: '#D7E1E9', border: '#A7BBC9' },
-  { bg: '#DEE5E0', border: '#AFBDB2' },
-  { bg: '#E4E0E7', border: '#BAB2BF' },
+  { bg: '#F4F1EA', border: '#CBD5E1' },
+  { bg: '#EAF0F6', border: '#CBD5E1' },
+  { bg: '#F4F1EA', border: '#CBD5E1' },
+  { bg: '#EAF0F6', border: '#CBD5E1' },
 ]
 
 export default function AnalyticalPartnerPage() {
@@ -176,7 +176,7 @@ export default function AnalyticalPartnerPage() {
             <div className="mt-5 border-t border-[#496C8A]">
               {t.value.map((item, index) => (
                 <div key={item} className="grid min-h-[78px] grid-cols-[48px_1fr] items-center gap-4 border-b border-[#496C8A] py-4">
-                  <span className="font-mono text-[14px] font-semibold text-[#8E91FF]">0{index + 1}</span>
+                  <span className="font-mono text-[14px] font-semibold text-[#7A7DFF]">0{index + 1}</span>
                   <p className="text-[17px] font-semibold leading-7 text-white">{item}</p>
                 </div>
               ))}
@@ -187,7 +187,7 @@ export default function AnalyticalPartnerPage() {
 
       <section className="border-b border-slate-300 bg-white">
         <div className="site-container py-14 md:py-16">
-          <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.fitLabel}</p>
+          <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.fitLabel}</p>
           <h2 className="mt-4 max-w-6xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.fitTitle}</h2>
 
           <div className="mt-8 grid gap-3 lg:grid-cols-3">
@@ -199,8 +199,8 @@ export default function AnalyticalPartnerPage() {
                   className="flex min-h-[220px] flex-col border p-7"
                   style={{ backgroundColor: palette.bg, borderColor: palette.border }}
                 >
-                  <p className="font-mono text-[14px] font-semibold text-[#4F46E5]">0{index + 1}</p>
-                  <h3 className="mt-5 max-w-[24ch] text-[27px] font-semibold leading-[1.12] text-[#1D2B44]">{title}</h3>
+                  <p className="font-mono text-[14px] font-semibold text-[#254A66]">0{index + 1}</p>
+                  <h3 className="mt-5 max-w-[24ch] text-[27px] font-semibold leading-[1.12] text-[#0D1B2A]">{title}</h3>
                   <p className="mt-auto max-w-[32ch] pt-8 text-[15px] leading-6 text-slate-700">{body}</p>
                 </article>
               )
@@ -212,7 +212,7 @@ export default function AnalyticalPartnerPage() {
       <section className="border-b border-slate-300 bg-[#FAFAF7]">
         <div className="site-container py-16 md:py-20">
           <div className="text-center">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.modelLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.modelLabel}</p>
             <h2 className="mx-auto mt-4 max-w-4xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.modelTitle}</h2>
           </div>
 
@@ -225,9 +225,9 @@ export default function AnalyticalPartnerPage() {
                   className="grid min-h-[180px] grid-rows-[auto_1fr] border p-6"
                   style={{ backgroundColor: palette.bg, borderColor: palette.border }}
                 >
-                  <span className="font-mono text-[14px] font-semibold text-[#4F46E5]">{number}</span>
+                  <span className="font-mono text-[14px] font-semibold text-[#254A66]">{number}</span>
                   <div className="flex items-center justify-center px-2 text-center">
-                    <h3 className="max-w-[18ch] text-[22px] font-semibold leading-7 text-[#1D2B44]">{title}</h3>
+                    <h3 className="max-w-[18ch] text-[22px] font-semibold leading-7 text-[#0D1B2A]">{title}</h3>
                   </div>
                 </article>
               )
@@ -239,7 +239,7 @@ export default function AnalyticalPartnerPage() {
       <section className="border-b border-slate-300 bg-white">
         <div className="site-container py-14 md:py-16">
           <div className="text-center">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#4F46E5]">{t.exploreLabel}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.exploreLabel}</p>
             <h2 className="mx-auto mt-3 max-w-4xl text-[34px] leading-[1.06] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
           </div>
 
@@ -254,7 +254,7 @@ export default function AnalyticalPartnerPage() {
                   <h3 className="text-[28px] leading-[1.1] text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
                   <p className="mt-4 max-w-[30ch] text-[16px] leading-7 text-slate-600">{body}</p>
                 </div>
-                <span className="mt-8 inline-flex items-center gap-2 text-[16px] font-semibold text-[#4F46E5]">
+                <span className="mt-8 inline-flex items-center gap-2 text-[16px] font-semibold text-[#254A66]">
                   {lang === 'es' ? 'Explorar' : lang === 'ca' ? 'Explorar' : 'Explore'} <span className="transition group-hover:translate-x-1">→</span>
                 </span>
               </Link>
