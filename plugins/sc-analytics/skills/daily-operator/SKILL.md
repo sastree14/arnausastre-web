@@ -14,6 +14,7 @@ Always retrieve state before answering:
 - call sync_google_metrics first when the user explicitly asks for current/fresh Google metrics or when current performance is central and existing data is clearly stale;
 - use Upwork connector state (recent proposals/invitations/messages/offers) when Upwork follow-up materially affects the brief;
 - use list_activities / list_followups when deeper history is needed.
+- when LinkedIn growth is relevant, use the linkedin-growth workflow to surface a few high-value people, engagement opportunities or invite-to-page actions rather than generic networking advice.
 
 The brief should normally answer:
 1. What was completed / changed.
@@ -23,6 +24,7 @@ The brief should normally answer:
 5. Material performance changes only if they affect decisions.
 6. The 1–3 highest-value next actions.
 7. Offer to execute those actions when tools allow.
+8. LinkedIn growth actions, when relevant: a few strong connection candidates, worthwhile posts to comment on, or existing contacts worth inviting to follow SC-Analytics. Always include direct LinkedIn URLs when available.
 
 Examples of behavior:
 - “We applied to X, Y is waiting for a response, P006 is scheduled tomorrow, and there is a meeting at 16:00.”
