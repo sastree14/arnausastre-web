@@ -241,7 +241,7 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
                   key={item.key}
                   href={item.href}
                   className={`group flex min-h-[215px] flex-col border-b border-r border-slate-300 p-6 transition ${
-                    index === 1 ? 'bg-[#F4F1EA] hover:bg-[#F4F1EA]' : index === 2 ? 'bg-[#EAF0F6] hover:bg-[#E5EDF3]' : 'bg-white hover:bg-[#FAFAF7]'
+                    index === 1 ? 'bg-[#EAF0F6] hover:bg-[#EAF0F6]' : index === 2 ? 'bg-[#EAF0F6] hover:bg-[#E5EDF3]' : 'bg-white hover:bg-[#F7F9FC]'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -257,7 +257,7 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
         </div>
       </section>
 
-      <section className="border-b border-slate-300 bg-[#F4F1EA]">
+      <section className="border-b border-slate-300 bg-[#EAF0F6]">
         <div className="site-container py-6">
           <div className="mb-4 flex items-center justify-between gap-4">
             <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t.filterLabel}</p>
@@ -275,7 +275,7 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
                   className={`flex min-h-[66px] items-center justify-center border-b border-r px-4 py-3 text-center text-[14px] font-medium leading-[1.2] transition-colors ${
                     active
                       ? 'border-slate-300 bg-white font-semibold text-slate-950 shadow-[inset_0_-3px_0_#0f172a]'
-                      : 'border-slate-300 bg-[#F4F1EA] text-slate-600 hover:bg-white hover:text-slate-950'
+                      : 'border-slate-300 bg-[#EAF0F6] text-slate-600 hover:bg-white hover:text-slate-950'
                   }`}
                 >
                   <span className="max-w-[150px] whitespace-normal">{t.filters[filter]}</span>
@@ -298,7 +298,7 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
                 key={item.key}
                 href={item.href}
                 className={`group flex min-h-[190px] flex-col border-b border-r border-slate-300 p-6 transition ${
-                  index % 2 === 0 ? 'bg-white hover:bg-[#FAFAF7]' : 'bg-[#F9F8F4] hover:bg-[#F4F1EA]'
+                  index % 2 === 0 ? 'bg-white hover:bg-[#F7F9FC]' : 'bg-[#EAF0F6] hover:bg-[#EAF0F6]'
                 }`}
               >
                 <div className="flex items-start justify-between gap-4">

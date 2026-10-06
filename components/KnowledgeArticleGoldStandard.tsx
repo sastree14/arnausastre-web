@@ -337,7 +337,7 @@ export default function KnowledgeArticleGoldStandard({ article, forcedLanguage }
   const branchHref = `/knowledge?area=${meta.area}`
 
   return (
-    <main className="bg-[#FAFAF7] text-slate-950">
+    <main className="bg-[#F7F9FC] text-slate-950">
       <section className="border-b border-slate-300 bg-white">
         <div className="site-container pb-10 pt-8 lg:pb-12">
           <Link href="/knowledge" className="inline-flex items-center gap-2 text-[14px] font-medium text-slate-500 transition hover:text-slate-950">← {ui.back}</Link>
@@ -350,7 +350,7 @@ export default function KnowledgeArticleGoldStandard({ article, forcedLanguage }
       </section>
 
       {quick.length === 3 ? (
-        <section className="border-b border-slate-300 bg-[#F4F1EA]">
+        <section className="border-b border-slate-300 bg-[#EAF0F6]">
           <div className="site-container py-8 text-center lg:py-10">
             <p className="text-[14px] font-semibold uppercase tracking-[0.15em] text-[#4F46E5]">{ui.quickLabel}</p>
             <h2 className="mx-auto mt-3 max-w-4xl text-[29px] leading-tight text-slate-950 sm:text-[33px]" style={{ fontFamily: 'var(--font-playfair)' }}>{ui.quickTitle}</h2>
@@ -369,7 +369,7 @@ export default function KnowledgeArticleGoldStandard({ article, forcedLanguage }
       <section className="site-container py-10 lg:py-14">
         <div className="lg:grid lg:grid-cols-[330px_minmax(0,900px)] lg:justify-center lg:gap-16 lg:items-start">
           <aside className="sticky top-24 mb-8 hidden self-start lg:block">
-            <div className="border border-slate-300 bg-[#F4F1EA] p-6">
+            <div className="border border-slate-300 bg-[#EAF0F6] p-6">
               <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#4F46E5]">{ui.contents}</p>
               <p className="mt-3 text-[26px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{meta.contentsTitle}</p>
               <nav className="mt-6 border-t border-slate-300">
@@ -412,7 +412,7 @@ export default function KnowledgeArticleGoldStandard({ article, forcedLanguage }
         </div>
       </section>
 
-      <section className="border-y border-slate-300 bg-[#F4F1EA]">
+      <section className="border-y border-slate-300 bg-[#EAF0F6]">
         <div className="site-container py-10 lg:py-12">
           <div className="text-center">
             <p className="text-[14px] font-semibold uppercase tracking-[0.15em] text-[#4F46E5]">{ui.businessLabel}</p>
@@ -440,7 +440,7 @@ export default function KnowledgeArticleGoldStandard({ article, forcedLanguage }
               ['02', ui.branchQuestion, ui.branchAction, branchHref],
               ['03', ui.contactQuestion, ui.contactAction, '/contact?intent=problem'],
             ].map(([number, question, action, href], index) => (
-              <Link key={`${number}-${href}`} href={href} className={`group flex min-h-[220px] flex-col border-b border-r border-slate-300 p-7 transition ${index === 1 ? 'bg-[#F4F1EA] hover:bg-[#F4F1EA]' : index === 2 ? 'bg-[#0D1B2A] text-white hover:bg-[#254A66]' : 'bg-white hover:bg-[#FAFAF7]'}`}>
+              <Link key={`${number}-${href}`} href={href} className={`group flex min-h-[220px] flex-col border-b border-r border-slate-300 p-7 transition ${index === 1 ? 'bg-[#EAF0F6] hover:bg-[#EAF0F6]' : index === 2 ? 'bg-[#0D1B2A] text-white hover:bg-[#254A66]' : 'bg-white hover:bg-[#F7F9FC]'}`}>
                 <div className="flex items-start justify-between gap-4"><span className={`font-mono text-[14px] font-semibold ${index === 2 ? 'text-[#7A7DFF]' : 'text-[#4F46E5]'}`}>{number}</span><ArrowRight className={`h-5 w-5 transition-transform group-hover:translate-x-1 ${index === 2 ? 'text-white' : 'text-slate-500'}`} /></div>
                 <p className={`mt-6 max-w-[23ch] text-[24px] leading-[1.1] ${index === 2 ? 'text-white' : 'text-[#1D2B44]'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{question}</p>
                 <p className={`mt-auto pt-6 text-[16px] font-semibold ${index === 2 ? 'text-white' : 'text-[#4F46E5]'}`}>{action}</p>

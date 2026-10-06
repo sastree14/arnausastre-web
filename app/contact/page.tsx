@@ -257,7 +257,7 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="bg-[#FAFAF7] text-slate-950">
+    <main className="bg-[#F7F9FC] text-slate-950">
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
         <div className="site-container public-hero py-14 md:py-16">
           <div className="text-center">
@@ -295,7 +295,7 @@ export default function ContactPage() {
                   key={key}
                   type="button"
                   onClick={() => setIntent(key as IntentKey)}
-                  className={`min-h-[165px] border-b border-r border-slate-300 p-5 text-left transition ${active ? 'bg-[#0D1B2A] text-white' : index === 1 ? 'bg-[#F4F1EA] text-slate-950 hover:bg-[#F4F1EA]' : 'bg-white text-slate-950 hover:bg-slate-50'}`}
+                  className={`min-h-[165px] border-b border-r border-slate-300 p-5 text-left transition ${active ? 'bg-[#0D1B2A] text-white' : index === 1 ? 'bg-[#FFFFFF] text-slate-950 hover:bg-[#FFFFFF]' : 'bg-white text-slate-950 hover:bg-slate-50'}`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <p className={`font-mono text-[14px] ${active ? 'text-[#7A7DFF]' : 'text-[#254A66]'}`}>0{index + 1}</p>
@@ -310,7 +310,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="border-b border-slate-300 bg-[#FAFAF7]">
+      <section className="border-b border-slate-300 bg-[#F7F9FC]">
         <div className="site-container grid gap-6 py-12 md:py-16 lg:grid-cols-[1.1fr_.9fr]">
           <div className="border border-slate-300 bg-white p-6 md:p-8">
             <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{selectedForm.label}</p>
@@ -394,7 +394,7 @@ export default function ContactPage() {
               </a>
             </div>
 
-            <div className="border border-slate-300 bg-[#F4F1EA] p-6 md:p-8">
+            <div className="border border-slate-300 bg-[#FFFFFF] p-6 md:p-8">
               <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.nextLabel}</p>
               <div className="mt-5 border-y border-slate-300">
                 {t.next.map(([number, title, body], index) => (

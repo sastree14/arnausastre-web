@@ -250,7 +250,7 @@ export default function HomePage() {
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
         <div className="site-container public-hero py-16 md:py-20">
           <div className="flex flex-col items-center justify-center text-center">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#C7D9E8]">{t.eyebrow}</p>
             <h1 className="mt-5 max-w-6xl text-[46px] leading-[1.02] tracking-[-0.03em] text-white sm:text-[58px] lg:text-[68px]" style={{ fontFamily: 'var(--font-playfair)' }}>
               {t.title}
             </h1>

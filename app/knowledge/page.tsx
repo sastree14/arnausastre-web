@@ -25,7 +25,7 @@ export default async function KnowledgePage() {
   }
 
   return (
-    <main className="bg-[#FAFAF7] text-slate-900 page-enter">
+    <main className="bg-[#F7F9FC] text-slate-900 page-enter">
       <KnowledgeHero />
       <KnowledgeContent articles={articles} generated={generated} />
     </main>

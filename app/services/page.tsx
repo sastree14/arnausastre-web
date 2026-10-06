@@ -188,7 +188,7 @@ export default function ServicesPage() {
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
         <div className="site-container flex flex-col items-center gap-8 text-center py-16 md:py-20">
           <div className="max-w-4xl">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#C7D9E8]">{t.eyebrow}</p>
             <h1 className="mt-5 text-[46px] leading-[1.03] tracking-[-0.03em] sm:text-[58px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
             <p className="mx-auto mt-6 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
           </div>
@@ -199,7 +199,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="border-b border-slate-300 bg-[#FAFAF7]">
+      <section className="border-b border-slate-300 bg-[#F7F9FC]">
         <div className="site-container py-14 md:py-16">
           <div className="text-center">
             <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.processLabel}</p>
@@ -212,7 +212,7 @@ export default function ServicesPage() {
 
       <section className="border-b border-slate-300 bg-white">
         <div className="site-container py-14 md:py-16">
-          <div className="grid gap-7 lg:grid-cols-[190px_1fr] lg:gap-10">
+          <div className="section-heading">
             <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.capabilitiesLabel}</p>
             <h2 className="max-w-4xl text-[34px] leading-[1.06] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.capabilitiesTitle}</h2>
           </div>
@@ -221,8 +221,8 @@ export default function ServicesPage() {
             {t.capabilities.map(([title, body], index) => {
               const [description, examples, deliverable] = process.details[index]
               return (
-                <article key={title} className={`flex flex-col border-b border-r border-slate-300 p-7 md:p-8 ${index % 2 === 0 ? 'bg-[#F4F1EA]' : 'bg-[#EAF0F6]'}`}>
-                  <h3 className="min-h-[96px] text-[26px] font-semibold leading-8 text-slate-950">{title}</h3>
+                <article key={title} className={`flex flex-col border-b border-r border-slate-300 p-7 md:p-8 ${index % 2 === 0 ? 'bg-[#FFFFFF]' : 'bg-[#EAF0F6]'}`}>
+                  <h3 className="editorial-title min-h-[80px]">{title}</h3>
                   <p className="mt-4 min-h-[84px] text-[17px] leading-7 text-slate-700">{body}</p>
                   <details className="service-detail mt-6 border-t border-slate-300 pt-4">
                     <summary className="flex cursor-pointer items-center justify-between gap-4 text-[16px] font-semibold text-[#254A66]">
@@ -246,9 +246,9 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="border-b border-slate-300 bg-[#F4F1EA]">
+      <section className="border-b border-slate-300 bg-[#FFFFFF]">
         <div className="site-container py-14 md:py-16">
-          <div className="grid gap-7 lg:grid-cols-[190px_1fr] lg:gap-10">
+          <div className="section-heading">
             <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.modelsLabel}</p>
             <h2 className="max-w-4xl text-[34px] leading-[1.06] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.modelsTitle}</h2>
           </div>
@@ -297,9 +297,9 @@ export default function ServicesPage() {
                 <Link
                   key={href}
                   href={href}
-                  className={`group relative flex min-h-[220px] flex-col justify-between border p-7 text-left transition duration-200 hover:z-10 hover:-translate-y-1 hover:scale-[1.015] hover:shadow-lg active:scale-[1.005] ${middle ? 'border-[#CBD5E1] bg-[#EAF0F6] text-slate-950' : index === 0 ? 'border-[#CBD5E1] bg-[#F4F1EA] text-slate-950' : 'border-[#CBD5E1] bg-[#F4F1EA] text-slate-950'}`}
+                  className={`group relative flex min-h-[220px] flex-col justify-between border p-7 text-left transition duration-200 hover:z-10 hover:-translate-y-1 hover:scale-[1.015] hover:shadow-lg active:scale-[1.005] ${middle ? 'border-[#CBD5E1] bg-[#EAF0F6] text-slate-950' : index === 0 ? 'border-[#CBD5E1] bg-[#FFFFFF] text-slate-950' : 'border-[#CBD5E1] bg-[#FFFFFF] text-slate-950'}`}
                 >
-                  <h3 className="min-h-[96px] max-w-[270px] text-[26px] font-semibold leading-8 text-slate-950">{title}</h3>
+                  <h3 className="editorial-title min-h-[96px] max-w-[270px]">{title}</h3>
                   <p className="mt-8 text-[16px] font-semibold text-[#254A66]">
                     {cta} <span className="inline-block transition group-hover:translate-x-1">→</span>
                   </p>
@@ -310,7 +310,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="border-b border-slate-300 bg-[#F4F1EA]">
+      <section className="border-b border-slate-300 bg-[#FFFFFF]">
         <div className="site-container flex flex-col gap-7 py-10 md:flex-row md:items-end md:justify-between md:py-12">
           <div>
             <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.finalLabel}</p>

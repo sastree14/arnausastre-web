@@ -43,3 +43,17 @@
   .process-sequence { grid-template-columns: repeat(var(--process-columns), minmax(0, 1fr)); }
   .process-stage h3 { min-height: 64px; }
 }
+
+/* Shared editorial panels: connected surfaces, quiet numbering and serif titles. */
+.site-public .editorial-grid { display: grid; grid-template-columns: 1fr; gap: 1px; overflow: hidden; border: 1px solid #CBD5E1; background: #CBD5E1; }
+.site-public .editorial-panel { min-width: 0; padding: 28px; background: #FFFFFF; }
+.site-public .editorial-panel:nth-child(4n + 1), .site-public .editorial-panel:nth-child(4n + 4) { background: #EAF0F6; }
+.site-public .editorial-title { font-family: var(--font-playfair); font-size: 28px; font-weight: 400; line-height: 1.18; color: #0D1B2A; }
+@media (min-width: 768px) {
+  .site-public .editorial-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .site-public .editorial-panel { padding: 32px; }
+  .site-public .editorial-title { font-size: 30px; }
+}
+
+.site-public .section-heading { text-align: center; }
+.site-public .section-heading h2 { margin: 14px auto 0; }

@@ -131,7 +131,7 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
   }, [projects, activeFilter])
 
   return (
-    <main className="bg-[#FAFAF7] text-slate-950">
+    <main className="bg-[#F7F9FC] text-slate-950">
       <section className="border-b border-slate-300">
         <div className="site-container pb-9 pt-11 lg:pb-10 lg:pt-12">
           <div className="public-hero text-center">
@@ -143,7 +143,7 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
         </div>
       </section>
 
-      <section className="border-b border-slate-300 bg-[#F4F1EA]">
+      <section className="border-b border-slate-300 bg-[#FFFFFF]">
         <div className="site-container py-5">
           <p className="mb-3 text-[14px] font-semibold uppercase tracking-[0.14em] text-slate-500">{c.filterLabel}</p>
           <div className="grid grid-cols-2 border-l border-t border-slate-300 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-8">
@@ -157,8 +157,8 @@ export default function ProjectsPageClient({ projects }: { projects: Project[] }
                   onClick={() => setActiveFilter(filter)}
                   className={`flex min-h-[66px] items-center justify-center border-b border-r px-4 py-3 text-center text-[14px] font-medium leading-[1.2] transition-colors ${
                     active
-                      ? 'border-slate-300 bg-white font-semibold text-slate-950 shadow-[inset_0_-3px_0_#0f172a]'
-                      : 'border-slate-300 bg-[#F4F1EA] text-slate-600 hover:bg-white hover:text-slate-950'
+                      ? 'border-slate-300 bg-[#254A66] font-semibold text-white'
+                      : 'border-slate-300 bg-[#EAF0F6] text-[#254A66] hover:bg-white hover:text-slate-950'
                   }`}
                 >
                   <span className="max-w-[150px] whitespace-normal">{c.filters[filter]}</span>

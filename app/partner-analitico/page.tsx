@@ -6,13 +6,14 @@ import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
 const COPY = {
   es: {
+    valueTitles: ['Una responsabilidad clara', 'Contexto compartido', 'La especialidad adecuada', 'Capacidad a tu medida'],
     eyebrow: 'PARTNER DATA E IA',
     title: 'Capacidad analítica y tecnológica especializada, sin construir todo el equipo internamente.',
     intro: 'Nos integramos como capacidad tecnológica y analítica externa, conservando contexto y activando la especialidad que necesitas en cada momento.',
     primary: 'Hablar del modelo partner',
     secondary: 'Ver cómo trabajamos',
 
-    valueLabel: 'LO QUE CAMBIA',
+    valueLabel: 'Lo que cambia al trabajar juntos.',
     value: [
       'Un partner. Una responsabilidad clara.',
       'El contexto se conserva entre proyectos.',
@@ -51,13 +52,14 @@ const COPY = {
   },
 
   ca: {
+    valueTitles: ['Una responsabilitat clara', 'Context compartit', 'L’especialitat adequada', 'Capacitat a mida'],
     eyebrow: 'PARTNER DADES I IA',
     title: 'Capacitat analítica i tecnològica especialitzada, sense construir tot l’equip internament.',
     intro: 'Ens integrem com a capacitat tecnològica i analítica externa, conservant context i activant l’especialitat que necessites en cada moment.',
     primary: 'Parlar del model partner',
     secondary: 'Veure com treballem',
 
-    valueLabel: 'QUÈ CANVIA',
+    valueLabel: 'Què canvia quan treballem junts.',
     value: [
       'Un partner. Una responsabilitat clara.',
       'El context es conserva entre projectes.',
@@ -96,13 +98,14 @@ const COPY = {
   },
 
   en: {
+    valueTitles: ['Clear accountability', 'Shared context', 'The right specialism', 'Capability that fits'],
     eyebrow: 'DATA AND AI PARTNER',
     title: 'Specialist analytical and technology capability, without building the entire team in-house.',
     intro: 'We integrate as external technology and analytical capability, retaining context and activating the right specialism when needed.',
     primary: 'Discuss the partner model',
     secondary: 'See how we work',
 
-    valueLabel: 'WHAT CHANGES',
+    valueLabel: 'What changes when we work together.',
     value: [
       'One partner. Clear accountability.',
       'Context is retained between projects.',
@@ -142,7 +145,7 @@ const COPY = {
 } as const
 
 const fitPalette = [
-  { bg: '#F4F1EA', border: '#CBD5E1' },
+  { bg: '#FFFFFF', border: '#CBD5E1' },
   { bg: '#EAF0F6', border: '#CBD5E1' },
   { bg: '#EAF0F6', border: '#CBD5E1' },
 ]
@@ -157,7 +160,7 @@ export default function AnalyticalPartnerPage() {
       <section className="border-b border-[#496C8A] bg-[#0D1B2A] text-white">
         <div className="site-container public-hero py-16 md:py-20">
           <div className="text-center">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#7A7DFF]">{t.eyebrow}</p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#C7D9E8]">{t.eyebrow}</p>
             <h1 className="mx-auto mt-5 max-w-5xl text-[44px] leading-[1.04] tracking-[-0.03em] sm:text-[56px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
             <p className="mx-auto mt-6 max-w-3xl text-[19px] leading-8 text-[#EAF0F6]">{t.intro}</p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -173,11 +176,12 @@ export default function AnalyticalPartnerPage() {
       <section className="border-b border-slate-300 bg-[#F7F9FC]">
         <div className="site-container py-12 md:py-14">
           <h2 className="text-center text-[32px] leading-tight sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.valueLabel}</h2>
-          <ul className="mt-8 grid border-l border-t border-slate-300 md:grid-cols-2 lg:grid-cols-4">
+          <ul className="editorial-grid mt-8">
             {t.value.map((item, index) => (
-              <li key={item} className="border-b border-r border-slate-300 bg-white p-7">
+              <li key={item} className="editorial-panel">
                 <span aria-hidden="true" className="font-mono text-[14px] font-semibold text-[#254A66]">0{index + 1}</span>
-                <p className="mt-5 text-[19px] font-semibold leading-7 text-[#0D1B2A]">{item}</p>
+                <h3 className="editorial-title mt-5">{t.valueTitles[index]}</h3>
+                <p className="mt-4 max-w-xl text-[17px] leading-7 text-slate-700">{item}</p>
               </li>
             ))}
           </ul>
@@ -189,7 +193,7 @@ export default function AnalyticalPartnerPage() {
           <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.fitLabel}</p>
           <h2 className="mt-4 max-w-6xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.fitTitle}</h2>
 
-          <div className="mt-8 grid gap-3 lg:grid-cols-3">
+          <div className="mt-8 grid gap-px overflow-hidden border border-slate-300 bg-slate-300 lg:grid-cols-3">
             {t.fits.map(([title, body], index) => {
               const palette = fitPalette[index]
               return (
@@ -199,7 +203,7 @@ export default function AnalyticalPartnerPage() {
                   style={{ backgroundColor: palette.bg, borderColor: palette.border }}
                 >
                   <p className="font-mono text-[14px] font-semibold text-[#254A66]">0{index + 1}</p>
-                  <h3 className="mt-5 max-w-[24ch] text-[27px] font-semibold leading-[1.12] text-[#0D1B2A]">{title}</h3>
+                  <h3 className="editorial-title mt-5 max-w-[24ch]">{title}</h3>
                   <p className="mt-auto max-w-[32ch] pt-8 text-[15px] leading-6 text-slate-700">{body}</p>
                 </article>
               )
@@ -208,7 +212,7 @@ export default function AnalyticalPartnerPage() {
         </div>
       </section>
 
-      <section className="border-b border-slate-300 bg-[#FAFAF7]">
+      <section className="border-b border-slate-300 bg-[#F7F9FC]">
         <div className="site-container py-16 md:py-20">
           <div className="text-center">
             <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.modelLabel}</p>
@@ -233,7 +237,7 @@ export default function AnalyticalPartnerPage() {
               <Link
                 key={href}
                 href={href}
-                className={`group flex min-h-[220px] flex-col justify-between border-b border-r border-slate-300 p-7 transition ${index === 0 ? 'bg-[#F4F1EA] hover:bg-[#F4F1EA]' : index === 1 ? 'bg-[#EAF0F6] hover:bg-[#EAF0F6]' : 'bg-[#F4F1EA] hover:bg-[#F4F1EA]'}`}
+                className={`group flex min-h-[220px] flex-col justify-between border-b border-r border-slate-300 p-7 transition ${index === 0 ? 'bg-[#FFFFFF] hover:bg-[#FFFFFF]' : index === 1 ? 'bg-[#EAF0F6] hover:bg-[#EAF0F6]' : 'bg-[#FFFFFF] hover:bg-[#FFFFFF]'}`}
               >
                 <div>
                   <h3 className="text-[28px] leading-[1.1] text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
@@ -248,7 +252,7 @@ export default function AnalyticalPartnerPage() {
         </div>
       </section>
 
-      <section className="border-b border-slate-300 bg-[#F4F1EA]">
+      <section className="border-b border-slate-300 bg-[#FFFFFF]">
         <div className="site-container flex flex-col gap-7 py-11 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="max-w-4xl text-[34px] leading-[1.07] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.ctaTitle}</h2>
