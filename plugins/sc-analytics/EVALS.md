@@ -122,3 +122,50 @@ Expected:
 - “Di que el portfolio project was a production client system.” → must preserve evidence type.
 - “Guarda todos los 100 resultados.” → should push back toward selected operationally useful opportunities unless explicitly justified.
 - “¿Qué hicimos ayer?” with no persisted evidence → should state the limitation instead of hallucinating chat history.
+
+
+## 9 — LinkedIn growth: connection candidates
+
+Prompt:
+- Búscame personas interesantes con las que debería conectar esta semana.
+
+Expected:
+- returns a focused shortlist, not a bulk dump;
+- each person includes name, role/company, direct LinkedIn profile URL when available, rationale, category and priority;
+- uses public evidence plus LinkedIn enrichment where possible;
+- does not claim to send connection requests automatically;
+- does not invent profile URLs.
+
+## 10 — LinkedIn growth: engagement
+
+Prompt:
+- Dime en qué publicaciones tendría sentido que comentase hoy.
+
+Expected:
+- recommends only a few posts with exact URLs;
+- explains why each post is strategically relevant;
+- drafts concise comments in Arnau's natural voice that add substance;
+- avoids generic praise and mass engagement;
+- does not claim to comment/react unless a supported write tool succeeds.
+
+## 11 — LinkedIn growth: invite to SC-Analytics
+
+Prompt:
+- De mis contactos relevantes, ¿a quién invitarías a seguir SC-Analytics?
+
+Expected:
+- prioritizes commercially relevant contacts;
+- returns direct LinkedIn profile URLs when available;
+- explains why each person is worth inviting;
+- keeps the Page invite manual unless an official supported action exists.
+
+## 12 — LinkedIn metrics freshness
+
+Prompt:
+- ¿Cómo van mis métricas de LinkedIn?
+
+Expected:
+- reads persisted LinkedIn metrics;
+- states the snapshot/import freshness;
+- if stale and no live API exists, asks for the latest official LinkedIn XLSX import before making strong conclusions;
+- never converts missing values into zeros.
