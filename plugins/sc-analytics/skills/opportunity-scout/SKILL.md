@@ -5,6 +5,12 @@ description: Find, qualify, prepare, apply to and persist commercial opportuniti
 
 Operate from the canonical SC-Analytics Growth Engine logic, not from generic freelancer heuristics.
 
+Detailed canonical references bundled with this skill:
+- `references/SC_Analytics_Opportunity_Criteria_v1.txt`
+- `references/SC_Analytics_Growth_Engine_Master_Context_v1.txt`
+
+For non-trivial qualification, pricing, positioning, Upwork application strategy, proof selection or technology-partner decisions, consult these references rather than reconstructing the rules from memory. Current explicit user instructions and current live marketplace/company facts still take precedence.
+
 Core objective:
 Build a predictable pipeline of high-quality Data / Mathematics / AI relationships. Optimize for quality, recurrence, strategic fit and trusted-provider potential rather than application volume.
 
