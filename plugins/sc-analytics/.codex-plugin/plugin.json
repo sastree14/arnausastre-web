@@ -1,0 +1,7 @@
+{
+  "name": "sc-analytics",
+  "version": "1.2.0",
+  "description": "SC-Analytics operating assistant for opportunities, editorial, metrics, LinkedIn growth and persistent business follow-up.",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

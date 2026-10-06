@@ -1,0 +1,20 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "sc-analytics",
+  "version": "1.2.0",
+  "description": "SC-Analytics operating assistant for opportunities, editorial, metrics, LinkedIn growth and persistent business follow-up.",
+  "author": {
+    "name": "SC-Analytics",
+    "url": "https://sc-analytics.io"
+  },
+  "homepage": "https://sc-analytics.io",
+  "repository": "https://github.com/sastree14/arnausastre-web",
+  "keywords": [
+    "sc-analytics",
+    "editorial",
+    "analytics",
+    "crm",
+    "research",
+    "linkedin"
+  ]
+}

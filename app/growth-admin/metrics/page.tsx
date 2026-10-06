@@ -1,19 +1,19 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
-import { Badge, EmptyState, SectionHeading, StatCard, adminButtonSecondary, adminPanel } from '@/components/growth-admin/AdminUi'
+import { Badge, EmptyState, PageHeader, SectionHeading, StatCard, adminPanel } from '@/components/growth-admin/AdminUi'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { getMetricsBundle } from '@/lib/growth-admin-performance'
-import { CORPORATE_GOOGLE_EMAIL, gmailOAuthReadiness } from '@/lib/google-oauth-finance'
 import MetricsPeriodComparison from '@/components/growth-admin/MetricsPeriodComparison'
 import { getMetricsComparison, normalizePeriodKind, periodOptions } from '@/lib/metrics-periods'
 
 export const dynamic='force-dynamic'
+
 const n=(value:unknown)=>Number(value||0)
-const euro=(value:unknown)=>`${n(value).toLocaleString('es-ES',{minimumFractionDigits:0,maximumFractionDigits:0})} €`
+const euro=(value:unknown)=>n(value).toLocaleString('es-ES',{minimumFractionDigits:0,maximumFractionDigits:0}) + ' €'
 const date=(value:unknown)=>value?new Date(String(value)).toLocaleString('es-ES',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Madrid'}):'Nunca'
 const show=(ready:boolean,value:unknown,format:(v:unknown)=>string=(v)=>n(v).toLocaleString('es-ES'))=>ready?format(value):'—'
 
-export default async function MetricsPage({searchParams}:{searchParams:Promise<{synced?:string;ga4_error?:string;gsc_error?:string;google_connected?:string;period_kind?:string;period_a?:string;period_b?:string;trend_metric?:string}>}){
+export default async function MetricsPage({searchParams}:{searchParams:Promise<{period_kind?:string;period_a?:string;period_b?:string;trend_metric?:string;synced?:string;ga4_error?:string;gsc_error?:string}>}){
   if(!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
   const params=await searchParams
   const kind=normalizePeriodKind(params.period_kind)
@@ -22,7 +22,7 @@ export default async function MetricsPage({searchParams}:{searchParams:Promise<{
     getMetricsBundle(),
     getMetricsComparison({kind,periodA:params.period_a,periodB:params.period_b,trendMetric:params.trend_metric}),
   ])
-  const oauth=gmailOAuthReadiness()
+
   const liReady=n(metrics.linkedin.posts_measured)>0
   const webReady=Boolean(metrics.website.latest_date)
   const seoReady=Boolean(metrics.seo.latest_date)
@@ -33,21 +33,92 @@ export default async function MetricsPage({searchParams}:{searchParams:Promise<{
   const seoCtr=n(metrics.seo.impressions)>0?n(metrics.seo.clicks)/n(metrics.seo.impressions):null
 
   return <AdminShell active="metrics">
-    <header className="overflow-hidden rounded-[2rem] border border-amber-950 bg-[#3a2a05] text-white shadow-sm"><div className="grid gap-8 px-6 py-9 md:px-10 md:py-12 xl:grid-cols-[1fr_auto] xl:items-end"><div className="max-w-4xl"><p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-amber-300">Cuadro de Mando Integral · Métricas</p><h1 className="mt-4 text-4xl md:text-6xl" style={{fontFamily:'var(--font-playfair)'}}>Métricas</h1><p className="mt-5 max-w-3xl text-sm leading-7 text-amber-100/80 md:text-base">Los valores automáticos salen de la misma base operativa; Google se sincroniza con totales de periodo separados de los desgloses; LinkedIn Analytics se importa. “—” significa sin dato disponible, no cero.</p></div><div className="flex flex-wrap gap-2">{metrics.sources.google_connected?<form action="/api/growth-admin/metrics/sync" method="post"><input type="hidden" name="days" value="365"/><input type="hidden" name="return_to" value="/growth-admin/metrics"/><button className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">Sincronizar Google ahora</button></form>:oauth.configured?<a href="/api/growth-admin/google/connect?account=corporate&return_to=/growth-admin/metrics" className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">Conectar {CORPORATE_GOOGLE_EMAIL}</a>:null}<a href="/growth-admin/metrics/dictionary" className="rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white">Cómo se calcula cada KPI</a><a href="/growth-admin/analytics" className="rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white">Detalle por fuente</a></div></div></header>
+    <PageHeader
+      eyebrow="CMI · Métricas"
+      title="Métricas"
+      description="Una vista sencilla para saber qué está pasando en web, SEO, LinkedIn y negocio. Actualizar Google solo sincroniza datos; no consume API de OpenAI."
+      actions={<>
+        <form action="/api/growth-admin/metrics/sync" method="post">
+          <input type="hidden" name="days" value="365"/>
+          <input type="hidden" name="return_to" value="/growth-admin/metrics"/>
+          <button className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">Actualizar Google</button>
+        </form>
+        <a href="/growth-admin/metrics/dictionary" className="rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white">Diccionario KPI</a>
+        <a href="/growth-admin/analytics" className="rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white">Detalle por fuente</a>
+      </>}
+    />
 
-    {params.synced&&!params.ga4_error&&!params.gsc_error&&<div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">Sincronización completada. GA4 y Search Console se han persistido correctamente en el CRM.</div>}
-    {(params.ga4_error||params.gsc_error)&&<div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900"><p className="mb-2 font-semibold">La sincronización no ha terminado correctamente.</p>{params.ga4_error&&<p><strong>GA4:</strong> {params.ga4_error}</p>}{params.gsc_error&&<p><strong>Search Console:</strong> {params.gsc_error}</p>}</div>}
+    {params.synced === '1' && !params.ga4_error && !params.gsc_error && (
+      <div className="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+        Google Analytics y Search Console se han actualizado correctamente.
+      </div>
+    )}
+    {(params.ga4_error || params.gsc_error) && (
+      <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+        <p className="font-semibold">La sincronización ha terminado con incidencias.</p>
+        {params.ga4_error && <p className="mt-1">GA4: {params.ga4_error}</p>}
+        {params.gsc_error && <p className="mt-1">Search Console: {params.gsc_error}</p>}
+      </div>
+    )}
 
     <MetricsPeriodComparison bundle={comparison} options={options}/>
 
-    <section className="mt-12"><SectionHeading eyebrow="Negocio" title="De actividad a resultado" description="CRM y Finance son automáticos: al actualizar deals, facturas, cobros o gastos confirmados, estos KPIs se recalculan desde Supabase."/><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6"><StatCard label="Oportunidades" value={n(metrics.commercial.opportunities)} tone="blue"/><StatCard label="Reuniones" value={n(metrics.commercial.meetings)} tone="violet"/><StatCard label="Pipeline abierto" value={euro(metrics.commercial.open_pipeline)} tone="blue"/><StatCard label="Facturado" value={euro(metrics.finance.invoiced)} tone="green"/><StatCard label="Cobrado" value={euro(metrics.finance.collected)} tone="green"/><StatCard label="Gasto" value={euro(metrics.finance.spent)} tone="amber"/></div></section>
+    <section className="mt-12">
+      <SectionHeading eyebrow="Negocio" title="Actividad comercial" description="Oportunidades y reuniones guardadas en el CMI; finanzas siguen leyendo la base operativa."/>
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
+        <StatCard label="Oportunidades" value={n(metrics.commercial.opportunities)} tone="blue"/>
+        <StatCard label="Reuniones" value={n(metrics.commercial.meetings)} tone="violet"/>
+        <StatCard label="Pipeline abierto" value={euro(metrics.commercial.open_pipeline)} tone="blue"/>
+        <StatCard label="Facturado" value={euro(metrics.finance.invoiced)} tone="green"/>
+        <StatCard label="Cobrado" value={euro(metrics.finance.collected)} tone="green"/>
+        <StatCard label="Gasto" value={euro(metrics.finance.spent)} tone="amber"/>
+      </div>
+    </section>
 
-    <section className="mt-12"><SectionHeading eyebrow="Website · GA4" title="Funnel web" description={webReady?`Último total de periodo sincronizado: ${metrics.website.latest_date}. Usuarios y sesiones proceden del informe GA4 sin dimensiones, evitando duplicidades por canal/página.`:'No existe todavía un total GA4 con el esquema corregido. Los guiones no son ceros.'}/><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-7"><StatCard label="Usuarios" value={show(webReady,metrics.website.users)}/><StatCard label="Sesiones" value={show(webReady,metrics.website.sessions)}/><StatCard label="Engagement" value={webReady&&webEngagement!==null?`${(webEngagement*100).toFixed(1)}%`:'—'} tone="blue"/><StatCard label="Page views" value={show(webReady,metrics.website.page_views)}/><StatCard label="Key events" value={show(webReady,metrics.website.key_events)} tone="violet"/><StatCard label="Discovery intent" value={show(webReady,metrics.website.discovery_clicks)} tone="amber"/><StatCard label="Bookings" value={show(webReady,metrics.website.bookings)} tone="green"/></div>{!webReady&&<div className="mt-4"><EmptyState>{metrics.sources.google_connected?'Google está conectado pero falta ejecutar una sincronización GA4 con el esquema corregido. Pulsa “Sincronizar Google ahora”.':'Google Workspace/GA4 está desconectado. Autoriza la cuenta corporativa para obtener datos.'}</EmptyState></div>}</section>
+    <section className="mt-12">
+      <SectionHeading eyebrow="Website · GA4" title="Web" description={webReady?'Último snapshot: ' + metrics.website.latest_date:'Todavía no hay un snapshot GA4 disponible en el CMI.'}/>
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-7">
+        <StatCard label="Usuarios" value={show(webReady,metrics.website.users)}/>
+        <StatCard label="Sesiones" value={show(webReady,metrics.website.sessions)}/>
+        <StatCard label="Engagement" value={webReady&&webEngagement!==null?(webEngagement*100).toFixed(1)+'%':'—'} tone="blue"/>
+        <StatCard label="Page views" value={show(webReady,metrics.website.page_views)}/>
+        <StatCard label="Key events" value={show(webReady,metrics.website.key_events)} tone="violet"/>
+        <StatCard label="Discovery intent" value={show(webReady,metrics.website.discovery_clicks)} tone="amber"/>
+        <StatCard label="Bookings" value={show(webReady,metrics.website.bookings)} tone="green"/>
+      </div>
+      {!webReady&&<div className="mt-4"><EmptyState>Pulsa “Actualizar Google” para traer GA4 y Search Console. Después podrás pedir a @SC-Analytics que analice los resultados.</EmptyState></div>}
+    </section>
 
-    <section className="mt-12"><SectionHeading eyebrow="SEO · Search Console" title="Visibilidad orgánica" description={seoReady?`Último dato sincronizado: ${metrics.seo.latest_date}`:'Sin snapshot Search Console: no se muestran ceros artificiales.'}/><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><StatCard label="Clicks orgánicos" value={show(seoReady,metrics.seo.clicks)} tone="green"/><StatCard label="Impresiones SEO" value={show(seoReady,metrics.seo.impressions)} tone="blue"/><StatCard label="CTR" value={seoReady&&seoCtr!==null?`${(seoCtr*100).toFixed(2)}%`:'—'} tone="violet"/><StatCard label="Posición media" value={seoReady?n(metrics.seo.position).toFixed(1):'—'} tone="amber"/></div></section>
+    <section className="mt-12">
+      <SectionHeading eyebrow="SEO · Search Console" title="Visibilidad orgánica" description={seoReady?'Último snapshot: ' + metrics.seo.latest_date:'Todavía no hay un snapshot Search Console disponible.'}/>
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <StatCard label="Clicks orgánicos" value={show(seoReady,metrics.seo.clicks)} tone="green"/>
+        <StatCard label="Impresiones SEO" value={show(seoReady,metrics.seo.impressions)} tone="blue"/>
+        <StatCard label="CTR" value={seoReady&&seoCtr!==null?(seoCtr*100).toFixed(2)+'%':'—'} tone="violet"/>
+        <StatCard label="Posición media" value={seoReady?n(metrics.seo.position).toFixed(1):'—'} tone="amber"/>
+      </div>
+    </section>
 
-    <section className="mt-12"><SectionHeading eyebrow="LinkedIn" title="Rendimiento de contenido" description="Publicación y analítica son permisos diferentes. Los posts se publican por API oficial; performance entra mediante el XLSX oficial de Content / post performance mientras la API analítica restringida no esté concedida."/><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6"><StatCard label="Impressions" value={show(liReady,metrics.linkedin.impressions)}/><StatCard label="Reach" value={show(liReady,metrics.linkedin.reach)}/><StatCard label="Engagement" value={liReady&&liDenominator>0?`${(liEngagement/liDenominator*100).toFixed(2)}%`:'—'} tone="blue"/><StatCard label="Saves" value={show(liReady,metrics.linkedin.saves)} tone="violet"/><StatCard label="Clicks" value={show(liReady,metrics.linkedin.clicks)} tone="green"/><StatCard label="Followers" value={show(liReady,metrics.linkedin.followers_gained)} tone="green"/></div><div className="mt-4"><a href="/growth-admin/analytics?account=arnau" className={adminButtonSecondary}>{liReady?'Actualizar / ver import LinkedIn':'Importar XLSX oficial LinkedIn'}</a></div></section>
+    <section className="mt-12">
+      <SectionHeading eyebrow="LinkedIn" title="Rendimiento editorial" description="Se muestran únicamente métricas disponibles y persistidas; si una fuente no está conectada no inventamos ceros."/>
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
+        <StatCard label="Impressions" value={show(liReady,metrics.linkedin.impressions)}/>
+        <StatCard label="Reach" value={show(liReady,metrics.linkedin.reach)}/>
+        <StatCard label="Engagement" value={liReady&&liDenominator>0?(liEngagement/liDenominator*100).toFixed(2)+'%':'—'} tone="blue"/>
+        <StatCard label="Saves" value={show(liReady,metrics.linkedin.saves)} tone="violet"/>
+        <StatCard label="Clicks" value={show(liReady,metrics.linkedin.clicks)} tone="green"/>
+        <StatCard label="Followers" value={show(liReady,metrics.linkedin.followers_gained)} tone="green"/>
+      </div>
+    </section>
 
-    <section className="mt-12 pb-12"><SectionHeading eyebrow="Fuentes" title="Estado de sincronización" description="Diferenciamos dato directo, sincronización, importación manual y desconexión."/><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4"><div className={`${adminPanel} p-5`}><div className="flex items-center justify-between"><p className="font-semibold text-slate-950">CRM + Finance</p><Badge tone="green">Directo</Badge></div><p className="mt-3 text-xs leading-5 text-slate-500">Misma base Supabase. No hay proceso de copia.</p></div><div className={`${adminPanel} p-5`}><div className="flex items-center justify-between"><p className="font-semibold text-slate-950">LinkedIn</p><Badge tone={liReady?'green':'amber'}>{liReady?'Import disponible':'Falta import analítico'}</Badge></div><p className="mt-3 text-xs leading-5 text-slate-500">Publicación de posts: {metrics.sources.linkedin_connected?'conectada':'sin conexión'}. Analytics: XLSX oficial de contenido. Posts medidos: {n(metrics.linkedin.posts_measured)}.</p></div><div className={`${adminPanel} p-5`}><div className="flex items-center justify-between"><p className="font-semibold text-slate-950">GA4</p><Badge tone={!metrics.sources.google_connected?'amber':webReady?'green':'blue'}>{!metrics.sources.google_connected?'Desconectado':webReady?'Sincronizado':'Pendiente sync'}</Badge></div><p className="mt-3 text-xs leading-5 text-slate-500">Última sync: {date(metrics.sources.last_ga4_sync)}</p></div><div className={`${adminPanel} p-5`}><div className="flex items-center justify-between"><p className="font-semibold text-slate-950">Search Console</p><Badge tone={!metrics.sources.google_connected?'amber':seoReady?'green':'blue'}>{!metrics.sources.google_connected?'Desconectado':seoReady?'Sincronizado':'Pendiente sync'}</Badge></div><p className="mt-3 text-xs leading-5 text-slate-500">Última sync: {date(metrics.sources.last_search_console_sync)}</p></div></div></section>
+    <section className="mt-12 pb-12">
+      <SectionHeading eyebrow="Fuentes" title="Estado de datos" description="El CMI enseña qué datos existen y cuándo se actualizaron; la ejecución vive fuera de esta pantalla."/>
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className={adminPanel + ' p-5'}><div className="flex items-center justify-between"><p className="font-semibold text-slate-950">CRM + Finance</p><Badge tone="green">Directo</Badge></div><p className="mt-3 text-xs leading-5 text-slate-500">Misma base Supabase.</p></div>
+        <div className={adminPanel + ' p-5'}><div className="flex items-center justify-between"><p className="font-semibold text-slate-950">LinkedIn</p><Badge tone={liReady?'green':'amber'}>{liReady?'Datos disponibles':'Sin analítica'}</Badge></div><p className="mt-3 text-xs leading-5 text-slate-500">Posts medidos: {n(metrics.linkedin.posts_measured)}.</p></div>
+        <div className={adminPanel + ' p-5'}><div className="flex items-center justify-between"><p className="font-semibold text-slate-950">GA4</p><Badge tone={webReady?'green':'amber'}>{webReady?'Disponible':'Pendiente'}</Badge></div><p className="mt-3 text-xs leading-5 text-slate-500">Última actualización: {date(metrics.sources.last_ga4_sync)}</p></div>
+        <div className={adminPanel + ' p-5'}><div className="flex items-center justify-between"><p className="font-semibold text-slate-950">Search Console</p><Badge tone={seoReady?'green':'amber'}>{seoReady?'Disponible':'Pendiente'}</Badge></div><p className="mt-3 text-xs leading-5 text-slate-500">Última actualización: {date(metrics.sources.last_search_console_sync)}</p></div>
+      </div>
+    </section>
   </AdminShell>
 }
