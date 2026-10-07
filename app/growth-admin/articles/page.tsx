@@ -5,6 +5,8 @@ import { ARTICLE_BANK } from '@/lib/article-bank'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { fallbackServiceForArticle, KNOWLEDGE_GOLD_STANDARD_IDS, KNOWLEDGE_SERVICES, publicationOrderForSequence } from '@/lib/knowledge-editorial'
 
+export const metadata = { robots: { index: false, follow: false } }
+
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
