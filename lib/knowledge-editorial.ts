@@ -153,6 +153,14 @@ export function presentationForFamily(contentFamily?: string | null): KnowledgeP
   }
 }
 
+export function presentationForArticle(contentFamily?: string | null, specId?: string | null): KnowledgePresentationVariant {
+  const id = String(specId || '')
+  // These are true three-way comparisons, so a triad is clearer than forcing
+  // a two-column compare layout.
+  if (['KB-005', 'KB-146', 'KB-149', 'KB-190'].includes(id)) return 'triad'
+  return presentationForFamily(contentFamily)
+}
+
 export function summaryCountForPresentation(variant: KnowledgePresentationVariant) {
   switch (variant) {
     case 'statement': return 1
