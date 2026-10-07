@@ -174,8 +174,12 @@ NON-NEGOTIABLE EDITORIAL RULES
 - Search optimization must never produce keyword stuffing or awkward titles.
 - Excerpt: 1-2 concise sentences.
 - quick: 1-8 short hooks. Vary the count according to the content. A contrarian piece may use one strong thesis; a comparison may use two; a framework or diagnostic may use four to six.
-- business_title: one strong implication sentence.
+- For statement/contrarian pieces, the visible thesis should normally express a complete idea in roughly 5-12 words. Do not reduce it to a cryptic three-word slogan.
+- The opening thesis and the final implication must do different jobs. The thesis frames the problem; the close gives a decision rule, diagnostic or next question. Never repeat the same sentence or paraphrase at both ends.
+- business_title: one strong implication sentence, normally compact enough to scan in one or two lines. Prefer roughly 6-16 words when the meaning allows it.
 - business_steps: 2-4 short concepts only when a sequence genuinely helps. Do not force three.
+- Normal prose must be written as real paragraphs, not stacks of isolated one-line sentences. Standalone short lines are reserved for genuine lists, numbered sequences, tables or intentional visual statements.
+- Within body sections, combine related sentences into 1-3 coherent paragraphs. Each paragraph should develop one idea and normally land around 50-100 words.
 - section_titles: 3-6 short display titles matching the actual body sections exactly.
 - SEO title should generally stay <= 60 characters where possible.
 - SEO description should generally be 120-160 characters.
