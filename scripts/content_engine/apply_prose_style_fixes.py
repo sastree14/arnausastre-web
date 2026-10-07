@@ -126,6 +126,15 @@ def unbold_weak_fragments(body: str, lang: str) -> tuple[str, int]:
         nonlocal removed
         phrase = match.group(1)
         stripped = phrase.strip()
+
+        # Standalone bold lines are section headings, not scanning anchors.
+        line_start = body.rfind("\n", 0, match.start()) + 1
+        line_end = body.find("\n", match.end())
+        if line_end == -1:
+            line_end = len(body)
+        if body[line_start:line_end].strip() == match.group(0).strip():
+            return match.group(0)
+
         if not stripped or stripped[-1] in ".!?;:":
             return match.group(0)
         toks = WORD_RE.findall(stripped.lower())
