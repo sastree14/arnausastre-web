@@ -34,6 +34,8 @@ export default async function ArticleBankPreviewPage({ params }: Props) {
   const familyApproved = ['es','ca','en'].every(language => familyByLanguage.get(language)?.status === 'approved')
   const familyScheduled = ['es','ca','en'].every(language => familyByLanguage.get(language)?.status === 'scheduled')
   const familyPublished = ['es','ca','en'].every(language => familyByLanguage.get(language)?.status === 'published')
+  const scheduleItem = familyByLanguage.get('es') || materializedFamily[0]
+  const familyScheduledAt = scheduleItem?.scheduled_at || null
   const order = publicationOrderForSequence(article.sequence)
   const serviceKey = fallbackServiceForArticle({ cluster: article.cluster, specId: article.spec_id })
   const service = KNOWLEDGE_SERVICES[serviceKey]
@@ -110,6 +112,25 @@ export default async function ArticleBankPreviewPage({ params }: Props) {
                 Marcar para cambios
               </button>
             </form>
+          </div>
+        )}
+
+        {familyApproved && scheduleItem && (
+          <form action="/api/growth-admin/schedule" method="post" className="mt-4 grid gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+            <input type="hidden" name="content_id" value={scheduleItem.content_id} />
+            <label className="text-xs font-semibold text-emerald-950">
+              Programar esta familia
+              <input required type="datetime-local" name="scheduled_at" className="mt-1 block w-full rounded-lg border border-emerald-200 bg-white px-3 py-2.5 text-sm text-slate-900" />
+            </label>
+            <button className="rounded-lg bg-emerald-800 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-900">
+              Programar ES · CA · EN
+            </button>
+          </form>
+        )}
+
+        {familyScheduled && familyScheduledAt && (
+          <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 p-4 text-xs leading-5 text-blue-900">
+            Familia programada para <strong>{new Date(familyScheduledAt).toLocaleString('es-ES')}</strong>. El publisher la hará pública cuando llegue ese momento.
           </div>
         )}
       </section>
