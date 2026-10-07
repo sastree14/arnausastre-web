@@ -34,7 +34,7 @@
         "El threshold incorpora coste y apetito de riesgo",
         "El sistema debe sobrevivir después del deployment"
       ],
-      "business_title": "Un sistema de credit scoring crea valor cuando convierte ranking y probabilidad en una política de aprobación coherente con pérdidas, margen, capacidad y riesgo.",
+      "business_title": "Credit scoring crea valor cuando el score se convierte en una política de crédito.",
       "business_steps": [
         "Ranking",
         "Probabilidad",
@@ -69,7 +69,7 @@
         "Threshold embeds cost and risk appetite",
         "The system must survive after deployment"
       ],
-      "business_title": "A credit-scoring system creates value when ranking and probability become an approval policy consistent with losses, margin, capacity and risk appetite.",
+      "business_title": "Credit scoring creates value when the score becomes a credit policy.",
       "business_steps": [
         "Ranking",
         "Probability",
@@ -104,7 +104,7 @@
         "El threshold incorpora cost i risk appetite",
         "El sistema ha de sobreviure després del deployment"
       ],
-      "business_title": "Un sistema de credit scoring crea valor quan ranking i probabilitat es converteixen en una política d’aprovació coherent amb pèrdues, marge, capacitat i risk appetite.",
+      "business_title": "El credit scoring crea valor quan el score es converteix en una política de crèdit.",
       "business_steps": [
         "Ranking",
         "Probabilitat",
