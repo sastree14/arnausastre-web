@@ -53,9 +53,52 @@ function metaFor(article: PublicGeneratedArticle): ArticleMeta {
 
 
 function splitReadableParagraph(text: string) {
-  // Preserve author paragraph boundaries, URLs, lists and Markdown tables.
   const clean = text.trim()
   return clean ? [clean] : []
+}
+
+function isStructuredParagraph(text: string) {
+  const lines = text.trim().split('\n').filter(Boolean)
+  if (lines.length > 1 && lines.every(line => line.trim().startsWith('|'))) return true
+  if (lines.length > 1 && lines.every(line => /^[-*]\s+/.test(line.trim()))) return true
+  if (lines.length > 1 && lines.every(line => /^\d+\.\s+/.test(line.trim()))) return true
+  return false
+}
+
+function mergeShortProseParagraphs(paragraphs: string[]) {
+  const merged: string[] = []
+  let buffer = ''
+
+  const flush = () => {
+    if (buffer.trim()) merged.push(buffer.trim())
+    buffer = ''
+  }
+
+  for (const paragraph of paragraphs) {
+    const clean = paragraph.trim()
+    if (!clean) continue
+    if (isStructuredParagraph(clean)) {
+      flush()
+      merged.push(clean)
+      continue
+    }
+
+    if (!buffer) {
+      buffer = clean
+      continue
+    }
+
+    const candidate = `${buffer} ${clean}`
+    if (buffer.length < 280 && candidate.length <= 620) {
+      buffer = candidate
+    } else {
+      flush()
+      buffer = clean
+    }
+  }
+
+  flush()
+  return merged
 }
 
 function parseBody(body: string): Segment[] {
@@ -71,7 +114,10 @@ function parseBody(body: string): Segment[] {
   }
   const flushSegment = () => {
     flushParagraph()
-    if (current.paragraphs.length) segments.push(current)
+    if (current.paragraphs.length) {
+      current = { ...current, paragraphs: mergeShortProseParagraphs(current.paragraphs) }
+      segments.push(current)
+    }
   }
 
   for (const rawLine of lines) {
@@ -238,9 +284,9 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
       />
 
       <section className="site-container py-10 lg:py-14">
-        <div className="lg:grid lg:grid-cols-[330px_minmax(0,900px)] lg:justify-center lg:gap-16 lg:items-start">
+        <div className="lg:grid lg:grid-cols-[250px_minmax(0,920px)] lg:justify-start lg:gap-10 lg:items-start">
           <aside className="sticky top-24 mb-8 hidden self-start lg:block">
-            <div className="border border-slate-300 bg-[#F4F1EA] p-6">
+            <div className="border border-slate-300 bg-[#F4F1EA] p-5">
               <p className="text-[14px] font-semibold uppercase tracking-[0.16em] text-[#4F46E5]">{t.contents}</p>
               <p className="mt-3 text-[26px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{t.contentsTitle}</p>
               <nav className="mt-6 border-t border-slate-300">
@@ -295,20 +341,18 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
       <KnowledgeExperienceNote locale={activeLanguage} note={experienceNote} />
 
       {businessTitle ? (
-        <section className="border-y border-slate-300 bg-[#F4F1EA]">
+        <section className="border-y border-slate-300 bg-[#F7F9FC]">
           <div className="site-container py-10 lg:py-12">
             <div className="text-center">
               <p className="text-[14px] font-semibold uppercase tracking-[0.15em] text-[#4F46E5]">{t.businessLabel}</p>
               <h2 className="mx-auto mt-3 max-w-5xl text-[32px] leading-[1.08] text-slate-950 sm:text-[39px]" style={{ fontFamily: 'var(--font-playfair)' }}>{businessTitle}</h2>
             </div>
             {businessSteps.length ? (
-              <div className={`mx-auto mt-7 grid max-w-[1180px] gap-3 ${businessGrid}`}>
+              <div className={`mx-auto mt-7 grid max-w-[1180px] border-l border-t border-slate-300 ${businessGrid}`}>
                 {businessSteps.map((step, index) => (
-                  <div key={step} className={`flex min-h-[128px] items-center justify-center border border-slate-300 px-6 py-5 text-center ${index % 3 === 1 ? 'bg-[#EAF0F6]' : 'bg-white'}`}>
-                    <div>
-                      <p className="font-mono text-[12px] font-semibold text-[#4F46E5]">{String(index + 1).padStart(2, '0')}</p>
-                      <p className="mt-3 text-[21px] font-semibold leading-7 text-[#1D2B44]">{step}</p>
-                    </div>
+                  <div key={step} className={`flex min-h-[136px] flex-col items-center justify-start border-b border-r border-slate-300 px-6 py-6 text-center ${index % 2 === 0 ? 'bg-white' : 'bg-[#EAF0F6]'}`}>
+                    <p className="font-mono text-[12px] font-semibold text-[#4F46E5]">{String(index + 1).padStart(2, '0')}</p>
+                    <p className="mt-4 max-w-[24ch] text-[22px] leading-[1.18] text-[#1D2B44]" style={{ fontFamily: 'var(--font-playfair)' }}>{step}</p>
                   </div>
                 ))}
               </div>
