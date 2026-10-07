@@ -107,6 +107,20 @@ def related_spec_ids(spec: dict[str, Any], specs: list[dict[str, Any]]) -> list[
     return [str(row["spec_id"]) for row in same_arc[:3]]
 
 
+def experience_register_for_spec(spec: dict[str, Any]) -> str:
+    sequence = int(spec.get("sequence") or 0)
+    cluster = str(spec.get("cluster") or "")
+    if cluster == "Forecasting & Planning":
+        return "first_hand"
+    if cluster == "Inventory & Supply Chain" and 21 <= sequence <= 28:
+        return "first_hand"
+    if cluster in {"Machine Learning", "AI & Automation", "Analytics & Decision Intelligence"}:
+        return "first_hand"
+    if 173 <= sequence <= 176 or 193 <= sequence <= 200:
+        return "first_hand"
+    return "analysis"
+
+
 def compact_spec(spec: dict[str, Any]) -> dict[str, Any]:
     keep = (
         "spec_id", "sequence", "arc_id", "cluster", "knowledge_area", "editorial_pillar",
@@ -114,7 +128,9 @@ def compact_spec(spec: dict[str, Any]) -> dict[str, Any]:
         "primary_keyword", "search_intent", "business_question", "thesis", "freshness",
         "related_case",
     )
-    return {key: spec.get(key) for key in keep}
+    compact = {key: spec.get(key) for key in keep}
+    compact["experience_register"] = experience_register_for_spec(spec)
+    return compact
 
 
 def build_prompt(spec: dict[str, Any], related: list[str], context: str) -> str:
@@ -134,15 +150,16 @@ RELATED ARTICLE IDS
 NON-NEGOTIABLE EDITORIAL RULES
 - Business-first, sober, specific, useful and commercially intelligent without sounding like sales copy.
 - The reader should learn something useful even if they never contact SC-Analytics.
-- Do not invent client work, company experience, project outcomes, benchmarks, market shares or statistics.
-- Do not imply SC-Analytics has implemented a technology unless the spec explicitly says so. This bank excludes case/project-proof articles.
+- Never invent client outcomes, named clients, numerical results, benchmarks, market shares or statistics.
+- The canonical spec contains experience_register. When it is "first_hand", you MAY use a restrained first-hand register ("in practice", "when we build...", "we have found...") for implementation patterns that SC-Analytics has actually worked with. Do not invent a client, a result or a project detail that is not in the spec.
+- When experience_register is "analysis", write from professional reasoning and evidence rather than pretending direct project history.
 - Avoid time-sensitive product/version claims unless they are structurally durable. Technology comparisons should focus on decision criteria, operating model, architecture and trade-offs.
 - No generic AI hype. No textbook introductions. Start with a substantive observation.
 - Every article must contain a concrete operating scenario, but it must be explicitly generic/illustrative rather than a claimed client case.
 - Explain trade-offs, limitations and when the proposed approach is NOT appropriate.
 - Use selective **bold** emphasis as scanning anchors: normally 1-3 short bold phrases per section. Never bold whole paragraphs.
-- Body should be approximately 750-1150 words PER LANGUAGE.
-- Use 4 body sections after the opening context. Section headings must be short.
+- Length follows the decision, not a quota. Most articles should land around 650-950 words PER LANGUAGE. A narrow comparison can be shorter; a framework that genuinely needs more depth can be longer. Do not add filler to hit a target.
+- Use 3-6 body sections after the opening context. The number of sections must follow the content family and argument rather than a fixed template. Section headings must be short.
 - The body format for every language is plain Markdown:
   opening paragraphs
   blank line
@@ -156,10 +173,10 @@ NON-NEGOTIABLE EDITORIAL RULES
 - The Spanish, English and Catalan versions must sound native. Do not translate literally.
 - Search optimization must never produce keyword stuffing or awkward titles.
 - Excerpt: 1-2 concise sentences.
-- quick: exactly 3 short hooks, each understandable without explanatory text below it.
+- quick: 1-8 short hooks. Vary the count according to the content. A contrarian piece may use one strong thesis; a comparison may use two; a framework or diagnostic may use four to six.
 - business_title: one strong implication sentence.
-- business_steps: exactly 3 short cause -> decision -> result concepts that visually form a sequence.
-- section_titles: exactly 4 short display titles matching the four body sections.
+- business_steps: 2-4 short concepts only when a sequence genuinely helps. Do not force three.
+- section_titles: 3-6 short display titles matching the actual body sections exactly.
 - SEO title should generally stay <= 60 characters where possible.
 - SEO description should generally be 120-160 characters.
 - SEO keywords: 3-6 natural phrases including the primary query and close semantic variants.
@@ -177,10 +194,10 @@ Return VALID JSON ONLY with exactly this shape:
     "es": {{
       "title": "...",
       "excerpt": "...",
-      "quick": ["...", "...", "..."],
-      "section_titles": ["...", "...", "...", "..."],
+      "quick": ["..."],
+      "section_titles": ["...", "...", "..."],
       "business_title": "...",
-      "business_steps": ["...", "...", "..."],
+      "business_steps": ["...", "..."],
       "body": "...",
       "seo_title": "...",
       "seo_description": "...",
@@ -205,27 +222,29 @@ def validate_variant(language: str, variant: dict[str, Any]) -> list[str]:
             issues.append(f"{language}: missing {key}")
 
     quick = variant.get("quick") or []
-    if not isinstance(quick, list) or len(quick) != 3:
-        issues.append(f"{language}: quick must contain exactly 3 hooks")
+    if not isinstance(quick, list) or not 1 <= len(quick) <= 8:
+        issues.append(f"{language}: quick must contain between 1 and 8 hooks")
 
     section_titles = variant.get("section_titles") or []
-    if not isinstance(section_titles, list) or len(section_titles) != 4:
-        issues.append(f"{language}: section_titles must contain exactly 4 titles")
+    if not isinstance(section_titles, list) or not 3 <= len(section_titles) <= 6:
+        issues.append(f"{language}: section_titles must contain between 3 and 6 titles")
 
     steps = variant.get("business_steps") or []
-    if not isinstance(steps, list) or len(steps) != 3:
-        issues.append(f"{language}: business_steps must contain exactly 3 steps")
+    if not isinstance(steps, list) or not 2 <= len(steps) <= 4:
+        issues.append(f"{language}: business_steps must contain between 2 and 4 steps")
 
     body = str(variant.get("body") or "")
     wc = words(body)
-    if wc < 620:
+    if wc < 520:
         issues.append(f"{language}: body too short ({wc} words)")
-    if wc > 1450:
+    if wc > 1200:
         issues.append(f"{language}: body too long ({wc} words)")
 
     headings = re.findall(r"(?m)^\*\*[^*\n]+\*\*\s*$", body)
-    if len(headings) != 4:
-        issues.append(f"{language}: expected exactly 4 standalone bold section headings, found {len(headings)}")
+    if not 3 <= len(headings) <= 6:
+        issues.append(f"{language}: expected 3-6 standalone bold section headings, found {len(headings)}")
+    if isinstance(section_titles, list) and len(headings) != len(section_titles):
+        issues.append(f"{language}: body headings and section_titles count do not match")
 
     bolds = re.findall(r"\*\*[^*\n]+\*\*", body)
     if len(bolds) < 8:
