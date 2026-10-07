@@ -68,23 +68,27 @@ The mechanism that generates the problem is usually more useful than the problem
 
 ---
 
-## Rule 3 — Practical experience
+## Rule 3 — Grounded experience
 
-Articles must contain observations that appear to come from direct project experience — not from reading about projects.
+Practical experience is an asset, but it must be truthful.
 
-This means including:
+When SC-Analytics has direct experience in the subject, the article may use first-hand language and concrete implementation observations. This is especially appropriate for areas such as forecasting and demand planning, machine learning, scoring and risk models, AI agents and automation, dashboards/CMI, reporting and planning systems.
 
-- Specific mistakes that are common in practice (not theoretically possible, but actually frequent)
-- Organisational resistance patterns that appear repeatedly across companies
-- Adoption problems that arise after implementation, not before
-- Decisions that are routinely made incorrectly in this domain, and why
+When direct experience is not established, do not imitate it. Use:
+- professional judgement;
+- explicit illustrative scenarios;
+- documented mechanisms;
+- external evidence where required.
 
-The difference in register:
+Never invent a client, outcome, percentage, project duration or implementation detail to make an article sound authoritative.
 
-Generic: "organisations often struggle with change management during system implementation"
-Grounded: "the most common failure point is not the technology — it is the six months after go-live, when planners revert to their spreadsheets because the new system flags exceptions they don't know how to handle, and no one has defined a protocol for resolving them"
+The desired register is still grounded rather than generic:
 
-If a statement could have been written without ever having worked on one of these projects, it is probably too generic.
+Generic: "organisations often struggle with adoption"
+Grounded analysis: "adoption usually breaks when the new system changes the exception-handling process but no owner has been assigned to resolve those exceptions"
+Grounded first-hand, when authorized: "when we implement decision interfaces, the adoption problem usually appears when the interface exposes exceptions but the operating protocol has not changed"
+
+Precision creates authority. Fabricated experience destroys it.
 
 ---
 
