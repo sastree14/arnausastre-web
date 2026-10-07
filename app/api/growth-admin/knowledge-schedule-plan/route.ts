@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import editorialPlan from '@/content/editorial/knowledge_editorial_plan_v2.json'
-import { isGrowthAdminAuthenticated, queryGrowthTable, updateGrowthRow, type GrowthApproval, type GrowthContentItem } from '@/lib/growth-admin'
+import { isGrowthAdminAuthenticated, queryGrowthTable, type GrowthApproval, type GrowthContentItem } from '@/lib/growth-admin'
+import { mutateGrowthRpc } from '@/lib/supabase-growth'
 import { parseControlCenterDateTime } from '@/lib/control-center-time'
 
 type PlanRow = {
@@ -98,18 +99,22 @@ export async function POST(request: Request) {
   }
 
   let dayOffset = 0
+  const scheduleRows: Array<{ content_id: string; scheduled_at: string }> = []
   for (let index = 0; index < plan.length; index += 1) {
     if (index > 0) dayOffset += cadence[(index - 1) % cadence.length]
     const scheduledAt = parseControlCenterDateTime(localSlot(startLocal, dayOffset)).toISOString()
     const family = bySpec.get(plan[index].spec_id) || []
-    await Promise.all(family.map(item => updateGrowthRow('content_items', 'content_id', item.content_id, {
-      status: 'scheduled',
-      scheduled_at: scheduledAt,
-    })))
+    for (const item of family) scheduleRows.push({ content_id: item.content_id, scheduled_at: scheduledAt })
   }
+
+  const updated = await mutateGrowthRpc<number>('sc_schedule_knowledge_plan', {
+    p_tenant_id: 'sc-analytics',
+    p_rows: scheduleRows,
+  })
 
   const url = new URL('/growth-admin/articles', request.url)
   url.searchParams.set('plan_scheduled', String(plan.length))
+  url.searchParams.set('rows_scheduled', String(updated))
   url.searchParams.set('first_slot', start.toISOString())
   return NextResponse.redirect(url, 303)
 }
