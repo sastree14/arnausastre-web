@@ -6,6 +6,8 @@ import { getBankArticle, toPreviewVariants, type ArticleBankLanguage } from '@/l
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { fallbackServiceForArticle, KNOWLEDGE_GOLD_STANDARD_IDS, KNOWLEDGE_SERVICES, presentationForFamily, publicationOrderForSequence } from '@/lib/knowledge-editorial'
 
+export const metadata = { robots: { index: false, follow: false } }
+
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
