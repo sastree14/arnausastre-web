@@ -10,9 +10,9 @@ BANK = ROOT / "content" / "article-bank"
 
 PATTERNS = {
     "es": [
-        r"\bi\b", r"\bthe\b", r"\bshould\b", r"\bthis\b", r"\bthat\b",
-        r"\bwithout\b", r"\bwhen\b", r"\bwhere\b", r"\bhow\b", r"\balso\b",
-        r"\bcompare\b", r"\bdoes\b", r"\bwill\b",
+        r"(?<!/)\bi\b(?!/)", r"\bshould\b", r"\bthis\b", r"\bthat\b",
+        r"\bwithout\b", r"\bwhen\b", r"\bwhere\b", r"\balso\b",
+        r"\bdoes\b", r"\bwill\b",
     ],
     "ca": [
         r"\bsin embargo\b", r"\bpor lo tanto\b", r"\bpor tanto\b",
@@ -26,12 +26,12 @@ PATTERNS = {
     ],
 }
 
-FIELDS = ("title", "excerpt", "business_title", "seo_title", "seo_description", "body")
+FIELDS = ("excerpt", "business_title", "seo_description", "body")
 
 
 def flatten(variant: dict) -> str:
     parts = [str(variant.get(field) or "") for field in FIELDS]
-    for field in ("quick", "section_titles", "business_steps", "seo_keywords", "tags"):
+    for field in ("quick", "section_titles", "business_steps"):
         value = variant.get(field) or []
         if isinstance(value, list):
             parts.extend(str(item) for item in value)
