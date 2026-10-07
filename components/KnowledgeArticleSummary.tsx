@@ -1,4 +1,3 @@
-import { ArrowRight } from 'lucide-react'
 import { summaryCountForPresentation, summaryGridClass, type KnowledgePresentationVariant } from '@/lib/knowledge-editorial'
 
 type Props = {
@@ -60,12 +59,15 @@ function itemsFor({ presentation, quick = [], sectionTitles = [], businessTitle 
   if (customItems.length) return unique(customItems).slice(0, 8)
 
   const count = summaryCountForPresentation(presentation)
-  if (presentation === 'statement') return unique([businessTitle, quick[0]]).slice(0, 1)
+  if (presentation === 'statement') return unique([quick[0], sectionTitles[0], businessTitle]).slice(0, 1)
   if (presentation === 'duo') return unique([...quick, ...sectionTitles]).slice(0, 2)
   if (presentation === 'matrix' || presentation === 'diagnostic' || presentation === 'architecture') {
     return unique([...sectionTitles, ...quick]).slice(0, count)
   }
-  if (presentation === 'sequence') return unique([...quick, ...sectionTitles]).slice(0, count)
+  if (presentation === 'sequence') {
+    const sequenceCount = Math.min(6, Math.max(3, sectionTitles.length || count))
+    return unique([...sectionTitles, ...quick]).slice(0, sequenceCount)
+  }
   return unique([...quick, ...sectionTitles]).slice(0, count)
 }
 
@@ -87,13 +89,13 @@ function Duo({ items }: { items: string[] }) {
 }
 
 function Sequence({ items }: { items: string[] }) {
+  const backgrounds = ['bg-white', 'bg-[#F7F9FC]', 'bg-[#EEF3F8]', 'bg-[#E4ECF4]', 'bg-[#D9E5F0]', 'bg-[#CEDFEB]']
   return (
-    <div className="mx-auto mt-7 flex max-w-[1240px] flex-col border-l border-t border-slate-300 lg:flex-row">
+    <div className={`mx-auto mt-7 grid max-w-[1240px] border-l border-t border-slate-300 ${summaryGridClass(items.length)}`}>
       {items.map((text, index) => (
-        <div key={text} className="group relative flex min-h-[160px] flex-1 flex-col justify-between border-b border-r border-slate-300 bg-white p-6 text-left">
+        <div key={text} className={`flex min-h-[156px] flex-col items-start border-b border-r border-slate-300 p-6 text-left ${backgrounds[Math.min(index, backgrounds.length - 1)]}`}>
           <p className="font-mono text-[13px] font-semibold text-[#4F46E5]">{number(index)}</p>
-          <p className="mt-5 text-[19px] font-semibold leading-6 text-[#1D2B44]">{text}</p>
-          {index < items.length - 1 && <ArrowRight className="absolute -right-3 top-1/2 z-10 hidden h-6 w-6 -translate-y-1/2 bg-[#F4F1EA] text-[#4F46E5] lg:block" />}
+          <p className="mt-4 max-w-[28ch] text-[21px] leading-[1.16] text-[#1D2B44]" style={{ fontFamily: 'var(--font-playfair)' }}>{text}</p>
         </div>
       ))}
     </div>
@@ -102,12 +104,12 @@ function Sequence({ items }: { items: string[] }) {
 
 function Diagnostic({ items }: { items: string[] }) {
   return (
-    <div className="mx-auto mt-7 grid max-w-[1180px] gap-3 md:grid-cols-2">
+    <div className="mx-auto mt-7 grid max-w-[1180px] border-l border-t border-slate-300 md:grid-cols-2">
       {items.map((text, index) => (
-        <div key={text} className="grid min-h-[132px] grid-cols-[74px_1fr] items-stretch border border-slate-300 bg-white text-left">
-          <div className="flex items-center justify-center border-r border-slate-300 bg-[#0D1B2A] font-mono text-[14px] font-semibold text-white">{number(index)}</div>
+        <div key={text} className="grid min-h-[132px] grid-cols-[74px_1fr] items-stretch border-b border-r border-slate-300 bg-white text-left">
+          <div className="flex items-center justify-center border-r border-slate-300 bg-[#EAF0F6] font-mono text-[14px] font-semibold text-[#4F46E5]">{number(index)}</div>
           <div className="flex items-center px-6 py-5">
-            <p className="text-[20px] font-semibold leading-7 text-[#1D2B44]">{text}</p>
+            <p className="text-[20px] leading-7 text-[#1D2B44]" style={{ fontFamily: 'var(--font-playfair)' }}>{text}</p>
           </div>
         </div>
       ))}
@@ -118,9 +120,9 @@ function Diagnostic({ items }: { items: string[] }) {
 function Evidence({ items, locale }: { items: string[]; locale: 'es' | 'ca' | 'en' }) {
   const label = locale === 'es' ? 'Evidencia' : locale === 'ca' ? 'Evidència' : 'Evidence'
   return (
-    <div className="mx-auto mt-7 grid max-w-[1180px] gap-4 md:grid-cols-3">
+    <div className="mx-auto mt-7 grid max-w-[1180px] border-l border-t border-slate-300 md:grid-cols-3">
       {items.map((text, index) => (
-        <div key={text} className="min-h-[164px] border border-slate-300 bg-white text-left">
+        <div key={text} className="min-h-[164px] border-b border-r border-slate-300 bg-white text-left">
           <div className="h-1.5 bg-[#4F46E5]" />
           <div className="p-6">
             <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.14em] text-slate-500">{label} {number(index)}</p>
@@ -134,19 +136,15 @@ function Evidence({ items, locale }: { items: string[]; locale: 'es' | 'ca' | 'e
 
 function Architecture({ items }: { items: string[] }) {
   return (
-    <div className="relative mx-auto mt-7 max-w-[1040px]">
-      <div className="pointer-events-none absolute inset-0 hidden md:block">
-        <div className="absolute left-1/2 top-[12%] h-[76%] w-px -translate-x-1/2 bg-slate-300" />
-        <div className="absolute left-[12%] top-1/2 h-px w-[76%] -translate-y-1/2 bg-slate-300" />
-      </div>
-      <div className="relative grid gap-4 md:grid-cols-2">
-        {items.map((text, index) => (
-          <div key={text} className={`min-h-[150px] border border-slate-300 px-7 py-6 text-left ${index === 0 || index === 3 ? 'bg-white' : 'bg-[#EAF0F6]'}`}>
-            <p className="font-mono text-[13px] font-semibold text-[#4F46E5]">{number(index)}</p>
-            <p className="mt-4 text-[21px] font-semibold leading-7 text-[#1D2B44]">{text}</p>
+    <div className="mx-auto mt-7 grid max-w-[1040px] border-l border-t border-slate-300 md:grid-cols-2">
+      {items.map((text, index) => (
+        <div key={text} className={`grid min-h-[150px] grid-cols-[56px_1fr] border-b border-r border-slate-300 text-left ${index === 0 || index === 3 ? 'bg-white' : 'bg-[#F7F9FC]'}`}>
+          <div className="flex items-start justify-center border-r border-slate-300 pt-7 font-mono text-[13px] font-semibold text-[#4F46E5]">{number(index)}</div>
+          <div className="px-6 py-6">
+            <p className="text-[21px] leading-7 text-[#1D2B44]" style={{ fontFamily: 'var(--font-playfair)' }}>{text}</p>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   )
 }
@@ -158,10 +156,10 @@ function CardGrid({ items, presentation }: { items: string[]; presentation: Know
       {items.map((text, index) => (
         <div
           key={`${index}-${text}`}
-          className={`flex min-h-[142px] flex-col items-center justify-center border-b border-r border-slate-300 px-6 py-6 ${matrix ? (index % 2 === 0 ? 'bg-white' : 'bg-[#EAF0F6]') : (index % 3 === 1 ? 'bg-[#EAF0F6]' : 'bg-white')}`}
+          className={`flex min-h-[142px] flex-col items-center justify-start border-b border-r border-slate-300 px-6 py-6 text-center ${matrix ? (index % 2 === 0 ? 'bg-white' : 'bg-[#F7F9FC]') : (index % 2 === 0 ? 'bg-white' : 'bg-[#F7F9FC]')}`}
         >
           <p className="font-mono text-[13px] font-semibold text-[#4F46E5]">{number(index)}</p>
-          <h3 className="mt-3 max-w-[28ch] text-[21px] font-semibold leading-7 text-slate-950 sm:text-[23px]">{text}</h3>
+          <h3 className="mt-4 max-w-[28ch] text-[21px] leading-7 text-slate-950 sm:text-[23px]" style={{ fontFamily: 'var(--font-playfair)' }}>{text}</h3>
         </div>
       ))}
     </div>
@@ -174,7 +172,7 @@ export default function KnowledgeArticleSummary(props: Props) {
   const [label, title] = COPY[props.locale][props.presentation]
 
   return (
-    <section className="border-b border-slate-300 bg-[#F4F1EA]">
+    <section className="border-b border-slate-300 bg-[#EAF0F6]">
       <div className="site-container py-8 text-center lg:py-10">
         <p className="text-[14px] font-semibold uppercase tracking-[0.15em] text-[#4F46E5]">{label}</p>
         <h2 className="mx-auto mt-3 max-w-4xl text-[29px] leading-tight text-slate-950 sm:text-[33px]" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h2>
