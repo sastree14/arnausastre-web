@@ -36,8 +36,9 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
     return{
       title:local.title,
       description:local.description,
-      keywords:local.tags,
-      alternates:{canonical,languages:{en:'/knowledge/'+slug+'/en',es:'/knowledge/'+slug+'/es',ca:'/knowledge/'+slug+'/ca'}},
+      authors:[{name:'SC-Analytics',url:'https://sc-analytics.io/about'}],
+      robots:{index:true,follow:true},
+      alternates:{canonical,languages:{en:'/knowledge/'+slug+'/en',es:'/knowledge/'+slug+'/es',ca:'/knowledge/'+slug+'/ca','x-default':'/knowledge/'+slug+'/es'}},
       openGraph:{title:local.title,description:local.description,url:'https://sc-analytics.io'+canonical,type:'article',locale:locale==='es'?'es_ES':locale==='ca'?'ca_ES':'en_GB',publishedTime:staticArticle.date},
     }
   }
@@ -47,16 +48,17 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
   if(!article)return{}
   const articleMeta=(article.critique && typeof article.critique==='object' ? (article.critique as Record<string,unknown>).article_meta : null) as Record<string,unknown>|null
   const title=clean(String(articleMeta?.seo_title||article.title)),description=summary(String(articleMeta?.seo_description||articleMeta?.excerpt||article.body))
-  const seoKeywords=Array.isArray(articleMeta?.seo_keywords)?articleMeta?.seo_keywords:[article.topic,article.industry,article.challenge]
   const available=Object.fromEntries(
     variants
       .filter(item=>SUPPORTED.has(String(item.language) as Locale))
       .map(item=>[String(item.language),'/knowledge/'+slug+'/'+item.language])
   )
+  available['x-default']='/knowledge/'+slug+'/es'
   return{
     title,
     description,
-    keywords:seoKeywords.filter(Boolean) as string[],
+    authors:[{name:'SC-Analytics',url:'https://sc-analytics.io/about'}],
+    robots:{index:true,follow:true},
     alternates:{canonical,languages:available},
     openGraph:{title,description,url:'https://sc-analytics.io'+canonical,type:'article',locale:locale==='es'?'es_ES':locale==='ca'?'ca_ES':'en_GB',publishedTime:article.published_at||undefined},
   }
@@ -96,9 +98,11 @@ export default async function LocalizedArticle({params}:Props){
     description:summary(article.body),
     inLanguage:locale,
     datePublished:article.published_at||undefined,
-    author:{'@type':'Organization',name:'SC-Analytics'},
+    dateModified:article.created_at||article.published_at||undefined,
+    author:{'@type':'Organization',name:'SC-Analytics',url:'https://sc-analytics.io/about'},
     publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://sc-analytics.io'},
     mainEntityOfPage:'https://sc-analytics.io/knowledge/'+slug+'/'+locale,
+    isPartOf:{'@type':'CollectionPage',name:'SC-Analytics Knowledge',url:'https://sc-analytics.io/knowledge'},
   }
   return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><GeneratedKnowledgeArticleGoldStandard variants={variants} forcedLanguage={locale}/></>
 }
