@@ -75,9 +75,9 @@ export default function KnowledgeArticleNext({ locale, serviceKey, relatedHref, 
             <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t.relatedLabel}</p>
             <div className="mt-3 grid border-l border-t border-slate-300 md:grid-cols-3">
               {relatedArticles.slice(0, 3).map((item, index) => (
-                <Link key={item.href} href={item.href} className="group flex min-h-[112px] flex-col justify-between border-b border-r border-slate-300 bg-[#FAFAF7] p-5 text-left transition hover:bg-[#F4F1EA]">
+                <Link key={item.href} href={item.href} className="group flex min-h-[128px] flex-col border-b border-r border-slate-300 bg-[#FAFAF7] p-5 text-left transition hover:bg-[#F4F1EA]">
                   <span className="font-mono text-[12px] font-semibold text-[#4F46E5]">{String(index + 1).padStart(2, '0')}</span>
-                  <span className="mt-3 text-[16px] font-semibold leading-6 text-[#1D2B44]">{item.title || t.relatedAction}</span>
+                  <span className="mt-5 text-[16px] font-semibold leading-6 text-[#1D2B44]">{item.title || t.relatedAction}</span>
                 </Link>
               ))}
             </div>
