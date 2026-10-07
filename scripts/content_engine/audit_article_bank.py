@@ -68,6 +68,8 @@ def main() -> int:
     warnings: list[str] = []
     counts = Counter()
     long_business_titles: list[str] = []
+    short_prose_paragraphs: list[str] = []
+    long_prose_paragraphs: list[str] = []
 
     if len(files) != 200:
         errors.append(f"Expected 200 canonical articles, found {len(files)}")
@@ -92,6 +94,12 @@ def main() -> int:
             prose = [p for p in paragraphs(body) if not re.fullmatch(r"\*\*[^*\n]+\*\*", p)]
             opening = prose[0] if prose else ""
             closing = prose[-1] if prose else ""
+            for paragraph_index, paragraph in enumerate(prose, start=1):
+                paragraph_words = words(paragraph)
+                if paragraph_words < 20:
+                    short_prose_paragraphs.append(f"{spec_id}/{language}/p{paragraph_index}:{paragraph_words}")
+                if paragraph_words > 150:
+                    long_prose_paragraphs.append(f"{spec_id}/{language}/p{paragraph_index}:{paragraph_words}")
             business_title = str(variant.get("business_title") or "")
             excerpt = str(variant.get("excerpt") or "")
 
@@ -175,6 +183,8 @@ def main() -> int:
         "identical_keyword_arrays": counts["identical_keyword_arrays"],
         "seo_localization_pending": counts["identical_keyword_arrays"],
         "long_business_titles": long_business_titles,
+        "short_prose_paragraphs": short_prose_paragraphs,
+        "long_prose_paragraphs": long_prose_paragraphs,
         "error_examples": errors[:30],
         "warning_examples": warnings[:80],
     }
