@@ -34,7 +34,7 @@
         "Un baseline simple es una prueba obligatoria",
         "ML se justifica por mejora de negocio"
       ],
-      "business_title": "Machine learning merece complejidad cuando mejora una decisión concreta más de lo que cuestan sus datos, mantenimiento y riesgo.",
+      "business_title": "Machine learning merece la complejidad solo cuando mejora una decisión de forma medible.",
       "business_steps": [
         "Decisión",
         "Baseline",
@@ -69,7 +69,7 @@
         "A simple baseline is mandatory",
         "ML is justified by business improvement"
       ],
-      "business_title": "Machine learning is worth its complexity when it improves a specific decision more than its data, maintenance and risk cost.",
+      "business_title": "Machine learning is worth the complexity only when it measurably improves a decision.",
       "business_steps": [
         "Decision",
         "Baseline",
@@ -104,7 +104,7 @@
         "Un baseline simple és obligatori",
         "ML es justifica per millora de negoci"
       ],
-      "business_title": "Machine learning mereix complexitat quan millora una decisió concreta més del que costen les dades, manteniment i risc.",
+      "business_title": "Machine learning mereix la complexitat només quan millora una decisió de manera mesurable.",
       "business_steps": [
         "Decisió",
         "Baseline",
