@@ -34,7 +34,7 @@
         "El objetivo también importa",
         "Modelar antes de optimizar"
       ],
-      "business_title": "La ruta óptima depende menos de dibujar el camino más corto que de representar correctamente lo que la operación puede y debe hacer.",
+      "business_title": "La ruta óptima empieza por modelar bien las restricciones de la operación.",
       "business_steps": [
         "Restricciones reales",
         "Objetivo económico",
@@ -69,7 +69,7 @@
         "The objective matters too",
         "Model before optimizing"
       ],
-      "business_title": "The optimal route depends less on drawing the shortest path than on representing what operations can and should actually do.",
+      "business_title": "The optimal route starts with modelling the operational constraints correctly.",
       "business_steps": [
         "Real constraints",
         "Economic objective",
@@ -104,7 +104,7 @@
         "L’objectiu també importa",
         "Modelar abans d’optimitzar"
       ],
-      "business_title": "La ruta òptima depèn menys de dibuixar el camí més curt que de representar què pot i ha de fer realment l’operació.",
+      "business_title": "La ruta òptima comença per modelar bé les restriccions de l’operació.",
       "business_steps": [
         "Restriccions reals",
         "Objectiu econòmic",
