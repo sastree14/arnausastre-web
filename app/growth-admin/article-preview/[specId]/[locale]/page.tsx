@@ -4,7 +4,7 @@ import { Badge, PageHeader } from '@/components/growth-admin/AdminUi'
 import GeneratedKnowledgeArticleGoldStandard from '@/components/GeneratedKnowledgeArticleGoldStandard'
 import { getBankArticle, toPreviewVariants, type ArticleBankLanguage } from '@/lib/article-bank'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
-import { fallbackServiceForArticle, KNOWLEDGE_GOLD_STANDARD_IDS, KNOWLEDGE_SERVICES, presentationForFamily, publicationOrderForSequence } from '@/lib/knowledge-editorial'
+import { fallbackServiceForArticle, KNOWLEDGE_GOLD_STANDARD_IDS, KNOWLEDGE_SERVICES, presentationForArticle, publicationOrderForSequence } from '@/lib/knowledge-editorial'
 
 export const metadata = { robots: { index: false, follow: false } }
 
@@ -26,7 +26,7 @@ export default async function ArticleBankPreviewPage({ params }: Props) {
   const order = publicationOrderForSequence(article.sequence)
   const serviceKey = fallbackServiceForArticle({ cluster: article.cluster, specId: article.spec_id })
   const service = KNOWLEDGE_SERVICES[serviceKey]
-  const presentation = presentationForFamily(article.content_family)
+  const presentation = presentationForArticle(article.content_family, article.spec_id)
 
   return (
     <AdminShell active="content">
