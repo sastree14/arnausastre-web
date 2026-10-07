@@ -8,7 +8,7 @@ import type { PublicGeneratedArticle } from '@/lib/public-growth'
 import KnowledgeArticleSummary from '@/components/KnowledgeArticleSummary'
 import KnowledgeArticleNext from '@/components/KnowledgeArticleNext'
 import KnowledgeExperienceNote from '@/components/KnowledgeExperienceNote'
-import { fallbackServiceForArticle, presentationForFamily, type KnowledgePresentationVariant, type KnowledgeServiceKey } from '@/lib/knowledge-editorial'
+import { experienceNoteForArticle, fallbackServiceForArticle, presentationForFamily, type KnowledgePresentationVariant, type KnowledgeServiceKey } from '@/lib/knowledge-editorial'
 
 type Props = { variants: PublicGeneratedArticle[]; forcedLanguage?: 'es' | 'ca' | 'en' }
 
@@ -206,6 +206,7 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
   const relatedHref = typeof firstRelated === 'string' ? firstRelated : firstRelated?.href || meta.related_article
   const relatedTitle = typeof firstRelated === 'string' ? meta.related_article_title : firstRelated?.title || meta.related_article_title
   const businessGrid = businessSteps.length <= 1 ? 'grid-cols-1' : businessSteps.length === 2 ? 'md:grid-cols-2' : businessSteps.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2 xl:grid-cols-4'
+  const experienceNote = meta.experience_note || experienceNoteForArticle(meta.spec_id, activeLanguage)
 
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
@@ -288,7 +289,7 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
         </div>
       </section>
 
-      <KnowledgeExperienceNote locale={activeLanguage} note={meta.experience_note} />
+      <KnowledgeExperienceNote locale={activeLanguage} note={experienceNote} />
 
       {businessTitle ? (
         <section className="border-y border-slate-300 bg-[#F4F1EA]">
