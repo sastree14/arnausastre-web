@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
 import { Badge, PageHeader, adminPanel } from '@/components/growth-admin/AdminUi'
 import { ARTICLE_BANK } from '@/lib/article-bank'
-import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { isGrowthAdminAuthenticated, queryGrowthTable, type GrowthContentItem } from '@/lib/growth-admin'
 import { fallbackServiceForArticle, KNOWLEDGE_GOLD_STANDARD_IDS, KNOWLEDGE_SERVICES, publicationOrderForSequence } from '@/lib/knowledge-editorial'
 
 export const metadata = { robots: { index: false, follow: false } }
@@ -25,6 +25,21 @@ export default async function KnowledgeBankReviewPage({ searchParams }: Props) {
 
   const clusters = [...new Set(ARTICLE_BANK.map(article => article.cluster || ''))].filter(Boolean)
   const families = [...new Set(ARTICLE_BANK.map(article => article.content_family || ''))].filter(Boolean)
+  const materialized = await queryGrowthTable<GrowthContentItem>('content_items', {
+    tenant_id: 'eq.sc-analytics',
+    content_type: 'eq.article',
+    channel: 'eq.website',
+    limit: '1000',
+  }, { cacheSeconds: 0 }).catch(() => [])
+  const bankRows = materialized.filter(row => (row.critique as Record<string, unknown> | null)?.article_bank === true)
+  const stateBySpec = new Map<string, GrowthContentItem[]>()
+  for (const row of bankRows) {
+    const critique = row.critique as Record<string, unknown> | null
+    const meta = critique?.article_meta as Record<string, unknown> | undefined
+    const specId = String(meta?.spec_id || '')
+    if (!specId) continue
+    stateBySpec.set(specId, [...(stateBySpec.get(specId) || []), row])
+  }
 
   const rows = ARTICLE_BANK
     .filter(article => !q || [
@@ -88,6 +103,11 @@ export default async function KnowledgeBankReviewPage({ searchParams }: Props) {
           const serviceKey = fallbackServiceForArticle({ cluster: article.cluster, specId: article.spec_id })
           const service = KNOWLEDGE_SERVICES[serviceKey]
           const gold = KNOWLEDGE_GOLD_STANDARD_IDS.has(article.spec_id)
+          const stateRows = stateBySpec.get(article.spec_id) || []
+          const statuses = new Map(stateRows.map(row => [String(row.language || ''), row.status]))
+          const approved = ['es','ca','en'].every(language => statuses.get(language) === 'approved')
+          const scheduled = ['es','ca','en'].every(language => statuses.get(language) === 'scheduled')
+          const published = ['es','ca','en'].every(language => statuses.get(language) === 'published')
           return (
             <article key={article.spec_id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
               <div className="flex flex-wrap items-center gap-2">
@@ -95,6 +115,7 @@ export default async function KnowledgeBankReviewPage({ searchParams }: Props) {
                 <Badge>orden {String(order).padStart(3, '0')}</Badge>
                 {gold && <Badge tone="green">gold standard</Badge>}
                 <Badge>{article.content_family || 'article'}</Badge>
+                {published ? <Badge tone="green">publicada</Badge> : scheduled ? <Badge tone="blue">programada</Badge> : approved ? <Badge tone="green">aprobada</Badge> : <Badge tone="amber">revisar</Badge>}
               </div>
               <h2 className="mt-4 text-xl font-semibold leading-7 text-slate-950">{article.variants.es?.title}</h2>
               <p className="mt-2 text-sm text-slate-500">{article.cluster} · {service.labels.es}</p>
@@ -106,7 +127,8 @@ export default async function KnowledgeBankReviewPage({ searchParams }: Props) {
                     href={`/growth-admin/article-preview/${encodeURIComponent(article.spec_id)}/${locale}`}
                     className="rounded-lg border border-slate-200 px-3 py-2.5 text-center text-xs font-semibold text-slate-700 transition hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-800"
                   >
-                    Preview {locale.toUpperCase()}
+                    <span className="block">Preview {locale.toUpperCase()}</span>
+                    <span className="mt-1 block text-[10px] font-medium text-slate-400">{statuses.get(locale) || 'repo'}</span>
                   </a>
                 ))}
               </div>
