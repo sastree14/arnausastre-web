@@ -241,15 +241,15 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
                   key={item.key}
                   href={item.href}
                   className={`group flex min-h-[215px] flex-col border-b border-r border-slate-300 p-6 transition ${
-                    index === 1 ? 'bg-[#EAF0F6] hover:bg-[#EAF0F6]' : index === 2 ? 'bg-[#EAF0F6] hover:bg-[#E5EDF3]' : 'bg-white hover:bg-[#F7F9FC]'
+                    index % 2 === 1 ? 'bg-[#0D1B2A] text-white hover:bg-[#162A3D]' : 'bg-white hover:bg-[#F7F9FC]'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
-                    <span className="font-mono text-[14px] font-semibold text-[#4F46E5]">0{index + 1}</span>
-                    <ArrowRight className="h-5 w-5 text-slate-400 transition-transform group-hover:translate-x-1" />
+                    <span className={`font-mono text-[14px] font-semibold ${index % 2 === 1 ? 'text-[#9EA2FF]' : 'text-[#4F46E5]'}`}>0{index + 1}</span>
+                    <ArrowRight className={`h-5 w-5 transition-transform group-hover:translate-x-1 ${index % 2 === 1 ? 'text-white/70' : 'text-slate-400'}`} />
                   </div>
-                  <h3 className="mt-6 max-w-[24ch] flex-1 text-[27px] leading-[1.06] text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{item.title}</h3>
-                  <p className="mt-7 text-[16px] font-semibold text-[#4F46E5]">{t.read} →</p>
+                  <h3 className={`mt-6 max-w-[24ch] flex-1 text-[27px] leading-[1.06] ${index % 2 === 1 ? 'text-white' : 'text-slate-950'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{item.title}</h3>
+                  <p className={`mt-7 text-[16px] font-semibold ${index % 2 === 1 ? 'text-white' : 'text-[#4F46E5]'}`}>{t.read} →</p>
                 </Link>
               )
             })}
