@@ -202,9 +202,9 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
   const branchHref = `/knowledge?area=${area}`
   const presentation = meta.presentation_variant || presentationForFamily(meta.content_family)
   const serviceKey = meta.service_key || fallbackServiceForArticle({ cluster: meta.cluster, specId: meta.spec_id })
-  const normalizedRelatedArticles = (meta.related_articles || [])
+  const normalizedRelatedArticles: Array<{ href: string; title: string | undefined }> = (meta.related_articles || [])
     .map(item => typeof item === 'string' ? { href: item, title: undefined } : { href: item.href || '', title: item.title })
-    .filter((item): item is { href: string; title?: string } => Boolean(item.href))
+    .filter(item => Boolean(item.href))
   const firstRelated = normalizedRelatedArticles[0]
   const relatedHref = firstRelated?.href || meta.related_article
   const relatedTitle = firstRelated?.title || meta.related_article_title
