@@ -59,7 +59,13 @@ function itemsFor({ presentation, quick = [], sectionTitles = [], businessTitle 
   if (customItems.length) return unique(customItems).slice(0, 8)
 
   const count = summaryCountForPresentation(presentation)
-  if (presentation === 'statement') return unique([quick[0], sectionTitles[0], businessTitle]).slice(0, 1)
+  if (presentation === 'statement') {
+    const first = String(quick[0] || '').trim()
+    const second = String(quick[1] || '').trim()
+    const firstWords = first.split(/\s+/).filter(Boolean).length
+    const combined = first && second && firstWords < 5 ? `${first}: ${second.charAt(0).toLocaleLowerCase()}${second.slice(1)}` : first
+    return unique([combined, sectionTitles[0], businessTitle]).slice(0, 1)
+  }
   if (presentation === 'duo') return unique([...quick, ...sectionTitles]).slice(0, 2)
   if (presentation === 'matrix' || presentation === 'diagnostic' || presentation === 'architecture') {
     return unique([...sectionTitles, ...quick]).slice(0, count)
