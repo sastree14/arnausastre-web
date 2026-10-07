@@ -125,17 +125,25 @@ This does not require naming companies or people. It requires naming roles, budg
 
 ---
 
-## Rule 5 — Practical experience register
+## Rule 5 — Experience must be real, not simulated
 
-At least one section must read as if it comes from direct project experience.
+First-hand language is valuable when SC-Analytics genuinely has practical experience in the subject. Use it selectively and only where the editorial spec authorizes a first-hand register.
 
-The register is: "this is what we have seen repeatedly across multiple engagements" — not "this is what the literature says" or "this is theoretically possible."
+Allowed first-hand forms include:
+- "In practice, the failure point is often..."
+- "When we build forecasting systems..."
+- "In model monitoring work..."
+- "A pattern we repeatedly see when implementing dashboards..."
 
-Markers of this register:
-- Specific failure modes, not general risk categories
-- Resistance patterns that arise at a particular stage (during scoping, at go-live, three months after deployment)
-- Decisions that people routinely make incorrectly, and the specific reason they make them
-- The gap between what the implementation plan says and what happens in practice
+Do not invent a client, project outcome, metric, deployment, industry or implementation detail merely to sound experienced.
+
+When the article is outside verified first-hand experience, write from professional analysis instead:
+- explain the mechanism;
+- use a clearly illustrative scenario;
+- cite or reference evidence when needed;
+- state the decision rule directly.
+
+Authority comes from precision and judgement. It must never depend on fabricated experience.
 
 ---
 
@@ -143,8 +151,9 @@ Markers of this register:
 
 The website article must feel like expert analysis written for a busy decision-maker, not a white paper.
 
-- Target **700–1,000 words per language** unless the topic genuinely requires more.
-- Prefer **4–6 body sections**. Do not create extra sections to make the article look comprehensive.
+- Most articles should land around **650–950 words per language**, but length follows the decision and the evidence, not a quota.
+- A narrow comparison or single diagnostic may be shorter. A framework may be longer if each paragraph adds a distinct decision-relevant point.
+- Prefer **3–6 body sections**. The number of sections should vary with the content family rather than repeat a fixed template.
 - Each section should normally contain **1–2 paragraphs**. A third paragraph is acceptable only when a concrete scenario or trade-off genuinely needs it.
 - Keep most paragraphs to roughly **50–100 words**. Split or rewrite dense paragraphs rather than stacking multiple ideas inside them.
 - The opening should normally be **under 110 words** and make the central claim immediately.
@@ -219,3 +228,30 @@ Acceptable:
 - An article with no claims that anyone could challenge
 - An article where every section is the same length and weight
 - An article where the structure is announced rather than embedded in the prose
+
+
+---
+
+## Presentation variability
+
+The website shell is consistent, but the article must not feel machine-stamped.
+
+The 30-second summary is adaptive:
+- 1 item: one strong thesis / statement;
+- 2 items: a direct comparison;
+- 3 items: a compact decision triad;
+- 4 items: a diagnostic or failure-mode matrix;
+- 5–6 items: a framework or sequence;
+- up to 8 items only when each item earns its place.
+
+Do not force the article into three cards.
+
+Body structure should also follow the family:
+- point of view: thesis → evidence → implication;
+- comparison: alternatives → criteria → trade-offs → decision rule;
+- failure mode: symptom → mechanism → consequence → correction;
+- decision guide: signals → thresholds → constraints → recommendation;
+- framework: steps → requirements → limitations → application;
+- diagnostic: observable signals → tests → interpretation → next action.
+
+The visual template remains recognisable. The narrative should not.
