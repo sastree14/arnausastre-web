@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[2]
 BANK = ROOT / "content" / "article-bank"
 CATALOG = ROOT / "content" / "editorial" / "knowledge_bank_v1.json"
 REVISION = "editorial-v3-2026-10-07"
+# One-time full-bank refinement; gold standards remain fixed as editorial anchors.
 GOLD_STANDARD_IDS = {
     "KB-001", "KB-004", "KB-041", "KB-061", "KB-081", "KB-088",
     "KB-101", "KB-117", "KB-173", "KB-197", "KB-200",
