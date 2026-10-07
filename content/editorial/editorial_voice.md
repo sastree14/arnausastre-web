@@ -121,6 +121,25 @@ Use domain-specific language instead. Name the system, the process, the regulati
 
 ---
 
+## Rule 6 — Thesis and closing are different jobs
+
+The visual thesis must be concise without becoming cryptic. As a default, aim for roughly **5–12 words**: enough to express a complete idea, short enough to scan immediately. Three-word slogans should be exceptional, not the house style.
+
+The opening thesis and the closing statement must not repeat one another. The thesis frames the problem; the closing changes the reader's next decision. If both could be swapped without changing the article, rewrite one of them.
+
+Examples:
+
+- Too thin: "Accuracy is not enough"
+- Better: "Accuracy is useless if the decision does not change"
+- Too repetitive: opening and closing both say "A dashboard is not a decision system"
+- Better: opening diagnoses the gap; closing gives the test for whether the dashboard changes action
+
+## Rule 7 — Write articles, not stacked captions
+
+Normal prose must read as paragraphs, not as isolated one-line statements separated by whitespace. Short standalone lines are reserved for genuine lists, numbered sequences, tables, quotes, or intentionally designed statements.
+
+In ordinary body copy, combine related sentences into paragraphs that develop one idea. The reader should feel a continuous argument, not a sequence of social-media fragments.
+
 ## The test
 
 Read the article and ask: would an experienced analytics practitioner or a senior operations executive learn something from this that they could not have learned from reading a standard industry report or a Google search?
