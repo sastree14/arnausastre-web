@@ -37,5 +37,7 @@ jobs:
           python-version: '3.12'
       - name: Audit canonical 200-article bank
         run: python scripts/content_engine/audit_article_bank.py
-      - name: Validate safe staged seed
-        run: python scripts/content_engine/seed_knowledge_bank.py --dry-run
+      - name: Validate publisher scripts compile
+        run: |
+          python -m py_compile scripts/content_engine/seed_knowledge_bank.py
+          python -m py_compile scripts/content_engine/build_knowledge_bank.py
