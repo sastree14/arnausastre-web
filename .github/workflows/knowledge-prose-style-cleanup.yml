@@ -1,0 +1,46 @@
+name: SC-Analytics Knowledge — Prose Style Cleanup
+
+on:
+  push:
+    branches:
+      - feat/knowledge-editorial-v2
+    paths:
+      - 'scripts/content_engine/apply_prose_style_fixes.py'
+      - '.github/workflows/knowledge-prose-style-cleanup.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/knowledge-editorial-v2
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply prose-style cleanup
+        run: python scripts/content_engine/apply_prose_style_fixes.py
+      - name: Run canonical editorial QA
+        run: python scripts/content_engine/audit_article_bank.py
+      - name: Run language scan
+        run: python scripts/content_engine/scan_article_language.py
+      - name: Run deep prose QA
+        run: python scripts/content_engine/audit_article_prose_style.py
+      - name: Commit prose cleanup
+        shell: bash
+        run: |
+          if git diff --quiet -- content/article-bank; then
+            echo "No article changes required."
+            exit 0
+          fi
+          git config user.name "sc-analytics-editorial-bot"
+          git config user.email "editorial-bot@users.noreply.github.com"
+          git add content/article-bank
+          git commit -m "Finish Knowledge prose-style cleanup"
+          git pull --rebase origin feat/knowledge-editorial-v2
+          git push origin HEAD:feat/knowledge-editorial-v2
