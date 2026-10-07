@@ -7,6 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 BANK = ROOT / "content" / "article-bank"
+# Scanner scope: editorial prose only; domain terminology is intentionally allowed.
 
 PATTERNS = {
     "es": [
