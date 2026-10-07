@@ -1,0 +1,25 @@
+name: SC-Analytics Knowledge — Language Scan
+
+on:
+  push:
+    branches:
+      - feat/knowledge-editorial-v2
+    paths:
+      - 'scripts/content_engine/scan_article_language.py'
+      - '.github/workflows/knowledge-language-scan.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/knowledge-editorial-v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/content_engine/scan_article_language.py
