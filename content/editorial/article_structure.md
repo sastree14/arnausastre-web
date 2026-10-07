@@ -167,6 +167,13 @@ When two sentences communicate the same idea, keep the stronger one.
 
 ---
 
+### Thesis card
+
+The thesis card is a complete editorial idea, not a slogan. In most cases it should be **5–12 words** and fit comfortably on one or two lines. If the first summary item is too terse, combine it with the next criterion rather than leaving a three-word fragment.
+
+The thesis card must not duplicate the article title or the closing statement verbatim. It should sharpen the framing; the closing should translate that framing into a diagnostic or decision rule.
+
+
 ## Body sections — format
 
 ### Subtitles
