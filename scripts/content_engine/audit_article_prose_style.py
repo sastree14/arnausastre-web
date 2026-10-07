@@ -19,7 +19,7 @@ BOLD_RE = re.compile(r"\*\*([^*\n]+)\*\*")
 
 
 def words(text: str) -> list[str]:
-    return re.findall(r"[\wÀ-ÿ'-]+", text or "")
+    return re.findall(r"[\wÀ-ÿ·'-]+", text or "")
 
 
 def main() -> int:
@@ -53,7 +53,7 @@ def main() -> int:
             for m in BOLD_RE.finditer(body):
                 phrase = m.group(1).strip()
                 toks = words(phrase.lower())
-                if toks and toks[-1] in WEAK_BOLD_ENDINGS[lang]:
+                if toks and phrase[-1] not in ".!?;:" and toks[-1] in WEAK_BOLD_ENDINGS[lang]:
                     after = re.sub(r"\s+", " ", body[m.end():m.end()+90]).strip()
                     findings["weak_bold_ending"].append({
                         "spec_id": spec_id,
@@ -72,7 +72,10 @@ def main() -> int:
                     b = set(w.lower() for w in words(sentences[idx+1]) if len(w) > 3)
                     if not a or not b:
                         continue
-                    sim = len(a & b) / len(a | b)
+                    union = a | b
+                    if len(union) < 3:
+                        continue
+                    sim = len(a & b) / len(union)
                     if sim >= 0.72:
                         findings["adjacent_sentence_similarity"].append({
                             "spec_id": spec_id,
