@@ -6,6 +6,8 @@ import ProcessSequence from '@/components/ProcessSequence'
 import { SERVICES_PROCESS } from '@/lib/services-process'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
+const SERVICE_ANCHORS = ['forecasting-planning', 'optimisation', 'machine-learning', 'ai-automation', 'analytics-bi', 'simulation-modelling'] as const
+
 const COPY = {
   es: {
     eyebrow: 'SERVICIOS',
@@ -223,7 +225,7 @@ export default function ServicesPage() {
             {t.capabilities.map(([title, body], index) => {
               const [description, examples, deliverable] = process.details[index]
               return (
-                <article key={title} className={`flex flex-col border-b border-r border-slate-300 p-7 md:p-8 ${index % 2 === 0 ? 'bg-[#FFFFFF]' : 'bg-[#EAF0F6]'}`}>
+                <article id={SERVICE_ANCHORS[index]} key={title} className={`scroll-mt-24 flex flex-col border-b border-r border-slate-300 p-7 md:p-8 ${index % 2 === 0 ? 'bg-[#FFFFFF]' : 'bg-[#EAF0F6]'}`}>
                   <h3 className="editorial-title min-h-[80px]">{title}</h3>
                   <p className="mt-4 min-h-[84px] text-[17px] leading-7 text-slate-700">{body}</p>
                   <details className="service-detail mt-6 border-t border-slate-300 pt-4">
