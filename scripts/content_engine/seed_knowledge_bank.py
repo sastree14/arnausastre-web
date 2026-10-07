@@ -37,8 +37,8 @@ def validate_bank(articles: list[dict[str, Any]], expected: int = 200) -> None:
         missing = [lang for lang in ("es", "en", "ca") if lang not in variants]
         if missing:
             raise RuntimeError(f"{article['spec_id']} missing variants: {', '.join(missing)}")
-        if not article.get("scheduled_at"):
-            raise RuntimeError(f"{article['spec_id']} has no scheduled_at")
+        # Scheduling is deliberately separate from article validity. Canonical
+        # article files may remain unscheduled until editorial review is complete.
 
 
 def content_id(spec_id: str, language: str) -> str:
@@ -260,6 +260,11 @@ def seed(*, bank_dir: Path, catalog_path: Path, mode: str, expected: int, limit:
 
     catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
     strategy = catalog.get("publication_strategy") or {}
+    if mode == "scheduled" and strategy.get("enabled") is not True:
+        raise RuntimeError(
+            "Knowledge publication scheduling is disabled. Complete editorial review "
+            "and explicitly enable publication_strategy.enabled before seeding scheduled content."
+        )
     initial_published = max(0, int(strategy.get("initial_published_articles") or 0))
 
     cfg = load_config()
