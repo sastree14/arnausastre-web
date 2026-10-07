@@ -1,0 +1,42 @@
+name: SC-Analytics Knowledge — Final Metadata Pass
+
+on:
+  push:
+    branches:
+      - feat/knowledge-editorial-v2
+    paths:
+      - 'scripts/content_engine/apply_editorial_v3_metadata.py'
+      - '.github/workflows/knowledge-final-metadata.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/knowledge-editorial-v2
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply final concise implications
+        run: python scripts/content_engine/apply_editorial_v3_metadata.py
+      - name: Audit canonical bank
+        run: python scripts/content_engine/audit_article_bank.py
+      - name: Commit final metadata pass
+        shell: bash
+        run: |
+          if git diff --quiet -- content/article-bank; then
+            echo "No metadata changes required."
+            exit 0
+          fi
+          git config user.name "sc-analytics-editorial-bot"
+          git config user.email "editorial-bot@users.noreply.github.com"
+          git add content/article-bank
+          git commit -m "Tighten remaining Knowledge business implications"
+          git pull --rebase origin feat/knowledge-editorial-v2
+          git push origin HEAD:feat/knowledge-editorial-v2
