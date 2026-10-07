@@ -202,9 +202,12 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
   const branchHref = `/knowledge?area=${area}`
   const presentation = meta.presentation_variant || presentationForFamily(meta.content_family)
   const serviceKey = meta.service_key || fallbackServiceForArticle({ cluster: meta.cluster, specId: meta.spec_id })
-  const firstRelated = meta.related_articles?.[0]
-  const relatedHref = typeof firstRelated === 'string' ? firstRelated : firstRelated?.href || meta.related_article
-  const relatedTitle = typeof firstRelated === 'string' ? meta.related_article_title : firstRelated?.title || meta.related_article_title
+  const normalizedRelatedArticles = (meta.related_articles || [])
+    .map(item => typeof item === 'string' ? { href: item, title: undefined } : { href: item.href || '', title: item.title })
+    .filter((item): item is { href: string; title?: string } => Boolean(item.href))
+  const firstRelated = normalizedRelatedArticles[0]
+  const relatedHref = firstRelated?.href || meta.related_article
+  const relatedTitle = firstRelated?.title || meta.related_article_title
   const businessGrid = businessSteps.length <= 1 ? 'grid-cols-1' : businessSteps.length === 2 ? 'md:grid-cols-2' : businessSteps.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2 xl:grid-cols-4'
   const experienceNote = meta.experience_note || experienceNoteForArticle(meta.spec_id, activeLanguage)
 
@@ -319,6 +322,7 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
         serviceKey={serviceKey}
         relatedHref={relatedHref}
         relatedTitle={relatedTitle}
+        relatedArticles={normalizedRelatedArticles}
         branchHref={branchHref}
       />
 
