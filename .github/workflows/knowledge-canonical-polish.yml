@@ -1,0 +1,42 @@
+name: SC-Analytics Knowledge — Canonical Polish
+
+on:
+  push:
+    branches:
+      - feat/knowledge-editorial-v2
+    paths:
+      - 'scripts/content_engine/polish_article_bank.py'
+      - '.github/workflows/knowledge-canonical-polish.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  polish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/knowledge-editorial-v2
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Polish canonical prose structure
+        run: python scripts/content_engine/polish_article_bank.py
+      - name: Audit canonical bank
+        run: python scripts/content_engine/audit_article_bank.py
+      - name: Commit polished bank
+        shell: bash
+        run: |
+          if git diff --quiet -- content/article-bank; then
+            echo "No article-bank changes required."
+            exit 0
+          fi
+          git config user.name "sc-analytics-editorial-bot"
+          git config user.email "editorial-bot@users.noreply.github.com"
+          git add content/article-bank
+          git commit -m "Polish canonical article paragraph structure"
+          git push origin HEAD:feat/knowledge-editorial-v2
