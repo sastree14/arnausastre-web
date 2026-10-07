@@ -34,7 +34,7 @@
         "Separa explicabilidad global y local",
         "Elige la complejidad mínima suficiente"
       ],
-      "business_title": "La interpretabilidad vale más que el lift cuando reduce riesgo, mejora adopción o hace posible una decisión que un modelo más opaco no podría sostener.",
+      "business_title": "La interpretabilidad gana cuando reduce riesgo y mejora la decisión.",
       "business_steps": [
         "Necesidad de explicación",
         "Lift incremental",
@@ -69,7 +69,7 @@
         "Separate global and local explainability",
         "Choose the minimum sufficient complexity"
       ],
-      "business_title": "Interpretability can be worth more than lift when it reduces risk, improves adoption or makes a decision sustainable that an opaque model could not support.",
+      "business_title": "Interpretability wins when it reduces risk and improves the decision.",
       "business_steps": [
         "Explanation need",
         "Incremental lift",
@@ -104,7 +104,7 @@
         "Separa explicabilitat global i local",
         "Tria la complexitat mínima suficient"
       ],
-      "business_title": "La interpretabilitat pot valer més que el lift quan redueix risc, millora adopció o fa sostenible una decisió que un model opac no podria suportar.",
+      "business_title": "La interpretabilitat guanya quan redueix risc i millora la decisió.",
       "business_steps": [
         "Necessitat d’explicació",
         "Lift incremental",

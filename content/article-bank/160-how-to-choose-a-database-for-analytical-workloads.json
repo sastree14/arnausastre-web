@@ -34,7 +34,7 @@
         "Compara coste de operación y evolución",
         "Diseña una arquitectura que pueda cambiar"
       ],
-      "business_title": "La mejor base analítica es la que cumple las necesidades reales de consulta con el menor coste total y una complejidad que el equipo puede operar.",
+      "business_title": "La mejor base analítica cumple el workload sin sobredimensionar la arquitectura.",
       "business_steps": [
         "Workload",
         "SLA",
@@ -69,7 +69,7 @@
         "Compare operating cost and evolution",
         "Design an architecture that can change"
       ],
-      "business_title": "The best analytical database meets real query needs with the lowest reasonable total cost and a level of complexity the team can operate.",
+      "business_title": "The best analytical database meets the workload without overbuilding the architecture.",
       "business_steps": [
         "Workload",
         "SLA",
@@ -104,7 +104,7 @@
         "Compara cost operatiu i evolució",
         "Dissenya una arquitectura que pugui canviar"
       ],
-      "business_title": "La millor base analítica compleix les necessitats reals de consulta amb el menor cost total raonable i una complexitat que l’equip pot operar.",
+      "business_title": "La millor base analítica compleix el workload sense sobredimensionar l’arquitectura.",
       "business_steps": [
         "Workload",
         "SLA",

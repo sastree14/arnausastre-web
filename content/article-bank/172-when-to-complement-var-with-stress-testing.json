@@ -34,7 +34,7 @@
         "Conecta pérdidas con liquidez y capacidad de respuesta",
         "Integra escenarios en límites y decisiones"
       ],
-      "business_title": "Stress testing aporta valor cuando obliga a responder qué pasaría bajo condiciones que el modelo no considera probables, pero que la empresa no puede permitirse ignorar.",
+      "business_title": "Stress testing sirve para preparar escenarios que VaR puede ignorar.",
       "business_steps": [
         "Escenario",
         "Impacto",
@@ -69,7 +69,7 @@
         "Connect losses to liquidity and response capacity",
         "Integrate scenarios into limits and decisions"
       ],
-      "business_title": "Stress testing creates value when it forces the organization to ask what would happen under conditions the model considers unlikely but the business cannot afford to ignore.",
+      "business_title": "Stress testing prepares the business for scenarios VaR may miss.",
       "business_steps": [
         "Scenario",
         "Impact",
@@ -104,7 +104,7 @@
         "Connecta pèrdues amb liquiditat i capacitat de resposta",
         "Integra escenaris en límits i decisions"
       ],
-      "business_title": "Stress testing aporta valor quan obliga a respondre què passaria sota condicions que el model considera poc probables però que l’empresa no es pot permetre ignorar.",
+      "business_title": "Stress testing serveix per preparar escenaris que VaR pot ignorar.",
       "business_steps": [
         "Escenari",
         "Impacte",

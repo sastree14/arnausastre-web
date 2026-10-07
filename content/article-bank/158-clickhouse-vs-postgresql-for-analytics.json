@@ -34,7 +34,7 @@
         "Las escrituras y updates cambian el diseño",
         "Una arquitectura dual suele tener más sentido"
       ],
-      "business_title": "PostgreSQL y ClickHouse no compiten por ser la única base: cada uno es fuerte cuando el workload coincide con su modelo de ejecución.",
+      "business_title": "PostgreSQL y ClickHouse sirven workloads distintos; no necesitan competir.",
       "business_steps": [
         "Workload transaccional",
         "Workload analítico",
@@ -69,7 +69,7 @@
         "Writes and updates change the design",
         "A dual architecture often makes more sense"
       ],
-      "business_title": "PostgreSQL and ClickHouse do not need to compete to be the only database; each is strongest when workload shape matches its execution model.",
+      "business_title": "PostgreSQL and ClickHouse serve different workloads; they need not compete.",
       "business_steps": [
         "Transactional workload",
         "Analytical workload",
@@ -104,7 +104,7 @@
         "Escriptures i updates canvien el disseny",
         "Una arquitectura dual sovint té més sentit"
       ],
-      "business_title": "PostgreSQL i ClickHouse no han de competir per ser l’única base; cadascun és fort quan la forma del workload encaixa amb el seu model d’execució.",
+      "business_title": "PostgreSQL i ClickHouse serveixen workloads diferents; no han de competir.",
       "business_steps": [
         "Workload transaccional",
         "Workload analític",

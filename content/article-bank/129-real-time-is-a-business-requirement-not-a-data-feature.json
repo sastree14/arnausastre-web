@@ -34,7 +34,7 @@
         "Near real time suele ser suficiente",
         "Diseña el SLA desde el valor"
       ],
-      "business_title": "Real time merece inversión cuando reducir segundos o minutos cambia una acción, evita una pérdida o captura una oportunidad que desaparecería con batch.",
+      "business_title": "Real time merece inversión solo cuando la velocidad cambia una acción.",
       "business_steps": [
         "Decisión",
         "Latencia útil",
@@ -69,7 +69,7 @@
         "Near real time is often enough",
         "Design the SLA from value"
       ],
-      "business_title": "Real time is worth investment when reducing seconds or minutes changes an action, prevents a loss or captures an opportunity that would disappear under batch.",
+      "business_title": "Real time deserves investment only when speed changes an action.",
       "business_steps": [
         "Decision",
         "Useful latency",
@@ -104,7 +104,7 @@
         "Near real time sovint és suficient",
         "Dissenya l’SLA des del valor"
       ],
-      "business_title": "Real time mereix inversió quan reduir segons o minuts canvia una acció, evita una pèrdua o captura una oportunitat que desapareixeria amb batch.",
+      "business_title": "Real time mereix inversió només quan la velocitat canvia una acció.",
       "business_steps": [
         "Decisió",
         "Latència útil",

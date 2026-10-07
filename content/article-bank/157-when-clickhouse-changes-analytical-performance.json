@@ -34,7 +34,7 @@
         "Cuando el coste por consulta empieza a importar",
         "Cuando la velocidad cambia una decisión"
       ],
-      "business_title": "ClickHouse merece la pena cuando una arquitectura orientada a columnas convierte consultas analíticas pesadas en respuestas suficientemente rápidas para cambiar el producto o la operación.",
+      "business_title": "ClickHouse compensa cuando la velocidad analítica cambia el producto o la operación.",
       "business_steps": [
         "Gran volumen",
         "Consulta analítica",
@@ -69,7 +69,7 @@
         "When cost per query starts to matter",
         "When speed changes a decision"
       ],
-      "business_title": "ClickHouse is worth using when a column-oriented architecture turns heavy analytical queries into responses fast enough to change the product or operating process.",
+      "business_title": "ClickHouse pays off when analytical speed changes the product or operation.",
       "business_steps": [
         "Large volume",
         "Analytical query",
@@ -104,7 +104,7 @@
         "Quan el cost per consulta comença a importar",
         "Quan la velocitat canvia una decisió"
       ],
-      "business_title": "ClickHouse val la pena quan una arquitectura orientada a columnes converteix consultes analítiques pesades en respostes prou ràpides per canviar el producte o l’operació.",
+      "business_title": "ClickHouse compensa quan la velocitat analítica canvia el producte o l’operació.",
       "business_steps": [
         "Gran volum",
         "Consulta analítica",

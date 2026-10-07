@@ -34,7 +34,7 @@
         "Por qué divergen con clases raras",
         "Cómo utilizarlas en una decisión"
       ],
-      "business_title": "ROC AUC y PR AUC son diagnósticos distintos; la métrica útil depende de la rareza del evento y de cómo se convierte el score en acción.",
+      "business_title": "ROC AUC y PR AUC responden a preguntas distintas sobre el riesgo.",
       "business_steps": [
         "Discriminación",
         "Concentración de positivos",
@@ -69,7 +69,7 @@
         "Why they diverge with rare classes",
         "How to use them in a decision"
       ],
-      "business_title": "ROC AUC and PR AUC are different diagnostics; the useful metric depends on event rarity and how scores become actions.",
+      "business_title": "ROC AUC and PR AUC answer different questions about risk.",
       "business_steps": [
         "Discrimination",
         "Positive concentration",
@@ -104,7 +104,7 @@
         "Per què divergeixen amb classes rares",
         "Com utilitzar-les en una decisió"
       ],
-      "business_title": "ROC AUC i PR AUC són diagnòstics diferents; la mètrica útil depèn de la raresa de l’esdeveniment i de com el score es converteix en acció.",
+      "business_title": "ROC AUC i PR AUC responen preguntes diferents sobre el risc.",
       "business_steps": [
         "Discriminació",
         "Concentració de positius",

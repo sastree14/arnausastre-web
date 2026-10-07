@@ -34,7 +34,7 @@
         "El sistema de decisión interpreta el contexto",
         "La arquitectura correcta separa responsabilidades"
       ],
-      "business_title": "CRM, ERP y decision intelligence no deberían competir por la misma función: registran partes distintas del negocio y la capa de decisión las convierte en acción.",
+      "business_title": "CRM y ERP registran; la capa de decisión convierte información en acción.",
       "business_steps": [
         "Relación",
         "Transacción",
@@ -69,7 +69,7 @@
         "The decision system interprets context",
         "The right architecture separates responsibilities"
       ],
-      "business_title": "CRM, ERP and decision intelligence should not compete for the same role: they record different parts of the business and the decision layer turns them into action.",
+      "business_title": "CRM and ERP record; the decision layer turns information into action.",
       "business_steps": [
         "Relationship",
         "Transaction",
@@ -104,7 +104,7 @@
         "El sistema de decisió interpreta el context",
         "L’arquitectura correcta separa responsabilitats"
       ],
-      "business_title": "CRM, ERP i decision intelligence no haurien de competir per la mateixa funció: registren parts diferents del negoci i la capa de decisió les converteix en acció.",
+      "business_title": "CRM i ERP registren; la capa de decisió converteix informació en acció.",
       "business_steps": [
         "Relació",
         "Transacció",

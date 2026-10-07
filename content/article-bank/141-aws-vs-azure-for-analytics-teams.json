@@ -34,7 +34,7 @@
         "Evalúa datos, analytics e integración como conjunto",
         "Decide por coste de cambio y capacidad de operar"
       ],
-      "business_title": "AWS o Azure debería elegirse por encaje con el ecosistema, skills y forma de operar de la empresa, no por quién tiene una lista más larga de servicios.",
+      "business_title": "AWS o Azure se eligen por encaje operativo, no por catálogo.",
       "business_steps": [
         "Ecosistema",
         "Operating model",
@@ -69,7 +69,7 @@
         "Evaluate data, analytics and integration together",
         "Decide by switching cost and operating capability"
       ],
-      "business_title": "AWS or Azure should be chosen by fit with the company’s ecosystem, skills and operating model rather than by which provider has the longer service list.",
+      "business_title": "Choose AWS or Azure by operating fit, not by service catalogue.",
       "business_steps": [
         "Ecosystem",
         "Operating model",
@@ -104,7 +104,7 @@
         "Avalua dades, analytics i integració com un conjunt",
         "Decideix per cost de canvi i capacitat d’operar"
       ],
-      "business_title": "AWS o Azure s’hauria de triar per encaix amb l’ecosistema, skills i forma d’operar de l’empresa, no per una llista de serveis.",
+      "business_title": "AWS o Azure es trien per encaix operatiu, no per catàleg.",
       "business_steps": [
         "Ecosistema",
         "Operating model",

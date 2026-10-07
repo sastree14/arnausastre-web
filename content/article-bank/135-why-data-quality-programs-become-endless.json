@@ -34,7 +34,7 @@
         "La causa raíz queda fuera del programa",
         "No existe una definición de suficiente"
       ],
-      "business_title": "Un programa de data quality se vuelve infinito cuando optimiza defectos técnicos sin una frontera clara entre lo que merece corregirse y lo que el negocio puede tolerar.",
+      "business_title": "Data quality necesita un límite económico, no perfección técnica.",
       "business_steps": [
         "Alcance",
         "Prioridad",
@@ -69,7 +69,7 @@
         "Root cause stays outside the program",
         "There is no definition of good enough"
       ],
-      "business_title": "A data-quality program becomes endless when it optimizes technical defects without a clear boundary between what deserves correction and what the business can tolerate.",
+      "business_title": "Data quality needs an economic boundary, not technical perfection.",
       "business_steps": [
         "Scope",
         "Priority",
@@ -104,7 +104,7 @@
         "La causa arrel queda fora del programa",
         "No existeix una definició de suficient"
       ],
-      "business_title": "Un programa de data quality es torna infinit quan optimitza defectes tècnics sense una frontera clara entre allò que mereix correcció i allò que el negoci pot tolerar.",
+      "business_title": "Data quality necessita un límit econòmic, no perfecció tècnica.",
       "business_steps": [
         "Abast",
         "Prioritat",

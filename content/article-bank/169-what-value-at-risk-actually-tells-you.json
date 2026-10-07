@@ -34,7 +34,7 @@
         "VaR no describe la severidad de la cola",
         "Úsalo dentro de un sistema de riesgo"
       ],
-      "business_title": "VaR es útil como resumen de exposición probable, pero debe interpretarse como un umbral estadístico dentro de una arquitectura de riesgo más amplia.",
+      "business_title": "VaR resume exposición; no sustituye una arquitectura completa de riesgo.",
       "business_steps": [
         "Cuantil",
         "Horizonte",
@@ -69,7 +69,7 @@
         "VaR does not describe tail severity",
         "Use it inside a broader risk system"
       ],
-      "business_title": "VaR is useful as a summary of probable exposure, but it should be interpreted as a statistical threshold inside a wider risk architecture.",
+      "business_title": "VaR summarizes exposure; it does not replace a complete risk architecture.",
       "business_steps": [
         "Quantile",
         "Horizon",
@@ -104,7 +104,7 @@
         "VaR no descriu la severitat de la cua",
         "Utilitza’l dins d’un sistema de risc"
       ],
-      "business_title": "VaR és útil com a resum d’exposició probable, però s’ha d’interpretar com un llindar estadístic dins d’una arquitectura de risc més àmplia.",
+      "business_title": "VaR resumeix exposició; no substitueix una arquitectura completa de risc.",
       "business_steps": [
         "Quantil",
         "Horitzó",

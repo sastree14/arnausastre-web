@@ -34,7 +34,7 @@
         "Dónde se confunden los dos enfoques",
         "Cómo decidir cuál necesitas"
       ],
-      "business_title": "Simulación y optimización no compiten: una describe el comportamiento de un sistema y la otra busca la mejor decisión dentro de un espacio de alternativas.",
+      "business_title": "Simulación describe consecuencias; optimización busca la mejor decisión.",
       "business_steps": [
         "Sistema",
         "Alternativas",
@@ -69,7 +69,7 @@
         "Where the two approaches get confused",
         "How to decide which one you need"
       ],
-      "business_title": "Simulation and optimization are not competing methods: one describes system behaviour and the other searches for the best decision across alternatives.",
+      "business_title": "Simulation describes consequences; optimization searches for the best decision.",
       "business_steps": [
         "System",
         "Alternatives",
@@ -104,7 +104,7 @@
         "On es confonen els dos enfocaments",
         "Com decidir quin necessites"
       ],
-      "business_title": "Simulació i optimització no competeixen: una descriu el comportament del sistema i l’altra busca la millor decisió dins d’un espai d’alternatives.",
+      "business_title": "Simulació descriu conseqüències; optimització busca la millor decisió.",
       "business_steps": [
         "Sistema",
         "Alternatives",

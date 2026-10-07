@@ -34,7 +34,7 @@
         "Revisa resiliencia, seguridad y soporte",
         "Elige la opción que el equipo puede operar bien"
       ],
-      "business_title": "PostgreSQL gestionado o propio no es una cuestión de pureza técnica: es una decisión sobre qué responsabilidades quiere asumir la empresa y cuáles quiere convertir en servicio.",
+      "business_title": "Managed o self-managed decide qué responsabilidad quiere asumir el equipo.",
       "business_steps": [
         "Control necesario",
         "Ownership operativo",
@@ -69,7 +69,7 @@
         "Review resilience, security and support",
         "Choose the model the team can operate well"
       ],
-      "business_title": "Managed versus self-managed PostgreSQL is not about technical purity; it is about which responsibilities the company wants to own and which it wants to consume as a service.",
+      "business_title": "Managed or self-managed decides which responsibility the team wants to own.",
       "business_steps": [
         "Required control",
         "Operating ownership",
@@ -104,7 +104,7 @@
         "Revisa resiliència, seguretat i suport",
         "Tria el model que l’equip pot operar bé"
       ],
-      "business_title": "PostgreSQL gestionat o propi no és una qüestió de puresa tècnica; és una decisió sobre quines responsabilitats vol assumir l’empresa i quines vol consumir com a servei.",
+      "business_title": "Managed o self-managed decideix quina responsabilitat vol assumir l’equip.",
       "business_steps": [
         "Control necessari",
         "Ownership operatiu",

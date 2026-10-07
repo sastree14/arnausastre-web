@@ -34,7 +34,7 @@
         "La fricción operativa tiene precio",
         "Detecta cuándo ha llegado el punto de cambio"
       ],
-      "business_title": "SaaS deja de ser barato cuando el coste marginal, la fricción de integración y la dependencia superan el valor de velocidad y mantenimiento que estamos comprando.",
+      "business_title": "SaaS deja de ser barato cuando la dependencia supera su velocidad.",
       "business_steps": [
         "Coste creciente",
         "Fricción acumulada",
@@ -69,7 +69,7 @@
         "Operating friction has a price",
         "Detect when the switching point arrives"
       ],
-      "business_title": "SaaS stops being cheap when marginal cost, integration friction and dependency exceed the value of speed and maintenance being purchased.",
+      "business_title": "SaaS stops being cheap when dependency outweighs its speed advantage.",
       "business_steps": [
         "Rising cost",
         "Accumulated friction",
@@ -104,7 +104,7 @@
         "La fricció operativa té preu",
         "Detecta quan arriba el punt de canvi"
       ],
-      "business_title": "SaaS deixa de ser barat quan el cost marginal, la fricció d’integració i la dependència superen el valor de velocitat i manteniment que estem comprant.",
+      "business_title": "SaaS deixa de ser barat quan la dependència supera la seva velocitat.",
       "business_steps": [
         "Cost creixent",
         "Fricció acumulada",

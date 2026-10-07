@@ -34,7 +34,7 @@
         "Comparar escenarios no equivale a optimizar",
         "La decisión necesita una función de valor"
       ],
-      "business_title": "La simulación es potente cuando cuantifica consecuencias e incertidumbre; la elección aparece cuando la empresa explicita qué resultado quiere maximizar y qué restricciones acepta.",
+      "business_title": "La simulación muestra consecuencias; los objetivos siguen decidiendo la elección.",
       "business_steps": [
         "Política",
         "Consecuencia",
@@ -69,7 +69,7 @@
         "Comparing scenarios is not the same as optimizing",
         "The decision needs a value function"
       ],
-      "business_title": "Simulation is powerful when it quantifies consequences and uncertainty; choice appears only when the organization states what it wants to optimize and which constraints it must respect.",
+      "business_title": "Simulation shows consequences; objectives still determine the choice.",
       "business_steps": [
         "Policy",
         "Consequence",
@@ -104,7 +104,7 @@
         "Comparar escenaris no és optimitzar",
         "La decisió necessita una funció de valor"
       ],
-      "business_title": "La simulació és potent quan quantifica conseqüències i incertesa; la tria apareix quan l’empresa explicita què vol optimitzar i quines restriccions accepta.",
+      "business_title": "La simulació mostra conseqüències; els objectius continuen decidint la tria.",
       "business_steps": [
         "Policy",
         "Conseqüència",

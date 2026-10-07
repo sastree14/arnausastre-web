@@ -34,7 +34,7 @@
         "La diferencia aparece en horizonte y granularidad",
         "Una arquitectura madura puede utilizar ambos"
       ],
-      "business_title": "Directo e indirecto no compiten por ser el único forecast: cada uno traduce el negocio a caja con una lógica distinta y sirve decisiones diferentes.",
+      "business_title": "Directo e indirecto sirven decisiones de caja diferentes.",
       "business_steps": [
         "Movimientos de caja",
         "Drivers financieros",
@@ -69,7 +69,7 @@
         "The difference appears in horizon and granularity",
         "A mature architecture can use both"
       ],
-      "business_title": "Direct and indirect methods do not need to compete to be the only forecast; each translates the business into cash differently and supports different decisions.",
+      "business_title": "Direct and indirect methods support different cash decisions.",
       "business_steps": [
         "Cash movements",
         "Financial drivers",
@@ -104,7 +104,7 @@
         "La diferència apareix en horitzó i granularitat",
         "Una arquitectura madura pot utilitzar tots dos"
       ],
-      "business_title": "Directe i indirecte no competeixen per ser l’únic forecast; cadascun tradueix el negoci a caixa amb una lògica diferent i serveix decisions diferents.",
+      "business_title": "Directe i indirecte serveixen decisions de caixa diferents.",
       "business_steps": [
         "Moviments de caixa",
         "Drivers financers",

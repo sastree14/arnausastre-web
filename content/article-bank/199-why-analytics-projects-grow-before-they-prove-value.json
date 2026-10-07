@@ -34,7 +34,7 @@
         "Los stakeholders añaden valor aparente",
         "Pon gates antes de ampliar"
       ],
-      "business_title": "Un proyecto de analytics debe ganar el derecho a crecer demostrando valor en una decisión concreta antes de acumular más datos, modelos, usuarios y arquitectura.",
+      "business_title": "Un proyecto de analytics debe demostrar valor antes de ganar complejidad.",
       "business_steps": [
         "Hipótesis acotada",
         "Prueba de valor",
@@ -69,7 +69,7 @@
         "Stakeholders add apparent value",
         "Put gates before expansion"
       ],
-      "business_title": "An analytics project should earn the right to grow by proving value in one decision before accumulating more data, models, users and architecture.",
+      "business_title": "An analytics project should prove value before it earns more complexity.",
       "business_steps": [
         "Bounded hypothesis",
         "Proof of value",
@@ -104,7 +104,7 @@
         "Els stakeholders afegeixen valor aparent",
         "Posa gates abans d’ampliar"
       ],
-      "business_title": "Un projecte d’analytics ha de guanyar-se el dret a créixer demostrant valor en una decisió abans d’acumular més dades, models, usuaris i arquitectura.",
+      "business_title": "Un projecte d’analytics ha de demostrar valor abans de guanyar complexitat.",
       "business_steps": [
         "Hipòtesi acotada",
         "Prova de valor",

@@ -34,7 +34,7 @@
         "Los modelos hacen demasiado",
         "El ownership desaparece"
       ],
-      "business_title": "La lógica de transformación se vuelve inmanejable cuando cambiar una definición sencilla exige tocar demasiadas capas, validar demasiados efectos y depender de demasiado conocimiento tácito.",
+      "business_title": "La transformación falla cuando una definición simple exige tocar demasiadas capas.",
       "business_steps": [
         "Duplicación",
         "Acoplamiento",
@@ -69,7 +69,7 @@
         "Models do too much",
         "Ownership disappears"
       ],
-      "business_title": "Transformation logic becomes unmanageable when a simple definition change requires touching too many layers, validating too many side effects and relying on too much tacit knowledge.",
+      "business_title": "Transformation breaks when a simple definition requires changing too many layers.",
       "business_steps": [
         "Duplication",
         "Coupling",
@@ -104,7 +104,7 @@
         "Els models fan massa coses",
         "L’ownership desapareix"
       ],
-      "business_title": "La lògica de transformació es torna immanejable quan un canvi simple exigeix tocar massa capes, validar massa efectes i dependre de massa coneixement tàcit.",
+      "business_title": "La transformació falla quan una definició simple exigeix tocar massa capes.",
       "business_steps": [
         "Duplicació",
         "Acoblament",

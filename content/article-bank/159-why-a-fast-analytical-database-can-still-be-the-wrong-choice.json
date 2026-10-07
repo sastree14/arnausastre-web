@@ -34,7 +34,7 @@
         "Los patrones de escritura pueden no encajar",
         "La decisión debe justificar el coste de especializar"
       ],
-      "business_title": "Una base analítica rápida es la elección correcta solo cuando la reducción de latencia y coste de consulta compensa de forma material la complejidad añadida.",
+      "business_title": "Más velocidad solo compensa cuando supera la complejidad que añade.",
       "business_steps": [
         "Problema real",
         "Coste adicional",
@@ -69,7 +69,7 @@
         "Write patterns may not fit",
         "The decision must justify specialization cost"
       ],
-      "business_title": "A fast analytical database is the right choice only when lower latency and query cost materially outweigh the additional complexity.",
+      "business_title": "More speed pays off only when it outweighs the complexity it adds.",
       "business_steps": [
         "Real problem",
         "Additional cost",
@@ -104,7 +104,7 @@
         "Els patrons d’escriptura poden no encaixar",
         "La decisió ha de justificar el cost d’especialitzar"
       ],
-      "business_title": "Una base analítica ràpida és la tria correcta només quan la reducció de latència i cost de consulta compensa materialment la complexitat afegida.",
+      "business_title": "Més velocitat només compensa quan supera la complexitat que afegeix.",
       "business_steps": [
         "Problema real",
         "Cost addicional",

@@ -34,7 +34,7 @@
         "Prueba la policy y el portfolio resultante",
         "Añade estabilidad, governance y monitoring"
       ],
-      "business_title": "Un sistema de credit scoring está bien evaluado cuando sabemos no solo si predice riesgo, sino si produce una cartera rentable, estable y gobernable.",
+      "business_title": "Un buen scoring debe producir una cartera rentable, estable y gobernable.",
       "business_steps": [
         "Modelo",
         "Policy",
@@ -69,7 +69,7 @@
         "Test policy and the resulting portfolio",
         "Add stability, governance and monitoring"
       ],
-      "business_title": "A credit-scoring system is well evaluated when we know not only whether it predicts risk, but whether it produces a profitable, stable and governable portfolio.",
+      "business_title": "Good scoring should produce a profitable, stable and governable portfolio.",
       "business_steps": [
         "Model",
         "Policy",
@@ -104,7 +104,7 @@
         "Prova la policy i el portfolio resultant",
         "Afegeix estabilitat, governance i monitoring"
       ],
-      "business_title": "Un sistema de credit scoring està ben avaluat quan sabem no només si prediu risc, sinó si produeix una cartera rendible, estable i governable.",
+      "business_title": "Un bon scoring ha de produir una cartera rendible, estable i governable.",
       "business_steps": [
         "Model",
         "Policy",

@@ -34,7 +34,7 @@
         "La respuesta debe poder verificarse",
         "RAG solo crea valor si mejora una decisión"
       ],
-      "business_title": "RAG es una capa de acceso; la estrategia de conocimiento define qué fuentes son fiables, quién puede verlas y cómo se convierten en decisiones útiles.",
+      "business_title": "RAG da acceso al conocimiento; no define cómo gobernarlo.",
       "business_steps": [
         "Fuentes gobernadas",
         "Retrieval fiable",
@@ -69,7 +69,7 @@
         "Answers need to be verifiable",
         "RAG creates value only when decisions improve"
       ],
-      "business_title": "RAG is an access layer; knowledge strategy defines which sources are authoritative, who may see them and how information becomes useful decisions.",
+      "business_title": "RAG provides knowledge access; it does not define knowledge governance.",
       "business_steps": [
         "Governed sources",
         "Reliable retrieval",
@@ -104,7 +104,7 @@
         "La resposta s’ha de poder verificar",
         "RAG només crea valor si millora una decisió"
       ],
-      "business_title": "RAG és una capa d’accés; l’estratègia de coneixement defineix quines fonts són fiables, qui pot veure-les i com la informació es converteix en decisions útils.",
+      "business_title": "RAG dona accés al coneixement; no defineix com governar-lo.",
       "business_steps": [
         "Fonts governades",
         "Retrieval fiable",
