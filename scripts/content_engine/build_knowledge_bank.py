@@ -372,13 +372,20 @@ def generate_one(
 
 
 def apply_schedule(output_dir: Path, catalog: dict[str, Any]) -> None:
-    strategy = catalog["publication_strategy"]
+    strategy = catalog.get("publication_strategy") or {}
+    enabled = strategy.get("enabled") is True
     for spec in catalog["specs"]:
         path = article_path(output_dir, spec)
         if not path.exists():
             continue
         data = json.loads(path.read_text(encoding="utf-8"))
-        data["scheduled_at"] = schedule_for(int(spec["sequence"]), strategy)
+        # Materialising the Knowledge bank never makes content public by itself.
+        # Dates are only written after editorial review explicitly enables scheduling.
+        data["scheduled_at"] = (
+            schedule_for(int(spec["sequence"]), strategy)
+            if enabled
+            else None
+        )
         path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
