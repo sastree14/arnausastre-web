@@ -115,14 +115,15 @@ function Diagnostic({ items }: { items: string[] }) {
   )
 }
 
-function Evidence({ items }: { items: string[] }) {
+function Evidence({ items, locale }: { items: string[]; locale: 'es' | 'ca' | 'en' }) {
+  const label = locale === 'es' ? 'Evidencia' : locale === 'ca' ? 'Evidència' : 'Evidence'
   return (
     <div className="mx-auto mt-7 grid max-w-[1180px] gap-4 md:grid-cols-3">
       {items.map((text, index) => (
         <div key={text} className="min-h-[164px] border border-slate-300 bg-white text-left">
           <div className="h-1.5 bg-[#4F46E5]" />
           <div className="p-6">
-            <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.14em] text-slate-500">Evidence {number(index)}</p>
+            <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.14em] text-slate-500">{label} {number(index)}</p>
             <p className="mt-4 text-[21px] font-semibold leading-7 text-[#1D2B44]">{text}</p>
           </div>
         </div>
@@ -189,7 +190,7 @@ export default function KnowledgeArticleSummary(props: Props) {
         ) : props.presentation === 'diagnostic' ? (
           <Diagnostic items={items} />
         ) : props.presentation === 'evidence' ? (
-          <Evidence items={items} />
+          <Evidence items={items} locale={props.locale} />
         ) : props.presentation === 'architecture' ? (
           <Architecture items={items} />
         ) : (
