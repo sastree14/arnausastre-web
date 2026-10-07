@@ -1,0 +1,41 @@
+name: SC-Analytics Knowledge — Editorial QA
+
+on:
+  push:
+    paths:
+      - 'content/article-bank/**'
+      - 'content/editorial/**'
+      - 'scripts/content_engine/audit_article_bank.py'
+      - 'scripts/content_engine/build_knowledge_bank.py'
+      - 'scripts/content_engine/seed_knowledge_bank.py'
+      - 'components/GeneratedKnowledgeArticleGoldStandard.tsx'
+      - 'components/KnowledgeArticle*.tsx'
+      - 'lib/article-bank.ts'
+      - 'lib/knowledge-editorial.ts'
+      - '.github/workflows/knowledge-editorial-qa.yml'
+  pull_request:
+    paths:
+      - 'content/article-bank/**'
+      - 'content/editorial/**'
+      - 'scripts/content_engine/**'
+      - 'components/GeneratedKnowledgeArticleGoldStandard.tsx'
+      - 'components/KnowledgeArticle*.tsx'
+      - 'lib/article-bank.ts'
+      - 'lib/knowledge-editorial.ts'
+
+permissions:
+  contents: read
+
+jobs:
+  editorial-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit canonical 200-article bank
+        run: python scripts/content_engine/audit_article_bank.py
+      - name: Validate safe staged seed
+        run: python scripts/content_engine/seed_knowledge_bank.py --dry-run
