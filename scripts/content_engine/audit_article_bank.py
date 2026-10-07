@@ -67,6 +67,7 @@ def main() -> int:
     errors: list[str] = []
     warnings: list[str] = []
     counts = Counter()
+    long_business_titles: list[str] = []
 
     if len(files) != 200:
         errors.append(f"Expected 200 canonical articles, found {len(files)}")
@@ -126,6 +127,7 @@ def main() -> int:
                 business_words = words(business_title)
                 if business_words < 5 or business_words > 24:
                     warnings.append(f"{spec_id}/{language}: business thesis length {business_words} words")
+                    long_business_titles.append(f"{spec_id}/{language}")
                 if excerpt and similarity(excerpt, business_title) >= 0.62:
                     warnings.append(f"{spec_id}/{language}: excerpt/business thesis too similar ({similarity(excerpt, business_title):.2f})")
 
@@ -172,6 +174,7 @@ def main() -> int:
             for lang in LANGUAGES
         },
         "identical_keyword_arrays": counts["identical_keyword_arrays"],
+        "long_business_titles": long_business_titles,
         "error_examples": errors[:30],
         "warning_examples": warnings[:80],
     }
