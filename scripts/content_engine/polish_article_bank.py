@@ -65,7 +65,11 @@ def compact_run(blocks: list[str]) -> list[str]:
 
 
 def polish_body(body: str) -> str:
-    blocks = [part.strip() for part in re.split(r"\n\s*\n", body or "") if part.strip()]
+    # Canonical files sometimes place a bold section heading directly above
+    # its first paragraph with only one newline. Isolate those headings before
+    # paragraph consolidation so editorial structure can never be swallowed.
+    prepared = re.sub(r"(?m)^(\*\*[^*\n]+\*\*)\s*$", r"\n\n\1\n\n", body or "")
+    blocks = [part.strip() for part in re.split(r"\n\s*\n", prepared) if part.strip()]
     if not blocks:
         return body
 
