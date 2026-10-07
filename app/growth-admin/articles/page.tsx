@@ -41,6 +41,20 @@ export default async function KnowledgeBankReviewPage({ searchParams }: Props) {
     stateBySpec.set(specId, [...(stateBySpec.get(specId) || []), row])
   }
 
+  const familyState = ARTICLE_BANK.map(article => {
+    const stateRows = stateBySpec.get(article.spec_id) || []
+    const statuses = new Map(stateRows.map(row => [String(row.language || ''), row.status]))
+    if (['es','ca','en'].every(language => statuses.get(language) === 'published')) return 'published'
+    if (['es','ca','en'].every(language => statuses.get(language) === 'scheduled')) return 'scheduled'
+    if (['es','ca','en'].every(language => statuses.get(language) === 'approved')) return 'approved'
+    return 'review'
+  })
+  const approvedFamilies = familyState.filter(status => status === 'approved').length
+  const scheduledFamilies = familyState.filter(status => status === 'scheduled').length
+  const publishedFamilies = familyState.filter(status => status === 'published').length
+  const reviewFamilies = familyState.filter(status => status === 'review').length
+  const readyToSchedulePlan = approvedFamilies === ARTICLE_BANK.length
+
   const rows = ARTICLE_BANK
     .filter(article => !q || [
       article.spec_id,
@@ -71,10 +85,10 @@ export default async function KnowledgeBankReviewPage({ searchParams }: Props) {
 
       <section className="mb-6 grid gap-3 md:grid-cols-4">
         {[
-          ['Familias', ARTICLE_BANK.length, '200 artículos canónicos'],
-          ['Idiomas', ARTICLE_BANK.length * 3, 'ES · CA · EN'],
-          ['Gold standard', ARTICLE_BANK.filter(article => KNOWLEDGE_GOLD_STANDARD_IDS.has(article.spec_id)).length, 'Referencias internas'],
-          ['Mostrados', rows.length, 'Después de filtros'],
+          ['Por revisar', reviewFamilies, 'Familias pendientes de validación'],
+          ['Aprobadas', approvedFamilies, 'Listas para entrar en calendario'],
+          ['Programadas', scheduledFamilies, 'Con fecha de publicación'],
+          ['Publicadas', publishedFamilies, 'Ya visibles en Knowledge'],
         ].map(([label, value, note]) => (
           <div key={String(label)} className={`${adminPanel} p-5`}>
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">{label}</p>
@@ -82,6 +96,47 @@ export default async function KnowledgeBankReviewPage({ searchParams }: Props) {
             <p className="mt-1 text-xs text-slate-500">{note}</p>
           </div>
         ))}
+      </section>
+
+      {params.plan_scheduled && (
+        <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+          Plan editorial programado correctamente para {textParam(params.plan_scheduled)} familias.
+        </div>
+      )}
+
+      <section className="mb-6 rounded-2xl border border-slate-200 bg-white p-5">
+        <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-indigo-700">Activación del calendario</p>
+            <h2 className="mt-2 text-xl font-semibold text-slate-950">Programación editorial en orden definitivo</h2>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+              El orden ya está intercalado por temas para evitar bloques repetitivos. La programación masiva solo se habilita cuando las 200 familias ES · CA · EN están aprobadas.
+            </p>
+          </div>
+          <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+            <strong>{approvedFamilies}/200</strong> familias aprobadas
+          </div>
+        </div>
+
+        {readyToSchedulePlan ? (
+          <form action="/api/growth-admin/knowledge-schedule-plan" method="post" className="mt-5 grid gap-3 md:grid-cols-[minmax(0,1fr)_180px_auto] md:items-end">
+            <label className="text-xs font-semibold text-slate-700">
+              Primera publicación
+              <input required type="datetime-local" name="start_local" className="mt-1 block w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm" />
+            </label>
+            <label className="text-xs font-semibold text-slate-700">
+              Cadencia en días
+              <input name="cadence_days" defaultValue="2,3" className="mt-1 block w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm" />
+            </label>
+            <button className="rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white">
+              Programar las 200
+            </button>
+          </form>
+        ) : (
+          <p className="mt-4 text-xs leading-5 text-slate-500">
+            Mientras quede alguna familia por revisar, ningún botón puede programar el banco completo. Esto evita publicar contenido por accidente.
+          </p>
+        )}
       </section>
 
       <form className="mb-6 grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 md:grid-cols-[minmax(0,1fr)_260px_240px_auto]">
