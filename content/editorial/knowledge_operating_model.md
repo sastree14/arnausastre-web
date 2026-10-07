@@ -39,7 +39,7 @@ The website shell stays consistent: hero, 30-second summary, sticky contents, bo
 The 30-second summary changes by content family:
 
 - `point_of_view_contrarian` → one strong thesis statement;
-- `compare` → two-column comparison;
+- `compare` → two-column comparison by default; true three-way comparisons use a triad;
 - `decision_guide` → three decision anchors;
 - `failure_modes_mistakes` → four-card matrix;
 - `framework_playbook` → five-item framework;
