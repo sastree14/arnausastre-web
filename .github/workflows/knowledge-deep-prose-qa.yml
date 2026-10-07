@@ -1,0 +1,25 @@
+name: SC-Analytics Knowledge — Deep Prose QA
+
+on:
+  push:
+    branches:
+      - feat/knowledge-editorial-v2
+    paths:
+      - 'scripts/content_engine/audit_article_prose_style.py'
+      - '.github/workflows/knowledge-deep-prose-qa.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/knowledge-editorial-v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/content_engine/audit_article_prose_style.py
