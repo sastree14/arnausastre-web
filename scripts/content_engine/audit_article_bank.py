@@ -163,7 +163,6 @@ def main() -> int:
         en_kw = (variants.get("en") or {}).get("seo_keywords") or []
         if es_kw == ca_kw == en_kw:
             counts["identical_keyword_arrays"] += 1
-            warnings.append(f"{spec_id}: identical localized SEO keyword arrays")
 
     summary = {
         "files": len(files),
@@ -174,6 +173,7 @@ def main() -> int:
             for lang in LANGUAGES
         },
         "identical_keyword_arrays": counts["identical_keyword_arrays"],
+        "seo_localization_pending": counts["identical_keyword_arrays"],
         "long_business_titles": long_business_titles,
         "error_examples": errors[:30],
         "warning_examples": warnings[:80],
