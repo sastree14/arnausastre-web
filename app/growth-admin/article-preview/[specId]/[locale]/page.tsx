@@ -130,7 +130,7 @@ export default async function ArticleBankPreviewPage({ params }: Props) {
 
         {familyScheduled && familyScheduledAt && (
           <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 p-4 text-xs leading-5 text-blue-900">
-            Familia programada para <strong>{new Date(familyScheduledAt).toLocaleString('es-ES')}</strong>. El publisher la hará pública cuando llegue ese momento.
+            Familia programada para <strong>{new Intl.DateTimeFormat('es-ES', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Europe/Madrid' }).format(new Date(familyScheduledAt))}</strong>. El publisher la hará pública cuando llegue ese momento.
           </div>
         )}
       </section>
