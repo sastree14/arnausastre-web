@@ -105,6 +105,8 @@ def main() -> int:
                 errors.append(
                     f"{spec_id}/{language}: {len(body_headings)} body headings != {len(section_titles)} section_titles"
                 )
+            elif [str(x).strip() for x in body_headings] != [str(x).strip() for x in section_titles]:
+                errors.append(f"{spec_id}/{language}: section_titles do not match body headings")
             if not 2 <= len(steps) <= 4:
                 errors.append(f"{spec_id}/{language}: business_steps count {len(steps)} outside 2-4")
 
@@ -159,6 +161,7 @@ def main() -> int:
         en_kw = (variants.get("en") or {}).get("seo_keywords") or []
         if es_kw == ca_kw == en_kw:
             counts["identical_keyword_arrays"] += 1
+            warnings.append(f"{spec_id}: identical localized SEO keyword arrays")
 
     summary = {
         "files": len(files),
