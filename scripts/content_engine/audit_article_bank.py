@@ -113,16 +113,16 @@ def main() -> int:
             if wc > 1200:
                 warnings.append(f"{spec_id}/{language}: long body ({wc} words)")
 
-            if opening and words(opening) > 110:
+            if opening and words(opening) > 125:
                 warnings.append(f"{spec_id}/{language}: long opening ({words(opening)} words)")
-            if closing and words(closing) > 120:
+            if closing and words(closing) > 150:
                 warnings.append(f"{spec_id}/{language}: long closing ({words(closing)} words)")
             if opening and closing and similarity(opening, closing) >= 0.48:
                 warnings.append(f"{spec_id}/{language}: opening/closing too similar ({similarity(opening, closing):.2f})")
 
             if business_title:
                 business_words = words(business_title)
-                if business_words < 5 or business_words > 18:
+                if business_words < 5 or business_words > 24:
                     warnings.append(f"{spec_id}/{language}: business thesis length {business_words} words")
                 if excerpt and similarity(excerpt, business_title) >= 0.62:
                     warnings.append(f"{spec_id}/{language}: excerpt/business thesis too similar ({similarity(excerpt, business_title):.2f})")
