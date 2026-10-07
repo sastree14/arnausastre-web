@@ -1,12 +1,6 @@
 name: SC-Analytics Knowledge — Full Editorial Refinement
 
 on:
-  push:
-    branches:
-      - feat/knowledge-editorial-v2
-    paths:
-      - 'scripts/content_engine/refine_knowledge_bank.py'
-      - '.github/workflows/knowledge-editorial-refine.yml'
   workflow_dispatch:
 
 permissions:
