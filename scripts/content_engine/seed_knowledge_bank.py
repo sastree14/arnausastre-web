@@ -149,6 +149,13 @@ def presentation_for_family(content_family: str | None) -> str:
     }.get(str(content_family or ""), "triad")
 
 
+def presentation_for_article(article: dict[str, Any]) -> str:
+    spec_id = str(article.get("spec_id") or "")
+    if spec_id in {"KB-005", "KB-146", "KB-149", "KB-190"}:
+        return "triad"
+    return presentation_for_family(article.get("content_family"))
+
+
 def service_for_article(article: dict[str, Any]) -> str:
     cluster = str(article.get("cluster") or "")
     spec = int("".join(ch for ch in str(article.get("spec_id") or "") if ch.isdigit()) or 0)
@@ -245,7 +252,7 @@ def article_meta(
         "primary_keyword": article.get("primary_keyword"),
         "search_intent": article.get("search_intent"),
         "freshness": article.get("freshness"),
-        "presentation_variant": presentation_for_family(article.get("content_family")),
+        "presentation_variant": presentation_for_article(article),
         "service_key": service_for_article(article),
         "gold_standard": spec_id in GOLD_STANDARD_IDS,
         "experience_note": EXPERIENCE_NOTES.get(spec_id, {}).get(language, ""),
