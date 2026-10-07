@@ -200,7 +200,7 @@ import a199 from '@/content/article-bank/199-why-analytics-projects-grow-before-
 import a200 from '@/content/article-bank/200-a-framework-for-sizing-a-data-or-ai-project.json'
 
 import type { PublicGeneratedArticle } from '@/lib/public-growth'
-import { experienceNoteForArticle, fallbackServiceForArticle, KNOWLEDGE_GOLD_STANDARD_IDS, presentationForFamily, publicationOrderForSequence } from '@/lib/knowledge-editorial'
+import { experienceNoteForArticle, fallbackServiceForArticle, KNOWLEDGE_GOLD_STANDARD_IDS, presentationForArticle, publicationOrderForSequence } from '@/lib/knowledge-editorial'
 
 export type ArticleBankLanguage = 'es' | 'en' | 'ca'
 
@@ -309,7 +309,7 @@ export function toPreviewVariants(article: ArticleBankArticle): PublicGeneratedA
           primary_keyword: article.primary_keyword || '',
           search_intent: article.search_intent || '',
           freshness: article.freshness || '',
-          presentation_variant: presentationForFamily(article.content_family),
+          presentation_variant: presentationForArticle(article.content_family, article.spec_id),
           service_key: fallbackServiceForArticle({ cluster: article.cluster, specId: article.spec_id }),
           gold_standard: KNOWLEDGE_GOLD_STANDARD_IDS.has(article.spec_id),
           experience_note: experienceNoteForArticle(article.spec_id, language) || '',
