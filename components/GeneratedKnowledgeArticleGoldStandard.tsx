@@ -8,7 +8,7 @@ import type { PublicGeneratedArticle } from '@/lib/public-growth'
 import KnowledgeArticleSummary from '@/components/KnowledgeArticleSummary'
 import KnowledgeArticleNext from '@/components/KnowledgeArticleNext'
 import KnowledgeExperienceNote from '@/components/KnowledgeExperienceNote'
-import { experienceNoteForArticle, fallbackServiceForArticle, presentationForFamily, type KnowledgePresentationVariant, type KnowledgeServiceKey } from '@/lib/knowledge-editorial'
+import { experienceNoteForArticle, fallbackServiceForArticle, presentationForArticle, type KnowledgePresentationVariant, type KnowledgeServiceKey } from '@/lib/knowledge-editorial'
 
 type Props = { variants: PublicGeneratedArticle[]; forcedLanguage?: 'es' | 'ca' | 'en' }
 
@@ -200,7 +200,7 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
   const businessTitle = meta.business_title || excerpt
   const businessSteps = (meta.business_steps || []).slice(0, 4)
   const branchHref = `/knowledge?area=${area}`
-  const presentation = meta.presentation_variant || presentationForFamily(meta.content_family)
+  const presentation = meta.presentation_variant || presentationForArticle(meta.content_family, meta.spec_id)
   const serviceKey = meta.service_key || fallbackServiceForArticle({ cluster: meta.cluster, specId: meta.spec_id })
   const normalizedRelatedArticles: Array<{ href: string; title: string | undefined }> = (meta.related_articles || [])
     .map(item => typeof item === 'string' ? { href: item, title: undefined } : { href: item.href || '', title: item.title })
