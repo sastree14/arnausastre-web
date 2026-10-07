@@ -61,6 +61,19 @@ def compact_run(blocks: list[str]) -> list[str]:
             flush()
 
     flush()
+
+    # Avoid orphan one-line prose at the end of a section. If a final short
+    # paragraph can be absorbed without creating an oversized paragraph, merge
+    # it back into the preceding idea. Lists/tables never enter this run.
+    if len(out) >= 2 and words(out[-1]) < 25 and words(out[-2]) + words(out[-1]) <= 150:
+        out[-2] = f"{out[-2]} {out[-1]}".strip()
+        out.pop()
+
+    # The same rule applies to a short opening fragment inside a section.
+    if len(out) >= 2 and words(out[0]) < 25 and words(out[0]) + words(out[1]) <= 150:
+        out[1] = f"{out[0]} {out[1]}".strip()
+        out.pop(0)
+
     return out
 
 
