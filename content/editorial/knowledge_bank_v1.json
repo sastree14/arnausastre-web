@@ -1,23 +1,25 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "generated_for": "SC-Analytics Knowledge Factory",
   "article_count": 200,
   "publication_strategy": {
-    "initial_published_articles": 5,
+    "initial_published_articles": 0,
     "cadence_days": [
       2,
       3
     ],
     "start_local": "2026-10-07T09:00:00",
     "timezone": "Europe/Madrid",
-    "order": "Four-article editorial arcs. Arcs rotate across the major SC-Analytics knowledge clusters.",
-    "case_project_proof_excluded": true
+    "order": "Interleaved editorial order across the ten knowledge clusters. Canonical sequence remains stable; publication order is computed separately after human review.",
+    "case_project_proof_excluded": true,
+    "enabled": false,
+    "review_required_before_schedule": true
   },
   "rules": {
     "website_article_gold_standard": "components/KnowledgeArticleGoldStandard.tsx",
     "target_words_per_language": [
-      750,
-      1150
+      650,
+      950
     ],
     "languages": [
       "es",
@@ -36,7 +38,11 @@
       "cuando-la-fijacion-dinamica-de-precios-crea-mas-problemas-que-soluciones",
       "why-hiring-faster-obscures-deeper-healthcare-capacity-problems",
       "why-professional-services-firms-misdiagnose-capacity-problems"
-    ]
+    ],
+    "adaptive_article_presentation": true,
+    "service_link_required": true,
+    "human_review_before_scheduling": true,
+    "first_hand_experience_must_be_verified": true
   },
   "specs": [
     {
