@@ -11,7 +11,7 @@ BANK = ROOT / "content" / "article-bank"
 
 PATTERNS = {
     "es": [
-        r"(?<!/)\bi\b(?!/)", r"\bshould\b", r"\bthis\b", r"\bthat\b",
+        r"(?<!/)\bi\b(?!/)", r"\bshould\b(?!-have)", r"\bthis\b", r"\bthat\b",
         r"\bwithout\b", r"\bwhen\b", r"\bwhere\b", r"\balso\b",
         r"\bdoes\b", r"\bwill\b",
     ],
