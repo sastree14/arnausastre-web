@@ -1,0 +1,76 @@
+name: SC-Analytics Knowledge — Full Editorial Refinement
+
+on:
+  push:
+    branches:
+      - feat/knowledge-editorial-v2
+    paths:
+      - 'scripts/content_engine/refine_knowledge_bank.py'
+      - '.github/workflows/knowledge-editorial-refine.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sc-analytics-knowledge-editorial-refine
+  cancel-in-progress: false
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/knowledge-editorial-v2
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: growth/requirements.txt
+
+      - name: Install runtime dependencies
+        run: pip install -r growth/requirements.txt
+
+      - name: Validate editorial LLM secret
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "::error::OPENAI_API_KEY is required for the editorial refinement"
+            exit 1
+          fi
+
+      - name: Refine the 189 non-gold-standard article families
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python scripts/content_engine/refine_knowledge_bank.py \
+            --workers 6 \
+            --profile balanced
+
+      - name: Consolidate paragraph structure
+        run: python scripts/content_engine/polish_article_bank.py
+
+      - name: Run editorial QA
+        run: python scripts/content_engine/audit_article_bank.py
+
+      - name: Commit refined canonical bank
+        shell: bash
+        run: |
+          if git diff --quiet -- content/article-bank; then
+            echo "No article-bank changes required."
+            exit 0
+          fi
+          git config user.name "sc-analytics-editorial-bot"
+          git config user.email "editorial-bot@users.noreply.github.com"
+          git add content/article-bank
+          git commit -m "Refine 200-article Knowledge bank to editorial v3"
+          git pull --rebase origin feat/knowledge-editorial-v2
+          git push origin HEAD:feat/knowledge-editorial-v2
