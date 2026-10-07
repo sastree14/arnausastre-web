@@ -48,11 +48,20 @@ export const metadata: Metadata = {
     siteName: 'SC-Analytics',
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: '/og/web.jpg',
+        width: 800,
+        height: 418,
+        alt: 'SC-Analytics — Better Decisions. Better Business Outcomes.',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'SC-Analytics | Better Decisions. Better Business Outcomes.',
     description: 'Data & AI consulting built around business value, rigor and proportionate solutions.',
+    images: ['/og/web.jpg'],
   },
   icons: { icon: '/brand/Monograma-simple.png' },
 }
