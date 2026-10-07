@@ -72,6 +72,9 @@ jobs:
             --output content/article-bank \
             --validate-only
 
+      - name: Run editorial QA audit
+        run: python scripts/content_engine/audit_article_bank.py
+
       - name: Commit materialized bank
         run: |
           if git diff --quiet -- content/article-bank && [ -z "$(git status --porcelain -- content/article-bank)" ]; then
