@@ -34,7 +34,7 @@
         "El sistema debe reducir distancia entre señal y acción",
         "Mide decisiones, no solo uso del dashboard"
       ],
-      "business_title": "Un dashboard aporta valor cuando informa; un sistema de decisión aporta más cuando convierte información en una acción mejor, más rápida y repetible.",
+      "business_title": "Un dashboard informa; un sistema de decisión cambia la acción.",
       "business_steps": [
         "Señal",
         "Decisión",
@@ -69,7 +69,7 @@
         "The system should reduce distance from signal to action",
         "Measure decisions, not only dashboard usage"
       ],
-      "business_title": "A dashboard creates value by informing; a decision system creates more when information becomes a better, faster and repeatable action.",
+      "business_title": "A dashboard informs; a decision system changes the action.",
       "business_steps": [
         "Signal",
         "Decision",
@@ -104,7 +104,7 @@
         "El sistema ha de reduir distància entre senyal i acció",
         "Mesura decisions, no només ús del dashboard"
       ],
-      "business_title": "Un dashboard aporta valor quan informa; un sistema de decisió en crea més quan la informació es converteix en una acció millor, més ràpida i repetible.",
+      "business_title": "Un dashboard informa; un sistema de decisió canvia l’acció.",
       "business_steps": [
         "Senyal",
         "Decisió",
