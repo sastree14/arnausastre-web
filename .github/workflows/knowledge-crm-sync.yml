@@ -1,0 +1,55 @@
+name: SC-Analytics Knowledge — CRM Sync
+
+on:
+  push:
+    branches:
+      - feat/knowledge-editorial-v2
+    paths:
+      - '.github/workflows/knowledge-crm-sync.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/knowledge-editorial-v2
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: growth/requirements.txt
+
+      - name: Install runtime dependencies
+        run: pip install -r growth/requirements.txt
+
+      - name: Validate canonical bank
+        run: |
+          python scripts/content_engine/build_knowledge_bank.py \
+            --catalog content/editorial/knowledge_bank_v1.json \
+            --output content/article-bank \
+            --validate-only
+          python scripts/content_engine/audit_article_bank.py
+          python scripts/content_engine/scan_article_language.py
+          python scripts/content_engine/audit_article_prose_style.py
+
+      - name: Synchronize canonical Knowledge bank to CRM
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          STATE_PROVIDER: supabase
+        run: |
+          python scripts/content_engine/seed_knowledge_bank.py \
+            --bank content/article-bank \
+            --catalog content/editorial/knowledge_bank_v1.json \
+            --mode staged \
+            --expected 200
