@@ -199,6 +199,9 @@ import a198 from '@/content/article-bank/198-prototype-vs-production-where-the-r
 import a199 from '@/content/article-bank/199-why-analytics-projects-grow-before-they-prove-value.json'
 import a200 from '@/content/article-bank/200-a-framework-for-sizing-a-data-or-ai-project.json'
 
+import type { PublicGeneratedArticle } from '@/lib/public-growth'
+import { experienceNoteForArticle, fallbackServiceForArticle, KNOWLEDGE_GOLD_STANDARD_IDS, presentationForFamily, publicationOrderForSequence } from '@/lib/knowledge-editorial'
+
 export type ArticleBankLanguage = 'es' | 'en' | 'ca'
 
 export type ArticleBankVariant = {
@@ -258,4 +261,60 @@ export function localizedRelatedArticles(article: ArticleBankArticle, language: 
       href: `/knowledge/${row.slug}/${language}`,
       title: row.variants[language]?.title || row.variants.es?.title || row.slug,
     }))
+}
+
+
+export function toPreviewVariants(article: ArticleBankArticle): PublicGeneratedArticle[] {
+  const languages: ArticleBankLanguage[] = ['es', 'ca', 'en']
+  return languages.map(language => {
+    const variant = article.variants[language]
+    const relatedArticles = localizedRelatedArticles(article, language)
+    return {
+      content_id: `preview_${article.spec_id.toLowerCase().replace('-', '_')}_${language}`,
+      brief_id: article.slug,
+      title: variant.title,
+      body: variant.body,
+      language,
+      content_family: article.content_family,
+      status: 'needs_review',
+      objective: 'authority',
+      topic: article.cluster,
+      critique: {
+        contract_valid: true,
+        contract_issues: [],
+        article_bank: true,
+        preview_only: true,
+        article_meta: {
+          excerpt: variant.excerpt || '',
+          quick: variant.quick || [],
+          section_titles: variant.section_titles || [],
+          business_title: variant.business_title || '',
+          business_steps: variant.business_steps || [],
+          knowledge_area: article.knowledge_area || 'analytics',
+          related_case: article.related_case || '',
+          related_article: relatedArticles[0]?.href || '',
+          related_article_title: relatedArticles[0]?.title || '',
+          related_articles: relatedArticles,
+          seo_title: variant.seo_title || '',
+          seo_description: variant.seo_description || '',
+          seo_keywords: variant.seo_keywords || [],
+          tags: variant.tags || [],
+          spec_id: article.spec_id,
+          sequence: article.sequence,
+          publication_order: publicationOrderForSequence(article.sequence),
+          cluster: article.cluster || '',
+          editorial_pillar: article.editorial_pillar || '',
+          content_family: article.content_family || '',
+          angle: article.angle || '',
+          primary_keyword: article.primary_keyword || '',
+          search_intent: article.search_intent || '',
+          freshness: article.freshness || '',
+          presentation_variant: presentationForFamily(article.content_family),
+          service_key: fallbackServiceForArticle({ cluster: article.cluster, specId: article.spec_id }),
+          gold_standard: KNOWLEDGE_GOLD_STANDARD_IDS.has(article.spec_id),
+          experience_note: experienceNoteForArticle(article.spec_id, language) || '',
+        },
+      },
+    }
+  })
 }
