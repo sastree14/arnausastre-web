@@ -7,6 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 BANK = ROOT / "content" / "article-bank"
 LANGUAGES = ("es", "ca", "en")
+# Editorial pass: preserve meaning while consolidating fragmented prose into article paragraphs.
 WORD_RE = re.compile(r"\b[\wÀ-ÿ'-]+\b")
 HEADING_RE = re.compile(r"^\*\*[^*\n]+\*\*$")
 
