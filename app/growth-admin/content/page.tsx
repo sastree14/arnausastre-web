@@ -104,6 +104,9 @@ export default async function ContentPage({
             <a href="/growth-admin" className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-semibold text-white">
               Revisión
             </a>
+            <a href="/growth-admin/articles" className="rounded-lg border border-indigo-500 px-4 py-2.5 text-sm font-semibold text-indigo-100">
+              Banco de artículos
+            </a>
             <a href="/growth-admin/calendar" className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">
               Calendario
             </a>
