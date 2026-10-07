@@ -134,3 +134,25 @@ SEO is built around:
 The internal `seo_keywords` arrays are editorial metadata. They are not emitted as a ranking mechanism.
 
 Quantitative keyword volume/difficulty and SERP competition should be added from Semrush when API units are available.
+
+
+## CMI review and activation
+
+The CMI now exposes the canonical Knowledge bank at `/growth-admin/articles`.
+
+Review workflow:
+
+1. Open any article family.
+2. Switch between ES, CA and EN in the same preview.
+3. Review the exact public renderer, including the article-specific 30-second summary layout.
+4. Approve the whole ES/CA/EN family in one action, or mark the family for changes.
+5. An approved family remains private. Approval alone never publishes it.
+6. Either schedule that family from its preview or wait until all 200 families are approved.
+7. When all 200 are approved, the bank page unlocks the gated bulk scheduler. The operator chooses the first local publication time and cadence; the system applies the predefined editorial order to all families.
+8. The due publisher only publishes rows whose status is `scheduled` and whose scheduled time has arrived.
+
+This deliberately separates four concepts that must not be conflated:
+
+`reviewed` → `approved` → `scheduled` → `published`
+
+There is no "publish everything and hide it" phase.
