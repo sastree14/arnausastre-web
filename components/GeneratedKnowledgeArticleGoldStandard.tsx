@@ -3,9 +3,12 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import ArticleText from '@/components/ArticleText'
-import { ArrowRight } from 'lucide-react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import type { PublicGeneratedArticle } from '@/lib/public-growth'
+import KnowledgeArticleSummary from '@/components/KnowledgeArticleSummary'
+import KnowledgeArticleNext from '@/components/KnowledgeArticleNext'
+import KnowledgeExperienceNote from '@/components/KnowledgeExperienceNote'
+import { fallbackServiceForArticle, presentationForFamily, type KnowledgePresentationVariant, type KnowledgeServiceKey } from '@/lib/knowledge-editorial'
 
 type Props = { variants: PublicGeneratedArticle[]; forcedLanguage?: 'es' | 'ca' | 'en' }
 
@@ -22,8 +25,17 @@ type ArticleMeta = {
   knowledge_area?: string
   related_case?: string
   related_article?: string
+  related_article_title?: string
+  related_articles?: Array<string | { href?: string; title?: string }>
   seo_title?: string
   seo_description?: string
+  content_family?: string
+  cluster?: string
+  spec_id?: string
+  presentation_variant?: KnowledgePresentationVariant
+  summary_items?: string[]
+  service_key?: KnowledgeServiceKey
+  experience_note?: string
 }
 
 function selectVariant(variants: PublicGeneratedArticle[], lang: string) {
@@ -181,14 +193,19 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
   if (!article) return null
 
   const sectionTitles = meta.section_titles || headings.map((section) => section.heading)
-  const quick = (meta.quick || []).slice(0, 3)
+  const quick = meta.quick || []
   const area = String(meta.knowledge_area || 'analytics') as keyof typeof AREA_LABELS.es
   const areaLabel = AREA_LABELS[activeLanguage][area] || t.label
   const excerpt = meta.excerpt || segments[0]?.paragraphs?.[0] || ''
   const businessTitle = meta.business_title || excerpt
-  const businessSteps = (meta.business_steps || []).slice(0, 3)
+  const businessSteps = (meta.business_steps || []).slice(0, 4)
   const branchHref = `/knowledge?area=${area}`
-  const caseHref = meta.related_case || meta.related_article || '/knowledge'
+  const presentation = meta.presentation_variant || presentationForFamily(meta.content_family)
+  const serviceKey = meta.service_key || fallbackServiceForArticle({ cluster: meta.cluster, specId: meta.spec_id })
+  const firstRelated = meta.related_articles?.[0]
+  const relatedHref = typeof firstRelated === 'string' ? firstRelated : firstRelated?.href || meta.related_article
+  const relatedTitle = typeof firstRelated === 'string' ? meta.related_article_title : firstRelated?.title || meta.related_article_title
+  const businessGrid = businessSteps.length <= 1 ? 'grid-cols-1' : businessSteps.length === 2 ? 'md:grid-cols-2' : businessSteps.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2 xl:grid-cols-4'
 
   return (
     <main className="bg-[#FAFAF7] text-slate-950">
@@ -207,22 +224,14 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
         </div>
       </section>
 
-      {quick.length ? (
-        <section className="border-b border-slate-300 bg-[#F4F1EA]">
-          <div className="site-container py-8 text-center lg:py-10">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.15em] text-[#4F46E5]">{t.quickLabel}</p>
-            <h2 className="mx-auto mt-3 max-w-4xl text-[29px] leading-tight text-slate-950 sm:text-[33px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.quickTitle}</h2>
-            <div className="mx-auto mt-6 grid max-w-[1240px] border-l border-t border-slate-300 lg:grid-cols-3">
-              {quick.map((titleText, index) => (
-                <div key={titleText} className={`flex min-h-[150px] flex-col items-center justify-center border-b border-r border-slate-300 px-7 py-6 ${index === 1 ? 'bg-[#EAF0F6]' : 'bg-white'}`}>
-                  <p className="font-mono text-[14px] font-semibold text-[#4F46E5]">0{index + 1}</p>
-                  <h3 className="mt-4 text-[24px] font-semibold leading-7 text-slate-950">{titleText}</h3>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      ) : null}
+      <KnowledgeArticleSummary
+        locale={activeLanguage}
+        presentation={presentation}
+        quick={quick}
+        sectionTitles={sectionTitles}
+        businessTitle={businessTitle}
+        customItems={meta.summary_items}
+      />
 
       <section className="site-container py-10 lg:py-14">
         <div className="lg:grid lg:grid-cols-[330px_minmax(0,900px)] lg:justify-center lg:gap-16 lg:items-start">
@@ -279,6 +288,8 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
         </div>
       </section>
 
+      <KnowledgeExperienceNote locale={activeLanguage} note={meta.experience_note} />
+
       {businessTitle ? (
         <section className="border-y border-slate-300 bg-[#F4F1EA]">
           <div className="site-container py-10 lg:py-12">
@@ -286,14 +297,14 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
               <p className="text-[14px] font-semibold uppercase tracking-[0.15em] text-[#4F46E5]">{t.businessLabel}</p>
               <h2 className="mx-auto mt-3 max-w-5xl text-[32px] leading-[1.08] text-slate-950 sm:text-[39px]" style={{ fontFamily: 'var(--font-playfair)' }}>{businessTitle}</h2>
             </div>
-            {businessSteps.length === 3 ? (
-              <div className="mx-auto mt-7 grid max-w-[1180px] items-stretch gap-3 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:gap-4">
+            {businessSteps.length ? (
+              <div className={`mx-auto mt-7 grid max-w-[1180px] gap-3 ${businessGrid}`}>
                 {businessSteps.map((step, index) => (
-                  <div key={step} className="contents">
-                    <div className={`flex min-h-[130px] items-center justify-center border border-slate-300 px-6 py-5 text-center ${index === 1 ? 'bg-[#EAF0F6]' : 'bg-white'}`}>
-                      <p className="text-[22px] font-semibold leading-7 text-[#1D2B44]">{step}</p>
+                  <div key={step} className={`flex min-h-[128px] items-center justify-center border border-slate-300 px-6 py-5 text-center ${index % 3 === 1 ? 'bg-[#EAF0F6]' : 'bg-white'}`}>
+                    <div>
+                      <p className="font-mono text-[12px] font-semibold text-[#4F46E5]">{String(index + 1).padStart(2, '0')}</p>
+                      <p className="mt-3 text-[21px] font-semibold leading-7 text-[#1D2B44]">{step}</p>
                     </div>
-                    {index < 2 ? <div className="hidden items-center justify-center lg:flex"><ArrowRight className="h-5 w-5 text-[#4F46E5]" /></div> : null}
                   </div>
                 ))}
               </div>
@@ -302,30 +313,14 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
         </section>
       ) : null}
 
-      <section className="bg-white">
-        <div className="site-container py-10 lg:py-12">
-          <div className="text-center">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.15em] text-[#4F46E5]">{t.nextLabel}</p>
-            <h2 className="mt-3 text-[31px] leading-tight text-slate-950 sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.nextTitle}</h2>
-          </div>
-          <div className="mt-7 grid border-l border-t border-slate-300 lg:grid-cols-3">
-            {[
-              ['01', t.caseQuestion, t.caseAction, caseHref],
-              ['02', t.branchQuestion, t.branchAction, branchHref],
-              ['03', t.contactQuestion, t.contactAction, '/contact?intent=problem'],
-            ].map(([number, question, action, href], index) => (
-              <Link key={`${number}-${href}`} href={href} className={`group flex min-h-[220px] flex-col border-b border-r border-slate-300 p-7 transition ${index === 1 ? 'bg-[#F4F1EA] hover:bg-[#F4F1EA]' : index === 2 ? 'bg-[#0D1B2A] text-white hover:bg-[#254A66]' : 'bg-white hover:bg-[#FAFAF7]'}`}>
-                <div className="flex items-start justify-between gap-4">
-                  <span className={`font-mono text-[14px] font-semibold ${index === 2 ? 'text-[#7A7DFF]' : 'text-[#4F46E5]'}`}>{number}</span>
-                  <ArrowRight className={`h-5 w-5 transition-transform group-hover:translate-x-1 ${index === 2 ? 'text-white' : 'text-slate-500'}`} />
-                </div>
-                <p className={`mt-6 max-w-[23ch] text-[24px] leading-[1.1] ${index === 2 ? 'text-white' : 'text-[#1D2B44]'}`} style={{ fontFamily: 'var(--font-playfair)' }}>{question}</p>
-                <p className={`mt-auto pt-6 text-[16px] font-semibold ${index === 2 ? 'text-white' : 'text-[#4F46E5]'}`}>{action}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      <KnowledgeArticleNext
+        locale={activeLanguage}
+        serviceKey={serviceKey}
+        relatedHref={relatedHref}
+        relatedTitle={relatedTitle}
+        branchHref={branchHref}
+      />
+
     </main>
   )
 }
