@@ -43,6 +43,25 @@ def headings(body: str) -> list[str]:
     return re.findall(r"(?m)^\*\*([^*\n]+)\*\*\s*$", body or "")
 
 
+def paragraphs(body: str) -> list[str]:
+    return [part.strip() for part in re.split(r"\n\s*\n", body or "") if part.strip()]
+
+
+def token_set(text: str) -> set[str]:
+    return {
+        token.lower()
+        for token in WORD_RE.findall(text or "")
+        if len(token) >= 4
+    }
+
+
+def similarity(left: str, right: str) -> float:
+    a, b = token_set(left), token_set(right)
+    if not a or not b:
+        return 0.0
+    return len(a & b) / len(a | b)
+
+
 def main() -> int:
     files = sorted(BANK.glob("[0-9][0-9][0-9]-*.json"))
     errors: list[str] = []
@@ -69,6 +88,11 @@ def main() -> int:
             steps = variant.get("business_steps") or []
             body_headings = headings(body)
             wc = words(body)
+            prose = [p for p in paragraphs(body) if not re.fullmatch(r"\*\*[^*\n]+\*\*", p)]
+            opening = prose[0] if prose else ""
+            closing = prose[-1] if prose else ""
+            business_title = str(variant.get("business_title") or "")
+            excerpt = str(variant.get("excerpt") or "")
 
             counts[f"{language}_words"] += wc
             counts[f"{language}_articles"] += 1
@@ -88,6 +112,31 @@ def main() -> int:
                 warnings.append(f"{spec_id}/{language}: short body ({wc} words)")
             if wc > 1200:
                 warnings.append(f"{spec_id}/{language}: long body ({wc} words)")
+
+            if opening and words(opening) > 110:
+                warnings.append(f"{spec_id}/{language}: long opening ({words(opening)} words)")
+            if closing and words(closing) > 120:
+                warnings.append(f"{spec_id}/{language}: long closing ({words(closing)} words)")
+            if opening and closing and similarity(opening, closing) >= 0.48:
+                warnings.append(f"{spec_id}/{language}: opening/closing too similar ({similarity(opening, closing):.2f})")
+
+            if business_title:
+                business_words = words(business_title)
+                if business_words < 5 or business_words > 18:
+                    warnings.append(f"{spec_id}/{language}: business thesis length {business_words} words")
+                if excerpt and similarity(excerpt, business_title) >= 0.62:
+                    warnings.append(f"{spec_id}/{language}: excerpt/business thesis too similar ({similarity(excerpt, business_title):.2f})")
+
+            quick_lengths = [words(str(item)) for item in quick]
+            if any(length > 12 for length in quick_lengths):
+                warnings.append(f"{spec_id}/{language}: long quick item {quick_lengths}")
+
+            if str(article.get("content_family") or "") == "point_of_view_contrarian" and quick:
+                first = str(quick[0])
+                second = str(quick[1]) if len(quick) > 1 else ""
+                display = first if words(first) >= 5 else f"{first}: {second}" if second else first
+                if not 5 <= words(display) <= 14:
+                    warnings.append(f"{spec_id}/{language}: statement thesis length {words(display)} words")
 
             seo_title = str(variant.get("seo_title") or "")
             seo_description = str(variant.get("seo_description") or "")
@@ -121,7 +170,7 @@ def main() -> int:
         },
         "identical_keyword_arrays": counts["identical_keyword_arrays"],
         "error_examples": errors[:30],
-        "warning_examples": warnings[:30],
+        "warning_examples": warnings[:80],
     }
     print(json.dumps(summary, ensure_ascii=False, indent=2))
     return 1 if errors else 0
