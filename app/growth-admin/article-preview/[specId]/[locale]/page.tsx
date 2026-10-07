@@ -3,7 +3,7 @@ import AdminShell from '@/components/growth-admin/AdminShell'
 import { Badge, PageHeader } from '@/components/growth-admin/AdminUi'
 import GeneratedKnowledgeArticleGoldStandard from '@/components/GeneratedKnowledgeArticleGoldStandard'
 import { getBankArticle, toPreviewVariants, type ArticleBankLanguage } from '@/lib/article-bank'
-import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
+import { isGrowthAdminAuthenticated, queryGrowthTable, type GrowthContentItem } from '@/lib/growth-admin'
 import { fallbackServiceForArticle, KNOWLEDGE_GOLD_STANDARD_IDS, KNOWLEDGE_SERVICES, presentationForArticle, publicationOrderForSequence } from '@/lib/knowledge-editorial'
 
 export const metadata = { robots: { index: false, follow: false } }
@@ -23,6 +23,17 @@ export default async function ArticleBankPreviewPage({ params }: Props) {
   if (!article) notFound()
 
   const variants = toPreviewVariants(article)
+  const materializedFamily = await queryGrowthTable<GrowthContentItem>('content_items', {
+    tenant_id: 'eq.sc-analytics',
+    content_type: 'eq.article',
+    channel: 'eq.website',
+    brief_id: `eq.${article.slug}`,
+    limit: '10',
+  }, { cacheSeconds: 0 }).catch(() => [])
+  const familyByLanguage = new Map(materializedFamily.map(row => [String(row.language || ''), row]))
+  const familyApproved = ['es','ca','en'].every(language => familyByLanguage.get(language)?.status === 'approved')
+  const familyScheduled = ['es','ca','en'].every(language => familyByLanguage.get(language)?.status === 'scheduled')
+  const familyPublished = ['es','ca','en'].every(language => familyByLanguage.get(language)?.status === 'published')
   const order = publicationOrderForSequence(article.sequence)
   const serviceKey = fallbackServiceForArticle({ cluster: article.cluster, specId: article.spec_id })
   const service = KNOWLEDGE_SERVICES[serviceKey]
@@ -58,10 +69,49 @@ export default async function ArticleBankPreviewPage({ params }: Props) {
           <Badge>{article.content_family || 'article'}</Badge>
           <Badge>{service.labels.es}</Badge>
           {KNOWLEDGE_GOLD_STANDARD_IDS.has(article.spec_id) && <Badge tone="green">gold standard</Badge>}
+          {familyPublished ? <Badge tone="green">publicada</Badge> : familyScheduled ? <Badge tone="blue">programada</Badge> : familyApproved ? <Badge tone="green">familia aprobada</Badge> : <Badge tone="amber">pendiente de revisión</Badge>}
         </div>
         <p className="mt-3 text-xs leading-5 text-indigo-900">
-          Flujo correcto: preview privado → revisión humana → estado aprobado/programado en Supabase → publicación automática de las tres variantes → la ruta pública empieza a existir para Google. No hace falta publicar y ocultar.
+          Flujo correcto: preview privado → revisión humana → aprobación de la familia ES · CA · EN → programación → publicación automática. La ruta pública no existe hasta publicar; no hace falta publicar y ocultar.
         </p>
+
+        <div className="mt-4 grid gap-2 sm:grid-cols-3">
+          {(['es','ca','en'] as const).map(language => {
+            const row = familyByLanguage.get(language)
+            return (
+              <div key={language} className="rounded-xl border border-indigo-100 bg-white p-3">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-semibold text-slate-900">{language.toUpperCase()}</span>
+                  <Badge tone={row?.status === 'published' || row?.status === 'approved' ? 'green' : row?.status === 'scheduled' ? 'blue' : 'amber'}>
+                    {row?.status || 'sin materializar'}
+                  </Badge>
+                </div>
+                <p className="mt-2 line-clamp-2 text-[11px] leading-4 text-slate-500">{row?.title || article.variants[language]?.title}</p>
+              </div>
+            )
+          })}
+        </div>
+
+        {!familyPublished && !familyScheduled && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            <form action="/api/growth-admin/knowledge-family-decision" method="post">
+              <input type="hidden" name="spec_id" value={article.spec_id} />
+              <input type="hidden" name="decision" value="approved" />
+              <input type="hidden" name="return_to" value={`/growth-admin/article-preview/${encodeURIComponent(article.spec_id)}/${locale}`} />
+              <button className="rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800">
+                Aprobar familia ES · CA · EN
+              </button>
+            </form>
+            <form action="/api/growth-admin/knowledge-family-decision" method="post">
+              <input type="hidden" name="spec_id" value={article.spec_id} />
+              <input type="hidden" name="decision" value="changes_requested" />
+              <input type="hidden" name="return_to" value={`/growth-admin/article-preview/${encodeURIComponent(article.spec_id)}/${locale}`} />
+              <button className="rounded-lg border border-amber-300 bg-white px-4 py-2.5 text-sm font-semibold text-amber-900 transition hover:bg-amber-50">
+                Marcar para cambios
+              </button>
+            </form>
+          </div>
+        )}
       </section>
 
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
