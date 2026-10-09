@@ -126,8 +126,10 @@ async function refreshAccessToken(refreshToken: string) {
 export async function getGmailAccessToken(connection: Connection) {
   const expiry = connection.token_expires_at ? new Date(String(connection.token_expires_at)).getTime() : 0
   if (connection.access_token_ciphertext && expiry > Date.now() + 120000) return decryptIntegrationSecret(String(connection.access_token_ciphertext))
-  if (!connection.refresh_token_ciphertext) throw new Error(`Google connection ${String(connection.display_name || connection.connection_id)} has no refresh token`)
-  const refreshed = await refreshAccessToken(decryptIntegrationSecret(String(connection.refresh_token_ciphertext)))
+  const metadata = connection.metadata && typeof connection.metadata === 'object' ? connection.metadata as Record<string, unknown> : {}
+  const refreshCiphertext = connection.refresh_token_ciphertext || metadata.refresh_token_ciphertext
+  if (!refreshCiphertext) throw new Error(`Google connection ${String(connection.display_name || connection.connection_id)} has no refresh token`)
+  const refreshed = await refreshAccessToken(decryptIntegrationSecret(String(refreshCiphertext)))
   const expiresAt = new Date(Date.now() + Number(refreshed.expires_in || 3600) * 1000).toISOString()
   await updateGrowthRow('integration_connections', 'connection_id', String(connection.connection_id), { access_token_ciphertext: encryptIntegrationSecret(String(refreshed.access_token)), token_expires_at: expiresAt, updated_at: new Date().toISOString() })
   return String(refreshed.access_token)

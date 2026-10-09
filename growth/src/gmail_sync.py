@@ -4,7 +4,10 @@ import os
 import re
 from datetime import datetime, timedelta, timezone
 from email.utils import parseaddr, parsedate_to_datetime
+
+from .gmail_commercial import addresses, body_text, message_kind, resolve_company, thread_state
 from typing import Any
+from urllib.parse import quote
 
 import requests
 
@@ -40,8 +43,8 @@ def _connection_access_token(connection: dict[str, Any], store: Any) -> str:
     encrypted_refresh = str(metadata.get("refresh_token_ciphertext") or "")
     if not encrypted_refresh:
         raise RuntimeError(f"Gmail connection {connection.get('provider_subject')} has no refresh token")
-    client_id = os.environ.get("GOOGLE_CLIENT_ID", "").strip()
-    client_secret = os.environ.get("GOOGLE_CLIENT_SECRET", "").strip()
+    client_id = (os.environ.get("GOOGLE_CLIENT_ID") or os.environ.get("GOOGLE_OAUTH_CLIENT_ID") or "").strip()
+    client_secret = (os.environ.get("GOOGLE_CLIENT_SECRET") or os.environ.get("GOOGLE_OAUTH_CLIENT_SECRET") or "").strip()
     if not client_id or not client_secret:
         raise RuntimeError("GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET are required for Gmail sync")
     response = requests.post(
@@ -94,7 +97,7 @@ def _received_at(message: dict[str, Any]) -> str:
 
 def _normalize_message(account: str, message: dict[str, Any]) -> dict[str, Any]:
     sender_name, sender_email = parseaddr(_header(message, "From"))
-    recipients = [address.strip() for address in re.split(r"[,;]", _header(message, "To")) if address.strip()]
+    recipients = addresses(_header(message, "To")) + addresses(_header(message, "Cc"))
     external_id = str(message.get("id") or "")
     return {
         "message_key": f"gmail:{account}:{external_id}",
@@ -111,7 +114,8 @@ def _normalize_message(account: str, message: dict[str, Any]) -> dict[str, Any]:
         "received_at": _received_at(message),
         "unread": "UNREAD" in (message.get("labelIds") or []),
         "labels": list(message.get("labelIds") or []),
-        "metadata": {"history_id": message.get("historyId")},
+        "metadata": {"history_id": message.get("historyId"), "headers": {str(h.get("name", "")).lower(): str(h.get("value", "")) for h in (message.get("payload") or {}).get("headers", [])}},
+        "body": body_text(message.get("payload") or {}),
     }
 
 
@@ -162,48 +166,138 @@ MESSAGES:
         return {row["message_key"]: _heuristic(row) for row in rows}
 
 
-def sync_gmail(limit_per_account: int = 50, newer_than_days: int = 14) -> dict[str, Any]:
-    store = get_store()
-    connections = [row for row in store.list("integration_connections") if row.get("tenant_id") == TENANT_ID and row.get("provider") == GMAIL_PROVIDER and row.get("account_type") == ACCOUNT_TYPE and not (row.get("metadata") or {}).get("disconnected")]
-    existing = {str(row.get("message_key")): row for row in store.list("crm_inbox_messages")}
-    fetched: list[dict[str, Any]] = []
-    errors: list[dict[str, str]] = []
 
+def _commercial_rpc(store: Any, name: str, payload: dict[str, Any]) -> Any:
+    if hasattr(store, 'rpc'):
+        return store.rpc(name, payload)
+    if not getattr(store, 'url', None) or not getattr(store, 'headers', None):
+        raise RuntimeError('Commercial memory requires Supabase RPC; local sync cannot claim persistence')
+    response = requests.post(f'{store.url}/rest/v1/rpc/{name}', headers=store.headers, json=payload, timeout=30)
+    store._check(response)
+    return response.json()
+
+
+def sync_gmail(limit_per_account: int = 100, newer_than_days: int = 14) -> dict[str, Any]:
+    """Read bounded incremental pages and whole selected threads, never mark read or send.
+
+    Page cursor is retained on partial failure; timestamp moves only on a complete scan.
+    Existing message IDs are replayed through the idempotent commercial event RPC.
+    """
+    store = get_store()
+    connections = [r for r in store.list('integration_connections') if r.get('tenant_id') == TENANT_ID and str(r.get('provider', '')).lower() == GMAIL_PROVIDER and str(r.get('account_type', '')).lower() in ('mailbox', 'personal', 'corporate') and not (r.get('metadata') or {}).get('disconnected')]
+    existing = {r['message_key']: r for r in store.list('crm_inbox_messages')}
+    snapshot = _commercial_rpc(store, 'mcp_commercial_memory_snapshot', {'p_company_id': None, 'p_limit': 250}) or {}
+    companies, people = snapshot.get('companies', []), snapshot.get('people', [])
+    counts = {'accounts': len(connections), 'new_messages': 0, 'new_relevant': 0, 'commercial_events': 0, 'unmatched': 0, 'already_linked': 0, 'errors': [], 'runs': []}
     for connection in connections:
-        account = str(connection.get("provider_subject") or "").strip().lower()
+        account = str(connection.get('provider_subject') or '').lower().strip()
         if not account:
             continue
+        started = _now()
+        metadata = dict(connection.get('metadata') or {})
+        prior = dict(metadata.get('gmail_sync') or {})
+        last = _parse_time(prior.get('last_success_at'))
+        lower = last - timedelta(hours=24) if last else datetime.now(timezone.utc) - timedelta(days=max(1, newer_than_days))
+        query = prior.get('query') if prior.get('next_page_token') else f'after:{int(lower.timestamp())} -in:trash -in:spam'
+        cursor = prior.get('next_page_token')
+        window_started = prior.get('window_started_at') if cursor else started
+        limit = max(1, min(250, int(limit_per_account)))
+        run = {'account': account, 'started_at': started, 'query': query, 'scanned': 0, 'complete': False}
         try:
             token = _connection_access_token(connection, store)
-            headers = {"Authorization": f"Bearer {token}"}
-            listing = requests.get("https://gmail.googleapis.com/gmail/v1/users/me/messages", headers=headers, params={"q": f"newer_than:{max(1, newer_than_days)}d", "maxResults": max(1, min(100, limit_per_account))}, timeout=30)
-            if listing.status_code >= 400:
-                raise RuntimeError(f"Gmail list failed {listing.status_code}: {listing.text[:300]}")
-            for ref in listing.json().get("messages", []) or []:
-                message_id = str(ref.get("id") or "")
-                if not message_id:
-                    continue
-                response = requests.get(f"https://gmail.googleapis.com/gmail/v1/users/me/messages/{message_id}", headers=headers, params={"format": "metadata", "metadataHeaders": ["From", "To", "Subject", "Date"]}, timeout=30)
-                if response.status_code >= 400:
-                    continue
-                row = _normalize_message(account, response.json())
-                previous = existing.get(row["message_key"])
-                if previous:
-                    store.upsert("crm_inbox_messages", {**previous, **row, "updated_at": _now()}, key="message_key")
-                else:
-                    fetched.append(row)
+            headers = {'Authorization': f'Bearer {token}'}
+            threads_seen = set()
+            fetched = {}
+            while run['scanned'] < limit:
+                params = {'q': query, 'maxResults': min(100, limit - run['scanned'])}
+                if cursor:
+                    params['pageToken'] = cursor
+                listing = requests.get('https://gmail.googleapis.com/gmail/v1/users/me/messages', headers=headers, params=params, timeout=30)
+                listing.raise_for_status()
+                page = listing.json()
+                # Keep input cursor until every message on this page persists successfully.
+                for ref in page.get('messages', []):
+                    thread_id = str(ref.get('threadId') or '')
+                    if not thread_id:
+                        raise RuntimeError('Gmail message reference missing threadId')
+                    if thread_id not in threads_seen:
+                        response = requests.get(f'https://gmail.googleapis.com/gmail/v1/users/me/threads/{thread_id}', headers=headers, params={'format': 'full'}, timeout=30)
+                        response.raise_for_status()
+                        for message in response.json().get('messages', []):
+                            row = _normalize_message(account, message)
+                            if row['external_message_id']:
+                                fetched[row['message_key']] = row
+                        threads_seen.add(thread_id)
+                    run['scanned'] += 1
+                # Chronological order prevents older hydrated context replacing latest state.
+                for row in sorted(fetched.values(), key=lambda r: r['received_at']):
+                    previous = existing.get(row['message_key'])
+                    decision = _heuristic(row) if not previous else {k: previous.get(k) for k in ('relevance_score', 'category', 'relevance_reason', 'summary', 'recommended_action')}
+                    score = float(decision.get('relevance_score') or 0)
+                    kind = message_kind(row)
+                    company_id, match = resolve_company(row, companies, people)
+                    row['metadata'].update({'commercial_kind': kind, 'company_match': match, 'company_id': company_id})
+                    stored = {**(previous or {}), **row, **decision, 'status': (previous or {}).get('status') or ('relevant' if score >= 5 else 'low_value'), 'updated_at': _now()}
+                    # Inbox stores only snippet; full body is used transiently for classification.
+                    stored.pop('body', None)
+                    if not previous:
+                        stored['created_at'] = _now()
+                        counts['new_messages'] += 1
+                        counts['new_relevant'] += int(score >= 5)
+                    store.upsert('crm_inbox_messages', stored, key='message_key')
+                    if company_id:
+                        event_payload = _event_payload(row, company_id, kind)
+                        counterpart_emails = set(row['recipients'] if kind == 'sent' else [row['sender_email']])
+                        person_ids = {p.get('person_id') for p in people if p.get('company_id') == company_id and str(p.get('email') or '').lower() in counterpart_emails and p.get('person_id')}
+                        if len(person_ids) == 1:
+                            event_payload['event']['person_id'] = next(iter(person_ids))
+                        existing_events = store.filter('interactions', tenant_id=TENANT_ID, idempotency_key=row['message_key'])
+                        if existing_events:
+                            _validate_existing_event(existing_events, row, company_id)
+                            counts['already_linked'] += 1
+                        else:
+                            _commercial_rpc(store, 'mcp_commercial_memory_mutate', {'p_payload': event_payload})
+                            counts['commercial_events'] += 1
+                    else:
+                        counts['unmatched'] += 1
+                    existing[row['message_key']] = stored
+                fetched.clear()
+                cursor = page.get('nextPageToken')
+                if not cursor:
+                    run['complete'] = True
+                    break
+            state = {**prior, 'query': query, 'next_page_token': cursor, 'last_run_at': started, 'last_error': None, 'last_run': run, 'window_started_at': window_started}
+            if run['complete']:
+                state['last_success_at'] = window_started
         except Exception as exc:
-            errors.append({"account": account, "error": str(exc)[:400]})
+            run['error'] = str(exc)[:400]
+            counts['errors'].append({'account': account, 'error': run['error']})
+            state = {**prior, 'query': query, 'next_page_token': cursor, 'last_run_at': started, 'last_error': run['error'], 'last_run': run, 'window_started_at': window_started}
+        metadata['gmail_sync'] = state
+        store.update('integration_connections', 'connection_id', connection['connection_id'], {'metadata': metadata, 'updated_at': _now()})
+        counts['runs'].append(run)
+    return counts
 
-    classified: dict[str, dict[str, Any]] = {}
-    for start in range(0, len(fetched), 25):
-        classified.update(_classify(fetched[start:start + 25]))
-    relevant = 0
-    for row in fetched:
-        decision = classified.get(row["message_key"]) or _heuristic(row)
-        score = float(decision.get("relevance_score", 0) or 0)
-        if score >= 5:
-            relevant += 1
-        store.upsert("crm_inbox_messages", {**row, **decision, "status": "relevant" if score >= 5 else "low_value", "created_at": _now(), "updated_at": _now()}, key="message_key")
 
-    return {"accounts": len(connections), "new_messages": len(fetched), "new_relevant": relevant, "errors": errors}
+def _event_payload(row, company_id, kind):
+    event_types = {'sent': 'email_sent', 'human_reply': 'human_reply', 'automatic_ack': 'auto_ack', 'out_of_office': 'out_of_office', 'bounce': 'bounce'}
+    event = {
+        'company_id': company_id, 'idempotency_key': row['message_key'], 'channel': 'email',
+        'direction': 'outbound' if kind == 'sent' else 'inbound',
+        'event_type': event_types[kind], 'occurred_at': row['received_at'],
+        'summary': (row['subject'] + ': ' + row['snippet'])[:500],
+        'source': 'gmail', 'external_message_id': row['external_message_id'], 'external_thread_id': row['thread_id'],
+        'evidence': {'url': f"https://mail.google.com/mail/u/?authuser={quote(row['account_email'], safe='')}#all/{row['thread_id']}", 'account_email': row['account_email'], 'sender_email': row['sender_email'], 'recipients': row['recipients'], 'auto_ack': kind not in ('sent', 'human_reply'), 'observed': True, 'correspondence_status': 'waiting_reply' if kind == 'sent' else 'pending_reply' if kind == 'human_reply' else None},
+    }
+    if kind in ('sent', 'human_reply'):
+        event['commercial_status'] = 'awaiting_reply' if kind == 'sent' else 'replied'
+    return {'action': 'event', 'event': event}
+
+
+def _validate_existing_event(events, row, company_id):
+    """Existing canonical events are immutable; presentation differences are harmless."""
+    if len(events) != 1:
+        raise RuntimeError('Ambiguous Gmail idempotency key in commercial memory')
+    event = events[0]
+    if event.get('external_message_id') != row['external_message_id'] or event.get('external_thread_id') != row['thread_id'] or event.get('company_id') != company_id:
+        raise RuntimeError('Gmail commercial event identity conflict; existing event was not modified')
