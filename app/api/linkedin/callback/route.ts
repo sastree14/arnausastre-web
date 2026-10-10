@@ -26,6 +26,7 @@ export async function GET(request: NextRequest) {
   if (oauthError) {
     const response = NextResponse.redirect(adminUrl(request, { linkedin: 'error', reason: oauthError }))
     response.cookies.delete(STATE_COOKIE)
+    response.cookies.delete('sc_linkedin_requested_scopes')
     return response
   }
 
@@ -71,7 +72,7 @@ export async function GET(request: NextRequest) {
     }
     if (!user.sub) throw new Error('LinkedIn userinfo returned no subject identifier')
 
-    const scopes = (token.scope || 'openid profile email w_member_social').split(/[ ,]+/).filter(Boolean)
+    const scopes = (token.scope || request.cookies.get('sc_linkedin_requested_scopes')?.value || 'openid profile email w_member_social').split(/[ ,]+/).filter(Boolean)
     await saveLinkedInConnection({
       subject: user.sub,
       displayName: user.name || [user.given_name, user.family_name].filter(Boolean).join(' ') || 'LinkedIn member',
@@ -89,11 +90,13 @@ export async function GET(request: NextRequest) {
 
     const response = NextResponse.redirect(adminUrl(request, { linkedin: 'connected' }))
     response.cookies.delete(STATE_COOKIE)
+    response.cookies.delete('sc_linkedin_requested_scopes')
     return response
   } catch (error) {
     console.error('LinkedIn OAuth callback failed', error)
     const response = NextResponse.redirect(adminUrl(request, { linkedin: 'error', reason: 'callback_failed' }))
     response.cookies.delete(STATE_COOKIE)
+    response.cookies.delete('sc_linkedin_requested_scopes')
     return response
   }
 }
