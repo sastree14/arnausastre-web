@@ -1,5 +1,5 @@
 import unittest
-from src.gmail_commercial import resolve_company, message_kind, thread_state, addresses
+from growth.src.gmail_commercial import resolve_company, message_kind, thread_state, addresses
 
 class GmailEvidenceTests(unittest.TestCase):
     def row(self, kind='human', date='2026-10-09T08:00:00Z', **changes):
@@ -43,7 +43,7 @@ if __name__ == '__main__': unittest.main()
 class GmailSyncTests(unittest.TestCase):
     def test_duplicate_sync_idempotency_and_partial_failure_checkpoint(self):
         from unittest.mock import patch
-        from src import gmail_sync
+        from growth.src import gmail_sync
         class Store:
             def __init__(self):
                 self.connection = {'tenant_id': 'sc-analytics', 'provider': 'gmail', 'account_type': 'CORPORATE', 'provider_subject': 'arnau@sc-analytics.io', 'connection_id': 'c', 'metadata': {}}
@@ -90,12 +90,12 @@ class GmailSyncTests(unittest.TestCase):
 
 class ExistingEventTests(unittest.TestCase):
     def test_existing_event_summary_difference_does_not_mutate(self):
-        from src.gmail_sync import _validate_existing_event
+        from growth.src.gmail_sync import _validate_existing_event
         row = {'external_message_id': 'm', 'thread_id': 't'}
         event = {'external_message_id': 'm', 'external_thread_id': 't', 'company_id': 'a', 'content': 'Different presentation'}
         _validate_existing_event([event], row, 'a')
         self.assertEqual(event['content'], 'Different presentation')
     def test_conflicting_link_fails_closed(self):
-        from src.gmail_sync import _validate_existing_event
+        from growth.src.gmail_sync import _validate_existing_event
         with self.assertRaises(RuntimeError):
             _validate_existing_event([{'external_message_id':'m','external_thread_id':'t','company_id':'other'}], {'external_message_id':'m','thread_id':'t'}, 'a')

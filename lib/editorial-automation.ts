@@ -6,6 +6,7 @@ export interface EditorialSchedulerStatus {
   key_configured: boolean
   organization_configured: boolean
   organization_permission: boolean
+  token_expired: boolean
   token_expires_at: string | null
   assets_expected: number
   assets_stored: number

@@ -1,6 +1,11 @@
 const base = Deno.env.get('SUPABASE_URL')!;
 const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const dbHeaders = { apikey: serviceKey, Authorization: `Bearer ${serviceKey}`, 'Content-Type': 'application/json' };
+type EditorialItem = {
+  content_id: string; title: string; body: string; status: string; channel: string;
+  scheduled_at: string; visual_path?: string;
+  visual_strategy?: { slides?: { asset_ref: string }[] };
+};
 async function db(path: string, method = 'GET', body?: unknown) {
   const r = await fetch(`${base}/rest/v1/${path}`, { method, headers: dbHeaders, body: body === undefined ? undefined : JSON.stringify(body) });
   if (!r.ok) throw new Error(`Database operation failed (${r.status})`);
@@ -20,14 +25,14 @@ async function decrypt(cipher: string, rawKey: string) {
   bytes.set(ct);bytes.set(t,ct.length);
   return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:decode64(iv),tagLength:128},key,bytes));
 }
-function assetRefs(item: Record<string, any>): string[] {
+function assetRefs(item: EditorialItem): string[] {
   const slides=item.visual_strategy?.slides;
-  const refs=Array.isArray(slides)?slides.map(s=>s.asset_ref):[item.visual_path];
+  const refs=Array.isArray(slides)?slides.map(s=>s.asset_ref):[item.visual_path||''];
   if(!refs.length || refs.length>20 || refs.some(r=>typeof r!=='string'||!/^supabase:\/\/growth-assets\/editorial\/approved-2026-10\/P\d{3}\/slide-\d{2}\.png$/.test(r))) throw new Error('Incomplete ordered image collection');
   if(new Set(refs).size!==refs.length) throw new Error('Repeated image in collection');
   return refs;
 }
-function commentary(item: Record<string, any>) {
+function commentary(item: EditorialItem) {
   // Figma-approved copy already includes its hashtags and paragraph spacing.
   const text=String(item.body||'');
   if(!text.trim() || text.length>3000) throw new Error('Approved copy exceeds LinkedIn limits or is empty');
@@ -63,7 +68,7 @@ async function runLog(status: string, detail: Record<string,unknown>) {
 Deno.serve(async(req: Request)=>{
   const capability=req.headers.get('x-editorial-capability')||'';
   if(!capability||!await rpc('editorial_worker_authorized',{p_name:'publisher',p_token:capability})) return new Response('Unauthorized',{status:401});
-  let claimed: any=null, requestSent=false;
+  let claimed: {claim_id:string;item:EditorialItem}|null=null, requestSent=false;
   try {
     const input=await req.json().catch(()=>({}));
     const creds=await rpc('editorial_worker_credentials');
@@ -73,8 +78,8 @@ Deno.serve(async(req: Request)=>{
     if(!connection || connection.metadata?.disconnected) blocks.push('LinkedIn is disconnected');
     if(connection?.token_expires_at && Date.parse(connection.token_expires_at)<=Date.now()) blocks.push('LinkedIn token expired; reconnect in CMI');
     const jobs=await db('editorial_publication_jobs?state=in.(scheduled,reserved,failed)&select=content_id&limit=200');
-    const items=jobs.length?await db(`content_items?content_id=in.(${jobs.map((j:any)=>j.content_id).join(',')})&select=content_id,channel`):[];
-    if(items.some((c:any)=>c.channel==='sc_analytics_linkedin')) {
+    const items=jobs.length?await db(`content_items?content_id=in.(${jobs.map((j:{content_id:string})=>j.content_id).join(',')})&select=content_id,channel`):[];
+    if(items.some((c:{channel:string})=>c.channel==='sc_analytics_linkedin')) {
       if(!config.organization_id) blocks.push('SC-Analytics organization ID is not configured');
       if(!connection?.scopes?.includes('w_organization_social')) blocks.push('LinkedIn requires w_organization_social to publish on the SC-Analytics page');
     }

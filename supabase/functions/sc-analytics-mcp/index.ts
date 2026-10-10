@@ -4,6 +4,7 @@ import { createMcpHandler, McpServer } from 'npm:@modelcontextprotocol/server@^2
 import { pipeline } from 'npm:@supabase/middleware@1'
 import { withOAuthProtectedResource, withSupabase } from 'npm:@supabase/server@^1.6.0'
 import { z } from 'npm:zod@^4.3.6'
+import type { SupabaseClient } from 'npm:@supabase/supabase-js@2'
 
 const CMI_BASE_URL = (Deno.env.get('SC_ANALYTICS_CMI_URL') || 'https://arnausastre-web-git-feat-editorial-r-c0f1cd-sastree14s-projects.vercel.app').replace(/\/$/, '')
 
@@ -18,7 +19,7 @@ Deno.serve(
   pipeline(
     [withOAuthProtectedResource(), withSupabase({ auth: 'user' })],
     async (req, context) => {
-      const supabase = (context as any).supabase
+      const supabase = (context as {supabase:SupabaseClient}).supabase
 
       async function currentAccess() {
         const { data: userData, error: userError } = await supabase.auth.getUser()
@@ -786,7 +787,7 @@ Deno.serve(
               body: JSON.stringify({ days }),
             })
             const body = await response.json().catch(() => ({}))
-            if (!response.ok) throw new Error(String((body as any)?.error || `CMI metrics sync failed: ${response.status}`))
+            if (!response.ok) throw new Error(String((body as {error?:unknown})?.error || `CMI metrics sync failed: ${response.status}`))
             return result(body)
           },
         )

@@ -35,6 +35,6 @@ The current saved connection is Arnau's member account, with `w_member_social` o
 - Approved copy preserved without added hashtags or truncation.
 - Live database test, rolled back: no duplicate claims, distinct claims for two jobs, reserved test excluded, in-flight edits blocked, uncertain response excluded from retry.
 - Anonymous/browser roles cannot access worker credentials or configuration; only the service role executes the worker RPCs.
-- Next.js production build and relevant publishing/calendar tests pass.
+- Next.js production build, TypeScript and ESLint pass (existing lint warnings remain); all 97 growth tests pass.
 
 The full editorial source and deterministic calendar live in `growth/data/editorial-approved-manifest.json` and `growth/data/editorial-calendar.json`; regenerate dates using `scripts/editorial/build_calendar.py`. Storage paths are recorded per slide in `content_items.visual_strategy.slides`.
