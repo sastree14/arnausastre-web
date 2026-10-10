@@ -1,0 +1,27 @@
+name: Configure approved editorial worker
+on:
+  push:
+    branches: [feat/commercial-memory-cmi]
+    paths:
+      - .github/workflows/editorial-worker-setup.yml
+      - scripts/editorial/configure_worker.py
+  workflow_dispatch: {}
+permissions:
+  contents: read
+concurrency:
+  group: editorial-worker-configuration
+  cancel-in-progress: false
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/editorial/configure_worker.py
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          GROWTH_ENCRYPTION_KEY: ${{ secrets.GROWTH_ENCRYPTION_KEY }}
+          LINKEDIN_ORGANIZATION_ID: ${{ secrets.LINKEDIN_ORGANIZATION_ID }}

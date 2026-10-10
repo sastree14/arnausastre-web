@@ -1,0 +1,1000 @@
+# SC-Analytics — Opportunity Criteria v1.0
+
+**Project:** SC-Analytics — Growth Engine  
+**Owner:** 00 — Command Center  
+**Status:** Canonical  
+**Version:** 1.0  
+**Date:** 2026-10-02  
+**Applies to:** 01 — Upwork Scout, 02 — Market & Partner Scout, 03 — Applications & Outreach, future scheduled scouting and qualification workflows.
+
+---
+
+## 0. Purpose
+
+This document converts SC-Analytics' commercial preferences into operational rules for identifying, qualifying, prioritizing and routing commercial opportunities.
+
+The objective is **not** to maximize leads, applications, outreach volume or utilization at any cost.
+
+The objective is to build a predictable pipeline of high-quality Data, Mathematics & AI relationships that can progress through:
+
+**opportunity → discovery → initial project → useful result → trust → recurring work → long-term Data/AI relationship**
+
+The Growth Engine must therefore evaluate not only whether SC-Analytics *can* technically perform a job, but whether the opportunity is commercially worth pursuing.
+
+Core decision question:
+
+> **Is this a good commercial relationship for SC-Analytics to pursue?**
+
+Technical capability is necessary. It is not sufficient.
+
+---
+
+## 1. Governing principles
+
+All opportunity evaluation must follow these principles:
+
+1. **Understand before building.** Start from the business problem, decision, constraint, process or economic consequence before selecting technology.
+2. **Quality over volume.** Prefer a small number of well-supported opportunities to large amounts of weak leads.
+3. **Long-term relationships over isolated tasks.** A small first engagement can be attractive when it creates a credible path to recurring work.
+4. **Problem-first positioning.** SC-Analytics sells judgment and decision capability, not fashionable tools.
+5. **Technology follows the problem.** Forecasting, optimization, machine learning, AI, BI, automation and data engineering are capabilities, not products to force into every opportunity.
+6. **Evidence over claims.** Separate real client work, internal systems, portfolio demonstrations, academic work, controlled builds and simulations.
+7. **No commodity positioning.** Do not compete primarily as a cheap freelancer, generic AI agency, chatbot builder, dashboard-only vendor or automation factory.
+8. **Founder-level technical involvement matters.** Arnau remains hands-on and can personally lead discovery, modelling, architecture, QA and key client relationships.
+9. **Company capacity is scalable.** SC-Analytics must not be treated as limited by Arnau's current personal delivery hours. Attractive contracts may justify using the existing team, collaborators or new hires when the economics and delivery structure support expansion.
+10. **Human judgment remains final.** Scoring is a prioritization system, not a substitute for commercial judgment.
+11. **External actions require approval where applicable.** Qualification and preparation can be automated; sending applications, outreach or spending Connects must follow the relevant approval rules.
+
+---
+
+# PART I — TARGET OPPORTUNITIES
+
+## 2. Types of opportunities we seek
+
+### 2.1 Highest-priority opportunity pattern
+
+The strongest opportunities normally combine most of the following:
+
+- a real business or operational problem;
+- an identifiable decision that needs to improve;
+- meaningful economic or operational consequences;
+- usable data or a realistic route to obtaining it;
+- a buyer with authority or direct access to the process owner;
+- a meaningful budget;
+- room for SC-Analytics to influence the solution rather than simply execute tickets;
+- measurable success criteria;
+- credible expansion, maintenance or recurring potential;
+- relevant SC-Analytics evidence or proof.
+
+### 2.2 Priority problem families
+
+#### Forecasting & Planning
+
+Strong examples include:
+
+- demand forecasting;
+- sales forecasting;
+- inventory planning;
+- multi-horizon forecasting;
+- workload and resource demand forecasting;
+- capacity planning;
+- cash-flow forecasting;
+- scenario planning;
+- operational planning;
+- forecast-to-decision systems.
+
+#### Optimization & Operations Research
+
+Strong examples include:
+
+- inventory optimization;
+- resource allocation;
+- capacity allocation;
+- routing;
+- scheduling;
+- supply-chain optimization;
+- pricing;
+- capital allocation;
+- blending;
+- facility location;
+- workforce allocation;
+- operational planning.
+
+#### Simulation & Decision Science
+
+Strong examples include:
+
+- Monte Carlo modelling;
+- what-if engines;
+- scenario analysis;
+- operational simulation;
+- capacity simulation;
+- financial simulation;
+- decision-support models under uncertainty.
+
+#### Machine Learning & Predictive Systems
+
+Strong examples include:
+
+- credit risk;
+- fraud;
+- churn;
+- customer lifetime value;
+- propensity models;
+- recommendation;
+- ranking;
+- classification;
+- regression;
+- survival analysis;
+- risk modelling;
+- predictive systems tied to a real decision.
+
+#### AI & Intelligent Automation
+
+Priority only when linked to a real business process or decision.
+
+Strong examples include:
+
+- long-running agents;
+- document intelligence;
+- RAG and knowledge workflows;
+- operational agents;
+- sales and CRM automation;
+- approval workflows;
+- human-in-the-loop systems;
+- agentic business systems;
+- multi-step automation across fragmented processes;
+- AI-enabled internal tools and business applications.
+
+#### Data & Decision Infrastructure
+
+Strong examples include:
+
+- data integration;
+- ETL/ELT;
+- APIs;
+- analytical platforms;
+- data quality pipelines;
+- monitoring;
+- operational dashboards;
+- decision-support systems;
+- reporting systems that form part of a broader operational process.
+
+#### Financial & Quantitative Modelling
+
+Strong examples include:
+
+- financial models;
+- debt models;
+- cash-flow models;
+- investment models;
+- unit economics;
+- capital allocation;
+- portfolio risk;
+- quantitative systems;
+- market and trading analytics where the evidence and scope are credible.
+
+---
+
+## 3. Types of opportunities we generally do not seek
+
+These should normally be down-ranked or ignored unless a clear strategic exception exists:
+
+- pure data entry;
+- repetitive manual tagging;
+- scraping-only work with no meaningful analytical component;
+- very basic spreadsheet tasks;
+- isolated basic dashboards with no strategic or recurring value;
+- generic prompt-writing tasks;
+- generic chatbot builds without a real business process behind them;
+- commodity n8n or automation work where price is the only differentiator;
+- generic web development unrelated to Data/AI systems;
+- routine software maintenance with no meaningful analytical component;
+- extremely prescriptive staff augmentation where Arnau/SC-Analytics cannot contribute judgment;
+- buyers whose only decision criterion is the lowest price;
+- very small one-off tasks with no meaningful economics, proof value or relationship potential;
+- technically interesting work with weak commercial value and no strategic upside.
+
+BI, dashboards, automation, full-stack development and data engineering are **not excluded categories**. They become low priority only when the work is commodity, isolated and commercially weak.
+
+---
+
+# PART II — POSITIONING
+
+## 4. Arnau vs Arnau + SC-Analytics vs SC-Analytics
+
+The positioning must reflect **what the buyer is actually purchasing**.
+
+### 4.1 Arnau as individual specialist
+
+Use when the buyer clearly wants one expert or embedded specialist.
+
+Typical cases:
+
+- senior Data Scientist;
+- ML specialist;
+- forecasting expert;
+- optimization / Operations Research expert;
+- quantitative analyst;
+- technical advisor;
+- architecture or modelling specialist;
+- highly specialized individual contributor.
+
+Position Arnau as:
+
+- Founder of SC-Analytics;
+- hands-on technical specialist;
+- mathematically and statistically strong;
+- business-aware;
+- capable of leading discovery and delivery;
+- personally involved in coding, modelling and architecture.
+
+Do not position Arnau as a manager who delegates all technical work.
+
+### 4.2 Arnau reinforced by SC-Analytics
+
+This is the preferred default for many opportunities where the client hires Arnau personally but additional delivery capacity strengthens the proposition.
+
+Use when:
+
+- Arnau remains the primary contact and technical lead;
+- the engagement may require complementary Data Engineering, AI/Software Engineering or Data Science capacity;
+- the project can expand;
+- delivery resilience is valuable;
+- the client is not explicitly seeking an agency.
+
+The positioning should communicate that Arnau leads the work personally and can draw on a small technical team when useful.
+
+Do not turn a personal freelancer application into an aggressive agency pitch.
+
+### 4.3 SC-Analytics as technical team/provider
+
+Use when the buyer is purchasing:
+
+- a team;
+- end-to-end delivery;
+- a technical provider;
+- multi-disciplinary implementation;
+- substantial fixed-price work;
+- broader delivery capacity;
+- a managed Data/AI workstream.
+
+### 4.4 SC-Analytics as long-term technology/delivery partner
+
+Use when there is evidence of:
+
+- recurring client projects;
+- external delivery needs;
+- technology partnership;
+- implementation partnership;
+- white-label delivery;
+- subcontracting;
+- external Data/AI capacity;
+- multiple end-clients;
+- a consultancy, agency or software studio needing specialist capability.
+
+This is one of the highest-value positioning modes because a single relationship can create repeated downstream projects.
+
+---
+
+## 5. Direct clients vs technology partners
+
+Both are strategic targets.
+
+### 5.1 Direct clients
+
+A strong direct client offers:
+
+- access to the real business problem;
+- access to decision-makers or process owners;
+- clearer business context;
+- better ability to influence solution design;
+- potential for higher margins;
+- cross-sell and expansion potential;
+- opportunity to become a trusted external Data/AI capability.
+
+The ideal direct client has multiple possible analytical or operational problems over time rather than one isolated technical task.
+
+### 5.2 Technology partners
+
+A strong technology partner already has some combination of:
+
+- clients;
+- distribution;
+- sales capability;
+- recurring projects;
+- commercial relationships;
+- demand for technical delivery;
+
+but lacks sufficient internal capacity in:
+
+- Data Science;
+- Machine Learning;
+- AI;
+- optimization;
+- analytics;
+- data engineering;
+- intelligent automation.
+
+Ideal model:
+
+**Partner generates demand → SC-Analytics provides specialist delivery → repeated projects/end-clients → recurring commercial relationship.**
+
+A strong technology partner may have higher strategic value than a larger one-off direct project.
+
+However, avoid permanent commodity subcontracting where SC-Analytics is invisible, easily replaceable and forced to compete mainly on price.
+
+---
+
+# PART III — TARGET MARKET
+
+## 6. Geographic priorities
+
+Geography is a preference and scoring factor, not a hard filter.
+
+### Tier 1 — Spain
+
+Highest priority for direct business development and partnerships.
+
+Priority includes the whole Spanish market, with particular practical relevance around major business hubs such as:
+
+- Barcelona / Catalonia;
+- Madrid;
+- Valencia;
+- Basque Country;
+- Navarra;
+- Aragón;
+- other relevant Spanish business regions.
+
+Reasons:
+
+- proximity;
+- easier relationship-building;
+- reputation development;
+- referrals;
+- local trust;
+- access to decision-makers;
+- potential for recurring work.
+
+### Tier 2 — Europe
+
+High priority, including:
+
+- United Kingdom;
+- Netherlands;
+- Germany;
+- France;
+- Portugal;
+- Ireland;
+- Belgium;
+- Switzerland;
+- Nordics;
+- rest of Europe.
+
+Europe is especially attractive for specialist technical work and technology partnerships.
+
+### Tier 3 — USA / Canada
+
+Fully valid where:
+
+- budget is strong;
+- client quality is high;
+- the problem fits strongly;
+- recurrence is credible;
+- SC-Analytics has clear proof or differentiation.
+
+Geography should carry less weight on Upwork than in direct outbound strategy.
+
+### Tier 4 — Rest of world
+
+Evaluate primarily on:
+
+- client quality;
+- payment reliability;
+- budget;
+- technical fit;
+- communication;
+- strategic value;
+- delivery practicality.
+
+---
+
+## 7. Target company size and type
+
+### 7.1 Company size
+
+Preferred direct-client range:
+
+**20–1,000 employees**
+
+This is a **soft preference only**.
+
+Never reject an opportunity solely because the company falls outside this range.
+
+### 7.2 Attractive company types
+
+High-interest profiles include:
+
+- SMEs;
+- mid-market companies;
+- established traditional businesses;
+- consolidated startups and scaleups;
+- software companies;
+- consultancies;
+- agencies;
+- B2B service companies;
+- e-commerce companies;
+- financial services businesses;
+- insurance companies;
+- operations-heavy businesses;
+- companies with complex planning needs;
+- teams with valuable data but no mature internal Data Science capability;
+- companies with fragmented processes or systems.
+
+### 7.3 Very small companies
+
+Companies below 20 employees can still be strong opportunities when there is evidence of:
+
+- real budget;
+- founder-level decision authority;
+- strong product/business traction;
+- funded growth;
+- valuable data;
+- a meaningful operational problem;
+- strong technology-partner potential.
+
+### 7.4 Enterprise
+
+Do not automatically exclude large enterprises.
+
+Down-rank when:
+
+- SC-Analytics would be an insignificant commodity vendor;
+- procurement creates excessive friction relative to value;
+- there is no access to process owners;
+- the scope is narrow staff augmentation with no influence.
+
+Up-rank when:
+
+- there is an internal sponsor;
+- the problem is specialized;
+- business access is real;
+- the project can lead to repeat work;
+- SC-Analytics can become a recognized specialist provider.
+
+---
+
+## 8. Sector priorities
+
+SC-Analytics is **problem-led, not sector-restricted**.
+
+Sector fit should support prioritization but must never override a strong problem fit.
+
+### Priority sectors with strong existing evidence
+
+- e-commerce;
+- retail / marketplaces;
+- banking;
+- financial services;
+- insurance;
+- technology / SaaS / software;
+- supply chain;
+- logistics;
+- operations-heavy businesses;
+- professional services;
+- consultancies;
+- agencies;
+- sales / CRM-intensive businesses;
+- quantitative finance;
+- forecasting-heavy businesses.
+
+### Secondary sectors
+
+Strong opportunities may also exist in:
+
+- manufacturing;
+- industrial businesses;
+- real estate / property;
+- hospitality;
+- education;
+- mobility;
+- energy;
+- B2B services;
+- subscription businesses;
+- other sectors where the underlying decision problem matches SC-Analytics' capabilities.
+
+### Sector-neutral rule
+
+A non-priority sector can still receive an A classification when problem fit, economics, client quality and proof fit are strong.
+
+Never manufacture sector expertise that SC-Analytics does not actually have.
+
+---
+
+# PART IV — CAPABILITY PRIORITY
+
+## 9. Service/capability priority
+
+### Tier 1 — Strategic differentiation
+
+Highest strategic priority:
+
+1. Forecasting & Planning
+2. Optimization & Operations Research
+3. Simulation / What-if / Decision Science
+4. Machine Learning tied to business decisions
+5. AI systems / intelligent automation with robust architecture
+6. Integrated Data/AI decision systems
+
+### Tier 2 — Strong supporting capabilities
+
+- Data Engineering;
+- financial modelling;
+- quantitative systems;
+- BI / decision interfaces;
+- full-stack Data/AI applications;
+- analytics engineering;
+- API and data-platform work supporting a broader decision system.
+
+### Tier 3 — Selective / entry-point work
+
+- dashboard-only projects;
+- generic automation;
+- generic full-stack work;
+- basic reporting;
+- simple n8n workflows.
+
+Tier 3 work becomes attractive when it provides at least one of:
+
+- strong recurrence;
+- strategic client access;
+- expansion into Tier 1/2 work;
+- meaningful partnership potential;
+- strong economics;
+- strong proof/case-study value.
+
+---
+
+# PART V — PRICING AND COMMERCIAL STRUCTURE
+
+## 10. Hourly pricing rules
+
+### 10.1 Normal hourly floor
+
+**$50/hour effective rate** is the normal minimum for hourly work.
+
+This is a **floor**, not a target rate.
+
+### 10.2 Strategic exception band
+
+Opportunities at **$40–49/hour** may be considered only when there is a strong strategic reason, such as:
+
+- substantial recurring work;
+- long expected duration;
+- high weekly volume;
+- unusually strong client quality;
+- clear technology-partnership potential;
+- strong access to valuable end-clients;
+- unusually attractive long-term commercial value.
+
+$40–49/hour opportunities cannot receive an A solely because they offer many hours. The strategic upside must be credible and documented.
+
+### 10.3 Below-floor rule
+
+Hourly opportunities below **$40/hour effective rate** are a hard commercial rejection by default.
+
+Exception requires explicit strategic override from Arnau.
+
+### 10.4 Indicative positioning bands
+
+These are positioning guides, not fixed tariffs:
+
+- **Senior advisory / specialist consulting / decision science / specialized AI:** approximately $100–150+/h when the opportunity supports it.
+- **Strong Data Science / ML / forecasting / optimization:** approximately $75–110+/h.
+- **Data Engineering / AI systems / full-stack Data-AI:** approximately $70–110+/h.
+- **BI / execution-heavy analytical work:** approximately $55–80+/h.
+
+A strong opportunity may justify pricing above these bands.
+
+Do not lower rates automatically to increase application probability.
+
+### 10.5 Rate evaluation must consider
+
+- specialization;
+- client budget;
+- competition;
+- duration;
+- risk;
+- weekly volume;
+- access to decision-makers;
+- recurring potential;
+- strategic value;
+- opportunity cost;
+- whether Arnau or the SC-Analytics team is being purchased.
+
+---
+
+## 11. Fixed-price project rules
+
+### 11.1 Normal minimum
+
+**€2,500** is the normal minimum for fixed-price projects.
+
+This is a commercial operating threshold, not an absolute hard filter in every case.
+
+### 11.2 Allowed sub-€2,500 engagements
+
+Projects below €2,500 can be accepted when they are deliberately bounded as:
+
+- discovery engagements;
+- diagnostics;
+- audits;
+- technical assessments;
+- workshops;
+- prototypes;
+- narrowly scoped pilots;
+- small strategic entry projects.
+
+The scope must genuinely match the smaller price.
+
+### 11.3 Prohibited underpricing pattern
+
+Do **not** accept a complete implementation that is materially underbudgeted merely to enter the account.
+
+A low-budget “full platform”, “complete AI system” or equivalent development is not a strategic pilot if the required scope remains large.
+
+### 11.4 Pricing method
+
+Fixed-price work should be evaluated using:
+
+**estimated effort × appropriate internal hourly rate + scope/risk premium**
+
+Typical risk premium:
+
+**15–30%**, depending on uncertainty.
+
+Risk factors include:
+
+- unclear scope;
+- integration complexity;
+- data uncertainty;
+- deployment responsibility;
+- revision risk;
+- stakeholder complexity;
+- QA/testing requirements;
+- project-management burden.
+
+### 11.5 Payment structure
+
+Prefer milestone structures that avoid financing the client with completed unpaid work.
+
+Where appropriate:
+
+- initial payment / first milestone;
+- intermediate milestone(s);
+- final payment linked to agreed deliverables.
+
+---
+
+## 12. Duration rules
+
+Duration is a soft preference, not a hard filter.
+
+### Preferred initial engagement
+
+**2–6 months** with potential for expansion or recurring work.
+
+### Strong project format
+
+**4–8 weeks** for a meaningful, well-scoped project.
+
+### Acceptable short engagement
+
+**2–4 weeks** when at least one of the following is strong:
+
+- rate;
+- specialization;
+- strategic client value;
+- proof value;
+- advisory value;
+- probability of subsequent work.
+
+### Low-priority format
+
+Very short isolated tasks with no meaningful economics or relationship potential.
+
+### Excellent long-term format
+
+**6–24+ months** of recurring work, retained advisory, ongoing analytics, technical partnership or repeated delivery.
+
+---
+
+## 13. Delivery capacity, founder capacity and scale
+
+SC-Analytics is a company-building vehicle, not a structure limited by Arnau's current personal weekly availability.
+
+A project requiring 30, 40 or more total delivery hours per week can be highly attractive when the contract can support a scalable delivery structure. Total workload must therefore be separated from Arnau's personal involvement.
+
+### 13.1 Founder Capacity
+
+**Founder Capacity** means the number and type of hours Arnau must personally dedicate to the opportunity.
+
+Typical founder responsibilities may include:
+
+- discovery;
+- problem framing;
+- solution architecture;
+- high-value modelling or technical work;
+- client relationship;
+- technical leadership;
+- reviews and QA;
+- key decisions;
+- handoffs and escalation.
+
+There is **no fixed weekly-hour maximum** that automatically disqualifies an opportunity.
+
+Founder Capacity should instead be evaluated against:
+
+- contract value;
+- expected margin;
+- duration;
+- strategic value;
+- how much senior involvement is genuinely required;
+- whether execution can be delegated;
+- opportunity cost for business development and other clients;
+- dependency on Arnau as a single point of failure.
+
+High Founder Capacity is a negative signal only when the economics or delivery model do not justify that dependency.
+
+### 13.2 Company Delivery Capacity
+
+**Company Delivery Capacity** means the total amount of work SC-Analytics can responsibly deliver using:
+
+- Arnau;
+- the current SC-Analytics team;
+- trusted collaborators;
+- subcontracting where appropriate;
+- additional hiring when economically justified.
+
+Company Delivery Capacity is **not limited to current headcount or current spare hours**.
+
+When assessing a large opportunity, estimate whether required capacity can be created safely and economically within the contract timeline.
+
+Evaluate:
+
+- total weekly delivery requirement;
+- skill mix required;
+- current team capacity;
+- delegation feasibility;
+- hiring/subcontracting feasibility;
+- expected ramp-up time;
+- onboarding and management burden;
+- QA and technical-lead requirements;
+- expected gross contribution / margin after added capacity;
+- contract duration and visibility;
+- predictability of workload.
+
+### 13.3 Capacity Expansion Opportunity
+
+A **Capacity Expansion Opportunity** is a project or relationship sufficiently large, stable and profitable to justify expanding SC-Analytics' delivery capacity.
+
+This is a **positive commercial and strategic signal**, not a penalty.
+
+A strong Capacity Expansion Opportunity normally has several of the following:
+
+- meaningful contract value;
+- healthy expected margin after staffing costs;
+- sufficient duration;
+- predictable workload or committed volume;
+- work that can be decomposed across profiles;
+- feasible hiring or delegation;
+- manageable founder involvement;
+- continuation or expansion potential;
+- opportunity to create durable internal capability;
+- strategic client or partnership value.
+
+When these conditions hold, the Growth Engine should explicitly recognize the opportunity as a potential mechanism for company growth.
+
+### 13.4 Large-opportunity evaluation
+
+A high-volume opportunity must be evaluated on:
+
+- contract value;
+- expected margin;
+- duration;
+- predictability;
+- hiring feasibility;
+- delegation feasibility;
+- required senior/founder involvement;
+- client concentration risk;
+- strategic value;
+- recurring or expansion potential.
+
+**Large weekly volume must not be down-ranked merely because it is large.**
+
+### 13.5 When large projects should be down-ranked
+
+Down-rank a large engagement when one or more material problems apply:
+
+- delivery depends almost entirely on Arnau personally;
+- expected margin after staffing is weak;
+- work cannot realistically be delegated;
+- contract duration or workload is unstable;
+- hiring or subcontracting cannot be completed safely within the required timeframe;
+- the engagement would block SC-Analytics' broader growth without adequate compensation;
+- the client would create excessive revenue or operational concentration;
+- scope requires substantial senior involvement but pricing does not support it.
+
+### 13.6 Concentration risk
+
+Client concentration is evaluated separately from weekly hours.
+
+A client can require substantial delivery capacity without being unattractive if the economics, team structure and strategic value justify it.
+
+Concentration becomes a concern when SC-Analytics becomes excessively dependent on one client for revenue, founder attention, specialized staff allocation or future pipeline, particularly when contract visibility is weak.
+
+### 13.7 Operational capacity labels
+
+For opportunities where delivery scale is material, record capacity explicitly using these fields:
+
+**Founder Capacity**
+- estimated Arnau hours/week or engagement-level effort, when estimable;
+- required role: discovery / architecture / technical execution / QA / client leadership / other;
+- founder dependency: Low / Medium / High.
+
+**Company Delivery Feasibility**
+- **READY** — current team can deliver responsibly;
+- **EXPANDABLE** — additional collaborators/hiring are required but economically and operationally feasible;
+- **UNCLEAR** — material staffing, margin or delegation assumptions still need validation;
+- **INFEASIBLE** — required capacity cannot be secured at acceptable quality, timing or economics.
+
+**Capacity Expansion Opportunity**
+- **YES** — contract can credibly justify building additional durable capacity;
+- **NO** — expansion is unnecessary or not economically justified;
+- **UNCLEAR** — insufficient evidence.
+
+Operational consequences:
+
+- **READY** or **EXPANDABLE** can support an A classification.
+- **UNCLEAR**, when material to delivery, routes the opportunity to B — Review until validated.
+- **INFEASIBLE** triggers the delivery hard filter unless scope, timeline or commercial structure can be changed.
+
+---
+
+# PART VI — LONG-TERM VALUE
+
+## 14. Recurring revenue and long-term potential
+
+Recurring potential is a major scoring dimension.
+
+High-value recurring structures include:
+
+- monthly retainers;
+- ongoing advisory;
+- recurring forecasting;
+- recurring planning;
+- model monitoring or retraining;
+- maintenance and iteration;
+- recurring reporting or decision support;
+- successive business units;
+- expansion to adjacent processes;
+- repeated end-client delivery;
+- technology partnerships;
+- ongoing Data/AI capability.
+
+A smaller initial engagement may be strategically superior to a larger isolated project when there is credible evidence of repeat work.
+
+However, recurring potential must be evidence-based.
+
+Use these labels:
+
+- **FACT:** directly observed or stated.
+- **INFERENCE:** reasonable interpretation supported by evidence.
+- **HYPOTHESIS:** commercial possibility requiring validation.
+
+Only FACT and strong INFERENCE should materially raise the recurring-potential score.
+
+---
+
+## 15. Client quality
+
+Evaluate the buyer, not only the job.
+
+Relevant variables include:
+
+- legitimacy;
+- payment reliability;
+- historical spend;
+- budget quality;
+- previous specialist rates;
+- repeat hiring;
+- reviews/reputation;
+- communication quality;
+- realistic expectations;
+- scope quality;
+- decision authority;
+- stakeholder access;
+- responsiveness;
+- procurement friction;
+- history with external providers;
+- evidence of disputes or non-payment.
+
+### Strong client
+
+Typical signals:
+
+- credible company or buyer;
+- meaningful budget;
+- pays specialists appropriately;
+- repeat use of external talent/providers;
+- good payment history;
+- realistic project description;
+- responsive communication;
+- direct access to relevant stakeholders.
+
+### Unknown client
+
+A new buyer is not automatically bad.
+
+Treat as viable when legitimacy, scope and economics appear credible.
+
+### Weak client
+
+Down-rank when there is evidence of:
+
+- consistently low rates;
+- abandoned jobs;
+- unclear scope;
+- unrealistic expectations;
+- poor reviews;
+- weak communication;
+- repeated attempts to obtain unpaid work.
+
+### Critical client risk
+
+Strong evidence of fraud, repeated non-payment or unethical behavior triggers a hard filter.
+
+---
+
+## 16. Competition
+
+Competition is a prioritization input, not an automatic rejection mechanism.
+
+### Upwork proposal-count interpretation
+
+- **<5 proposals:** excellent
+- **5–10:** very good
+- **10–20:** good
+- **20–50:** competitive
+- **50+:** strong negative signal
+
+50+ proposals does not automatically reject a job when one or more of the following are true:
+
+- personal invitation;
+- exceptional niche fit;
+- unusually strong proof;
+- excellent client;
+- premium budget;
+- client is interviewing only a small number of candidates;
+- clear differentiation exists.
+
+**50+ proposals + commodity scope** should normally be ignored.
+
+For direct-market opportunities, competition should be assessed qualitatively based on how commoditized the requirement is and whether SC-Analytics has credible differentiation.
+
+---
+
+## 17. Strategic value
+
+Strategic value captures benefits beyond immediate project revenue.
+
+Positive signals include:
+
+- technology-partner potential;
+- access to multiple end-clients;
+- strong relationship in Spain;
+- access to a strategic market or vertical;
+- repeatable service opportunity;
+- strong case-study potential;
+- testimonial/reference potential;
+- decision-maker relationship;

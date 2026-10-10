@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from urllib.parse import urlparse
 
+from .commercial_history import canonical_domain, find_existing_company, find_existing_person, may_discover, preserve_existing_record
 from .brain import load_brain
 from .config import load_config
 from .llm import get_llm
@@ -43,14 +43,7 @@ OFFER_KEYS = {
 
 
 def _website_key(value: str) -> str:
-    raw = str(value or '').strip()
-    if not raw:
-        return ''
-    try:
-        parsed = urlparse(raw if '://' in raw else f'https://{raw}')
-        return parsed.netloc.lower().removeprefix('www.').rstrip('/')
-    except ValueError:
-        return ''
+    return canonical_domain(value)
 
 
 def _as_list(value) -> list:
@@ -154,7 +147,7 @@ RESULTS:
     return phone, source_url
 
 
-def run_commercial_signal_scan(limit: int = 12) -> list[dict]:
+def run_commercial_signal_scan(limit: int = 12, *, include_existing: bool = False) -> list[dict]:
     cfg = load_config()
     tenant_id = cfg['company']['tenant_id']
     search = BraveResearchClient()
@@ -195,8 +188,8 @@ Rules:
 - recommended_service is the technical capability; recommended_offer is the packaged entry offer.
 - suggested_roles should name 2-4 decision-maker roles appropriate to the event.
 - Never claim the company has a private/internal problem. Frame the commercial opportunity as a hypothesis from the observable signal.
-- Apply the same direct-client ICP as the prospecting engine: 10-200 employees is ideal; 201-500 is stretch-only with unusually strong fit; never select companies above 500 employees.
-- employee_range must contain a numeric range/count grounded in the supplied public evidence. If size is not supported, leave employee_range empty; the downstream verifier may try to confirm it, otherwise the signal will be rejected.
+- Apply the same direct-client ICP as the prospecting engine: under 50 employees is ideal, especially small teams hiring Data/AI profiles; 51-250 requires strong fit; never select companies above 250 employees.
+- employee_range must contain a numeric range/count grounded in the supplied public evidence. If size is not supported, leave employee_range empty; the downstream verifier may try to confirm it, otherwise report the size as unknown without guessing.
 - Exclude global enterprises, household-name multinationals, large corporate groups, consultancies/agencies/data vendors and recruitment firms.
 - Prefer Spain/EU operating companies where SC-Analytics could plausibly become the primary external Data/Analytics/AI specialist and where a focused discovery could lead to forecasting, optimization, financial planning, Data/BI or AI automation work.
 
@@ -209,11 +202,8 @@ SEARCH RESULTS:
 
     hit_urls = {h.url for h in hits}
     existing_companies = store.filter('companies', tenant_id=tenant_id)
-    by_domain = {
-        _website_key(str(row.get('website', ''))): row
-        for row in existing_companies
-        if _website_key(str(row.get('website', '')))
-    }
+    existing_people = store.filter('people', tenant_id=tenant_id)
+    existing_signals = store.filter('commercial_signals', tenant_id=tenant_id) if include_existing else []
     output: list[dict] = []
 
     for raw in _as_list(classified):
@@ -233,7 +223,11 @@ SEARCH RESULTS:
             continue
 
         website_key = _website_key(website)
-        existing = by_domain.get(website_key)
+        existing = find_existing_company(existing_companies, website, company_name)
+        if existing and existing.get('website'):
+            website = str(existing['website'])
+        if not may_discover(existing, include_existing=include_existing):
+            continue
         if existing and str(existing.get('fit_type') or 'lead') == 'partner':
             continue
 
@@ -282,9 +276,12 @@ SEARCH RESULTS:
             'partnership_model': '',
             'partnership_value': '',
         })
+        company_row.update({'canonical_domain': website_key, 'exclude_from_discovery': True})
+        company_row = preserve_existing_record(existing, company_row)
         stored_company = store.upsert('companies', company_row, key='tenant_id,website')
+        if existing is None:
+            existing_companies.append(stored_company)
         candidate.company_id = str(stored_company.get('company_id') or candidate.company_id)
-        by_domain[website_key] = stored_company
 
         phone, phone_source_url = _public_business_phone(company_name, website, search, llm) if strength >= 8 else ('', '')
         if phone:
@@ -295,6 +292,11 @@ SEARCH RESULTS:
 
         primary_raw = _discover_primary_person(candidate, suggested_roles, search, llm, 'lead')
         person_id = ''
+        if primary_raw:
+            primary_raw['company_id'] = candidate.company_id
+            known_person = find_existing_person(existing_people, primary_raw)
+            if known_person and not may_discover(known_person, include_existing=include_existing):
+                primary_raw = None
         if primary_raw:
             person = PersonCandidate(
                 person_id=new_id('person'),
@@ -318,7 +320,11 @@ SEARCH RESULTS:
                 'recommended_offer': offer,
                 'completed_at': None,
             })
+            existing_person = find_existing_person(existing_people, person_payload)
+            person_payload = preserve_existing_record(existing_person, person_payload)
             stored_person = store.upsert('people', person_payload, key='tenant_id,company_id,name')
+            if existing_person is None:
+                existing_people.append(stored_person)
             person_id = str(stored_person.get('person_id') or person.person_id)
 
             outreach = _draft_outreach('lead', candidate, stored_person, company_extra, brain, search, llm)
@@ -366,6 +372,10 @@ SEARCH RESULTS:
             'metadata': {'person_id': person_id, 'employee_range': employee_range, 'employee_size_source_url': employee_size_source_url},
             'created_at': datetime.now(timezone.utc).isoformat(),
         }
+        known_signal = next((row for row in existing_signals if row.get('source_url') == source_url), None)
+        signal = preserve_existing_record(known_signal, signal)
+        if known_signal:
+            signal['signal_id'] = known_signal['signal_id']
         stored_signal = store.upsert('commercial_signals', signal, key='tenant_id,source_url')
         output.append(stored_signal)
 

@@ -125,6 +125,11 @@ def _fit_commentary_with_hashtags(commentary: str, hashtags: str, max_chars: int
 
 
 def _commentary_for_mode(item: dict) -> str:
+    if (item.get('visual_strategy') or {}).get('publisher') == 'editorial_edge':
+        approved = str(item.get('body') or '')
+        if not approved.strip() or len(approved.encode('utf-16-le')) // 2 > 3000:
+            raise PublishingError('Approved copy is empty or exceeds LinkedIn limits')
+        return approved
     mode = _publication_mode(item)
     body = str(item.get("body") or "").strip()
     if mode == "visual_first":
@@ -159,6 +164,8 @@ def publish_content(content_id: str) -> dict:
     if not items:
         raise PublishingError(f"Content item not found: {content_id}")
     item = items[0]
+    if (item.get('visual_strategy') or {}).get('publisher') == 'editorial_edge':
+        raise PublishingError('This publication is managed by the atomic editorial scheduler')
     if item.get("status") not in {"approved", "scheduled"}:
         raise PublishingError("Content item is not approved or scheduled")
     if not _scheduled_is_due(item):
@@ -212,6 +219,7 @@ def publish_all_approved(limit: int = 20) -> list[dict]:
         if row.get("content_type") == "linkedin_post"
         and "linkedin" in str(row.get("channel") or "")
         and row.get("status") in {"approved", "scheduled"}
+        and (row.get('visual_strategy') or {}).get('publisher') != 'editorial_edge'
         and not row.get("external_post_id")
         and _scheduled_is_due(row)
     ][:limit]

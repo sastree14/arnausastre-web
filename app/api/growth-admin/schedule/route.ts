@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     order: 'decided_at.desc',
     limit: '10',
   }, { cacheSeconds: 0 })
-  const requiredAction = approvalAction(String(item.content_type||''))
+  const requiredAction = item.visual_strategy?.publisher==='editorial_edge'?'publish_editorial':approvalAction(String(item.content_type||''))
   const approved = approvals.some((row) => row.action_type === requiredAction)
   if (scheduledAt && !approved) return new NextResponse('Approve the publication before scheduling it', { status: 409 })
 
@@ -57,6 +57,8 @@ export async function POST(request: Request) {
     scheduled_at: scheduledAt,
     status: approved ? (scheduledAt ? 'scheduled' : 'approved') : item.status,
   }
+
+  if (item.visual_strategy?.publisher==='editorial_edge' && scheduledAt) updates.visual_strategy={...item.visual_strategy,test_reserved:false}
 
   if (item.content_type === 'article' && item.channel === 'website' && item.brief_id) {
     const family = await queryGrowthTable<typeof item>('content_items', {

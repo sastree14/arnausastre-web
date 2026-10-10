@@ -36,7 +36,8 @@ export function evaluatePublicationReadiness(item: GrowthContentItem, brief?: Gr
 
   if (!contractValid) issues.push('El contrato editorial no es válido todavía.')
   if (rewriteRequired) issues.push('El crítico todavía exige una reescritura.')
-  if (qualityScore < 7.5) issues.push(`La calidad (${qualityScore.toFixed(1)}) está por debajo del mínimo 7.5.`)
+  const humanApproved = critique.user_approved === true && item.visual_strategy?.publisher === 'editorial_edge' && ['approved','scheduled','published'].includes(item.status)
+  if (!humanApproved && qualityScore < 7.5) issues.push(`La calidad (${qualityScore.toFixed(1)}) está por debajo del mínimo 7.5.`)
   if (visualRequired && !hasVisual) issues.push('Esta pieza requiere un visual antes de aprobarse.')
 
   return {
@@ -72,7 +73,7 @@ export async function ensurePendingPublicationApproval(contentId: string) {
     return { created: false, reason: 'alternate_variant', readiness }
   }
 
-  const actionType = item.content_type === 'article' ? 'publish_article' : 'publish_post'
+  const actionType = item.visual_strategy?.publisher === 'editorial_edge' ? 'publish_editorial' : item.content_type === 'article' ? 'publish_article' : 'publish_post'
   const existing = await queryGrowthTable<GrowthApproval>('approvals', {
     target_id: `eq.${contentId}`,
     action_type: `eq.${actionType}`,
