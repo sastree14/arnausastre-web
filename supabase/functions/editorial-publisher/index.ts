@@ -79,6 +79,7 @@ Deno.serve(async(req: Request)=>{
     if(connection?.token_expires_at && Date.parse(connection.token_expires_at)<=Date.now()) blocks.push('LinkedIn token expired; reconnect in CMI');
     const jobs=await db('editorial_publication_jobs?state=in.(scheduled,reserved,failed)&select=content_id&limit=200');
     const items=jobs.length?await db(`content_items?content_id=in.(${jobs.map((j:{content_id:string})=>j.content_id).join(',')})&select=content_id,channel`):[];
+    if(items.some((c:{channel:string})=>c.channel==='arnau_linkedin') && (!connection?.scopes?.includes('w_member_social') || !connection?.metadata?.person_urn)) blocks.push('Personal LinkedIn publishing permission or identity is missing');
     if(items.some((c:{channel:string})=>c.channel==='sc_analytics_linkedin')) {
       if(!config.organization_id) blocks.push('SC-Analytics organization ID is not configured');
       if(!connection?.scopes?.includes('w_organization_social')) blocks.push('LinkedIn requires w_organization_social to publish on the SC-Analytics page');

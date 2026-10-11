@@ -38,3 +38,6 @@ The current saved connection is Arnau's member account, with `w_member_social` o
 - Next.js production build, TypeScript and ESLint pass (existing lint warnings remain); all 97 growth tests pass.
 
 The full editorial source and deterministic calendar live in `growth/data/editorial-approved-manifest.json` and `growth/data/editorial-calendar.json`; regenerate dates using `scripts/editorial/build_calendar.py`. Storage paths are recorded per slide in `content_items.visual_strategy.slides`.
+
+## Actualización 11 de octubre de 2026
+Las 150 publicaciones de esta cola tienen destino arnau_linkedin. SC-Analytics se comparte manualmente; no se requiere permiso de organización para esta cola. La configuración personal se verifica con w_member_social e identidad personal. Una prueba sin publicación no sustituye la validación de una publicación real.

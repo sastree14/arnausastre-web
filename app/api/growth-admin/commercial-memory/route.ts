@@ -1,3 +1,4 @@
+import { getCrmBundle } from '@/lib/growth-admin-performance'
 import { NextResponse } from 'next/server'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { getCommercialMemory, updateCommercialMemory } from '@/lib/commercial-memory'
@@ -7,7 +8,8 @@ export async function GET(request:Request) {
   if (!(await isGrowthAdminAuthenticated())) return NextResponse.json({error:'Unauthorized'},{status:401})
   try {
     const id = new URL(request.url).searchParams.get('company_id') || undefined
-    return NextResponse.json({...await getCommercialMemory(id),configured:true},{headers:{'Cache-Control':'no-store'}})
+    const [memory,crm]=await Promise.all([getCommercialMemory(id),getCrmBundle()])
+    return NextResponse.json({...memory,opportunities:crm.opportunities,meetings:crm.meetings,configured:true},{headers:{'Cache-Control':'no-store'}})
   } catch { return NextResponse.json({error:'No se ha podido cargar el historial comercial.'},{status:503}) }
 }
 export async function POST(request:Request) {
