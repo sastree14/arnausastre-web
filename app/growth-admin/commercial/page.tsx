@@ -1,3 +1,4 @@
+import CommercialViewRefresh from '@/components/growth-admin/CommercialViewRefresh'
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
 import { Badge, EmptyState, SectionHeading, adminPanel } from '@/components/growth-admin/AdminUi'
@@ -33,7 +34,7 @@ export default async function CommercialPage(){
   })
   const agenda=[...opportunityActions,...meetings,...followUps].sort((a,b)=>new Date(a.date).getTime()-new Date(b.date).getTime()).slice(0,12)
 
-  return <AdminShell active="commercial">
+  return <AdminShell active="commercial"><CommercialViewRefresh/>
     <header className="overflow-hidden rounded-[2rem] border border-indigo-950 bg-indigo-950 text-white shadow-sm"><div className="grid gap-8 px-6 py-9 md:px-10 md:py-12 xl:grid-cols-[1fr_auto] xl:items-end"><div className="max-w-4xl"><p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-indigo-300">Cuadro de Mando Integral · Comercial</p><h1 className="mt-4 text-4xl md:text-6xl" style={{fontFamily:'var(--font-playfair)'}}>Comercial</h1><p className="mt-5 max-w-3xl text-sm leading-7 text-indigo-100/80 md:text-base">Adquisición, inteligencia, conversión y seguimiento sobre una única fuente de verdad. Cada bloque tiene una función operativa y evita duplicar información.</p></div><div className="grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-indigo-200/70">Oportunidades</p><p className="mt-1 text-2xl font-semibold">{summary.opportunities}</p></div><div className="rounded-xl border border-white/10 bg-white/[0.05] p-3"><p className="text-indigo-200/70">Reuniones</p><p className="mt-1 text-2xl font-semibold">{summary.meetings}</p></div></div></div></header>
 
     {(summary.degraded||intelligence.degraded||crm.degraded)&&<div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">Alguna lectura ha entrado en modo ligero. Los módulos siguen operativos, pero conviene refrescar antes de tomar una decisión.</div>}

@@ -1,6 +1,7 @@
+import CommercialViewRefresh from '@/components/growth-admin/CommercialViewRefresh'
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
-import { Badge, EmptyState, SectionHeading, adminInput, adminPanel } from '@/components/growth-admin/AdminUi'
+import { Badge, EmptyState, SectionHeading, adminPanel } from '@/components/growth-admin/AdminUi'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { getCompetitorEvents, getCompetitors, getCompetitionTasks, type CompetitorEventRow, type CompetitorRow } from '@/lib/competition-admin'
 
@@ -57,18 +58,8 @@ function CompetitorCard({ competitor, events }: { competitor: CompetitorRow; eve
       </div>
 
       <div className="mt-5 flex flex-wrap items-center gap-2">
-        <form action="/api/growth-admin/competition/monitor" method="post">
-          <input type="hidden" name="competitor_id" value={competitor.competitor_id}/>
-          <input type="hidden" name="enabled" value={monitored ? '0' : '1'}/>
-          <input type="hidden" name="monitoring_frequency" value="daily"/>
-          <button className={`rounded-lg border px-4 py-2.5 text-xs font-semibold ${monitored ? 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50' : 'border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'}`}>{monitored ? 'Pausar monitorización' : 'Monitorizar movimientos'}</button>
-        </form>
-        <form action="/api/growth-admin/operator-task" method="post">
-          <input type="hidden" name="action" value="competitor_refresh"/>
-          <input type="hidden" name="competitor_id" value={competitor.competitor_id}/>
-          <input type="hidden" name="return_to" value="/growth-admin/competition"/>
-          <button className="rounded-lg border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-100">Actualizar movimientos ahora</button>
-        </form>
+
+
         <a href={competitor.website} target="_blank" rel="noreferrer" className="rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-600">Web ↗</a>
         {competitor.primary_source_url && <a href={competitor.primary_source_url} target="_blank" rel="noreferrer" className="px-2 py-2.5 text-xs font-semibold text-slate-400">Fuente base ↗</a>}
       </div>
@@ -94,11 +85,11 @@ export default async function CompetitionPage({ searchParams }: { searchParams: 
   const highImpact = events.filter((item) => Number(item.significance || 0) >= 8).length
   const visible = competitors.filter((item) => view === 'monitored' ? item.is_monitored : view === 'direct' ? item.category === 'direct' : view === 'adjacent' ? item.category === 'adjacent' : true)
 
-  return <AdminShell active="competition">
+  return <AdminShell active="competition"><CommercialViewRefresh/>
     <header className="overflow-hidden rounded-[2rem] border border-slate-900 bg-slate-950 text-white shadow-sm">
       <div className="grid gap-8 px-6 py-9 md:px-10 md:py-12 xl:grid-cols-[1fr_auto] xl:items-end">
         <div className="max-w-4xl"><p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-indigo-300">Commercial OS · Competitive Intelligence</p><h1 className="mt-4 text-4xl leading-tight md:text-6xl" style={{fontFamily:'var(--font-playfair)'}}>Radar competitivo</h1><p className="mt-5 max-w-3xl text-sm leading-7 text-slate-300 md:text-base">Una lista persistente de consultoras comparables a SC-Analytics. Buscamos firmas boutique o de tamaño razonable, con filosofía business-first y solape real; después decides cuáles monitorizar de forma continua.</p></div>
-        <form action="/api/growth-admin/operator-task" method="post" className="rounded-2xl border border-white/10 bg-white/5 p-2"><input type="hidden" name="action" value="competitor_refresh_all"/><input type="hidden" name="return_to" value="/growth-admin/competition"/><input type="hidden" name="limit" value="30"/><button className="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-950 shadow-sm hover:bg-slate-100">Actualizar monitorizadas</button></form>
+
       </div>
       <div className="border-t border-white/10 bg-white/[0.035] px-6 py-4 md:px-10"><div className="grid gap-2 text-xs text-slate-400 md:grid-cols-4"><span><strong className="text-slate-200">Descubrimiento</strong> → encuentra peers razonables</span><span><strong className="text-slate-200">Watchlist</strong> → la lista permanece</span><span><strong className="text-slate-200">Monitor</strong> → busca movimientos públicos</span><span><strong className="text-slate-200">Respuesta</strong> → interpreta huecos para SC</span></div></div>
     </header>
@@ -114,11 +105,7 @@ export default async function CompetitionPage({ searchParams }: { searchParams: 
     </section>
 
     <section className="mt-8 grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
-      <form action="/api/growth-admin/operator-task" method="post" className={`${adminPanel} p-6`}>
-        <input type="hidden" name="action" value="competitor_discover"/><input type="hidden" name="return_to" value="/growth-admin/competition"/>
-        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-indigo-600">Descubrir</p><h2 className="mt-2 text-2xl font-semibold text-slate-950">Buscar competidores comparables</h2><p className="mt-2 text-sm leading-6 text-slate-600">Cada búsqueda enriquece la watchlist existente. No sustituye ni borra empresas ya guardadas. Puedes orientar la búsqueda a un servicio concreto o dejarla abierta.</p>
-        <div className="mt-5 grid gap-3 sm:grid-cols-[1fr_110px_auto]"><input name="focus" className={adminInput} placeholder="Ej. forecasting, optimización, Data & BI, AI automation…"/><select name="limit" defaultValue="8" className={adminInput}><option value="6">6</option><option value="8">8</option><option value="12">12</option><option value="16">16</option></select><button className="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700">Buscar y añadir</button></div>
-      </form>
+
       <div className={`${adminPanel} p-6`}><p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">Criterio</p><h2 className="mt-2 text-xl font-semibold text-slate-950">Qué entra en este radar</h2><div className="mt-4 space-y-2 text-sm leading-6 text-slate-600"><p>✓ Boutique, especialista o firma pequeña/mediana comparable.</p><p>✓ Data, Analytics, IA, forecasting, optimización o automatización con impacto de negocio.</p><p>✓ Filosofía cercana: entender contexto, construir a medida, medir valor y ejecutar.</p><p>✕ Big Four, integradores globales y gigantes como Deloitte, Accenture o Capgemini.</p></div></div>
     </section>
 

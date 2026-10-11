@@ -1,3 +1,4 @@
+import CommercialViewRefresh from '@/components/growth-admin/CommercialViewRefresh'
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
 import { getCommercialIntelligenceBundle } from '@/lib/growth-admin-performance'
@@ -42,7 +43,7 @@ export default async function CommercialIntelligencePage({ searchParams }: { sea
   const phoneSignals = signals.filter((signal) => Boolean(signal.phone)).length
 
   return <AdminShell active="intelligence" surface="light">
-    <div className="pb-12">
+    <div className="pb-12"><CommercialViewRefresh/>
       <header className="overflow-hidden rounded-[2rem] border border-slate-900 bg-slate-950 text-white shadow-sm">
         <div className="grid gap-8 px-6 py-9 md:px-10 md:py-12 xl:grid-cols-[1fr_auto] xl:items-end">
           <div className="max-w-4xl">
@@ -50,12 +51,7 @@ export default async function CommercialIntelligencePage({ searchParams }: { sea
             <h1 className="mt-4 text-4xl leading-tight md:text-6xl" style={{ fontFamily: 'var(--font-playfair)' }}>Señales, ofertas y canales</h1>
             <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-300 md:text-base">Este módulo no sustituye Clientes ni Partners. Responde tres preguntas anteriores: <strong className="text-white">¿por qué ahora?</strong>, <strong className="text-white">¿con qué oferta entramos?</strong> y <strong className="text-white">¿por qué canal distribuimos?</strong>.</p>
           </div>
-          <form action="/api/growth-admin/operator-task" method="post" className="flex shrink-0 items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-2">
-            <input type="hidden" name="action" value="commercial_signals"/>
-            <input type="hidden" name="return_to" value="/growth-admin/intelligence"/>
-            <select name="limit" defaultValue="12" className="rounded-xl border border-white/10 bg-slate-900 px-3 py-3 text-sm font-semibold text-white outline-none"><option value="12">12</option><option value="20">20</option><option value="30">30</option><option value="40">40</option></select>
-            <button className="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-950 shadow-sm transition hover:bg-slate-100">Buscar señales ahora</button>
-          </form>
+
         </div>
         <div className="border-t border-white/10 bg-white/[0.035] px-6 py-4 md:px-10">
           <div className="grid gap-2 text-xs text-slate-400 md:grid-cols-5"><span><strong className="text-slate-200">Trigger Engine</strong> → detecta el evento</span><span><strong className="text-slate-200">Offer Engine</strong> → selecciona la entrada</span><span><strong className="text-slate-200">Channel Engine</strong> → decide distribución</span><span><strong className="text-slate-200">ICP tamaño</strong> → 10–200 ideal · 500 máximo verificado</span><span><strong className="text-slate-200">CRM</strong> → ejecuta y aprende</span></div>

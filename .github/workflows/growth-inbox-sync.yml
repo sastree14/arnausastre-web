@@ -1,6 +1,12 @@
 name: SC-Analytics Operating System — Inbox Sync
 
 on:
+  push:
+    branches: [feat/commercial-memory-cmi]
+    paths:
+      - .github/workflows/growth-inbox-sync.yml
+      - growth/src/gmail_sync.py
+      - growth/src/gmail_commercial.py
   workflow_dispatch:
   schedule:
     - cron: '*/10 * * * *'
