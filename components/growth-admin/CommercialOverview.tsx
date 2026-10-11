@@ -15,7 +15,7 @@ function contactSummary(c:Company,history:Event[]){
  if(c.email_status==='bounced')return 'Contactada · dirección incorrecta'
  if(c.email_status==='pending_reply')return 'Ha respondido · nos toca contestar'
  if(['replied','conversation','meeting_pending','meeting_booked','meeting_scheduled','proposal','won'].includes(c.commercial_status||''))return stages[c.commercial_status||'']||'Respuesta registrada'
- const contacted=['contacted','replied'].includes(c.contact_status||'')||history.some(e=>e.event_type==='email_sent'||e.event_type==='linkedin_message_sent'||e.event_type==='phone_call')
+ const contacted=['contacted','replied'].includes(c.contact_status||'')||['contacted','awaiting_reply'].includes(c.commercial_status||'')||history.some(e=>e.event_type==='email_sent'||e.event_type==='linkedin_message_sent'||e.event_type==='phone_call')
  return contacted?'Contactada · sin respuesta registrada':'Sin contacto registrado'
 }
 function url(raw?:string){try{const value=new URL(raw||'');return ['http:','https:'].includes(value.protocol)?value.href:undefined}catch{return undefined}}
