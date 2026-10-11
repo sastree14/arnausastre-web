@@ -1,3 +1,5 @@
+import CommercialSignalsOverview from '@/components/growth-admin/CommercialSignalsOverview'
+import CommercialViewRefresh from '@/components/growth-admin/CommercialViewRefresh'
 import { redirect } from 'next/navigation'
 import CommercialOverview from '@/components/growth-admin/CommercialOverview'
 import AdminShell from '@/components/growth-admin/AdminShell'
@@ -9,5 +11,5 @@ export const revalidate = 0
 export default async function CrmPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
   void searchParams
-  return <AdminShell active="crm"><CommercialOverview /></AdminShell>
+  return <AdminShell active="crm"><CommercialOverview /><CommercialViewRefresh/><CommercialSignalsOverview /></AdminShell>
 }
