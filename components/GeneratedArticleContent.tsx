@@ -103,7 +103,7 @@ function renderGeneratedBlock(block: GeneratedBodyBlock, key: string, lead = fal
   return (
     <p
       key={key}
-      className={lead ? 'my-5 text-[20px] leading-9 text-[#1D2B44]' : 'my-5 text-[17px] leading-8 text-slate-700'}
+      className={lead ? 'my-5 text-justify hyphens-auto text-[20px] leading-9 text-[#1D2B44]' : 'my-5 text-justify hyphens-auto text-[17px] leading-8 text-slate-700'}
     >
       {renderInline(block.text)}
     </p>
@@ -218,7 +218,7 @@ function ArticleVisualSummary({ article, labels }: { article: PublicGeneratedArt
   const cards = sequential ? steps : variant === 'duo' ? quick.slice(0, 2) : variant !== 'statement' ? quick.slice(0, 3) : []
   if (!statement && !cards.length) return null
 
-  return <aside aria-label={labels.takeaway} className="mx-auto mb-10 max-w-[760px] border border-slate-300">
+  return <aside aria-label={labels.takeaway} className="mx-auto mb-10 max-w-[760px] border border-slate-300 text-center">
     {statement && <div className="bg-[#1D2B44] px-6 py-7 text-white md:px-8">
       <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/75">{labels.takeaway}</p>
       <p className="mt-3 text-[22px] font-medium leading-8 md:text-[25px] md:leading-9">{cleanInline(statement)}</p>
@@ -226,9 +226,9 @@ function ArticleVisualSummary({ article, labels }: { article: PublicGeneratedArt
     {cards.length >= 2 && <div className="border-t border-slate-300 bg-white">
       <p className="border-b border-slate-300 px-6 py-3 font-mono text-[11px] uppercase tracking-[0.12em] text-slate-500">{labels.synthesis}</p>
       <ol className={`grid ${cards.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
-        {cards.map((text, index) => <li key={index} className={`relative border-b border-slate-300 px-6 py-6 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0 ${index % 2 ? 'bg-[#F4F1EA]' : 'bg-[#FAFAF7]'}`}>
+        {cards.map((text, index) => <li key={index} className={`relative flex min-h-48 flex-col items-center justify-center border-b border-slate-300 px-6 py-6 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0 ${index % 2 ? 'bg-[#F4F1EA]' : 'bg-[#FAFAF7]'}`}>
           <span className="font-mono text-[12px] font-semibold text-indigo-700">{String(index + 1).padStart(2, '0')}</span>
-          <p className="mt-3 text-[17px] font-medium leading-7 text-[#1D2B44]">{cleanInline(text)}</p>
+          <p className="mt-3 w-full text-[17px] font-medium leading-7 text-[#1D2B44]">{cleanInline(text)}</p>
           {sequential && index < cards.length - 1 && <span aria-hidden="true" className="mt-4 block text-xl text-indigo-700">→</span>}
         </li>)}
       </ol>
@@ -247,7 +247,7 @@ export default function GeneratedArticleContent({ variants, forcedLanguage }: Pr
   const hasVisual = Boolean(article.visual_path?.startsWith('supabase://'))
 
   return (
-    <main className="bg-[#FAFAF7] text-slate-950">
+    <main lang={activeLanguage} className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-slate-300 bg-white">
         <div className="mx-auto max-w-6xl px-6 pb-12 pt-10 md:pb-14 md:pt-12">
           <Link href="/knowledge" className="text-[15px] font-medium text-slate-500 transition hover:text-slate-950">← {t.back}</Link>
@@ -284,7 +284,7 @@ export default function GeneratedArticleContent({ variants, forcedLanguage }: Pr
 
         <section className="mx-auto mt-12 max-w-[760px] border border-slate-300 bg-[#F4F1EA] px-6 py-7 md:px-7">
           <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-indigo-700">{t.ctaEyebrow}</p>
-          <p className="mt-3 max-w-2xl text-[17px] leading-8 text-slate-700">{t.ctaText}</p>
+          <p className="mt-3 max-w-2xl text-justify hyphens-auto text-[17px] leading-8 text-slate-700">{t.ctaText}</p>
           <Link href="/contact?intent=problem" className="mt-5 inline-flex bg-slate-950 px-5 py-3 text-[15px] font-semibold text-white transition hover:bg-slate-800">
             {t.primary} →
           </Link>
