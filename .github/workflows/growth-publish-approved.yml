@@ -25,7 +25,7 @@ jobs:
           cache-dependency-path: growth/requirements.txt
       - run: pip install -r growth/requirements.txt
       - name: Refresh time-sensitive Knowledge articles approaching publication
-        run: python scripts/content_engine/refresh_due_knowledge.py --window-days 21 --max-age-days 150 --limit 4
+        run: python -m scripts.content_engine.refresh_due_knowledge --window-days 21 --max-age-days 150 --limit 4
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
