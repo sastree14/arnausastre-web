@@ -42,14 +42,14 @@ function renderPara(para: string, i: number) {
     return (
       <ul key={i} className="space-y-3 border-l-2 border-indigo-200 pl-5">
         {items.map((item, j) => (
-          <li key={j} className="text-[17px] leading-8 text-slate-700">
+          <li key={j} className="text-justify hyphens-auto text-[17px] leading-8 text-slate-700">
             {renderInline(item.slice(2))}
           </li>
         ))}
       </ul>
     )
   }
-  return <p key={i} className="text-[17px] leading-8 text-slate-700">{renderInline(para)}</p>
+  return <p key={i} className="text-justify hyphens-auto text-[17px] leading-8 text-slate-700">{renderInline(para)}</p>
 }
 
 function extractHeadings(body: string): string[] {
@@ -106,7 +106,7 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
   const headings = extractHeadings(body)
 
   return (
-    <main className="bg-[#FAFAF7] text-slate-950">
+    <main lang={lang} className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-slate-300 bg-white">
         <div className="mx-auto max-w-6xl px-6 pb-12 pt-10 md:pb-14 md:pt-12">
           <Link href="/knowledge" className="inline-flex items-center gap-2 text-[15px] font-medium text-slate-500 transition hover:text-slate-950">
@@ -139,7 +139,7 @@ export default function ArticleContent({ article, forcedLanguage }: { article: A
                   <div key={segmentIndex} className="border-b border-slate-300 bg-[#F4F1EA] px-6 py-8 md:px-8 md:py-9">
                     <div className="max-w-[72ch] space-y-5">
                       {segment.paras.map((para, i) => (
-                        <p key={i} className="text-[20px] leading-9 text-[#1D2B44]">{renderInline(para)}</p>
+                        <p key={i} className="text-justify hyphens-auto text-[20px] leading-9 text-[#1D2B44]">{renderInline(para)}</p>
                       ))}
                     </div>
                   </div>

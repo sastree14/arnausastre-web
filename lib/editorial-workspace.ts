@@ -79,3 +79,7 @@ export function collapseWebsiteArticleFamilies(items: GrowthContentItem[]): Grow
 
   return result.sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')))
 }
+
+export function preparedEditorialLibrary(items: GrowthContentItem[]): GrowthContentItem[] {
+  return collapseWebsiteArticleFamilies(items.filter(item => /^P\d{3}$/.test(item.content_id) || (item.content_type === 'article' && item.channel === 'website' && item.content_id.startsWith('knowledge_'))));
+}

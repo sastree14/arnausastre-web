@@ -1,0 +1,1502 @@
+[
+  {
+    "content_id": "P001",
+    "order": 1,
+    "title": "Tus datos pueden estar ordenados y tus decisiones seguir igual",
+    "pillar": "Datos y arquitectura",
+    "scheduled_at": "2026-10-14T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P002",
+    "order": 2,
+    "title": "Cinco respuestas que necesitas antes de desarrollar una solución",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2026-10-16T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P004",
+    "order": 3,
+    "title": "Tu primera inversión en IA necesita una comparación justa",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2026-10-19T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P003",
+    "order": 4,
+    "title": "El pedido puede esperar aunque el ERP esté actualizado",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2026-10-21T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P009",
+    "order": 5,
+    "title": "Compara la solución avanzada con una regla que puedas mantener",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2026-10-23T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P005",
+    "order": 6,
+    "title": "Una previsión para comprar no siempre sirve para reponer",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2026-10-26T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P012",
+    "order": 7,
+    "title": "¿Tu agente puede continuar después de una interrupción?",
+    "pillar": "Automatización y agentes",
+    "scheduled_at": "2026-10-28T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P007",
+    "order": 8,
+    "title": "¿Por qué estás pagando otro transporte urgente?",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2026-10-30T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P015",
+    "order": 9,
+    "title": "Puedes incorporar especialización sin crear todo un departamento",
+    "pillar": "Colaboración y proyectos",
+    "scheduled_at": "2026-11-02T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P010",
+    "order": 10,
+    "title": "Prueba la reposición antes de cambiar todo el forecasting",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2026-11-04T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P051",
+    "order": 11,
+    "title": "¿Qué haces cuando cambia este KPI?",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2026-11-06T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P006",
+    "order": 12,
+    "title": "Trae una decisión pendiente a nuestra primera conversación",
+    "pillar": "Colaboración y proyectos",
+    "scheduled_at": "2026-11-09T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P008",
+    "order": 13,
+    "title": "Un control de IA tiene que poder ejecutarse",
+    "pillar": "Gobernanza de IA",
+    "scheduled_at": "2026-11-11T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P025",
+    "order": 14,
+    "title": "Data Act: define el uso antes de construir la integración",
+    "pillar": "Gobernanza de IA",
+    "scheduled_at": "2026-11-13T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P011",
+    "order": 15,
+    "title": "El mantenimiento también entra en el precio de un modelo",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2026-11-16T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P013",
+    "order": 16,
+    "title": "Prioriza la revisión de IA por el uso y su impacto",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2026-11-18T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P014",
+    "order": 17,
+    "title": "Recomendar esperar también debe incluir un siguiente paso",
+    "pillar": "Colaboración y proyectos",
+    "scheduled_at": "2026-11-20T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P037",
+    "order": 18,
+    "title": "El pasaporte digital de producto empieza por las fuentes del dato",
+    "pillar": "Gobernanza de IA",
+    "scheduled_at": "2026-11-23T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P016",
+    "order": 19,
+    "title": "Vender más en posventa puede dejar menos margen",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2026-11-25T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P018",
+    "order": 20,
+    "title": "Separa agentes cuando haya responsabilidades que separar",
+    "pillar": "Automatización y agentes",
+    "scheduled_at": "2026-11-27T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P032",
+    "order": 21,
+    "title": "Un componente común puede ahorrar mantenimiento entre líneas",
+    "pillar": "Datos y arquitectura",
+    "scheduled_at": "2026-11-30T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P041",
+    "order": 22,
+    "title": "eFTI: el dato del transporte debe llegar a la tarea",
+    "pillar": "Gobernanza de IA",
+    "scheduled_at": "2026-12-02T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P039",
+    "order": 23,
+    "title": "Ahorrar flete también puede inmovilizar más caja",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2026-12-04T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P019",
+    "order": 24,
+    "title": "Una tabla práctica para registrar los usos de IA",
+    "pillar": "Gobernanza de IA",
+    "scheduled_at": "2026-12-07T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P017",
+    "order": 25,
+    "title": "Explica qué decisión permite tomar el modelo",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2026-12-09T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P021",
+    "order": 26,
+    "title": "La IA también puede venir dentro del software que ya utilizas",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2026-12-11T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P020",
+    "order": 27,
+    "title": "Cuéntanos dónde se atasca el trabajo",
+    "pillar": "Colaboración y proyectos",
+    "scheduled_at": "2026-12-14T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P029",
+    "order": 28,
+    "title": "Una liquidación distinta al cobro necesita una explicación",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2026-12-16T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P024",
+    "order": 29,
+    "title": "La conversación que el recepcionista con IA debe escalar",
+    "pillar": "Automatización y agentes",
+    "scheduled_at": "2026-12-18T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P048",
+    "order": 30,
+    "title": "«Cliente activo» puede significar algo distinto en CRM y ERP",
+    "pillar": "Datos y arquitectura",
+    "scheduled_at": "2026-12-21T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P043",
+    "order": 31,
+    "title": "Digitalizar el documento y asignar capacidad son dos proyectos distintos",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2026-12-23T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P026",
+    "order": 32,
+    "title": "El piloto de forecasting debe poder terminar con un «no»",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2026-12-28T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P022",
+    "order": 33,
+    "title": "El siguiente proyecto debería empezar con lo que ya aprendiste",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2026-12-30T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P065",
+    "order": 34,
+    "title": "Un equipo sólido también puede necesitar una especialidad puntual",
+    "pillar": "Colaboración y proyectos",
+    "scheduled_at": "2027-01-04T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P030",
+    "order": 35,
+    "title": "Una conclusión de due diligence debe poder volver a su fuente",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-01-06T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P033",
+    "order": 36,
+    "title": "¿Qué acción permite ahora la nueva API?",
+    "pillar": "Automatización y agentes",
+    "scheduled_at": "2027-01-08T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P087",
+    "order": 37,
+    "title": "Sitúa el error de datos donde cambia la decisión",
+    "pillar": "Datos y arquitectura",
+    "scheduled_at": "2027-01-11T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P050",
+    "order": 38,
+    "title": "La optimización empieza cuando las restricciones compiten",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2027-01-13T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P031",
+    "order": 39,
+    "title": "Preparar un uso de IA exige describir el proceso",
+    "pillar": "Gobernanza de IA",
+    "scheduled_at": "2027-01-15T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P038",
+    "order": 40,
+    "title": "El vendedor necesita contexto junto al scoring",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-01-18T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P023",
+    "order": 41,
+    "title": "Cambiar un envase también cambia el calendario de compras",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-01-20T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P075",
+    "order": 42,
+    "title": "Algunas decisiones necesitan dos capacidades trabajando juntas",
+    "pillar": "Colaboración y proyectos",
+    "scheduled_at": "2027-01-22T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P040",
+    "order": 43,
+    "title": "¿Qué tendría que demostrar el proyecto para aprobar su inversión?",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-01-25T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P036",
+    "order": 44,
+    "title": "Una aprobación puede evitar que el workflow actúe de más",
+    "pillar": "Automatización y agentes",
+    "scheduled_at": "2027-01-27T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P098",
+    "order": 45,
+    "title": "Un flujo de datos puede terminar la carga y seguir estando mal",
+    "pillar": "Datos y arquitectura",
+    "scheduled_at": "2027-01-29T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P069",
+    "order": 46,
+    "title": "Optimizar también puede ser decidir qué trabajos entran primero",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2027-02-01T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P035",
+    "order": 47,
+    "title": "El proveedor de IA necesita controles del negocio que la utiliza",
+    "pillar": "Gobernanza de IA",
+    "scheduled_at": "2027-02-03T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P046",
+    "order": 48,
+    "title": "Compara modelos de demanda con la misma política de pedidos",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-02-05T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P027",
+    "order": 49,
+    "title": "Define cómo detener el sistema antes de ponerlo en producción",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-02-08T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P083",
+    "order": 50,
+    "title": "Empieza con un encargo analítico que tenga principio y final",
+    "pillar": "Colaboración y proyectos",
+    "scheduled_at": "2027-02-10T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P044",
+    "order": 51,
+    "title": "Una prueba de precios necesita una condición de parada",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-02-12T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P042",
+    "order": 52,
+    "title": "Un copilot de negocio necesita saber a qué puede acceder",
+    "pillar": "Automatización y agentes",
+    "scheduled_at": "2027-02-15T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P115",
+    "order": 53,
+    "title": "La excepción que una persona resuelve de memoria debe documentarse",
+    "pillar": "Datos y arquitectura",
+    "scheduled_at": "2027-02-17T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P074",
+    "order": 54,
+    "title": "El coste de quedarse corto y el de acumular stock no son iguales",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2027-02-19T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P055",
+    "order": 55,
+    "title": "Tesorería y presupuesto necesitan previsiones diferentes",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-02-22T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P028",
+    "order": 56,
+    "title": "Sigue una alerta de mantenimiento que nadie atendió",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-02-24T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P091",
+    "order": 57,
+    "title": "El contexto interno y la especialización externa necesitan un punto de encuentro",
+    "pillar": "Colaboración y proyectos",
+    "scheduled_at": "2027-02-26T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P053",
+    "order": 58,
+    "title": "El mismo riesgo puede justificar acciones distintas",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-03-01T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P047",
+    "order": 59,
+    "title": "Antes de dar autonomía, aclara quién resuelve la excepción",
+    "pillar": "Automatización y agentes",
+    "scheduled_at": "2027-03-03T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P123",
+    "order": 60,
+    "title": "La arquitectura de una pyme puede empezar pequeña",
+    "pillar": "Datos y arquitectura",
+    "scheduled_at": "2027-03-05T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P081",
+    "order": 61,
+    "title": "Una mejora técnica puede dejar los pedidos exactamente igual",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2027-03-08T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P059",
+    "order": 62,
+    "title": "Forecast y simulación: dos preguntas sobre la misma operación",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-03-10T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P034",
+    "order": 63,
+    "title": "Personaliza la oferta donde cambie el resultado",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-03-12T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P101",
+    "order": 64,
+    "title": "Un proyecto puede terminar; el apoyo recurrente necesita otra razón",
+    "pillar": "Colaboración y proyectos",
+    "scheduled_at": "2027-03-15T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P066",
+    "order": 65,
+    "title": "Un simulador permite discutir el supuesto que cambia la decisión",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-03-17T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P070",
+    "order": 66,
+    "title": "Automatizar puede empezar por eliminar una espera",
+    "pillar": "Automatización y agentes",
+    "scheduled_at": "2027-03-19T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P131",
+    "order": 67,
+    "title": "La excepción costosa necesita el dato que permite resolverla",
+    "pillar": "Datos y arquitectura",
+    "scheduled_at": "2027-03-22T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P082",
+    "order": 68,
+    "title": "El optimizador debe respetar el límite que conoce operaciones",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2027-03-24T16:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P045",
+    "order": 69,
+    "title": "El mismo software puede contener dos usos de IA muy distintos",
+    "pillar": "Gobernanza de IA",
+    "scheduled_at": "2027-03-26T15:00:00+01:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P060",
+    "order": 70,
+    "title": "¿Qué señal obligaría a revisar tu modelo en producción?",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-03-29T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P052",
+    "order": 71,
+    "title": "El conocimiento del negocio debe poder cambiar de manos",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-03-31T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P103",
+    "order": 72,
+    "title": "Un primer encargo puede servir para probar la colaboración analítica",
+    "pillar": "Colaboración y proyectos",
+    "scheduled_at": "2027-04-02T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P071",
+    "order": 73,
+    "title": "Pon a prueba el supuesto que incomoda al plan financiero",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-04-05T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P073",
+    "order": 74,
+    "title": "El agente puede leer una factura y seguir sin permiso para pagarla",
+    "pillar": "Automatización y agentes",
+    "scheduled_at": "2027-04-07T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P093",
+    "order": 75,
+    "title": "Pon una regla clara como referencia antes de optimizar",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2027-04-09T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P049",
+    "order": 76,
+    "title": "Legal necesita un caso de uso descrito por operaciones",
+    "pillar": "Gobernanza de IA",
+    "scheduled_at": "2027-04-12T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P061",
+    "order": 77,
+    "title": "Un dato mal definido puede romper el modelo antes de empezar",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-04-14T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P054",
+    "order": 78,
+    "title": "Separa las cuatro esperas entre señal y acción",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-04-16T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P106",
+    "order": 79,
+    "title": "Partner tecnológico y analítico: acuerda dónde se encuentran",
+    "pillar": "Colaboración y proyectos",
+    "scheduled_at": "2027-04-19T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P080",
+    "order": 80,
+    "title": "El umbral de crédito cambia qué riesgo aceptas",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-04-21T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P094",
+    "order": 81,
+    "title": "El CRM necesita saber qué pasó antes de automatizar el siguiente mensaje",
+    "pillar": "Automatización y agentes",
+    "scheduled_at": "2027-04-23T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P114",
+    "order": 82,
+    "title": "La herramienta debe encajar con la capacidad de mantenerla",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2027-04-26T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P062",
+    "order": 83,
+    "title": "Una ausencia prevista necesita una intervención viable",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-04-28T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P056",
+    "order": 84,
+    "title": "¿Qué trabajo dejará de hacerse al comprar este software?",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-04-30T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P108",
+    "order": 85,
+    "title": "Un entregable conjunto para ampliar la capacidad de un partner",
+    "pillar": "Colaboración y proyectos",
+    "scheduled_at": "2027-05-03T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P086",
+    "order": 86,
+    "title": "Mover el precio también cambia el escenario que debes evaluar",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-05-05T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P109",
+    "order": 87,
+    "title": "Repartir el capital por igual no reparte el riesgo por igual",
+    "pillar": "Automatización y agentes",
+    "scheduled_at": "2027-05-07T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P124",
+    "order": 88,
+    "title": "La excepción del pedido debe llegar con una acción posible",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2027-05-10T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P067",
+    "order": 89,
+    "title": "¿Qué harías distinto si la predicción fuese buena?",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-05-12T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P057",
+    "order": 90,
+    "title": "Modelizar también permite comparar decisiones",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-05-14T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P092",
+    "order": 91,
+    "title": "Simula el escenario que podría cambiar tu plan",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-05-17T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P138",
+    "order": 92,
+    "title": "Decide qué parte del workflow necesita autonomía",
+    "pillar": "Automatización y agentes",
+    "scheduled_at": "2027-05-19T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P127",
+    "order": 93,
+    "title": "La tienda se queda sin stock: ¿falta comprar o falta redistribuir?",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2027-05-21T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P076",
+    "order": 94,
+    "title": "Prueba la transferibilidad antes de separar modelos por línea",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-05-24T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P058",
+    "order": 95,
+    "title": "La primera iniciativa analítica de una pyme necesita dueño",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-05-26T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P096",
+    "order": 96,
+    "title": "El supuesto financiero debe mostrar qué decisión cambia",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-05-28T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P143",
+    "order": 97,
+    "title": "Más disponibilidad puede exigir más capital: compara el equilibrio",
+    "pillar": "Automatización y agentes",
+    "scheduled_at": "2027-05-31T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P135",
+    "order": 98,
+    "title": "Ver stock en dos ubicaciones permite estudiar una transferencia",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2027-06-02T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P084",
+    "order": 99,
+    "title": "El mismo riesgo de abandono no implica la misma prioridad",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-06-04T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P063",
+    "order": 100,
+    "title": "Quitar una métrica también puede mejorar un dashboard",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-06-07T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P102",
+    "order": 101,
+    "title": "La rentabilidad final puede ocultar un periodo con poca caja",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-06-09T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P139",
+    "order": 102,
+    "title": "Dos grupos de productos pueden necesitar políticas de stock distintas",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2027-06-11T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P088",
+    "order": 103,
+    "title": "La restricción que solo conoce el planificador debe entrar en el modelo",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-06-14T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P064",
+    "order": 104,
+    "title": "Del informe del viernes a una revisión con hora y responsable",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-06-16T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P112",
+    "order": 105,
+    "title": "Antes de ajustar precios, elige el objetivo",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-06-18T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P144",
+    "order": 106,
+    "title": "El presupuesto puede acertar y una tienda quedarse sin stock",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2027-06-21T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P090",
+    "order": 107,
+    "title": "Bajar el umbral de fraude también añade revisión y fricción",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-06-23T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P068",
+    "order": 108,
+    "title": "Con pocas llamadas, prioriza la intervención que puedes ejecutar",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-06-25T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P117",
+    "order": 109,
+    "title": "Un retraso de permisos puede cambiar la viabilidad del proyecto",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-06-28T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P145",
+    "order": 110,
+    "title": "El SKU que vende poco puede cumplir una función en el surtido",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2027-06-30T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P104",
+    "order": 111,
+    "title": "La predicción dudosa de visión por computador necesita una salida",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-07-02T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P072",
+    "order": 112,
+    "title": "De la caída de ventas a la cuenta que necesita atención",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-07-05T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P122",
+    "order": 113,
+    "title": "Compara iniciativas con el mismo criterio de inversión",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-07-07T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P147",
+    "order": 114,
+    "title": "Antes del APS, documenta qué hace viable el plan",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2027-07-09T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P119",
+    "order": 115,
+    "title": "La previsión necesita una política de reposición explícita",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-07-12T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P077",
+    "order": 116,
+    "title": "Una regla equivocada también puede ejecutarse perfectamente",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-07-14T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P125",
+    "order": 117,
+    "title": "Dos políticas de resiliencia pueden proteger riesgos diferentes",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-07-16T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P149",
+    "order": 118,
+    "title": "La máquina más ocupada puede empeorar el plazo del pedido",
+    "pillar": "Optimización operativa",
+    "scheduled_at": "2027-07-19T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P120",
+    "order": 119,
+    "title": "BI y forecasting pueden encontrarse en una revisión de inventario",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-07-21T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P078",
+    "order": 120,
+    "title": "¿Qué resultado merece aparecer primero en una búsqueda?",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-07-23T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P132",
+    "order": 121,
+    "title": "Comprueba que el precio calculado es el que se aplica",
+    "pillar": "Finanzas y escenarios",
+    "scheduled_at": "2027-07-26T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P126",
+    "order": 122,
+    "title": "La granularidad del forecast debe encajar con el pedido",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-07-28T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P079",
+    "order": 123,
+    "title": "La desviación necesita llegar a quien puede resolverla",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-07-30T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P129",
+    "order": 124,
+    "title": "Guarda la decisión junto a la predicción",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-08-02T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P085",
+    "order": 125,
+    "title": "Hay problemas donde una regla gana y otros donde la IA merece probarse",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-08-04T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P134",
+    "order": 126,
+    "title": "La predicción debe llegar a tiempo para intervenir",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-08-06T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P089",
+    "order": 127,
+    "title": "La actualización necesita llegar antes del compromiso operativo",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-08-09T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P136",
+    "order": 128,
+    "title": "La excepción de la previsión debe llegar al planner con contexto",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-08-11T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P095",
+    "order": 129,
+    "title": "Hay señales que necesitan una tarea y otras que necesitan análisis",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-08-13T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P137",
+    "order": 130,
+    "title": "Diseña la intervención de agenda antes del modelo de ausencia",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-08-16T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P097",
+    "order": 131,
+    "title": "El sistema necesita una persona que pueda revisar su utilidad",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-08-18T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P140",
+    "order": 132,
+    "title": "En inventario, evalúa la previsión por la decisión que cambia",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-08-20T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P099",
+    "order": 133,
+    "title": "La revisión posterior debería acordarse antes de la entrega",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-08-23T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P146",
+    "order": 134,
+    "title": "Compara modelo y política por separado antes de elegir el conjunto",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-08-25T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P100",
+    "order": 135,
+    "title": "La investigación debe mostrar qué podría cambiar la tesis",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-08-27T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P150",
+    "order": 136,
+    "title": "El forecast hotelero puede empezar por la decisión de turnos",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": "2027-08-30T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P105",
+    "order": 137,
+    "title": "Ver la excepción no da autoridad para resolverla",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-09-01T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P107",
+    "order": 138,
+    "title": "La pantalla ejecutiva debe explicar qué merece atención",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-09-03T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P110",
+    "order": 139,
+    "title": "Prueba el recorrido que la demo no enseñó",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-09-06T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P111",
+    "order": 140,
+    "title": "La evidencia ayuda; la responsabilidad necesita un nombre",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-09-08T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P113",
+    "order": 141,
+    "title": "La microestructura interesa cuando necesitas entender la ejecución",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-09-10T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P116",
+    "order": 142,
+    "title": "Un error pequeño puede cambiar una decisión cara",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-09-13T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P118",
+    "order": 143,
+    "title": "Diseña la revisión para el momento en que el equipo puede actuar",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-09-15T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P121",
+    "order": 144,
+    "title": "Si el usuario sigue trabajando fuera del sistema, revisa la entrega",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-09-17T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P128",
+    "order": 145,
+    "title": "La hoja de ruta debe explicar por qué una prioridad va primero",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-09-20T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P130",
+    "order": 146,
+    "title": "La alerta debe convertirse en una orden de trabajo aceptada",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-09-22T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P133",
+    "order": 147,
+    "title": "¿Cuánto tarda una señal en cambiar una acción?",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-09-24T15:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P141",
+    "order": 148,
+    "title": "Construye un KPI desde una decisión completa",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-09-27T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P142",
+    "order": 149,
+    "title": "Lo obligatorio invalida el plan; lo preferible tiene un coste",
+    "pillar": "Decisiones y visualización",
+    "scheduled_at": "2027-09-29T16:00:00+02:00",
+    "timezone": "Europe/Madrid",
+    "images": 1,
+    "test_reserved": false
+  },
+  {
+    "content_id": "P148",
+    "order": null,
+    "title": "La previsión debe llegar antes del cierre del pedido",
+    "pillar": "Forecasting y machine learning",
+    "scheduled_at": null,
+    "timezone": "Europe/Madrid",
+    "images": 6,
+    "test_reserved": true
+  }
+]

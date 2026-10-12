@@ -182,7 +182,8 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
   const bundle = await getCrmBundle()
   const allCompanies = bundle.companies as unknown as CrmCompany[]
   const allPeople = bundle.people as unknown as CrmPerson[]
-  const companies = allCompanies.filter((company) => modeOfCompany(company) === mode)
+  const networkCategory = typeof params.category === 'string' ? params.category : ''
+  const companies = allCompanies.filter((company) => mode === 'network' || modeOfCompany(company) === mode)
   const companyIds = new Set(companies.map((company) => company.company_id))
   const people = allPeople.filter((person) => Boolean(person.company_id && companyIds.has(person.company_id)))
   const companyById = new Map(companies.map((company) => [company.company_id, company]))
@@ -192,6 +193,15 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
     .sort((a, b) => Number(Boolean(b.recommended_offer)) - Number(Boolean(a.recommended_offer)) || Number(Boolean(b.recommended_service)) - Number(Boolean(a.recommended_service)) || Number(b.score || 0) - Number(a.score || 0))
   const activePeople = people
     .filter((person) => !PERSON_TERMINAL.has(person.status || 'candidate'))
+    .filter((person) => {
+      if (mode !== 'network' || !networkCategory) return true
+      const company = person.company_id ? companyById.get(person.company_id) : undefined
+      const kind = company ? modeOfCompany(company) : undefined
+      if (networkCategory === 'client') return kind === 'lead'
+      if (networkCategory === 'partner') return kind === 'partner'
+      if (networkCategory === 'opportunity') return bundle.opportunities.some(item => item.primary_person_id === person.person_id) || /recruit|talent|staffing/i.test(person.role || '')
+      return kind === 'network'
+    })
     .sort((a, b) => qualityRank(b) - qualityRank(a) || Number(b.relevance_score || 0) - Number(a.relevance_score || 0))
   const contactedPeople = people.filter((person) => CONTACTED.has(person.status || ''))
   const conversationPeople = people.filter((person) => CONVERSATION.has(person.status || ''))
@@ -249,6 +259,7 @@ export default async function CommercialProspectingWorkspace({ mode, searchParam
         </div>
       </header>
 
+      {isNetwork && <form action="/growth-admin/network" method="get" className="mt-5 flex flex-wrap items-center gap-3 rounded-xl border border-slate-200 bg-white p-4"><label className="text-sm font-semibold">Qué relación buscamos <select name="category" defaultValue={networkCategory} className="ml-2 rounded-lg border border-slate-200 px-3 py-2"><option value="">Todas las personas</option><option value="client">Posibles clientes</option><option value="partner">Posibles partners</option><option value="opportunity">Oportunidades y recruiters</option><option value="peer">Gente del sector</option></select></label><button className="rounded-lg bg-slate-950 px-3 py-2 text-xs font-semibold text-white">Filtrar</button><p className="w-full text-xs text-slate-500">El filtro usa la clasificación registrada de la empresa, las oportunidades y el cargo. No confirma intención comercial ni conexión en LinkedIn.</p></form>}
       {bundle.degraded && <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">El CRM se ha cargado en modo seguro porque Supabase ha tardado en responder. Refresca para recuperar el detalle.</div>}
       {queued && <div className={`mt-5 rounded-2xl border px-5 py-4 text-sm ${dispatched ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-sky-200 bg-sky-50 text-sky-800'}`}>{dispatched ? <>Búsqueda lanzada ahora: <strong>{queued}</strong>. GitHub Actions procesará la cola y los resultados aparecerán aquí al terminar.</> : <>Búsqueda guardada: <strong>{queued}</strong>. {dispatchAttempted ? 'No se ha podido disparar GitHub Actions al instante; el barrido diario queda como red de seguridad.' : 'Queda persistida en Supabase.'}</>}</div>}
       {interactionSaved && <div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">Acción guardada: <strong>{interactionSaved}</strong>.</div>}

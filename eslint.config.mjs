@@ -5,6 +5,10 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    files: ["tests/**/*.cjs"],
+    rules: { "@typescript-eslint/no-require-imports": "off" },
+  },
   // These server-backed operating-system surfaces consume heterogeneous JSON
   // payloads from Supabase / external APIs. Keep the exception scoped here.
   {

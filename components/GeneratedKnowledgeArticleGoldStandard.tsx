@@ -14,6 +14,7 @@ type Segment =
   | { type: 'section'; heading: string; paragraphs: string[] }
 
 type ArticleMeta = {
+  presentation_variant?: string
   excerpt?: string
   quick?: string[]
   section_titles?: string[]
@@ -85,7 +86,7 @@ const COPY = {
     back: 'Conocimiento',
     label: 'ANÁLISIS',
     quickLabel: 'EL ARTÍCULO EN 30 SEGUNDOS',
-    quickTitle: 'Tres ideas para entender la tesis antes de entrar en detalle.',
+    quickTitle: 'Ideas para entender la tesis antes de entrar en detalle.',
     contents: 'EN ESTE ANÁLISIS',
     contentsTitle: 'De la idea a la decisión',
     introTitle: 'Contexto y tesis',
@@ -103,7 +104,7 @@ const COPY = {
     back: 'Coneixement',
     label: 'ANÀLISI',
     quickLabel: 'L’ARTICLE EN 30 SEGONS',
-    quickTitle: 'Tres idees per entendre la tesi abans d’entrar en detall.',
+    quickTitle: 'Idees per entendre la tesi abans d’entrar en detall.',
     contents: 'EN AQUESTA ANÀLISI',
     contentsTitle: 'De la idea a la decisió',
     introTitle: 'Context i tesi',
@@ -121,7 +122,7 @@ const COPY = {
     back: 'Knowledge',
     label: 'ANALYSIS',
     quickLabel: 'THE ARTICLE IN 30 SECONDS',
-    quickTitle: 'Three ideas to understand the thesis before going deeper.',
+    quickTitle: 'Key ideas to understand the thesis before going deeper.',
     contents: 'IN THIS ANALYSIS',
     contentsTitle: 'From idea to decision',
     introTitle: 'Context & thesis',
@@ -181,7 +182,8 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
   if (!article) return null
 
   const sectionTitles = meta.section_titles || headings.map((section) => section.heading)
-  const quick = (meta.quick || []).slice(0, 3)
+  const presentation = meta.presentation_variant || 'triad'
+  const quick = presentation === 'statement' ? [] : (meta.quick || []).slice(0, presentation === 'duo' ? 2 : 3)
   const area = String(meta.knowledge_area || 'analytics') as keyof typeof AREA_LABELS.es
   const areaLabel = AREA_LABELS[activeLanguage][area] || t.label
   const excerpt = meta.excerpt || segments[0]?.paragraphs?.[0] || ''
@@ -191,7 +193,7 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
   const caseHref = meta.related_case || meta.related_article || '/knowledge'
 
   return (
-    <main className="bg-[#FAFAF7] text-slate-950">
+    <main lang={activeLanguage} className="bg-[#FAFAF7] text-slate-950">
       <section className="border-b border-slate-300 bg-white">
         <div className="site-container pb-10 pt-8 lg:pb-12">
           <Link href="/knowledge" className="inline-flex items-center gap-2 text-[14px] font-medium text-slate-500 transition hover:text-slate-950">
@@ -202,7 +204,7 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
             <h1 className="mt-5 max-w-[1200px] text-[42px] leading-[1.02] tracking-[-0.03em] text-slate-950 sm:text-[50px] lg:text-[56px]" style={{ fontFamily: 'var(--font-playfair)' }}>
               {article.title}
             </h1>
-            {excerpt ? <p className="mt-5 max-w-[920px] text-[19px] leading-8 text-[#1D2B44]">{excerpt}</p> : null}
+            {excerpt ? <p className="mt-5 max-w-[920px] text-justify hyphens-auto text-[19px] leading-8 text-[#1D2B44]">{excerpt}</p> : null}
           </div>
         </div>
       </section>
@@ -212,11 +214,11 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
           <div className="site-container py-8 text-center lg:py-10">
             <p className="text-[14px] font-semibold uppercase tracking-[0.15em] text-[#4F46E5]">{t.quickLabel}</p>
             <h2 className="mx-auto mt-3 max-w-4xl text-[29px] leading-tight text-slate-950 sm:text-[33px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.quickTitle}</h2>
-            <div className="mx-auto mt-6 grid max-w-[1240px] border-l border-t border-slate-300 lg:grid-cols-3">
+            <div className={`mx-auto mt-6 grid max-w-[1240px] auto-rows-fr border-l border-t border-slate-300 ${quick.length === 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-3'}`}>
               {quick.map((titleText, index) => (
                 <div key={titleText} className={`flex min-h-[150px] flex-col items-center justify-center border-b border-r border-slate-300 px-7 py-6 ${index === 1 ? 'bg-[#EAF0F6]' : 'bg-white'}`}>
                   <p className="font-mono text-[14px] font-semibold text-[#4F46E5]">0{index + 1}</p>
-                  <h3 className="mt-4 text-[24px] font-semibold leading-7 text-slate-950">{titleText}</h3>
+                  <h3 className="mt-4 w-full text-center text-[24px] font-semibold leading-7 text-slate-950">{titleText}</h3>
                 </div>
               ))}
             </div>
@@ -268,7 +270,15 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
                   <span className="absolute left-2 top-10 font-mono text-[14px] font-semibold text-[#4F46E5] md:-left-9">{String(sectionNumber).padStart(2, '0')}</span>
                   <h2 className="max-w-[24ch] text-[29px] leading-[1.08] text-slate-950 sm:text-[33px]" style={{ fontFamily: 'var(--font-playfair)' }}>{displayHeading}</h2>
                   <div className="mt-6 space-y-6">
-                    {segment.paragraphs.map((paragraph, index) => (
+                    {/^(ejemplo(?:\s|:|$)|exemple(?:\s|:|$)|example(?:\s|:|$)|nota técnica|nota tècnica|technical note|apéndice|apèndix|appendix)/i.test(segment.heading) && segment.paragraphs.length > 1 ? <>
+                      <ArticleText text={segment.paragraphs[0]} className="hyphens-auto text-justify text-[18px] leading-9 text-slate-700"/>
+                      <details className="group border border-indigo-200 bg-white open:border-indigo-400">
+                        <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 bg-indigo-50 px-5 py-4 text-[16px] font-semibold text-indigo-900 transition hover:bg-indigo-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-700 [&::-webkit-details-marker]:hidden">
+                          <span>{displayHeading}</span><span aria-hidden="true" className="flex h-7 w-7 items-center justify-center border border-indigo-300 bg-white text-xl transition-transform group-open:rotate-45">+</span>
+                        </summary>
+                        <div className="space-y-6 border-t border-indigo-200 p-5">{segment.paragraphs.slice(1).map((paragraph,index)=><ArticleText key={index} text={paragraph} className="hyphens-auto text-justify text-[18px] leading-9 text-slate-700"/>)}</div>
+                      </details>
+                    </> : segment.paragraphs.map((paragraph, index) => (
                       <ArticleText key={index} text={paragraph} className="hyphens-auto text-justify text-[18px] leading-9 text-slate-700" />
                     ))}
                   </div>
@@ -286,12 +296,12 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
               <p className="text-[14px] font-semibold uppercase tracking-[0.15em] text-[#4F46E5]">{t.businessLabel}</p>
               <h2 className="mx-auto mt-3 max-w-5xl text-[32px] leading-[1.08] text-slate-950 sm:text-[39px]" style={{ fontFamily: 'var(--font-playfair)' }}>{businessTitle}</h2>
             </div>
-            {businessSteps.length === 3 ? (
-              <div className="mx-auto mt-7 grid max-w-[1180px] items-stretch gap-3 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:gap-4">
+            {businessSteps.length === 3 && ['sequence','architecture'].includes(presentation) ? (
+              <div className="mx-auto mt-7 grid max-w-[1180px] items-stretch gap-3 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] auto-rows-fr lg:gap-4">
                 {businessSteps.map((step, index) => (
                   <div key={step} className="contents">
                     <div className={`flex min-h-[130px] items-center justify-center border border-slate-300 px-6 py-5 text-center ${index === 1 ? 'bg-[#EAF0F6]' : 'bg-white'}`}>
-                      <p className="text-[22px] font-semibold leading-7 text-[#1D2B44]">{step}</p>
+                      <p className="w-full text-center text-[22px] font-semibold leading-7 text-[#1D2B44]">{step}</p>
                     </div>
                     {index < 2 ? <div className="hidden items-center justify-center lg:flex"><ArrowRight className="h-5 w-5 text-[#4F46E5]" /></div> : null}
                   </div>

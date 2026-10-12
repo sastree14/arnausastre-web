@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 from urllib.parse import quote_plus, urlparse
 
+from .commercial_history import canonical_domain, normalized_name, find_existing_person
 from .brain import load_brain
 from .config import load_config
 from .llm import get_llm
@@ -45,8 +46,8 @@ NON_OFFICIAL_COMPANY_HOSTS = {
     "wikipedia.org",
 }
 
-DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES = 250
-DIRECT_CLIENT_LARGE_EMPLOYEE_THRESHOLD = 500
+DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES = 50
+DIRECT_CLIENT_LARGE_EMPLOYEE_THRESHOLD = 250
 DIRECT_CLIENT_MIN_SCORE = 5.5
 DIRECT_CLIENT_STRETCH_MIN_SCORE = 6.5
 DIRECT_CLIENT_LARGE_MIN_SCORE = 7.5
@@ -72,17 +73,12 @@ def _employee_upper_bound(value: str) -> int | None:
 
 
 def _direct_client_size_allowed(employee_range: str, score: float) -> bool:
-    """Use headcount only to prioritize, never as a hard discovery exclusion.
-
-    Small and mid-market companies remain easier default buyers, but a large
-    organization can still contain a business unit, specialist gap or bounded
-    project where external Data/AI work creates material value.
-    """
+    """Prefer small teams; exclude giants without guessing missing headcount."""
     employee_upper = _employee_upper_bound(employee_range)
     if employee_upper is None:
         return score >= DIRECT_CLIENT_MIN_SCORE
     if employee_upper > DIRECT_CLIENT_LARGE_EMPLOYEE_THRESHOLD:
-        return score >= DIRECT_CLIENT_LARGE_MIN_SCORE
+        return False
     if employee_upper > DIRECT_CLIENT_IDEAL_MAX_EMPLOYEES:
         return score >= DIRECT_CLIENT_STRETCH_MIN_SCORE
     if employee_upper <= DIRECT_CLIENT_MICRO_MAX_EMPLOYEES:
@@ -110,11 +106,9 @@ def _direct_client_business_allowed(raw: dict, score: float) -> bool:
         return False
     if operational_leverage == "weak":
         return False
-    # Enterprise scale is a prioritization penalty, not an automatic rejection.
-    # Keep only evidence-backed large-company opportunities where a bounded
-    # specialist gap or external-capacity need is plausible.
+    # Giant enterprises are outside the current commercial target.
     if enterprise_risk == "high":
-        return score >= 8.0 and specialist_gap == "clear" and operational_leverage == "strong"
+        return False
 
     # Mature internal Data Science capacity reduces default fit, but specialist
     # optimisation/forecasting/ML/automation gaps can still justify outreach.
@@ -194,18 +188,11 @@ RESULTS:
 
 
 def _website_key(value: str) -> str:
-    raw = str(value or "").strip()
-    if not raw:
-        return ""
-    try:
-        host = urlparse(raw if "://" in raw else f"https://{raw}").netloc.lower().removeprefix("www.")
-        return host.rstrip("/")
-    except ValueError:
-        return raw.rstrip("/").lower()
+    return canonical_domain(value)
 
 
 def _company_name_key(value: str) -> str:
-    return re.sub(r"[^a-z0-9]+", "", str(value or "").lower())
+    return normalized_name(value)
 
 
 def _is_non_official_company_host(value: str) -> bool:
@@ -318,7 +305,7 @@ Return JSON with: name, role, linkedin_url, public_source_url, relevance_score (
 Requirements:
 - name plus company/role association must be supported by supplied results;
 - prefer a direct linkedin.com/in profile when supplied;
-- linkedin_url may be empty if no direct profile is supported; the system will build a LinkedIn people-search link;
+- linkedin_url must be a direct profile supplied in the results; if absent return {{}} so enrichment remains pending;
 - public_source_url must be the strongest supplied supporting result;
 - return {{}} if no real named decision maker is supported.
 Do not infer facts from inside LinkedIn beyond supplied public search titles/snippets.
@@ -334,8 +321,10 @@ RESULTS:
     if not name or not role:
         return None
     linkedin_url = str(response.get("linkedin_url", "")).strip()
-    if "linkedin.com/in/" not in linkedin_url:
-        linkedin_url = _linkedin_people_search_url(name, company.name)
+    if "linkedin.com/in/" not in linkedin_url or linkedin_url not in {h.url for h in hits}:
+        return None
+    if str(response.get("public_source_url", "")) not in {h.url for h in hits}:
+        return None
     response["linkedin_url"] = linkedin_url
     return response
 
@@ -681,11 +670,11 @@ Prefer evidence of public professional activity: articles, talks, meetups, podca
 The organization is context only; it is not a sales target."""
     else:
         target = """Find END-CLIENT operating businesses where external Data/Analytics/AI systems can create measurable value and where an internal Data Science team is unlikely or incomplete.
-The target universe must be intentionally broad enough to sustain AT LEAST 1,000 plausible prospects across Spain/EU. Include self-employed professionals/autónomos, microbusinesses, SMEs, mid-market companies and larger organisations when the economics make sense.
+The target universe must be intentionally broad enough to sustain AT LEAST 1,000 plausible prospects across Spain/EU. Include self-employed professionals/autónomos, microbusinesses and SMEs with evidence-backed operational leverage.
 BUSINESS OPPORTUNITY MATTERS MORE THAN HEADCOUNT OR SECTOR ASSUMPTIONS:
-- 1-250 employees is a high-priority segment, not a hard boundary;
-- 251-500 employees are fully acceptable when there is meaningful leverage;
-- >500 employees and large/global companies are lower-priority, but DO NOT automatically reject them when a business unit, specialist modelling gap, overflow need or bounded external project is plausible;
+- prioritize teams under 50 employees, particularly those hiring Data/AI/engineering roles;
+- 51-250 employees require stronger evidence of fit;
+- exclude companies above 250 employees, giant brands and global enterprises;
 - unknown headcount is acceptable;
 - do NOT reject a company because the first search result omits employee count;
 - actively look for non-obvious opportunities: data can improve planning, allocation, pricing, reporting, scheduling, risk or workflows even when the company is not in an obvious "data-heavy" industry.
@@ -736,9 +725,9 @@ Do not choose a partner merely because it is another consultancy; explain the ac
 - choose operating/end-client businesses with a plausible decision/process SC-Analytics could improve;
 - the PRIMARY criterion is business-model leverage + probability that the company does NOT have a mature internal Data Science team;
 - include autónomos and 1-9 employee microbusinesses when recurring bookings/orders/inventory/scheduling/reporting/administration create enough leverage to justify a system;
-- 1-250 employees is a high-priority segment; 251-500 requires slightly stronger evidence; >500 is lower-priority but NOT automatically excluded;
+- prioritize teams under 50 employees; 51-250 requires stronger evidence; exclude above 250, giant brands and global enterprises;
 - unknown headcount is acceptable;
-- for large/global enterprises, keep candidates only when supplied evidence supports a specific business-unit opportunity, specialist gap, overflow need or bounded project where external expertise is credible;
+- a hiring advert is an indirect signal of capacity demand, NOT proof they accept an external supplier; retain the source and explain the alternative gently;
 - exclude consultancies, marketing agencies, ERP/BI/software vendors, Data/AI service firms and recruitment companies from DIRECT CLIENT mode;
 - a current expansion/hiring/news trigger is valuable but NOT mandatory: stable operational complexity can itself be a valid signal;
 - prefer organizations where SC-Analytics could become the main external analytics/automation specialist rather than compete with a large in-house data department;
@@ -787,7 +776,8 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
     store = get_store()
 
     existing_companies = store.filter("companies", tenant_id=tenant_id)
-    existing_websites = {_website_key(str(row.get("website", ""))) for row in existing_companies if row.get("website")}
+    existing_websites = {_website_key(str(row.get("canonical_domain") or row.get("website", ""))) for row in existing_companies if row.get("canonical_domain") or row.get("website")}
+    existing_people = store.filter("people", tenant_id=tenant_id)
     existing_names = {_company_name_key(str(row.get("name", ""))) for row in existing_companies if row.get("name")}
     requested = max(1, min(int(limit), 50))
     pool_target = max(requested * 5, 50)
@@ -865,9 +855,7 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
             if not _direct_client_business_allowed(raw, score):
                 continue
 
-            # Headcount enriches prioritisation but never becomes a categorical
-            # rejection by itself. Large-company evidence simply raises the
-            # quality threshold required to keep the opportunity.
+            # Apply the SME preference to sourced counts; keep unknown size explicit.
             if employee_range:
                 if not _direct_client_size_allowed(employee_range, score):
                     continue
@@ -885,7 +873,7 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
                 )
                 verified_range = str(size_verification.get("employee_range", "")).strip()
                 classification = str(size_verification.get("classification", "unknown"))
-                if classification == "over_500" and score < DIRECT_CLIENT_LARGE_MIN_SCORE:
+                if classification in {"over_500", "from_251_to_500"}:
                     continue
                 if verified_range:
                     employee_range = verified_range
@@ -928,6 +916,7 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
         # executive profile should never erase a commercially valid target.
         company_row = to_dict(candidate)
         company_row.update(company_extra)
+        company_row.update({"canonical_domain": normalized_website, "exclude_from_discovery": True})
         stored_candidate = store.upsert("companies", company_row, key="tenant_id,website")
         candidate.company_id = stored_candidate.get("company_id", candidate.company_id)
         seen_websites.add(normalized_website)
@@ -961,7 +950,14 @@ def research_companies(mode: str = "partner", limit: int = 10) -> list[dict]:
             "notes": "",
             "completed_at": None,
         })
+        if find_existing_person(existing_people, person_dict):
+            enriched = dict(company_row)
+            enriched["people"] = []
+            enriched["decision_maker_status"] = "already_known"
+            output.append(enriched)
+            continue
         stored_person = store.upsert("people", person_dict, key="tenant_id,company_id,name")
+        existing_people.append(stored_person)
         target_id = stored_person.get("person_id", person.person_id)
 
         outreach = _draft_outreach(mode, candidate, stored_person, company_extra, brain, search, llm)

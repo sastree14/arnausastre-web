@@ -102,7 +102,7 @@ export function linkedInConnectionStatus(connection: IntegrationConnection | nul
 }
 
 export async function getGmailConnections(): Promise<IntegrationConnection[]> {
-  const rows = await getConnection('gmail', 'mailbox')
+  const rows = await queryGrowthTable<IntegrationConnection>('integration_connections', {tenant_id:'eq.sc-analytics',provider:'eq.gmail',order:'updated_at.desc',limit:'20'}, {cacheSeconds:0})
   return rows.filter((row) => !row.metadata?.disconnected)
 }
 

@@ -23,7 +23,10 @@ export async function GET(request: NextRequest) {
   authorize.searchParams.set('client_id', clientId)
   authorize.searchParams.set('redirect_uri', redirectUri)
   authorize.searchParams.set('state', state)
-  authorize.searchParams.set('scope', 'openid profile email w_member_social')
+  const organization=request.nextUrl.searchParams.get('destination')==='organization'
+  if(organization && new URL(redirectUri).origin!==request.nextUrl.origin) return new NextResponse('Para autorizar la página de empresa, esta URL debe estar registrada como callback en la aplicación de LinkedIn. Completa esa configuración o utiliza la versión desplegada con el mismo dominio de callback.',{status:409})
+  const requestedScopes=organization?'openid profile email w_member_social w_organization_social':'openid profile email w_member_social'
+  authorize.searchParams.set('scope',requestedScopes)
 
   const response = NextResponse.redirect(authorize)
   response.cookies.set(STATE_COOKIE, state, {
@@ -33,5 +36,6 @@ export async function GET(request: NextRequest) {
     path: '/api/linkedin',
     maxAge: 10 * 60,
   })
+  response.cookies.set('sc_linkedin_requested_scopes',requestedScopes,{httpOnly:true,secure:process.env.NODE_ENV==='production',sameSite:'lax',path:'/api/linkedin',maxAge:600})
   return response
 }
