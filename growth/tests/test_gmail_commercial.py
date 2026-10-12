@@ -99,3 +99,16 @@ class ExistingEventTests(unittest.TestCase):
         from growth.src.gmail_sync import _validate_existing_event
         with self.assertRaises(RuntimeError):
             _validate_existing_event([{'external_message_id':'m','external_thread_id':'t','company_id':'other'}], {'external_message_id':'m','thread_id':'t'}, 'a')
+
+
+class GmailTokenStorageTests(unittest.TestCase):
+    def test_refresh_uses_connection_column_before_legacy_metadata(self):
+        from unittest.mock import patch, Mock
+        from growth.src.gmail_sync import _connection_access_token
+        response = Mock(status_code=200)
+        response.json.return_value = {"access_token": "test-access", "expires_in": 3600}
+        connection = {"provider_subject": "test@example.invalid", "refresh_token_ciphertext": "column-token", "metadata": {"refresh_token_ciphertext": "legacy-token"}}
+        with patch.dict("os.environ", {"GOOGLE_CLIENT_ID": "test-client", "GOOGLE_CLIENT_SECRET": "test-secret"}), patch("growth.src.gmail_sync.decrypt_secret", return_value="test-refresh") as decrypt, patch("growth.src.gmail_sync.requests.post", return_value=response) as post:
+            self.assertEqual(_connection_access_token(connection, Mock()), "test-access")
+            decrypt.assert_called_once_with("column-token")
+            self.assertEqual(post.call_args.kwargs["data"]["refresh_token"], "test-refresh")

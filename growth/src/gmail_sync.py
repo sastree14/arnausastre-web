@@ -40,7 +40,7 @@ def _connection_access_token(connection: dict[str, Any], store: Any) -> str:
     if expires and expires > datetime.now(timezone.utc):
         return decrypt_secret(str(connection.get("access_token_ciphertext") or ""))
     metadata = dict(connection.get("metadata") or {})
-    encrypted_refresh = str(metadata.get("refresh_token_ciphertext") or "")
+    encrypted_refresh = str(connection.get("refresh_token_ciphertext") or metadata.get("refresh_token_ciphertext") or "")
     if not encrypted_refresh:
         raise RuntimeError(f"Gmail connection {connection.get('provider_subject')} has no refresh token")
     client_id = (os.environ.get("GOOGLE_CLIENT_ID") or os.environ.get("GOOGLE_OAUTH_CLIENT_ID") or "").strip()
