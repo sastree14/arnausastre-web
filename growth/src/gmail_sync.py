@@ -186,7 +186,7 @@ def sync_gmail(limit_per_account: int = 100, newer_than_days: int = 14) -> dict[
     store = get_store()
     connections = [r for r in store.list('integration_connections') if r.get('tenant_id') == TENANT_ID and str(r.get('provider', '')).lower() == GMAIL_PROVIDER and str(r.get('account_type', '')).lower() in ('mailbox', 'personal', 'corporate') and not (r.get('metadata') or {}).get('disconnected')]
     existing = {r['message_key']: r for r in store.list('crm_inbox_messages')}
-    snapshot = _commercial_rpc(store, 'mcp_commercial_memory_snapshot', {'p_company_id': None, 'p_limit': 250}) or {}
+    snapshot = _commercial_rpc(store, 'commercial_memory_snapshot', {'p_company_id': None, 'p_limit': 250}) or {}
     companies, people = snapshot.get('companies', []), snapshot.get('people', [])
     counts = {'accounts': len(connections), 'new_messages': 0, 'new_relevant': 0, 'commercial_events': 0, 'unmatched': 0, 'already_linked': 0, 'errors': [], 'runs': []}
     for connection in connections:
@@ -256,7 +256,7 @@ def sync_gmail(limit_per_account: int = 100, newer_than_days: int = 14) -> dict[
                             _validate_existing_event(existing_events, row, company_id)
                             counts['already_linked'] += 1
                         else:
-                            _commercial_rpc(store, 'mcp_commercial_memory_mutate', {'p_payload': event_payload})
+                            _commercial_rpc(store, 'commercial_memory_mutate', {'p_payload': event_payload})
                             counts['commercial_events'] += 1
                     else:
                         counts['unmatched'] += 1
