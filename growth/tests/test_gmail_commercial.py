@@ -112,3 +112,24 @@ class GmailTokenStorageTests(unittest.TestCase):
             self.assertEqual(_connection_access_token(connection, Mock()), "test-access")
             decrypt.assert_called_once_with("column-token")
             self.assertEqual(post.call_args.kwargs["data"]["refresh_token"], "test-refresh")
+
+class GmailQuotaTests(unittest.TestCase):
+    def test_quota_is_retried_without_credentials_in_diagnostics(self):
+        from unittest.mock import Mock, patch
+        from growth.src.gmail_sync import _gmail_get
+        denied = Mock(status_code=403)
+        denied.json.return_value = {'error': {'message': 'Quota exceeded', 'status': 'PERMISSION_DENIED'}}
+        ok = Mock(status_code=200)
+        with patch('growth.src.gmail_sync.requests.get', side_effect=[denied, ok]) as get, patch('growth.src.gmail_sync.time.sleep') as sleep:
+            self.assertIs(_gmail_get('https://gmail.googleapis.com/test'), ok)
+            self.assertEqual(get.call_count, 2)
+            self.assertIn(((60,), {}), sleep.call_args_list)
+
+    def test_permission_denied_is_not_blindly_retried(self):
+        from unittest.mock import Mock, patch
+        from growth.src.gmail_sync import _gmail_get
+        denied = Mock(status_code=403)
+        denied.json.return_value = {'error': {'message': 'Insufficient authentication scopes'}}
+        with patch('growth.src.gmail_sync.requests.get', return_value=denied) as get, patch('growth.src.gmail_sync.time.sleep'):
+            self.assertIs(_gmail_get('https://gmail.googleapis.com/test'), denied)
+            self.assertEqual(get.call_count, 1)
