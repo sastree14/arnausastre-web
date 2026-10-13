@@ -222,12 +222,24 @@ def sync_gmail(limit_per_account: int = 100, newer_than_days: int = 14) -> dict[
                         raise RuntimeError('Gmail message reference missing threadId')
                     if thread_id not in threads_seen:
                         response = requests.get(f'https://gmail.googleapis.com/gmail/v1/users/me/threads/{thread_id}', headers=headers, params={'format': 'full'}, timeout=30)
-                        response.raise_for_status()
-                        for message in response.json().get('messages', []):
+                        if getattr(response, 'status_code', 200) == 403:
+                            # Some Gmail threads are inaccessible even though their listed
+                            # messages can be read. Preserve message-level evidence, without
+                            # claiming that unavailable whole-thread context was retrieved.
+                            response = requests.get(f'https://gmail.googleapis.com/gmail/v1/users/me/messages/{ref["id"]}', headers=headers, params={'format': 'full'}, timeout=30)
+                            if response.status_code >= 400:
+                                detail = response.json().get('error', {})
+                                raise RuntimeError(f'Gmail message read failed {response.status_code}: {detail.get("status", "")} {detail.get("message", "")[:240]}')
+                            messages = [response.json()]
+                            run['message_fallbacks'] = run.get('message_fallbacks', 0) + 1
+                        else:
+                            response.raise_for_status()
+                            messages = response.json().get('messages', [])
+                            threads_seen.add(thread_id)
+                        for message in messages:
                             row = _normalize_message(account, message)
                             if row['external_message_id']:
                                 fetched[row['message_key']] = row
-                        threads_seen.add(thread_id)
                     run['scanned'] += 1
                 # Chronological order prevents older hydrated context replacing latest state.
                 for row in sorted(fetched.values(), key=lambda r: r['received_at']):

@@ -57,3 +57,6 @@ Do not:
 - create work for the sake of activity;
 - send external messages or applications without required approval;
 - duplicate state across multiple CMI records unnecessarily.
+
+## Integration health
+CMI reads Supabase; chat actions require an actual successful persistence call. Never claim every chat message is automatically stored. Gmail connector access and CMI OAuth are separate. Report last successful sync, incomplete pagination and errors by account. Never mark success after partial failure. Upwork history is visible at /growth-admin/upwork; persist the actual proposal ID, job URL, account, status and dates after sending, without duplicate submissions. Upwork Accepted means submitted, not hired.

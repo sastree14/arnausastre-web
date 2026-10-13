@@ -40,3 +40,6 @@ Do not:
 - treat old generated CRM content as canonical when a newer P00X exists;
 - invent dates, status, metrics or translations;
 - bypass MCP with arbitrary SQL for normal editorial work.
+
+## Presentation and scheduling contract
+Preserve the approved website design while choosing one, two or three cards, comparisons, sequences or diagrams according to the article. Do not force three cards. Keep alignment, margins, typography and backgrounds consistent. Schedule all ES/CA/EN variants of each knowledge family together. Validate contract and approvals, preserve already-published items and future dates, and verify cron health. A successful test does not prove that the whole library is scheduled.
