@@ -31,7 +31,7 @@ jobs:
           cache-dependency-path: growth/requirements.txt
       - run: pip install -r growth/requirements.txt
       - name: Sync relevant Gmail messages
-        run: python -m growth.src.cli gmail-sync --limit 50
+        run: python -m growth.src.cli gmail-sync --limit 250
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
