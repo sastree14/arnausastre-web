@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
-import { Badge, EmptyState, PageHeader, SectionHeading, adminPanel } from '@/components/growth-admin/AdminUi'
+import CommercialViewRefresh from '@/components/growth-admin/CommercialViewRefresh'
+import { Badge, EmptyState, PageHeader, SectionHeading, adminPanel, formatDate } from '@/components/growth-admin/AdminUi'
 import { getGmailConnections } from '@/lib/growth-integrations'
 import { getInteractions, isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
 import { CORPORATE_GOOGLE_EMAIL } from '@/lib/google-oauth-finance'
@@ -30,11 +31,31 @@ export default async function InboxPage({searchParams}:{searchParams:Promise<Rec
   const corporateConnected=connectedEmails.has(CORPORATE_GOOGLE_EMAIL)
 
   return <AdminShell active="inbox">
-    <PageHeader eyebrow="Operaciones · Communication Hub" title="Inbox relevante" description="Unifica correo personal y corporativo, prioriza trabajo real y separa newsletters/promociones de mensajes que requieren decisión o seguimiento." actions={<><a href="/api/growth-admin/google/connect?account=personal&return_to=/growth-admin/inbox" className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">{personalConnected?'Reautorizar personal':'Conectar personal'}</a><a href="/api/growth-admin/google/connect?account=corporate&return_to=/growth-admin/inbox" className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">{corporateConnected?'Reautorizar empresa':'Conectar empresa'}</a><form action="/api/growth-admin/operator-task" method="post"><input type="hidden" name="action" value="gmail_sync"/><input type="hidden" name="return_to" value="/growth-admin/inbox"/><button className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-semibold text-white">Actualizar ahora</button></form></>}/>
+    <PageHeader eyebrow="Operaciones · Communication Hub" title="Inbox relevante" description="Unifica correo personal y corporativo, prioriza trabajo real y separa newsletters/promociones de mensajes que requieren decisión o seguimiento." actions={<><a href="/api/growth-admin/google/connect?account=personal&return_to=/growth-admin/inbox" className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">{personalConnected?'Reautorizar personal':'Conectar personal'}</a><a href="/api/growth-admin/google/connect?account=corporate&return_to=/growth-admin/inbox" className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">{corporateConnected?'Reautorizar empresa':'Conectar empresa'}</a></>}/>
 
     <section className="mb-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4"><div className={`${adminPanel} p-4`}><p className="text-xs uppercase tracking-wide text-slate-400">Relevantes</p><p className="mt-2 text-3xl font-semibold">{relevant}</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase tracking-wide text-slate-400">Alta prioridad</p><p className="mt-2 text-3xl font-semibold">{urgent}</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase tracking-wide text-slate-400">Sin leer</p><p className="mt-2 text-3xl font-semibold">{unread}</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase tracking-wide text-slate-400">Cuentas</p><p className="mt-2 text-3xl font-semibold">{connections.length}/2</p></div></section>
 
-    <section className="mb-8 rounded-2xl border border-slate-200 bg-white p-5"><div className="grid gap-4 lg:grid-cols-2"><div className={`rounded-xl border p-4 ${personalConnected?'border-emerald-200 bg-emerald-50':'border-slate-200 bg-slate-50'}`}><div className="flex items-center justify-between"><p className="text-sm font-semibold">arnau.sastre@gmail.com</p><Badge tone={personalConnected?'green':'amber'}>{personalConnected?'Conectado':'Pendiente'}</Badge></div><p className="mt-2 text-xs text-slate-500">Cuenta personal · Gmail readonly.</p></div><div className={`rounded-xl border p-4 ${corporateConnected?'border-emerald-200 bg-emerald-50':'border-slate-200 bg-slate-50'}`}><div className="flex items-center justify-between"><p className="text-sm font-semibold">{CORPORATE_GOOGLE_EMAIL}</p><Badge tone={corporateConnected?'green':'amber'}>{corporateConnected?'Conectado':'Pendiente'}</Badge></div><p className="mt-2 text-xs text-slate-500">Cuenta de empresa · Gmail + servicios corporativos Google.</p></div></div><p className="mt-4 text-xs text-slate-500">La sincronización programada del Inbox se ejecuta cada 10 minutos; también puedes forzarla con “Actualizar ahora”.</p></section>
+    <CommercialViewRefresh/>
+    <section className="mb-8 rounded-2xl border border-slate-200 bg-white p-5">
+      <div className="grid gap-4 lg:grid-cols-2">{connections.map(connection => {
+        const sync = (connection.metadata?.gmail_sync || {}) as Record<string, unknown>
+        const error = String(sync.last_error || '')
+        const success = String(sync.last_success_at || '')
+        const lastRun = String(sync.last_run_at || '')
+        const partial = Boolean(sync.next_page_token)
+        const needsConsent = error.includes('invalid_grant')
+        const state = needsConsent ? 'Reautorizar' : error ? 'Error de sincronización' : partial ? 'Sincronización parcial' : success ? 'Sincronizado' : 'Pendiente de sincronizar'
+        return <div key={connection.connection_id} className={`rounded-xl border p-4 ${success && !error && !partial ? 'border-emerald-200 bg-emerald-50' : 'border-amber-200 bg-amber-50'}`}>
+          <div className="flex flex-wrap items-center justify-between gap-3"><p className="text-sm font-semibold">{connection.display_name || connection.provider_subject}</p><Badge tone={success && !error && !partial ? 'green' : 'amber'}>{state}</Badge></div>
+          <p className="mt-2 text-xs text-slate-600">Última ejecución: {lastRun ? formatDate(lastRun, true) : 'sin registrar'}.</p>
+          <p className="mt-1 text-xs text-slate-600">Última revisión completa: {success ? formatDate(success, true) : 'sin registrar'}.</p>
+          {needsConsent && <p className="mt-3 text-xs leading-5 text-amber-900">Google ha rechazado la autorización guardada. Utiliza «Reautorizar personal» para volver a conectar esta cuenta.</p>}
+          {error && !needsConsent && <p className="mt-3 text-xs leading-5 text-amber-900">La última ejecución no pudo completarse. El correo pendiente se conserva para el siguiente intento.</p>}
+          {partial && !error && <p className="mt-3 text-xs text-slate-600">El proceso continuará desde la página pendiente sin duplicar mensajes.</p>}
+        </div>
+      })}</div>
+      <p className="mt-4 text-xs text-slate-500">El proceso periódico sincroniza Gmail con Supabase. «Actualizar sección» recarga los datos del CMI; los correos y las respuestas se trabajan desde el chat.</p>
+    </section>
 
     <div className="mb-5 flex flex-wrap gap-2"><a href="/growth-admin/inbox?filter=relevant" className={`rounded-full border px-4 py-2 text-xs font-semibold ${filter==='relevant'?'border-indigo-300 bg-indigo-50 text-indigo-700':'border-slate-200 bg-white text-slate-600'}`}>Relevantes</a><a href="/growth-admin/inbox?filter=all" className={`rounded-full border px-4 py-2 text-xs font-semibold ${filter==='all'?'border-indigo-300 bg-indigo-50 text-indigo-700':'border-slate-200 bg-white text-slate-600'}`}>Todos</a><a href="/growth-admin/inbox?filter=low" className={`rounded-full border px-4 py-2 text-xs font-semibold ${filter==='low'?'border-indigo-300 bg-indigo-50 text-indigo-700':'border-slate-200 bg-white text-slate-600'}`}>Ruido filtrado</a>{connections.map(row=><a key={row.connection_id} href={`/growth-admin/inbox?filter=${filter}&account=${encodeURIComponent(row.provider_subject)}`} className="rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-600">{row.provider_subject}</a>)}</div>
 
