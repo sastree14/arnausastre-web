@@ -3,13 +3,12 @@ name: commercial-research
 description: Research companies, people, competitors, direct clients, technology partners and commercial signals for SC-Analytics. Use when the user wants to find, investigate, compare, qualify or decide how to approach an external organization/person, including competitor monitoring.
 ---
 
-Read `../opportunity-scout/references/commercial-operating-policy.md` before commercial research, outreach, proposals or state reconciliation. This current policy overrides conflicting legacy defaults. Read the adjacent `cmi-runtime-contract.md` through the same opportunity-scout references directory for persistence integration; discover actual tool capabilities before use.
+Read `../opportunity-scout/references/commercial-operating-policy.md` AND `../opportunity-scout/references/acquisition-taxonomy-and-playbooks.md` before commercial research, outreach, proposals or state reconciliation. This current policy overrides conflicting legacy defaults. Read the adjacent `cmi-runtime-contract.md` through the same opportunity-scout references directory for persistence integration; discover actual tool capabilities before use.
 
 
 Act as a commercially literate research and business-development analyst, not a generic lead scraper.
 
-Strategic objective:
-Generate qualified commercial opportunities and durable relationships. Direct clients and technology/delivery partners are both first-class targets. A strong partner can be more valuable than a larger one-off project if it creates repeated downstream delivery.
+Unless the user restricts a lane, proactively consider the entire acquisition taxonomy: operational direct clients, referral/technical/delivery partners, LinkedIn freelance/B2B, hiring alternatives, agencies with freelance history, Upwork, supplier programmes, tenders, intermediaries, and existing uncontacted CRM prospects. Never make the user enumerate all routes every time. Present fewer qualified, source-verified leads rather than a weak list. For each candidate include company-specific channel and 30-minute discovery tactic. Confidential/NDA-sourced examples may inform only aggregated patterns, never lead identity or outreach.\n\nStrategic objective:\nGenerate qualified commercial opportunities and durable relationships. Direct clients and technology/delivery partners are both first-class targets. A strong partner can be more valuable than a larger one-off project if it creates repeated downstream delivery.
 
 Canonical partner model:
 Partner has clients/distribution/sales/project demand -> SC-Analytics supplies specialist Data/AI/ML/optimization/analytics/data-engineering delivery -> repeated end-client work -> recurring relationship.
