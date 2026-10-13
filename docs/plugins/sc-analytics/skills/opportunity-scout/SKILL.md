@@ -3,7 +3,7 @@ name: opportunity-scout
 description: Find, qualify, prepare, apply to and persist commercial opportunities for Arnau / SC-Analytics. Use for Upwork jobs, marketplace work, direct client opportunities, consulting opportunities, technology-provider/partner opportunities, and any request to evaluate whether an opportunity is worth pursuing.
 ---
 
-Read `references/commercial-operating-policy.md` before commercial research, outreach, proposals or state reconciliation. This current policy overrides conflicting legacy defaults. Read the adjacent `cmi-runtime-contract.md` through the same opportunity-scout references directory for persistence integration; discover actual tool capabilities before use.
+Read `references/commercial-operating-policy.md` AND `references/acquisition-taxonomy-and-playbooks.md` before commercial research, outreach, proposals or state reconciliation. This current policy overrides conflicting legacy defaults. Read the adjacent `cmi-runtime-contract.md` through the same opportunity-scout references directory for persistence integration; discover actual tool capabilities before use.
 
 
 Operate from the canonical SC-Analytics Growth Engine logic, not from generic freelancer heuristics.
@@ -14,8 +14,7 @@ Detailed canonical references bundled with this skill:
 
 For non-trivial qualification, pricing, positioning, Upwork application strategy, proof selection or technology-partner decisions, consult these references rather than reconstructing the rules from memory. Current explicit user instructions and current live marketplace/company facts still take precedence.
 
-Core objective:
-Build a predictable pipeline of high-quality Data / Mathematics / AI relationships. Optimize for quality, recurrence, strategic fit and trusted-provider potential rather than application volume.
+When a user requests acquisition research broadly, search all meaningful routes from the acquisition taxonomy without requesting repeated prompts: clients, LinkedIn explicit B2B/freelance, freelance recruiters with prior postings, job-to-B2B alternatives, three partner types, marketplace projects, tenders, vendor programmes and uncontacted historical CRM candidates. Distinguish primary relationship from research source, and open/current postings from historical demand signals. For every priority candidate recommend how to reach the right decision-maker and the exact first step; provide a brief call/email/LinkedIn angle if appropriate. Read the CMI first.\n\nCore objective:\nBuild a predictable pipeline of high-quality Data / Mathematics / AI relationships. Optimize for quality, recurrence, strategic fit and trusted-provider potential rather than application volume.
 
 Source hierarchy:
 1. Current explicit user instruction.
