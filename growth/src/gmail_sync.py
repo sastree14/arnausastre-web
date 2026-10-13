@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import re
+import time
 from datetime import datetime, timedelta, timezone
 from email.utils import parseaddr, parsedate_to_datetime
 
@@ -69,6 +70,23 @@ def _connection_access_token(connection: dict[str, Any], store: Any) -> str:
         store.update("integration_connections", "connection_id", connection_id, changes)
         connection.update(changes)
     return token
+
+
+def _gmail_get(url, **kwargs):
+    """Bound request rate and retry only explicit transient Gmail quota failures."""
+    for attempt in range(4):
+        time.sleep(1.2)
+        response = requests.get(url, **kwargs)
+        if getattr(response, 'status_code', 200) not in (403, 429):
+            return response
+        error = response.json().get('error', {})
+        detail = str(error).lower()
+        if not any(word in detail for word in ('quota', 'ratelimit', 'rate limit', 'resource_exhausted')):
+            return response
+        if attempt == 3:
+            return response
+        time.sleep(60)
+    return response
 
 
 def _header(message: dict[str, Any], name: str) -> str:
@@ -212,7 +230,7 @@ def sync_gmail(limit_per_account: int = 100, newer_than_days: int = 14) -> dict[
                 params = {'q': query, 'maxResults': min(100, limit - run['scanned'])}
                 if cursor:
                     params['pageToken'] = cursor
-                listing = requests.get('https://gmail.googleapis.com/gmail/v1/users/me/messages', headers=headers, params=params, timeout=30)
+                listing = _gmail_get('https://gmail.googleapis.com/gmail/v1/users/me/messages', headers=headers, params=params, timeout=30)
                 listing.raise_for_status()
                 page = listing.json()
                 # Keep input cursor until every message on this page persists successfully.
@@ -221,12 +239,12 @@ def sync_gmail(limit_per_account: int = 100, newer_than_days: int = 14) -> dict[
                     if not thread_id:
                         raise RuntimeError('Gmail message reference missing threadId')
                     if thread_id not in threads_seen:
-                        response = requests.get(f'https://gmail.googleapis.com/gmail/v1/users/me/threads/{thread_id}', headers=headers, params={'format': 'full'}, timeout=30)
+                        response = _gmail_get(f'https://gmail.googleapis.com/gmail/v1/users/me/threads/{thread_id}', headers=headers, params={'format': 'full'}, timeout=30)
                         if getattr(response, 'status_code', 200) == 403:
                             # Some Gmail threads are inaccessible even though their listed
                             # messages can be read. Preserve message-level evidence, without
                             # claiming that unavailable whole-thread context was retrieved.
-                            response = requests.get(f'https://gmail.googleapis.com/gmail/v1/users/me/messages/{ref["id"]}', headers=headers, params={'format': 'full'}, timeout=30)
+                            response = _gmail_get(f'https://gmail.googleapis.com/gmail/v1/users/me/messages/{ref["id"]}', headers=headers, params={'format': 'full'}, timeout=30)
                             if response.status_code >= 400:
                                 detail = response.json().get('error', {})
                                 raise RuntimeError(f'Gmail message read failed {response.status_code}: {detail.get("status", "")} {detail.get("message", "")[:240]}')
