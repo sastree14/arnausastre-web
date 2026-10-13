@@ -14,7 +14,7 @@ type Person = { id: string; company_id?: string; name: string; role?: string; em
 type Event = { id: string; company_id?: string; event_type?: string; channel?: string; summary?: string; occurred_at?: string }
 type Opportunity = { opportunity_id: string; company_id?: string; source_signal_id?: string; name?: string; stage?: string; source?: string; metadata?: Record<string,unknown> }
 type Signal = {
-  signal_id: string; company_id?: string; company_name?: string; title: string; summary?: string
+  signal_id: string; company_id?: string; company_name?: string; signal_type?: string; title: string; summary?: string
   source_url?: string; evidence?: string; recommended_offer?: string; status?: string
   metadata?: Record<string,unknown>
 }
