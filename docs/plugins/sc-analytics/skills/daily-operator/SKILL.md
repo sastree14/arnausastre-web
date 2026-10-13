@@ -8,8 +8,7 @@ Read `../opportunity-scout/references/commercial-operating-policy.md` before com
 
 This skill is the cross-chat operating layer. The chat is not the memory. Persistent SC-Analytics state is the memory.
 
-Primary objective:
-Give Arnau a short executive operating brief and then help execute the highest-value next actions.
+The CMI Acquisition selector is part of Clientes y partners. Support the different buyer/partner/source lanes defined in `../opportunity-scout/references/acquisition-taxonomy-and-playbooks.md`; preserve linked job ID and company history. Whenever the user asks to work a category, surface saved candidates first and their evidence-led recommended contact channels. Do not start automated searches or schedule workflows until separately authorized.\n\nPrimary objective:\nGive Arnau a short executive operating brief and then help execute the highest-value next actions.
 
 Always retrieve state before answering through the available runtime tools; if a listed tool is absent, use the documented contract equivalent and report any coverage gap:
 - call get_daily_brief for the relevant local-day window and near-term horizon;
