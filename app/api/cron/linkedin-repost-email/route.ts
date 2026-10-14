@@ -7,7 +7,6 @@ export const maxDuration = 60
 
 // Avoid notifying about posts published before this integration was requested.
 const ACTIVE_FROM = '2026-10-14T10:35:00Z'
-const MAX_ATTEMPTS = 6
 
 type Published = {
   content_id: string
@@ -62,7 +61,6 @@ async function consumeInvocation(req: NextRequest): Promise<boolean> {
   return consumed.length === 1
 }
 function due(row: Notification, now: number) {
-  if (row.attempts >= MAX_ATTEMPTS) return false
   if (row.status === 'pending') return true
   if (row.status === 'failed') return !row.next_attempt_at || Date.parse(row.next_attempt_at) <= now
   return row.status === 'processing' && !!row.lease_until && Date.parse(row.lease_until) <= now
@@ -83,7 +81,7 @@ export async function POST(req: NextRequest) {
       status: 'eq.published',
       published_at: `gte.${ACTIVE_FROM}`,
       external_post_url: 'not.is.null',
-      order: 'published_at.asc',
+      order: 'published_at.desc',
       limit: '150',
     })
     for (const post of published) {
@@ -162,7 +160,7 @@ export async function POST(req: NextRequest) {
           method: 'PATCH', prefer: 'return=minimal',
           body: {
             status: 'failed', lease_until: null,
-            next_attempt_at: new Date(Date.now() + 15 * (row.attempts + 1) * 60 * 1000).toISOString(),
+            next_attempt_at: new Date(Date.now() + 15 * Math.min(8, row.attempts + 1) * 60 * 1000).toISOString(),
             last_error: error instanceof Error ? error.message.slice(0,250) : 'Mail delivery failed',
             updated_at: new Date().toISOString(),
           },
