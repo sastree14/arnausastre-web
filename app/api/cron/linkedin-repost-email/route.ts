@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
-import { timingSafeEqual } from 'node:crypto'
 import { growthSupabaseHeaders, growthSupabaseUrl } from '@/lib/supabase-growth'
 
 export const runtime = 'nodejs'
@@ -25,7 +24,7 @@ type Notification = {
   next_attempt_at: string | null
   lease_until: string | null
 }
-type ChangeOptions = { method?: 'GET' | 'POST' | 'PATCH'; body?: unknown; prefer?: string }
+type ChangeOptions = { method?: 'GET' | 'POST' | 'PATCH' | 'DELETE'; body?: unknown; prefer?: string }
 async function requestDb<T>(
   table: string,
   params: Record<string, string> = {},
@@ -51,12 +50,16 @@ function escapeHtml(value: string) {
   return value.replace(/&/g, '&amp;').replace(/</g, '&lt;')
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;')
 }
-function authorized(req: NextRequest) {
-  const expected = process.env.LINKEDIN_REPOST_NOTIFY_SECRET || ''
-  const received = req.headers.get('x-sc-notify-token') || ''
-  if (!expected || !received) return false
-  const a = Buffer.from(expected), b = Buffer.from(received)
-  return a.length === b.length && timingSafeEqual(a, b)
+async function consumeInvocation(req: NextRequest): Promise<boolean> {
+  const body: unknown = await req.json().catch(() => null)
+  const nonce = body && typeof body === 'object' && 'nonce' in body ? String(body.nonce) : ''
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(nonce)) return false
+  // A nonce is minted by the Supabase 5-minute scheduler and can be consumed once.
+  // Validation is an atomic DELETE, with no reusable secrets in the HTTP request.
+  const consumed = await requestDb<{ nonce: string }>('linkedin_notification_invocations', {
+    nonce: `eq.${nonce}`, expires_at: `gt.${new Date().toISOString()}`, select: 'nonce',
+  }, { method: 'DELETE', prefer: 'return=representation' })
+  return consumed.length === 1
 }
 function due(row: Notification, now: number) {
   if (row.attempts >= MAX_ATTEMPTS) return false
@@ -66,7 +69,7 @@ function due(row: Notification, now: number) {
 }
 
 export async function POST(req: NextRequest) {
-  if (!authorized(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!await consumeInvocation(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_SECURE } = process.env
   if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASSWORD) {
     return NextResponse.json({ error: 'Mail service is not configured' }, { status: 503 })
