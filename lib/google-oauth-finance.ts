@@ -11,10 +11,11 @@ const firstEnv = (...names: string[]) => names.map(env).find(Boolean) || ''
 export const CORPORATE_GOOGLE_EMAIL = 'arnau.sastre@sc-analytics.io'
 
 export const GOOGLE_SCOPES = {
-  personal: ['openid', 'email', 'profile', 'https://www.googleapis.com/auth/gmail.readonly'],
+  personal: ['openid', 'email', 'profile', 'https://www.googleapis.com/auth/gmail.readonly', 'https://www.googleapis.com/auth/calendar.events.readonly'],
   corporate: [
     'openid', 'email', 'profile',
     'https://www.googleapis.com/auth/gmail.readonly',
+    'https://www.googleapis.com/auth/calendar.events.readonly',
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/spreadsheets',
     'https://www.googleapis.com/auth/analytics.readonly',
