@@ -1,5 +1,7 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
+import CalendarModeSelect from '@/components/growth-admin/CalendarModeSelect'
+import MeetingCalendarView from '@/components/growth-admin/MeetingCalendarView'
 import { Badge, EmptyState, PageHeader, SectionHeading, adminButtonPrimary, adminButtonSecondary, adminInput, adminPanel, formatDate, publicationLabel, scheduleInputValue } from '@/components/growth-admin/AdminUi'
 import { getEditorialAutomationStatus, getEditorialJobs, getExternalEditorialEvents } from '@/lib/editorial-automation'
 import { controlCenterDateKey } from '@/lib/control-center-time'
@@ -29,6 +31,7 @@ const WEEK = ['L','M','X','J','V','S','D']
 export default async function CalendarPage({ searchParams }: { searchParams: Promise<Record<string,string|string[]|undefined>> }) {
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
   const params = await searchParams
+  if (params.view === 'meetings') return <MeetingCalendarView/>
   const monthsRaw = typeof params.months === 'string' ? Number(params.months) : 1
   const months = [1,3,6,12].includes(monthsRaw) ? monthsRaw : 1
   const [rawContent, automation, jobs, externalEvents] = await Promise.all([getWorkspaceContent(), getEditorialAutomationStatus(), getEditorialJobs(), getExternalEditorialEvents()])
@@ -42,6 +45,7 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
   scheduled.forEach((item) => { const key=controlCenterDateKey(item.scheduled_at||''); if(key) byDate.set(key,[...(byDate.get(key)||[]),item]) })
 
   return <AdminShell active="calendar">
+    <CalendarModeSelect value="editorial"/>
     <PageHeader eyebrow="CMI · Editorial" title="Calendario" description="La planificación editorial vive dentro del CMI: cada publicación conserva objetivo, estado, destino y relación con el funnel. Reprogramar, quitar fecha y publicar son acciones trazables." actions={<a href="/growth-admin/content" className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">Biblioteca de contenido</a>}/>
     <section className="mb-6 rounded-2xl border border-slate-200 bg-white p-5"><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">{[['Programadas',automation.scheduled],['Imágenes guardadas',`${automation.assets_stored}/${automation.assets_expected}`],['LinkedIn publicadas',prepared.filter(item=>item.content_type==='linkedin_post'&&item.status==='published').length],['Artículos publicados',prepared.filter(item=>item.content_type==='article'&&item.status==='published').length],['Comprobación automática',automation.cron_enabled?'Cada 5 minutos':'Inactiva']].map(([label,value])=><div key={label}><p className="text-xs text-slate-500">{label}</p><p className="mt-2 text-xl font-semibold">{value}</p></div>)}</div><p className="mt-4 text-xs text-slate-500">Europe/Madrid · Lunes y miércoles 16:00 · Viernes 15:00 · Primera publicación: 14 de octubre de 2026. El cambio de hora se calcula para cada fecha.</p></section>
     <section className="mb-6 rounded-2xl border border-sky-200 bg-sky-50 p-5"><p className="font-semibold text-sky-900">Publicación automática desde Arnau Sastre</p><p className="mt-2 text-sm text-sky-800">La página de SC-Analytics queda fuera de esta cola. Puedes compartir allí las publicaciones manualmente desde LinkedIn.</p></section>
