@@ -36,9 +36,21 @@ export default async function DealDeskPage({ searchParams }: { searchParams: Pro
   const meta = (opportunity?.metadata || {}) as Row
   const timeline = Array.isArray(meta.timeline) ? [...meta.timeline].reverse() : []
   const stages = ['contacted', 'qualification', 'discovery', 'proposal', 'negotiation', 'won', 'lost']
+  const submissions = bundle.opportunities.filter(item => item.stage === 'applied')
+  const discovered = bundle.opportunities.filter(item => item.stage === 'discovered')
+  const advanced = bundle.opportunities.filter(item => ['discovery', 'proposal', 'negotiation', 'won'].includes(String(item.stage)))
 
   return <AdminShell active="deal-desk">
     <PageHeader eyebrow="Operaciones · Pipeline" title="Deal Desk" description="Un expediente operativo por cliente: origen, contacto, qualification, discovery, propuesta, presupuesto, negociación y conversión a proyecto." actions={<a href="/growth-admin/operations#deals" className={adminButtonSecondary}>Volver a Operaciones</a>}/>
+    <section className={adminPanel + ' mb-5 p-5'}>
+      <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-lg font-semibold text-slate-900">Embudo comercial: visibilidad y respuestas</h2><a href="/growth-admin/crm" className="text-sm font-semibold text-indigo-700">Revisar seguimiento en CRM ↗</a></div>
+      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        <div className="rounded-xl border border-slate-200 p-4"><p className="text-xs text-slate-500">Candidaturas registradas</p><p className="mt-1 text-2xl font-semibold">{submissions.length}</p></div>
+        <div className="rounded-xl border border-slate-200 p-4"><p className="text-xs text-slate-500">Oportunidades descubiertas</p><p className="mt-1 text-2xl font-semibold">{discovered.length}</p></div>
+        <div className="rounded-xl border border-slate-200 p-4"><p className="text-xs text-slate-500">En discovery o posteriores</p><p className="mt-1 text-2xl font-semibold">{advanced.length}</p></div>
+      </div>
+      <p className="mt-4 text-sm leading-6 text-slate-600"><strong>Importante:</strong> «applied» acredita el estado registrado de una candidatura, no que el cliente la haya visto ni que haya respondido. Tampoco una oferta «discovered» es un cliente activo. Para evaluar las respuestas hay que contrastar Upwork y los hilos reales de Gmail. Antes de volver a aplicar, prioriza perfiles con contratación reciente, alcance técnico claro y actividad verificable.</p>
+    </section>
     {params.created && <div className="mb-4 rounded-xl border border-violet-200 bg-violet-50 p-4 text-sm text-violet-800">Expediente creado. Completa la ficha maestra y sigue el proceso.</div>}
     {params.saved && <div className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">Cambios guardados en el expediente.</div>}
 
