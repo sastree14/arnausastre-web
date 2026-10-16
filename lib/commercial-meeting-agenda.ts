@@ -48,7 +48,7 @@ const currentWindow = () => {
 }
 const str = (value: unknown) => typeof value === 'string' ? value : ''
 const dateOk = (value: string) => Number.isFinite(new Date(value).getTime())
-const timeInWindow = (value: string, min: string, max: string) => dateOk(value) && value >= min && value <= max
+const timeInWindow = (value: string, min: string, max: string) => dateOk(value) && new Date(value).getTime() >= new Date(min).getTime() && new Date(value).getTime() <= new Date(max).getTime()
 const isAllowedUrl = (value: string) => {
   try { return new URL(value).protocol === 'https:' ? value : '' } catch { return '' }
 }
@@ -79,7 +79,7 @@ export async function getMeetingAgenda(): Promise<MeetingAgenda> {
       url: isAllowedUrl(str(m.booking_url)),
       account: 'CMI',
       source: 'crm' as const,
-      response: m.status === 'confirmed' ? 'accepted' as const : 'unknown' as const,
+      response: responseLabel(str(meta.attendee_response || meta.response_status)),
       status: m.status,
     }
   })
@@ -106,6 +106,8 @@ export async function getMeetingAgenda(): Promise<MeetingAgenda> {
         calendarAuthorized += 1
         for (const event of data.items || []) {
           if (!event.id || event.status === 'cancelled' || event.eventType === 'outOfOffice' || event.eventType === 'focusTime') continue
+          const hasGuests = (event.attendees || []).some(guest => !guest.self && guest.email?.toLowerCase() !== account.toLowerCase())
+          if (!hasGuests && !/meeting|call|entrevista|reuni[oó]n|discovery|partner|partnership|cliente|client|workshop|demo/i.test(str(event.summary))) continue
           const start = str(event.start?.dateTime)
           if (!start || !dateOk(start)) continue // All-day reminders are not business meetings
           const self = event.attendees?.find(x => x.self || x.email?.toLowerCase() === account.toLowerCase())
@@ -133,7 +135,7 @@ export async function getMeetingAgenda(): Promise<MeetingAgenda> {
       for (const result of details) {
         if (result.status !== 'fulfilled') continue
         const msg = result.value
-        if (!msg.id || (msg.labelIds || []).includes('SENT') || (msg.labelIds || []).includes('TRASH')) continue
+        if (!msg.id || !msg.internalDate || (msg.labelIds || []).includes('SENT') || (msg.labelIds || []).includes('TRASH')) continue
         const subject = str(msg.payload?.headers?.find(h => h.name.toLowerCase() === 'subject')?.value)
         if (!/invitation|confirmed:|meeting|entrevista|reuni[oó]n|discovery|calendly|booking/i.test(subject)) continue
         const received = new Date(Number(msg.internalDate || 0)).toISOString()
