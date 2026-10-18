@@ -19,7 +19,9 @@ const COPY = {
     ],
 
     intentLabel: '¿QUÉ TE TRAE HASTA AQUÍ?',
-    intentHint: 'Elige la opción que mejor encaje. El formulario se adaptará a tu situación.',
+    intentHint: 'Selecciona una de las tres opciones. Verás cómo cambia el formulario según lo que necesites.',
+    chooseLabel: 'Seleccionar esta opción',
+    chosenLabel: 'Opción seleccionada',
     formFor: 'CONSULTA SOBRE',
     guidanceLabel: 'PARA ORIENTAR TU MENSAJE',
     intents: [
@@ -88,7 +90,9 @@ const COPY = {
     ],
 
     intentLabel: 'QUÈ ET PORTA FINS AQUÍ?',
-    intentHint: 'Tria l’opció que encaixi millor. El formulari s’adaptarà a la teva situació.',
+    intentHint: 'Selecciona una de les tres opcions. Veuràs com canvia el formulari segons el que necessitis.',
+    chooseLabel: 'Seleccionar aquesta opció',
+    chosenLabel: 'Opció seleccionada',
     formFor: 'CONSULTA SOBRE',
     guidanceLabel: 'PER ORIENTAR EL TEU MISSATGE',
     intents: [
@@ -157,7 +161,9 @@ const COPY = {
     ],
 
     intentLabel: 'WHAT BRINGS YOU HERE?',
-    intentHint: 'Choose the option that best fits. The form will adapt to your situation.',
+    intentHint: 'Select one of the three options. The form below changes to match what you need.',
+    chooseLabel: 'Select this option',
+    chosenLabel: 'Selected option',
     formFor: 'ENQUIRY ABOUT',
     guidanceLabel: 'TO HELP GUIDE YOUR MESSAGE',
     intents: [
@@ -318,15 +324,41 @@ export default function ContactPage() {
                   key={key}
                   type="button"
                   aria-pressed={active}
-                  onClick={() => setIntent(key as IntentKey)}
-                  className={`min-h-[165px] border-b border-r border-slate-300 p-5 text-left transition ${active ? 'bg-[#0D1B2A] text-white' : index === 1 ? 'bg-[#FFFFFF] text-slate-950 hover:bg-[#FFFFFF]' : 'bg-white text-slate-950 hover:bg-slate-50'}`}
+                  aria-controls="contact-context-form"
+                  onClick={() => {
+                    setIntent(key as IntentKey)
+                    setSubmitted(false)
+                    setError(false)
+                  }}
+                  className={`group relative flex min-h-[225px] cursor-pointer flex-col border-b border-r border-slate-300 p-6 text-left outline-none transition-[background-color,box-shadow] duration-200 focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#4F46E5] ${
+                    active
+                      ? 'bg-[#0D1B2A] text-white shadow-[inset_0_0_0_3px_#7A7DFF]'
+                      : 'bg-white text-slate-950 hover:bg-[#EAF0F6] hover:shadow-[inset_0_0_0_2px_#496C8A]'
+                  }`}
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <p className={`font-mono text-[14px] ${active ? 'text-[#7A7DFF]' : 'text-[#254A66]'}`}>0{index + 1}</p>
-                    <span className={`text-[14px] font-semibold ${active ? 'text-[#A8BACB]' : 'text-slate-300'}`}>{active ? '✓' : '→'}</span>
+                  <div className="flex w-full items-start justify-between gap-4">
+                    <p className={`font-mono text-[14px] font-semibold ${active ? 'text-[#A4A5FF]' : 'text-[#254A66]'}`}>0{index + 1}</p>
+                    <span
+                      aria-hidden="true"
+                      className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition ${
+                        active ? 'border-[#A4A5FF] bg-[#A4A5FF]' : 'border-[#496C8A] bg-white group-hover:border-[#4F46E5]'
+                      }`}
+                    >
+                      {active ? <span className="h-2.5 w-2.5 rounded-full bg-[#0D1B2A]" /> : null}
+                    </span>
                   </div>
-                  <h2 className={`mt-5 text-[22px] font-semibold ${active ? 'text-white' : 'text-slate-950'}`}>{title}</h2>
-                  <p className={`mt-3 text-[16px] leading-7 ${active ? 'text-[#A8BACB]' : 'text-slate-600'}`}>{body}</p>
+                  <h2 className={`mt-5 text-[22px] font-semibold leading-[1.2] ${active ? 'text-white' : 'text-slate-950'}`}>{title}</h2>
+                  <p className={`mt-3 text-[16px] leading-7 ${active ? 'text-[#D5E1EB]' : 'text-slate-600'}`}>{body}</p>
+                  <div
+                    className={`mt-auto flex w-full items-center justify-between gap-3 border-t pt-5 text-[15px] font-semibold ${
+                      active ? 'border-[#496C8A] text-white' : 'border-slate-300 text-[#254A66]'
+                    }`}
+                  >
+                    <span>{active ? t.chosenLabel : t.chooseLabel}</span>
+                    <span aria-hidden="true" className={`text-[20px] transition-transform ${active ? 'text-[#A4A5FF]' : 'group-hover:translate-x-1'}`}>
+                      {active ? '✓' : '→'}
+                    </span>
+                  </div>
                 </button>
               )
             })}
@@ -336,7 +368,7 @@ export default function ContactPage() {
 
       <section className="border-b border-slate-300 bg-[#F7F9FC]">
         <div className="site-container grid gap-6 py-12 md:py-16 lg:grid-cols-[1.1fr_.9fr]">
-          <div className="border border-slate-300 bg-white p-6 md:p-8">
+          <div id="contact-context-form" className="scroll-mt-24 border border-slate-300 bg-white p-6 md:p-8">
             <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{selectedForm.label}</p>
             <h2 className="mt-3 text-[32px] leading-[1.08] sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{selectedForm.title}</h2>
             <p aria-live="polite" className="mt-4 text-[15px] font-medium text-slate-600">{t.formFor}: <span className="font-semibold text-[#254A66]">{selectedIntent[1]}</span></p>
