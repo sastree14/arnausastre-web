@@ -22,6 +22,7 @@ type KnowledgeItem = {
   href: string
   title: string
   excerpt: string
+  searchText: string
   areas: KnowledgeArea[]
 }
 
@@ -46,6 +47,10 @@ const COPY = {
     read: 'Descubrir análisis',
     filterLabel: 'EXPLORA POR ÁREA',
     count: 'análisis',
+    searchLabel: 'BUSCAR ANÁLISIS',
+    searchPlaceholder: 'Busca por tema o palabra clave (p. ej., stock)',
+    clearSearch: 'Limpiar búsqueda',
+    emptySearch: 'No hemos encontrado análisis para esta búsqueda y los filtros seleccionados.',
     library: 'TODOS LOS ANÁLISIS',
     filters: {
       all: 'Todos',
@@ -70,6 +75,10 @@ const COPY = {
     read: 'Descobrir anàlisi',
     filterLabel: 'EXPLORA PER ÀREA',
     count: 'anàlisis',
+    searchLabel: 'CERCA ANÀLISIS',
+    searchPlaceholder: 'Cerca per tema o paraula clau (p. ex., estoc)',
+    clearSearch: 'Netejar cerca',
+    emptySearch: 'No hem trobat anàlisis per a aquesta cerca i els filtres seleccionats.',
     library: 'TOTES LES ANÀLISIS',
     filters: {
       all: 'Tots',
@@ -94,6 +103,10 @@ const COPY = {
     read: 'Explore analysis',
     filterLabel: 'EXPLORE BY AREA',
     count: 'analyses',
+    searchLabel: 'SEARCH ANALYSES',
+    searchPlaceholder: 'Search by topic or keyword (e.g., stock)',
+    clearSearch: 'Clear search',
+    emptySearch: 'No analyses match this search and the selected filters.',
     library: 'ALL ANALYSES',
     filters: {
       all: 'All',
@@ -159,6 +172,10 @@ function chooseGeneratedVariant(items: PublicGeneratedArticle[], lang: 'en' | 'e
     || items[0]
 }
 
+function normalizeSearch(value: string) {
+  return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase().trim()
+}
+
 function compactExcerpt(body: string) {
   return body
     .replace(/^#{1,6}\s+/gm, '')
@@ -173,6 +190,7 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
   const { lang } = useSiteLanguage()
   const t = COPY[lang]
   const [activeFilter, setActiveFilter] = useState<KnowledgeArea>('all')
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     const requested = new URLSearchParams(window.location.search).get('area') as KnowledgeArea | null
@@ -197,6 +215,9 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
       href: `/knowledge/${article.slug}/${lang}`,
       title: lang === 'en' ? article.titleEn : lang === 'ca' ? (article.titleCa || article.titleEs) : article.titleEs,
       excerpt: lang === 'en' ? article.excerptEn : lang === 'ca' ? (article.excerptCa || article.excerptEs) : article.excerptEs,
+      searchText: [article.titleEn, article.titleEs, article.titleCa, article.excerptEn, article.excerptEs, article.excerptCa,
+        article.bodyEn, article.bodyEs, article.bodyCa, ...article.tagsEn, ...article.tagsEs, ...(article.tagsCa || [])]
+        .filter(Boolean).join(' '),
       areas: STATIC_AREAS[article.slug] || ['analytics'],
     }))
 
@@ -208,6 +229,9 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
         href: `/knowledge/${key}/${lang}`,
         title: item.title,
         excerpt: String(generatedMeta(item).excerpt || compactExcerpt(item.body)),
+        searchText: variants.flatMap((variant) => [variant.title, variant.body, variant.topic, variant.challenge,
+          variant.industry, variant.content_family, ...(variant.hashtags || []), String(generatedMeta(variant).excerpt || '')])
+          .filter(Boolean).join(' '),
         areas: generatedAreas(item),
       }]
     })
@@ -219,9 +243,13 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
     .map((slug) => items.find((item) => item.key === slug))
     .filter((item): item is KnowledgeItem => Boolean(item))
 
-  const filtered = activeFilter === 'all'
-    ? items
-    : items.filter((item) => item.areas.includes(activeFilter))
+  const searchTerms = normalizeSearch(searchQuery).split(/\s+/).filter(Boolean)
+  const filtered = items.filter((item) => {
+    if (activeFilter !== 'all' && !item.areas.includes(activeFilter)) return false
+    if (!searchTerms.length) return true
+    const haystack = normalizeSearch(item.searchText)
+    return searchTerms.every((term) => haystack.includes(term))
+  })
 
   if (!items.length) return null
 
@@ -261,7 +289,25 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
         <div className="site-container py-6">
           <div className="mb-4 flex items-center justify-between gap-4">
             <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t.filterLabel}</p>
-            <p className="font-mono text-[14px] text-slate-500">{String(filtered.length).padStart(2, '0')} {t.count}</p>
+            <p aria-live="polite" className="font-mono text-[14px] text-slate-500">{String(filtered.length).padStart(2, '0')} {t.count}</p>
+          </div>
+          <div role="search" className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:gap-4">
+            <label htmlFor="knowledge-search" className="flex-1 text-[14px] font-semibold uppercase tracking-[0.12em] text-[#254A66]">
+              {t.searchLabel}
+              <input
+                id="knowledge-search"
+                type="search"
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                placeholder={t.searchPlaceholder}
+                className="mt-2 block min-h-12 w-full border border-slate-400 bg-white px-4 py-3 text-[16px] font-normal normal-case tracking-normal text-slate-950 outline-none placeholder:text-slate-500 focus:border-[#254A66] focus:ring-2 focus:ring-[#254A66]/20"
+              />
+            </label>
+            {searchQuery && (
+              <button type="button" onClick={() => setSearchQuery('')} className="min-h-12 border border-slate-400 bg-white px-5 py-3 text-[15px] font-semibold text-[#254A66] hover:bg-slate-50">
+                {t.clearSearch} ×
+              </button>
+            )}
           </div>
           <div className="grid grid-cols-2 border-l border-t border-slate-300 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-8">
             {FILTER_ORDER.map((filter) => {
@@ -314,8 +360,8 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
           </div>
         ) : (
           <div className="border-b border-slate-300 py-10">
-            <p className="text-[17px] text-slate-600">{t.empty}</p>
-            <button onClick={() => setActiveFilter('all')} className="mt-4 text-[15px] font-semibold text-[#4F46E5]">{t.emptyCta} →</button>
+            <p className="text-[17px] text-slate-600">{searchTerms.length ? t.emptySearch : t.empty}</p>
+            <button type="button" onClick={() => { setActiveFilter('all'); setSearchQuery('') }} className="mt-4 text-[15px] font-semibold text-[#4F46E5]">{t.emptyCta} →</button>
           </div>
         )}
       </section>

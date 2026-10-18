@@ -27,6 +27,15 @@ const COPY = {
       ['Simulación y modelización', 'Escenarios y modelos para decidir antes de cambiar una operación real.'],
     ],
 
+    businessCases: [
+      'Automatización de atención, documentos y tareas internas.',
+      'Previsión de demanda y necesidades de stock.',
+      'Asignación de recursos, rutas y turnos.',
+      'Mantenimiento predictivo y detección de anomalías.',
+      'Cuadros de mando e indicadores fiables.',
+      'Evaluación de escenarios, inversiones y riesgos.',
+    ],
+
     modelsLabel: 'FORMAS DE COLABORAR',
     modelsTitle: 'Una colaboración adaptada a tu empresa.',
     models: [
@@ -60,7 +69,7 @@ const COPY = {
 
     finalLabel: 'SIN COMPROMISO',
     finalTitle: 'Cuéntanos qué quieres mejorar y te diremos cómo podemos ayudarte.',
-    finalBody: 'Primera llamada de 30 minutos, sin coste ni compromiso.',
+    finalBody: 'Primera conversación de 30 minutos para entender tu contexto y valorar cómo podemos ayudarte.',
     finalCta: 'Cuéntanos tu caso',
   },
 
@@ -82,6 +91,15 @@ const COPY = {
       ['Intel·ligència artificial i automatització', 'Solucions d’IA i automatització adaptades als teus processos i eines.'],
       ['Analytics i BI', 'Visibilitat clara per seguir operacions, rendiment i decisions.'],
       ['Simulació i modelització', 'Escenaris i models per decidir abans de canviar una operació real.'],
+    ],
+
+    businessCases: [
+      'Automatització de l’atenció, documents i tasques internes.',
+      'Previsió de demanda i necessitats d’estoc.',
+      'Assignació de recursos, rutes i torns.',
+      'Manteniment predictiu i detecció d’anomalies.',
+      'Quadres de comandament i indicadors fiables.',
+      'Avaluació d’escenaris, inversions i riscos.',
     ],
 
     modelsLabel: 'FORMES DE COL·LABORAR',
@@ -117,7 +135,7 @@ const COPY = {
 
     finalLabel: 'SENSE COMPROMÍS',
     finalTitle: 'Explica’ns què vols millorar i et direm com et podem ajudar.',
-    finalBody: 'Primera trucada de 30 minuts, sense cost ni compromís.',
+    finalBody: 'Primera conversa de 30 minuts per entendre el teu context i valorar com et podem ajudar.',
     finalCta: 'Explica’ns el teu cas',
   },
 
@@ -139,6 +157,15 @@ const COPY = {
       ['Artificial intelligence & automation', 'AI and automation solutions tailored to your processes and tools.'],
       ['Analytics and BI', 'Clear visibility into operations, performance and decisions.'],
       ['Simulation & modelling', 'Scenarios and models for deciding before changing a real operation.'],
+    ],
+
+    businessCases: [
+      'Automating support, documents and internal tasks.',
+      'Demand forecasting and stock planning.',
+      'Resource allocation, routing and scheduling.',
+      'Predictive maintenance and anomaly detection.',
+      'Dashboards and reliable performance indicators.',
+      'Evaluating scenarios, investments and risks.',
     ],
 
     modelsLabel: 'WAYS TO WORK TOGETHER',
@@ -174,10 +201,12 @@ const COPY = {
 
     finalLabel: 'NO COMMITMENT',
     finalTitle: 'Tell us what you want to improve and we will show you how we can help.',
-    finalBody: 'A free 30-minute initial call, with no commitment.',
+    finalBody: 'A 30-minute introductory conversation to understand your context and assess how we can help.',
     finalCta: 'Tell us about your case',
   },
 } as const
+
+const CAPABILITY_ORDER = [3, 0, 1, 2, 4, 5] as const
 
 export default function ServicesPage() {
   const { lang } = useSiteLanguage()
@@ -220,12 +249,14 @@ export default function ServicesPage() {
           </div>
 
           <div className="mt-8 grid border-l border-t border-slate-300 md:grid-cols-2 lg:grid-cols-3">
-            {t.capabilities.map(([title, body], index) => {
-              const [description, examples, deliverable] = process.details[index]
+            {CAPABILITY_ORDER.map((capabilityIndex, index) => {
+              const [title, body] = t.capabilities[capabilityIndex]
+              const [description, examples, deliverable] = process.details[capabilityIndex]
               return (
                 <article key={title} className={`flex flex-col border-b border-r border-slate-300 p-7 md:p-8 ${index % 2 === 0 ? 'bg-[#FFFFFF]' : 'bg-[#EAF0F6]'}`}>
                   <h3 className="editorial-title min-h-[80px]">{title}</h3>
-                  <p className="mt-4 min-h-[84px] text-[17px] leading-7 text-slate-700">{body}</p>
+                  <p className="mt-1 min-h-[48px] text-[16px] font-semibold leading-6 text-[#254A66]">{t.businessCases[index]}</p>
+                  <p className="mt-3 min-h-[84px] text-[17px] leading-7 text-slate-700">{body}</p>
                   <details className="service-detail mt-6 border-t border-slate-300 pt-4">
                     <summary className="flex cursor-pointer items-center justify-between gap-4 text-[16px] font-semibold text-[#254A66]">
                       <span>{process.expand}<span className="sr-only">: {title}</span></span>
