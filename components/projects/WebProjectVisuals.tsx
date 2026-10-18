@@ -80,8 +80,8 @@ function ArchitectureStage({
 
   return (
     <div className="min-w-0 overflow-hidden border" style={{ borderColor: palette.border, backgroundColor: palette.body }}>
-      <div className="border-b px-5 py-4" style={{ borderColor: palette.border, backgroundColor: palette.header }}>
-        <p className="text-[17px] font-semibold uppercase tracking-[0.15em] text-white xl:text-[18px]">{label}</p>
+      <div className="flex min-h-[82px] items-center justify-center border-b px-4 py-4 text-center" style={{ borderColor: palette.border, backgroundColor: palette.header }}>
+        <p className="text-balance text-[16px] font-semibold uppercase leading-6 tracking-[0.09em] text-white xl:text-[17px]">{label}</p>
       </div>
       <div>{children}</div>
     </div>
@@ -95,7 +95,7 @@ function ArchitectureNode({ index, title, detail }: { index: number; title: stri
         <span className="font-mono text-[14px] font-semibold text-[#A4A5FF]">{String(index).padStart(2, '0')}</span>
       </div>
       <div className="min-h-[124px] px-5 py-4">
-        <h3 className="break-words text-[16px] font-semibold leading-7 text-[#E4ECF3] xl:text-[17px]">{title}</h3>
+        <h3 className="break-words text-[15px] font-semibold leading-6 text-[#E4ECF3] xl:text-[16px]">{title}</h3>
         <p className="mt-1.5 break-words text-[14px] leading-6 text-[#AFC0CF]">{detail}</p>
       </div>
     </div>
