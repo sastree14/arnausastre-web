@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import ArticleText from '@/components/ArticleText'
+import ArticleSearchJump from '@/components/ArticleSearchJump'
 import { ArrowRight } from 'lucide-react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import type { PublicGeneratedArticle } from '@/lib/public-growth'
@@ -250,7 +251,8 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
             </div>
           </aside>
 
-          <article className="border-t border-slate-400">
+          <article data-knowledge-article-body className="border-t border-slate-400">
+            <ArticleSearchJump language={activeLanguage} articleId={article.content_id} />
             {segments.map((segment, segmentIndex) => {
               if (segment.type === 'intro') {
                 return (

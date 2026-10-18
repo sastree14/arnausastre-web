@@ -22,6 +22,7 @@ type KnowledgeItem = {
   href: string
   title: string
   excerpt: string
+  body: string
   searchText: string
   areas: KnowledgeArea[]
 }
@@ -51,6 +52,10 @@ const COPY = {
     searchPlaceholder: 'Escribe cualquier palabra o tema que quieras encontrar',
     clearSearch: 'Limpiar búsqueda',
     emptySearch: 'No hemos encontrado análisis para esta búsqueda y los filtros seleccionados.',
+    matchLabel: 'COINCIDENCIA EN EL ARTÍCULO',
+    summaryLabel: 'SOBRE ESTE ANÁLISIS',
+    goToMatch: 'Ir directamente al fragmento',
+    searchHeading: 'Resultados para',
     library: 'TODOS LOS ANÁLISIS',
     filters: {
       all: 'Todos',
@@ -79,6 +84,10 @@ const COPY = {
     searchPlaceholder: 'Escriu qualsevol paraula o tema que vulguis trobar',
     clearSearch: 'Netejar cerca',
     emptySearch: 'No hem trobat anàlisis per a aquesta cerca i els filtres seleccionats.',
+    matchLabel: 'COINCIDÈNCIA A L’ARTICLE',
+    summaryLabel: 'SOBRE AQUESTA ANÀLISI',
+    goToMatch: 'Anar directament al fragment',
+    searchHeading: 'Resultats per a',
     library: 'TOTES LES ANÀLISIS',
     filters: {
       all: 'Tots',
@@ -107,6 +116,10 @@ const COPY = {
     searchPlaceholder: 'Type any keyword or topic you want to find',
     clearSearch: 'Clear search',
     emptySearch: 'No analyses match this search and the selected filters.',
+    matchLabel: 'MATCH IN THE ARTICLE',
+    summaryLabel: 'ABOUT THIS ANALYSIS',
+    goToMatch: 'Go straight to the passage',
+    searchHeading: 'Results for',
     library: 'ALL ANALYSES',
     filters: {
       all: 'All',
@@ -176,6 +189,63 @@ function normalizeSearch(value: string) {
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase().trim()
 }
 
+
+/** Use the real article text for the preview, never invent a search summary. */
+function cleanPassage(value: string) {
+  return value
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/^\s*[-*]\s+/g, '')
+    .replace(/[#*`_]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function findPassage(body: string, terms: string[]) {
+  for (const raw of body.split(/\r?\n/)) {
+    const line = raw.trim()
+    if (!line || /^#{1,5}\s+/.test(line) || /^\*\*[^*]+\*\*$/.test(line)) continue
+    const text = cleanPassage(line)
+    if (!text || text.length < 12) continue
+    const normalized = normalizeSearch(text)
+    const found = terms
+      .map((term) => ({ term, index: normalized.indexOf(term) }))
+      .filter((result) => result.index !== -1)
+      .sort((a, b) => a.index - b.index || b.term.length - a.term.length)[0]
+    if (!found) continue
+
+    const start = Math.max(0, found.index - 66)
+    const end = Math.min(text.length, found.index + Math.max(90, found.term.length + 105))
+    const excerpt = (start ? '…' : '') + text.slice(start, end).trim() + (end < text.length ? '…' : '')
+    return { excerpt, term: text.slice(found.index, found.index + found.term.length), context: text.slice(0, 48) }
+  }
+  return null
+}
+
+function highlightTerms(text: string, terms: string[]) {
+  const normalized = normalizeSearch(text)
+  const pieces: React.ReactNode[] = []
+  let cursor = 0
+
+  while (cursor < text.length) {
+    let hitIndex = -1
+    let hitTerm = ''
+    for (const term of terms) {
+      const next = normalized.indexOf(term, cursor)
+      if (next !== -1 && (hitIndex === -1 || next < hitIndex || (next === hitIndex && term.length > hitTerm.length))) {
+        hitIndex = next
+        hitTerm = term
+      }
+    }
+    if (hitIndex === -1) break
+    if (hitIndex > cursor) pieces.push(text.slice(cursor, hitIndex))
+    pieces.push(<mark key={hitIndex} className="bg-[#C7D2FE] px-0.5 font-semibold text-[#0D1B2A]">{text.slice(hitIndex, hitIndex + hitTerm.length)}</mark>)
+    cursor = hitIndex + hitTerm.length
+  }
+
+  if (cursor < text.length) pieces.push(text.slice(cursor))
+  return pieces.length ? pieces : text
+}
+
 function compactExcerpt(body: string) {
   return body
     .replace(/^#{1,6}\s+/gm, '')
@@ -210,16 +280,21 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
   }, [generated])
 
   const items = useMemo<KnowledgeItem[]>(() => {
-    const staticItems: KnowledgeItem[] = articles.map((article) => ({
-      key: article.slug,
-      href: `/knowledge/${article.slug}/${lang}`,
-      title: lang === 'en' ? article.titleEn : lang === 'ca' ? (article.titleCa || article.titleEs) : article.titleEs,
-      excerpt: lang === 'en' ? article.excerptEn : lang === 'ca' ? (article.excerptCa || article.excerptEs) : article.excerptEs,
-      searchText: [article.titleEn, article.titleEs, article.titleCa, article.excerptEn, article.excerptEs, article.excerptCa,
-        article.bodyEn, article.bodyEs, article.bodyCa, ...article.tagsEn, ...article.tagsEs, ...(article.tagsCa || [])]
-        .filter(Boolean).join(' '),
-      areas: STATIC_AREAS[article.slug] || ['analytics'],
-    }))
+    const staticItems: KnowledgeItem[] = articles.map((article) => {
+      const title = lang === 'en' ? article.titleEn : lang === 'ca' ? (article.titleCa || article.titleEs) : article.titleEs
+      const excerpt = lang === 'en' ? article.excerptEn : lang === 'ca' ? (article.excerptCa || article.excerptEs) : article.excerptEs
+      const body = lang === 'en' ? article.bodyEn : lang === 'ca' ? (article.bodyCa || article.bodyEs) : article.bodyEs
+      const tags = lang === 'en' ? article.tagsEn : lang === 'ca' ? (article.tagsCa || article.tagsEs) : article.tagsEs
+      return {
+        key: article.slug,
+        href: `/knowledge/${article.slug}/${lang}`,
+        title,
+        excerpt,
+        body,
+        searchText: [title, excerpt, body, ...tags].filter(Boolean).join(' '),
+        areas: STATIC_AREAS[article.slug] || ['analytics'],
+      }
+    })
 
     const generatedItems = generatedGroups.flatMap(([key, variants]) => {
       const item = chooseGeneratedVariant(variants, lang)
@@ -229,8 +304,9 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
         href: `/knowledge/${key}/${lang}`,
         title: item.title,
         excerpt: String(generatedMeta(item).excerpt || compactExcerpt(item.body)),
-        searchText: variants.flatMap((variant) => [variant.title, variant.body, variant.topic, variant.challenge,
-          variant.industry, variant.content_family, ...(variant.hashtags || []), String(generatedMeta(variant).excerpt || '')])
+        body: item.body,
+        searchText: [item.title, item.body, item.topic, item.challenge, item.industry,
+          item.content_family, ...(item.hashtags || []), String(generatedMeta(item).excerpt || '')]
           .filter(Boolean).join(' '),
         areas: generatedAreas(item),
       }]
@@ -337,15 +413,22 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
 
       <section className="site-container py-8 lg:py-10">
         <div className="flex items-center justify-between border-b border-slate-400 pb-3">
-          <p className="text-[14px] font-semibold uppercase tracking-[0.15em] text-[#4F46E5]">{t.library}</p>
+          <p className="text-[14px] font-semibold uppercase tracking-[0.15em] text-[#4F46E5]">{searchTerms.length ? `${t.searchHeading} “${searchQuery.trim()}”` : t.library}</p>
         </div>
 
         {filtered.length ? (
           <div className="grid border-l border-t border-slate-300 md:grid-cols-2 xl:grid-cols-3">
-            {filtered.map((item, index) => (
+            {filtered.map((item, index) => {
+              const passage = searchTerms.length ? findPassage(item.body, searchTerms) : null
+              const preview = passage?.excerpt || compactExcerpt(item.excerpt || item.body)
+              const href = passage
+                ? `${item.href}?${new URLSearchParams({ find: passage.term, context: passage.context }).toString()}`
+                : item.href
+
+              return (
               <Link
                 key={item.key}
-                href={item.href}
+                href={href}
                 className={`group flex min-h-[190px] flex-col border-b border-r border-slate-300 p-6 transition ${
                   index % 2 === 0 ? 'bg-white hover:bg-[#F7F9FC]' : 'bg-[#EAF0F6] hover:bg-[#EAF0F6]'
                 }`}
@@ -357,9 +440,16 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
                 <h3 className="mt-5 max-w-[26ch] text-[25px] leading-[1.08] text-slate-950 transition-colors group-hover:text-[#4F46E5]" style={{ fontFamily: 'var(--font-playfair)' }}>
                   {item.title}
                 </h3>
-                <p className="mt-auto pt-7 text-[16px] font-semibold text-[#4F46E5]">{t.read} →</p>
+                {searchTerms.length ? (
+                  <div className="mt-6 border-t border-slate-300 pt-4">
+                    <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#254A66]">{passage ? t.matchLabel : t.summaryLabel}</p>
+                    <p className="mt-2 line-clamp-4 text-[16px] leading-7 text-slate-700">{highlightTerms(preview, searchTerms)}</p>
+                  </div>
+                ) : null}
+                <p className="mt-auto pt-7 text-[16px] font-semibold text-[#4F46E5]">{passage ? t.goToMatch : t.read} →</p>
               </Link>
-            ))}
+              )
+            })}
           </div>
         ) : (
           <div className="border-b border-slate-300 py-10">
