@@ -2,7 +2,7 @@ export const SERVICES_PROCESS = {
   es: {
     title: 'Del primer contacto al acompañamiento.',
     steps: [
-      ['01', 'Llamada inicial', 'Una conversación de 30 minutos, sin coste ni compromiso, para conocer tu empresa y lo que quieres mejorar.'],
+      ['01', 'Llamada inicial', 'Una conversación de 30 minutos para entender tu empresa, tus prioridades y lo que quieres mejorar.'],
       ['02', 'Revisar necesidades', 'Revisamos procesos, datos disponibles y oportunidades de mejora. Acordamos las prioridades.'],
       ['03', 'Proponer', 'Te presentamos una propuesta con alcance, entregables, calendario y presupuesto.'],
       ['04', 'Desarrollar', 'Construimos y validamos el proyecto contigo. Integramos la solución y documentamos su uso.'],
@@ -21,7 +21,7 @@ export const SERVICES_PROCESS = {
   ca: {
     title: 'Del primer contacte a l’acompanyament.',
     steps: [
-      ['01', 'Trucada inicial', 'Una conversa de 30 minuts, sense cost ni compromís, per conèixer la teva empresa i què vols millorar.'],
+      ['01', 'Trucada inicial', 'Una conversa de 30 minuts per entendre la teva empresa, les prioritats i què vols millorar.'],
       ['02', 'Revisar necessitats', 'Revisem processos, dades disponibles i oportunitats de millora. Acordem les prioritats.'],
       ['03', 'Proposar', 'Et presentem una proposta amb abast, lliurables, calendari i pressupost.'],
       ['04', 'Desenvolupar', 'Construïm i validem el projecte amb tu. Integrem la solució i documentem com utilitzar-la.'],
@@ -40,7 +40,7 @@ export const SERVICES_PROCESS = {
   en: {
     title: 'From the first conversation to ongoing support.',
     steps: [
-      ['01', 'Initial call', 'A free 30-minute conversation, without commitment, to understand your business and what you want to improve.'],
+      ['01', 'Initial call', 'A 30-minute conversation to understand your business, your priorities and what you want to improve.'],
       ['02', 'Review needs', 'We review processes, available data and opportunities for improvement. Together, we agree on priorities.'],
       ['03', 'Propose', 'We present a proposal with scope, deliverables, timeline and budget.'],
       ['04', 'Develop', 'We build and validate the project with you, integrate the solution and document its use.'],
