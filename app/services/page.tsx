@@ -69,7 +69,7 @@ const COPY = {
 
     finalLabel: 'SIN COMPROMISO',
     finalTitle: 'Cuéntanos qué quieres mejorar y te diremos cómo podemos ayudarte.',
-    finalBody: 'Primera conversación de 30 minutos para entender tu contexto y valorar cómo podemos ayudarte.'
+    finalBody: 'Primera conversación de 30 minutos para entender tu contexto y valorar cómo podemos ayudarte.',
     finalCta: 'Cuéntanos tu caso',
   },
 
@@ -135,7 +135,7 @@ const COPY = {
 
     finalLabel: 'SENSE COMPROMÍS',
     finalTitle: 'Explica’ns què vols millorar i et direm com et podem ajudar.',
-    finalBody: 'Primera conversa de 30 minuts per entendre el teu context i valorar com et podem ajudar.'
+    finalBody: 'Primera conversa de 30 minuts per entendre el teu context i valorar com et podem ajudar.',
     finalCta: 'Explica’ns el teu cas',
   },
 
@@ -201,7 +201,7 @@ const COPY = {
 
     finalLabel: 'NO COMMITMENT',
     finalTitle: 'Tell us what you want to improve and we will show you how we can help.',
-    finalBody: 'A 30-minute introductory conversation to understand your context and assess how we can help.'
+    finalBody: 'A 30-minute introductory conversation to understand your context and assess how we can help.',
     finalCta: 'Tell us about your case',
   },
 } as const
