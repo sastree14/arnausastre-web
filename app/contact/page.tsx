@@ -14,11 +14,14 @@ const COPY = {
     expectLabel: 'PRIMERA CONVERSACIÓN',
     expect: [
       ['30 minutos', 'Alineamos contexto, objetivo y prioridad.'],
-      ['Sin coste', 'Primera conversación gratuita.'],
-      ['Sin compromiso', 'Sin obligación de continuar.'],
+      ['Enfocada a tu caso', 'Exploramos tu situación y qué tendría sentido mejorar.'],
+      ['Sin compromiso', 'Decidimos juntos si tiene sentido avanzar.'],
     ],
 
     intentLabel: '¿QUÉ TE TRAE HASTA AQUÍ?',
+    intentHint: 'Elige la opción que mejor encaje. El formulario se adaptará a tu situación.',
+    formFor: 'CONSULTA SOBRE',
+    guidanceLabel: 'PARA ORIENTAR TU MENSAJE',
     intents: [
       ['problem', 'Tengo un problema concreto', 'Hay una decisión, proceso o sistema que debería funcionar mejor.'],
       ['opportunity', 'Quiero explorar una oportunidad', 'Veo potencial en datos o IA, pero todavía no está claro dónde capturar más valor.'],
@@ -80,11 +83,14 @@ const COPY = {
     expectLabel: 'PRIMERA CONVERSA',
     expect: [
       ['30 minuts', 'Alineem context, objectiu i prioritat.'],
-      ['Sense cost', 'Primera conversa gratuïta.'],
-      ['Sense compromís', 'Sense obligació de continuar.'],
+      ['Centrada en el teu cas', 'Explorem la teva situació i què convindria millorar.'],
+      ['Sense compromís', 'Decidim plegats si té sentit avançar.'],
     ],
 
     intentLabel: 'QUÈ ET PORTA FINS AQUÍ?',
+    intentHint: 'Tria l’opció que encaixi millor. El formulari s’adaptarà a la teva situació.',
+    formFor: 'CONSULTA SOBRE',
+    guidanceLabel: 'PER ORIENTAR EL TEU MISSATGE',
     intents: [
       ['problem', 'Tinc un problema concret', 'Hi ha una decisió, procés o sistema que hauria de funcionar millor.'],
       ['opportunity', 'Vull explorar una oportunitat', 'Veig potencial en dades o IA, però encara no és clar on capturar més valor.'],
@@ -146,11 +152,14 @@ const COPY = {
     expectLabel: 'FIRST CONVERSATION',
     expect: [
       ['30 minutes', 'Align the context, objective and priority.'],
-      ['No cost', 'First conversation is free.'],
-      ['No commitment', 'No obligation to continue.'],
+      ['Focused on your case', 'We explore your situation and what could be improved.'],
+      ['No commitment', 'We decide together whether there is a sensible next step.'],
     ],
 
     intentLabel: 'WHAT BRINGS YOU HERE?',
+    intentHint: 'Choose the option that best fits. The form will adapt to your situation.',
+    formFor: 'ENQUIRY ABOUT',
+    guidanceLabel: 'TO HELP GUIDE YOUR MESSAGE',
     intents: [
       ['problem', 'I have a concrete problem', 'A decision, process or system should work better than it does today.'],
       ['opportunity', 'I want to explore an opportunity', 'I see potential in data or AI, but the highest-value opportunity is not yet clear.'],
@@ -300,6 +309,7 @@ export default function ContactPage() {
       <section className="border-b border-slate-300 bg-white">
         <div className="site-container py-10 md:py-12">
           <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.intentLabel}</p>
+          <p className="mt-2 text-[16px] leading-7 text-slate-600">{t.intentHint}</p>
           <div className="mt-5 grid border-l border-t border-slate-300 lg:grid-cols-3">
             {t.intents.map(([key, title, body], index) => {
               const active = intent === key
@@ -307,6 +317,7 @@ export default function ContactPage() {
                 <button
                   key={key}
                   type="button"
+                  aria-pressed={active}
                   onClick={() => setIntent(key as IntentKey)}
                   className={`min-h-[165px] border-b border-r border-slate-300 p-5 text-left transition ${active ? 'bg-[#0D1B2A] text-white' : index === 1 ? 'bg-[#FFFFFF] text-slate-950 hover:bg-[#FFFFFF]' : 'bg-white text-slate-950 hover:bg-slate-50'}`}
                 >
@@ -328,6 +339,18 @@ export default function ContactPage() {
           <div className="border border-slate-300 bg-white p-6 md:p-8">
             <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{selectedForm.label}</p>
             <h2 className="mt-3 text-[32px] leading-[1.08] sm:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>{selectedForm.title}</h2>
+            <p aria-live="polite" className="mt-4 text-[15px] font-medium text-slate-600">{t.formFor}: <span className="font-semibold text-[#254A66]">{selectedIntent[1]}</span></p>
+            <div className="mt-6 border-y border-slate-200 py-4">
+              <p className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[#254A66]">{t.guidanceLabel}</p>
+              <ul className="mt-3 grid gap-3 sm:grid-cols-3">
+                {selectedForm.prompts.map((prompt, index) => (
+                  <li key={prompt} className="flex gap-2 text-[14px] leading-6 text-slate-700">
+                    <span className="shrink-0 font-mono font-semibold text-[#4F46E5]">0{index + 1}</span>
+                    <span>{prompt}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
             {submitted ? (
               <div className="mt-8 border border-emerald-300 bg-emerald-50 p-6">
