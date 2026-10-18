@@ -193,17 +193,17 @@ function normalizeSearch(value: string) {
 /** Use the real article text for the preview, never invent a search summary. */
 function cleanPassage(value: string) {
   return value
-    .replace(/\\[([^\\]]+)\\]\\([^)]+\\)/g, '$1')
-    .replace(/^\\s*[-*]\\s+/g, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/^\s*[-*]\s+/g, '')
     .replace(/[#*`_]/g, '')
-    .replace(/\\s+/g, ' ')
+    .replace(/\s+/g, ' ')
     .trim()
 }
 
 function findPassage(body: string, terms: string[]) {
-  for (const raw of body.split(/\\r?\\n/)) {
+  for (const raw of body.split(/\r?\n/)) {
     const line = raw.trim()
-    if (!line || /^#{1,5}\\s+/.test(line) || /^\\*\\*[^*]+\\*\\*$/.test(line)) continue
+    if (!line || /^#{1,5}\s+/.test(line) || /^\*\*[^*]+\*\*$/.test(line)) continue
     const text = cleanPassage(line)
     if (!text || text.length < 12) continue
     const normalized = normalizeSearch(text)
