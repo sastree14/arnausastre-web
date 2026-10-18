@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Search } from 'lucide-react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import type { Article } from '@/lib/content'
 import type { PublicGeneratedArticle } from '@/lib/public-growth'
@@ -48,7 +48,7 @@ const COPY = {
     filterLabel: 'EXPLORA POR ÁREA',
     count: 'análisis',
     searchLabel: 'BUSCAR ANÁLISIS',
-    searchPlaceholder: 'Busca por tema o palabra clave (p. ej., stock)',
+    searchPlaceholder: 'Escribe cualquier palabra o tema que quieras encontrar',
     clearSearch: 'Limpiar búsqueda',
     emptySearch: 'No hemos encontrado análisis para esta búsqueda y los filtros seleccionados.',
     library: 'TODOS LOS ANÁLISIS',
@@ -76,7 +76,7 @@ const COPY = {
     filterLabel: 'EXPLORA PER ÀREA',
     count: 'anàlisis',
     searchLabel: 'CERCA ANÀLISIS',
-    searchPlaceholder: 'Cerca per tema o paraula clau (p. ex., estoc)',
+    searchPlaceholder: 'Escriu qualsevol paraula o tema que vulguis trobar',
     clearSearch: 'Netejar cerca',
     emptySearch: 'No hem trobat anàlisis per a aquesta cerca i els filtres seleccionats.',
     library: 'TOTES LES ANÀLISIS',
@@ -104,7 +104,7 @@ const COPY = {
     filterLabel: 'EXPLORE BY AREA',
     count: 'analyses',
     searchLabel: 'SEARCH ANALYSES',
-    searchPlaceholder: 'Search by topic or keyword (e.g., stock)',
+    searchPlaceholder: 'Type any keyword or topic you want to find',
     clearSearch: 'Clear search',
     emptySearch: 'No analyses match this search and the selected filters.',
     library: 'ALL ANALYSES',
@@ -294,14 +294,17 @@ export default function KnowledgeContent({ articles, generated = [] }: { article
           <div role="search" className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:gap-4">
             <label htmlFor="knowledge-search" className="flex-1 text-[14px] font-semibold uppercase tracking-[0.12em] text-[#254A66]">
               {t.searchLabel}
-              <input
-                id="knowledge-search"
-                type="search"
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder={t.searchPlaceholder}
-                className="mt-2 block min-h-12 w-full border border-slate-400 bg-white px-4 py-3 text-[16px] font-normal normal-case tracking-normal text-slate-950 outline-none placeholder:text-slate-500 focus:border-[#254A66] focus:ring-2 focus:ring-[#254A66]/20"
-              />
+              <span className="relative mt-2 block">
+                <Search aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#254A66]" />
+                <input
+                  id="knowledge-search"
+                  type="search"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder={t.searchPlaceholder}
+                  className="block min-h-12 w-full border border-slate-400 bg-white py-3 pl-12 pr-4 text-[16px] font-normal normal-case tracking-normal text-slate-950 outline-none placeholder:text-slate-500 focus:border-[#254A66] focus:ring-2 focus:ring-[#254A66]/20"
+                />
+              </span>
             </label>
             {searchQuery && (
               <button type="button" onClick={() => setSearchQuery('')} className="min-h-12 border border-slate-400 bg-white px-5 py-3 text-[15px] font-semibold text-[#254A66] hover:bg-slate-50">
