@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import ArticleText from '@/components/ArticleText'
+import ArticleSearchJump from '@/components/ArticleSearchJump'
 import { ArrowRight } from 'lucide-react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 import type { Article } from '@/lib/content'
@@ -367,7 +368,8 @@ export default function KnowledgeArticleGoldStandard({ article, forcedLanguage }
             </div>
           </aside>
 
-          <article className="border-t border-slate-400">
+          <article data-knowledge-article-body className="border-t border-slate-400">
+            <ArticleSearchJump language={lang} articleId={article.slug} />
             {segments.map((segment, segmentIndex) => {
               if (segment.type === 'intro') {
                 return (
