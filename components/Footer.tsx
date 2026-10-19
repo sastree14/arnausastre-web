@@ -15,6 +15,8 @@ const COPY = {
     contact: 'Contacta con nosotros',
     rights: '© 2026 SC-Analytics. Todos los derechos reservados.',
     cookies: 'Política de cookies',
+    privacy: 'Política de privacidad',
+    legal: 'Aviso legal',
     settings: 'Configurar cookies',
   },
   ca: {
@@ -27,6 +29,8 @@ const COPY = {
     contact: 'Contacta amb nosaltres',
     rights: '© 2026 SC-Analytics. Tots els drets reservats.',
     cookies: 'Política de galetes',
+    privacy: 'Política de privacitat',
+    legal: 'Avís legal',
     settings: 'Configurar galetes',
   },
   en: {
@@ -39,6 +43,8 @@ const COPY = {
     contact: 'Contact us',
     rights: '© 2026 SC-Analytics. All rights reserved.',
     cookies: 'Cookie policy',
+    privacy: 'Privacy policy',
+    legal: 'Legal notice',
     settings: 'Cookie settings',
   },
 } as const
@@ -78,6 +84,8 @@ export default function Footer() {
         <div className="mt-4 flex flex-col gap-2 border-t border-[#496C8A] pt-3 text-[12px] text-[#A8BACB] sm:flex-row sm:items-center sm:justify-between">
           <p>{t.rights}</p>
           <div className="flex flex-wrap gap-x-5 gap-y-2">
+            <Link href="/legal" className="hover:text-white hover:underline">{t.legal}</Link>
+            <Link href="/privacy" className="hover:text-white hover:underline">{t.privacy}</Link>
             <Link href="/cookies" className="hover:text-white hover:underline">{t.cookies}</Link>
             <button type="button" onClick={() => window.dispatchEvent(new Event('sc-open-cookie-settings'))} className="text-left hover:text-white hover:underline">{t.settings}</button>
           </div>
