@@ -1,6 +1,7 @@
 'use client'
 
 import HeroBrandSeal from '@/components/HeroBrandSeal'
+import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
@@ -59,6 +60,9 @@ const COPY = {
     email: 'Email',
     send: 'Enviar contexto',
     sending: 'Enviando…',
+    privacyLabel: 'Información sobre protección de datos',
+    privacyNotice: 'Responsable: Arnau Sastre Conde (SC-Analytics). Finalidad: responder tu solicitud y gestionar el contacto comercial. Base jurídica: medidas precontractuales solicitadas. Destinatarios: proveedores tecnológicos necesarios (alojamiento, CRM y correo). Derechos: acceso, rectificación, supresión y otros en arnau.sastre@sc-analytics.io.',
+    privacyLink: 'Lee la política de privacidad completa.',
     successTitle: 'Contexto recibido.',
     success: 'Gracias. Revisaremos lo que nos has contado y continuaremos la conversación desde ahí.',
     error: 'No hemos podido enviar el mensaje. Puedes volver a intentarlo o reservar directamente una conversación.',
@@ -130,6 +134,9 @@ const COPY = {
     email: 'Email',
     send: 'Enviar context',
     sending: 'Enviant…',
+    privacyLabel: 'Informació sobre protecció de dades',
+    privacyNotice: 'Responsable: Arnau Sastre Conde (SC-Analytics). Finalitat: respondre la teva sol·licitud i gestionar el contacte comercial. Base jurídica: mesures precontractuals sol·licitades. Destinataris: proveïdors tecnològics necessaris (allotjament, CRM i correu). Drets: accés, rectificació, supressió i altres a arnau.sastre@sc-analytics.io.',
+    privacyLink: 'Consulta la política de privacitat completa.',
     successTitle: 'Context rebut.',
     success: 'Gràcies. Revisarem el que ens has explicat i continuarem la conversa des d’aquí.',
     error: 'No hem pogut enviar el missatge. Pots tornar-ho a provar o reservar directament una conversa.',
@@ -201,6 +208,9 @@ const COPY = {
     email: 'Email',
     send: 'Send context',
     sending: 'Sending…',
+    privacyLabel: 'Data protection information',
+    privacyNotice: 'Controller: Arnau Sastre Conde (SC-Analytics). Purpose: respond to your enquiry and manage the business contact. Legal basis: pre-contractual steps requested by you. Recipients: necessary technology providers (hosting, CRM and email). Rights: access, correction, erasure and others at arnau.sastre@sc-analytics.io.',
+    privacyLink: 'Read the full privacy policy.',
     successTitle: 'Context received.',
     success: 'Thank you. We will review what you shared and continue the conversation from there.',
     error: 'We could not send the message. You can try again or book a conversation directly.',
@@ -434,6 +444,11 @@ export default function ContactPage() {
                   />
                 </label>
 
+                <div className="border-t border-slate-200 pt-4 text-[13px] leading-6 text-slate-700">
+                  <p className="font-semibold text-[#0D1B2A]">{t.privacyLabel}</p>
+                  <p className="mt-1">{t.privacyNotice}</p>
+                  <Link href="/privacy" className="mt-1 inline-block font-semibold text-[#254A66] underline underline-offset-2">{t.privacyLink}</Link>
+                </div>
                 <div className="flex justify-end border-t border-slate-200 pt-5">
                   <button
                     disabled={sending}
