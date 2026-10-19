@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
@@ -14,6 +15,7 @@ const COPY={
     button:'Quiero recibirlo',
     sending:'Suscribiendo…',
     consent:'Acepto recibir el briefing de SC-Analytics por email. Puedo darme de baja cuando quiera.',
+    privacy:'Consulta cómo tratamos tus datos personales.',
     success:'Perfecto. Ya formas parte del briefing.',
     error:'No hemos podido completar la suscripción. Inténtalo de nuevo.',
     topics:['Data & IA','Forecasting','Operaciones','Automatización','Casos y proyectos'],
@@ -27,6 +29,7 @@ const COPY={
     button:'Vull rebre’l',
     sending:'Subscrivint…',
     consent:'Accepto rebre el briefing de SC-Analytics per email. Em puc donar de baixa quan vulgui.',
+    privacy:'Consulta com tractem les teves dades personals.',
     success:'Perfecte. Ja formes part del briefing.',
     error:'No hem pogut completar la subscripció. Torna-ho a provar.',
     topics:['Dades i IA','Forecasting','Operacions','Automatització','Casos i projectes'],
@@ -40,6 +43,7 @@ const COPY={
     button:'Subscribe',
     sending:'Subscribing…',
     consent:'I agree to receive the SC-Analytics briefing by email. I can unsubscribe at any time.',
+    privacy:'Read how we process your personal data.',
     success:'Done. You are now part of the briefing.',
     error:'We could not complete the subscription. Please try again.',
     topics:['Data & AI','Forecasting','Operations','Automation','Cases & projects'],
@@ -89,6 +93,7 @@ export default function NewsletterSignup({compact=false}:{compact?:boolean}){
         <button disabled={!consent||state==='sending'} className={`rounded-lg px-5 py-3 text-sm font-semibold disabled:opacity-40 ${compact?'bg-slate-950 text-white':'bg-white text-slate-950'}`}>{state==='sending'?t.sending:t.button}</button>
       </div>
       <label className={`mt-3 flex items-start gap-2 text-[11px] leading-5 ${compact?'text-slate-500':'text-slate-400'}`}><input type="checkbox" checked={consent} onChange={e=>setConsent(e.target.checked)} className="mt-1"/><span>{t.consent}</span></label>
+      <Link href="/privacy" className={`mt-1 inline-block text-[12px] underline underline-offset-2 ${compact ? "text-slate-600" : "text-slate-300"}`}>{t.privacy}</Link>
       {state==='error'&&<p className="mt-2 text-xs text-rose-500">{t.error}</p>}
     </form>
   </div>
