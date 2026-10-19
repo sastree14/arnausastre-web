@@ -78,7 +78,7 @@ export async function subscribeNewsletter(input:{email:string;name?:string;compa
       interests,
       source_path:String(input.sourcePath||existing.source_path||'').slice(0,500)||null,
       status:'active',
-      consent_version:'2026-09',
+      consent_version:'2026-10-19',
       consent_at:now,
       updated_at:now,
     })
@@ -93,7 +93,7 @@ export async function subscribeNewsletter(input:{email:string;name?:string;compa
       interests,
       source_path:String(input.sourcePath||'').slice(0,500)||null,
       status:'active',
-      consent_version:'2026-09',
+      consent_version:'2026-10-19',
       consent_at:now,
       unsubscribe_token:randomUUID().replaceAll('-',''),
       created_at:now,
