@@ -65,17 +65,17 @@ export default function PrivacyPage() {
   const t = INFO[lang]
   return (
     <main className="bg-[#F7F9FC] text-[#0D1B2A]">
-      <article className="site-container mx-auto max-w-4xl py-14 md:py-20">
-        <h1 className="text-[40px] md:text-[52px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-        <p className="mt-2 text-[14px] text-slate-600">{t.date}</p>
-        <p className="mt-7 text-[17px] leading-8">{t.lead}</p>
+      <article className="site-container mx-auto max-w-[940px] py-9 md:py-12">
+        <h1 className="text-[29px] font-semibold tracking-tight md:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
+        <p className="mt-1 text-[11px] text-slate-500">{t.date}</p>
+        <p className="mt-4 text-[13px] leading-6 text-slate-700">{t.lead}</p>
         {t.items.map(([title, body]) => (
-          <section key={title} className="mt-9">
-            <h2 className="text-[24px] font-semibold">{title}</h2>
-            <p className="mt-3 text-[16px] leading-8 text-slate-800">{body}</p>
+          <section key={title} className="mt-6">
+            <h2 className="text-[15px] font-semibold">{title}</h2>
+            <p className="mt-2 text-[13px] leading-6 text-slate-700">{body}</p>
           </section>
         ))}
-        <nav className="mt-10 flex flex-col gap-3 border-t border-slate-300 pt-6 text-[15px] font-semibold text-[#254A66]">
+        <nav className="mt-7 flex flex-col gap-2 border-t border-slate-200 pt-4 text-[12px] font-medium text-[#254A66]">
           <Link className="underline underline-offset-4" href="/cookies">{t.cookies}</Link>
           <Link className="underline underline-offset-4" href="/legal">{t.legal}</Link>
         </nav>
