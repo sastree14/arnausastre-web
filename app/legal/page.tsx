@@ -97,13 +97,13 @@ export default function LegalPage() {
   const t = COPY[lang]
   return (
     <main className="bg-[#F7F9FC] text-[#0D1B2A]">
-      <article className="site-container mx-auto max-w-4xl py-14 md:py-20">
-        <h1 className="text-[40px] md:text-[52px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-        <p className="mt-2 text-[14px] text-slate-600">{t.date}</p>
-        <p className="mt-7 text-[17px] leading-8">{t.intro}</p>
-        <section className="mt-9">
-          <h2 className="text-[24px] font-semibold">{t.identity}</h2>
-          <dl className="mt-4 grid gap-4 border border-slate-300 bg-white p-6 text-[16px] leading-7">
+      <article className="site-container mx-auto max-w-[940px] py-9 md:py-12">
+        <h1 className="text-[29px] font-semibold tracking-tight md:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
+        <p className="mt-1 text-[11px] text-slate-500">{t.date}</p>
+        <p className="mt-4 text-[13px] leading-6 text-slate-700">{t.intro}</p>
+        <section className="mt-6">
+          <h2 className="text-[15px] font-semibold">{t.identity}</h2>
+          <dl className="mt-3 grid gap-2 border border-slate-200 bg-white p-4 text-[12px] leading-5">
             <div><dt className="font-semibold">{t.name}</dt><dd>Arnau Sastre Conde</dd></div>
             <div><dt className="font-semibold">{t.brand}</dt><dd>SC-Analytics</dd></div>
             <div><dt className="font-semibold">{t.role}</dt><dd>{t.roleText}</dd></div>
@@ -120,12 +120,12 @@ export default function LegalPage() {
           [t.privacy,t.privacyText],
           [t.law,t.lawText],
         ].map(([title,body]) => (
-          <section className="mt-9" key={title}>
-            <h2 className="text-[24px] font-semibold">{title}</h2>
-            <p className="mt-3 text-[16px] leading-8 text-slate-800">{body}</p>
+          <section className="mt-6" key={title}>
+            <h2 className="text-[15px] font-semibold">{title}</h2>
+            <p className="mt-2 text-[13px] leading-6 text-slate-700">{body}</p>
           </section>
         ))}
-        <nav className="mt-10 flex flex-col gap-3 border-t border-slate-300 pt-6 text-[15px] font-semibold text-[#254A66]">
+        <nav className="mt-7 flex flex-col gap-2 border-t border-slate-200 pt-4 text-[12px] font-medium text-[#254A66]">
           <Link href="/privacy" className="underline underline-offset-4">{t.privacyLink}</Link>
           <Link href="/cookies" className="underline underline-offset-4">{t.cookieLink}</Link>
         </nav>

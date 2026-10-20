@@ -27,6 +27,18 @@ const COPY = {
     save: 'Guardar preferencias',
     back: 'Volver',
     error: 'No se pudo guardar tu elección. La analítica seguirá desactivada.',
+    readDetails: 'Ver información sobre cookies',
+    hideDetails: 'Ocultar información',
+    fullPolicy: 'Consultar la política completa',
+    shortIntro: 'Información sobre las tecnologías utilizadas, sus finalidades y duración:',
+    technicalTitle: 'Necesarias · sc_site_lang, lang',
+    technicalText: 'Almacenamiento local de SC-Analytics para recordar el idioma. Persisten hasta que cambies o borres la preferencia.',
+    choiceTitle: 'Consentimiento · sc_cookie_consent_v1',
+    choiceText: 'Almacenamiento local de SC-Analytics que conserva tu elección hasta 180 días.',
+    metricsTitle: 'Analíticas · _ga, _ga_3E1DK7935G',
+    metricsText: 'Cookies de Google Analytics para medir sesiones y visitas, solo si aceptas. Pueden durar hasta 24 meses.',
+    transfers: 'Google puede tratar datos fuera del Espacio Económico Europeo, con las garantías correspondientes. Puedes retirar el consentimiento en cualquier momento.',
+    close: 'Cerrar preferencias de cookies',
   },
   ca: {
     title: 'La teva privacitat a SC-Analytics',
@@ -43,6 +55,18 @@ const COPY = {
     save: 'Desar preferències',
     back: 'Tornar',
     error: "No s'ha pogut desar la tria. L'analítica continuarà desactivada.",
+    readDetails: 'Veure informació sobre les galetes',
+    hideDetails: 'Amagar informació',
+    fullPolicy: 'Consultar la política completa',
+    shortIntro: 'Informació sobre les tecnologies utilitzades, finalitats i durada:',
+    technicalTitle: 'Necessàries · sc_site_lang, lang',
+    technicalText: "Emmagatzematge local de SC-Analytics per recordar l'idioma. Persisteix fins que canviïs o esborris la preferència.",
+    choiceTitle: 'Consentiment · sc_cookie_consent_v1',
+    choiceText: 'Emmagatzematge local de SC-Analytics que conserva la tria fins a 180 dies.',
+    metricsTitle: 'Analítiques · _ga, _ga_3E1DK7935G',
+    metricsText: 'Galetes de Google Analytics per mesurar sessions i visites, només si acceptes. Poden durar fins a 24 mesos.',
+    transfers: 'Google pot tractar dades fora de l’Espai Econòmic Europeu, amb les garanties corresponents. Pots retirar el consentiment quan vulguis.',
+    close: 'Tancar preferències de galetes',
   },
   en: {
     title: 'Your privacy at SC-Analytics',
@@ -59,6 +83,18 @@ const COPY = {
     save: 'Save preferences',
     back: 'Back',
     error: 'Your preference could not be stored. Analytics will remain disabled.',
+    readDetails: 'View cookie information',
+    hideDetails: 'Hide information',
+    fullPolicy: 'Read the full cookie policy',
+    shortIntro: 'Information about the technologies used, their purposes and duration:',
+    technicalTitle: 'Essential · sc_site_lang, lang',
+    technicalText: 'SC-Analytics local storage to remember your language. Stored until you change or remove the preference.',
+    choiceTitle: 'Consent · sc_cookie_consent_v1',
+    choiceText: 'SC-Analytics local storage that retains your choice for up to 180 days.',
+    metricsTitle: 'Analytics · _ga, _ga_3E1DK7935G',
+    metricsText: 'Google Analytics cookies for visits and sessions, only when accepted. They can last up to 24 months.',
+    transfers: 'Google may process data outside the European Economic Area with applicable safeguards. You can withdraw consent at any time.',
+    close: 'Close cookie preferences',
   },
 } as const
 
@@ -68,6 +104,7 @@ export default function CookieConsent() {
   const [ready, setReady] = useState(false)
   const [open, setOpen] = useState(false)
   const [custom, setCustom] = useState(false)
+  const [policyExpanded, setPolicyExpanded] = useState(false)
   const [analyticsEnabled, setAnalyticsEnabled] = useState(false)
   const [error, setError] = useState(false)
 
@@ -81,6 +118,7 @@ export default function CookieConsent() {
     const openSettings = () => {
       setAnalyticsEnabled(readAnalyticsChoice() === 'accepted')
       setCustom(true)
+      setPolicyExpanded(false)
       setError(false)
       setOpen(true)
     }
@@ -104,6 +142,7 @@ export default function CookieConsent() {
     if (choice === 'rejected') removeGoogleAnalyticsCookies()
     setAnalyticsEnabled(choice === 'accepted')
     setCustom(false)
+    setPolicyExpanded(false)
     setError(false)
     setOpen(false)
 
@@ -117,19 +156,29 @@ export default function CookieConsent() {
     <section
       role="dialog"
       aria-label={custom ? t.preferences : t.title}
-      className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-w-3xl border border-[#496C8A] bg-white p-5 text-[#0D1B2A] shadow-2xl sm:bottom-5 sm:p-6"
+      className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-h-[min(76dvh,590px)] max-w-[660px] overflow-y-auto overscroll-contain border border-[#B8C9D8] bg-white p-4 text-[#0D1B2A] shadow-[0_12px_40px_rgba(13,27,42,0.19)] sm:bottom-5 sm:p-5"
     >
-      <h2 className="text-[20px] font-semibold">{custom ? t.preferences : t.title}</h2>
+      <div className="flex items-start justify-between gap-3">
+        <h2 className="text-[16px] font-semibold leading-6">{custom ? t.preferences : t.title}</h2>
+        {readAnalyticsChoice() !== null && (
+          <button
+            type="button"
+            aria-label={t.close}
+            onClick={() => { setOpen(false); setCustom(false); setPolicyExpanded(false) }}
+            className="shrink-0 rounded p-1 text-slate-600 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#254A66]"
+          >✕</button>
+        )}
+      </div>
       {custom ? (
-        <div className="mt-4 space-y-4">
-          <div className="border border-slate-300 bg-slate-50 p-3">
+        <div className="mt-3 space-y-2.5">
+          <div className="border border-slate-300 bg-slate-50 p-2.5 text-[13px] leading-5">
             <p className="font-semibold">{t.essential}</p>
-            <p className="mt-1 text-[14px] text-slate-700">{t.essentialDetail}</p>
+            <p className="mt-1 text-[12px] leading-5 text-slate-700">{t.essentialDetail}</p>
           </div>
-          <label className="flex cursor-pointer items-start gap-3 border border-slate-300 p-3">
+          <label className="flex cursor-pointer items-start gap-3 border border-slate-300 p-2.5 text-[13px] leading-5">
             <input
               type="checkbox"
-              className="mt-1 h-5 w-5 accent-[#254A66]"
+              className="mt-0.5 h-5 w-5 shrink-0 accent-[#254A66]"
               checked={analyticsEnabled}
               onChange={(event) => setAnalyticsEnabled(event.target.checked)}
             />
@@ -139,33 +188,56 @@ export default function CookieConsent() {
             </span>
           </label>
           <div className="flex flex-wrap gap-2">
-            <button type="button" onClick={() => choose(analyticsEnabled ? 'accepted' : 'rejected')} className="min-h-11 flex-1 bg-[#0D1B2A] px-4 py-2 font-semibold text-white">
+            <button type="button" onClick={() => choose(analyticsEnabled ? 'accepted' : 'rejected')} className="min-h-11 flex-1 bg-[#0D1B2A] px-4 py-2 text-[13px] font-semibold text-white">
               {t.save}
             </button>
-            <button type="button" onClick={() => setCustom(false)} className="min-h-11 flex-1 border border-[#0D1B2A] px-4 py-2 font-semibold">
+            <button type="button" onClick={() => setCustom(false)} className="min-h-11 flex-1 border border-[#0D1B2A] px-4 py-2 text-[13px] font-semibold">
               {t.back}
             </button>
           </div>
         </div>
       ) : (
         <>
-          <p className="mt-3 text-[15px] leading-6 text-slate-700">{t.description}</p>
-          <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-            <button type="button" onClick={() => choose('rejected')} className="min-h-11 flex-1 border border-[#0D1B2A] bg-[#0D1B2A] px-3 py-2 text-[14px] font-semibold text-white">
+          <p className="mt-2 text-[13px] leading-5 text-slate-700">{t.description}</p>
+          <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+            <button type="button" onClick={() => choose('rejected')} className="min-h-11 flex-1 border border-[#0D1B2A] bg-[#0D1B2A] px-3 py-2 text-[13px] font-semibold text-white">
               {t.reject}
             </button>
             <button type="button" onClick={() => choose('accepted')} className="min-h-11 flex-1 border border-[#0D1B2A] bg-[#0D1B2A] px-3 py-2 text-[14px] font-semibold text-white">
               {t.accept}
             </button>
-            <button type="button" onClick={() => setCustom(true)} className="min-h-11 flex-1 border border-[#496C8A] px-3 py-2 text-[14px] font-semibold text-[#0D1B2A]">
+            <button type="button" onClick={() => setCustom(true)} className="min-h-11 flex-1 border border-[#496C8A] px-3 py-2 text-[13px] font-semibold text-[#0D1B2A]">
               {t.configure}
             </button>
           </div>
         </>
       )}
-      <Link href="/cookies" className="mt-3 inline-block text-[14px] font-medium text-[#254A66] underline underline-offset-2">
-        {t.policy}
-      </Link>
+      <div className="mt-3 border-t border-slate-200 pt-2">
+        <button
+          type="button"
+          aria-expanded={policyExpanded}
+          aria-controls="sc-cookie-details"
+          onClick={() => setPolicyExpanded((value) => !value)}
+          className="inline-flex min-h-8 items-center gap-2 text-left text-[12px] font-semibold text-[#254A66] underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#254A66]"
+        >
+          {policyExpanded ? t.hideDetails : t.readDetails}
+          <span aria-hidden="true">{policyExpanded ? '▴' : '▾'}</span>
+        </button>
+        {policyExpanded && (
+          <div id="sc-cookie-details" className="mt-2 border border-slate-200 bg-[#F7F9FC] p-3 text-[12px] leading-5 text-slate-700">
+            <p className="mb-2">{t.shortIntro}</p>
+            <dl className="space-y-2">
+              <div><dt className="font-semibold text-[#0D1B2A]">{t.technicalTitle}</dt><dd>{t.technicalText}</dd></div>
+              <div><dt className="font-semibold text-[#0D1B2A]">{t.choiceTitle}</dt><dd>{t.choiceText}</dd></div>
+              <div><dt className="font-semibold text-[#0D1B2A]">{t.metricsTitle}</dt><dd>{t.metricsText}</dd></div>
+            </dl>
+            <p className="mt-2">{t.transfers}</p>
+            <Link href="/cookies" className="mt-2 inline-block font-semibold text-[#254A66] underline underline-offset-2">
+              {t.fullPolicy} ↗
+            </Link>
+          </div>
+        )}
+      </div>
       {error && <p role="alert" className="mt-2 text-[14px] text-red-700">{t.error}</p>}
     </section>
   )

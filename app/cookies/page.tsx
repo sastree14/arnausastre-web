@@ -65,38 +65,38 @@ export default function CookiesPage() {
 
   return (
     <main className="bg-[#F7F9FC] text-[#0D1B2A]">
-      <article className="site-container max-w-4xl py-14 md:py-20">
-        <h1 className="text-[40px] md:text-[52px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
-        <p className="mt-2 text-[14px] text-slate-600">{t.updated}</p>
-        <p className="mt-7 text-[17px] leading-8">{t.intro}</p>
-        <h2 className="mt-9 text-[25px] font-semibold">{t.inventory}</h2>
-        <div className="mt-4 overflow-x-auto border border-slate-300 bg-white">
-          <table className="w-full min-w-[630px] text-left text-[14px] leading-6">
+      <article className="site-container mx-auto max-w-[940px] py-9 md:py-12">
+        <h1 className="text-[29px] font-semibold tracking-tight md:text-[34px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.title}</h1>
+        <p className="mt-1 text-[11px] text-slate-500">{t.updated}</p>
+        <p className="mt-4 text-[13px] leading-6 text-slate-700">{t.intro}</p>
+        <h2 className="mt-6 text-[15px] font-semibold">{t.inventory}</h2>
+        <div className="mt-2 overflow-x-auto border border-slate-200 bg-white">
+          <table className="w-full min-w-[600px] text-left text-[12px] leading-5">
             <thead className="bg-[#0D1B2A] text-white">
               <tr>
-                <th scope="col" className="px-4 py-3">{t.tableName}</th>
-                <th scope="col" className="px-4 py-3">{t.tableProvider}</th>
-                <th scope="col" className="px-4 py-3">{t.tablePurpose}</th>
-                <th scope="col" className="px-4 py-3">{t.tableRetention}</th>
+                <th scope="col" className="px-3 py-2">{t.tableName}</th>
+                <th scope="col" className="px-3 py-2">{t.tableProvider}</th>
+                <th scope="col" className="px-3 py-2">{t.tablePurpose}</th>
+                <th scope="col" className="px-3 py-2">{t.tableRetention}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
-              <tr><td className="px-4 py-3 font-mono">sc_site_lang / lang</td><td className="px-4 py-3">SC-Analytics</td><td className="px-4 py-3">{t.technical}</td><td className="px-4 py-3">{t.session}</td></tr>
-              <tr><td className="px-4 py-3 font-mono">sc_cookie_consent_v1</td><td className="px-4 py-3">SC-Analytics</td><td className="px-4 py-3">{t.decision}</td><td className="px-4 py-3">{t.halfYear}</td></tr>
-              <tr><td className="px-4 py-3 font-mono">_ga / _ga_3E1DK7935G</td><td className="px-4 py-3">Google</td><td className="px-4 py-3">{t.stats}</td><td className="px-4 py-3">{t.twoYears}</td></tr>
+              <tr><td className="px-4 py-3 font-mono">sc_site_lang / lang</td><td className="px-3 py-2">SC-Analytics</td><td className="px-3 py-2">{t.technical}</td><td className="px-3 py-2">{t.session}</td></tr>
+              <tr><td className="px-4 py-3 font-mono">sc_cookie_consent_v1</td><td className="px-3 py-2">SC-Analytics</td><td className="px-3 py-2">{t.decision}</td><td className="px-3 py-2">{t.halfYear}</td></tr>
+              <tr><td className="px-4 py-3 font-mono">_ga / _ga_3E1DK7935G</td><td className="px-3 py-2">Google</td><td className="px-3 py-2">{t.stats}</td><td className="px-3 py-2">{t.twoYears}</td></tr>
             </tbody>
           </table>
         </div>
-        <h2 className="mt-9 text-[25px] font-semibold">{t.necessary}</h2>
-        <p className="mt-3 text-[16px] leading-7">{t.necessaryText}</p>
-        <h2 className="mt-9 text-[25px] font-semibold">{t.analytical}</h2>
-        <p className="mt-3 text-[16px] leading-7">{t.analyticalText}</p>
-        <p className="mt-3 text-[16px] leading-7">{t.purpose}</p>
-        <h2 className="mt-9 text-[25px] font-semibold">{t.change}</h2>
-        <p className="mt-3 text-[16px] leading-7">{t.changeText}</p>
-        <h2 className="mt-9 text-[25px] font-semibold">{t.provider}</h2>
-        <p className="mt-3 text-[16px] leading-7">{t.providerText}</p>
-        <a className="mt-3 inline-block font-semibold underline underline-offset-4" href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
+        <h2 className="mt-6 text-[15px] font-semibold">{t.necessary}</h2>
+        <p className="mt-2 text-[13px] leading-6 text-slate-700">{t.necessaryText}</p>
+        <h2 className="mt-6 text-[15px] font-semibold">{t.analytical}</h2>
+        <p className="mt-2 text-[13px] leading-6 text-slate-700">{t.analyticalText}</p>
+        <p className="mt-2 text-[13px] leading-6 text-slate-700">{t.purpose}</p>
+        <h2 className="mt-6 text-[15px] font-semibold">{t.change}</h2>
+        <p className="mt-2 text-[13px] leading-6 text-slate-700">{t.changeText}</p>
+        <h2 className="mt-6 text-[15px] font-semibold">{t.provider}</h2>
+        <p className="mt-2 text-[13px] leading-6 text-slate-700">{t.providerText}</p>
+        <a className="mt-2 inline-block text-[12px] font-medium underline underline-offset-4" href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
           Google Privacy Policy ↗
         </a>
       </article>
