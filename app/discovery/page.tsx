@@ -7,12 +7,12 @@ export const metadata: Metadata = {
   title: 'Book a 30-Minute Discovery Call',
   description:
     'A first 30-minute conversation with SC-Analytics to understand the problem, context and potential value. No cost and no commitment.',
-  alternates: { canonical: 'https://sc-analytics.io/discovery' },
+  alternates: { canonical: 'https://www.sc-analytics.io/discovery' },
   robots: { index: false, follow: true },
   openGraph: {
     title: 'Book a 30-Minute Discovery Call | SC-Analytics',
     description: '30 minutes · no cost · no commitment.',
-    url: 'https://sc-analytics.io/discovery',
+    url: 'https://www.sc-analytics.io/discovery',
     siteName: 'SC-Analytics',
     images: [
       {
