@@ -1,4 +1,4 @@
-import { classifyOrganicSearchQuery } from '@/lib/seo-search-query-classification'
+import { classifyOrganicSearchQuery } from './seo-search-query-classification.ts'
 
 export type SearchObservation={
   metric_date:string
