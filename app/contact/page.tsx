@@ -63,6 +63,9 @@ const COPY = {
     privacyLabel: 'Información sobre protección de datos',
     privacyNotice: 'Responsable: Arnau Sastre Conde (SC-Analytics). Finalidad: responder tu solicitud y gestionar el contacto comercial. Base jurídica: medidas precontractuales solicitadas. Destinatarios: proveedores tecnológicos necesarios (alojamiento, CRM y correo). Derechos: acceso, rectificación, supresión y otros en arnau.sastre@sc-analytics.io.',
     privacyLink: 'Lee la política de privacidad completa.',
+    privacyAcknowledgmentPrefix: 'He leído y comprendido la información sobre protección de datos y la',
+    privacyAcknowledgmentLink: 'Política de privacidad',
+    privacyAcknowledgmentSuffix: 'de SC-Analytics.',
     successTitle: 'Contexto recibido.',
     success: 'Gracias. Revisaremos lo que nos has contado y continuaremos la conversación desde ahí.',
     error: 'No hemos podido enviar el mensaje. Puedes volver a intentarlo o reservar directamente una conversación.',
@@ -137,6 +140,9 @@ const COPY = {
     privacyLabel: 'Informació sobre protecció de dades',
     privacyNotice: 'Responsable: Arnau Sastre Conde (SC-Analytics). Finalitat: respondre la teva sol·licitud i gestionar el contacte comercial. Base jurídica: mesures precontractuals sol·licitades. Destinataris: proveïdors tecnològics necessaris (allotjament, CRM i correu). Drets: accés, rectificació, supressió i altres a arnau.sastre@sc-analytics.io.',
     privacyLink: 'Consulta la política de privacitat completa.',
+    privacyAcknowledgmentPrefix: 'He llegit i comprès la informació sobre protecció de dades i la',
+    privacyAcknowledgmentLink: 'Política de privacitat',
+    privacyAcknowledgmentSuffix: 'de SC-Analytics.',
     successTitle: 'Context rebut.',
     success: 'Gràcies. Revisarem el que ens has explicat i continuarem la conversa des d’aquí.',
     error: 'No hem pogut enviar el missatge. Pots tornar-ho a provar o reservar directament una conversa.',
@@ -211,6 +217,9 @@ const COPY = {
     privacyLabel: 'Data protection information',
     privacyNotice: 'Controller: Arnau Sastre Conde (SC-Analytics). Purpose: respond to your enquiry and manage the business contact. Legal basis: pre-contractual steps requested by you. Recipients: necessary technology providers (hosting, CRM and email). Rights: access, correction, erasure and others at arnau.sastre@sc-analytics.io.',
     privacyLink: 'Read the full privacy policy.',
+    privacyAcknowledgmentPrefix: 'I have read and understood the data protection information and the',
+    privacyAcknowledgmentLink: 'Privacy policy',
+    privacyAcknowledgmentSuffix: 'of SC-Analytics.',
     successTitle: 'Context received.',
     success: 'Thank you. We will review what you shared and continue the conversation from there.',
     error: 'We could not send the message. You can try again or book a conversation directly.',
@@ -238,6 +247,7 @@ export default function ContactPage() {
   const [form, setForm] = useState({ name: '', company: '', email: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending] = useState(false)
+  const [privacyAcknowledged, setPrivacyAcknowledged] = useState(false)
   const [error, setError] = useState(false)
 
   useEffect(() => {
@@ -255,6 +265,7 @@ export default function ContactPage() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
+    if (!privacyAcknowledged) return
     setSending(true)
     setError(false)
 
@@ -268,6 +279,7 @@ export default function ContactPage() {
           message,
           language: lang,
           sourcePath: `/contact?intent=${intent}`,
+          privacyNoticeAcknowledged: privacyAcknowledged,
         }),
       })
 
@@ -448,6 +460,32 @@ export default function ContactPage() {
                   <p className="font-semibold text-[#0D1B2A]">{t.privacyLabel}</p>
                   <p className="mt-1">{t.privacyNotice}</p>
                   <Link href="/privacy" className="mt-1 inline-block font-semibold text-[#254A66] underline underline-offset-2">{t.privacyLink}</Link>
+                </div>
+                <div className="flex items-start gap-3 rounded-sm border border-slate-200 bg-slate-50 px-4 py-3">
+                  <input
+                    id="contact-privacy-acknowledged"
+                    type="checkbox"
+                    required
+                    checked={privacyAcknowledged}
+                    onChange={(event) => setPrivacyAcknowledged(event.target.checked)}
+                    className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-[#0D1B2A] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#254A66]"
+                  />
+                  <div className="text-[13px] leading-5 text-slate-700">
+                    <label htmlFor="contact-privacy-acknowledged" className="cursor-pointer">
+                      {t.privacyAcknowledgmentPrefix}
+                    </label>{' '}
+                    <Link
+                      href="/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-[#254A66] underline underline-offset-2 hover:text-[#0D1B2A]"
+                    >
+                      {t.privacyAcknowledgmentLink}
+                    </Link>{' '}
+                    <label htmlFor="contact-privacy-acknowledged" className="cursor-pointer">
+                      {t.privacyAcknowledgmentSuffix}
+                    </label>
+                  </div>
                 </div>
                 <div className="flex justify-end border-t border-slate-200 pt-5">
                   <button

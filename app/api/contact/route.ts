@@ -4,9 +4,10 @@ import { randomUUID } from 'node:crypto'
 import { insertGrowthRow } from '@/lib/supabase-growth'
 
 const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL || 'arnau.sastre@sc-analytics.io'
+const PRIVACY_NOTICE_VERSION = '2026-10-21-v1'
 
 export async function POST(req: NextRequest) {
-  let body: { name?: string; company?: string; email?: string; message?: string; language?: string; sourcePath?: string }
+  let body: { name?: string; company?: string; email?: string; message?: string; language?: string; sourcePath?: string; privacyNoticeAcknowledged?: boolean }
   try {
     body = await req.json()
   } catch {
@@ -19,6 +20,12 @@ export async function POST(req: NextRequest) {
   const message = (body.message || '').trim()
   const language = ['es','ca','en'].includes(String(body.language)) ? String(body.language) : 'es'
   const sourcePath = String(body.sourcePath || '/contact').trim().slice(0,500)
+
+  // This is acknowledgement of the privacy information, not consent to marketing.
+  // Reject requests that bypass the mandatory checkbox in the browser.
+  if (body.privacyNoticeAcknowledged !== true) {
+    return NextResponse.json({ error: 'Privacy information acknowledgment required' }, { status: 400 })
+  }
 
   if (!name || !email || !message) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -41,6 +48,8 @@ export async function POST(req: NextRequest) {
       message,
       language,
       source_path: sourcePath,
+      privacy_notice_version: PRIVACY_NOTICE_VERSION,
+      privacy_notice_acknowledged_at: now,
       status: 'new',
       created_at: now,
       updated_at: now,
