@@ -4,7 +4,7 @@
  * created for EXACTLY that Calendly event; never overwrite an unrelated sale.
  */
 export type ExistingOpportunity={
-  opportunity_id:string
+  opportunity_id?:string
   source?:string|null
   stage?:string|null
   metadata?:Record<string,unknown>|null
@@ -14,6 +14,7 @@ export function findCalendlyEventOpportunity<T extends ExistingOpportunity>(
 ):T|null {
   if(!/^https:\/\/api\.calendly\.com\/scheduled_events\/[a-z0-9-]+$/i.test(eventUri))return null
   return rows.find(row=>
+    typeof row.opportunity_id==='string' && row.opportunity_id.length>0 &&
     row.source==='calendly' &&
     row.metadata?.calendly_event_uri===eventUri
   )||null
