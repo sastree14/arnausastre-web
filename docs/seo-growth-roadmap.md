@@ -1,5 +1,24 @@
 # SC-Analytics · Organic Growth implementation log
 
+> **Actualizado tras el lanzamiento del 21/10/2026:** leer primero [SEO_HANDOFF.md](./SEO_HANDOFF.md). Los PR #80 y #81 ya están fusionados; esta hoja conserva también el historial de las etapas previas. No interpretar un checklist histórico como estado actual.
+
+## Hito de despliegue completado
+
+- [x] SEO técnico y contenido multilingüe comercial: **23 páginas de servicio publicadas**, incluidas diez nuevas ES/CA, sin cambiar el diseño ni los archivos CSS.
+- [x] Keywords del CMI consolidadas por intención: **29/29 destinos activos apuntan a páginas publicadas**.
+- [x] Sitemap dinámico corregido (PR #81): **93 URLs**, 23 de servicios y las diez nuevas ES/CA incluidas.
+- [x] Auditor SEO público: **93/93 URL correctas, 0 errores**; quedaron dos avisos de títulos largos de un artículo (ES corregido en Supabase, CA en PR de metadatos).
+- [x] Auditor enlaces internos: **98 destinos, 0 enlaces rotos**.
+- [x] CI general y SEO PR checks aprobados para #80 y #81; 12 pruebas SEO unitarias y 10 de navegador con backend simulado.
+- [x] Publicación controlada mediante transacción SQL protegida con dry run y rollback previo.
+- [ ] Revalidar metatítulos y actualizar métricas GSC cuando Google rastree las nuevas rutas.
+- [ ] Mejorar atribución de reuniones Calendly y cualificación en CRM, distinguiendo visitas, clics, formularios y reservas reales.
+- [ ] Monitorizar posiciones de búsquedas sin marca y calidad comercial de las nuevas landings sin provocar cambios visuales.
+- [ ] Revisar escalabilidad del listado de artículos cuando supere 200 traducciones, manteniendo su experiencia de búsqueda.
+- [ ] Configurar redirección apex → www como permanente (308) desde el panel Vercel si está permitido.
+- [ ] SEO externo: referencias editoriales y enlaces genuinos; no redes automatizadas ni compras.
+
+
 **Branch:** `feature/seo-growth-foundation-20261021`  
 **Owner:** SC-Analytics  
 **Updated:** 2026-10-21  

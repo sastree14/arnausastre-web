@@ -1,5 +1,38 @@
 # SC-Analytics — SEO Growth: REANUDAR AQUÍ
 
+## ESTADO ACTUAL EN PRODUCCIÓN — actualización posterior al lanzamiento, 21/10/2026
+
+> **Esta sección prevalece sobre los checkpoints históricos que aparecen más abajo.** El PR #80 **YA SE FUSIONÓ** con main; no seguir trabajando sobre `feature/seo-growth-foundation-20261021` sin comparar primero con main.
+
+**Producción comprobada:** `https://www.sc-analytics.io`.
+
+- **PR #80** fusionado: `4fd8227d6a8da6dfa8684d2d34688b53811a1614` (infraestructura SEO, 10 landings en borrador, validadores, CMI, sitemap, control editorial, medición del formulario, CI semanal).
+- **PR #81** fusionado: `07efe3d0033ff64cd70d9adcefa8111ea927ffd0` (sitemap: corregida la caché de 300 s de `seo_pages`; si falla una fuente dinámica no oculta la otra).
+- **Landings publicadas:** **23** (13 EN existentes + 6 ES + 4 CA). Las diez fueron publicadas mediante `scripts/seo-localized-release-20261021.sql`, con transacción guardada y comprobación de cobertura. El cambio pasó primero una prueba de SQL con `ROLLBACK`.
+- **Keywords del CMI:** **29 activas de 29** apuntan a una página de servicio `published`. Se consolidaron sinónimos de intención comercial, evitando 16 páginas repetitivas.
+- **Sitemap real:** **93 URLs**, de ellas **23 páginas de servicio y las 10 nuevas rutas ES/CA**.
+- **Rastreo SEO de producción:** `npm run seo:health` comprobó **93/93 páginas, 0 errores y 2 avisos** de metatítulos largos de un artículo antiguo `brief_093a3a68227e`. El ES fue corregido directamente en el metadato del registro publicado de Supabase; el CA se corrige en `lib/generated-article-localizations.ts` del PR de esta documentación. No dar esos dos avisos por cerrados hasta otro rastreo.
+- **Enlaces:** `python3 scripts/seo-internal-links.py` revisó **93 páginas, 98 destinos internos y 0 enlaces rotos**.
+- **QA previo a la publicación:** `npm run lint` 0 errores (20 warnings no bloqueantes), `npm run seo:test` 12/12, `npm run build` OK. E2E Chromium móvil con Supabase simulado y contacto interceptado: 10/10. Cookies analíticas permanecen desactivadas al rechazar, sin nuevas cookies.
+- **Frontend público preservado:** misma maqueta y diseño; 0 archivos CSS/Tailwind cambiados en PR #80. Únicas diferencias visibles: contenido de las 10 nuevas páginas, traducción de etiquetas en esas páginas y texto/destino de un CTA existente en artículos. No se rediseñó home, navegación ni servicios.
+- **Publicador de artículos:** cron Supabase existente sigue activo; no se añadió un segundo mecanismo. La auditoría semanal GitHub Actions será de solo lectura y mostrará resultados tras activarse en `main`.
+- **Limitaciones abiertas:** el dominio apex `sc-analytics.io` redirige a www con HTTP 307 y el cambio a 308 pertenece a configuración de Vercel; la UI de índice de conocimiento carga 200 localizaciones completas y a largo plazo necesitará paginación. Semrush todavía no se ha vuelto a ejecutar tras la publicación; tampoco hay garantía de cambios de ranking.
+- **Privacidad legal pendiente fuera de SEO:** política legal/aviso legal requieren NIF y domicilio profesional según normativa aplicable, pero no inventar ni publicar dirección privada sin consentimiento informado.
+
+### Qué hacer en el SIGUIENTE CHAT
+
+1. Leer **esta sección de estado actual**, la ruta `docs/seo-localized-commercial-20261021.md` y `docs/seo-growth-roadmap.md`.
+2. Revisar último SHA de `main`, últimos PR/deploys Vercel, y último rastreo; no asumir que PR #80 está pendiente.
+3. Terminar / verificar el PR de metatítulo catalán y esta documentación; volver a ejecutar `npm run seo:health` contra producción y `seo-internal-links.py`.
+4. Revisar Search Console después de que Google vuelva a rastrear el sitemap y contar impresiones/clics sin marca por página y país; no tomar las 29 keywords planificadas como 29 consultas con demanda demostrada.
+5. Mejorar embudo real: atribución `source_path` desde servicio → contacto → cualificación CRM y reservas Calendly (sin equiparar clic a reunión). Conservar consentimiento analítico.
+6. Fortalecer **calidad comercial** de las diez páginas ya publicadas con ejemplos verificables y preguntas de clientes reales, sin cambiar el layout; evaluar crear recursos originales si justifican su inversión.
+7. Obtener backlinks y menciones naturales mediante colaboraciones, casos y recursos. **No comprar enlaces** ni automatizar intercambios.
+8. Revisar legitimidad y visibilidad de ES/CA en Google. Los títulos/hreflang y schema no garantizan indexación ni resultados.
+9. No contratar Semrush, BabyLoveGrowth ni otras herramientas de pago.
+10. Actualizar este documento después de cada bloque, con fechas, commits y pruebas.
+
+
 > **Documento maestro de continuidad entre chats.** Actualizar al terminar **cada bloque**. Para retomar: leer este archivo, `docs/seo-growth-roadmap.md`, `docs/seo-keyword-intents-20261021.md`, verificar la rama y el estado del PR, y continuar la primera tarea pendiente con pruebas. **No depender del historial del chat.**
 
 **Fecha de inicio:** 21/10/2026  

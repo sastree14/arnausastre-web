@@ -106,7 +106,7 @@ export function withReviewedArticleLocalizations(rows: PublicGeneratedArticle[])
       excerpt: 'Defineix la decisió, el responsable i l’indicador abans de triar una eina analítica. Compara iniciatives i valida el seu ús amb un pilot acotat.',
       knowledge_area: 'analytics',
       related_case: '/projects/power-bi-executive-decision-system',
-      seo_title: SME_ANALYTICS_CA.title,
+      seo_title: 'Analítica a les pimes: decideix abans de triar eines',
     } },
   }]
 }
