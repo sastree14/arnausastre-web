@@ -1,5 +1,7 @@
 # SC-Analytics SEO: punto de partida de búsquedas no branded
 
+**Estado:** publicado mediante PR #84 (`4eb5a0a95c2c825beeeb5b17157f5f3f8220d745`), Vercel READY. Auditor SEO de producción posterior: **93 páginas, 0 errores y 0 advertencias**; 98 destinos internos, 0 enlaces rotos.
+
 **Fecha de análisis:** 2026-10-21.  
 **Último día importado desde Search Console:** 2026-10-18.  
 **Origen:** `public.search_console_daily`, tenant `sc-analytics`.
