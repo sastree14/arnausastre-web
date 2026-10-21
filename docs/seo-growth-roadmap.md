@@ -29,15 +29,15 @@
 
 - [x] Create SEO-only working branch from current `main`.
 - [x] Add `npm run seo:health` to check the production sitemap, HTTP status, canonicals, `hreflang`, JSON-LD, and duplicates using built-in Node APIs.
-- [ ] Verify health script against live production (read-only).
-- [ ] Validate Next.js build, preview deployment and consent/contact regressions.
+- [x] Verify health script against live production (read-only): 82 pages fetched; found 2 sitemap/hreflang errors and 3 warnings; corrections staged in this branch.
+- [x] Validate Next.js production build in an isolated Vercel sandbox (passes).\n- [x] Verify all seven mapped service destinations return HTTP 200.\n- [ ] Validate a Vercel preview with production-like content and repeat consent/contact regressions before any merge.
 - [ ] Keep first PR unmerged until the reviewed implementation is ready.
 
 ### 1. Commercial SEO and internal linking
 
 - [x] Map seven existing editorial knowledge areas to verified, published service pages.
 - [x] Reuse the existing three-card footer of articles to point the *second* card at a relevant service, rather than only returning to the article index. Keep all classes/CSS/layout untouched.
-- [ ] Analyse all 29 keyword targets by intent and consolidate into a smaller set of commercial search topics. Verify relevance, language and SEO landing page existence.
+- [x] Group the 29 target expressions by language and buyer intent, without creating duplicates. See `docs/seo-keyword-intents-20261021.md`.\n- [ ] Confirm search demand and page-level performance before drafting new landings.
 - [ ] Verify existing 13 service page metadata and map each to one genuinely relevant published article or public case; avoid invented examples.
 - [ ] Add a small number of qualified editorial links **within existing link slots** rather than adding new page sections.
 - [ ] Review essential conversion-related CTA wording with the user if commercial claims change.
