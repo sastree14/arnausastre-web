@@ -124,7 +124,7 @@ El crawler de producción no depende de secretos. Evitar usarlo como único gate
 - `lib/seo-page-quality.ts`, `app/api/growth-admin/seo-page/route.ts` y nuevas pruebas: comprobado con datos actuales de las 13 landings. La sección más corta tiene 134 caracteres, todas las landings existentes superan las restricciones. Publicaciones incompletas o con URLs peligrosas devuelven 422 al administrador, sin guardarse.
 - Nuevo control `scripts/seo-internal-links.py` integrado en auditoría semanal. Ejecución real pública: **82 URLs de sitemap**, **96 destinos internos**, **0 fallos** (antes del merge de esta rama).
 - Control de calidad del banco: **585 localizaciones programadas**, de ellas **480 sin `related_case`** pero con `related_article` que a menudo remite a un artículo todavía no publicado. Se corrigió el enlace de la tarjeta de caso en `components/GeneratedKnowledgeArticleGoldStandard.tsx`: usa `/projects` si no hay un caso público específico, sin cambiar la estructura visual.
-- Resultado del sandbox renovado, HEAD anterior al último ajuste de la tarjeta: **`npm run seo:test` 9/9, `npm run build` OK, `ƒ /sitemap.xml` y `ƒ /services/[slug]`**. Tras el último cambio de tarjeta y esta documentación repetir QA antes del merge.
+- QA repetida tras el ajuste de la tarjeta y del CMI: **`npm run seo:test` 9/9, `npm run build` OK, `ƒ /sitemap.xml` y `ƒ /services/[slug]`**. Comparación con `main`: 23 archivos modificados, **0 CSS/Tailwind** (antes de las últimas actualizaciones documentales).
 - **No se han aplicado migraciones Supabase, ni cambiado cron, cookies, newsletter, ni publicado páginas SEO nuevas.** CMI sólo cambia en rama GitHub.
 - Sigue pendiente **un E2E de preview con las variables reales del backend** y un rastreo de producción tras release; no marcarlo como superado antes de probarlo.
 - El listado público `/knowledge` sigue utilizando hasta 200 localizaciones con cuerpo completo. El sitemap ahora paginará todas las publicadas, pero **la UI del listado puede dejar de listar artículos antiguos cuando haya muchos**. No cambiar la UX de búsqueda de conocimiento sin un plan de paginación que conserve su funcionamiento.
@@ -135,7 +135,7 @@ El crawler de producción no depende de secretos. Evitar usarlo como único gate
 
 **Último resultado verificado:** nueve tests SEO correctos, Next.js build OK con sitemap dinámico y 82 URLs/96 destinos internos en producción sin fallos de enlace. Los cambios permanecen en PR #80 en borrador; falta E2E de la rama más reciente y, después del merge, auditoría de producción.
 
-**Siguiente paso recomendado:** instrumentar GitHub Action semanal de SEO QA + comprobar informe; después revisar flujo editorial real y preparar validadores que adviertan, no reprogramen silenciosamente. Actualizar aquí la lista de completado y el commit/PR al cerrar cada sesión.
+**Siguiente paso recomendado:** comprobar el preview del último HEAD con acceso a las variables backend de Vercel (sin exponer secretos), probar CMI y cookies/formulario, validar sitemap dinámico con artículos publicados y cerrar el bloque de lanzamiento cuando las pruebas sean satisfactorias. Después preparar las landings comerciales multilingües ES/CAT (contenido sustantivo revisado) y medición de reuniones/CRM. Los workflows de GitHub ya están preparados, pero aún inactivos hasta merge. Actualizar este archivo en cada sesión.
 
 ## 8. Fuentes de verdad para el próximo chat
 
