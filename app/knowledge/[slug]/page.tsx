@@ -20,7 +20,7 @@ function summary(value:string,max=158){
 
 export async function generateMetadata({params}:Props):Promise<Metadata>{
   const {slug}=await params
-  const canonical=`/knowledge/${slug}`
+  const canonical=`/knowledge/${slug}/en`
   const staticArticle=getArticleBySlug(slug)
   if(staticArticle){
     const title=staticArticle.titleEn||staticArticle.titleEs
@@ -30,7 +30,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
       description,
       keywords:staticArticle.tagsEn?.length?staticArticle.tagsEn:staticArticle.tagsEs,
       alternates:{canonical},
-      openGraph:{title,description,url:`https://sc-analytics.io${canonical}`,type:'article',publishedTime:staticArticle.date},
+      openGraph:{title,description,url:`https://www.sc-analytics.io${canonical}`,type:'article',publishedTime:staticArticle.date},
     }
   }
 
@@ -46,7 +46,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
     description,
     keywords:seoKeywords.filter(Boolean) as string[],
     alternates:{canonical},
-    openGraph:{title,description,url:`https://sc-analytics.io${canonical}`,type:'article',publishedTime:article.published_at||undefined},
+    openGraph:{title,description,url:`https://www.sc-analytics.io${canonical}`,type:'article',publishedTime:article.published_at||undefined},
   }
 }
 
@@ -61,8 +61,8 @@ export default async function ArticlePage({ params }: Props) {
       description:staticArticle.excerptEn||staticArticle.excerptEs,
       datePublished:staticArticle.date,
       author:{'@type':'Organization',name:'SC-Analytics'},
-      publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://sc-analytics.io'},
-      mainEntityOfPage:`https://sc-analytics.io/knowledge/${slug}`,
+      publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://www.sc-analytics.io'},
+      mainEntityOfPage:`https://www.sc-analytics.io/knowledge/${slug}`,
     }
     return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><KnowledgeArticleGoldStandard article={staticArticle} /></>
   }
@@ -77,8 +77,8 @@ export default async function ArticlePage({ params }: Props) {
     description:summary(preferred.body),
     datePublished:preferred.published_at||undefined,
     author:{'@type':'Organization',name:'SC-Analytics'},
-    publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://sc-analytics.io'},
-    mainEntityOfPage:`https://sc-analytics.io/knowledge/${slug}`,
+    publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://www.sc-analytics.io'},
+    mainEntityOfPage:`https://www.sc-analytics.io/knowledge/${slug}`,
   }
   return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><GeneratedKnowledgeArticleGoldStandard variants={generated} /></>
 }
