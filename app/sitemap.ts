@@ -1,4 +1,10 @@
 import type { MetadataRoute } from 'next'
+
+// Knowledge content is published independently of Vercel deploys by Supabase
+// cron. The sitemap MUST be generated at request time, otherwise Next.js can
+// freeze its XML during a build and never list newly published knowledge pages.
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 import { getAllArticles } from '@/lib/content'
 import { getAllProjects } from '@/lib/projects'
 import { queryGrowthTable } from '@/lib/supabase-growth'
