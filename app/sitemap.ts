@@ -43,17 +43,24 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
     })),
   ]
 
-  try{
-    const[pages,articles]=await Promise.all([
-      queryGrowthTable<SeoPage>('seo_pages',{tenant_id:'eq.sc-analytics',status:'eq.published',limit:'200'},{cacheSeconds:300}),
-      getPublishedKnowledgeSitemapRows(),
-    ])
-    const dynamicRoutes:MetadataRoute.Sitemap=[
-      ...pages.map(row=>({url:`${base}/services/${row.slug}`,lastModified:row.updated_at?new Date(row.updated_at):new Date(),changeFrequency:'monthly' as const,priority:0.85})),
-      ...articles.map(row=>({url:row.language?`${base}/knowledge/${row.brief_id||row.content_id}/${row.language}`:`${base}/knowledge/${row.brief_id||row.content_id}`,lastModified:row.published_at?new Date(row.published_at):new Date(),changeFrequency:'monthly' as const,priority:0.72})),
-    ]
-    return uniqueByUrl([...staticRoutes,...repositoryContent,...dynamicRoutes])
-  }catch{
-    return uniqueByUrl([...staticRoutes,...repositoryContent])
-  }
+  // Read the published-service index without fetch caching so newly approved
+  // landings enter the sitemap on the next request; the sitemap route is dynamic.
+  // Retrieve service and article sources independently: one transient backend
+  // failure must not erase the other inventory from XML.
+  const [serviceResult, articleResult] = await Promise.allSettled([
+    queryGrowthTable<SeoPage>('seo_pages',{
+      select:'slug,updated_at,status',tenant_id:'eq.sc-analytics',status:'eq.published',
+      order:'slug.asc',limit:'200',
+    },{cacheSeconds:0,timeoutMs:10000,retries:1}),
+    getPublishedKnowledgeSitemapRows(),
+  ])
+  if(serviceResult.status==='rejected') console.error('SEO sitemap service index unavailable',serviceResult.reason)
+  if(articleResult.status==='rejected') console.error('SEO sitemap knowledge index unavailable',articleResult.reason)
+  const pages=serviceResult.status==='fulfilled'?serviceResult.value:[]
+  const articles=articleResult.status==='fulfilled'?articleResult.value:[]
+  const dynamicRoutes:MetadataRoute.Sitemap=[
+    ...pages.map(row=>({url:`${base}/services/${row.slug}`,lastModified:row.updated_at?new Date(row.updated_at):new Date(),changeFrequency:'monthly' as const,priority:0.85})),
+    ...articles.map(row=>({url:row.language?`${base}/knowledge/${row.brief_id||row.content_id}/${row.language}`:`${base}/knowledge/${row.brief_id||row.content_id}`,lastModified:row.published_at?new Date(row.published_at):new Date(),changeFrequency:'monthly' as const,priority:0.72})),
+  ]
+  return uniqueByUrl([...staticRoutes,...repositoryContent,...dynamicRoutes])
 }
