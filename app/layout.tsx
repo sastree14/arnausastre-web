@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { headers } from 'next/headers'
 import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import './public-polish.css'
@@ -95,19 +94,15 @@ const jsonLd = {
   ],
 }
 
-export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  // The proxy resolves URL language server-side. Avoid trusting arbitrary
-  // request values; only these three supported locales may reach <html>.
-  const candidate=(await headers()).get('x-sc-document-language')
-  const documentLanguage=candidate==='es'||candidate==='ca'?candidate:'en'
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang={documentLanguage}>
+    <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
         <GoogleAnalytics />
         <WebAnalytics />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <LanguageProvider>
-          <SiteLanguageProvider initialLang={documentLanguage}>
+          <SiteLanguageProvider>
             <SiteChrome>{children}</SiteChrome>
           </SiteLanguageProvider>
         </LanguageProvider>
