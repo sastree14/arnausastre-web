@@ -1,0 +1,11 @@
+# SC-Analytics
+> Independent data science, forecasting, optimisation, analytics and AI automation consulting.
+
+Website: https://www.sc-analytics.io/
+Services: https://www.sc-analytics.io/services
+Case studies: https://www.sc-analytics.io/projects
+Knowledge articles: https://www.sc-analytics.io/knowledge
+Data and AI partnership: https://www.sc-analytics.io/partner-analitico
+Contact: https://www.sc-analytics.io/contact
+
+Contact details and legal policies are available via the website footer.

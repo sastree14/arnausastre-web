@@ -15,7 +15,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!project) return {}
 
   const goldStandard = getWebsiteProjectGoldStandard(slug)
-  const title = `${goldStandard?.title || project.headline} — Full case study`
+  const rawTitle = goldStandard?.title || project.headline
+  const shortTitle = rawTitle.length > 42 ? `${rawTitle.slice(0, 39).trimEnd()}…` : rawTitle
+  const title = `${shortTitle} — Case Study`
   const description = goldStandard?.description || project.description
   const canonical = `/projects/${slug}/case-study`
 
@@ -26,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      url: `https://sc-analytics.io${canonical}`,
+      url: `https://www.sc-analytics.io${canonical}`,
       type: 'article',
     },
   }

@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: 'Knowledge | Data, AI & Decision Systems',
   description:
     'SC-Analytics analysis on forecasting, optimisation, operations, machine learning, automation, AI and decision systems — written when there is something useful to understand.',
+  alternates: { canonical: '/knowledge' },
   keywords: [
     'forecasting insights',
     'operations research',

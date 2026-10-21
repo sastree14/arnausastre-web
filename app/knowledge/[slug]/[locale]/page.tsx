@@ -38,7 +38,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
       description:local.description,
       keywords:local.tags,
       alternates:{canonical,languages:{en:'/knowledge/'+slug+'/en',es:'/knowledge/'+slug+'/es',ca:'/knowledge/'+slug+'/ca'}},
-      openGraph:{title:local.title,description:local.description,url:'https://sc-analytics.io'+canonical,type:'article',locale:locale==='es'?'es_ES':locale==='ca'?'ca_ES':'en_GB',publishedTime:staticArticle.date},
+      openGraph:{title:local.title,description:local.description,url:'https://www.sc-analytics.io'+canonical,type:'article',locale:locale==='es'?'es_ES':locale==='ca'?'ca_ES':'en_GB',publishedTime:staticArticle.date},
     }
   }
 
@@ -58,7 +58,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
     description,
     keywords:seoKeywords.filter(Boolean) as string[],
     alternates:{canonical,languages:available},
-    openGraph:{title,description,url:'https://sc-analytics.io'+canonical,type:'article',locale:locale==='es'?'es_ES':locale==='ca'?'ca_ES':'en_GB',publishedTime:article.published_at||undefined},
+    openGraph:{title,description,url:'https://www.sc-analytics.io'+canonical,type:'article',locale:locale==='es'?'es_ES':locale==='ca'?'ca_ES':'en_GB',publishedTime:article.published_at||undefined},
   }
 }
 
@@ -80,8 +80,8 @@ export default async function LocalizedArticle({params}:Props){
       inLanguage:locale,
       datePublished:staticArticle.date,
       author:{'@type':'Organization',name:'SC-Analytics'},
-      publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://sc-analytics.io'},
-      mainEntityOfPage:'https://sc-analytics.io/knowledge/'+slug+'/'+locale,
+      publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://www.sc-analytics.io'},
+      mainEntityOfPage:'https://www.sc-analytics.io/knowledge/'+slug+'/'+locale,
     }
     return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><KnowledgeArticleGoldStandard article={staticArticle} forcedLanguage={locale}/></>
   }
@@ -97,8 +97,8 @@ export default async function LocalizedArticle({params}:Props){
     inLanguage:locale,
     datePublished:article.published_at||undefined,
     author:{'@type':'Organization',name:'SC-Analytics'},
-    publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://sc-analytics.io'},
-    mainEntityOfPage:'https://sc-analytics.io/knowledge/'+slug+'/'+locale,
+    publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://www.sc-analytics.io'},
+    mainEntityOfPage:'https://www.sc-analytics.io/knowledge/'+slug+'/'+locale,
   }
   return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><GeneratedKnowledgeArticleGoldStandard variants={variants} forcedLanguage={locale}/></>
 }

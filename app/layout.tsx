@@ -12,7 +12,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://sc-analytics.io'),
+  metadataBase: new URL('https://www.sc-analytics.io'),
   title: {
     default: 'SC-Analytics | Data & AI for Better Business Decisions',
     template: '%s | SC-Analytics',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'SC-Analytics | Better Decisions. Better Business Outcomes.',
     description: 'We help companies improve decisions, planning and operations with data, mathematics, automation and AI — only where it creates real value.',
-    url: 'https://sc-analytics.io',
+    url: 'https://www.sc-analytics.io',
     siteName: 'SC-Analytics',
     locale: 'en_US',
     type: 'website',
@@ -68,23 +68,30 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  name: 'SC-Analytics',
-  url: 'https://sc-analytics.io',
-  description: 'Data & AI consultancy helping companies improve decisions, planning and operations through forecasting, optimisation, machine learning, automation, analytics and AI.',
-  serviceType: [
-    'Data & AI Consulting',
-    'Forecasting',
-    'Business Optimisation',
-    'Machine Learning',
-    'AI Automation',
-    'Decision Support Systems',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://www.sc-analytics.io/#organization',
+      name: 'SC-Analytics',
+      url: 'https://www.sc-analytics.io/',
+      description: 'Independent consultancy for forecasting, optimisation, business analytics, data science and AI automation.',
+      founder: { '@type': 'Person', name: 'Arnau Sastre', jobTitle: 'Founder' },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'business enquiries',
+        email: 'arnau.sastre@sc-analytics.io',
+        url: 'https://www.sc-analytics.io/contact',
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://www.sc-analytics.io/#website',
+      name: 'SC-Analytics',
+      url: 'https://www.sc-analytics.io/',
+      publisher: { '@id': 'https://www.sc-analytics.io/#organization' },
+      inLanguage: ['en','es','ca'],
+    },
   ],
-  areaServed: ['Spain', 'Europe'],
-  knowsAbout: ['Data Science','Artificial Intelligence','Forecasting','Operations Research','Optimization','Machine Learning','AI Automation','Business Analytics','Decision Support Systems'],
-  slogan: 'Mejores decisiones. Mejores resultados empresariales.',
-  founder: { '@type': 'Person', name: 'Arnau Sastre', jobTitle: 'Founder' },
-  contactPoint: { '@type': 'ContactPoint', contactType: 'business enquiries', url: 'https://sc-analytics.io/contact' },
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

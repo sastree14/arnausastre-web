@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: 'Why SC-Analytics',
   description:
     'Why companies work with SC-Analytics: direct communication, quantitative rigor, proportionate solutions and Data & AI capability built around real business decisions.',
+  alternates: { canonical: '/about' },
   keywords: [
     'SC Analytics',
     'data AI consulting',

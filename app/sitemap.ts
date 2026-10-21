@@ -16,7 +16,7 @@ function uniqueByUrl(entries:MetadataRoute.Sitemap):MetadataRoute.Sitemap{
 }
 
 export default async function sitemap():Promise<MetadataRoute.Sitemap>{
-  const base='https://sc-analytics.io'
+  const base='https://www.sc-analytics.io'
   const staticRoutes:MetadataRoute.Sitemap=['','/services','/projects','/knowledge','/about','/contact','/partner-analitico','/briefing'].map(path=>({
     url:`${base}${path}`,
     changeFrequency:path===''?'weekly':'monthly',

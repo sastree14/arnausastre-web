@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: 'Start a Conversation',
   description:
     'Talk to SC-Analytics about a business problem, a Data & AI opportunity or an ongoing partner model. Start with the decision that should improve, not with a pre-selected technology.',
+  alternates: { canonical: '/contact' },
   keywords: [
     'data AI consultation',
     'data science consultation',

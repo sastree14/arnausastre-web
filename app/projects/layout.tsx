@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: 'Success Stories',
   description:
     '32 public portfolio implementations across AI, data, forecasting, BI, risk, optimisation and finance. Explore the business decision, technical proof and clearly labelled reference economics behind each system.',
+  alternates: { canonical: '/projects' },
   keywords: [
     'analytics success stories',
     'data analytics projects',
