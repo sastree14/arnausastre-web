@@ -7,7 +7,7 @@ import { queryGrowthTable } from '@/lib/supabase-growth'
 
 export const dynamic='force-dynamic';export const revalidate=0
 type SeoPage={slug:string;primary_keyword:string;secondary_keywords?:string[];title:string;meta_description:string;h1:string;intro:string;sections?:Array<{heading?:string;body?:string}>;cta_title?:string;cta_body?:string;internal_links?:Array<{href?:string;label?:string}>;status:string}
-const getPage=cache(async (slug:string){try{return(await queryGrowthTable<SeoPage>('seo_pages',{tenant_id:'eq.sc-analytics',slug:`eq.${slug}`,status:'eq.published',limit:'1'},{cacheSeconds:0}))[0]||null}catch(error){console.error('SEO service page unavailable',{slug,error:error instanceof Error?error.message:String(error)});return null}})
+const getPage=cache(async (slug:string)=>{try{return(await queryGrowthTable<SeoPage>('seo_pages',{tenant_id:'eq.sc-analytics',slug:`eq.${slug}`,status:'eq.published',limit:'1'},{cacheSeconds:0}))[0]||null}catch(error){console.error('SEO service page unavailable',{slug,error:error instanceof Error?error.message:String(error)});return null}})
 const getPublishedServiceSlugs=cache(async()=>{
   const rows=await queryGrowthTable<{slug:string}>('seo_pages',{select:'slug',tenant_id:'eq.sc-analytics',status:'eq.published',limit:'150'},{cacheSeconds:60,timeoutMs:9000})
   return new Set(rows.map(row=>row.slug))
