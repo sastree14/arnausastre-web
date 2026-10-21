@@ -278,7 +278,14 @@ export default function ContactPage() {
           ...form,
           message,
           language: lang,
-          sourcePath: `/contact?intent=${intent}`,
+          // The ref parameter is an explicit navigation source from a service
+          // page. No persistent tracking identifier or analytics cookie is used.
+          sourcePath: (() => {
+            const parameters = new URLSearchParams(window.location.search)
+            const ref = parameters.get('ref') || ''
+            const validRef = /^service:[a-z0-9-]{1,110}$/.test(ref) ? ref : ''
+            return `/contact?intent=${intent}${validRef ? '&ref='+encodeURIComponent(validRef) : ''}`
+          })(),
           privacyNoticeAcknowledged: privacyAcknowledged,
         }),
       })
