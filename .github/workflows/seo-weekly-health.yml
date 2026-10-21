@@ -1,0 +1,79 @@
+name: SEO — weekly production health (free, read-only)
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Monday 06:15 UTC; GitHub may delay scheduled runs at busy times.
+    - cron: '15 6 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sc-seo-health-production
+  cancel-in-progress: false
+
+jobs:
+  seo-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout source (no write access)
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run public technical SEO audit
+        id: audit
+        env:
+          SEO_AUDIT_BASE_URL: https://www.sc-analytics.io
+        run: |
+          set +e
+          node scripts/seo-health.mjs > seo-health.json
+          audit_exit=$?
+          echo "exit_code=$audit_exit" >> "$GITHUB_OUTPUT"
+          echo "$audit_exit" > seo-exit.txt
+          exit 0
+      - name: Publish a concise run summary
+        if: always()
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs'
+          const output = process.env.GITHUB_STEP_SUMMARY
+          const input = fs.readFileSync('seo-health.json','utf8')
+          let result
+          try { result = JSON.parse(input) } catch {
+            fs.appendFileSync(output, '## SEO Production QA\nAudit did not return valid JSON. See artifact.\n')
+            process.exit(0)
+          }
+          const summarize = (items) => (items||[]).slice(0,15).map(item =>
+            '- **' + item.code + '**: \`' + item.url + '\`'
+          ).join('\n') || 'None'
+          fs.appendFileSync(output, [
+            '## SC-Analytics — SEO QA ('+result.checkedAt+')',
+            '- Public pages: **'+result.fetched+'/'+result.urlsInSitemap+'**',
+            '- Errors: **'+result.errorCount+'**',
+            '- Warnings: **'+result.warningCount+'**',
+            '### Errors (first 15)',
+            summarize(result.errors),
+            '### Warnings (first 15)',
+            summarize(result.warnings),
+            '',
+          ].join('\n\n'))
+          NODE
+      - name: Retain machine-readable report for comparison
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-health-${{ github.run_id }}
+          path: |
+            seo-health.json
+            seo-exit.txt
+          retention-days: 30
+      - name: Fail check if there are genuine technical errors
+        if: always()
+        run: |
+          [ -f seo-exit.txt ] && [ "$(cat seo-exit.txt)" = "0" ] || exit 1
