@@ -12,6 +12,17 @@
 - **QA en rama:** 16/16 unit tests, lint 0 errores, build OK, homepage estática, 16/16 pruebas de navegador (backend simulado; ninguna consulta de prueba guardada).
 - **Próxima fase:** merge después de checks; verificar URLs, cabeceras y cron real en producción. Ver [detalle](./seo-attribution-locale-20261021.md).
 
+## Seguimiento de Search Console — 21/10/2026 (sprint posterior a PR #83)
+
+**Documento:** [seo-nonbrand-baseline-20261021.md](./seo-nonbrand-baseline-20261021.md).
+
+- Rama de trabajo: `feature/seo-nonbrand-search-trends-20261021`, creada desde main ya con el lanzamiento SEO y CRM de PR #83.
+- Agregador `lib/seo-organic-trends.ts`: compara 28 días frente a los 28 días anteriores sobre la **última fecha GSC importada**, excluye búsquedas de marca y presenta cobertura de días; no atribuye clics a reservas.
+- CMI privado `app/growth-admin/seo/page.tsx`: tarjetas con clics, impresiones y variación, más fecha de corte y advertencia de consultas anonimizadas.
+- Datos de referencia antes de que Google rastree los nuevos servicios (último dato 18/10): ventana **24/08–20/09**: 94 impresiones y 0 clics sin marca, 21 días de registros; ventana **21/09–18/10**: 27 impresiones y 0 clics, 26 días. Cambio observable de impresiones **−71,3 %**. **NO refleja el impacto de las diez páginas publicadas el 21/10**.
+- QA de rama: `npm run seo:test` **19/19**, `npm run lint` 0 errores (18 warnings preexistentes) y `npm run build` OK, preservando home/contact prerender estático.
+- Siguiente paso: revisar PR de métricas y publicar si GitHub/Vercel aprueban; después monitorizar descubrimiento e indexación de URLs comerciales a lo largo de semanas.
+
 ## PR #83 FUSIONADO — producción comprobada el 21/10/2026
 
 **Nuevo sprint completado:** [docs/seo-attribution-locale-20261021.md](./seo-attribution-locale-20261021.md).
