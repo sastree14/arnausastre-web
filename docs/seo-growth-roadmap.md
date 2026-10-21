@@ -30,22 +30,25 @@
 - [x] Create SEO-only working branch from current `main`.
 - [x] Add `npm run seo:health` to check the production sitemap, HTTP status, canonicals, `hreflang`, JSON-LD, and duplicates using built-in Node APIs.
 - [x] Verify health script against live production (read-only): 82 pages fetched; found 2 sitemap/hreflang errors and 3 warnings; corrections staged in this branch.
-- [x] Validate Next.js production build in an isolated Vercel sandbox (passes).\n- [x] Verify all seven mapped service destinations return HTTP 200.\n- [ ] Validate a Vercel preview with production-like content and repeat consent/contact regressions before any merge.
+- [x] Validate Next.js production build in an isolated Vercel sandbox (passes).
+- [x] Verify all seven mapped service destinations return HTTP 200.
+- [ ] Validate a Vercel preview with production-like content and repeat consent/contact regressions before any merge.
 - [ ] Keep first PR unmerged until the reviewed implementation is ready.
 
 ### 1. Commercial SEO and internal linking
 
 - [x] Map seven existing editorial knowledge areas to verified, published service pages.
 - [x] Reuse the existing three-card footer of articles to point the *second* card at a relevant service, rather than only returning to the article index. Keep all classes/CSS/layout untouched.
-- [x] Group the 29 target expressions by language and buyer intent, without creating duplicates. See `docs/seo-keyword-intents-20261021.md`.\n- [ ] Confirm search demand and page-level performance before drafting new landings.
-- [ ] Verify existing 13 service page metadata and map each to one genuinely relevant published article or public case; avoid invented examples.
+- [x] Group the 29 target expressions by language and buyer intent, without creating duplicates. See `docs/seo-keyword-intents-20261021.md`.
+- [ ] Confirm search demand and page-level performance before drafting new landings; free Semrush API quota is limited and no paid subscription is approved.
+- [x] Verify metadata across the existing 13 published services: 49–68-char titles, 130–158-char descriptions, 3 content sections per page; public link crawl detected 0 broken links. Related article/case links need ongoing editorial review.
 - [ ] Add a small number of qualified editorial links **within existing link slots** rather than adding new page sections.
 - [ ] Review essential conversion-related CTA wording with the user if commercial claims change.
 
 ### 2. Editorial publication quality
 
-- [ ] Inspect the actual existing scheduling/approval flow before changing its rules.
-- [ ] Define review gates: distinct purpose and audience, search intent, evidence, title/description, canonical URL, internal link destination, publication date and language variants.
+- [x] Verify existing Supabase cron: sc-knowledge-publisher runs every minute, editorial publisher every five minutes; keep unchanged.
+- [x] Implement read-only editorial metadata audit plus 9 unit tests (including CMI landing validation). No silent publication changes.
 - [ ] Prefer warnings and drafts over silently suppressing scheduled content.
 - [ ] Avoid changing production article cadence without separate approval.
 
@@ -53,12 +56,12 @@
 
 - [ ] Define GA4 event names and distinguish meaningful contact intent, form submission, Calendly booking and CRM-qualified opportunity.
 - [ ] Prevent duplicate event counting and respect consent handling (no analytics before opt-in).
-- [ ] Reuse existing Search Console imports for brand vs non-brand visibility.
+- [x] Improve authenticated CMI SEO view with full-query (not top-20-only) non-brand clicks/impressions and keyword target coverage.
 - [ ] Provide a simple weekly comparison view/report using existing CMI and Supabase data (no purchased tools).
 
 ### 4. Locale SEO
 
-- [ ] Audit commercial page language/indexability.
+- [x] Inventory 13 published English commercial SEO pages and missing ES/CA target paths; no invented translated pages.
 - [ ] Scope a language-specific solution for the **few priority service pages**, preserving the existing visual design.
 - [ ] Defer a wholesale migration of all URLs until scope/risk are reviewed.
 
@@ -67,6 +70,26 @@
 - [ ] Identify permitted/credible portfolio evidence and partnership content opportunities.
 - [ ] Prepare qualified external citations and collaborators without buying or exchanging spam links.
 - [ ] Optional: design the first ROI/calculator resource *only after* intent and development value are confirmed.
+
+## Additional backend work completed on this branch (21/10/2026)
+
+- [x] `docs/SEO_HANDOFF.md` authoritative recovery document for another chat.
+- [x] Automated weekly `seo-weekly-health.yml`: read-only robots/sitemap/canonical/hreflang/JSON-LD/internal links; 30-day report artifacts; starts only after merge.
+- [x] `seo-pr-checks.yml`: build and unit SEO tests on PR.
+- [x] `scripts/seo-internal-links.py`: public crawl of 82 indexed pages and 96 internal targets; **0 broken**.
+- [x] `lib/public-knowledge-sitemap.ts`: paginated narrow query for the future 600+ translated published articles, avoiding 200 rich-row truncation.
+- [x] `app/sitemap.ts` dynamic runtime regeneration: newly published Supabase cron articles become indexable without new Vercel deployment.
+- [x] JSON-LD `Service` and `BreadcrumbList` on commercial SEO landings, invisible to site visitors.
+- [x] Authenticated CMI landing publish gate validates slug, page substance, SEO title, description, internal paths; does not change published content by itself.
+- [x] Existing generated article case-card link falls back to published `/projects` rather than pointing at another article still scheduled for a future date.
+- [ ] Verify latest HEAD with `npm run build` and `npm run seo:test` after each new commit; 9 tests passed at previous checkpoint.
+- [ ] Perform representative E2E preview checks with production-like Supabase data, cookie consent and contact flow, and mobile layout.
+- [ ] Release only after checking production errors and index/sitemap visibility.
+- [ ] Fix apex → www temporary Vercel redirect (307 → 308) via domain configuration if available.
+
+### Important constraints
+
+Indexing and ranking are external to our server: even zero technical audit errors does not guarantee search traffic, Google positions, or backlinks. The existing site CSS/classes and public layout remain protected. Separate multilingual commercial content, original thought leadership and genuine external mentions are **future editorial work**, not disguised backend-only operations.
 
 ## Acceptance criteria
 
