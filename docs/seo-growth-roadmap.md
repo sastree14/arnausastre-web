@@ -82,7 +82,7 @@
 - [x] JSON-LD `Service` and `BreadcrumbList` on commercial SEO landings, invisible to site visitors.
 - [x] Authenticated CMI landing publish gate validates slug, page substance, SEO title, description, internal paths; does not change published content by itself.
 - [x] Existing generated article case-card link falls back to published `/projects` rather than pointing at another article still scheduled for a future date.
-- [ ] Verify latest HEAD with `npm run build` and `npm run seo:test` after each new commit; 9 tests passed at previous checkpoint.
+- [x] Verify latest implementation HEAD: `npm run seo:test` 9/9 and `npm run build` successful; Next routes for services and sitemap remain dynamic.
 - [ ] Perform representative E2E preview checks with production-like Supabase data, cookie consent and contact flow, and mobile layout.
 - [ ] Release only after checking production errors and index/sitemap visibility.
 - [ ] Fix apex → www temporary Vercel redirect (307 → 308) via domain configuration if available.
