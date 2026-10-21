@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { SERVICE_LANGUAGE_GROUPS,serviceLocaleForSlug,serviceGroupForSlug,languageAlternatesForPublishedSlugs } from '../../lib/seo-service-locales.ts'
 
 test('all commercial locale group slugs are unique and language assignment is stable',()=>{
- const slugs=new Set<string>()
+ const slugs=new Set()
  for(const variants of Object.values(SERVICE_LANGUAGE_GROUPS)){
    for(const [lang,slug] of Object.entries(variants)){
      assert.ok(!slugs.has(slug),'Duplicate slug '+slug)
