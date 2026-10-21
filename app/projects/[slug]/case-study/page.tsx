@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      url: `https://sc-analytics.io${canonical}`,
+      url: `https://www.sc-analytics.io${canonical}`,
       type: 'article',
     },
   }
