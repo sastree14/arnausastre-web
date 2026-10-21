@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: 'Services | Data, AI, Forecasting & Optimization',
   description:
     'From business problem to working system: forecasting, optimisation, machine learning, AI automation, analytics and simulation selected around the decision that needs to improve.',
+  alternates: { canonical: '/services' },
   keywords: [
     'demand forecasting',
     'inventory optimization',
