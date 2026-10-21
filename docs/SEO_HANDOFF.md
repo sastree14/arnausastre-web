@@ -1,5 +1,38 @@
 # SC-Analytics — SEO Growth: REANUDAR AQUÍ
 
+
+## ACTUALIZACIÓN 22/10/2026 — punto correcto para reanudar
+
+**Priorizar esta sección sobre los hitos históricos de más abajo.** Trabajar siempre desde `main`; estas ramas históricas ya se han fusionado.
+
+| PR | SHA de merge | Resultado |
+| --- | --- | --- |
+| [#85](https://github.com/sastree14/arnausastre-web/pull/85) | `3ae954db314e818484d5dbb4db9118559b3876a5` | Evita que la reconciliación Calendly altere oportunidades ajenas/cerradas, vincule personas por nombre o reactive archivados. No crea oportunidades con eventos/invitaciones canceladas. |
+| [#86](https://github.com/sastree14/arnausastre-web/pull/86) | `951e7ae8900934004dbeafb7c0ae8997bb3f622d` | El CMI deja las reservas en **—** hasta que el sincronizador Calendly haya completado un ciclo reciente (≤48 h). |
+| [#87](https://github.com/sastree14/arnausastre-web/pull/87) | `447c24654f5589f6ceb58e958d597a6c33f1734c` | Search Console por páginas de 500 (hasta 6.000) y limitado al histórico reciente de 90 días; alerta de lectura parcial o fallo. |
+| [#88](https://github.com/sastree14/arnausastre-web/pull/88) | `4c4f84a9b7f5cd083a6cbbf48d90b526e1f9fb2f` | Clasificación de consultas `branded`, `ambiguous`, `nonbrand`, `unavailable`, excluyendo marcas y abreviaturas engañosas. |
+
+**QA**: PR85 23/23 tests; PR86 26/26; PR87 29/29; PR88 33/33; sin errores de lint, builds correctos y sin CSS/layout público modificado. Los PRs anteriores #80–84 siguen fusionados y vigentes.
+
+**Revisión del dato orgánico (importante):** la antigua cifra de `94 → 27` impresiones sin marca (28d/28d) era **demasiado amplia**: contaba búsquedas como `sc data`, `sc insights`, `sc analytix` y el fundador. Con clasificación conservadora:
+- **Strict nonbrand**: **90 → 8 impresiones**, **0 → 0 clics**.
+- **Ambiguous**: **4 → 18 impresiones**, 0 clics.
+- **Branded**: **79 → 130 impresiones**, **3 → 17 clics**.
+- Ventanas: 24/08–20/09 versus 21/09–18/10, último dato disponible. La publicación de las diez páginas ES/CA fue el **21/10** y por tanto estos datos **NO miden su efecto**.
+- Ver [metodología](./seo-search-query-classification-20261022.md) y [baseline inicial supersedida](./seo-nonbrand-baseline-20261021.md).
+
+**Cron de Calendly:** `/api/cron/calendly-crm-daily`, programado a `10 6 * * *` UTC, con `CRON_SECRET` y `CALENDLY_ACCESS_TOKEN` presentes en Vercel. **La primera ejecución del 22/10/2026 todavía NO SE HA VERIFICADO a esta fecha del informe.** La última sincronización observada en Supabase fue `2026-09-21T12:17:37.905Z`; por ello los contadores de reservas deben quedar en **—** hasta comprobar que se actualizan. Revisar logs, sello `last_synced_at`, registros de `crm_meetings` y etapas de las oportunidades.
+
+**Pendientes técnicos/comerciales reales:**
+1. **Después de 06:10 UTC de 22/10:** verificar la primera ejecución del cron de Calendly; si falla, inspeccionar error y revalidar un ciclo. No inventar bookings ni confundir clics con reservas.
+2. Solicitar/revisar indexación de las diez páginas comerciales ES/CA desde Google Search Console y evaluar demanda sin marca en unas semanas (con retraso normal).
+3. Seguir auditoría semanal sitemap/canónicas/enlaces; última auditoría previa fue 93 páginas, 0 incidencias, 98 destinos internos sin roturas.
+4. **Apex** `sc-analytics.io` sigue redirigiendo a `www.sc-analytics.io` temporalmente (307). Vercel Project Domain muestra `redirectStatusCode=null`; actualizarlo a **308** con herramienta de modificación de dominio autorizada o panel, sin borrar/recrear el dominio ni cambiar DNS. No registrar como arreglado.
+5. HTML inicial `<html lang="en">` en rutas ES/CA se hidrata al idioma correcto y devuelve `Content-Language`, pero el SSR inicial sigue sin ajustarse; evitar volver dinámica toda la home para corregirlo.
+6. Las nuevas páginas necesitan evidencia comercial verificable y backlinks orgánicos; no comprar links ni automatizar publicaciones sin calidad. Revisar índice Knowledge cuando sobrepase su capacidad prevista.
+7. No contratar herramientas ni servicios SEO de pago. Frontend visual actual se mantiene protegido.
+
+
 ## Continuación histórica del 21/10/2026 — Implementación que se fusionó en PR #83
 
 **Documento detallado:** [seo-attribution-locale-20261021.md](./seo-attribution-locale-20261021.md).
