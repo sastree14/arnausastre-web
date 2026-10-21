@@ -83,6 +83,42 @@ git diff main...HEAD --stat
 
 El crawler de producción no depende de secretos. Evitar usarlo como único gate de CI de PR porque `main` público no contiene aún los cambios de la rama. Para previews usar URL de Vercel y entorno de contenido equivalente al real.
 
+## 6 bis. Ejecución prolongada del 21/10/2026: estado verificable actualizado
+
+### Implementado en la rama (además de lo indicado arriba)
+- `.github/workflows/seo-weekly-health.yml`: comprobación técnica semanal de producción (lunes 06:15 UTC) con auditor de sitemap/metadatos + enlaces internos, resumen de GitHub Actions e informe de 30 días. **No estará activa hasta que esta rama se fusione con main.** No escribe sobre producción.
+- `.github/workflows/seo-pr-checks.yml`: compila Next.js y ejecuta pruebas unitarias SEO sobre los PR; no necesita secretos.
+- `scripts/seo-internal-links.py`: rastreo de páginas del sitemap y enlaces internos utilizando solamente Python estándar. En producción se comprobaron **82 URLs y 96 destinos internos, 0 enlaces rotos** el 21/10.
+- `scripts/seo-editorial-audit.mjs`: audita, en modo lectura, artículos programados y publicados, metatítulos/descripciones, vínculos, traducciones y fechas. Usa `SUPABASE_URL` y secreto **solo en un entorno confiable**; jamás publicar informes detallados de artículos programados en logs públicos.
+- `scripts/tests/seo-editorial-audit.test.mjs`: 5 pruebas aprobadas; `scripts/tests/seo-page-quality.test.mjs`: nuevas pruebas que deben comprobarse en la última compilación.
+- `app/growth-admin/seo/page.tsx`: añade al CMI **privado** contadores de keywords con landing publicada y clics/impresiones orgánicas sin marca, sin alterar la web pública.
+- `lib/public-knowledge-sitemap.ts`: carga únicamente identificadores publicados de contenido (sin cuerpos de artículo), con paginación estable de 250 filas y límite de seguridad; evita truncamiento al superar las 200 localizaciones.
+- `lib/generated-article-localizations.ts`: añade al índice ligero la localización catalana revisada del artículo histórico.
+- `app/sitemap.ts`: usa la consulta ligera paginada y `dynamic='force-dynamic'`; es importante porque el cron de Supabase publica artículos sin desplegar código. **Build anterior verificó `ƒ /sitemap.xml` (ruta dinámica).**
+- `app/services/[slug]/page.tsx`: marcado JSON-LD `Service` y `BreadcrumbList` invisible, sin tocar el diseño.
+- `lib/seo-page-quality.ts` y `app/api/growth-admin/seo-page/route.ts`: publicación manual/por recomendación en el CMI exige metadatos, contenido y enlaces seguros antes de crear o modificar una landing `published`. NO altera el editor visual público.
+
+### Evidencia de pruebas realizadas
+- `npm run seo:test` original: **5/5** antes de añadir tests del validador de landings.
+- `npm run build`: **OK** después de añadir sitemap paginado, JSON-LD y CMI de métricas; `ƒ /sitemap.xml` y `ƒ /services/[slug]`.
+- Ambos archivos YAML de Actions se analizaron correctamente con el parser `yaml` de Node; el workflow semanal ampliado también validó su sintaxis con el parser.
+- Auditor enlaces (última ejecución): 82 páginas, 96 destinos, 0 rotos.
+- La auditoría editorial por SQL detectó **585 localizaciones `scheduled`** (195 artículos × 3 idiomas), 17 `published` y **9 artículos con metatítulos iguales entre idiomas**; además, 4 descripciones programadas superan 160 caracteres. El renderer corregido en la rama desambigua títulos por idioma. No se modificaron las fechas ni los estados de publicación.
+- Publicador activo: `cron.job` n.º 2 `sc-knowledge-publisher`, cada minuto. También existe `sc-editorial-publisher` cada 5 minutos. NO añadir otro publicador.
+- Diff contra main del primer bloque: 20 archivos, **0 CSS**.
+
+### Pendiente de la siguiente ejecución (NO declarar terminado)
+1. El sandbox `sbx_4wJ2eYdgRse12Pw9sXDKuixy18n9` caducó durante la última fase. Crear un sandbox nuevo si se necesita validar los commits recientes; **repetir `npm run seo:test`, `npm run build`, YAML y QA de endpoints** sobre HEAD actual (no solo sobre SHA 9bd74e8).
+2. Comprobar que el validador de landings no bloquea ediciones legítimas de las 13 páginas actuales (medidas existentes: títulos 49–68, descripciones 130–158, introducciones 200+, 3 secciones); pruebas unitarias nuevas.
+3. Inspeccionar el diff completo y comprobar **cero cambios de CSS/layout**; sí cambian enlaces y copys de tarjeta de artículo existente.
+4. Verificar sitemap dinámico, `Service` JSON-LD y rutas publicadas en un **preview con acceso a datos** sin filtrar secretos. El preview no equivale a producción si carece de credenciales.
+5. Evaluar SEO multilingüe de servicios nuevos (content/translation de calidad) y medición de leads reales vs clics; aún no implementado. No inventar datos ni 29 páginas.
+6. Completar PR #80 / release: merge solo después de validación de último commit; verificar Vercel production READY y reejecutar auditores sobre main público.
+7. Recordar el redirect temporal 307 del dominio sin www, que requiere configurar Vercel project domain a 308 si el acceso permite; no ocultar como resuelto.
+8. Semrush solo puede corroborar con próximo rastreo gratuito; **no afirmar puntuación 100 ni ranking garantizado**.
+
+**Última actualización de este bloque:** 21/10/2026, ejecución de implementación prolongada en PR #80. Todo este trabajo se mantiene en la rama (no main).
+
 ## 7. Último resultado verificado y siguiente paso
 
 **Último resultado verificado:** build correcto en sandbox y siete destinos comerciales HTTP 200; auditor público detectó 2 problemas de sitemap/hreflang ya arreglados en la rama. PR #80 se creó inicialmente en borrador. La auditoría posterior al deploy sigue pendiente.
