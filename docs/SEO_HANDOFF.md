@@ -12,6 +12,16 @@
 - **QA en rama:** 16/16 unit tests, lint 0 errores, build OK, homepage estática, 16/16 pruebas de navegador (backend simulado; ninguna consulta de prueba guardada).
 - **Próxima fase:** merge después de checks; verificar URLs, cabeceras y cron real en producción. Ver [detalle](./seo-attribution-locale-20261021.md).
 
+## PR #84 fusionado — Comparativa SEO medible en producción (21/10/2026)
+
+- **PR #84** fusionado en `main`: commit `4eb5a0a95c2c825beeeb5b17157f5f3f8220d745`, Vercel **READY**. Las dos CI de GitHub pasaron.
+- `/growth-admin/seo` compara 28 días contra los 28 anteriores de *consultas sin marca* tomando el último día realmente importado desde Search Console. No confundir ausencia de consultas identificables con todo el tráfico orgánico.
+- Última fecha GSC al preparar el bloque: **18/10/2026**. Impresiones sin marca: **94 → 27 (−71,3 %)**, clics sin marca **0 → 0**, con 21 y 26 días respectivamente con registros. **Las diez landings nuevas se publicaron después**, el 21/10; todavía no podemos evaluar su efecto.
+- **QA final de producción:** `node scripts/seo-health.mjs` = **93/93 URLs, 0 errores, 0 advertencias**; `python3 scripts/seo-internal-links.py` = **98 destinos internos, 0 enlaces rotos**, después de PR #84.
+- **No se han cambiado los estilos de la web pública, ni se ha contratado software adicional.**
+- **Pendiente prioritario mañana:** verificar que Vercel Cron de Calendly, configurado a las 06:10 UTC (ejecución dentro de la hora en Hobby), se ejecutó correctamente y sincronizó reservas recientes en el CRM. Si falla, inspeccionar logs y no dar por confirmadas reuniones solo por clics.
+- **Próximas decisiones SEO:** identificar páginas nuevas rastreadas/indexadas por Google; analizar el progreso de consultas sin marca en las siguientes semanas y reforzar contenido con evidencia propia, backlinks genuinos y autoridad, sin SEO automatizado de baja calidad.
+
 ## Seguimiento de Search Console — 21/10/2026 (sprint posterior a PR #83)
 
 **Documento:** [seo-nonbrand-baseline-20261021.md](./seo-nonbrand-baseline-20261021.md).
