@@ -92,7 +92,7 @@ async function main() {
   async function worker() {
     while (next < unique.length) {
       const url = unique[next++]
-      if (!url.startsWith(origin + '/')) {
+      if (url !== origin && !url.startsWith(origin + '/')) {
         report('error', 'OUTSIDE_CANONICAL_ORIGIN', url, origin)
         continue
       }
