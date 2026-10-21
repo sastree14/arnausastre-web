@@ -42,3 +42,20 @@ export function languageAlternatesForPublishedSlugs(slug:string,published:Set<st
       'https://www.sc-analytics.io/services/'+peerSlug
   return output
 }
+
+/** URL-selected document language for SEO and accessibility.
+ * Returns null for generic pages whose language is chosen client-side.
+ * Client preferences must never override an explicitly localized URL.
+ */
+export function explicitLanguageForPath(pathname:string):CommercialLocale|null{
+  const pieces=pathname.split('/').filter(Boolean)
+  if(pieces[0]==='knowledge' && pieces.length===3){
+    return pieces[2]==='es'||pieces[2]==='ca'||pieces[2]==='en'
+      ? pieces[2]:null
+  }
+  if(pieces[0]==='services' && pieces.length===2){
+    return serviceLocaleForSlug(pieces[1])
+  }
+  if(pieces.length===1 && pieces[0]==='partner-analitico')return 'es'
+  return null
+}
