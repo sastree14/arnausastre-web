@@ -1,3 +1,5 @@
+> **Revisión del 22/10/2026:** la definición inicial de «sin marca» era demasiado amplia e incluía abreviaturas ambiguas como `sc data`. Los números de esta página reflejan la metodología histórica original. La clasificación conservadora actual y sus cifras revisadas están en [seo-search-query-classification-20261022.md](./seo-search-query-classification-20261022.md): **90 → 8 impresiones estrictamente no branded**, cero clics en ambas ventanas, 4 → 18 impresiones ambiguas. No usar 94 → 27 como indicador actual sin explicar la revisión.
+
 # SC-Analytics SEO: punto de partida de búsquedas no branded
 
 **Estado:** publicado mediante PR #84 (`4eb5a0a95c2c825beeeb5b17157f5f3f8220d745`), Vercel READY. Auditor SEO de producción posterior: **93 páginas, 0 errores y 0 advertencias**; 98 destinos internos, 0 enlaces rotos.
