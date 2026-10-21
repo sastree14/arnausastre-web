@@ -111,9 +111,13 @@ export default function CookieConsent() {
   useEffect(() => {
     const existing = readAnalyticsChoice()
     if (existing !== 'accepted') removeGoogleAnalyticsCookies()
-    setOpen(existing === null)
-    setAnalyticsEnabled(existing === 'accepted')
-    setReady(true)
+    // Defer React state initialization from the external consent store to
+    // the next task. This avoids synchronous effect-triggered state cascades.
+    const initialSync = window.setTimeout(() => {
+      setOpen(existing === null)
+      setAnalyticsEnabled(existing === 'accepted')
+      setReady(true)
+    }, 0)
 
     const openSettings = () => {
       setAnalyticsEnabled(readAnalyticsChoice() === 'accepted')
@@ -128,6 +132,7 @@ export default function CookieConsent() {
     window.addEventListener('sc-open-cookie-settings', openSettings)
     window.addEventListener('storage', syncTabs)
     return () => {
+      window.clearTimeout(initialSync)
       window.removeEventListener('sc-open-cookie-settings', openSettings)
       window.removeEventListener('storage', syncTabs)
     }

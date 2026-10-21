@@ -46,7 +46,19 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
   const article=variants.find(item=>item.language===locale)||variants.find(item=>item.language==='es')||variants.find(item=>item.language==='en')||variants[0]
   if(!article)return{}
   const articleMeta=(article.critique && typeof article.critique==='object' ? (article.critique as Record<string,unknown>).article_meta : null) as Record<string,unknown>|null
-  const title=clean(String(articleMeta?.seo_title||article.title)),description=summary(String(articleMeta?.seo_description||articleMeta?.excerpt||article.body))
+  // Avoid duplicate SEO titles across localized siblings when the editorial
+  // metadata accidentally repeats the same SEO title in multiple languages.
+  // Prefer each locale's approved, visible article headline in that case.
+  const proposedSeoTitle=clean(String(articleMeta?.seo_title||article.title))
+  const sharesSeoTitle=variants.some(other=>{
+    if(other.language===article.language)return false
+    const otherMeta=other.critique && typeof other.critique==='object'
+      ? (other.critique as Record<string,unknown>).article_meta as Record<string,unknown>|undefined
+      : undefined
+    return clean(String(otherMeta?.seo_title||other.title))===proposedSeoTitle
+  })
+  const title=sharesSeoTitle?clean(article.title):proposedSeoTitle
+  const description=summary(String(articleMeta?.seo_description||articleMeta?.excerpt||article.body))
   const seoKeywords=Array.isArray(articleMeta?.seo_keywords)?articleMeta?.seo_keywords:[article.topic,article.industry,article.challenge]
   const available=Object.fromEntries(
     variants

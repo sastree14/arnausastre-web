@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seo:health": "node scripts/seo-health.mjs",
+    "seo:editorial-audit": "node scripts/seo-editorial-audit.mjs",
+    "seo:test": "node --experimental-strip-types --test scripts/tests/seo-*.test.mjs"
   },
   "dependencies": {
     "exceljs": "^4.4.0",

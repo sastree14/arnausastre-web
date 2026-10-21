@@ -110,3 +110,16 @@ export function withReviewedArticleLocalizations(rows: PublicGeneratedArticle[])
     } },
   }]
 }
+
+/** Lightweight index for the reviewed Catalan article, without loading its body. */
+export type SitemapArticleLocale = {content_id:string; brief_id?:string; language?:string; published_at?:string|null}
+export function withReviewedSitemapLocalizations<T extends SitemapArticleLocale>(rows:T[]): SitemapArticleLocale[] {
+  const original = rows.find(row => row.content_id === 'content_83c9e5b6a81a' && row.language === 'es')
+  if (!original || rows.some(row => row.brief_id === original.brief_id && row.language === 'ca')) return rows
+  return [...rows, {
+    content_id: `${original.content_id}_ca_web`,
+    brief_id: original.brief_id,
+    language: 'ca',
+    published_at: original.published_at,
+  }]
+}

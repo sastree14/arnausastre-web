@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { serviceHrefForArea } from '@/lib/seo-clusters'
 import ArticleText from '@/components/ArticleText'
 import ArticleSearchJump from '@/components/ArticleSearchJump'
 import { ArrowRight } from 'lucide-react'
@@ -79,8 +80,8 @@ const UI = {
     nextLabel: 'SIGUE DESDE AQUÍ',
     nextTitle: 'Del análisis a la aplicación.',
     caseQuestion: '¿Quieres ver un caso aplicado?',
-    branchQuestion: '¿Quieres seguir explorando esta rama?',
-    branchAction: 'Explorar más análisis',
+    branchQuestion: '¿Quieres llevar este análisis a tu empresa?',
+    branchAction: 'Ver servicio relacionado',
     contactQuestion: '¿Te ocurre algo parecido?',
     contactAction: 'Cuéntanos tu caso',
   },
@@ -93,8 +94,8 @@ const UI = {
     nextLabel: 'CONTINUA DES D’AQUÍ',
     nextTitle: 'De l’anàlisi a l’aplicació.',
     caseQuestion: 'Vols veure un cas aplicat?',
-    branchQuestion: 'Vols continuar explorant aquesta branca?',
-    branchAction: 'Explorar més anàlisis',
+    branchQuestion: 'Vols aplicar aquesta anàlisi a la teva empresa?',
+    branchAction: 'Veure servei relacionat',
     contactQuestion: 'Et passa alguna cosa semblant?',
     contactAction: 'Explica’ns el teu cas',
   },
@@ -107,8 +108,8 @@ const UI = {
     nextLabel: 'CONTINUE FROM HERE',
     nextTitle: 'From analysis to application.',
     caseQuestion: 'Want to see an applied case?',
-    branchQuestion: 'Want to keep exploring this branch?',
-    branchAction: 'Explore more analysis',
+    branchQuestion: 'Want to apply this analysis to your business?',
+    branchAction: 'Explore related service',
     contactQuestion: 'Facing something similar?',
     contactAction: 'Tell us about your case',
   },
@@ -313,7 +314,7 @@ export default function KnowledgeArticleGoldStandard({ article, forcedLanguage }
   const headings = segments.filter((segment): segment is Extract<Segment, { type: 'section' }> => segment.type === 'section')
   const quick = meta.quick.slice(0, 3)
   const businessSteps = meta.businessSteps.slice(0, 3)
-  const branchHref = `/knowledge?area=${meta.area}`
+  const branchHref = serviceHrefForArea(meta.area)
 
   return (
     <main className="bg-[#F7F9FC] text-slate-950">

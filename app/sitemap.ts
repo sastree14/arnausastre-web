@@ -1,10 +1,16 @@
 import type { MetadataRoute } from 'next'
+
+// Knowledge content is published independently of Vercel deploys by Supabase
+// cron. The sitemap MUST be generated at request time, otherwise Next.js can
+// freeze its XML during a build and never list newly published knowledge pages.
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 import { getAllArticles } from '@/lib/content'
 import { getAllProjects } from '@/lib/projects'
 import { queryGrowthTable } from '@/lib/supabase-growth'
+import { getPublishedKnowledgeSitemapRows } from '@/lib/public-knowledge-sitemap'
 
 type SeoPage={slug:string;updated_at?:string;status:string}
-type Article={brief_id?:string;content_id:string;language?:string;published_at?:string;status:string}
 
 function uniqueByUrl(entries:MetadataRoute.Sitemap):MetadataRoute.Sitemap{
   const seen=new Set<string>()
@@ -40,7 +46,7 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
   try{
     const[pages,articles]=await Promise.all([
       queryGrowthTable<SeoPage>('seo_pages',{tenant_id:'eq.sc-analytics',status:'eq.published',limit:'200'},{cacheSeconds:300}),
-      queryGrowthTable<Article>('content_items',{content_type:'eq.article',status:'eq.published',order:'published_at.desc',limit:'1000'},{cacheSeconds:300}),
+      getPublishedKnowledgeSitemapRows(),
     ])
     const dynamicRoutes:MetadataRoute.Sitemap=[
       ...pages.map(row=>({url:`${base}/services/${row.slug}`,lastModified:row.updated_at?new Date(row.updated_at):new Date(),changeFrequency:'monthly' as const,priority:0.85})),

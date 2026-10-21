@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { NextResponse } from 'next/server'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { queryGrowthTable, updateGrowthRow, upsertGrowthRow } from '@/lib/supabase-growth'
+import { validateSeoLanding } from '@/lib/seo-page-quality'
 
 type Row=Record<string,unknown>
 const text=(form:FormData,name:string)=>String(form.get(name)||'').trim()
@@ -16,6 +17,13 @@ export async function POST(request:Request){
     if(!recommendation)return new NextResponse('Recommendation not found',{status:404})
     const payload=(recommendation.payload||{}) as Record<string,unknown>,slug=String(payload.slug||'').trim()
     if(!slug)return new NextResponse('Recommendation has no slug',{status:400})
+    const problems=validateSeoLanding({
+      slug,
+      title:String(payload.title||''),meta_description:String(payload.meta_description||''),
+      h1:String(payload.h1||''),intro:String(payload.intro||''),primary_keyword:String(payload.primary_keyword||''),
+      sections:payload.sections,internal_links:payload.internal_links,
+    })
+    if(problems.length)return new NextResponse('SEO publication blocked: '+problems.join('; '),{status:422})
     const existing=(await queryGrowthTable<Row>('seo_pages',{tenant_id:'eq.sc-analytics',slug:`eq.${slug}`,limit:'1'},{cacheSeconds:0}))[0]
     const pageId=String(existing?.seo_page_id||`seo_page_${randomUUID().replaceAll('-','').slice(0,14)}`)
     await upsertGrowthRow('seo_pages',{seo_page_id:pageId,tenant_id:'sc-analytics',slug,primary_keyword:String(payload.primary_keyword||''),secondary_keywords:payload.secondary_keywords||[],search_intent:String(payload.search_intent||'commercial'),title:String(payload.title||''),meta_description:String(payload.meta_description||''),h1:String(payload.h1||''),intro:String(payload.intro||''),sections:payload.sections||[],cta_title:String(payload.cta_title||''),cta_body:String(payload.cta_body||''),internal_links:payload.internal_links||[],status:'published',source:'seo_agent_approved',version:Number(existing?.version||0)+1,created_at:existing?.created_at||now,updated_at:now,published_at:now},'tenant_id,slug')
@@ -30,7 +38,17 @@ export async function POST(request:Request){
     if(!slug)return new NextResponse('Missing slug',{status:400})
     const existing=(await queryGrowthTable<Row>('seo_pages',{tenant_id:'eq.sc-analytics',slug:`eq.${slug}`,limit:'1'},{cacheSeconds:0}))[0]
     const status=text(form,'status')||String(existing?.status||'draft')
-    await upsertGrowthRow('seo_pages',{seo_page_id:String(existing?.seo_page_id||pageId),tenant_id:'sc-analytics',slug,primary_keyword:text(form,'primary_keyword'),secondary_keywords:text(form,'secondary_keywords').split(',').map(v=>v.trim()).filter(Boolean),search_intent:text(form,'search_intent')||'commercial',title:text(form,'title'),meta_description:text(form,'meta_description'),h1:text(form,'h1'),intro:text(form,'intro'),sections:jsonArray(text(form,'sections_json')),cta_title:text(form,'cta_title'),cta_body:text(form,'cta_body'),internal_links:jsonArray(text(form,'internal_links_json')),status,source:'manual_crm',version:Number(existing?.version||0)+1,created_at:existing?.created_at||now,updated_at:now,published_at:status==='published'?(existing?.published_at||now):null},'tenant_id,slug')
+    const sections=jsonArray(text(form,'sections_json'))
+    const internalLinks=jsonArray(text(form,'internal_links_json'))
+    if(status==='published'){
+      const problems=validateSeoLanding({
+        slug,title:text(form,'title'),meta_description:text(form,'meta_description'),
+        h1:text(form,'h1'),intro:text(form,'intro'),primary_keyword:text(form,'primary_keyword'),
+        sections,internal_links:internalLinks,
+      })
+      if(problems.length)return new NextResponse('SEO publication blocked: '+problems.join('; '),{status:422})
+    }
+    await upsertGrowthRow('seo_pages',{seo_page_id:String(existing?.seo_page_id||pageId),tenant_id:'sc-analytics',slug,primary_keyword:text(form,'primary_keyword'),secondary_keywords:text(form,'secondary_keywords').split(',').map(v=>v.trim()).filter(Boolean),search_intent:text(form,'search_intent')||'commercial',title:text(form,'title'),meta_description:text(form,'meta_description'),h1:text(form,'h1'),intro:text(form,'intro'),sections,cta_title:text(form,'cta_title'),cta_body:text(form,'cta_body'),internal_links:internalLinks,status,source:'manual_crm',version:Number(existing?.version||0)+1,created_at:existing?.created_at||now,updated_at:now,published_at:status==='published'?(existing?.published_at||now):null},'tenant_id,slug')
     return NextResponse.redirect(new URL(`/growth-admin/seo?saved=${encodeURIComponent(slug)}#pages`,request.url),303)
   }
   if(action==='archive_page'){
