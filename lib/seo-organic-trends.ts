@@ -1,3 +1,5 @@
+import { classifyOrganicSearchQuery } from '@/lib/seo-search-query-classification'
+
 export type SearchObservation={
   metric_date:string
   query?:string|null
@@ -13,7 +15,6 @@ export type NonBrandTrend={
   clicksChangePct:number|null
 }
 const DAY_MS=24*60*60*1000
-const BRAND=/(?:\bsc[\s-]?analytics\b|\bscanalytics\b)/i
 const dateOnly=(timestamp:number)=>new Date(timestamp).toISOString().slice(0,10)
 const isISODate=(date:string)=>/^\d{4}-\d{2}-\d{2}$/.test(date)&&
   !Number.isNaN(Date.parse(date+'T00:00:00Z'))
@@ -48,7 +49,7 @@ export function compareNonBrandWindows(rows:SearchObservation[],days=28):NonBran
     if(i<0)continue
     daySets[i].add(day)
     const query=String(row.query||'').trim()
-    if(!query||BRAND.test(query))continue
+    if(classifyOrganicSearchQuery(query)!=='nonbrand')continue
     const period=i===0?current:previous
     period.clicks+=number(row.clicks)
     period.impressions+=number(row.impressions)
