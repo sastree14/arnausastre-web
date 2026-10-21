@@ -7,11 +7,11 @@
 **Producción comprobada:** `https://www.sc-analytics.io`.
 
 - **PR #80** fusionado: `4fd8227d6a8da6dfa8684d2d34688b53811a1614` (infraestructura SEO, 10 landings en borrador, validadores, CMI, sitemap, control editorial, medición del formulario, CI semanal).
-- **PR #81** fusionado: `07efe3d0033ff64cd70d9adcefa8111ea927ffd0` (sitemap: corregida la caché de 300 s de `seo_pages`; si falla una fuente dinámica no oculta la otra).
+- **PR #82** fusionado: `ea7c0b921f9a7074c21d71b19059435a0cb9b9e0` (metatítulo catalán conciso y actualización del documento de continuidad).\n- **PR #81** fusionado: `07efe3d0033ff64cd70d9adcefa8111ea927ffd0` (sitemap: corregida la caché de 300 s de `seo_pages`; si falla una fuente dinámica no oculta la otra).
 - **Landings publicadas:** **23** (13 EN existentes + 6 ES + 4 CA). Las diez fueron publicadas mediante `scripts/seo-localized-release-20261021.sql`, con transacción guardada y comprobación de cobertura. El cambio pasó primero una prueba de SQL con `ROLLBACK`.
 - **Keywords del CMI:** **29 activas de 29** apuntan a una página de servicio `published`. Se consolidaron sinónimos de intención comercial, evitando 16 páginas repetitivas.
 - **Sitemap real:** **93 URLs**, de ellas **23 páginas de servicio y las 10 nuevas rutas ES/CA**.
-- **Rastreo SEO de producción:** `npm run seo:health` comprobó **93/93 páginas, 0 errores y 2 avisos** de metatítulos largos de un artículo antiguo `brief_093a3a68227e`. El ES fue corregido directamente en el metadato del registro publicado de Supabase; el CA se corrige en `lib/generated-article-localizations.ts` del PR de esta documentación. No dar esos dos avisos por cerrados hasta otro rastreo.
+- **Rastreo SEO final de producción tras PR #82:** `npm run seo:health` comprobó **93/93 páginas, 0 errores y 0 advertencias**; las dos longitudes de metatítulos del artículo `brief_093a3a68227e` ya están corregidas sin cambiar títulos visibles. Este resultado es del auditor técnico propio, **no de una repetición de Semrush**.
 - **Enlaces:** `python3 scripts/seo-internal-links.py` revisó **93 páginas, 98 destinos internos y 0 enlaces rotos**.
 - **QA previo a la publicación:** `npm run lint` 0 errores (20 warnings no bloqueantes), `npm run seo:test` 12/12, `npm run build` OK. E2E Chromium móvil con Supabase simulado y contacto interceptado: 10/10. Cookies analíticas permanecen desactivadas al rechazar, sin nuevas cookies.
 - **Frontend público preservado:** misma maqueta y diseño; 0 archivos CSS/Tailwind cambiados en PR #80. Únicas diferencias visibles: contenido de las 10 nuevas páginas, traducción de etiquetas en esas páginas y texto/destino de un CTA existente en artículos. No se rediseñó home, navegación ni servicios.
@@ -23,13 +23,13 @@
 
 1. Leer **esta sección de estado actual**, la ruta `docs/seo-localized-commercial-20261021.md` y `docs/seo-growth-roadmap.md`.
 2. Revisar último SHA de `main`, últimos PR/deploys Vercel, y último rastreo; no asumir que PR #80 está pendiente.
-3. Terminar / verificar el PR de metatítulo catalán y esta documentación; volver a ejecutar `npm run seo:health` contra producción y `seo-internal-links.py`.
+3. Confirmar periódicamente que `npm run seo:health` y `seo-internal-links.py` siguen sin incidencias después de publicar artículos o modificar servicios; el último rastreo técnico fue 93/93, 0 errores, 0 avisos.
 4. Revisar Search Console después de que Google vuelva a rastrear el sitemap y contar impresiones/clics sin marca por página y país; no tomar las 29 keywords planificadas como 29 consultas con demanda demostrada.
 5. Mejorar embudo real: atribución `source_path` desde servicio → contacto → cualificación CRM y reservas Calendly (sin equiparar clic a reunión). Conservar consentimiento analítico.
 6. Fortalecer **calidad comercial** de las diez páginas ya publicadas con ejemplos verificables y preguntas de clientes reales, sin cambiar el layout; evaluar crear recursos originales si justifican su inversión.
 7. Obtener backlinks y menciones naturales mediante colaboraciones, casos y recursos. **No comprar enlaces** ni automatizar intercambios.
 8. Revisar legitimidad y visibilidad de ES/CA en Google. Los títulos/hreflang y schema no garantizan indexación ni resultados.
-9. No contratar Semrush, BabyLoveGrowth ni otras herramientas de pago.
+9. No contratar Semrush, BabyLoveGrowth ni otras herramientas de pago.\n10. Auditar el HTML `lang` de landings ES/CA (actual root `lang=en`) y valorar ajuste SSR sin afectar diseño, además del redirect apex 307→308.\n11. Volver a ejecutar Semrush cuando el cupo gratuito permita nueva auditoría, sin confundir puntuación del proveedor con ranking real.
 10. Actualizar este documento después de cada bloque, con fechas, commits y pruebas.
 
 
