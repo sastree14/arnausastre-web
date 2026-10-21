@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seo:health": "node scripts/seo-health.mjs"
+    "seo:health": "node scripts/seo-health.mjs",
+    "seo:editorial-audit": "node scripts/seo-editorial-audit.mjs",
+    "seo:test": "node --test scripts/tests/seo-editorial-audit.test.mjs"
   },
   "dependencies": {
     "exceljs": "^4.4.0",
