@@ -1,5 +1,18 @@
 # SC-Analytics — SEO Growth: REANUDAR AQUÍ
 
+## BLOQUEO ACTUAL DE PRODUCCIÓN — 22/10/2026
+
+**IMPORTANTE:** GitHub y producción NO están sincronizados todavía. No afirmar que PR #88 está publicado.
+
+- **Última versión de producción Vercel READY:** commit `447c24654f5589f6ceb58e958d597a6c33f1734c` del **PR #87** (paginación GSC). Los PR #85 y #86 también están publicados.
+- **PR #88**, clasificación corregida de consultas SC Analytics / SC abreviado / búsquedas independientes, **fusionado en main** con commit `4c4f84a9b7f5cd083a6cbbf48d90b526e1f9fb2f` y CI verde, pero **aún NO desplegado**.
+- **Último SHA conocido de main** al inspeccionar: `19c2240b6602346f1c884b27b0bf86fdb7ca6d43` (documentación incluida); refrescar SHA antes de despliegue.
+- **Causa:** intento de despliegue a producción mediante Vercel Git connection devolvió `HTTP 402 payment_required`, código `api-deployments-free-per-day` con mensaje `more than 100`, `retryAfter=86400`. Plan actual **Hobby**; el usuario prohíbe pagar. **NO reintentar continuamente, cambiar de plan, ni intentar esquivar la cuota con otro método**.
+- Cuando Vercel libere de nuevo el cupo gratuito, desplegar la revisión más reciente de `main` **una sola vez**, verificar READY, revisar las nuevas métricas en `/growth-admin/seo`, y repetir `seo-health.mjs` e `seo-internal-links.py`.
+- El comparativo estricto **90→8** impresiones no branded está documentado en GitHub pero **no aparecerá en el CMI de producción** hasta que PR #88 se despliegue. Hasta entonces seguirá mostrando la clasificación anterior de la versión #87.
+- El primer cron de Calendly programado para 06:10 UTC del 22/10 **no se ha verificado**. La versión prod #87 incluye el cron, los guardarraíles de CRM y el indicador de datos obsoletos. Comprobar `integration_connections.metadata.last_synced_at` y logs cuando corresponda.
+
+
 
 ## ACTUALIZACIÓN 22/10/2026 — punto correcto para reanudar
 
