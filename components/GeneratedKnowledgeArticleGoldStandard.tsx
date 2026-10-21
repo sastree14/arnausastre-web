@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { serviceHrefForArea } from '@/lib/seo-clusters'
 import ArticleText from '@/components/ArticleText'
 import ArticleSearchJump from '@/components/ArticleSearchJump'
 import { ArrowRight } from 'lucide-react'
@@ -96,8 +97,8 @@ const COPY = {
     nextTitle: 'Del análisis a la aplicación.',
     caseQuestion: '¿Quieres ver un caso aplicado?',
     caseAction: 'Explorar caso relacionado',
-    branchQuestion: '¿Quieres seguir explorando esta rama?',
-    branchAction: 'Explorar más análisis',
+    branchQuestion: '¿Quieres llevar este análisis a tu empresa?',
+    branchAction: 'Ver servicio relacionado',
     contactQuestion: '¿Te ocurre algo parecido?',
     contactAction: 'Cuéntanos tu caso',
   },
@@ -114,8 +115,8 @@ const COPY = {
     nextTitle: 'De l’anàlisi a l’aplicació.',
     caseQuestion: 'Vols veure un cas aplicat?',
     caseAction: 'Explorar cas relacionat',
-    branchQuestion: 'Vols continuar explorant aquesta branca?',
-    branchAction: 'Explorar més anàlisis',
+    branchQuestion: 'Vols aplicar aquesta anàlisi a la teva empresa?',
+    branchAction: 'Veure servei relacionat',
     contactQuestion: 'Et passa alguna cosa semblant?',
     contactAction: 'Explica’ns el teu cas',
   },
@@ -132,8 +133,8 @@ const COPY = {
     nextTitle: 'From analysis to application.',
     caseQuestion: 'Want to see an applied case?',
     caseAction: 'Explore related case',
-    branchQuestion: 'Want to keep exploring this branch?',
-    branchAction: 'Explore more analysis',
+    branchQuestion: 'Want to apply this analysis to your business?',
+    branchAction: 'Explore related service',
     contactQuestion: 'Facing something similar?',
     contactAction: 'Tell us about your case',
   },
@@ -190,7 +191,7 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
   const excerpt = meta.excerpt || segments[0]?.paragraphs?.[0] || ''
   const businessTitle = meta.business_title || excerpt
   const businessSteps = (meta.business_steps || []).slice(0, 3)
-  const branchHref = `/knowledge?area=${area}`
+  const branchHref = serviceHrefForArea(area)
   const caseHref = meta.related_case || meta.related_article || '/knowledge'
 
   return (
