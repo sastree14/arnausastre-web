@@ -4,6 +4,7 @@ import 'server-only'
 import { randomUUID } from 'node:crypto'
 import { insertGrowthRow, queryGrowthTable, updateGrowthRow } from '@/lib/supabase-growth'
 import { encryptIntegrationSecret } from '@/lib/integration-secrets'
+import { bookingAttributionFromInvitee } from '@/lib/seo-booking-attribution'
 
 type Json = Record<string, any>
 
@@ -134,6 +135,8 @@ async function findOrCreateOpportunity(person: Json, company: Json | null, event
       calendly_event_uri: event.uri || '',
       calendly_event_type: event.event_type || '',
       meeting_name: event.name || '',
+      // Anonymous UTM source of an actual confirmed booking, not a link click.
+      booking_attribution: bookingAttributionFromInvitee(event?.invitee_tracking)||null,
     },
     updated_at: now,
   }
@@ -169,6 +172,7 @@ async function upsertMeeting(event: Json, invitee: Json | null, person: Json | n
     limit: '1',
   }, { cacheSeconds: 0 })
   const status = String(event.status || 'active').toLowerCase()
+  const bookingAttribution=bookingAttributionFromInvitee(invitee?.tracking)
   const metadata = {
     event_name: event.name || '',
     event_uri: event.uri || '',
@@ -180,6 +184,7 @@ async function upsertMeeting(event: Json, invitee: Json | null, person: Json | n
     cancel_url: invitee?.cancel_url || '',
     join_url: meetingJoinUrl(event.location),
     timezone: invitee?.timezone || '',
+    booking_attribution: bookingAttribution || existing[0]?.metadata?.booking_attribution || null,
   }
   const changes = {
     company_id: company?.company_id || null,
@@ -263,7 +268,7 @@ export async function syncCalendlyCrm() {
       person = await findOrCreatePerson(invitee, company)
       if (person) peopleLinked += 1
       if (person) {
-        opportunity = await findOrCreateOpportunity(person, company, event)
+        opportunity = await findOrCreateOpportunity(person, company, { ...event, invitee_tracking: invitee?.tracking||null })
         if (opportunity) opportunitiesLinked += 1
       }
     } else if (invitee) {

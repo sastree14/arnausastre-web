@@ -1,5 +1,17 @@
 # SC-Analytics — SEO Growth: REANUDAR AQUÍ
 
+## Continuación del 21/10/2026 — Idiomas y atribución de reuniones (PR nuevo)
+
+**Documento detallado:** [seo-attribution-locale-20261021.md](./seo-attribution-locale-20261021.md).
+
+- Rama `feature/seo-attribution-document-language-20261021` creada desde main después de PR #82. **No confundir con el PR #80 ya fusionado**.
+- Idioma explícito de servicios ES/CAT, `Content-Language` en HTTP y sincronización del atributo `document.documentElement.lang` al hidratar; conserva homepage y contacto **estáticos**. Se descartó conscientemente hacer root layout dinámico porque perjudicaba la precompilación.
+- Atribución de servicio → enlace Calendly mediante UTM anónima, captura posterior desde `invitee.tracking` de una reserva confirmada, sin cookies nuevas.
+- Nuevo cron autenticado para reconciliar Calendly con el CRM cada día a **06:10 UTC** con las credenciales ya configuradas en Vercel. El webhook de Calendly no dispone actualmente de signing key, por lo que **no se le puede atribuir sincronización fiable**. El cron usa la función ya existente y evita reimportación masiva de históricos.
+- CMI SEO contará cuatro eventos separados: formularios, formularios procedentes de servicios, citas Calendly reales, citas etiquetadas con origen web. Nunca se consideran las visitas/clics como reuniones confirmadas.
+- **QA en rama:** 16/16 unit tests, lint 0 errores, build OK, homepage estática, 16/16 pruebas de navegador (backend simulado; ninguna consulta de prueba guardada).
+- **Próxima fase:** merge después de checks; verificar URLs, cabeceras y cron real en producción. Ver [detalle](./seo-attribution-locale-20261021.md).
+
 ## ESTADO ACTUAL EN PRODUCCIÓN — actualización posterior al lanzamiento, 21/10/2026
 
 > **Esta sección prevalece sobre los checkpoints históricos que aparecen más abajo.** El PR #80 **YA SE FUSIONÓ** con main; no seguir trabajando sobre `feature/seo-growth-foundation-20261021` sin comparar primero con main.

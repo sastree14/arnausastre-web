@@ -3,12 +3,15 @@ import AdminShell from '@/components/growth-admin/AdminShell'
 import { Badge, EmptyState, PageHeader, SectionHeading, adminButtonPrimary, adminButtonSecondary, adminInput, adminPanel } from '@/components/growth-admin/AdminUi'
 import ConfirmFormButton from '@/components/growth-admin/ConfirmFormButton'
 import { isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
+import { summarizeSeoFunnel } from '@/lib/seo-attribution-report'
 
 export const dynamic='force-dynamic';export const revalidate=0
 type Keyword={keyword_id:string;keyword:string;search_intent:string;service_area:string;priority:number|string;target_path?:string;status:string}
 type Recommendation={recommendation_id:string;keyword_id?:string;target_path:string;title:string;rationale?:string;priority:number|string;payload:Record<string,unknown>;status:string;created_at?:string}
 type SeoPage={seo_page_id:string;slug:string;primary_keyword:string;secondary_keywords?:string[];search_intent:string;title:string;meta_description:string;h1:string;intro:string;sections?:Array<Record<string,unknown>>;cta_title?:string;cta_body?:string;internal_links?:Array<Record<string,unknown>>;status:string;version:number|string;updated_at?:string}
 type SearchRow={query:string;page:string;clicks:number|string;impressions:number|string;ctr:number|string;position:number|string;metric_date:string}
+type InquiryRow={source_path?:string|null}
+type BookingRow={provider?:string|null;status?:string|null;metadata?:Record<string,unknown>|null}
 
 export default async function SeoPage(){
   if(!(await isGrowthAdminAuthenticated()))redirect('/growth-admin/login')
@@ -18,6 +21,27 @@ export default async function SeoPage(){
     queryGrowthTable<SeoPage>('seo_pages',{tenant_id:'eq.sc-analytics',order:'updated_at.desc',limit:'100'},{cacheSeconds:0}),
     queryGrowthTable<SearchRow>('search_console_daily',{tenant_id:'eq.sc-analytics',order:'metric_date.desc,impressions.desc',limit:'5000'},{cacheSeconds:0}).catch(()=>[]),
   ])
+  // Admin-only, server-side comparison of distinct confirmed funnel events.
+  // Do NOT treat a Calendly outbound click as a confirmed booking.
+  const windowStart=new Date()
+  windowStart.setUTCDate(windowStart.getUTCDate()-90)
+  const since=windowStart.toISOString()
+  const [inquiryResult,bookingResult]=await Promise.allSettled([
+    queryGrowthTable<InquiryRow>('website_inquiries',{
+      select:'source_path',tenant_id:'eq.sc-analytics',created_at:`gte.${since}`,
+      order:'created_at.desc',limit:'500',
+    },{cacheSeconds:0}),
+    queryGrowthTable<BookingRow>('crm_meetings',{
+      select:'provider,status,metadata',tenant_id:'eq.sc-analytics',created_at:`gte.${since}`,
+      order:'created_at.desc',limit:'500',
+    },{cacheSeconds:0}),
+  ])
+  const formAvailable=inquiryResult.status==='fulfilled'
+  const bookingAvailable=bookingResult.status==='fulfilled'
+  const funnel=summarizeSeoFunnel(
+    formAvailable?inquiryResult.value:[],
+    bookingAvailable?bookingResult.value:[],
+  )
   const published=pages.filter(row=>row.status==='published')
   const queryMap=new Map<string,{query:string;clicks:number;impressions:number;positionWeighted:number}>()
   searchRows.forEach(row=>{const query=String(row.query||'').trim();if(!query)return;const impressions=Number(row.impressions||0),clicks=Number(row.clicks||0),position=Number(row.position||0);const current=queryMap.get(query)||{query,clicks:0,impressions:0,positionWeighted:0};current.clicks+=clicks;current.impressions+=impressions;current.positionWeighted+=position*impressions;queryMap.set(query,current)})
@@ -35,6 +59,27 @@ export default async function SeoPage(){
     <PageHeader eyebrow="Métricas · Organic Growth" title="SEO Control" description="Convierte intención de búsqueda real en contenido útil e indexable. El agente propone; tú apruebas cada cambio antes de que aparezca en la web." actions={<form action="/api/growth-admin/operator-task" method="post"><input type="hidden" name="action" value="seo_audit"/><input type="hidden" name="return_to" value="/growth-admin/seo"/><button className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">Generar auditoría SEO</button></form>}/>
     <section className="mb-8 grid gap-3 sm:grid-cols-3"><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Keywords objetivo</p><p className="mt-2 text-3xl font-semibold">{keywords.length}</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Propuestas pendientes</p><p className="mt-2 text-3xl font-semibold">{recommendations.length}</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Landings publicadas</p><p className="mt-2 text-3xl font-semibold">{published.length}</p></div></section>
     <section className="mb-8 grid gap-3 sm:grid-cols-3"><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Keywords con landing publicada</p><p className="mt-2 text-3xl font-semibold">{coveredKeywords.length} / {keywords.length}</p><p className="mt-1 text-xs text-slate-500">{awaitingLanding.length} objetivos pendientes; no son necesariamente enlaces públicos rotos.</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Clics de consultas sin marca</p><p className="mt-2 text-3xl font-semibold">{nonBrandClicks}</p><p className="mt-1 text-xs text-slate-500">Histórico importado de Search Console</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Impresiones sin marca</p><p className="mt-2 text-3xl font-semibold">{nonBrandImpressions}</p><p className="mt-1 text-xs text-slate-500">No incluye consultas sin dimensión disponible</p></div></section>
+    <section className="mb-10">
+      <SectionHeading eyebrow="SEO → consulta → reunión" title="Embudo comercial verificable"
+        description="Registros de los últimos 90 días: formularios recibidos y citas confirmadas realmente sincronizadas desde Calendly. Los pasos se miden por separado, sin atribuir reservas a simples clics."/>
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Formularios recibidos</p><p className="mt-2 text-3xl font-semibold">{formAvailable?funnel.inquiries:'—'}</p></div>
+        <div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Formularios desde servicios</p><p className="mt-2 text-3xl font-semibold">{formAvailable?funnel.attributedServiceInquiries:'—'}</p></div>
+        <div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Reservas Calendly confirmadas</p><p className="mt-2 text-3xl font-semibold">{bookingAvailable?funnel.confirmedCalendlyMeetings:'—'}</p></div>
+        <div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Reservas con origen web</p><p className="mt-2 text-3xl font-semibold">{bookingAvailable?funnel.websiteAttributedBookings:'—'}</p></div>
+      </div>
+      <p className="mt-3 text-xs leading-5 text-slate-500">
+        {bookingAvailable
+          ? 'Las reservas solo aparecen cuando el CRM ha sincronizado un evento activo de Calendly. Una reserva web necesita además los UTM de origen. No implica que el visitante haya enviado el formulario.'
+          : 'No se pudieron consultar las reuniones del CRM; un dato no disponible no equivale a cero reservas.'}
+        {' '}Se consultan hasta 500 registros por fuente. La sincronización Calendly se ejecuta diariamente mediante cron y puede tener retraso.
+      </p>
+      {Object.keys(funnel.sourceByService).length>0&&<div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {Object.entries(funnel.sourceByService).sort((a,b)=>b[1].inquiries+b[1].bookings-a[1].inquiries-a[1].bookings).map(([slug,counts])=>
+          <div key={slug} className={`${adminPanel} p-3`}><p className="text-xs font-semibold">/services/{slug}</p><p className="mt-1 text-xs text-slate-500">{counts.inquiries} formularios · {counts.bookings} reservas de origen web</p></div>
+        )}
+      </div>}
+    </section>
     <section className="mb-10"><SectionHeading eyebrow="Organic demand" title="Lo que Google ya está enseñando" description="Consultas reales de Search Console. Se actualizan con la sincronización de métricas y sirven para decidir qué páginas reforzar antes de inventar nuevas keywords." count={organicQueries.length}/>{organicQueries.length===0?<EmptyState>Search Console todavía no tiene consultas suficientes.</EmptyState>:<div className="grid gap-3 md:grid-cols-2">{organicQueries.slice(0,10).map(row=><div key={row.query} className={`${adminPanel} p-4`}><div className="flex items-start justify-between gap-3"><p className="font-semibold text-slate-950">{row.query}</p><Badge tone={row.position<=10?'green':row.position<=30?'amber':'slate'}>Pos. {row.position.toFixed(1)}</Badge></div><div className="mt-3 flex gap-4 text-xs text-slate-500"><span>{row.impressions} impresiones</span><span>{row.clicks} clics</span></div></div>)}</div>}<div className="mt-4 rounded-2xl border border-indigo-100 bg-indigo-50 p-5 text-sm leading-6 text-indigo-900"><strong>Lectura:</strong> {nonBrandQueries.length? `Ya hay ${nonBrandQueries.length} consultas no branded entre las principales. Prioriza las que tienen impresiones y posición 8–30: suelen ser la mejora SEO más barata.`:'De momento la visibilidad real está concentrada en búsquedas de marca. El objetivo de las landings y artículos nuevos es abrir consultas no branded de Data, IA, forecasting y optimización.'}</div></section>
 
     <section className="mb-10"><SectionHeading eyebrow="SEO + SEM readiness" title="Cobertura antes de comprar tráfico" description="El CRM trabaja primero intención, landing, contenido y atribución. Cuando una landing convierta o tenga señales orgánicas, esa misma página queda preparada para campañas de pago sin enviar tráfico a una home genérica."/><div className="grid gap-3 md:grid-cols-3"><div className={`${adminPanel} p-5`}><Badge tone="violet">1 · Intent</Badge><p className="mt-3 text-sm leading-6 text-slate-600">Keywords comerciales ES/CA/EN agrupadas por forecasting, Data Science, IA, optimización y analytics.</p></div><div className={`${adminPanel} p-5`}><Badge tone="blue">2 · Landing</Badge><p className="mt-3 text-sm leading-6 text-slate-600">Página específica, proyecto relacionado, CTA de diagnóstico gratuito y medición GA4/Search Console.</p></div><div className={`${adminPanel} p-5`}><Badge tone="green">3 · Paid</Badge><p className="mt-3 text-sm leading-6 text-slate-600">SEM se activa sobre páginas con mensaje y atribución listos; campaña y UTM quedan medibles hasta inquiry, reunión y oportunidad.</p></div></div></section>
