@@ -131,6 +131,32 @@ El crawler de producción no depende de secretos. Evitar usarlo como único gate
 - El cron semanal de GitHub Actions sólo empezará después de fusionar la rama; todavía no se ha ejecutado automáticamente.
 - Para la siguiente sesión revisar estado HEAD/PR, correr pruebas actualizadas y abrir el plan multilingüe priorizado sin crear páginas duplicadas.
 
+## Checkpoint — Sprint SEO comercial ES/CAT y medición (21/10/2026, continuación)
+
+**Trabajos realizados en esta iteración:**
+- `lib/seo-service-locales.ts`: familias curadas de 6 servicios EN con correspondencias ES/CA. `app/services/[slug]/page.tsx`: metadatos localizados, Open Graph locale, JSON-LD `inLanguage` y etiquetas `hreflang` **solo entre rutas publicadas**, conservando exactamente clases CSS, layout y plantilla visual.
+- En Supabase se crearon **10 landings nuevas como `draft`** (6 ES, 4 CA), fuente `seo_localized_curated_draft`. No son públicas ni aparecen en sitemap hasta publicación. Cada página tiene introducción propia, 4 apartados, metadatos y 3 enlaces internos. Consulta: `select slug,status from public.seo_pages where tenant_id='sc-analytics' and source='seo_localized_curated_draft';`.
+- `scripts/seo-localized-release-20261021.sql`: transacción protegida de liberación de las diez páginas y consolidación de los 16 targets pendientes, con verificación final **29/29**. **No ejecutar antes de merge y READY**.
+- `docs/seo-localized-commercial-20261021.md`: mapa editorial, arquitectura y secuencia de publicación.
+- `app/services/[slug]/page.tsx` y `app/contact/page.tsx`: atribución de servicio mediante URL `/contact?ref=service:<slug>`, persistida en el campo existente `website_inquiries.source_path`; sin nuevas cookies ni nuevos campos visuales.
+- Dos correcciones mínimas de lint CI fuera del SEO: `components/CookieConsent.tsx` (inicialización de estado diferida un tick, respetando rechazo y consentimiento) y `components/growth-admin/MeetingCalendarView.tsx` (utilizar `current.getTime()` en vez de Date.now en render). Clases/CSS intactas.
+
+**Pruebas realizadas:**
+- `npm run lint`: **0 errores**, 20 warnings ya presentes; antes 2 errores generales bloqueaban CI.
+- `npm run seo:test`: **12 pruebas/12 correctas** (incluyendo `hreflang` recíproco y borradores excluidos).
+- `npm run build`: **OK**, sitemap y rutas de servicios dinámicas.
+- E2E en Chromium móvil, con Supabase simulado y POST de contacto interceptado: **10/10** (HTTP ES, canónica, `hreflang`, sin scroll horizontal, CTA a contacto, origen persistido, checkbox RGPD, GA4 bloqueado al rechazar y página en borrador 404). **No se insertaron leads ficticios**.
+- Preview Vercel protegido con SSO; curl anónimo devuelve login, por eso se usó E2E local y datos de Supabase auditados, no se afirmó QA del preview autenticado.
+- SQL de Supabase: **10/10** borradores válidos con 4 secciones, descripciones de 135+ caracteres, enlaces a contacto y referencias a rutas actuales.
+
+**Próximos pasos estrictos:**
+1. Comprobar checks del último commit del PR #80; CI verde y Vercel READY.
+2. Fusionar PR #80 si cumple criterios, sin tocar frontend.
+3. Verificar producción: páginas EN, enlaces nuevos, formulario y cookies, nuevo sitemap.
+4. Ejecutar transacción guardada en `scripts/seo-localized-release-20261021.sql`; comprobar 10 nuevas páginas HTTP 200, `hreflang`, sitemap y 29/29 targets. Si el sitemap refleja caché antigua, revisar revalidación/cron antes de publicar.
+5. Revisar Search Console y solicitar indexación donde proceda, monitorizar palabras no branded; no asegurar rankings.
+6. Trabajo posterior independiente: mejoras reales de captación, autoridad externa genuina, calendario de contenido con evidencia y semántica de páginas comerciales, no herramientas SEO de pago.
+
 ## 7. Último resultado verificado y siguiente paso
 
 **Último resultado verificado:** nueve tests SEO correctos, Next.js build OK con sitemap dinámico y 82 URLs/96 destinos internos en producción sin fallos de enlace. Los cambios permanecen en PR #80 en borrador; falta E2E de la rama más reciente y, después del merge, auditoría de producción.
