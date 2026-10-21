@@ -5,6 +5,7 @@ import ConfirmFormButton from '@/components/growth-admin/ConfirmFormButton'
 import { isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
 import { summarizeSeoFunnel } from '@/lib/seo-attribution-report'
 import { compareNonBrandWindows } from '@/lib/seo-organic-trends'
+import { calendlySyncHealth } from '@/lib/seo-calendly-health'
 
 export const dynamic='force-dynamic';export const revalidate=0
 type Keyword={keyword_id:string;keyword:string;search_intent:string;service_area:string;priority:number|string;target_path?:string;status:string}
@@ -13,6 +14,7 @@ type SeoPage={seo_page_id:string;slug:string;primary_keyword:string;secondary_ke
 type SearchRow={query:string;page:string;clicks:number|string;impressions:number|string;ctr:number|string;position:number|string;metric_date:string}
 type InquiryRow={source_path?:string|null}
 type BookingRow={provider?:string|null;status?:string|null;metadata?:Record<string,unknown>|null}
+type SyncRow={metadata?:Record<string,unknown>|null}
 
 export default async function SeoPage(){
   if(!(await isGrowthAdminAuthenticated()))redirect('/growth-admin/login')
@@ -27,7 +29,7 @@ export default async function SeoPage(){
   const windowStart=new Date()
   windowStart.setUTCDate(windowStart.getUTCDate()-90)
   const since=windowStart.toISOString()
-  const [inquiryResult,bookingResult]=await Promise.allSettled([
+  const [inquiryResult,bookingResult,connectionResult]=await Promise.allSettled([
     queryGrowthTable<InquiryRow>('website_inquiries',{
       select:'source_path',tenant_id:'eq.sc-analytics',created_at:`gte.${since}`,
       order:'created_at.desc',limit:'500',
@@ -36,9 +38,18 @@ export default async function SeoPage(){
       select:'provider,status,metadata',tenant_id:'eq.sc-analytics',created_at:`gte.${since}`,
       order:'created_at.desc',limit:'500',
     },{cacheSeconds:0}),
+    queryGrowthTable<SyncRow>('integration_connections',{
+      select:'metadata',tenant_id:'eq.sc-analytics',provider:'eq.calendly',
+      order:'updated_at.desc',limit:'1',
+    },{cacheSeconds:0}),
   ])
   const formAvailable=inquiryResult.status==='fulfilled'
   const bookingAvailable=bookingResult.status==='fulfilled'
+  const syncInfo=calendlySyncHealth(
+    connectionResult.status==='fulfilled'?connectionResult.value[0]?.metadata?.last_synced_at:null,
+    new Date(),connectionResult.status==='fulfilled',
+  )
+  const bookingsVerified=bookingAvailable&&syncInfo.status==='fresh'
   const funnel=summarizeSeoFunnel(
     formAvailable?inquiryResult.value:[],
     bookingAvailable?bookingResult.value:[],
@@ -67,18 +78,20 @@ export default async function SeoPage(){
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Formularios recibidos</p><p className="mt-2 text-3xl font-semibold">{formAvailable?funnel.inquiries:'—'}</p></div>
         <div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Formularios desde servicios</p><p className="mt-2 text-3xl font-semibold">{formAvailable?funnel.attributedServiceInquiries:'—'}</p></div>
-        <div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Reservas Calendly confirmadas</p><p className="mt-2 text-3xl font-semibold">{bookingAvailable?funnel.confirmedCalendlyMeetings:'—'}</p></div>
-        <div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Reservas con origen web</p><p className="mt-2 text-3xl font-semibold">{bookingAvailable?funnel.websiteAttributedBookings:'—'}</p></div>
+        <div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Reservas Calendly confirmadas</p><p className="mt-2 text-3xl font-semibold">{bookingsVerified?funnel.confirmedCalendlyMeetings:'—'}</p></div>
+        <div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Reservas con origen web</p><p className="mt-2 text-3xl font-semibold">{bookingsVerified?funnel.websiteAttributedBookings:'—'}</p></div>
       </div>
       <p className="mt-3 text-xs leading-5 text-slate-500">
-        {bookingAvailable
-          ? 'Las reservas solo aparecen cuando el CRM ha sincronizado un evento activo de Calendly. Una reserva web necesita además los UTM de origen. No implica que el visitante haya enviado el formulario.'
-          : 'No se pudieron consultar las reuniones del CRM; un dato no disponible no equivale a cero reservas.'}
+        {bookingsVerified
+          ? 'Calendly sincronizado recientemente. Solo se cuentan reuniones activas confirmadas; los enlaces del calendario no son reservas.'
+          : `Reservas todavía no verificables: estado de sincronización Calendly ${syncInfo.status==='stale'?'desactualizado':syncInfo.status==='never'?'sin primera ejecución':syncInfo.status==='unavailable'?'no disponible':'sin datos de reuniones'}.`}
+        {' '}Última sincronización confirmada: {syncInfo.lastSyncedAt||'ninguna'}.
+
         {' '}Se consultan hasta 500 registros por fuente. La sincronización Calendly se ejecuta diariamente mediante cron y puede tener retraso.
       </p>
       {Object.keys(funnel.sourceByService).length>0&&<div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {Object.entries(funnel.sourceByService).sort((a,b)=>b[1].inquiries+b[1].bookings-a[1].inquiries-a[1].bookings).map(([slug,counts])=>
-          <div key={slug} className={`${adminPanel} p-3`}><p className="text-xs font-semibold">/services/{slug}</p><p className="mt-1 text-xs text-slate-500">{counts.inquiries} formularios · {counts.bookings} reservas de origen web</p></div>
+          <div key={slug} className={`${adminPanel} p-3`}><p className="text-xs font-semibold">/services/{slug}</p><p className="mt-1 text-xs text-slate-500">{counts.inquiries} formularios · {bookingsVerified?counts.bookings:'—'} reservas de origen web</p></div>
         )}
       </div>}
     </section>
