@@ -192,7 +192,12 @@ export default function GeneratedKnowledgeArticleGoldStandard({ variants, forced
   const businessTitle = meta.business_title || excerpt
   const businessSteps = (meta.business_steps || []).slice(0, 3)
   const branchHref = serviceHrefForArea(area)
-  const caseHref = meta.related_case || meta.related_article || '/knowledge'
+  // Do not link a currently published article to an editorial draft that may
+  // only go live weeks later. Most scheduled records have related_article but
+  // no related_case. Keep the existing case-study card and send it to the
+  // public case index until a specific published case is available.
+  const caseHref = typeof meta.related_case === 'string' && meta.related_case.startsWith('/projects/')
+    ? meta.related_case : '/projects'
 
   return (
     <main lang={activeLanguage} className="bg-[#F7F9FC] text-slate-950">
