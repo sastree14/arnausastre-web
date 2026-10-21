@@ -4,6 +4,7 @@ import { Badge, EmptyState, PageHeader, SectionHeading, adminButtonPrimary, admi
 import ConfirmFormButton from '@/components/growth-admin/ConfirmFormButton'
 import { isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
 import { summarizeSeoFunnel } from '@/lib/seo-attribution-report'
+import { compareNonBrandWindows } from '@/lib/seo-organic-trends'
 
 export const dynamic='force-dynamic';export const revalidate=0
 type Keyword={keyword_id:string;keyword:string;search_intent:string;service_area:string;priority:number|string;target_path?:string;status:string}
@@ -52,6 +53,7 @@ export default async function SeoPage(){
   const nonBrandQueries=allOrganicQueries.filter(row=>!/(?:\bsc[\s-]?analytics\b|\bscanalytics\b)/i.test(row.query))
   const nonBrandClicks=nonBrandQueries.reduce((acc,row)=>acc+row.clicks,0)
   const nonBrandImpressions=nonBrandQueries.reduce((acc,row)=>acc+row.impressions,0)
+  const nonBrandTrend=compareNonBrandWindows(searchRows)
   const publishedPaths=new Set(published.map(page=>'/services/'+page.slug))
   const coveredKeywords=keywords.filter(keyword=>keyword.target_path && publishedPaths.has(keyword.target_path))
   const awaitingLanding=keywords.filter(keyword=>!keyword.target_path || !publishedPaths.has(keyword.target_path))
@@ -79,6 +81,29 @@ export default async function SeoPage(){
           <div key={slug} className={`${adminPanel} p-3`}><p className="text-xs font-semibold">/services/{slug}</p><p className="mt-1 text-xs text-slate-500">{counts.inquiries} formularios · {counts.bookings} reservas de origen web</p></div>
         )}
       </div>}
+    </section>
+    <section className="mb-10">
+      <SectionHeading eyebrow="Search Console · evolución" title="Búsquedas sin marca: últimos 28 días frente a los anteriores"
+        description="Comparación cerrada en la última fecha disponible de Search Console, no en la fecha de hoy. Evita interpretar el retraso de Google como una caída de tráfico."/>
+      {nonBrandTrend?<div className="grid gap-3 md:grid-cols-2">
+        <div className={`${adminPanel} p-5`}>
+          <p className="text-xs uppercase text-slate-400">Impresiones de búsquedas sin marca</p>
+          <p className="mt-3 text-3xl font-semibold">{nonBrandTrend.current.impressions.toLocaleString('es-ES')}</p>
+          <p className="mt-2 text-sm text-slate-500">Periodo anterior: {nonBrandTrend.previous.impressions.toLocaleString('es-ES')}</p>
+          <p className="mt-2 text-sm font-semibold text-slate-700">{nonBrandTrend.impressionsChangePct===null?'Sin base anterior comparable':`${nonBrandTrend.impressionsChangePct>0?'+':''}${nonBrandTrend.impressionsChangePct}% respecto al anterior`}</p>
+        </div>
+        <div className={`${adminPanel} p-5`}>
+          <p className="text-xs uppercase text-slate-400">Clics de búsquedas sin marca</p>
+          <p className="mt-3 text-3xl font-semibold">{nonBrandTrend.current.clicks.toLocaleString('es-ES')}</p>
+          <p className="mt-2 text-sm text-slate-500">Periodo anterior: {nonBrandTrend.previous.clicks.toLocaleString('es-ES')}</p>
+          <p className="mt-2 text-sm font-semibold text-slate-700">{nonBrandTrend.clicksChangePct===null?'Sin base anterior comparable':`${nonBrandTrend.clicksChangePct>0?'+':''}${nonBrandTrend.clicksChangePct}% respecto al anterior`}</p>
+        </div>
+      </div>:<EmptyState>Search Console aún no ha importado días con consultas verificables.</EmptyState>}
+      {nonBrandTrend&&<p className="mt-3 text-xs leading-5 text-slate-500">
+        Último dato: {nonBrandTrend.latestDate}. Periodo actual: {nonBrandTrend.current.from} → {nonBrandTrend.current.to} ({nonBrandTrend.current.reportedDays}/28 días con registros).
+        Periodo anterior: {nonBrandTrend.previous.from} → {nonBrandTrend.previous.to} ({nonBrandTrend.previous.reportedDays}/28 días con registros).
+        Solo consultas identificables de Search Console; Google puede anonimizar otras búsquedas. Cifras orgánicas ≠ oportunidades comerciales.
+      </p>}
     </section>
     <section className="mb-10"><SectionHeading eyebrow="Organic demand" title="Lo que Google ya está enseñando" description="Consultas reales de Search Console. Se actualizan con la sincronización de métricas y sirven para decidir qué páginas reforzar antes de inventar nuevas keywords." count={organicQueries.length}/>{organicQueries.length===0?<EmptyState>Search Console todavía no tiene consultas suficientes.</EmptyState>:<div className="grid gap-3 md:grid-cols-2">{organicQueries.slice(0,10).map(row=><div key={row.query} className={`${adminPanel} p-4`}><div className="flex items-start justify-between gap-3"><p className="font-semibold text-slate-950">{row.query}</p><Badge tone={row.position<=10?'green':row.position<=30?'amber':'slate'}>Pos. {row.position.toFixed(1)}</Badge></div><div className="mt-3 flex gap-4 text-xs text-slate-500"><span>{row.impressions} impresiones</span><span>{row.clicks} clics</span></div></div>)}</div>}<div className="mt-4 rounded-2xl border border-indigo-100 bg-indigo-50 p-5 text-sm leading-6 text-indigo-900"><strong>Lectura:</strong> {nonBrandQueries.length? `Ya hay ${nonBrandQueries.length} consultas no branded entre las principales. Prioriza las que tienen impresiones y posición 8–30: suelen ser la mejora SEO más barata.`:'De momento la visibilidad real está concentrada en búsquedas de marca. El objetivo de las landings y artículos nuevos es abrir consultas no branded de Data, IA, forecasting y optimización.'}</div></section>
 
