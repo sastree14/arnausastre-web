@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Cookie Policy | SC-Analytics',
+  title: 'Cookie Policy',
   description: 'Information about essential storage, Google Analytics cookies and how to change your cookie preferences.',
   alternates: { canonical: '/cookies' },
   robots: { index: false, follow: true },
