@@ -119,9 +119,21 @@ El crawler de producción no depende de secretos. Evitar usarlo como único gate
 
 **Última actualización de este bloque:** 21/10/2026, ejecución de implementación prolongada en PR #80. Todo este trabajo se mantiene en la rama (no main).
 
+### Segundo checkpoint de implementación (mismo 21/10/2026)
+
+- `lib/seo-page-quality.ts`, `app/api/growth-admin/seo-page/route.ts` y nuevas pruebas: comprobado con datos actuales de las 13 landings. La sección más corta tiene 134 caracteres, todas las landings existentes superan las restricciones. Publicaciones incompletas o con URLs peligrosas devuelven 422 al administrador, sin guardarse.
+- Nuevo control `scripts/seo-internal-links.py` integrado en auditoría semanal. Ejecución real pública: **82 URLs de sitemap**, **96 destinos internos**, **0 fallos** (antes del merge de esta rama).
+- Control de calidad del banco: **585 localizaciones programadas**, de ellas **480 sin `related_case`** pero con `related_article` que a menudo remite a un artículo todavía no publicado. Se corrigió el enlace de la tarjeta de caso en `components/GeneratedKnowledgeArticleGoldStandard.tsx`: usa `/projects` si no hay un caso público específico, sin cambiar la estructura visual.
+- Resultado del sandbox renovado, HEAD anterior al último ajuste de la tarjeta: **`npm run seo:test` 9/9, `npm run build` OK, `ƒ /sitemap.xml` y `ƒ /services/[slug]`**. Tras el último cambio de tarjeta y esta documentación repetir QA antes del merge.
+- **No se han aplicado migraciones Supabase, ni cambiado cron, cookies, newsletter, ni publicado páginas SEO nuevas.** CMI sólo cambia en rama GitHub.
+- Sigue pendiente **un E2E de preview con las variables reales del backend** y un rastreo de producción tras release; no marcarlo como superado antes de probarlo.
+- El listado público `/knowledge` sigue utilizando hasta 200 localizaciones con cuerpo completo. El sitemap ahora paginará todas las publicadas, pero **la UI del listado puede dejar de listar artículos antiguos cuando haya muchos**. No cambiar la UX de búsqueda de conocimiento sin un plan de paginación que conserve su funcionamiento.
+- El cron semanal de GitHub Actions sólo empezará después de fusionar la rama; todavía no se ha ejecutado automáticamente.
+- Para la siguiente sesión revisar estado HEAD/PR, correr pruebas actualizadas y abrir el plan multilingüe priorizado sin crear páginas duplicadas.
+
 ## 7. Último resultado verificado y siguiente paso
 
-**Último resultado verificado:** build correcto en sandbox y siete destinos comerciales HTTP 200; auditor público detectó 2 problemas de sitemap/hreflang ya arreglados en la rama. PR #80 se creó inicialmente en borrador. La auditoría posterior al deploy sigue pendiente.
+**Último resultado verificado:** nueve tests SEO correctos, Next.js build OK con sitemap dinámico y 82 URLs/96 destinos internos en producción sin fallos de enlace. Los cambios permanecen en PR #80 en borrador; falta E2E de la rama más reciente y, después del merge, auditoría de producción.
 
 **Siguiente paso recomendado:** instrumentar GitHub Action semanal de SEO QA + comprobar informe; después revisar flujo editorial real y preparar validadores que adviertan, no reprogramen silenciosamente. Actualizar aquí la lista de completado y el commit/PR al cerrar cada sesión.
 
