@@ -2,6 +2,18 @@
 
 > **Actualizado tras el lanzamiento del 21/10/2026:** leer primero [SEO_HANDOFF.md](./SEO_HANDOFF.md). Los PR #80 y #81 ya están fusionados; esta hoja conserva también el historial de las etapas previas. No interpretar un checklist histórico como estado actual.
 
+## Sprint adicional completado — 21/10/2026 (PR #83)
+
+- [x] `Content-Language` explícito en rutas ES/CA/EN sin desactivar el prerender estático de la home, About o Contacto.
+- [x] Prioridad correcta del idioma de la URL frente al navegador en hidratación y navegación cliente; **queda pendiente HTML `lang` inicial SSR** si se decide rediseñar la estructura de root layouts, que no se justifica ahora.
+- [x] UTM anónima de procedencia de servicio para enlaces Calendly y captura en registros de reservas reales del CRM (sin nuevas cookies).
+- [x] `/growth-admin/seo`: KPIs separados de consultas web y reservas sincronizadas/atribuidas.
+- [x] Vercel Cron diario autenticado preparado y publicado, usando el sincronizador Calendly existente, **sin pagar un proveedor nuevo**.
+- [x] Pruebas: unitarias 16/16, E2E local 16/16, navegador real producción 8/8, build y lint correctos.
+- [ ] **22/10/2026:** verificar ejecución real del primer cron y nuevas reuniones de Calendly en el CRM; registrar errores o duplicaciones si ocurren.
+- [ ] Monitorizar consultas sin marca 28 días vs periodo anterior y relación entre páginas orgánicas, formularios y reservas reales.
+- [ ] Auditoría externa Semrush gratuita cuando permita volver a rastrear, sin darla por completada anticipadamente.
+
 ## Hito de despliegue completado
 
 - [x] SEO técnico y contenido multilingüe comercial: **23 páginas de servicio publicadas**, incluidas diez nuevas ES/CA, sin cambiar el diseño ni los archivos CSS.
