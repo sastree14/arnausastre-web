@@ -1,6 +1,6 @@
 # SC-Analytics — SEO Growth: REANUDAR AQUÍ
 
-## Continuación del 21/10/2026 — Idiomas y atribución de reuniones (PR nuevo)
+## Continuación histórica del 21/10/2026 — Implementación que se fusionó en PR #83
 
 **Documento detallado:** [seo-attribution-locale-20261021.md](./seo-attribution-locale-20261021.md).
 
@@ -11,6 +11,21 @@
 - CMI SEO contará cuatro eventos separados: formularios, formularios procedentes de servicios, citas Calendly reales, citas etiquetadas con origen web. Nunca se consideran las visitas/clics como reuniones confirmadas.
 - **QA en rama:** 16/16 unit tests, lint 0 errores, build OK, homepage estática, 16/16 pruebas de navegador (backend simulado; ninguna consulta de prueba guardada).
 - **Próxima fase:** merge después de checks; verificar URLs, cabeceras y cron real en producción. Ver [detalle](./seo-attribution-locale-20261021.md).
+
+## PR #83 FUSIONADO — producción comprobada el 21/10/2026
+
+**Nuevo sprint completado:** [docs/seo-attribution-locale-20261021.md](./seo-attribution-locale-20261021.md).
+
+- **PR #83** fusionado a main: `848637f0f76f6b84fd5ec007bf15eeb399b7d4de`. Vercel **READY**. La rama `feature/seo-attribution-document-language-20261021` es histórica: **continuar desde main**.
+- Nuevos `Content-Language: es|ca|en` en rutas explícitas (servicios, artículos, partner analítico). La preferencia del navegador no desplaza el idioma de la URL en navegación cliente. `<html lang>` inicial SSR permanece `en` por decisión consciente de **preservar prerender estático** de home/about/contact; hidrata al idioma URL después. No afirmar que SSR HTML inicial fue reparado del todo.
+- Link directo a Calendly con UTM `sc_analytics_website` y `utm_content=service:<slug>` cuando existe; **sin cookies ni identificadores personales nuevos**. El sincronizador guarda la atribución de la reserva real en metadatos de CRM.
+- Vercel cron adicional: `GET /api/cron/calendly-crm-daily`, autenticado con `CRON_SECRET`, programado en `vercel.json` para **06:10 UTC cada día**. En Vercel Hobby la ejecución **puede ocurrir en algún momento entre las 06:00 y las 06:59 UTC**; no prometer precisión al minuto. `CALENDLY_ACCESS_TOKEN` y `CRON_SECRET` estaban en producción; `CALENDLY_WEBHOOK_SIGNING_KEY` sigue ausente.
+- **Primera ejecución automática aún no verificada**: comprobar los logs del **22/10/2026** y los nuevos registros `crm_meetings` de Calendly. La función existente solo sincroniza reuniones desde siete días antes de la ejecución, por lo que no reimporta históricos lejanos.
+- CMI privado `/growth-admin/seo`: cuatro cifras distintas (formularios, formularios de servicios, eventos confirmados en Calendly/CRM, eventos confirmados etiquetados desde la web). En ausencia de fuente, muestra **—**, no un cero engañoso. No igualar clics y reuniones.
+- QA rama: **16/16** tests unitarios, lint sin errores, build correcto y **16/16** pruebas de navegador con Supabase simulado y POST interceptado. QA de producción: **8/8** pruebas de Chromium móvil correctas, 200 ES/CA/EN, cabeceras de idioma, ausencia de overflow y enlaces de reserva con UTM; cron sin autenticación devuelve **401**. **Ningún lead de prueba insertado**.
+- Se mantiene **93 URL en el sitemap**, y las páginas estáticas principales siguen prerenderizadas; **ningún archivo CSS modificado**.
+- Contexto de reuniones: la cuenta Calendly conectada mostró **2 eventos entre agosto y octubre**, mientras que el CMI tenía **0 eventos proveedor Calendly** antes del cron. Ese hecho justifica la reconciliación, pero no autoriza a atribuir esas reuniones al SEO ni a importarlas retrospectivamente sin evaluación.
+- **Siguiente prioridad**: verificar cron diario y deduplicación real; analizar Search Console últimas 4 semanas vs 4 anteriores, atribución hasta oportunidad y referencias externas genuinas; seguir sin herramientas de pago y respetar el frontend.
 
 ## ESTADO ACTUAL EN PRODUCCIÓN — actualización posterior al lanzamiento, 21/10/2026
 
