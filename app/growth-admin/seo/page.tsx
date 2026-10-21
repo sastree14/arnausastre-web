@@ -6,29 +6,34 @@ import { isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin
 import { summarizeSeoFunnel } from '@/lib/seo-attribution-report'
 import { compareNonBrandWindows } from '@/lib/seo-organic-trends'
 import { calendlySyncHealth } from '@/lib/seo-calendly-health'
+import { getRecentSeoSearchMetrics } from '@/lib/seo-search-console'
 
 export const dynamic='force-dynamic';export const revalidate=0
 type Keyword={keyword_id:string;keyword:string;search_intent:string;service_area:string;priority:number|string;target_path?:string;status:string}
 type Recommendation={recommendation_id:string;keyword_id?:string;target_path:string;title:string;rationale?:string;priority:number|string;payload:Record<string,unknown>;status:string;created_at?:string}
 type SeoPage={seo_page_id:string;slug:string;primary_keyword:string;secondary_keywords?:string[];search_intent:string;title:string;meta_description:string;h1:string;intro:string;sections?:Array<Record<string,unknown>>;cta_title?:string;cta_body?:string;internal_links?:Array<Record<string,unknown>>;status:string;version:number|string;updated_at?:string}
-type SearchRow={query:string;page:string;clicks:number|string;impressions:number|string;ctr:number|string;position:number|string;metric_date:string}
 type InquiryRow={source_path?:string|null}
 type BookingRow={provider?:string|null;status?:string|null;metadata?:Record<string,unknown>|null}
 type SyncRow={metadata?:Record<string,unknown>|null}
 
 export default async function SeoPage(){
   if(!(await isGrowthAdminAuthenticated()))redirect('/growth-admin/login')
-  const [keywords,recommendations,pages,searchRows]=await Promise.all([
-    queryGrowthTable<Keyword>('seo_keyword_targets',{tenant_id:'eq.sc-analytics',status:'eq.active',order:'priority.desc',limit:'100'},{cacheSeconds:0}),
-    queryGrowthTable<Recommendation>('seo_recommendations',{tenant_id:'eq.sc-analytics',status:'eq.proposed',order:'priority.desc,created_at.desc',limit:'50'},{cacheSeconds:0}),
-    queryGrowthTable<SeoPage>('seo_pages',{tenant_id:'eq.sc-analytics',order:'updated_at.desc',limit:'100'},{cacheSeconds:0}),
-    queryGrowthTable<SearchRow>('search_console_daily',{tenant_id:'eq.sc-analytics',order:'metric_date.desc,impressions.desc',limit:'5000'},{cacheSeconds:0}).catch(()=>[]),
-  ])
-  // Admin-only, server-side comparison of distinct confirmed funnel events.
-  // Do NOT treat a Calendly outbound click as a confirmed booking.
   const windowStart=new Date()
   windowStart.setUTCDate(windowStart.getUTCDate()-90)
   const since=windowStart.toISOString()
+  // Restrict the admin report to recent GSC observations and paginate safely.
+  // A single 5,000-row PostgREST request can silently truncate at 1,000.
+  const [keywords,recommendations,pages,searchDataset]=await Promise.all([
+    queryGrowthTable<Keyword>('seo_keyword_targets',{tenant_id:'eq.sc-analytics',status:'eq.active',order:'priority.desc',limit:'100'},{cacheSeconds:0}),
+    queryGrowthTable<Recommendation>('seo_recommendations',{tenant_id:'eq.sc-analytics',status:'eq.proposed',order:'priority.desc,created_at.desc',limit:'50'},{cacheSeconds:0}),
+    queryGrowthTable<SeoPage>('seo_pages',{tenant_id:'eq.sc-analytics',order:'updated_at.desc',limit:'100'},{cacheSeconds:0}),
+    getRecentSeoSearchMetrics(since.slice(0,10))
+      .then(result=>({...result,available:true}))
+      .catch(()=>({rows:[],truncated:false,available:false})),
+  ])
+  // Admin-only, server-side comparison of distinct confirmed funnel events.
+  // Do NOT treat a Calendly outbound click as a confirmed booking.
+  const searchRows=searchDataset.rows
   const [inquiryResult,bookingResult,connectionResult]=await Promise.allSettled([
     queryGrowthTable<InquiryRow>('website_inquiries',{
       select:'source_path',tenant_id:'eq.sc-analytics',created_at:`gte.${since}`,
@@ -71,7 +76,11 @@ export default async function SeoPage(){
   return <AdminShell active="seo">
     <PageHeader eyebrow="Métricas · Organic Growth" title="SEO Control" description="Convierte intención de búsqueda real en contenido útil e indexable. El agente propone; tú apruebas cada cambio antes de que aparezca en la web." actions={<form action="/api/growth-admin/operator-task" method="post"><input type="hidden" name="action" value="seo_audit"/><input type="hidden" name="return_to" value="/growth-admin/seo"/><button className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">Generar auditoría SEO</button></form>}/>
     <section className="mb-8 grid gap-3 sm:grid-cols-3"><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Keywords objetivo</p><p className="mt-2 text-3xl font-semibold">{keywords.length}</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Propuestas pendientes</p><p className="mt-2 text-3xl font-semibold">{recommendations.length}</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Landings publicadas</p><p className="mt-2 text-3xl font-semibold">{published.length}</p></div></section>
-    <section className="mb-8 grid gap-3 sm:grid-cols-3"><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Keywords con landing publicada</p><p className="mt-2 text-3xl font-semibold">{coveredKeywords.length} / {keywords.length}</p><p className="mt-1 text-xs text-slate-500">{awaitingLanding.length} objetivos pendientes; no son necesariamente enlaces públicos rotos.</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Clics de consultas sin marca</p><p className="mt-2 text-3xl font-semibold">{nonBrandClicks}</p><p className="mt-1 text-xs text-slate-500">Histórico importado de Search Console</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Impresiones sin marca</p><p className="mt-2 text-3xl font-semibold">{nonBrandImpressions}</p><p className="mt-1 text-xs text-slate-500">No incluye consultas sin dimensión disponible</p></div></section>
+    <section className="mb-8 grid gap-3 sm:grid-cols-3"><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Keywords con landing publicada</p><p className="mt-2 text-3xl font-semibold">{coveredKeywords.length} / {keywords.length}</p><p className="mt-1 text-xs text-slate-500">{awaitingLanding.length} objetivos pendientes; no son necesariamente enlaces públicos rotos.</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Clics de consultas sin marca</p><p className="mt-2 text-3xl font-semibold">{searchDataset.available?nonBrandClicks:'—'}</p><p className="mt-1 text-xs text-slate-500">Últimos 90 días importados de Search Console</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Impresiones sin marca</p><p className="mt-2 text-3xl font-semibold">{searchDataset.available?nonBrandImpressions:'—'}</p><p className="mt-1 text-xs text-slate-500">Últimos 90 días; excluye consultas anónimas</p></div></section>
+    {(!searchDataset.available||searchDataset.truncated)&&
+      <p className="mb-5 text-sm text-amber-700">
+        {!searchDataset.available?'Datos Search Console temporalmente no disponibles; no interpretar cifras vacías como cero tráfico.':'Se alcanzó el límite de 6.000 registros del panel SEO; ampliar paginación antes de usar estos totales como completos.'}
+      </p>}
     <section className="mb-10">
       <SectionHeading eyebrow="SEO → consulta → reunión" title="Embudo comercial verificable"
         description="Registros de los últimos 90 días: formularios recibidos y citas confirmadas realmente sincronizadas desde Calendly. Los pasos se miden por separado, sin atribuir reservas a simples clics."/>
