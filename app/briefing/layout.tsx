@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata:Metadata={
-  title:'SC-Analytics Briefing | Data, AI, sectors and business signals',
+  title:'Data & AI Briefing',
   description:'A concise SC-Analytics newsletter on Data, AI, sectors, companies, public cases and business signals worth understanding.',
   keywords:['data AI newsletter','newsletter inteligencia artificial empresas','newsletter data science','analytics newsletter','business AI insights','SC-Analytics Briefing'],
   alternates:{canonical:'/briefing'},
