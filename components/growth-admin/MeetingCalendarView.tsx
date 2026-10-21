@@ -41,7 +41,7 @@ export default async function MeetingCalendarView() {
   const upcoming = data.meetings.filter(m=>new Date(m.starts_at).getTime() >= current.getTime())
   const past = data.meetings.filter(m=>new Date(m.starts_at).getTime() < current.getTime()).reverse()
   const months=[0,1].map(n=>new Date(Date.UTC(current.getUTCFullYear(),current.getUTCMonth()+n,1,12)))
-  const reloadUrl='/growth-admin/calendar?view=meetings&refresh='+Date.now()
+  const reloadUrl='/growth-admin/calendar?view=meetings&refresh='+current.getTime()
   return <AdminShell active="calendar">
     <CalendarModeSelect value="meetings"/>
     <PageHeader eyebrow="CMI · Agenda comercial" title="Reuniones y seguimiento" description="Vista unificada de reuniones de Google Calendar y del CMI. Gmail aporta pistas para revisar, nunca reservas confirmadas por sí solo."
