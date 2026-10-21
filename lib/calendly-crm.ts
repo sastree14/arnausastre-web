@@ -5,6 +5,7 @@ import { randomUUID } from 'node:crypto'
 import { insertGrowthRow, queryGrowthTable, updateGrowthRow } from '@/lib/supabase-growth'
 import { encryptIntegrationSecret } from '@/lib/integration-secrets'
 import { bookingAttributionFromInvitee } from '@/lib/seo-booking-attribution'
+import { bookingPersonStatus,findCalendlyEventOpportunity,shouldCreateOpportunityForBooking } from '@/lib/calendly-crm-safety'
 
 type Json = Record<string, any>
 
@@ -69,22 +70,23 @@ async function findCompanyForInvitee(email: string, companies: Json[]) {
 
 async function findOrCreatePerson(invitee: Json, company: Json | null) {
   const email = String(invitee.email || '').trim().toLowerCase()
-  const name = String(invitee.name || `${invitee.first_name || ''} ${invitee.last_name || ''}`).trim() || email || 'Calendly invitee'
+  const name = String(invitee.name || `${invitee.first_name || ''} ${invitee.last_name || ''}`).trim() || email
+  // Do not associate a real CRM person with an unidentifiable invitee.
+  if(!email)return null
 
   let rows: Json[] = []
   if (email) rows = await queryGrowthTable<Json>('people', { tenant_id: `eq.${TENANT_ID}`, email: `eq.${email}`, limit: '1' }, { cacheSeconds: 0 })
-  if (!rows.length && name) rows = await queryGrowthTable<Json>('people', { tenant_id: `eq.${TENANT_ID}`, name: `eq.${name}`, limit: '1' }, { cacheSeconds: 0 })
+  // A name match is not a reliable identity; never join two leads by name alone.
 
   if (rows[0]) {
     const row = rows[0]
     const updated = await updateGrowthRow<Json>('people', 'person_id', row.person_id, {
       email: email || row.email || '',
       company_id: row.company_id || company?.company_id || null,
-      status: 'discovery_booked',
+      status: bookingPersonStatus(row.status),
       source: row.source || 'calendly',
-      completed_at: null,
     })
-    return updated || { ...row, email, company_id: row.company_id || company?.company_id || null, status: 'discovery_booked' }
+    return updated || { ...row, email, company_id: row.company_id || company?.company_id || null, status: bookingPersonStatus(row.status) }
   }
 
   const personId = `person_${randomUUID().replaceAll('-', '').slice(0, 12)}`
@@ -116,33 +118,28 @@ async function findOrCreatePerson(invitee: Json, company: Json | null) {
 }
 
 async function findOrCreateOpportunity(person: Json, company: Json | null, event: Json) {
+  // Fetch enough rows to find ONLY a previous opportunity bound to the same
+  // Calendly event. Reusing the last opportunity for this person would silently
+  // reopen finished deals or overwrite a different commercial relationship.
   const rows = await queryGrowthTable<Json>('crm_opportunities', {
     tenant_id: `eq.${TENANT_ID}`,
     primary_person_id: `eq.${person.person_id}`,
     order: 'updated_at.desc',
-    limit: '1',
+    limit: '100',
   }, { cacheSeconds: 0 })
+  const existing=findCalendlyEventOpportunity(rows,event.uri||'')
+  const bookingAttribution=bookingAttributionFromInvitee(event?.invitee_tracking)
+  if(existing){
+    // Never reset stage, close date, value or probability on a daily sync.
+    // Only enrich the same meeting's opportunity with safe UTM metadata
+    // when that information has become available since its creation.
+    if(bookingAttribution && !existing.metadata?.booking_attribution){
+      const metadata={...(existing.metadata||{}),booking_attribution:bookingAttribution}
+      return await updateGrowthRow<Json>('crm_opportunities','opportunity_id',existing.opportunity_id,{metadata,updated_at:new Date().toISOString()})||existing
+    }
+    return existing
+  }
   const now = new Date().toISOString()
-  const changes = {
-    company_id: rows[0]?.company_id || company?.company_id || null,
-    primary_person_id: person.person_id,
-    stage: 'discovery_booked',
-    probability: Math.max(Number(rows[0]?.probability || 0), 40),
-    source: rows[0]?.source || 'calendly',
-    next_action_at: event.start_time || null,
-    metadata: {
-      ...(rows[0]?.metadata || {}),
-      calendly_event_uri: event.uri || '',
-      calendly_event_type: event.event_type || '',
-      meeting_name: event.name || '',
-      // Anonymous UTM source of an actual confirmed booking, not a link click.
-      booking_attribution: bookingAttributionFromInvitee(event?.invitee_tracking)||null,
-    },
-    updated_at: now,
-  }
-  if (rows[0]) {
-    return await updateGrowthRow<Json>('crm_opportunities', 'opportunity_id', rows[0].opportunity_id, changes) || { ...rows[0], ...changes }
-  }
   const opportunityId = `opportunity_${randomUUID().replaceAll('-', '').slice(0, 12)}`
   return await insertGrowthRow<Json>('crm_opportunities', {
     opportunity_id: opportunityId,
@@ -157,7 +154,12 @@ async function findOrCreateOpportunity(person: Json, company: Json | null, event
     probability: 40,
     source: 'calendly',
     next_action_at: event.start_time || null,
-    metadata: changes.metadata,
+    metadata: {
+      calendly_event_uri:event.uri||'',
+      calendly_event_type:event.event_type||'',
+      meeting_name:event.name||'',
+      booking_attribution:bookingAttribution,
+    },
     created_at: now,
     updated_at: now,
   }) || { opportunity_id: opportunityId }
@@ -264,7 +266,7 @@ export async function syncCalendlyCrm() {
     let person: Json | null = null
     let opportunity: Json | null = null
 
-    if (invitee && String(event.status || 'active').toLowerCase() !== 'canceled') {
+    if (invitee && shouldCreateOpportunityForBooking(event.status||'active',invitee.status||'active')) {
       person = await findOrCreatePerson(invitee, company)
       if (person) peopleLinked += 1
       if (person) {
