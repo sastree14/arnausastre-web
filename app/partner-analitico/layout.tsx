@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'SC-Analytics · Data & AI Partner',
     description: 'External specialist capability that retains context and enters when the business needs it.',
-    url: 'https://sc-analytics.io/partner-analitico',
+    url: 'https://www.sc-analytics.io/partner-analitico',
     type: 'website',
   },
 }
