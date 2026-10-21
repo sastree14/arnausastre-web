@@ -4,6 +4,7 @@ import HeroBrandSeal from '@/components/HeroBrandSeal'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
+import { calendlyDiscoveryLink,serviceSlugFromRef } from '@/lib/seo-booking-attribution'
 
 const COPY = {
   es: {
@@ -249,11 +250,17 @@ export default function ContactPage() {
   const [sending, setSending] = useState(false)
   const [privacyAcknowledged, setPrivacyAcknowledged] = useState(false)
   const [error, setError] = useState(false)
+  const [serviceRef, setServiceRef] = useState<string|null>(null)
 
   useEffect(() => {
-    const requested = new URLSearchParams(window.location.search).get('intent')
-    if (requested === 'partner') setIntent('partner')
-    if (requested === 'discovery' || requested === 'opportunity') setIntent('opportunity')
+    const parameters=new URLSearchParams(window.location.search)
+    const requested=parameters.get('intent')
+    if(requested==='partner')setIntent('partner')
+    if(requested==='discovery'||requested==='opportunity')setIntent('opportunity')
+    const rawRef=parameters.get('ref')
+    const slug=serviceSlugFromRef(rawRef)
+    const timer=window.setTimeout(() => setServiceRef(slug ? 'service:'+slug : null),0)
+    return () => window.clearTimeout(timer)
   }, [])
 
   const selectedIntent = useMemo(
@@ -513,7 +520,7 @@ export default function ContactPage() {
               <h2 className="mt-3 text-[30px] leading-[1.08]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.callTitle}</h2>
               <p className="mt-4 text-[16px] leading-7 text-[#D5E1EB]">{t.callBody}</p>
               <a
-                href="https://calendly.com/arnau-sastre-sc-analytics"
+                href={calendlyDiscoveryLink(serviceRef)}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-6 inline-flex w-full items-center justify-center bg-white px-5 py-3 text-[15px] font-semibold text-[#0D1B2A] transition hover:bg-[#EAF0F6]"
