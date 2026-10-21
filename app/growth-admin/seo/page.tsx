@@ -23,7 +23,9 @@ export default async function SeoPage(){
   ])
   // Admin-only, server-side comparison of distinct confirmed funnel events.
   // Do NOT treat a Calendly outbound click as a confirmed booking.
-  const since=new Date(Date.now()-90*24*60*60*1000).toISOString()
+  const windowStart=new Date()
+  windowStart.setUTCDate(windowStart.getUTCDate()-90)
+  const since=windowStart.toISOString()
   const [inquiryResult,bookingResult]=await Promise.allSettled([
     queryGrowthTable<InquiryRow>('website_inquiries',{
       select:'source_path',tenant_id:'eq.sc-analytics',created_at:`gte.${since}`,
