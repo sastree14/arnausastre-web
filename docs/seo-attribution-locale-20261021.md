@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-10-21  
 **Rama de implementación:** `feature/seo-attribution-document-language-20261021`  
-**Estado inicial:** implementación probada en rama, pendiente de fusión y primer cron productivo.
+**Estado actual:** **PR #83 fusionado en main** (commit `848637f0f76f6b84fd5ec007bf15eeb399b7d4de`), Vercel producción READY. **Primera ejecución diaria de cron aún por verificar**.
 
 ## Objetivo
 
@@ -26,9 +26,9 @@ No confundir clics, formularios, reservas reales y oportunidades cualificadas, y
 ## 3. Calendly → CRM diario
 
 - `CALENDLY_ACCESS_TOKEN` y `CRON_SECRET` **existen** en el entorno de producción de Vercel; se comprobó únicamente la existencia de los nombres, sin consultar ni divulgar valores.
-- `CALENDLY_WEBHOOK_SIGNING_KEY` **no está configurada** actualmente, de modo que no puede presumirse sincronización por webhook.
+- `CALENDLY_WEBHOOK_SIGNING_KEY` **no está configurada** actualmente, de modo que no puede presumirse sincronización por webhook. La tarea diaria suple la reconciliación básica; no se debe confundir webhook en tiempo real con polling diario.
 - Nueva ruta `GET /api/cron/calendly-crm-daily` protegida por `Authorization: Bearer <CRON_SECRET>`; devuelve 401 sin token y 503 sin token de Calendly configurado.
-- `vercel.json` registra ejecución diaria a **06:10 UTC**. Reutiliza la implementación existente `syncCalendlyCrm`, con `provider+external_id` para actualizar registros existentes.
+- `vercel.json` registra una programación diaria a **06:10 UTC**; en Hobby Vercel puede ejecutarla dentro de la hora correspondiente, sin precisión garantizada al minuto. Reutiliza la implementación existente `syncCalendlyCrm`, con `provider+external_id` para actualizar registros existentes.
 - Al 21/10/2026 había **cero reuniones `provider='calendly'` en el CMI**, pero en la cuenta Calendly conectada se observaron **dos eventos en la franja agosto–octubre**. La sincronización existente solo importa eventos desde siete días antes de la ejecución; **no se importará retrospectivamente el evento de agosto**, por decisión explícita del sincronizador de evitar historial antiguo de pruebas. Una reunión de octubre podría entrar en el siguiente ciclo si sigue dentro de la ventana. **No afirmar que el cron se ha ejecutado con éxito antes de revisar el log del día siguiente.**
 
 ## 4. Panel SEO del CMI (administradores)
@@ -51,10 +51,10 @@ No confundir clics, formularios, reservas reales y oportunidades cualificadas, y
 - Chromium, con Supabase de prueba y contacto interceptado: **16/16** (200 ES/CA/EN, `Content-Language`, idioma hidratado, sin overflow móvil, UTM correctas, consentimiento, origen en JSON del contacto, no GA4 sin aceptación y 401 de cron).
 - **No se enviaron contactos falsos a Supabase ni reservas a Calendly.**
 
-## 6. Verificaciones pendientes tras merge
+## 6. Validaciones de producción y siguientes pasos
 
-1. GitHub CI general y SEO checks en verde; Vercel production READY.
-2. Producción: cabecera `Content-Language` de ES/CA/EN, 93 URLs existentes, cero roturas, sin cambios de CSS/layout; verificar el iframe/CTA de Calendly mantiene UTM.
+1. **Completado:** GitHub CI general y SEO checks en verde, PR #83 fusionado y Vercel producción READY.
+2. **Completado:** producción devuelve `Content-Language` ES/CA/EN en las rutas correspondientes, conserva 93 URLs en sitemap y genera el CTA de Calendly con UTM. **8/8** comprobaciones reales de Chromium móvil correctas; no se cambió ningún CSS.
 3. Comprobar la primera ejecución de Vercel Cron el **22/10/2026 a las 06:10 UTC**, que sincronice eventos recientes o, si no, revisar logs y token.
 4. Diferenciar reserva `active` de `canceled`; revisar calidad de las oportunidades creadas por la sincronización existente sin duplicados ni asignaciones erróneas.
 5. Revisión de Search Console y rastreo gratuito Semrush tras la publicación SEO reciente: los resultados reales llegarán con retraso.
