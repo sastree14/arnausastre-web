@@ -134,7 +134,7 @@ async function sendWelcome(subscriber:NewsletterSubscriber){
   if(!transporter)return
   const copy=WELCOME[subscriber.language]||WELCOME.es
   const from=process.env.SMTP_USER!
-  const unsubscribe=`https://sc-analytics.io/unsubscribe?token=${encodeURIComponent(subscriber.unsubscribe_token)}`
+  const unsubscribe=`https://www.sc-analytics.io/unsubscribe?token=${encodeURIComponent(subscriber.unsubscribe_token)}`
   await transporter.sendMail({
     from:`"SC-Analytics" <${from}>`,
     to:subscriber.email,
@@ -167,9 +167,9 @@ export async function sendNewsletterDigest(opts:{force?:boolean;subscriberLimit?
     const selected=sourceGroups.map(([key,variants])=>({key,item:chooseVariant(variants,subscriber.language)})).filter(x=>x.item)
     if(!selected.length){skipped+=1;continue}
     const copy=DIGEST[subscriber.language]||DIGEST.es
-    const unsubscribe=`https://sc-analytics.io/unsubscribe?token=${encodeURIComponent(subscriber.unsubscribe_token)}`
-    const textItems=selected.map(({key,item},i)=>`${i+1}. ${item.title}\nhttps://sc-analytics.io/knowledge/${key}/${subscriber.language}\n${plainExcerpt(item.body)}`).join('\n\n')
-    const htmlItems=selected.map(({key,item})=>`<div style="padding:18px 0;border-top:1px solid #e2e8f0"><h2 style="font-family:Georgia,serif;font-weight:500;font-size:21px;margin:0 0 8px"><a style="color:#0f172a;text-decoration:none" href="https://sc-analytics.io/knowledge/${encodeURIComponent(key)}/${subscriber.language}">${escapeHtml(item.title)}</a></h2><p style="line-height:1.65;color:#475569;margin:0">${escapeHtml(plainExcerpt(item.body))}</p></div>`).join('')
+    const unsubscribe=`https://www.sc-analytics.io/unsubscribe?token=${encodeURIComponent(subscriber.unsubscribe_token)}`
+    const textItems=selected.map(({key,item},i)=>`${i+1}. ${item.title}\nhttps://www.sc-analytics.io/knowledge/${key}/${subscriber.language}\n${plainExcerpt(item.body)}`).join('\n\n')
+    const htmlItems=selected.map(({key,item})=>`<div style="padding:18px 0;border-top:1px solid #e2e8f0"><h2 style="font-family:Georgia,serif;font-weight:500;font-size:21px;margin:0 0 8px"><a style="color:#0f172a;text-decoration:none" href="https://www.sc-analytics.io/knowledge/${encodeURIComponent(key)}/${subscriber.language}">${escapeHtml(item.title)}</a></h2><p style="line-height:1.65;color:#475569;margin:0">${escapeHtml(plainExcerpt(item.body))}</p></div>`).join('')
     try{
       await transporter.sendMail({
         from:`"SC-Analytics" <${process.env.SMTP_USER}>`,
