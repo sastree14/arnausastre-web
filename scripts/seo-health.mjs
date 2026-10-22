@@ -72,6 +72,30 @@ function metadata(html) {
 }
 
 async function main() {
+  // Domain redirects and canonical links should consistently elect HTTPS/www.
+  // This is a diagnostic only: the Vercel apex-domain redirect occurs before
+  // Next.js routing and cannot be fixed by a page-level canonical tag.
+  if (origin.startsWith('https://www.')) {
+    const apex = 'https://' + new URL(origin).hostname.replace(/^www\./, '') + '/'
+    try {
+      const response = await fetch(apex, {
+        redirect: 'manual',
+        signal: AbortSignal.timeout(timeoutMs),
+        headers: { 'User-Agent': 'SC-Analytics-SEO-QA/1.0' },
+      })
+      const destination = response.headers.get('location') || ''
+      if (![301, 308].includes(response.status)) {
+        report('warning', 'APEX_REDIRECT_TEMPORARY', apex,
+          { status: response.status, destination, expectedStatus: 308 })
+      }
+      if (response.status >= 300 && response.status < 400 &&
+          !destination.startsWith(origin)) {
+        report('error', 'APEX_WRONG_CANONICAL_DOMAIN', apex, destination)
+      }
+    } catch (error) {
+      report('warning', 'APEX_REDIRECT_UNVERIFIED', apex, String(error))
+    }
+  }
   const robotsUrl = origin + '/robots.txt'
   const robots = await request(robotsUrl)
   if (!robots.response.ok) report('error', 'ROBOTS_HTTP', robotsUrl, robots.response.status)
