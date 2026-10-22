@@ -32,6 +32,7 @@ jobs:
           python -m unittest \
             growth.tests.test_seo_intelligence \
             growth.tests.test_seo_commercial_readiness \
+            growth.tests.test_seo_keyword_expansion \
             growth.tests.test_seo_review_briefs \
             growth.tests.test_seo_weekly_queue \
             growth.tests.test_seo_competitor_research -q
@@ -52,6 +53,7 @@ jobs:
               f.write(f"Services: {result['unique_commercial_pages']}; active keyword targets: {result['active_keywords']}; ")
               f.write(f"proposals staged for review: {len(result['written'])}\n\n")
               f.write(f"Observed new keyword candidates: {len(result.get('unmapped_keyword_opportunities',[]))}\n\n")
+              f.write(f"Editorial keyword-variant hypotheses to verify: {len(result.get('variant_recommendations',[]))}\n\n")
               f.write("Sources are observed query/page rows, not estimated search-market volume.\n\n")
               f.write("Recommendations do **not** publish pages, send outreach or create backlinks. ")
               f.write("Google indexing remains unverified until URL Inspection confirms it.\n")
