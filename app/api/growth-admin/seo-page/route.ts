@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { queryGrowthTable, updateGrowthRow, upsertGrowthRow } from '@/lib/supabase-growth'
 import { validateSeoLanding } from '@/lib/seo-page-quality'
+import { validateSerpSubmission } from '@/lib/seo-serp-evidence'
 
 type Row=Record<string,unknown>
 const text=(form:FormData,name:string)=>String(form.get(name)||'').trim()
@@ -11,6 +12,31 @@ const jsonArray=(value:string)=>{try{const parsed=JSON.parse(value);return Array
 export async function POST(request:Request){
   if(!(await isGrowthAdminAuthenticated()))return new NextResponse('Unauthorized',{status:401})
   const form=await request.formData(),action=text(form,'action'),now=new Date().toISOString()
+  if(action==='record_serp_evidence'){
+    const keywordId=text(form,'keyword_id')
+    if(!/^[a-zA-Z0-9_-]{1,120}$/.test(keywordId))
+      return new NextResponse('Invalid keyword identifier',{status:400})
+    const target=(await queryGrowthTable<Row>('seo_keyword_targets',{
+      tenant_id:'eq.sc-analytics',keyword_id:'eq.'+keywordId,status:'eq.active',limit:'1',
+    },{cacheSeconds:0}))[0]
+    if(!target)return new NextResponse('Active SEO keyword not found',{status:404})
+    // The target keyword comes from the database, not from the request.
+    const normalized=validateSerpSubmission({
+      keyword:String(target.keyword||''),
+      country:text(form,'country'),device:text(form,'device'),
+      observedAt:text(form,'observed_at'),sourceUrl:text(form,'source_url'),
+      competitorUrls:text(form,'competitor_urls'),notes:text(form,'notes'),
+    })
+    if(!normalized.ok)
+      return new NextResponse('SERP evidence not saved: '+normalized.error,{status:422})
+    const metrics=target.metrics&&typeof target.metrics==='object'&&!Array.isArray(target.metrics)
+      ?target.metrics as Record<string,unknown>:{}
+    // Only a review-only observation. Preserve Search Console inspection metrics.
+    await updateGrowthRow('seo_keyword_targets','keyword_id',keywordId,{
+      metrics:{...metrics,serp_evidence:normalized.value},updated_at:now,
+    })
+    return NextResponse.redirect(new URL('/growth-admin/seo?serp_saved=1#keywords',request.url),303)
+  }
   if(action==='apply_recommendation'){
     const recommendationId=text(form,'recommendation_id')
     const recommendation=(await queryGrowthTable<Row>('seo_recommendations',{tenant_id:'eq.sc-analytics',recommendation_id:`eq.${recommendationId}`,limit:'1'},{cacheSeconds:0}))[0]
