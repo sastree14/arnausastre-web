@@ -53,9 +53,11 @@ class WeeklySeoPublicationSafetyTests(unittest.TestCase):
             patch("growth.src.storage.get_store",return_value=store):
             result=run_organic_engine(write=True,max_write=12,date_today=date(2026,10,22))
             self.assertEqual(len(result["keyword_recommendations"]),1)
-            self.assertEqual(len(result["written"]),2)
+            self.assertEqual(len(result["written"]),4)
             self.assertTrue(any(x.startswith("seo_query_") for x in result["written"]))
-            self.assertEqual(len(store.saved),2)
+            self.assertEqual(len(result["variant_recommendations"]),2)
+            self.assertTrue(any(x.startswith("seo_variant_") for x in result["written"]))
+            self.assertEqual(len(store.saved),4)
             for item in store.saved.values():
                 self.assertEqual(item["status"],"proposed")
                 self.assertFalse(item["payload"]["publishable"])
@@ -63,8 +65,8 @@ class WeeklySeoPublicationSafetyTests(unittest.TestCase):
                 self.assertNotIn("synthetic_search_volume",item["payload"])
             # Re-running does not generate duplicate persistent entries.
             second=run_organic_engine(write=True,max_write=12,date_today=date(2026,10,22))
-            self.assertEqual(len(store.saved),2)
-            self.assertEqual(len(second["written"]),2)
+            self.assertEqual(len(store.saved),4)
+            self.assertEqual(len(second["written"]),4)
 
     def test_rejected_opportunity_is_not_reactivated_by_scheduled_jobs(self):
         store=FakeStore()
