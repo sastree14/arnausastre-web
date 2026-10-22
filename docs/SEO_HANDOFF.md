@@ -1,5 +1,15 @@
 # SC-Analytics — SEO Growth: REANUDAR AQUÍ
 
+## CONTINUACIÓN — 22/10/2026: completar desarrollo antes de piloto
+
+**Documento de cierre de alcance:** [seo-development-completion-20261022.md](./seo-development-completion-20261022.md).
+Se incorporó a PR #89 en borrador el módulo de inteligencia comercial, listas de evidencias de autoridad editorial, revisión de canónica Google y antigüedad GSC, bloqueo de páginas externas, y formulario CMI autenticado para registrar evidencia SERP geolocalizada sin servicios de pago. Todas las observaciones SERP manuales son **no verificadas** hasta revisión, no posicionamiento acreditado ni backlinks obtenidos.
+
+**ORDEN VINCULANTE:** terminar y revisar el código primero; después, en una fase distinta, realizar piloto/activación. NO fusionar PR, no desplegar, no invocar crons de producción, no programar una tarea ChatGPT redundante ni comprar APIs en esta fase. GitHub Actions existente cubre el análisis semanal, Google URL Inspection Vercel el estado diario tras despliegue.
+
+**Validación de desarrollo:** comprobar los dos workflows CI + SEO safety del commit más reciente. El piloto funcional, la comprobación de credenciales y la operación comercial quedan separados y pendientes por decisión explícita del usuario.
+
+
 ## CONTINUACIÓN ACTUAL — 22/10/2026: motor SEO con revisión, aún no desplegado
 
 **Leer primero:** [seo-automation-engine-20261022.md](./seo-automation-engine-20261022.md) y [seo-commercial-intent-research-20261022.md](./seo-commercial-intent-research-20261022.md). Ambos forman parte de **PR #89 en borrador**, que **NO debe fusionarse/desplegarse por cada commit**.
