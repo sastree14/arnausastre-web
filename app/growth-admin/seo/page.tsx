@@ -149,7 +149,7 @@ export default async function SeoPage(){
       ? ` Última inspección: ${String((evidence.google_inspection as Record<string,unknown>).checked_at)}.`:''}
     {' '}No implica garantía de ranking ni autoriza publicar automáticamente.
   </p>
-  {payload.workplan&&typeof payload.workplan==='object'&&<div className="mt-3 rounded-lg border border-amber-200 bg-white/70 p-3 text-slate-800">
+  {Boolean(payload.workplan&&typeof payload.workplan==='object')&&<div className="mt-3 rounded-lg border border-amber-200 bg-white/70 p-3 text-slate-800">
     <p className="font-semibold">Plan de revisión, sin publicación automática</p>
     <p className="mt-1">Tipo de cambio: {String((payload.workplan as Record<string,unknown>).change_scope||'revisión técnica')}.</p>
     <p className="mt-1">Campos: {Array.isArray((payload.workplan as Record<string,unknown>).fields_to_review)
