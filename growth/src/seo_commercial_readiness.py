@@ -95,10 +95,37 @@ def commercial_readiness(
             "reason": "Observed impressions and position indicate a potential snippet review; causality unknown.",
             "action": "Compare actual search results and consider title/meta changes after approval.",
         })
+    submitted_serp = []
+    for target in targets:
+        metrics = target.get("metrics") or {}
+        data = metrics.get("serp_evidence") if isinstance(metrics, dict) else None
+        if not isinstance(data, dict) or data.get("status") != "submitted_unverified":
+            continue
+        if str(data.get("query") or "").casefold() != str(target.get("keyword") or "").casefold():
+            continue
+        try:
+            age = (today - date.fromisoformat(str(data.get("observed_at") or ""))).days
+        except ValueError:
+            continue
+        if age < 0 or age > 90:
+            continue
+        source = str(data.get("source_url") or "")
+        if not source.startswith("https://"):
+            continue
+        submitted_serp.append({
+            "query": str(data.get("query") or "")[:160],
+            "country": str(data.get("country") or "")[:3],
+            "device": str(data.get("device") or "")[:12],
+            "date": str(data.get("observed_at") or "")[:10],
+            "source_url": source[:450],
+            "status": "submitted_unverified",
+        })
+    submitted_serp = submitted_serp[:4]
     tasks.append({
         "kind": "serp_competition",
-        "status": "unverified",
-        "reason": "No verified country/device-specific Google SERP snapshot or competitor ranks.",
+        "status": "submitted_for_verification" if submitted_serp else "unverified",
+        "reason": ("Manual SERP observations exist, but independent rank and country/device evidence remain unverified."
+                   if submitted_serp else "No verified country/device-specific Google SERP snapshot or competitor ranks."),
         "action": "Record search location, date, target query and competitor URLs before making claims.",
     })
     tasks.append({
@@ -130,6 +157,7 @@ def commercial_readiness(
         "google_indexation_observed": index["status"],
         "verified_market_search_volume": None,
         "verified_serp_rankings": None,
+        "serp_observations_for_review": submitted_serp,
         "verified_external_referring_domains": None,
         "verified_new_customers_from_seo": None,
         "tasks": tasks,
