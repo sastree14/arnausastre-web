@@ -1,0 +1,68 @@
+name: SEO — weekly opportunity intelligence (no deployments)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '45 6 * * 3'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sc-seo-intelligence-weekly
+  cancel-in-progress: false
+
+jobs:
+  audit-opportunities:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout reviewed main
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Dependencies
+        run: python -m pip install 'requests==2.32.3' 'PyYAML==6.0.2'
+      - name: Validate evidence rules (no backend writes)
+        run: |
+          python -m unittest \
+            growth.tests.test_seo_intelligence \
+            growth.tests.test_seo_commercial_readiness \
+            growth.tests.test_seo_keyword_expansion \
+            growth.tests.test_seo_review_briefs \
+            growth.tests.test_seo_weekly_queue \
+            growth.tests.test_seo_competitor_research -q
+      - name: Evaluate existing GSC keywords, services and competitor evidence
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          STATE_PROVIDER: supabase
+        run: |
+          set -euo pipefail
+          python -m growth.src.cli seo-intelligence --write-proposals --limit 12 > seo-intelligence.json
+          python - <<'PY'
+          import json,os
+          result=json.load(open("seo-intelligence.json",encoding="utf-8"))
+          with open(os.environ["GITHUB_STEP_SUMMARY"],"a",encoding="utf-8") as f:
+              f.write("## SEO weekly intelligence\n\n")
+              f.write(f"Last imported GSC date: {result['gsc_last_date']}\n\n")
+              f.write(f"Services: {result['unique_commercial_pages']}; active keyword targets: {result['active_keywords']}; ")
+              f.write(f"proposals staged for review: {len(result['written'])}\n\n")
+              f.write(f"Observed new keyword candidates: {len(result.get('unmapped_keyword_opportunities',[]))}\n\n")
+              f.write(f"Editorial keyword-variant hypotheses to verify: {len(result.get('variant_recommendations',[]))}\n\n")
+              f.write("Sources are observed query/page rows, not estimated search-market volume.\n\n")
+              f.write("Recommendations do **not** publish pages, send outreach or create backlinks. ")
+              f.write("Google indexing remains unverified until URL Inspection confirms it.\n")
+          PY
+      - name: Save evidence (no secrets, no contact PII)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-weekly-opportunities
+          path: seo-intelligence.json
+          retention-days: 14
+          if-no-files-found: ignore

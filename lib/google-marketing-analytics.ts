@@ -2,7 +2,8 @@ import 'server-only'
 
 import { createHash, randomUUID } from 'node:crypto'
 import { getCorporateGoogleConnection, getGmailAccessToken } from '@/lib/google-oauth-finance'
-import { growthSupabaseHeaders, growthSupabaseUrl, insertGrowthRow, updateGrowthRow } from '@/lib/supabase-growth'
+import { growthSupabaseHeaders, growthSupabaseUrl, insertGrowthRow, updateGrowthRow, queryGrowthTable } from '@/lib/supabase-growth'
+import { sanitizeIndexInspection,inspectPathsForDay } from '@/lib/seo-index-inspection'
 
 type Json=Record<string,any>
 const TENANT_ID='sc-analytics'
@@ -155,4 +156,64 @@ export async function syncMarketingMetrics(days=365){
     ga4:ga4.status==='fulfilled'?ga4.value:{ok:false,error:ga4.reason instanceof Error?ga4.reason.message:String(ga4.reason)},
     search_console:searchConsole.status==='fulfilled'?searchConsole.value:{ok:false,error:searchConsole.reason instanceof Error?searchConsole.reason.message:String(searchConsole.reason)},
   }
+}
+
+/**
+ * Daily bounded URL Inspection, using the Search Console OAuth connection
+ * already approved for read-only analytics. This API reports Google's indexed
+ * version, NOT live URL indexability, and cannot request indexing.
+ *
+ * Exactly five or fewer service URLs inspected on each daily cron run.
+ * Existing seo_keyword_targets.metrics values are preserved.
+ */
+export async function inspectCommercialServiceIndexStatus(){
+  const {connection,accessToken}=await connectionAndToken(SEARCH_SCOPE)
+  const siteUrl=await resolveSearchConsoleSite(connection,accessToken)
+  const targets=await queryGrowthTable<Json>('seo_keyword_targets',{
+    select:'keyword_id,target_path,metrics,status',
+    tenant_id:'eq.sc-analytics',status:'eq.active',limit:'100',
+  },{cacheSeconds:0})
+  const candidates=[...new Set(targets.map(x=>String(x.target_path||'')))].filter(
+    path=>/^\/services\/[a-z0-9-]+$/.test(path)
+  )
+  const today=new Date()
+  const batch=inspectPathsForDay(candidates,today,5)
+  const results:{path:string;verdict?:string;error?:string}[]=[]
+  let successful=0
+  for(const path of batch){
+    try{
+      const document=await googleJson(
+        'https://searchconsole.googleapis.com/v1/urlInspection/index:inspect',
+        accessToken,{
+          method:'POST',
+          signal:AbortSignal.timeout(9000),
+          body:JSON.stringify({
+            inspectionUrl:'https://www.sc-analytics.io'+path,
+            siteUrl,
+            languageCode:'es-ES',
+          }),
+        }
+      )
+      const report=sanitizeIndexInspection(document)
+      const timestamp=new Date().toISOString()
+      const siblings=targets.filter(row=>row.target_path===path)
+      for(const row of siblings){
+        await updateGrowthRow('seo_keyword_targets','keyword_id',String(row.keyword_id),{
+          metrics:{
+            ...(row.metrics&&typeof row.metrics==='object'?row.metrics:{}),
+            google_index_inspection:{...report,checked_at:timestamp,source:'google_url_inspection_api'},
+          },
+          updated_at:timestamp,
+        })
+      }
+      results.push({path,verdict:report.verdict})
+      successful++
+    }catch(error){
+      // No false "not indexed" on transient API failure.
+      console.error('SEO URL Inspection unavailable for',path,error)
+      results.push({path,error:'inspection_unavailable'})
+    }
+  }
+  if(batch.length>0&&successful===0)throw new Error('No Google URL Inspection request succeeded')
+  return {siteUrl,inspected:successful,attempted:batch.length,results}
 }

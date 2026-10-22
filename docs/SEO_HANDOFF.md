@@ -1,5 +1,58 @@
 # SC-Analytics — SEO Growth: REANUDAR AQUÍ
 
+## NOTA DE CONTINUIDAD — 22/10/2026, ampliación de búsquedas y manual
+- Usuario solicita detectar cada vez más variantes útiles para captar demanda ES/CA/EN, comprender competencia y recibir manual detallado **tras** validación de producción.
+- 32 hipótesis en growth/src/seo_keyword_expansion.py (18 ES, 5 CA, 9 EN), 2 propuestas rotativas por semana, **sin asumir volumen, posición ni tendencia** y solo para servicios publicados. Consultas GSC observadas tienen prioridad aparte.
+- Competidores públicos observados y seis fuentes fijas en growth/src/seo_competitor_research.py; la herramienta lee lenguaje editorial y estructura, no posiciones SERP.
+- Frontend público, textos publicados y CSS intactos; CMI distingue datos observados frente a investigación no verificada.
+- Manual de arquitectura, operaciones y diagnóstico en [SC_ANALYTICS_SYSTEM_OWNER_GUIDE.md](./SC_ANALYTICS_SYSTEM_OWNER_GUIDE.md). Revisar/actualizar tras piloto con SHA de producción, inspecciones Google, recomendaciones y evidencias.
+- El PR #89 permanece abierto y **NO fusionar solo por estos commits**: existe una continuación automatizada autorizada para la tarde, que debe verificar cuota Vercel, HEAD CI, main y despliegue real.
+- Antes de fusionar: confirmar el CI verde **del último SHA** de esta ampliación, además de SEO safety. Nunca prometer rankings ni indexación garantizada.
+
+
+## CONTINUACIÓN — 22/10/2026: completar desarrollo antes de piloto
+
+**Documento de cierre de alcance:** [seo-development-completion-20261022.md](./seo-development-completion-20261022.md).
+Se incorporó a PR #89 en borrador el módulo de inteligencia comercial, listas de evidencias de autoridad editorial, revisión de canónica Google y antigüedad GSC, bloqueo de páginas externas, y formulario CMI autenticado para registrar evidencia SERP geolocalizada sin servicios de pago. Todas las observaciones SERP manuales son **no verificadas** hasta revisión, no posicionamiento acreditado ni backlinks obtenidos.
+
+**ORDEN VINCULANTE:** terminar y revisar el código primero; después, en una fase distinta, realizar piloto/activación. NO fusionar PR, no desplegar, no invocar crons de producción, no programar una tarea ChatGPT redundante ni comprar APIs en esta fase. GitHub Actions existente cubre el análisis semanal, Google URL Inspection Vercel el estado diario tras despliegue.
+
+**Validación de desarrollo:** comprobar los dos workflows CI + SEO safety del commit más reciente. El piloto funcional, la comprobación de credenciales y la operación comercial quedan separados y pendientes por decisión explícita del usuario.
+
+
+## CONTINUACIÓN ACTUAL — 22/10/2026: motor SEO con revisión, aún no desplegado
+
+**Leer primero:** [seo-automation-engine-20261022.md](./seo-automation-engine-20261022.md) y [seo-commercial-intent-research-20261022.md](./seo-commercial-intent-research-20261022.md). Ambos forman parte de **PR #89 en borrador**, que **NO debe fusionarse/desplegarse por cada commit**.
+
+- Se ha corregido un error de atribución del motor: **las impresiones y posiciones de Home/Knowledge no deben sumarse artificialmente a una landing comercial** porque su keyword se parezca. Quedan en una cola de nuevas consultas para investigar.
+- `growth/src/seo_review_briefs.py` proporciona veredictos de **Google URL Inspection reales** si están disponibles (últimos 45 días), un plan de revisión editorial y candidatos a keywords observados con volumen de mercado explícitamente **desconocido**.
+- `growth/src/seo_intelligence.py` genera diagnósticos revisables y hasta 4 propuestas adicionales para nuevas consultas que aparecen en GSC. Son `seo_opportunity` con `publishable:false`; el CMI bloquea su publicación directa.
+- La UI del CMI distingue resultado inspección Google, tipo de cambio y vínculo a casos del portfolio; **sin tocar diseño/CSS público**.
+- El crawler de competencia `growth/src/seo_competitor_research.py` corrigió codificación UTF-8. Prueba read-only de cuatro dominios ya allowlisted: **3 observados, 1 no disponible**; no se deduce posición Google.
+- **Prueba con datos reales en modo lectura:** 126 observaciones GSC, 23 servicios publicados, 29 keywords activas, dato más reciente 19/10. Salida: 13 páginas para verificar indexación, 9 para esperar rastreo; 0 impresiones no branded directamente atribuibles a servicios en esa muestra; candidata «operations control layer» con 4 impresiones. **No crear una nueva página basándose solo en eso**.
+- **Supabase observado antes de desplegar:** 0 recomendaciones generadas y 0/29 keywords con informe Google `google_index_inspection`. Los 14 competidores de otro flujo están archivados, 0 monitorizados, 0 eventos; no reactivar sin evidencia/decisión.
+- **Validación en sandbox:** 15 pruebas Python focalizadas correctas, 43 pruebas SEO Node correctas, lint 0 errores (18 warnings heredados), Next.js build correcto y home/contact estáticas. Ejecutar una última prueba tras cambios finales.
+- **Activación posterior al único release**: comprobar que `seo-weekly-intelligence.yml` se ejecuta miércoles 06:45 UTC, que `/api/cron/seo-index-daily` a 07:25 UTC obtiene respuestas de Google Search Console y guarda resultados; si credenciales faltan, **no afirmar funcionamiento automático**. Confirmar fuentes y permisos, nunca mostrar secretos.
+- **SEO editorial seguro:** metadatos/analítica/indexación invisibles al usuario; cambios de texto afectarían el contenido visible, pero no el layout; solo tras revisión. **No** prometer ranking/indexación forzosa ni backlinks artificiales.
+- Mantener PR #89 como lote, sin consumir previews ni despliegues. Una vez verificado el CI, coordinar **una sola** publicación cuando haya cuota Vercel y seguir con la auditoría Google, no rehacer sistemas existentes.
+
+
+## TANDA ACTUAL — 22/10/2026: schema, indexación, casos y Vercel
+
+**DOCUMENTO PRINCIPAL DEL LOTE:** [seo-canonical-schema-proof-20261022.md](./seo-canonical-schema-proof-20261022.md).
+
+- **Rama:** `feature/seo-canonical-schema-proof-20261022`, originada desde `main` sin desplegar. **Mantener en revisión; no fusionar hasta que Vercel permita un solo release del lote.**
+- La captura GSC del usuario: apex `https://sc-analytics.io/` está **indexado**, Google lo rastreó 21/10/2026, declaró «ninguna canónica proporcionada» durante ese rastreo y escogió la URL inspeccionada. El mensaje temporal del sitemap es independiente.
+- **Auditoría HTTP actual en producción:** 93/93 páginas con canónica autodeclarada **www**, un H1, metatítulos únicos, todos los JSON-LD parseables. La portada y Contacto ya tenían correctas sus canónicas en código; no añadir etiquetas duplicadas.
+- **Error semántico real corregido en rama:** `Service.inLanguage` no es una propiedad definida para ese tipo en Schema.org; nueva `lib/seo-service-structured-data.ts` mueve `inLanguage` a un `WebPage` del mismo servicio, enlazado por `mainEntity`, conservando breadcrumbs. **No publicado aún**: el sitio activo sigue con marcado anterior.
+- `scripts/seo-health.mjs` ahora detecta campos de Schema.org mal ubicados, pérdida súbita de secciones del sitemap (mínimo 85 URL frente a 93) y redirect apex **307** no permanente. Este último continuará como aviso hasta corregirlo en Vercel Domains a 308 (herramienta de actualización de dominio no disponible mediante connector).
+- **Implementado directamente en Supabase y YA PÚBLICO:** 23/23 páginas de servicio incluyen un enlace a un caso ya existente, 11 destinos de casos distintos verificados HTTP 200; 4 enlaces por servicio. SQL versionado `scripts/seo-service-proof-links-20261022.sql`; dry run ROLLBACK y transacción posterior confirmada. **Sin modificación de casos, CSS, diseño o resultados**.
+- **Preview Vercel suspendido a nivel de proyecto** con `previewDeploymentsDisabled:true` mediante conector. La rama de esta tanda no ha producido previews, ahorrando compilaciones y espacio. El contador mostrado por usuario era 8,94 GB/10 GB en Deployment Storage y Functions Storage 0 B. No se borraron deploys: conector no tiene acción delete-deployment y no se debe arriesgar versión activa/rollback.
+- Pruebas actuales del lote: `npm run seo:test` **39/39**, `npm run lint` **0 errores** (18 warnings existentes), `npm run build` OK. Verificar nuevamente al finalizar PR; `next build` no requiere despliegue.
+- **Para liberar:** revisar PR, CI, comprobar cuota disponible, merge en `main` → **un solo** despliegue Vercel → comprobar READY → rastreo nuevo 93 URL, Schema Validator, Semrush gratis e inspección Search Console (incluidas 10 páginas ES/CA).
+- **Privacidad:** no incluir nunca NIF ni domicilio personal del usuario en repo, schema ni frontend; el usuario ha solicitado explícitamente confidencialidad.
+
+
 ## BLOQUEO ACTUAL DE PRODUCCIÓN — 22/10/2026
 
 **IMPORTANTE:** GitHub y producción NO están sincronizados todavía. No afirmar que PR #88 está publicado.

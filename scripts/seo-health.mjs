@@ -72,6 +72,30 @@ function metadata(html) {
 }
 
 async function main() {
+  // Domain redirects and canonical links should consistently elect HTTPS/www.
+  // This is a diagnostic only: the Vercel apex-domain redirect occurs before
+  // Next.js routing and cannot be fixed by a page-level canonical tag.
+  if (origin.startsWith('https://www.')) {
+    const apex = 'https://' + new URL(origin).hostname.replace(/^www\./, '') + '/'
+    try {
+      const response = await fetch(apex, {
+        redirect: 'manual',
+        signal: AbortSignal.timeout(timeoutMs),
+        headers: { 'User-Agent': 'SC-Analytics-SEO-QA/1.0' },
+      })
+      const destination = response.headers.get('location') || ''
+      if (![301, 308].includes(response.status)) {
+        report('warning', 'APEX_REDIRECT_TEMPORARY', apex,
+          { status: response.status, destination, expectedStatus: 308 })
+      }
+      if (response.status >= 300 && response.status < 400 &&
+          !destination.startsWith(origin)) {
+        report('error', 'APEX_WRONG_CANONICAL_DOMAIN', apex, destination)
+      }
+    } catch (error) {
+      report('warning', 'APEX_REDIRECT_UNVERIFIED', apex, String(error))
+    }
+  }
   const robotsUrl = origin + '/robots.txt'
   const robots = await request(robotsUrl)
   if (!robots.response.ok) report('error', 'ROBOTS_HTTP', robotsUrl, robots.response.status)
@@ -83,6 +107,13 @@ async function main() {
   const urls = [...sitemap.text.matchAll(/<loc>([\s\S]*?)<\/loc>/gi)]
     .map(x => x[1].trim().replaceAll('&amp;', '&'))
   if (urls.length === 0) throw new Error('Sitemap has no URLs')
+  // Fail closed if a temporary database error silently drops most service
+  // pages from the dynamic sitemap. Baseline: 93 public URLs (October 2026).
+  const minimum = Number(process.env.SEO_MIN_SITEMAP_URLS || 85)
+  if (Number.isFinite(minimum) && urls.length < minimum) {
+    report('error', 'SITEMAP_MISSING_SECTIONS', sitemapUrl,
+      `Only ${urls.length} URLs found; expected at least ${minimum}`)
+  }
 
   const duplicates = urls.filter((url, index) => urls.indexOf(url) !== index)
   for (const url of new Set(duplicates)) report('error', 'DUPLICATE_SITEMAP_URL', url, 'Repeated <loc>')
@@ -123,10 +154,34 @@ async function main() {
             report('error', 'HREFLANG_MISSING_DESTINATION', url, { lang, href })
           }
         }
+        const structuredTypes = new Set()
         for (const schema of meta.schemas) {
-          try { JSON.parse(schema) } catch {
+          try {
+            const parsed = JSON.parse(schema)
+            const nodes = Array.isArray(parsed['@graph']) ? parsed['@graph'] : [parsed]
+            for (const item of nodes) {
+              if (!item || typeof item !== 'object') continue
+              const kind = item['@type']
+              structuredTypes.add(kind)
+              // Schema.org inLanguage is a CreativeWork/WebPage property,
+              // not a Service property. This was incorrect on 23 landings.
+              if (kind === 'Service' && Object.hasOwn(item, 'inLanguage')) {
+                report('error', 'INVALID_SERVICE_LANGUAGE_DOMAIN', url,
+                  'Move inLanguage from Service to a WebPage node')
+              }
+              if (kind === 'WebPage' && item.mainEntity?.['@id']?.endsWith('#service')
+                  && !['en', 'es', 'ca'].includes(item.inLanguage)) {
+                report('error', 'SERVICE_WEBPAGE_LANGUAGE', url,
+                  'Commercial service WebPage needs a valid language')
+              }
+            }
+          } catch {
             report('error', 'INVALID_JSONLD', url, 'Unparseable structured data')
           }
+        }
+        if (new URL(url).pathname.startsWith('/services/') &&
+            !structuredTypes.has('Service')) {
+          report('error', 'SERVICE_SCHEMA_MISSING', url, 'Expected a Service JSON-LD node')
         }
       } catch (error) {
         report('error', 'REQUEST_FAILED', url, String(error))
