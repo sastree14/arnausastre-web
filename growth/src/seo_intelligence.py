@@ -97,6 +97,7 @@ def analyze(
     targets: list[dict[str, Any]],
     pages: list[dict[str, Any]],
     competitor_events: list[dict[str, Any]] | None = None,
+    competitor_pages: list[dict[str, Any]] | None = None,
     today: date | None = None,
     sitemap_service_paths: set[str] | None = None,
 ) -> dict[str, Any]:
@@ -238,6 +239,7 @@ def analyze(
                 },
                 "research": {
                     "tracked_competitor_events": verified_events[:4],
+                    "public_competitor_page_observations": [x for x in (competitor_pages or []) if x.get("status")=="observed"][:4],
                     "serp_rankings_verified": False,
                     "backlink_opportunities_verified": False,
                 },
@@ -316,8 +318,11 @@ def run_organic_engine(*, write: bool = False, max_write: int = 23,
                          if el.tag.endswith("loc")}
     except (requests.RequestException, ValueError):
         pass  # If fetch fails, do not claim a service is absent.
-    result = analyze(rows, targets, pages, events, today=today,
-                     sitemap_service_paths=sitemap_paths)
+    from .seo_competitor_research import research_competitor_pages
+    competitor_pages = research_competitor_pages()
+    result = analyze(rows, targets, pages, events, competitor_pages,
+                     today=today, sitemap_service_paths=sitemap_paths)
+    result["competitor_research"] = competitor_pages
     if write:
         from .storage import get_store
         store = get_store()
