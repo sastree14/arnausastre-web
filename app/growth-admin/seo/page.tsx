@@ -157,6 +157,8 @@ export default async function SeoPage(){
   <p className="mt-2">
     {payload.action==='research_keyword_candidate'
       ? `Consulta observada: ${String(evidence.query||'sin datos')}. Impresiones identificadas: ${String(evidence.observed_impressions??'no disponible')} (NO equivale a volumen de mercado).`
+      : payload.action==='research_keyword_variant'
+      ? `Hipótesis de búsqueda: ${String(evidence.query||'sin datos')}. Idioma: ${String(evidence.language||'por determinar')}; intención propuesta: ${String(evidence.intent_hypothesis||'por validar')}; página existente: ${String(evidence.target_existing_service_path||'—')}. Aún NO tenemos demanda ni posiciones verificadas para esta variante.`
       : `Impresiones sin marca de esta URL (28 días): ${String(evidence.nonbrand_impressions_28d??'sin datos')}; clics: ${String(evidence.nonbrand_clicks_28d??'sin datos')}; posición ponderada: ${String(evidence.weighted_position??'sin muestra')}. Fecha GSC: ${String(evidence.last_imported_date??'sin datos')}.`}
   </p>
   <p className="mt-2">Google URL Inspection: <strong>{String(evidence.google_indexation||'no verificado')}</strong>.
@@ -173,6 +175,13 @@ export default async function SeoPage(){
     <p className="mt-1">Casos reales relacionados: {Array.isArray((payload.workplan as Record<string,unknown>).real_portfolio_links)
       ? ((payload.workplan as Record<string,unknown>).real_portfolio_links as string[]).join(', ')||'no vinculados'
       :'no comprobados'}.</p>
+  </div>}
+  {Boolean(payload.research && typeof payload.research==='object')&&Array.isArray((payload.research as Record<string,unknown>).public_competitor_page_observations)&&<div className="mt-3 rounded-lg border border-slate-200 bg-white p-3 text-slate-700">
+    <p className="font-semibold">Lenguaje público observado en competidores (sin posiciones Google verificadas)</p>
+    <ul className="mt-2 list-disc space-y-1 pl-5">
+      {((payload.research as Record<string,unknown>).public_competitor_page_observations as Array<{name?:string;url?:string;h1?:string;title?:string}>).slice(0,4).map((item,i)=><li key={i}><span className="font-semibold">{String(item.name||'Sitio consultado')}</span>: {String(item.h1||item.title||'Estructura observada')}. <a href={String(item.url||'#')} target="_blank" rel="noreferrer" className="text-indigo-700 underline">Fuente pública</a></li>)}
+    </ul>
+    <p className="mt-2 text-xs">No copiamos sus textos ni inferimos volumen de búsqueda, posición o demanda a partir de su web.</p>
   </div>}
   {Boolean(payload.commercial_plan && typeof payload.commercial_plan==='object')&&<div className="mt-3 rounded-lg border border-slate-200 bg-white p-3 text-slate-700">
     <p className="font-semibold">Preparación comercial y autoridad (solo análisis)</p>
