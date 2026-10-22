@@ -1,5 +1,21 @@
 # SC-Analytics — SEO Growth: REANUDAR AQUÍ
 
+## TANDA ACTUAL — 22/10/2026: schema, indexación, casos y Vercel
+
+**DOCUMENTO PRINCIPAL DEL LOTE:** [seo-canonical-schema-proof-20261022.md](./seo-canonical-schema-proof-20261022.md).
+
+- **Rama:** `feature/seo-canonical-schema-proof-20261022`, originada desde `main` sin desplegar. **Mantener en revisión; no fusionar hasta que Vercel permita un solo release del lote.**
+- La captura GSC del usuario: apex `https://sc-analytics.io/` está **indexado**, Google lo rastreó 21/10/2026, declaró «ninguna canónica proporcionada» durante ese rastreo y escogió la URL inspeccionada. El mensaje temporal del sitemap es independiente.
+- **Auditoría HTTP actual en producción:** 93/93 páginas con canónica autodeclarada **www**, un H1, metatítulos únicos, todos los JSON-LD parseables. La portada y Contacto ya tenían correctas sus canónicas en código; no añadir etiquetas duplicadas.
+- **Error semántico real corregido en rama:** `Service.inLanguage` no es una propiedad definida para ese tipo en Schema.org; nueva `lib/seo-service-structured-data.ts` mueve `inLanguage` a un `WebPage` del mismo servicio, enlazado por `mainEntity`, conservando breadcrumbs. **No publicado aún**: el sitio activo sigue con marcado anterior.
+- `scripts/seo-health.mjs` ahora detecta campos de Schema.org mal ubicados, pérdida súbita de secciones del sitemap (mínimo 85 URL frente a 93) y redirect apex **307** no permanente. Este último continuará como aviso hasta corregirlo en Vercel Domains a 308 (herramienta de actualización de dominio no disponible mediante connector).
+- **Implementado directamente en Supabase y YA PÚBLICO:** 23/23 páginas de servicio incluyen un enlace a un caso ya existente, 11 destinos de casos distintos verificados HTTP 200; 4 enlaces por servicio. SQL versionado `scripts/seo-service-proof-links-20261022.sql`; dry run ROLLBACK y transacción posterior confirmada. **Sin modificación de casos, CSS, diseño o resultados**.
+- **Preview Vercel suspendido a nivel de proyecto** con `previewDeploymentsDisabled:true` mediante conector. La rama de esta tanda no ha producido previews, ahorrando compilaciones y espacio. El contador mostrado por usuario era 8,94 GB/10 GB en Deployment Storage y Functions Storage 0 B. No se borraron deploys: conector no tiene acción delete-deployment y no se debe arriesgar versión activa/rollback.
+- Pruebas actuales del lote: `npm run seo:test` **39/39**, `npm run lint` **0 errores** (18 warnings existentes), `npm run build` OK. Verificar nuevamente al finalizar PR; `next build` no requiere despliegue.
+- **Para liberar:** revisar PR, CI, comprobar cuota disponible, merge en `main` → **un solo** despliegue Vercel → comprobar READY → rastreo nuevo 93 URL, Schema Validator, Semrush gratis e inspección Search Console (incluidas 10 páginas ES/CA).
+- **Privacidad:** no incluir nunca NIF ni domicilio personal del usuario en repo, schema ni frontend; el usuario ha solicitado explícitamente confidencialidad.
+
+
 ## BLOQUEO ACTUAL DE PRODUCCIÓN — 22/10/2026
 
 **IMPORTANTE:** GitHub y producción NO están sincronizados todavía. No afirmar que PR #88 está publicado.
