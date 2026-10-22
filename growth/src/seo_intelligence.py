@@ -15,6 +15,8 @@ import re
 from urllib.parse import urlparse
 from typing import Any
 
+from .seo_review_briefs import verified_index_state, review_brief, keyword_discovery
+
 TENANT = "sc-analytics"
 SITE = "https://www.sc-analytics.io"
 BRAND = re.compile(r"\bsc[\s-]?analyt(?:ics|ix|is)\b|\bscanalytics\b|\bsastre\b", re.I)
@@ -125,6 +127,7 @@ def analyze(
                  "observed_paths": set()}
     )
     observed = 0
+    unmatched_queries: list[dict[str, Any]] = []
     for r in rows:
         query = str(r.get("query") or "").strip()
         kind = classify_query(query)
@@ -141,11 +144,12 @@ def analyze(
             continue
         clicks = _safe_num(r.get("clicks"))
         destination = _page_key(r.get("page") or "")
-        # Prefer real Search Console landing-page mapping; use semantic match
-        # only when the page is unknown/unrelated to the commercial catalogue.
+        # Only attribute rank and CTR to the page that GSC ACTUALLY reported.
+        # A homepage article query must not be credited to an unrelated
+        # /services URL merely because its wording resembles a keyword.
         if destination not in published:
-            destination = _choose_target(query, active_targets)
-        if not destination or destination not in published:
+            if event_day >= window_start:
+                unmatched_queries.append(r)
             continue
         item = stats[destination]
         if event_day >= window_start:
@@ -177,6 +181,7 @@ def analyze(
         position = round(evidence["weighted_position"] / seen, 1) if seen else None
         ctr = round(clicks / seen, 4) if seen else None
         page_targets = [x for x in active_targets if x["target_path"] == path]
+        index = verified_index_state(page_targets, today)
         priority = max((_safe_num(x.get("priority")) for x in page_targets), default=1.0)
         date_published = str(page.get("published_at") or "")[:10]
         try:
@@ -188,6 +193,9 @@ def analyze(
         if not in_sitemap:
             action = "technical_sitemap_fix"
             rationale = "Published service is absent from current sitemap; inspect visibility."
+        elif index["status"] == "reported_not_indexed":
+            action = "review_google_indexing"
+            rationale = "Google URL Inspection recently reported an unindexed service; check canonical, indexing policy and page value."
         elif seen >= 20 and position and 7 <= position <= 35 and ctr is not None and ctr < 0.04:
             action = "review_title_snippet"
             rationale = "Actual non-brand impressions with weak observed CTR; review SERP title, page intent and competing results."
@@ -197,6 +205,9 @@ def analyze(
         elif age_days is not None and age_days < 28:
             action = "wait_for_crawl"
             rationale = "Landing recently published. Validate actual URL inspection before assuming it is indexed or rewriting content."
+        elif index["status"] == "unverified" and seen < 5:
+            action = "verify_google_indexing"
+            rationale = "No recent Google URL Inspection report and too little GSC evidence to assume indexing."
         elif seen < 5:
             action = "validate_keyword_demand"
             rationale = "Insufficient identifiable non-brand Search Console observations; validate demand before editing or creating pages."
@@ -235,7 +246,8 @@ def analyze(
                     "query_examples": [{"query": q, "impressions": round(i, 1)} for q, i in ranked_queries],
                     "age_days": age_days,
                     "present_in_sitemap": in_sitemap,
-                    "google_indexation": "not_verified",
+                    "google_indexation": index["status"],
+                    "google_inspection": index,
                 },
                 "research": {
                     "tracked_competitor_events": verified_events[:4],
@@ -244,6 +256,7 @@ def analyze(
                     "backlink_opportunities_verified": False,
                 },
                 "review_required": True,
+                "workplan": review_brief(action,page,index,ranked_queries),
             },
         })
     recommendations.sort(key=lambda r: (-r["priority"], r["target_path"]))
@@ -255,6 +268,8 @@ def analyze(
         "unique_commercial_pages": len(published),
         "active_keywords": len(active_targets),
         "recommendations": recommendations,
+        "unmapped_keyword_opportunities": keyword_discovery(unmatched_queries),
+        "unmapped_gsc_rows": len(unmatched_queries),
         "constraints": [
             "No automatic page publication",
             "No inferred indexing status or rank guarantees",
