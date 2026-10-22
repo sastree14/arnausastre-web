@@ -49,7 +49,14 @@ jobs:
           STATE_PROVIDER: supabase
         run: |
           set -euo pipefail
-          python -m growth.src.cli seo-intelligence --write-proposals --limit 12 > seo-intelligence.json
+          # Load only the isolated SEO module; the general CLI imports
+          # optional image-rendering dependencies not needed by this job.
+          python - <<'PY' > seo-intelligence.json
+          import json
+          from growth.src.seo_intelligence import run_organic_engine
+          result = run_organic_engine(write=True, max_write=12)
+          print(json.dumps(result, ensure_ascii=False, default=str))
+          PY
           python - <<'PY'
           import json,os
           result=json.load(open("seo-intelligence.json",encoding="utf-8"))
