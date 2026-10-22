@@ -15,7 +15,11 @@ export async function POST(request:Request){
     const recommendationId=text(form,'recommendation_id')
     const recommendation=(await queryGrowthTable<Row>('seo_recommendations',{tenant_id:'eq.sc-analytics',recommendation_id:`eq.${recommendationId}`,limit:'1'},{cacheSeconds:0}))[0]
     if(!recommendation)return new NextResponse('Recommendation not found',{status:404})
-    const payload=(recommendation.payload||{}) as Record<string,unknown>,slug=String(payload.slug||'').trim()
+    const payload=(recommendation.payload||{}) as Record<string,unknown>
+    // Weekly intelligence is evidence to review, never a ready-to-publish page.
+    if(payload.kind==='seo_opportunity'||payload.publishable===false)
+      return new NextResponse('Analysis-only recommendation cannot be published',{status:422})
+    const slug=String(payload.slug||'').trim()
     if(!slug)return new NextResponse('Recommendation has no slug',{status:400})
     const problems=validateSeoLanding({
       slug,
