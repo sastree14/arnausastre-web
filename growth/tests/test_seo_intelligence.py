@@ -75,5 +75,37 @@ class SeoIntelligenceTests(unittest.TestCase):
                             for r in result["recommendations"]))
 
 
+    def test_stale_search_console_does_not_trigger_copy_rewrite(self):
+        rows = [{"metric_date":"2026-08-20", "query":"predicción de demanda",
+                 "page":"https://www.sc-analytics.io/services/prediccion-demanda",
+                 "impressions":100, "clicks":0, "position":11}]
+        report=analyze(rows,self.targets,self.pages,today=date(2026,10,22))
+        row=next(x for x in report["recommendations"]
+                 if x["target_path"]=="/services/prediccion-demanda")
+        self.assertEqual(row["payload"]["action"],"refresh_search_console")
+        self.assertTrue(row["payload"]["evidence"]["search_console_data_stale"])
+        self.assertFalse(row["payload"]["publishable"])
+
+    def test_google_canonical_conflict_outranks_snippet_work(self):
+        targets=[dict(x,metrics={"google_index_inspection":{
+            "verdict":"PASS","checked_at":"2026-10-21",
+            "googleCanonical":"https://other.example/services/prediccion-demanda",
+        }}) if x["keyword_id"]=="kw1" else x for x in self.targets]
+        report=analyze([],targets,self.pages,today=date(2026,10,22))
+        row=next(x for x in report["recommendations"]
+                 if x["target_path"]=="/services/prediccion-demanda")
+        self.assertEqual(row["payload"]["action"],"review_google_canonical")
+        self.assertTrue(row["payload"]["evidence"]["google_canonical_conflict"])
+        self.assertIn("canonical",row["payload"]["workplan"]["fields_to_review"])
+
+    def test_offsite_business_query_cannot_be_discovered_as_our_demand(self):
+        rows=[{"metric_date":"2026-10-18","query":"predicción de demanda",
+               "page":"https://other.example/prediccion-demanda",
+               "impressions":500, "clicks":5, "position":1}]
+        report=analyze(rows,self.targets,self.pages,today=date(2026,10,22))
+        self.assertEqual(report["unmapped_keyword_opportunities"],[])
+        self.assertEqual(report["unmapped_gsc_rows"],0)
+
+
 if __name__=="__main__":
     unittest.main()
