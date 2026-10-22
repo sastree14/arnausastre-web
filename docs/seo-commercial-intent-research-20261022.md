@@ -1,5 +1,18 @@
 # SC-Analytics — Estudio de intención SEO comercial (22/10/2026)
 
+## Ampliación basada en lenguaje público observable (22/10/2026)
+
+Nuevas páginas públicas inspeccionadas para contrastar vocabulario, no rankings:
+- [ConsultorIA — análisis predictivo y forecasting](https://www.consultoriaconia.com/servicios/analisis-predictivo): explica demanda por SKU, ventas y monitoreo. Hipótesis: «predicción de demanda por SKU», «previsión de ventas por producto».
+- [Technova Partners — consultoría IA](https://technovapartners.com/es/services/data-ai/consultoria-ia): casos de workflows integrados en CRM, automatización y modelos predictivos. Hipótesis: «integrar agentes IA con CRM».
+- [MERIDIAN — consultoría de datos e IA](https://meridiandata.es/): contenidos pensados para pymes con procesos y datos reales. Hipótesis: «consultoría de datos para pymes».
+- [Umbral BI — soluciones de analítica aplicada](https://www.umbralbi.com/servicios): mención pública de optimización y pricing. Hipótesis: «pricing and margin optimization».
+
+**Muy importante:** vocabulario en una web de un competidor ≠ consultas realizadas ≠ volumen mensual ≠ tendencia «de moda» ≠ ranking. Estas expresiones requieren GSC/estudio geográfico antes de usarlas en cambios editoriales.
+
+Se codificaron **32 hipótesis curadas** (18 ES, 5 CA, 9 EN) en growth/src/seo_keyword_expansion.py, relacionadas con páginas comerciales existentes y propuestas rotativas de dos por semana. El objetivo es ampliar cobertura de intención, no el número de landings. El CMI distingue propuestas hipotéticas de consultas GSC verificadas. Más información técnica: [manual del propietario](./SC_ANALYTICS_SYSTEM_OWNER_GUIDE.md).
+
+
 **Alcance:** investigación preliminar de las rutas ES/CA/EN y evidencia pública. **No** supone un estudio de volúmenes mensuales, posiciones reales en Google ni dificultad de keywords; esos datos requieren herramientas de keyword research y/o observaciones de Search Console. No se ha contratado nada.
 
 ## Señales verificables
