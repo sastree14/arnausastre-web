@@ -2,6 +2,12 @@ name: SEO — weekly opportunity intelligence (no deployments)
 
 on:
   workflow_dispatch:
+  # Controlled production verification: a workflow-file change runs intelligence once.
+  # Subsequent weekly runs remain scheduled; no public content is auto-published.
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/seo-weekly-intelligence.yml'
   schedule:
     - cron: '45 6 * * 3'
 
