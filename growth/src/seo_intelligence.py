@@ -16,6 +16,7 @@ from urllib.parse import urlparse
 from typing import Any
 
 from .seo_review_briefs import verified_index_state, review_brief, keyword_discovery
+from .seo_commercial_readiness import commercial_readiness
 
 TENANT = "sc-analytics"
 SITE = "https://www.sc-analytics.io"
@@ -219,6 +220,12 @@ def analyze(
                          (2.5 if action == "technical_sitemap_fix" else 0)), 2)
         ranked_queries = sorted(evidence["queries"].items(), key=lambda item: (-item[1], item[0]))[:6]
         key = sha256((path + "|" + action).encode()).hexdigest()[:16]
+        commercial = commercial_readiness(
+            page, page_targets, today=today,
+            observed_service_impressions=seen,
+            observed_service_clicks=clicks,
+            observed_service_position=position,
+        )
         recommendations.append({
             "recommendation_id": "seo_engine_" + key,
             "tenant_id": TENANT,
@@ -257,6 +264,7 @@ def analyze(
                 },
                 "review_required": True,
                 "workplan": review_brief(action,page,index,ranked_queries),
+                "commercial_plan": commercial,
             },
         })
     recommendations.sort(key=lambda r: (-r["priority"], r["target_path"]))
@@ -370,6 +378,12 @@ def run_organic_engine(*, write: bool = False, max_write: int = 23,
                     "keyword_volume_verified": False,
                     "serp_rankings_verified": False,
                     "backlink_opportunities_verified": False,
+                    "validation_tasks": [
+                        "Confirm geographic language and Google SERP intent for this exact query",
+                        "Check existing service keyword targets before proposing another URL",
+                        "Verify actual search demand before reprioritizing",
+                        "Require editorial approval for any new public content",
+                    ],
                 },
             },
         })
