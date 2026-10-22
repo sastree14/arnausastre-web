@@ -148,6 +148,8 @@ def analyze(
         # Only attribute rank and CTR to the page that GSC ACTUALLY reported.
         # A homepage article query must not be credited to an unrelated
         # /services URL merely because its wording resembles a keyword.
+        if not destination:  # Reject offsite or corrupt GSC page URLs outright.
+            continue
         if destination not in published:
             if event_day >= window_start:
                 unmatched_queries.append(r)
@@ -191,12 +193,26 @@ def analyze(
             age_days = None
         # Existence in sitemap means discoverable, NOT Google-indexed.
         in_sitemap = sitemap_service_paths is None or path in sitemap_service_paths
+        google_canonical = str(index.get("google_canonical") or "").rstrip("/")
+        expected_canonical = (SITE + path).rstrip("/")
+        canonical_conflict = (
+            index["status"] == "reported_indexed"
+            and bool(google_canonical)
+            and google_canonical != expected_canonical
+        )
+        search_data_stale = bool(newest) and (today - cutoff).days > 14
         if not in_sitemap:
             action = "technical_sitemap_fix"
             rationale = "Published service is absent from current sitemap; inspect visibility."
+        elif canonical_conflict:
+            action = "review_google_canonical"
+            rationale = "Google's recently observed canonical differs from this service's expected www canonical."
         elif index["status"] == "reported_not_indexed":
             action = "review_google_indexing"
             rationale = "Google URL Inspection recently reported an unindexed service; check canonical, indexing policy and page value."
+        elif search_data_stale:
+            action = "refresh_search_console"
+            rationale = "Latest imported Search Console data is over 14 days old; do not optimize from stale observations."
         elif seen >= 20 and position and 7 <= position <= 35 and ctr is not None and ctr < 0.04:
             action = "review_title_snippet"
             rationale = "Actual non-brand impressions with weak observed CTR; review SERP title, page intent and competing results."
@@ -253,6 +269,9 @@ def analyze(
                     "query_examples": [{"query": q, "impressions": round(i, 1)} for q, i in ranked_queries],
                     "age_days": age_days,
                     "present_in_sitemap": in_sitemap,
+                    "google_canonical_conflict": canonical_conflict,
+                    "search_console_data_stale": search_data_stale,
+                    "search_console_last_imported": newest or None,
                     "google_indexation": "not_verified" if index["status"] == "unverified" else index["status"],
                     "google_inspection": index,
                 },
