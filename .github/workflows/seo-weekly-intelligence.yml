@@ -31,6 +31,7 @@ jobs:
         run: |
           python -m unittest \
             growth.tests.test_seo_intelligence \
+            growth.tests.test_seo_commercial_readiness \
             growth.tests.test_seo_review_briefs \
             growth.tests.test_seo_weekly_queue \
             growth.tests.test_seo_competitor_research -q
