@@ -18,6 +18,7 @@ from .prospecting import research_companies
 from .publishing import publish_all_approved,publish_content
 from .scheduled_publishing import publish_due_content
 from .seo_ops import run_seo_audit
+from .seo_intelligence import run_organic_engine
 from .storage import get_store
 from .strategy import build_weekly_plan
 from .website_publishing import publish_article,publish_due_articles
@@ -29,6 +30,7 @@ def main()->None:
     p_queue=sub.add_parser("run-operator-queue");p_queue.add_argument("--task-id",default="");p_queue.add_argument("--recovery",action="store_true");p_queue.add_argument("--limit",type=int,default=10);p_queue.add_argument("--recovery-minutes",type=int,default=10080)
     p_gmail=sub.add_parser("gmail-sync");p_gmail.add_argument("--limit",type=int,default=50);p_gmail.add_argument("--days",type=int,default=14)
     p_seo=sub.add_parser("seo-audit");p_seo.add_argument("--limit",type=int,default=6)
+    p_organic=sub.add_parser('seo-intelligence');p_organic.add_argument('--write-proposals',action='store_true');p_organic.add_argument('--limit',type=int,default=12)
     sub.add_parser("plan-week")
     p_content=sub.add_parser("content");p_content.add_argument("--case",required=True);p_content.add_argument("--channel",default="arnau_linkedin")
     p_editorial=sub.add_parser("editorial-run");p_editorial.add_argument("--signals",type=int,default=50);p_editorial.add_argument("--briefs",type=int,default=3);p_editorial.add_argument("--theme",default="")
@@ -49,6 +51,7 @@ def main()->None:
     elif args.command=="run-day":print(json.dumps(run_day(),indent=2,ensure_ascii=False))
     elif args.command=="approvals":print(json.dumps(list_pending(),indent=2,ensure_ascii=False))
     elif args.command=="gmail-sync":print(json.dumps(sync_gmail(args.limit,args.days),indent=2,ensure_ascii=False))
+    elif args.command=='seo-intelligence':print(json.dumps(run_organic_engine(write=args.write_proposals,max_write=args.limit),indent=2,ensure_ascii=False))
     elif args.command=="seo-audit":print(json.dumps(run_seo_audit(args.limit),indent=2,ensure_ascii=False))
     elif args.command=="plan-week":
         plan=build_weekly_plan();store=get_store();payload=to_dict(plan);store.upsert("weekly_plans",payload,key="tenant_id,week_start")
