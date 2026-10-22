@@ -3,6 +3,7 @@ from unittest.mock import patch
 import unittest
 
 from growth.src.seo_intelligence import run_organic_engine
+from growth.src import storage, seo_competitor_research
 
 
 class FakeStore:
