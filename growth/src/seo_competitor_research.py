@@ -83,7 +83,12 @@ def research_competitor_pages(
             if response.status_code != 200 or len(response.content) > 900_000:
                 output.append({"name": name, "url": url, "status": "unavailable"})
                 continue
-            html = response.text
+            # Several Spanish sites serve UTF-8 without a charset header.
+            # requests.text can decode those as ISO-8859-1 and corrupt h1s.
+            try:
+                html = response.content.decode("utf-8")
+            except UnicodeDecodeError:
+                html = response.text
             structure = PageStructure()
             structure.feed(html)
             output.append({
