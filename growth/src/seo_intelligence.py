@@ -17,7 +17,7 @@ from typing import Any
 
 TENANT = "sc-analytics"
 SITE = "https://www.sc-analytics.io"
-BRAND = re.compile(r"\bsc[\s-]?analytic(?:s|x)\b|\bscanalytics\b|\bsastre\b", re.I)
+BRAND = re.compile(r"\bsc[\s-]?analyt(?:ics|ix|is)\b|\bscanalytics\b|\bsastre\b", re.I)
 AMBIGUOUS = re.compile(r"\bsc\b|\bscdata\b|\bscca\b|\bscio\b", re.I)
 BUSINESS_TERMS = re.compile(
     r"(consult|optimi[sz]|predic|pron[oó]st|forecast|planning|automat|machine.learning|"
