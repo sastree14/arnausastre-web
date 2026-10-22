@@ -407,16 +407,42 @@ def run_organic_engine(*, write: bool = False, max_write: int = 23,
             },
         })
     result["keyword_recommendations"] = candidate_recommendations
+    # Bounded multilingual lexical expansion: REVIEW ONLY. Do not assume
+    # that editorial variants are queried by Google or create new pages.
+    from .seo_keyword_expansion import propose_variant_research
+    variant_recommendations = propose_variant_research(
+        targets, pages, today=today, limit=2
+    )
+    result["variant_recommendations"] = variant_recommendations
     if write:
         from .storage import get_store
         store = get_store()
         written = []
         # Bounded queue. Do not overwrite rejected/applied rows.
         existing = {str(e.get("recommendation_id")): e for e in store.list("seo_recommendations")}
-        # Eight landing diagnostics + up to four newly observed query reviews.
+        # Reserve research slots rather than allowing high-scoring diagnostics
+        # to crowd out real new queries and useful language hypotheses.
         budget = max(0, min(int(max_write), 23))
-        prioritized = result["recommendations"][:max(0, budget - min(4, len(candidate_recommendations)))]
-        prioritized += candidate_recommendations[:min(4, budget)]
+        observed_count = min(4, len(candidate_recommendations), budget)
+        variant_count = min(2, len(variant_recommendations), max(0, budget - observed_count))
+        diagnostics_budget = budget - observed_count - variant_count
+        # Rotate the non-emergency diagnostics so every published service is
+        # reviewed across weeks (rather than always the same first 8).
+        urgent_actions = {"technical_sitemap_fix", "review_google_canonical",
+                          "review_google_indexing", "refresh_search_console"}
+        urgent = [r for r in result["recommendations"]
+                  if r["payload"]["action"] in urgent_actions]
+        ordinary = [r for r in result["recommendations"]
+                    if r["payload"]["action"] not in urgent_actions]
+        prioritized = urgent[:diagnostics_budget]
+        free = diagnostics_budget - len(prioritized)
+        if free and ordinary:
+            week_year, week_no, _ = today.isocalendar()
+            offset = ((week_year * 53 + week_no) * free) % len(ordinary)
+            prioritized += [ordinary[(offset + i) % len(ordinary)]
+                            for i in range(min(free, len(ordinary)))]
+        prioritized += candidate_recommendations[:observed_count]
+        prioritized += variant_recommendations[:variant_count]
         for item in prioritized:
             previous = existing.get(item["recommendation_id"])
             if previous and previous.get("status") != "proposed":
