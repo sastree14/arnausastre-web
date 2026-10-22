@@ -338,13 +338,53 @@ def run_organic_engine(*, write: bool = False, max_write: int = 23,
     result = analyze(rows, targets, pages, events, competitor_pages,
                      today=today, sitemap_service_paths=sitemap_paths)
     result["competitor_research"] = competitor_pages
+    # Reserve a small part of the weekly review queue for newly *observed*
+    # Search Console queries whose impressions belong to a non-service page.
+    # This is research, not permission to create more landing pages.
+    candidate_recommendations = []
+    for candidate in result["unmapped_keyword_opportunities"][:4]:
+        query = candidate["query"]
+        pages_seen = candidate.get("observed_pages") or []
+        target = _page_key(pages_seen[0]) if pages_seen else "/"
+        if not target.startswith("/") or target.startswith("//"):
+            target = "/"
+        candidate_recommendations.append({
+            "recommendation_id": "seo_query_" + sha256(query.casefold().encode()).hexdigest()[:16],
+            "tenant_id": TENANT,
+            "keyword_id": None,
+            "target_path": target,
+            "title": "Investigate observed keyword: " + query[:115],
+            "rationale": (
+                "Google Search Console reported this query on an existing page. "
+                "Validate intent and real competition before changing an existing service."
+            ),
+            "priority": round(min(8, 3 + candidate["observed_impressions"] / 12), 2),
+            "status": "proposed",
+            "payload": {
+                "kind": "seo_opportunity",
+                "action": "research_keyword_candidate",
+                "publishable": False,
+                "review_required": True,
+                "evidence": candidate,
+                "research": {
+                    "keyword_volume_verified": False,
+                    "serp_rankings_verified": False,
+                    "backlink_opportunities_verified": False,
+                },
+            },
+        })
+    result["keyword_recommendations"] = candidate_recommendations
     if write:
         from .storage import get_store
         store = get_store()
         written = []
         # Bounded queue. Do not overwrite rejected/applied rows.
         existing = {str(e.get("recommendation_id")): e for e in store.list("seo_recommendations")}
-        for item in result["recommendations"][:max(0, min(int(max_write), 23))]:
+        # Eight landing diagnostics + up to four newly observed query reviews.
+        budget = max(0, min(int(max_write), 23))
+        prioritized = result["recommendations"][:max(0, budget - min(4, len(candidate_recommendations)))]
+        prioritized += candidate_recommendations[:min(4, budget)]
+        for item in prioritized:
             previous = existing.get(item["recommendation_id"])
             if previous and previous.get("status") != "proposed":
                 continue
