@@ -1,5 +1,15 @@
 # SC-Analytics — SEO Growth: REANUDAR AQUÍ
 
+## NOTA DE CONTINUIDAD — 22/10/2026, ampliación de búsquedas y manual
+- Usuario solicita detectar cada vez más variantes útiles para captar demanda ES/CA/EN, comprender competencia y recibir manual detallado **tras** validación de producción.
+- 32 hipótesis en growth/src/seo_keyword_expansion.py (18 ES, 5 CA, 9 EN), 2 propuestas rotativas por semana, **sin asumir volumen, posición ni tendencia** y solo para servicios publicados. Consultas GSC observadas tienen prioridad aparte.
+- Competidores públicos observados y seis fuentes fijas en growth/src/seo_competitor_research.py; la herramienta lee lenguaje editorial y estructura, no posiciones SERP.
+- Frontend público, textos publicados y CSS intactos; CMI distingue datos observados frente a investigación no verificada.
+- Manual de arquitectura, operaciones y diagnóstico en [SC_ANALYTICS_SYSTEM_OWNER_GUIDE.md](./SC_ANALYTICS_SYSTEM_OWNER_GUIDE.md). Revisar/actualizar tras piloto con SHA de producción, inspecciones Google, recomendaciones y evidencias.
+- El PR #89 permanece abierto y **NO fusionar solo por estos commits**: existe una continuación automatizada autorizada para la tarde, que debe verificar cuota Vercel, HEAD CI, main y despliegue real.
+- Antes de fusionar: confirmar el CI verde **del último SHA** de esta ampliación, además de SEO safety. Nunca prometer rankings ni indexación garantizada.
+
+
 ## CONTINUACIÓN — 22/10/2026: completar desarrollo antes de piloto
 
 **Documento de cierre de alcance:** [seo-development-completion-20261022.md](./seo-development-completion-20261022.md).
