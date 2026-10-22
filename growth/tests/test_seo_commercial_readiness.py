@@ -71,5 +71,37 @@ class CommercialSeoReadinessTests(unittest.TestCase):
         self.assertFalse(row["payload"]["commercial_plan"]["publishable"])
         self.assertEqual(row["payload"]["commercial_plan"]["onsite_readiness_checks_passed"], 6)
 
+    def test_manual_serp_evidence_requires_independent_verification(self):
+        observation = {
+            "evidence_type": "manual_serp_observation",
+            "status": "submitted_unverified",
+            "query": "predicción de demanda",
+            "observed_at": "2026-10-21",
+            "country": "ES",
+            "device": "desktop",
+            "source_url": "https://www.google.com/search?q=prediccion+de+demanda",
+        }
+        targets = [dict(self.targets[0], metrics={"serp_evidence": observation})]
+        result = commercial_readiness(self.page, targets, today=self.today)
+        task = next(t for t in result["tasks"] if t["kind"] == "serp_competition")
+        self.assertEqual(task["status"], "submitted_for_verification")
+        self.assertEqual(len(result["serp_observations_for_review"]), 1)
+        self.assertIsNone(result["verified_serp_rankings"])
+        self.assertFalse(result["publishable"])
+
+    def test_stale_manual_serp_evidence_must_be_rechecked(self):
+        observation = {
+            "status": "submitted_unverified",
+            "query": "predicción de demanda",
+            "observed_at": "2026-02-01",
+            "source_url": "https://www.google.com/search?q=prediccion",
+        }
+        targets = [dict(self.targets[0], metrics={"serp_evidence": observation})]
+        result = commercial_readiness(self.page, targets, today=self.today)
+        self.assertEqual(result["serp_observations_for_review"], [])
+        self.assertEqual(next(t for t in result["tasks"]
+                              if t["kind"] == "serp_competition")["status"], "unverified")
+
+
 if __name__ == "__main__":
     unittest.main()
