@@ -17,6 +17,8 @@ SOURCES = (
     ("Aureliox", "https://www.aureliox.digital/"),
     ("Todoesdata", "https://todoesdata.com/"),
     ("MB Soluciones", "https://mbsoluciones.es/business-intelligence-pymes"),
+    ("ConsultorIA Forecasting", "https://www.consultoriaconia.com/servicios/analisis-predictivo"),
+    ("Technova Partners IA", "https://technovapartners.com/es/services/data-ai/consultoria-ia"),
 )
 ALLOW_HOSTS = frozenset(urlparse(url).hostname for _, url in SOURCES)
 
