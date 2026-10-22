@@ -25,7 +25,7 @@ BUSINESS_TERMS = re.compile(
     r"(consult|optimi[sz]|predic|pron[oó]st|forecast|planning|automat|machine.learning|"
     r"business.intelligence|inventory|inventario|data.engineer|demand|demanda|"
     r"supply.chain|inteligencia.artificial|intel·lig[eè]ncia.artificial|"
-    r"pricing|route|rutas|operaciones|operations|anal[ií]tica|analyt)",
+    r"pricing|route|rutas|operaciones|operations|agentes|agents|anal[ií]tica|analyt)",
     re.I,
 )
 GENERIC_WORDFORMS = {"consultoria", "consultoría", "data", "datos", "dades", "servicios",
@@ -246,7 +246,7 @@ def analyze(
                     "query_examples": [{"query": q, "impressions": round(i, 1)} for q, i in ranked_queries],
                     "age_days": age_days,
                     "present_in_sitemap": in_sitemap,
-                    "google_indexation": index["status"],
+                    "google_indexation": "not_verified" if index["status"] == "unverified" else index["status"],
                     "google_inspection": index,
                 },
                 "research": {
