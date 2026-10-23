@@ -46,7 +46,7 @@ MIN_INDEXED_PILLARS = 2
 MAX_GSC_LAG_DAYS = 7
 CRITICAL_ACTIONS = frozenset({
     "technical_sitemap_fix", "review_google_canonical",
-    "review_google_indexing",
+    "review_google_indexing", "review_inconclusive_inspection",
 })
 
 
@@ -188,6 +188,13 @@ def prioritize_growth_review(
         )
         row["payload"]["growth_strategy"] = {
             "stage": growth["stage"],
+            "evidence_as_of": growth["gsc_last_date"],
+            "gsc_fresh": growth["gsc_fresh"],
+            "focus_impressions_28d": growth["focus_impressions_28d"],
+            "focus_impressions_previous_28d": growth["focus_impressions_previous_28d"],
+            "focus_clicks_28d": growth["focus_clicks_28d"],
+            "indexed_pillars": growth["indexed_pillars"],
+            "growing_pillars": growth["growing_pillars"],
             "focus_pillar": pillar_for_path(path),
             "priority_model": "commercial_value_35_demand_25_rank_gap_20_proof_10_fit_10",
             "score_0_to_10": score,
