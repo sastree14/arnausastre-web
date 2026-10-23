@@ -73,6 +73,16 @@ class KeywordExpansionTests(unittest.TestCase):
         self.assertEqual(evidence["source"],"curated_editorial_hypothesis")
         self.assertFalse(evidence["commercial_intent_verified"])
 
+    def test_focused_research_does_not_touch_other_paths(self):
+        allowed = frozenset({"/services/prediccion-demanda"})
+        variants = propose_variant_research(
+            [], self.pages, today=self.day, limit=30, allowed_paths=allowed
+        )
+        self.assertGreater(len(variants), 0)
+        self.assertTrue(all(row["target_path"] in allowed for row in variants))
+        self.assertTrue(all(row["payload"]["review_required"] for row in variants))
+
+
 
 if __name__=="__main__":
     unittest.main()

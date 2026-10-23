@@ -11,7 +11,7 @@ import { classifyOrganicSearchQuery } from '@/lib/seo-search-query-classificatio
 
 export const dynamic='force-dynamic';export const revalidate=0
 type Keyword={keyword_id:string;keyword:string;search_intent:string;service_area:string;priority:number|string;target_path?:string;status:string;metrics?:{google_index_inspection?:{verdict?:string;coverageState?:string;googleCanonical?:string|null;userCanonical?:string|null;lastCrawlTime?:string|null;checked_at?:string};serp_evidence?:{source_url?:string;observed_at?:string;status?:string;country?:string;device?:string}}}
-type Recommendation={recommendation_id:string;keyword_id?:string;target_path:string;title:string;rationale?:string;priority:number|string;payload:Record<string,unknown>;status:string;created_at?:string}
+type Recommendation={recommendation_id:string;keyword_id?:string;target_path:string;title:string;rationale?:string;priority:number|string;payload:Record<string,unknown>;status:string;created_at?:string;updated_at?:string}
 type SeoPage={seo_page_id:string;slug:string;primary_keyword:string;secondary_keywords?:string[];search_intent:string;title:string;meta_description:string;h1:string;intro:string;sections?:Array<Record<string,unknown>>;cta_title?:string;cta_body?:string;internal_links?:Array<Record<string,unknown>>;status:string;version:number|string;updated_at?:string}
 type InquiryRow={source_path?:string|null}
 type BookingRow={provider?:string|null;status?:string|null;metadata?:Record<string,unknown>|null}
@@ -73,12 +73,22 @@ export default async function SeoPage(){
   const nonBrandImpressions=nonBrandQueries.reduce((acc,row)=>acc+row.impressions,0)
   const nonBrandTrend=compareNonBrandWindows(searchRows)
   const publishedPaths=new Set(published.map(page=>'/services/'+page.slug))
+  const growthSnapshot=[...recommendations].filter(row=>row.payload && typeof row.payload.growth_strategy==='object' && row.payload.growth_strategy!==null).sort((a,b)=>String(b.updated_at||'').localeCompare(String(a.updated_at||'')))[0]
+  const growthStrategy=(growthSnapshot?.payload.growth_strategy||{}) as Record<string,unknown>
   const coveredKeywords=keywords.filter(keyword=>keyword.target_path && publishedPaths.has(keyword.target_path))
   const awaitingLanding=keywords.filter(keyword=>!keyword.target_path || !publishedPaths.has(keyword.target_path))
   return <AdminShell active="seo">
     <PageHeader eyebrow="Métricas · Organic Growth" title="SEO Control" description="Convierte intención de búsqueda real en contenido útil e indexable. El agente propone; tú apruebas cada cambio antes de que aparezca en la web." actions={<form action="/api/growth-admin/operator-task" method="post"><input type="hidden" name="action" value="seo_audit"/><input type="hidden" name="return_to" value="/growth-admin/seo"/><button className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">Generar auditoría SEO</button></form>}/>
     <section className="mb-8 grid gap-3 sm:grid-cols-3"><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Keywords objetivo</p><p className="mt-2 text-3xl font-semibold">{keywords.length}</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Propuestas pendientes</p><p className="mt-2 text-3xl font-semibold">{recommendations.length}</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Landings publicadas</p><p className="mt-2 text-3xl font-semibold">{published.length}</p></div></section>
     <section className="mb-8 grid gap-3 sm:grid-cols-3"><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Keywords con landing publicada</p><p className="mt-2 text-3xl font-semibold">{coveredKeywords.length} / {keywords.length}</p><p className="mt-1 text-xs text-slate-500">{awaitingLanding.length} objetivos pendientes; no son necesariamente enlaces públicos rotos.</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Clics de consultas sin marca</p><p className="mt-2 text-3xl font-semibold">{searchDataset.available?nonBrandClicks:'—'}</p><p className="mt-1 text-xs text-slate-500">Últimos 90 días importados de Search Console</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase text-slate-400">Impresiones sin marca</p><p className="mt-2 text-3xl font-semibold">{searchDataset.available?nonBrandImpressions:'—'}</p><p className="mt-1 text-xs text-slate-500">Últimos 90 días; excluye marca, acrónimos ambiguos y consultas anónimas</p></div></section>
+    {growthSnapshot&&<section className="mb-8"><SectionHeading eyebrow="Evidence-gated Growth" title="Fase de crecimiento SEO" description="Última evaluación semanal guardada; una hipótesis no equivale a demanda verificada ni autoriza publicaciones."/>
+      <div className={`${adminPanel} p-4`}>
+        <p className="text-sm font-semibold text-slate-100">{growthStrategy.stage==='expansion_research'?'Exploración ampliada de keywords':'Consolidación: cuatro áreas comerciales prioritarias'}</p>
+        <p className="mt-2 text-sm text-slate-300">GSC a fecha: {String(growthStrategy.evidence_as_of||'sin datos')}. Datos recientes: {growthStrategy.gsc_fresh===true?'sí':'no o pendientes'}.</p>
+        <p className="mt-2 text-sm text-slate-300">Impresiones comerciales en páginas de foco, 28 días / 28 anteriores: {String(growthStrategy.focus_impressions_28d??'—')} / {String(growthStrategy.focus_impressions_previous_28d??'—')}. Clics: {String(growthStrategy.focus_clicks_28d??'—')}.</p>
+        <p className="mt-2 text-xs text-slate-400">Áreas con inspección indexada: {String(growthStrategy.indexed_pillars??'—')} de 4. Áreas con crecimiento observado: {String(growthStrategy.growing_pillars??'—')} de 4. La expansión solo habilita propuestas de investigación, nunca publicación automática.</p>
+      </div>
+    </section>}
     {(!searchDataset.available||searchDataset.truncated)&&
       <p className="mb-5 text-sm text-amber-700">
         {!searchDataset.available?'Datos Search Console temporalmente no disponibles; no interpretar cifras vacías como cero tráfico.':'Se alcanzó el límite de 6.000 registros del panel SEO; ampliar paginación antes de usar estos totales como completos.'}

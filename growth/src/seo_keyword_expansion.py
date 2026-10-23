@@ -63,6 +63,7 @@ def propose_variant_research(
     *,
     today: date,
     limit: int = 2,
+    allowed_paths: frozenset[str] | set[str] | None = None,
 ) -> list[dict[str, Any]]:
     """Rotate safe hypotheses weekly; never represent them as real search data.
 
@@ -81,7 +82,8 @@ def propose_variant_research(
     for phrase, slug, language, intent, use in CURATED_HYPOTHESES:
         path = "/services/" + slug
         norm = _normalized(phrase)
-        if (path not in published or norm in tracked or norm in used or
+        if (path not in published or (allowed_paths is not None and path not in allowed_paths)
+                or norm in tracked or norm in used or
                 classify_query(phrase) != "nonbrand" or
                 language not in {"es", "ca", "en"} or
                 intent not in {"commercial", "informational"}):
