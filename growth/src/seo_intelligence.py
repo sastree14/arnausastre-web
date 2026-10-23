@@ -17,6 +17,9 @@ from typing import Any
 
 from .seo_review_briefs import verified_index_state, review_brief, keyword_discovery
 from .seo_commercial_readiness import commercial_readiness
+from .seo_growth_strategy import (
+    FOCUS_PATHS, assess_growth_stage, prioritize_growth_review,
+)
 
 TENANT = "sc-analytics"
 SITE = "https://www.sc-analytics.io"
@@ -365,6 +368,15 @@ def run_organic_engine(*, write: bool = False, max_write: int = 23,
     result = analyze(rows, targets, pages, events, competitor_pages,
                      today=today, sitemap_service_paths=sitemap_paths)
     result["competitor_research"] = competitor_pages
+    # Assess only actual, attributed service query/page data; do not infer
+    # demand from homepage visits or an indexable sitemap.
+    growth = assess_growth_stage(
+        result["recommendations"], imported_date=result["gsc_last_date"], today=today,
+    )
+    result["growth_strategy"] = growth
+    result["recommendations"] = prioritize_growth_review(
+        result["recommendations"], growth,
+    )
     # Reserve a small part of the weekly review queue for newly *observed*
     # Search Console queries whose impressions belong to a non-service page.
     # This is research, not permission to create more landing pages.
@@ -411,7 +423,9 @@ def run_organic_engine(*, write: bool = False, max_write: int = 23,
     # that editorial variants are queried by Google or create new pages.
     from .seo_keyword_expansion import propose_variant_research
     variant_recommendations = propose_variant_research(
-        targets, pages, today=today, limit=2
+        targets, pages, today=today, limit=2,
+        allowed_paths=(None if growth["expanded_keyword_research_enabled"]
+                       else FOCUS_PATHS),
     )
     result["variant_recommendations"] = variant_recommendations
     if write:
@@ -426,21 +440,48 @@ def run_organic_engine(*, write: bool = False, max_write: int = 23,
         observed_count = min(4, len(candidate_recommendations), budget)
         variant_count = min(2, len(variant_recommendations), max(0, budget - observed_count))
         diagnostics_budget = budget - observed_count - variant_count
-        # Rotate the non-emergency diagnostics so every published service is
-        # reviewed across weeks (rather than always the same first 8).
+        # Coverage of technical incidents remains site-wide, while the early
+        # commercial research budget concentrates on the four selected pillars.
+        # A stale GSC import is a single integration issue, not 23 different
+        # copywriting tasks. Weekly rotation prevents a permanent queue bias.
         urgent_actions = {"technical_sitemap_fix", "review_google_canonical",
-                          "review_google_indexing", "refresh_search_console"}
+                          "review_google_indexing"}
         urgent = [r for r in result["recommendations"]
                   if r["payload"]["action"] in urgent_actions]
+        refresh = next((r for r in result["recommendations"]
+                        if r["payload"]["action"] == "refresh_search_console"), None)
         ordinary = [r for r in result["recommendations"]
-                    if r["payload"]["action"] not in urgent_actions]
-        prioritized = urgent[:diagnostics_budget]
+                    if r["payload"]["action"] not in urgent_actions
+                    and r["payload"]["action"] != "refresh_search_console"]
+        iso_year, iso_week, _ = today.isocalendar()
+        week_number = iso_year * 53 + iso_week
+
+        def rotate(items: list[dict[str, Any]], number: int) -> list[dict[str, Any]]:
+            if number <= 0 or not items:
+                return []
+            start = (week_number * max(number, 1)) % len(items)
+            return [items[(start + i) % len(items)]
+                    for i in range(min(number, len(items)))]
+
+        critical_slots = min(len(urgent), (diagnostics_budget + 1) // 2)
+        prioritized = rotate(urgent, critical_slots)
+        if refresh and len(prioritized) < diagnostics_budget:
+            prioritized.append(refresh)
         free = diagnostics_budget - len(prioritized)
-        if free and ordinary:
-            week_year, week_no, _ = today.isocalendar()
-            offset = ((week_year * 53 + week_no) * free) % len(ordinary)
-            prioritized += [ordinary[(offset + i) % len(ordinary)]
-                            for i in range(min(free, len(ordinary)))]
+        focus = [r for r in ordinary if r["target_path"] in FOCUS_PATHS]
+        other = [r for r in ordinary if r["target_path"] not in FOCUS_PATHS]
+        other_slots = min(len(other), free // 3 if growth["expanded_keyword_research_enabled"]
+                          else int(free >= 4))
+        prioritized += rotate(focus, free - other_slots)
+        remaining = diagnostics_budget - len(prioritized)
+        prioritized += rotate(other, min(remaining, other_slots))
+        remaining = diagnostics_budget - len(prioritized)
+        if remaining:
+            # If a focus pool is smaller than the budget, continue auditing
+            # all other published pages rather than leaving slots unused.
+            chosen = {item["recommendation_id"] for item in prioritized}
+            rest = [r for r in ordinary if r["recommendation_id"] not in chosen]
+            prioritized += rotate(rest, remaining)
         prioritized += candidate_recommendations[:observed_count]
         prioritized += variant_recommendations[:variant_count]
         for item in prioritized:
@@ -455,6 +496,14 @@ def run_organic_engine(*, write: bool = False, max_write: int = 23,
             store.upsert("seo_recommendations", item, key="recommendation_id")
             written.append(item["recommendation_id"])
         result["written"] = written
+        result["write_summary"] = {
+            "review_proposals_written": len(written),
+            "technical_proposals_selected": sum(
+                r["payload"]["action"] in urgent_actions for r in prioritized
+            ),
+            "expanded_keyword_research": growth["expanded_keyword_research_enabled"],
+            "no_automatic_publication": True,
+        }
     else:
         result["written"] = []
     return result
