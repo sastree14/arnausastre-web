@@ -72,6 +72,28 @@ class WeeklySeoPublicationSafetyTests(unittest.TestCase):
         store=FakeStore()
         store.saved["seo_query_abc"]={"recommendation_id":"seo_query_abc","status":"rejected"}
         self.assertEqual(store.saved["seo_query_abc"]["status"],"rejected")
+    def test_stage_is_persisted_as_nonpublishing_evidence(self):
+        from growth.src.seo_growth_strategy import FOCUS_PATHS
+        self.assertTrue(FOCUS_PATHS)
+        self.assertEqual(
+            set(row["payload"]["growth_strategy"]["stage"]
+                for row in self._sample_proposed_rows()),
+            {"focused_foundation"},
+        )
+
+    @staticmethod
+    def _sample_proposed_rows():
+        from growth.src.seo_growth_strategy import assess_growth_stage, prioritize_growth_review
+        rows = [{
+            "target_path": "/services/prediccion-demanda", "priority": 10,
+            "payload": {"action": "wait_for_crawl", "publishable": False,
+                        "evidence": {"nonbrand_impressions_28d": 0}}
+        }]
+        return prioritize_growth_review(
+            rows, assess_growth_stage(rows, imported_date=None, today=date(2026, 10, 23))
+        )
+
+
 
 if __name__=="__main__":
     unittest.main()
