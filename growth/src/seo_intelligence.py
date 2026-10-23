@@ -213,6 +213,9 @@ def analyze(
         elif index["status"] == "reported_not_indexed":
             action = "review_google_indexing"
             rationale = "Google URL Inspection recently reported an unindexed service; check canonical, indexing policy and page value."
+        elif index["status"] == "inconclusive" and (age_days is None or age_days >= 28):
+            action = "review_inconclusive_inspection"
+            rationale = "Google URL Inspection returned an inconclusive verdict on a mature service; investigate coverage and canonical without claiming it is not indexed."
         elif search_data_stale:
             action = "refresh_search_console"
             rationale = "Latest imported Search Console data is over 14 days old; do not optimize from stale observations."
@@ -445,7 +448,7 @@ def run_organic_engine(*, write: bool = False, max_write: int = 23,
         # A stale GSC import is a single integration issue, not 23 different
         # copywriting tasks. Weekly rotation prevents a permanent queue bias.
         urgent_actions = {"technical_sitemap_fix", "review_google_canonical",
-                          "review_google_indexing"}
+                          "review_google_indexing", "review_inconclusive_inspection"}
         urgent = [r for r in result["recommendations"]
                   if r["payload"]["action"] in urgent_actions]
         refresh = next((r for r in result["recommendations"]
