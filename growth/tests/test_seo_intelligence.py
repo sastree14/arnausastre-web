@@ -106,6 +106,19 @@ class SeoIntelligenceTests(unittest.TestCase):
         self.assertEqual(report["unmapped_keyword_opportunities"],[])
         self.assertEqual(report["unmapped_gsc_rows"],0)
 
+    def test_inconclusive_google_inspection_not_presented_as_indexed_or_failed(self):
+        targets = [dict(x, metrics={"google_index_inspection": {
+            "verdict": "NEUTRAL", "coverageState": "Google no reconoce esta URL",
+            "checked_at": "2026-10-23",
+        }}) if x["keyword_id"] == "kw1" else x for x in self.targets]
+        report = analyze([], targets, self.pages, today=date(2026, 10, 23))
+        proposal = next(x for x in report["recommendations"]
+                        if x["target_path"] == "/services/prediccion-demanda")
+        self.assertEqual(proposal["payload"]["action"], "review_inconclusive_inspection")
+        self.assertEqual(proposal["payload"]["evidence"]["google_indexation"], "inconclusive")
+        self.assertFalse(proposal["payload"]["publishable"])
+
+
 
 if __name__=="__main__":
     unittest.main()
