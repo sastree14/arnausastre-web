@@ -67,6 +67,7 @@ def review_brief(
         "review_search_intent": ["title", "intro", "sections"],
         "technical_sitemap_fix": ["sitemap", "canonical"],
         "review_google_indexing": ["index_inspection", "canonical", "sitemap"],
+        "review_inconclusive_inspection": ["index_inspection", "coverage_state", "canonical"],
         "review_google_canonical": ["index_inspection", "canonical", "redirects"],
         "refresh_search_console": ["search_console", "integration_sync"],
         "verify_google_indexing": ["index_inspection", "sitemap"],
