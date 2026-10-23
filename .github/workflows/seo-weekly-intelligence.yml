@@ -39,6 +39,7 @@ jobs:
             growth.tests.test_seo_intelligence \
             growth.tests.test_seo_commercial_readiness \
             growth.tests.test_seo_keyword_expansion \
+            growth.tests.test_seo_growth_strategy \
             growth.tests.test_seo_review_briefs \
             growth.tests.test_seo_weekly_queue \
             growth.tests.test_seo_competitor_research -q
@@ -63,6 +64,15 @@ jobs:
           with open(os.environ["GITHUB_STEP_SUMMARY"],"a",encoding="utf-8") as f:
               f.write("## SEO weekly intelligence\n\n")
               f.write(f"Last imported GSC date: {result['gsc_last_date']}\n\n")
+              strategy=result.get("growth_strategy",{})
+              f.write(f"Growth phase: **{strategy.get('stage','unknown')}**; ")
+              f.write(f"expanded editorial research: **{strategy.get('expanded_keyword_research_enabled',False)}**.\n\n")
+              f.write(f"Core non-branded service impressions (last 28d / previous): ")
+              f.write(f"{strategy.get('focus_impressions_28d','unknown')} / ")
+              f.write(f"{strategy.get('focus_impressions_previous_28d','unknown')}; ")
+              f.write(f"clicks: {strategy.get('focus_clicks_28d','unknown')}.\n\n")
+              f.write(f"Verified indexed pillars: {strategy.get('indexed_pillars','unknown')}; ")
+              f.write(f"pillars with observed growth: {strategy.get('growing_pillars','unknown')}.\n\n")
               f.write(f"Services: {result['unique_commercial_pages']}; active keyword targets: {result['active_keywords']}; ")
               f.write(f"proposals staged for review: {len(result['written'])}\n\n")
               f.write(f"Observed new keyword candidates: {len(result.get('unmapped_keyword_opportunities',[]))}\n\n")
