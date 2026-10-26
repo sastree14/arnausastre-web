@@ -13,6 +13,7 @@ export type BusinessMeeting = {
   source: 'google_calendar' | 'crm'
   response: 'accepted' | 'needsAction' | 'tentative' | 'declined' | 'unknown'
   status: string
+  calendar_event_id?: string
 }
 export type MeetingMailSignal = { id: string; subject: string; received_at: string; account: string; url: string }
 export type MeetingAgenda = {
@@ -69,10 +70,11 @@ export async function getMeetingAgenda(): Promise<MeetingAgenda> {
       .catch(() => [] as GrowthMeeting[]),
     getGmailConnections().catch(() => [] as Array<Record<string,unknown>>),
   ])
-  const meetings: BusinessMeeting[] = crmRows.filter(m => Boolean(m.starts_at) && m.status !== 'cancelled' && timeInWindow(str(m.starts_at),min,max)).map(m => {
+  const meetings: BusinessMeeting[] = crmRows.filter(m => Boolean(m.starts_at) && !['cancelled','pending_confirmation','pending_reschedule'].includes(m.status) && timeInWindow(str(m.starts_at),min,max)).map(m => {
     const meta = m.metadata || {}
     return {
       id: 'crm:' + m.meeting_id,
+      calendar_event_id: m.provider === 'google_calendar' ? (m.external_id || undefined) : undefined,
       title: str(meta.title || meta.summary || meta.meeting_title || meta.event_name) || 'Reunión comercial',
       starts_at: str(m.starts_at),
       ends_at: str(meta.ends_at || meta.end_at) || undefined,
@@ -105,7 +107,7 @@ export async function getMeetingAgenda(): Promise<MeetingAgenda> {
         const data = await fetchGoogleJson<{items?:GoogleEvent[]}>(url, token)
         calendarAuthorized += 1
         for (const event of data.items || []) {
-          if (!event.id || event.status === 'cancelled' || event.eventType === 'outOfOffice' || event.eventType === 'focusTime') continue
+          if (!event.id || event.status === 'cancelled' || event.eventType === 'outOfOffice' || event.eventType === 'focusTime' || /^SIN REUNI[ÓO]N/i.test(str(event.summary))) continue
           const hasGuests = (event.attendees || []).some(guest => !guest.self && guest.email?.toLowerCase() !== account.toLowerCase())
           if (!hasGuests && !/meeting|call|entrevista|reuni[oó]n|discovery|partner|partnership|cliente|client|workshop|demo/i.test(str(event.summary))) continue
           const start = str(event.start?.dateTime)
@@ -114,7 +116,7 @@ export async function getMeetingAgenda(): Promise<MeetingAgenda> {
           const response = responseLabel(str(self?.responseStatus || (event.organizer?.self ? 'accepted' : 'unknown')))
           if (response === 'declined') continue
           meetings.push({
-            id: 'gcal:' + account + ':' + event.id,
+            id: 'gcal:' + account + ':' + event.id, calendar_event_id: event.id,
             title: str(event.summary) || 'Evento de calendario',
             starts_at: start, ends_at: str(event.end?.dateTime) || undefined,
             url: isAllowedUrl(str(event.htmlLink)), account, source:'google_calendar',
@@ -150,7 +152,9 @@ export async function getMeetingAgenda(): Promise<MeetingAgenda> {
   const ordered = [...meetings].sort((a,b) => a.starts_at.localeCompare(b.starts_at))
   const distinct = new Map<string,BusinessMeeting>()
   for (const event of ordered) {
-    const key = new Date(event.starts_at).getTime() + ':' + event.title.trim().toLowerCase()
+    // A CRM copy and its Google Calendar invitation refer to the same booking;
+    // match by immutable provider ID before falling back to date/title.
+    const key = event.calendar_event_id ? 'calendar:' + event.calendar_event_id : new Date(event.starts_at).getTime() + ':' + event.title.trim().toLowerCase()
     const prior = distinct.get(key)
     if (!prior || (event.source === 'google_calendar' && prior.source !== 'google_calendar')) distinct.set(key,event)
   }
