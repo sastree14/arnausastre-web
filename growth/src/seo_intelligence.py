@@ -225,7 +225,7 @@ def analyze(
         elif seen >= 12 and position and position > 35:
             action = "review_content_relevance"
             rationale = "Non-brand impressions but poor observed position; compare search intent and existing evidence."
-        elif age_days is not None and age_days < 28:
+        elif age_days is not None and age_days < 28 and index["status"] != "reported_indexed":
             action = "wait_for_crawl"
             rationale = "Landing recently published. Validate actual URL inspection before assuming it is indexed or rewriting content."
         elif index["status"] == "unverified" and seen < 5:
