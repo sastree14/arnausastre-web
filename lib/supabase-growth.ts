@@ -1,4 +1,5 @@
 import 'server-only'
+import { isTransientJwtClockSkew } from './supabase-read-retry-policy'
 
 function env(name:string){return (process.env[name]||'').trim()}
 export function growthSupabaseUrl(){const url=env('SUPABASE_URL').replace(/\/$/,'');if(!url)throw new Error('SUPABASE_URL is not configured');return url}
@@ -12,8 +13,7 @@ async function readRequest(url:URL|string,options:GrowthReadOptions={}){const ca
 // ONLY this explicit 401 signature; other authorization failures must fail closed.
 let clockSkew401=false;
 if(response.status===401){
-  const errorBody=await response.clone().text();
-  clockSkew401=/"code"\s*:\s*"PGRST303"/.test(errorBody) && /JWT issued at future/i.test(errorBody);
+  clockSkew401=isTransientJwtClockSkew(response.status,await response.clone().text());
 }
 if(response.ok||(!RETRYABLE_STATUS.has(response.status)&&!clockSkew401)||attempt===retries)return response;
 await response.body?.cancel().catch(()=>undefined);
