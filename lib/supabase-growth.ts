@@ -10,9 +10,11 @@ const sleep=(ms:number)=>new Promise(resolve=>setTimeout(resolve,ms))
 async function readRequest(url:URL|string,options:GrowthReadOptions={}){const cacheSeconds=options.cacheSeconds??DEFAULT_READ_CACHE_SECONDS,timeoutMs=options.timeoutMs??DEFAULT_TIMEOUT_MS,retries=options.retries??1;let lastError:unknown=null;for(let attempt=0;attempt<=retries;attempt+=1){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);try{const response=await fetch(url,{headers:growthSupabaseHeaders(),signal:controller.signal,...(cacheSeconds>0?{cache:'force-cache' as const,next:{revalidate:cacheSeconds}}:{cache:'no-store' as const})});clearTimeout(timer);// A small number of Supabase edge responses can report a transient JWT clock-skew
 // error even though the same credentials succeed immediately afterwards. Retry
 // ONLY this explicit 401 signature; other authorization failures must fail closed.
-const clockSkew401=response.status===401 &&
-  /"code"\s*:\s*"PGRST303"/.test(await response.clone().text()) &&
-  /JWT issued at future/i.test(await response.clone().text());
+let clockSkew401=false;
+if(response.status===401){
+  const errorBody=await response.clone().text();
+  clockSkew401=/"code"\s*:\s*"PGRST303"/.test(errorBody) && /JWT issued at future/i.test(errorBody);
+}
 if(response.ok||(!RETRYABLE_STATUS.has(response.status)&&!clockSkew401)||attempt===retries)return response;
 await response.body?.cancel().catch(()=>undefined);
 await sleep((clockSkew401?400:120)*(attempt+1))}catch(error){clearTimeout(timer);lastError=error;if(attempt===retries)throw error;await sleep(120*(attempt+1))}}throw lastError instanceof Error?lastError:new Error('Supabase read failed')}
