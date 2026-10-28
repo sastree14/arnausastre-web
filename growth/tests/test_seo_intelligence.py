@@ -52,6 +52,22 @@ class SeoIntelligenceTests(unittest.TestCase):
                       if r["target_path"] == "/services/consultoria-datos")
         self.assertEqual(recent["payload"]["action"], "wait_for_crawl")
 
+    def test_recent_service_already_indexed_does_not_wait_for_crawl(self):
+        targets = [dict(x, metrics={"google_index_inspection": {
+            "verdict": "PASS",
+            "coverageState": "Enviada e indexada",
+            "checked_at": "2026-10-22T08:02:00Z",
+            "googleCanonical": "https://www.sc-analytics.io/services/consultoria-datos",
+        }}) if x["keyword_id"] == "kw3" else x for x in self.targets]
+        report = analyze([], targets, self.pages, today=date(2026, 10, 22),
+                         sitemap_service_paths={"/services/consultoria-datos", "/services/prediccion-demanda"})
+        indexed = next(x for x in report["recommendations"]
+                       if x["target_path"] == "/services/consultoria-datos")
+        self.assertEqual(indexed["payload"]["evidence"]["google_indexation"],
+                         "reported_indexed")
+        self.assertNotEqual(indexed["payload"]["action"], "wait_for_crawl")
+        self.assertEqual(indexed["payload"]["action"], "validate_keyword_demand")
+
     def test_sitemap_error_is_more_important_than_keyword_content(self):
         result = analyze([], self.targets, self.pages, today=date(2026, 10, 22),
                          sitemap_service_paths={"/services/consultoria-datos"})
