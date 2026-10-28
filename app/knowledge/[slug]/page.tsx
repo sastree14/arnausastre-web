@@ -4,6 +4,7 @@ import { getArticleBySlug } from '@/lib/content'
 import { getPublicGeneratedArticleVariants } from '@/lib/public-growth'
 import GeneratedKnowledgeArticleGoldStandard from '@/components/GeneratedKnowledgeArticleGoldStandard'
 import KnowledgeArticleGoldStandard from '@/components/KnowledgeArticleGoldStandard'
+import { knowledgeCanonicalPath, knowledgeCanonicalUrl } from '@/lib/knowledge-canonical'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -20,7 +21,7 @@ function summary(value:string,max=158){
 
 export async function generateMetadata({params}:Props):Promise<Metadata>{
   const {slug}=await params
-  const canonical=`/knowledge/${slug}/en`
+  const canonical=knowledgeCanonicalPath(slug)
   const staticArticle=getArticleBySlug(slug)
   if(staticArticle){
     const title=staticArticle.titleEn||staticArticle.titleEs
@@ -41,12 +42,13 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
   const title=clean(String(articleMeta?.seo_title||article.title))
   const description=summary(String(articleMeta?.seo_description||articleMeta?.excerpt||article.body))
   const seoKeywords=Array.isArray(articleMeta?.seo_keywords)?articleMeta?.seo_keywords:[article.topic,article.industry,article.challenge]
+  const dynamicCanonical=knowledgeCanonicalPath(slug, article.language)
   return {
     title,
     description,
     keywords:seoKeywords.filter(Boolean) as string[],
-    alternates:{canonical},
-    openGraph:{title,description,url:`https://www.sc-analytics.io${canonical}`,type:'article',publishedTime:article.published_at||undefined},
+    alternates:{canonical:dynamicCanonical},
+    openGraph:{title,description,url:`https://www.sc-analytics.io${dynamicCanonical}`,type:'article',publishedTime:article.published_at||undefined},
   }
 }
 
@@ -62,7 +64,7 @@ export default async function ArticlePage({ params }: Props) {
       datePublished:staticArticle.date,
       author:{'@type':'Organization',name:'SC-Analytics'},
       publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://www.sc-analytics.io'},
-      mainEntityOfPage:`https://www.sc-analytics.io/knowledge/${slug}`,
+      mainEntityOfPage:knowledgeCanonicalUrl(slug),
     }
     return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><KnowledgeArticleGoldStandard article={staticArticle} /></>
   }
@@ -78,7 +80,7 @@ export default async function ArticlePage({ params }: Props) {
     datePublished:preferred.published_at||undefined,
     author:{'@type':'Organization',name:'SC-Analytics'},
     publisher:{'@type':'Organization',name:'SC-Analytics',url:'https://www.sc-analytics.io'},
-    mainEntityOfPage:`https://www.sc-analytics.io/knowledge/${slug}`,
+    mainEntityOfPage:knowledgeCanonicalUrl(slug, preferred.language),
   }
   return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><GeneratedKnowledgeArticleGoldStandard variants={generated} /></>
 }
