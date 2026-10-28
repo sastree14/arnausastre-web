@@ -54,10 +54,19 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
     },{cacheSeconds:0,timeoutMs:10000,retries:1}),
     getPublishedKnowledgeSitemapRows(),
   ])
-  if(serviceResult.status==='rejected') console.error('SEO sitemap service index unavailable',serviceResult.reason)
-  if(articleResult.status==='rejected') console.error('SEO sitemap knowledge index unavailable',articleResult.reason)
-  const pages=serviceResult.status==='fulfilled'?serviceResult.value:[]
-  const articles=articleResult.status==='fulfilled'?articleResult.value:[]
+  // A 200 response omitting an entire category is more damaging than a
+  // temporary error: crawlers could treat previously indexed URLs as removed.
+  // Fail the request so Google retries rather than publishing incomplete XML.
+  if(serviceResult.status==='rejected'){
+    console.error('SEO sitemap service index unavailable',serviceResult.reason)
+    throw new Error('SEO sitemap unavailable: published service index could not be verified')
+  }
+  if(articleResult.status==='rejected'){
+    console.error('SEO sitemap knowledge index unavailable',articleResult.reason)
+    throw new Error('SEO sitemap unavailable: published knowledge index could not be verified')
+  }
+  const pages=serviceResult.value
+  const articles=articleResult.value
   const dynamicRoutes:MetadataRoute.Sitemap=[
     ...pages.map(row=>({url:`${base}/services/${row.slug}`,lastModified:row.updated_at?new Date(row.updated_at):new Date(),changeFrequency:'monthly' as const,priority:0.85})),
     ...articles.map(row=>({url:row.language?`${base}/knowledge/${row.brief_id||row.content_id}/${row.language}`:`${base}/knowledge/${row.brief_id||row.content_id}`,lastModified:row.published_at?new Date(row.published_at):new Date(),changeFrequency:'monthly' as const,priority:0.72})),
