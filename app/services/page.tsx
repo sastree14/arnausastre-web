@@ -30,12 +30,12 @@ const COPY = {
     ],
 
     businessCases: [
-      'Automatización de atención, documentos y tareas internas.',
-      'Previsión de demanda y necesidades de stock.',
-      'Asignación de recursos, rutas y turnos.',
-      'Mantenimiento predictivo y detección de anomalías.',
-      'Cuadros de mando e indicadores fiables.',
-      'Evaluación de escenarios, inversiones y riesgos.',
+      'Automatizamos procesos y conectamos operaciones.',
+      'Anticipamos cambios y planificamos decisiones con mayor claridad.',
+      'Tomamos mejores decisiones considerando recursos, costes y restricciones.',
+      'Transformamos patrones de datos en predicciones útiles.',
+      'Entendemos el negocio mediante datos e indicadores fiables.',
+      'Evaluamos alternativas e incertidumbre antes de actuar.',
     ],
 
     modelsLabel: 'FORMAS DE COLABORAR',
@@ -97,12 +97,12 @@ const COPY = {
     ],
 
     businessCases: [
-      'Automatització de l’atenció, documents i tasques internes.',
-      'Previsió de demanda i necessitats d’estoc.',
-      'Assignació de recursos, rutes i torns.',
-      'Manteniment predictiu i detecció d’anomalies.',
-      'Quadres de comandament i indicadors fiables.',
-      'Avaluació d’escenaris, inversions i riscos.',
+      'Automatitzem processos i connectem operacions.',
+      'Anticipem canvis i planifiquem decisions amb més claredat.',
+      'Prenem millors decisions considerant recursos, costos i restriccions.',
+      'Transformem patrons de dades en prediccions útils.',
+      'Entenem el negoci mitjançant dades i indicadors fiables.',
+      'Avaluem alternatives i incertesa abans d\'actuar.',
     ],
 
     modelsLabel: 'FORMES DE COL·LABORAR',
@@ -164,12 +164,12 @@ const COPY = {
     ],
 
     businessCases: [
-      'Automating support, documents and internal tasks.',
-      'Demand forecasting and stock planning.',
-      'Resource allocation, routing and scheduling.',
-      'Predictive maintenance and anomaly detection.',
-      'Dashboards and reliable performance indicators.',
-      'Evaluating scenarios, investments and risks.',
+      'Streamline processes and connect business operations.',
+      'Anticipate change and plan decisions with greater clarity.',
+      'Make better choices within costs, capacity and constraints.',
+      'Turn data patterns into useful predictions and decisions.',
+      'Understand performance through reliable data and reporting.',
+      'Compare scenarios and uncertainty before taking action.',
     ],
 
     modelsLabel: 'WAYS TO WORK TOGETHER',
