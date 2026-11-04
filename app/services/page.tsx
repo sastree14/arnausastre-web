@@ -24,7 +24,7 @@ const COPY = {
       ['Forecasting y planning', 'Previsiones de variables y escenarios para anticipar su evolución.'],
       ['Optimización', 'Modelos para elegir la mejor alternativa según objetivos y restricciones.'],
       ['Machine learning', 'Modelos que aprenden de los datos para predecir y detectar patrones.'],
-      ['Inteligencia artificial y automatización', 'Soluciones de IA y automatización adaptadas a tus procesos y herramientas.'],
+      ['IA y automatización', 'Soluciones de IA y automatización adaptadas a tus procesos y herramientas.'],
       ['Analytics y BI', 'Visibilidad clara para seguir operaciones, rendimiento y decisiones.'],
       ['Simulación y modelización', 'Escenarios y modelos para decidir antes de cambiar una operación real.'],
     ],
@@ -91,7 +91,7 @@ const COPY = {
       ['Forecasting i planning', 'Previsions de variables i escenaris per anticipar-ne l’evolució.'],
       ['Optimització', 'Models per escollir la millor alternativa segons objectius i restriccions.'],
       ['Machine learning', 'Models que aprenen de les dades per predir i detectar patrons.'],
-      ['Intel·ligència artificial i automatització', 'Solucions d’IA i automatització adaptades als teus processos i eines.'],
+      ['IA i automatització', 'Solucions d’IA i automatització adaptades als teus processos i eines.'],
       ['Analytics i BI', 'Visibilitat clara per seguir operacions, rendiment i decisions.'],
       ['Simulació i modelització', 'Escenaris i models per decidir abans de canviar una operació real.'],
     ],
@@ -158,7 +158,7 @@ const COPY = {
       ['Forecasting and planning', 'Forecasts of variables and scenarios to anticipate how they evolve.'],
       ['Optimisation', 'Models for selecting the best alternative given objectives and constraints.'],
       ['Machine learning', 'Models that learn from data to predict outcomes and detect patterns.'],
-      ['Artificial intelligence & automation', 'AI and automation solutions tailored to your processes and tools.'],
+      ['AI & automation', 'AI and automation solutions tailored to your processes and tools.'],
       ['Analytics and BI', 'Clear visibility into operations, performance and decisions.'],
       ['Simulation & modelling', 'Scenarios and models for deciding before changing a real operation.'],
     ],
@@ -255,23 +255,22 @@ export default function ServicesPage() {
 
           <div className="mt-8 grid border-l border-t border-slate-300 md:grid-cols-2 lg:grid-cols-3">
             {CAPABILITY_ORDER.map((capabilityIndex, index) => {
-              const [title, body] = t.capabilities[capabilityIndex]
+              const [title] = t.capabilities[capabilityIndex]
               const hub = SERVICE_HUBS[SERVICE_HUB_ORDER[index]]
               return (
                 <Link
                   key={hub.slug}
                   href={'/services/' + hub.slug}
                   aria-label={t.exploreService + ': ' + title}
-                  className={'group flex min-h-[245px] flex-col border-b border-r border-slate-300 p-6 text-[#0D1B2A] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#496C8A] md:p-7 ' +
-                    ((index % 4 === 1 || index % 4 === 2) ? 'bg-[#EAF0F6] hover:bg-[#DFEAF3]' : 'bg-white hover:bg-[#F7F9FC]')}
+                  className={'group flex min-h-[212px] flex-col border-b border-r border-slate-300 p-6 text-[#0D1B2A] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#496C8A] md:p-7 ' +
+                    ((index % 2 === 1) ? 'bg-[#EAF0F6] hover:bg-[#DFEAF3]' : 'bg-white hover:bg-[#F7F9FC]')}
                 >
                   <div className="flex items-start justify-between gap-4">
-                    <h3 className="max-w-[23ch] text-[27px] font-normal leading-[1.14] text-[#0D1B2A]" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
+                    <h3 className="max-w-[23ch] text-[26px] font-normal leading-[1.17] text-[#0D1B2A]" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>{title}</h3>
                     <span aria-hidden="true" className="text-xl text-[#496C8A] transition-transform group-hover:translate-x-1">→</span>
                   </div>
-                  <p className="mt-5 text-[15px] font-semibold leading-6 text-[#254A66]">{t.businessCases[index]}</p>
-                  <p className="mt-2 text-[15px] leading-6 text-slate-700">{body}</p>
-                  <div className="mt-auto flex items-center justify-between gap-4 border-t border-slate-300 pt-4 text-[15px] font-semibold text-[#254A66]">
+                  <p className="mt-6 max-w-[38ch] text-[16px] font-normal leading-7 text-slate-700">{t.businessCases[index]}</p>
+                  <div className="mt-auto flex items-center justify-between gap-4 border-t border-slate-300 pt-4 text-[14px] font-semibold text-[#254A66]">
                     <span>{t.exploreService}</span>
                     <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
                   </div>
