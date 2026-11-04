@@ -73,29 +73,29 @@
 .site-public .hero-brand-logo { width: 132px; height: 88px; object-fit: contain; }
 @media (min-width: 768px) { .site-public .hero-brand-seal { justify-content: flex-start; } }
 
-/* Fluid specialist directory: equal-size cards, centred final row, any future count.
-   Desktop: 1 centred, 2 centred, 3 in a row, 4 as 2x2, 5 as 3+2, 6 as 3+3.
-   The layout requires no code change as new published SEO landings are added. */
+/* The specialist directory uses real cards only: no tinted container or fake side cells.
+   Cards have identical widths for each breakpoint and incomplete rows remain centred.
+   Desktop: 1 centred, 2 centred, 3 across, 4 as 2x2, 5 as 3+2, 6 as 3+3. */
 .site-public .service-related-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: stretch;
-  gap: 1px;
-  border: 1px solid #CBD5E1;
-  background: #CBD5E1;
+  gap: 16px;
+  background: transparent;
 }
 .site-public .service-related-card {
   box-sizing: border-box;
   flex: 0 0 100%;
   min-width: 0;
+  border: 1px solid #CBD5E1;
 }
 @media (min-width: 768px) {
-  .site-public .service-related-card { flex-basis: calc((100% - 1px) / 2); }
+  .site-public .service-related-card { flex-basis: calc((100% - 16px) / 2); }
 }
 @media (min-width: 1024px) {
-  .site-public .service-related-card { flex-basis: calc((100% - 2px) / 3); }
+  .site-public .service-related-card { flex-basis: calc((100% - 32px) / 3); }
   .site-public .service-related-grid[data-count="4"] .service-related-card {
-    flex-basis: calc((100% - 1px) / 2);
+    flex-basis: calc((100% - 16px) / 2);
   }
 }
