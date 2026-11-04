@@ -259,7 +259,7 @@ export default function HomePage() {
         <div className="site-container py-14 md:py-16">
           <div className="text-center">
             <p className="text-[14px] font-semibold uppercase tracking-[0.14em] text-[#254A66]">{t.exploreLabel}</p>
-            <h2 className="mx-auto mt-2 max-w-5xl text-[34px] leading-[1.05] tracking-[-0.02em] text-slate-950 sm:text-[40px] xl:text-[42px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
+            <h2 className="mx-auto mt-2 max-w-4xl text-[30px] leading-[1.14] tracking-[-0.01em] text-slate-950 sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.exploreTitle}</h2>
           </div>
 
           <div className="home-route-grid mt-8">
@@ -268,15 +268,15 @@ export default function HomePage() {
                 <Link
                   key={route.href}
                   href={route.href}
-                  className="home-route-card group flex min-h-[300px] flex-col p-6 transition md:p-7"
+                  className="home-route-card group flex min-h-[235px] flex-col p-6 transition-colors md:p-7"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <span className="font-mono text-[15px] font-semibold text-[#254A66]">{route.number}</span>
                     <span className="text-lg text-slate-400 transition group-hover:translate-x-1">→</span>
                   </div>
-                  <h3 className="mt-6 min-h-[78px] text-[31px] leading-tight text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{route.title}</h3>
-                  <p className="mt-4 flex-1 text-[19px] font-semibold leading-7 text-slate-900">{route.hook}</p>
-                  <p className="mt-7 text-[18px] font-semibold text-[#254A66]">{route.cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
+                  <h3 className="mt-5 min-h-[56px] text-[26px] font-normal leading-[1.12] text-slate-950" style={{ fontFamily: 'var(--font-playfair)' }}>{route.title}</h3>
+                  <p className="mt-3 flex-1 text-[16px] font-medium leading-7 text-slate-700">{route.hook}</p>
+                  <p className="mt-6 border-t border-slate-300 pt-4 text-[15px] font-semibold text-[#254A66]">{route.cta} <span className="inline-block transition group-hover:translate-x-1">→</span></p>
                 </Link>
               )
             })}
