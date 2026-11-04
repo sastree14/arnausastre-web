@@ -5,6 +5,8 @@
  *
  * The public page component and CSS are shared by every language.
  */
+import { isServiceHubSlug } from './service-hubs'
+
 export const SERVICE_LANGUAGE_GROUPS = {
   'consulting': {en:'data-science-consulting',es:'consultoria-datos',ca:'consultoria-dades'},
   'forecasting': {en:'demand-forecasting',es:'prediccion-demanda',ca:'previsio-demanda'},
@@ -54,6 +56,8 @@ export function explicitLanguageForPath(pathname:string):CommercialLocale|null{
       ? pieces[2]:null
   }
   if(pieces[0]==='services' && pieces.length===2){
+    // Category hubs use the current site language; localized specialist URLs still force their own language.
+    if(isServiceHubSlug(pieces[1]))return null
     return serviceLocaleForSlug(pieces[1])
   }
   if(pieces.length===1 && pieces[0]==='partner-analitico')return 'es'
