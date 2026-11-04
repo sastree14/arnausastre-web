@@ -109,7 +109,7 @@ BEGIN
  SELECT public.seo_knowledge_hash(d.content_id) INTO h;
  IF h IS DISTINCT FROM d.baseline_hash THEN RAISE EXCEPTION 'Article changed since draft';END IF;
  newmeta=COALESCE(c.critique->'article_meta','{}'::jsonb);
- IF d.patch ? 'article_meta' THEN newmeta=newmeta || d.patch->'article_meta'; END IF;
+ IF d.patch ? 'article_meta' THEN newmeta=newmeta || (d.patch->'article_meta'); END IF;
  newcritique=COALESCE(c.critique,'{}'::jsonb) || jsonb_build_object('article_meta',newmeta);
  UPDATE public.content_items SET
  title=COALESCE(d.patch->>'title',c.title),

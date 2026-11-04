@@ -33,6 +33,11 @@ class KnowledgeEditorialTests(unittest.TestCase):
         self.assertEqual(edited['critique']['other'],'untouched')
         self.assertEqual(current['title'],'Original article title')
 
+    def test_sql_preserves_unmodified_article_metadata(self):
+        migration=(ROOT.parent/'supabase/migrations/20261104_knowledge_article_meta_merge_fix.sql').read_text(encoding='utf-8')
+        self.assertIn("newmeta=newmeta || (d.patch->'article_meta')",migration)
+        self.assertNotIn("newmeta=newmeta || d.patch->'article_meta'",migration)
+
     def test_qa_detects_template_missing(self):
         with self.assertRaises(RuntimeError):qa.assert_layout({'fatal':'unknown article layout'})
 
