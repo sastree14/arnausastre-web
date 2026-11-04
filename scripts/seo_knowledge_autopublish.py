@@ -9,6 +9,7 @@ import hashlib
 import json
 import os
 import re
+import secrets
 import sys
 import tempfile
 from pathlib import Path
@@ -64,9 +65,13 @@ def run():
         future=expected_article(before,draft['patch'])
         slug=before['brief_id'];language=before['language']
         qa.article_url(slug,language)
+        preview_token=secrets.token_urlsafe(32)
+        preview_hash=hashlib.sha256(preview_token.encode()).hexdigest()
+        issued=backend.rpc('set_seo_knowledge_preview_token',p_draft_id=draft_id,p_sha256=preview_hash)
+        if issued is not True:raise RuntimeError('Could not issue short-lived protected preview token')
         with tempfile.TemporaryDirectory(prefix='seo-knowledge-qa-') as tmp:
             folder=Path(tmp)
-            results=qa.gate(slug,language,content_id,draft_id,backend.key,future,folder)
+            results=qa.gate(slug,language,content_id,draft_id,preview_token,future,folder)
             reference=hashlib.sha256(json.dumps(
                 {'draft_id':draft_id,'baseline_hash':oldhash,
                  'patch':draft['patch'],'qa':results},sort_keys=True,ensure_ascii=False).encode()).hexdigest()

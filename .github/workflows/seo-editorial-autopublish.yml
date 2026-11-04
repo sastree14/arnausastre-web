@@ -64,17 +64,22 @@ jobs:
           sys.path.insert(0,'scripts')
           import seo_knowledge_qa as qa
           from playwright.sync_api import sync_playwright
-          url=qa.article_url('direct-vs-recursive-multi-step-forecasting','en')
+          targets=[
+              ('direct-vs-recursive-multi-step-forecasting','en'),
+              ('mae-rmse-or-wape-start-with-the-business-cost','es'),
+          ]
           with sync_playwright() as pw:
               browser=pw.chromium.launch(headless=True)
-              for name,(w,h) in qa.SIZES.items():
-                  page=browser.new_page(viewport={'width':w,'height':h},reduced_motion='reduce')
-                  try:
-                      measured=qa.load(page,url)
-                      qa.assert_layout(measured)
-                      assert measured['lang']=='en',(name,measured.get('lang'))
-                  finally:
-                      page.close()
+              for slug,locale in targets:
+                  url=qa.article_url(slug,locale)
+                  for name,(w,h) in qa.SIZES.items():
+                      page=browser.new_page(viewport={'width':w,'height':h},reduced_motion='reduce')
+                      try:
+                          measured=qa.load(page,url)
+                          qa.assert_layout(measured)
+                          assert measured['lang']==locale,(slug,name,measured.get('lang'))
+                      finally:
+                          page.close()
               browser.close()
           PY
 

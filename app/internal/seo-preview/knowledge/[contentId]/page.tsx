@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
-import { createHmac, timingSafeEqual } from 'node:crypto'
+import { createHash, timingSafeEqual } from 'node:crypto'
 import GeneratedKnowledgeArticleGoldStandard from '@/components/GeneratedKnowledgeArticleGoldStandard'
 import { getPublicGeneratedArticleVariants } from '@/lib/public-growth'
 import { getArticleBySlug } from '@/lib/content'
-import { growthSupabaseKey, queryGrowthTable } from '@/lib/supabase-growth'
+import { queryGrowthTable } from '@/lib/supabase-growth'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -19,6 +19,8 @@ type PreviewDraft = {
   draft_id: string
   content_id: string
   status: string
+  claimed_at?: string | null
+  qa_reference?: string | null
   patch: Record<string, unknown>
 }
 type Props = {
@@ -26,16 +28,16 @@ type Props = {
   searchParams: Promise<{ draft?: string }>
 }
 
-function authenticated(header: string | null, contentId: string, draftId: string): boolean {
-  if (!header) return false
-  const match = /^([0-9]{10}):([a-f0-9]{64})$/.exec(header)
-  if (!match) return false
-  const expires = Number(match[1])
-  const now = Math.floor(Date.now() / 1000)
-  if (!Number.isSafeInteger(expires) || expires < now || expires > now + 300) return false
-  const signed = [contentId, draftId, String(expires)].join(':')
-  const expected = createHmac('sha256', growthSupabaseKey()).update(signed).digest('hex')
-  return timingSafeEqual(Buffer.from(expected, 'hex'), Buffer.from(match[2], 'hex'))
+function authenticated(header: string | null, draft: PreviewDraft): boolean {
+  if (!header || header.length < 30 || header.length > 160
+      || draft.status !== 'processing'
+      || !draft.claimed_at
+      || !/^[a-f0-9]{64}$/.test(draft.qa_reference || '')) return false
+  const started = Date.parse(draft.claimed_at)
+  const elapsed = Date.now() - started
+  if (!Number.isFinite(started) || elapsed < 0 || elapsed > 10 * 60 * 1000) return false
+  const actual = createHash('sha256').update(header).digest('hex')
+  return timingSafeEqual(Buffer.from(actual, 'hex'), Buffer.from(draft.qa_reference!, 'hex'))
 }
 
 function asRecord(value: unknown): Record<string, unknown> {
@@ -48,7 +50,7 @@ export default async function InternalKnowledgePreview({ params, searchParams }:
   const draftId = String(query.draft || '')
   if (!/^[a-zA-Z0-9_-]{1,180}$/.test(contentId)
       || !/^[0-9a-f]{8}-[0-9a-f-]{27,36}$/i.test(draftId)
-      || !authenticated(hdr.get('x-sc-seo-preview'), contentId, draftId)) notFound()
+      || !hdr.get('x-sc-seo-preview-token')) notFound()
 
   const drafts = await queryGrowthTable<PreviewDraft>(
     'seo_knowledge_editorial_drafts',
@@ -56,7 +58,7 @@ export default async function InternalKnowledgePreview({ params, searchParams }:
     { cacheSeconds: 0, timeoutMs: 8000, retries: 0 }
   )
   const draft = drafts[0]
-  if (!draft || !['processing', 'verifying'].includes(draft.status)) notFound()
+  if (!draft || !authenticated(hdr.get('x-sc-seo-preview-token'), draft)) notFound()
 
   const patch = asRecord(draft.patch)
   if (Object.keys(patch).some(key => !['title', 'body', 'article_meta'].includes(key))) notFound()
