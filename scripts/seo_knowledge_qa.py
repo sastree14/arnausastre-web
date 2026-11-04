@@ -3,8 +3,6 @@
 Runs the real React component in an authenticated read-only draft preview;
 the same layout is compared to the published URL in 3 viewports.
 """
-import hashlib
-import hmac
 import re
 import time
 from pathlib import Path
@@ -54,12 +52,6 @@ keys => {
 }
 """
 
-def signed_preview(content_id,draft_id,key,expires=None):
-    expires=expires or int(time.time())+180
-    message=':'.join((content_id,draft_id,str(expires)))
-    mac=hmac.new(key.encode(),message.encode(),hashlib.sha256).hexdigest()
-    return str(expires)+':'+mac
-
 def article_url(slug,locale):
     if not re.fullmatch(r'[A-Za-z0-9_-]{1,180}',slug):raise ValueError('Unexpected article slug')
     if locale not in ('es','en','ca'):raise ValueError('Unexpected language')
@@ -89,12 +81,14 @@ def assert_content(measured,article):
 
 def load(page,url):
     resp=page.goto(url,wait_until='domcontentloaded',timeout=30000)
-    if resp is None or resp.status>=400:raise RuntimeError('HTTP error loading article')
+    if resp is None or resp.status>=400:
+        label='private-preview' if '/internal/seo-preview/' in url else 'public-article'
+        raise RuntimeError('HTTP '+str(resp.status if resp else 'none')+' loading '+label)
     page.evaluate('() => document.fonts.ready.then(() => true)')
     page.wait_for_timeout(300)
     return page.evaluate(MEASURE,STYLE_KEYS)
 
-def gate(slug,locale,content_id,draft_id,key,expected,out):
+def gate(slug,locale,content_id,draft_id,preview_token,expected,out):
     out.mkdir(parents=True,exist_ok=True)
     public=article_url(slug,locale)
     url=preview_url(content_id,draft_id)
@@ -112,10 +106,9 @@ def gate(slug,locale,content_id,draft_id,key,expected,out):
                     before.locator('main[lang]').screenshot(path=str(out/(name+'-before.png')),animations='disabled')
                     before.close()
                     draftpage=ctx.new_page()
-                    token=signed_preview(content_id,draft_id,key)
                     def sign_request(route):
                         headers=dict(route.request.headers)
-                        headers['x-sc-seo-preview']=token
+                        headers['x-sc-seo-preview-token']=preview_token
                         route.continue_(headers=headers)
                     draftpage.route('**/internal/seo-preview/knowledge/**',sign_request)
                     draft=load(draftpage,url)
