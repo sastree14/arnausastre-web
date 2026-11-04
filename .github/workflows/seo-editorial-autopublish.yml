@@ -17,8 +17,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: sc-seo-editorial-publisher
-  cancel-in-progress: false
+  group: sc-seo-editorial-publisher-${{ github.event_name }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   qa-smoke:
