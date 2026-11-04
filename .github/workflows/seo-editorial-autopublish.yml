@@ -10,6 +10,10 @@ on:
       - 'scripts/tests/test_seo_editorial_autopublish.py'
       - '.github/workflows/seo-editorial-autopublish.yml'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/seo-editorial-autopublish.yml'
   schedule:
     - cron: '20 9 * * *'
 
