@@ -17,7 +17,7 @@ const COPY = {
     examplesLabel: 'APLICACIONES PRÁCTICAS', examples: 'Dónde puede aportar valor.',
     examplesNote: 'Situaciones ilustrativas. La solución concreta depende de los objetivos, datos y restricciones de cada empresa.',
     relatedLabel: 'SERVICIOS ESPECIALIZADOS', related: 'Explora soluciones concretas.',
-    relatedNote: 'Servicios publicados en español, sin enlaces repetidos a sus traducciones.',
+    relatedNote: 'Descubre soluciones específicas para las necesidades de tu empresa.',
     otherLabel: 'SIGUE EXPLORANDO', knowledgeTitle: 'Conocimiento', knowledgeBody: 'Análisis y recursos relacionados con esta especialidad.', projectsTitle: 'Casos de éxito', projectsBody: 'Explora proyectos y aplicaciones de nuestro trabajo.', emptyRelated: 'Todavía no hay páginas especializadas publicadas en español para esta área.',
     openService: 'Ver servicio',
     finalLabel: 'HABLEMOS', finalTitle: '¿Qué te gustaría mejorar en tu empresa?',
@@ -33,7 +33,7 @@ const COPY = {
     examplesLabel: 'APLICACIONS PRÀCTIQUES', examples: 'On pot aportar valor.',
     examplesNote: 'Situacions il·lustratives. La solució concreta depèn dels objectius, les dades i les restriccions de cada empresa.',
     relatedLabel: 'SERVEIS ESPECIALITZATS', related: 'Explora solucions concretes.',
-    relatedNote: 'Serveis publicats en català, sense enllaços repetits a les traduccions.',
+    relatedNote: 'Descobreix solucions específiques per a les necessitats de la teva empresa.',
     otherLabel: 'CONTINUA EXPLORANT', knowledgeTitle: 'Coneixement', knowledgeBody: 'Anàlisis i recursos relacionats amb aquesta especialitat.', projectsTitle: 'Casos d’èxit', projectsBody: 'Explora projectes i aplicacions de la nostra feina.', emptyRelated: 'Encara no hi ha pàgines especialitzades publicades en català per a aquesta àrea.',
     openService: 'Veure servei',
     finalLabel: 'PARLEM-NE', finalTitle: 'Què t’agradaria millorar a la teva empresa?',
@@ -49,7 +49,7 @@ const COPY = {
     examplesLabel: 'PRACTICAL APPLICATIONS', examples: 'Where it can create value.',
     examplesNote: 'Illustrative situations. The right solution depends on each organisation’s goals, data and constraints.',
     relatedLabel: 'SPECIALISED SERVICES', related: 'Explore the specific solutions.',
-    relatedNote: 'Published specialist services in English, without duplicate translated versions.',
+    relatedNote: 'Discover focused solutions for the challenges your business faces.',
     otherLabel: 'KEEP EXPLORING', knowledgeTitle: 'Knowledge', knowledgeBody: 'Analyses and useful resources connected to this specialism.', projectsTitle: 'Success stories', projectsBody: 'Explore projects and practical applications of our work.', emptyRelated: 'No dedicated English-language service pages are published in this area yet.',
     openService: 'Explore service',
     finalLabel: 'LET’S TALK', finalTitle: 'What would you like to improve in your business?',
@@ -129,7 +129,7 @@ export default function ServiceHubPage({ hubKey, directory }: { hubKey: ServiceH
 
       <section id="practical-examples" className="border-b border-slate-300 bg-[#F7F9FC]">
         <div className="site-container py-11 md:py-14">
-          <div className="mx-auto max-w-[780px] border-y border-slate-300 py-5 text-center">
+          <div className="mx-auto max-w-[780px] text-center">
             <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-[#254A66]">{t.examplesLabel}</p>
             <h2 className="mt-2 text-[30px] font-normal leading-[1.15] sm:text-[37px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.examples}</h2>
           </div>
@@ -137,7 +137,7 @@ export default function ServiceHubPage({ hubKey, directory }: { hubKey: ServiceH
             {editorial.scenarios.map(([title, body], index) => (
               <article key={title} className={'flex min-h-[220px] flex-col border-b border-r border-slate-300 p-6 ' + (index === 1 ? 'bg-[#EAF0F6]' : 'bg-white')}>
                 <span className="font-mono text-[13px] font-semibold text-[#496C8A]">{String(index + 1).padStart(2, '0')}</span>
-                <h3 className="mt-5 text-[25px] font-normal leading-[1.16]" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
+                <h3 className="mt-5 text-[25px] font-semibold leading-[1.16]" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
                 <p className="mt-3 text-[15px] leading-7 text-slate-700">{body}</p>
               </article>
             ))}
@@ -148,7 +148,7 @@ export default function ServiceHubPage({ hubKey, directory }: { hubKey: ServiceH
 
       <section id="specialist-services" className="scroll-mt-20 border-b border-slate-300 bg-white">
         <div className="site-container py-11 md:py-14">
-          <div className="mx-auto max-w-[780px] border-y border-slate-300 py-5 text-center">
+          <div className="mx-auto max-w-[780px] text-center">
             <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-[#254A66]">{t.relatedLabel}</p>
             <h2 className="mt-2 text-[30px] font-normal leading-[1.15] sm:text-[37px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.related}</h2>
           </div>
@@ -162,10 +162,7 @@ export default function ServiceHubPage({ hubKey, directory }: { hubKey: ServiceH
                   className={'service-related-card group flex min-h-[160px] flex-col p-6 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#496C8A] ' +
                     (index % 2 === 1 ? 'bg-[#EAF0F6] hover:bg-[#DFEAF3]' : 'bg-white hover:bg-[#F7F9FC]')}
                 >
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="font-mono text-[12px] font-medium tracking-wider text-[#496C8A]">{String(index+1).padStart(2,'0')}</span>
-                    <span aria-hidden="true" className="text-[18px] text-[#496C8A] transition-transform group-hover:translate-x-1">→</span>
-                  </div>
+                  <span className="font-mono text-[12px] font-medium tracking-wider text-[#496C8A]">{String(index+1).padStart(2,'0')}</span>
                   <h3 className="mt-4 text-[23px] font-normal leading-[1.15] text-[#0D1B2A]" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>{label}</h3>
                   <span className="mt-auto pt-4 text-[14px] font-medium text-[#254A66]">{t.openService} <span aria-hidden="true">→</span></span>
                 </Link>
@@ -174,7 +171,7 @@ export default function ServiceHubPage({ hubKey, directory }: { hubKey: ServiceH
           ) : (
             <p className="mx-auto mt-7 max-w-xl border border-slate-300 bg-[#F7F9FC] p-6 text-center text-[15px] leading-7 text-slate-600">{t.emptyRelated}</p>
           )}
-          <div className="mt-10 border-t border-slate-300 pt-7">
+          <div className="mt-12">
             <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#254A66]">{t.otherLabel}</p>
             <div className="mt-4 grid gap-3 md:grid-cols-2">
               <Link href={'/knowledge?area='+knowledgeArea[hubKey]} className="group flex items-center justify-between gap-5 border border-slate-300 bg-[#EAF0F6] p-6 transition-colors hover:bg-[#DFEAF3]">
