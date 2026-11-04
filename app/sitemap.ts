@@ -9,6 +9,7 @@ import { getAllArticles } from '@/lib/content'
 import { getAllProjects } from '@/lib/projects'
 import { queryGrowthTable } from '@/lib/supabase-growth'
 import { getPublishedKnowledgeSitemapRows } from '@/lib/public-knowledge-sitemap'
+import { SERVICE_HUB_ORDER, SERVICE_HUBS } from '@/lib/service-hubs'
 
 type SeoPage={slug:string;updated_at?:string;status:string}
 
@@ -27,6 +28,12 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
     url:`${base}${path}`,
     changeFrequency:path===''?'weekly':'monthly',
     priority:path===''?1:0.8,
+  }))
+
+  const hubRoutes:MetadataRoute.Sitemap=SERVICE_HUB_ORDER.map(key=>({
+    url:base+'/services/'+SERVICE_HUBS[key].slug,
+    changeFrequency:'monthly' as const,
+    priority:0.8,
   }))
 
   const repositoryContent:MetadataRoute.Sitemap=[
@@ -71,5 +78,5 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
     ...pages.map(row=>({url:`${base}/services/${row.slug}`,lastModified:row.updated_at?new Date(row.updated_at):new Date(),changeFrequency:'monthly' as const,priority:0.85})),
     ...articles.map(row=>({url:row.language?`${base}/knowledge/${row.brief_id||row.content_id}/${row.language}`:`${base}/knowledge/${row.brief_id||row.content_id}`,lastModified:row.published_at?new Date(row.published_at):new Date(),changeFrequency:'monthly' as const,priority:0.72})),
   ]
-  return uniqueByUrl([...staticRoutes,...repositoryContent,...dynamicRoutes])
+  return uniqueByUrl([...staticRoutes,...hubRoutes,...repositoryContent,...dynamicRoutes])
 }

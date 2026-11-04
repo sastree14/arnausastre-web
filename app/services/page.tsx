@@ -5,6 +5,7 @@ import Link from 'next/link'
 import ProcessSequence from '@/components/ProcessSequence'
 import { SERVICES_PROCESS } from '@/lib/services-process'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
+import { SERVICE_HUBS, SERVICE_HUB_ORDER } from '@/lib/service-hubs'
 
 const COPY = {
   es: {
@@ -18,6 +19,7 @@ const COPY = {
 
     capabilitiesLabel: 'EN QUÉ NOS ESPECIALIZAMOS',
     capabilitiesTitle: 'Nuestras especialidades.',
+    exploreService: 'Explorar servicio',
     capabilities: [
       ['Forecasting y planning', 'Previsiones de variables y escenarios para anticipar su evolución.'],
       ['Optimización', 'Modelos para elegir la mejor alternativa según objetivos y restricciones.'],
@@ -84,6 +86,7 @@ const COPY = {
 
     capabilitiesLabel: 'EN QUÈ ENS ESPECIALITZEM',
     capabilitiesTitle: 'Les nostres especialitats.',
+    exploreService: 'Explorar el servei',
     capabilities: [
       ['Forecasting i planning', 'Previsions de variables i escenaris per anticipar-ne l’evolució.'],
       ['Optimització', 'Models per escollir la millor alternativa segons objectius i restriccions.'],
@@ -150,6 +153,7 @@ const COPY = {
 
     capabilitiesLabel: 'WHAT WE SPECIALISE IN',
     capabilitiesTitle: 'Our specialisms.',
+    exploreService: 'Explore service',
     capabilities: [
       ['Forecasting and planning', 'Forecasts of variables and scenarios to anticipate how they evolve.'],
       ['Optimisation', 'Models for selecting the best alternative given objectives and constraints.'],
@@ -207,6 +211,7 @@ const COPY = {
 } as const
 
 const CAPABILITY_ORDER = [3, 0, 1, 2, 4, 5] as const
+const CAPABILITY_SURFACES = ['bg-[#F5F0EB]', 'bg-[#EAF0F6]', 'bg-[#EDF3EC]', 'bg-[#F3F0F8]', 'bg-[#F8F4E9]', 'bg-[#EEF4F5]'] as const
 
 export default function ServicesPage() {
   const { lang } = useSiteLanguage()
@@ -248,31 +253,33 @@ export default function ServicesPage() {
             <h2 className="max-w-4xl text-[34px] leading-[1.06] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.capabilitiesTitle}</h2>
           </div>
 
-          <div className="mt-8 grid border-l border-t border-slate-300 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-9 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {CAPABILITY_ORDER.map((capabilityIndex, index) => {
               const [title, body] = t.capabilities[capabilityIndex]
-              const [description, examples, deliverable] = process.details[capabilityIndex]
+              const hub = SERVICE_HUBS[SERVICE_HUB_ORDER[index]]
               return (
-                <article key={title} className={`flex flex-col border-b border-r border-slate-300 p-7 md:p-8 ${index % 2 === 0 ? 'bg-[#FFFFFF]' : 'bg-[#EAF0F6]'}`}>
-                  <h3 className="editorial-title min-h-[80px]">{title}</h3>
-                  <p className="mt-1 min-h-[48px] text-[16px] font-semibold leading-6 text-[#254A66]">{t.businessCases[index]}</p>
-                  <p className="mt-3 min-h-[84px] text-[17px] leading-7 text-slate-700">{body}</p>
-                  <details className="service-detail mt-6 border-t border-slate-300 pt-4">
-                    <summary className="flex cursor-pointer items-center justify-between gap-4 text-[16px] font-semibold text-[#254A66]">
-                      <span>{process.expand}<span className="sr-only">: {title}</span></span>
-                      <span aria-hidden="true" className="detail-symbol text-[24px]">+</span>
-                    </summary>
-                    <div className="pt-5 text-[16px] leading-7 text-slate-700">
-                      <p>{description}</p>
-                      <ul className="mt-4 list-disc space-y-2 pl-5">
-                        {examples.map((example) => <li key={example}>{example}</li>)}
-                      </ul>
-                      <p className="mt-5 font-semibold text-[#0D1B2A]">{process.deliverable}</p>
-                      <p className="mt-2">{deliverable}</p>
-                      <Link href="/contact?intent=problem" className="mt-5 inline-flex font-semibold text-[#254A66]">{process.contact} →</Link>
-                    </div>
-                  </details>
-                </article>
+                <Link
+                  key={hub.slug}
+                  href={'/services/' + hub.slug}
+                  aria-label={t.exploreService + ': ' + title}
+                  className={[
+                    'group flex min-h-[270px] flex-col border border-[#CBD5E1] p-7 text-[#0D1B2A] transition-all duration-200',
+                    'hover:-translate-y-1 hover:border-[#496C8A] hover:shadow-[0_12px_28px_rgba(13,27,42,0.09)]',
+                    'focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#496C8A] md:p-8',
+                    CAPABILITY_SURFACES[index]
+                  ].join(' ')}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="max-w-[22ch] text-[26px] font-semibold leading-[1.18] tracking-[-0.035em]">{title}</h3>
+                    <span aria-hidden="true" className="text-2xl font-medium text-[#254A66] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+                  </div>
+                  <p className="mt-5 text-base font-semibold leading-6 text-[#254A66]">{t.businessCases[index]}</p>
+                  <p className="mt-3 text-[15px] leading-7 text-slate-700">{body}</p>
+                  <div className="mt-auto flex items-center justify-between gap-4 border-t border-[#CBD5E1] pt-5 text-[15px] font-semibold text-[#254A66]">
+                    <span>{t.exploreService}</span>
+                    <span aria-hidden="true" className="text-xl transition-transform group-hover:translate-x-1">→</span>
+                  </div>
+                </Link>
               )
             })}
           </div>
