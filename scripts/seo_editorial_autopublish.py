@@ -105,6 +105,11 @@ def postflight(url,expected,folder):
 
 def main():
     backend=Backend()
+    recovery=backend.rpc('recover_stale_seo_editorial_drafts')
+    if recovery.get('needs_manual_review',0):
+        raise RuntimeError('CRITICAL: a previous SEO publication needs manual recovery')
+    if recovery.get('restored',0):
+        print('Recovered interrupted SEO publications:',recovery['restored'])
     draft=backend.rpc('claim_seo_editorial_draft')
     if not draft:
         print('NO_OP: no editorial drafts awaiting visual QA')
