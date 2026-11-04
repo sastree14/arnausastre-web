@@ -1,0 +1,71 @@
+name: SEO — visual QA and safe editorial publisher
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/seo_visual_qa.py'
+      - 'scripts/seo_editorial_autopublish.py'
+      - 'scripts/requirements-visual-qa.txt'
+      - 'scripts/tests/test_seo_visual_qa.py'
+      - 'scripts/tests/test_seo_editorial_autopublish.py'
+      - '.github/workflows/seo-editorial-autopublish.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '20 9 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sc-seo-editorial-publisher-${{ github.event_name }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  qa-smoke:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned browser dependencies
+        run: |
+          python -m pip install --disable-pip-version-check -r scripts/requirements-visual-qa.txt
+          python -m playwright install --with-deps chromium
+      - name: Synthetic page browser tests
+        run: |
+          python -m py_compile scripts/seo_editorial_autopublish.py scripts/seo_visual_qa.py
+          python -m unittest discover -s scripts/tests -p 'test_seo_*.py' -v
+      - name: Read-only test against the real website
+        run: |
+          mkdir -p "$RUNNER_TEMP/seo-visual-qa"
+          printf '%s' '{"h1":"Inventory optimization and better operational decisions"}' > "$RUNNER_TEMP/seo-visual-qa/draft.json"
+          python scripts/seo_visual_qa.py \
+            --url https://www.sc-analytics.io/services/inventory-optimization \
+            --draft "$RUNNER_TEMP/seo-visual-qa/draft.json" \
+            --out "$RUNNER_TEMP/seo-visual-qa/output"
+
+  publish-existing-pages:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && github.repository == 'sastree14/arnausastre-web'
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned browser dependencies
+        run: |
+          python -m pip install --disable-pip-version-check -r scripts/requirements-visual-qa.txt
+          python -m playwright install --with-deps chromium
+      - name: Claim one authorized draft and visually verify publishing
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        run: python scripts/seo_editorial_autopublish.py
