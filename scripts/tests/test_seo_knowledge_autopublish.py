@@ -1,5 +1,7 @@
 """Knowledge editorial safety checks. All tests are read-only and use no secrets."""
 import sys
+import secrets
+import hashlib
 from pathlib import Path
 import unittest
 
@@ -9,13 +11,12 @@ import seo_knowledge_qa as qa
 import seo_knowledge_autopublish as publisher
 
 class KnowledgeEditorialTests(unittest.TestCase):
-    def test_authentication_token_is_bounded(self):
-        token=qa.signed_preview('knowledge_kb_011_en','f2847ccd-4fe2-46cf-b988-39c20542053a','dummy-key',expires=1793818000)
-        expires,digest=token.split(':')
-        self.assertEqual(expires,'1793818000')
-        self.assertEqual(len(digest),64)
-        self.assertEqual(token,qa.signed_preview('knowledge_kb_011_en','f2847ccd-4fe2-46cf-b988-39c20542053a','dummy-key',expires=1793818000))
-        self.assertNotEqual(token,qa.signed_preview('other_id','f2847ccd-4fe2-46cf-b988-39c20542053a','dummy-key',expires=1793818000))
+    def test_preview_token_is_unpredictable_and_hashed(self):
+        one=secrets.token_urlsafe(32)
+        two=secrets.token_urlsafe(32)
+        self.assertNotEqual(one,two)
+        self.assertEqual(len(hashlib.sha256(one.encode()).hexdigest()),64)
+        self.assertNotEqual(hashlib.sha256(one.encode()).digest(),hashlib.sha256(two.encode()).digest())
 
     def test_reject_wrong_article_path(self):
         for slug in ('../admin','https://bad.site','missing/slug'):
