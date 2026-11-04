@@ -56,7 +56,7 @@ La publicación autónoma de artículos **ya publicados** en `content_items` uti
 
 - `public.seo_knowledge_revisions`: snapshots originales, captura automática antes de cada modificación y restauración íntegra de título/cuerpo/metadata editorial.
 - `public.seo_knowledge_editorial_drafts`: cola protegida por RLS. Un borrador solo puede modificar `title`, `body` y las propiedades editoriales `seo_title`, `seo_description`, `excerpt`, `business_title`, `quick`, `business_steps`, `section_titles` y `seo_keywords` en `critique.article_meta`. No se admite `presentation_variant`, diseños, CSS, HTML, `brief_id`, rutas ni idioma.
-- `app/internal/seo-preview/knowledge/[contentId]/page.tsx`: ruta no indexable con token HMAC corto, que renderiza el **mismo componente React** del artículo con los datos de la propuesta, sin guardarlos.
+- `app/internal/seo-preview/knowledge/[contentId]/page.tsx`: ruta no indexable con token aleatorio efímero y hash SHA-256 guardado en la cola, que renderiza el **mismo componente React** del artículo con los datos de la propuesta, sin guardarlos.
 - `scripts/seo_knowledge_qa.py`: antes de publicar, Chromium abre la URL pública y el borrador autenticado en 375/768/1440 px. Comprueba estilos, márgenes, desbordamientos y contenido; produce capturas privadas. Después de publicar, compara la representación resultante con la versión comprobada.
 - `scripts/seo_knowledge_autopublish.py`: reclama una sola propuesta que incluye evidencia y baseline hash. Si la página cambió en paralelo, no escribe. En caso de diferencia visual, restaura la versión anterior. Se abstiene si queda una restauración crítica sin resolver.
 - El workflow diario existente ejecuta también el publicador de Conocimiento, **solo si hay propuestas elegibles en cola**.
