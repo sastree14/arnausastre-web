@@ -133,7 +133,7 @@ CREATE OR REPLACE FUNCTION public.recover_stale_seo_knowledge_drafts()
  LANGUAGE plpgsql
  SET search_path TO ''
 AS $function$
-DECLARE d public.seo_knowledge_editorial_drafts%ROWTYPE; h text; n_restored integer:=0;n_failed integer:=0;
+DECLARE d public.seo_knowledge_editorial_drafts%ROWTYPE;h text;n_restored integer:=0;n_failed integer:=0;
 BEGIN
  FOR d IN SELECT * FROM public.seo_knowledge_editorial_drafts
  WHERE status='verifying' AND published_at<now()-interval '22 minutes'
@@ -141,21 +141,24 @@ BEGIN
  BEGIN
   SELECT public.restore_seo_knowledge_revision(d.baseline_revision_id,d.published_hash) INTO h;
   UPDATE public.seo_knowledge_editorial_drafts SET status='rolled_back',
-  last_error='Worker interrupted after publication; restored previous article',
-  updated_at=now() WHERE draft_id=d.draft_id;
+  last_error='Worker interrupted; prior content restored',updated_at=now()
+  WHERE draft_id=d.draft_id;
   n_restored:=n_restored+1;
  EXCEPTION WHEN OTHERS THEN
   UPDATE public.seo_knowledge_editorial_drafts SET status='failed',
-  last_error='CRITICAL: stopped after failed recovery; manual intervention needed',
+  last_error='CRITICAL: recovery failed, manual review required',
   updated_at=now() WHERE draft_id=d.draft_id;
   n_failed:=n_failed+1;
  END;
  END LOOP;
  UPDATE public.seo_knowledge_editorial_drafts SET status='failed',
- last_error='Interrupted before publishing',updated_at=now()
+ last_error='Worker interrupted before publishing',updated_at=now()
  WHERE status='processing' AND claimed_at<now()-interval '25 minutes';
+ SELECT COUNT(*) INTO n_failed FROM public.seo_knowledge_editorial_drafts
+ WHERE status='failed' AND last_error LIKE 'CRITICAL:%';
  RETURN jsonb_build_object('restored',n_restored,'needs_manual_review',n_failed);
-END $function$;
+END $function$
+
 
 CREATE OR REPLACE FUNCTION public.restore_seo_knowledge_revision(p_revision_id bigint, p_expected_hash text)
  RETURNS text
