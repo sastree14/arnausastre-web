@@ -137,3 +137,38 @@ REVOKE ALL ON FUNCTION public.rollback_seo_editorial_draft(uuid,text) FROM PUBLI
 GRANT EXECUTE ON FUNCTION public.rollback_seo_editorial_draft(uuid,text) TO service_role;
 REVOKE ALL ON FUNCTION public.validate_seo_editorial_patch(jsonb) FROM PUBLIC,anon,authenticated;
 GRANT EXECUTE ON FUNCTION public.validate_seo_editorial_patch(jsonb) TO service_role;
+
+CREATE OR REPLACE FUNCTION public.recover_stale_seo_editorial_drafts()
+ RETURNS jsonb
+ LANGUAGE plpgsql
+ SET search_path TO ''
+AS $function$
+DECLARE d public.seo_editorial_drafts%ROWTYPE; restored integer;
+        n_reverted integer:=0;n_failed integer:=0;
+BEGIN
+ FOR d IN SELECT * FROM public.seo_editorial_drafts WHERE tenant_id='sc-analytics'
+ AND status='verifying' AND published_at<now()-interval '22 minutes'
+ ORDER BY published_at FOR UPDATE SKIP LOCKED LOOP
+  BEGIN
+   SELECT public.restore_seo_page_revision(d.baseline_revision_id,d.published_version)
+    INTO restored;
+   UPDATE public.seo_editorial_drafts SET status='rolled_back',
+    last_error='Runner interrupted before verification; restored automatically',
+    updated_at=now() WHERE draft_id=d.draft_id;
+   n_reverted:=n_reverted+1;
+  EXCEPTION WHEN OTHERS THEN
+   UPDATE public.seo_editorial_drafts SET status='failed',
+    last_error='CRITICAL: automatic restore of stale version failed; manual check required',
+    updated_at=now() WHERE draft_id=d.draft_id;
+   n_failed:=n_failed+1;
+  END;
+ END LOOP;
+ UPDATE public.seo_editorial_drafts SET status='failed',
+ last_error='Preflight runner interrupted before publishing',updated_at=now()
+ WHERE tenant_id='sc-analytics' AND status='processing'
+ AND claimed_at<now()-interval '25 minutes';
+ RETURN jsonb_build_object('restored',n_reverted,'needs_manual_review',n_failed);
+END $function$
+;
+REVOKE ALL ON FUNCTION public.recover_stale_seo_editorial_drafts() FROM PUBLIC,anon,authenticated;
+GRANT EXECUTE ON FUNCTION public.recover_stale_seo_editorial_drafts() TO service_role;
