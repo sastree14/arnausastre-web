@@ -48,3 +48,19 @@ Es solo un **ejemplo**: no ejecutar sobre producción sin una mejora editorial r
 No se ha habilitado publicación autónoma para artículos generados de Conocimiento, que residen en otra tabla y usan otra plantilla, ni para modificaciones de código de presentación o enlaces internos complejos. Estos requieren validadores específicos. No afirmar cobertura total de cualquier URL o variable SEO. El objetivo es una expansión segura de la autonomía, nunca saltar las pruebas.
 
 Los cambios de diseño requerirían una decisión independiente del propietario; no forman parte de esta autorización.
+
+
+## Artículos de Conocimiento (autonomía editorial adicional)
+
+La publicación autónoma de artículos **ya publicados** en `content_items` utiliza una vía distinta de la de las páginas comerciales.
+
+- `public.seo_knowledge_revisions`: snapshots originales, captura automática antes de cada modificación y restauración íntegra de título/cuerpo/metadata editorial.
+- `public.seo_knowledge_editorial_drafts`: cola protegida por RLS. Un borrador solo puede modificar `title`, `body` y las propiedades editoriales `seo_title`, `seo_description`, `excerpt`, `business_title`, `quick`, `business_steps`, `section_titles` y `seo_keywords` en `critique.article_meta`. No se admite `presentation_variant`, diseños, CSS, HTML, `brief_id`, rutas ni idioma.
+- `app/internal/seo-preview/knowledge/[contentId]/page.tsx`: ruta no indexable con token HMAC corto, que renderiza el **mismo componente React** del artículo con los datos de la propuesta, sin guardarlos.
+- `scripts/seo_knowledge_qa.py`: antes de publicar, Chromium abre la URL pública y el borrador autenticado en 375/768/1440 px. Comprueba estilos, márgenes, desbordamientos y contenido; produce capturas privadas. Después de publicar, compara la representación resultante con la versión comprobada.
+- `scripts/seo_knowledge_autopublish.py`: reclama una sola propuesta que incluye evidencia y baseline hash. Si la página cambió en paralelo, no escribe. En caso de diferencia visual, restaura la versión anterior. Se abstiene si queda una restauración crítica sin resolver.
+- El workflow diario existente ejecuta también el publicador de Conocimiento, **solo si hay propuestas elegibles en cola**.
+
+No se automatizan cambios sobre artículos estáticos de `content/articles` ni páginas cuyo diseño exige modificar TSX. Esas intervenciones se prepararán como PR con pruebas, y no se fusionarán sin una validación visual equivalente. Tampoco se reescriben artículos futuros programados sin haber sido publicados.
+
+La tarea ChatGPT «Estrategia SEO semanal SC-Analytics» debe basar sus propuestas en Search Console, intención de búsqueda, coherencia editorial y evidencias verificables, marcar la fecha de referencia y evitar volver a modificar la misma URL antes de poder comparar resultados.
