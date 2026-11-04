@@ -81,15 +81,13 @@ export default function ServiceHubPage({ hubKey, directory }: { hubKey: ServiceH
             <span aria-hidden="true" className="mx-2">/</span>
             <span aria-current="page" className="text-white">{hub.titles[lang]}</span>
           </nav>
-          <div className="mt-7 grid items-center gap-7 lg:grid-cols-[minmax(0,0.93fr)_minmax(0,1.07fr)] lg:gap-12">
-            <div className="lg:col-start-2 lg:row-start-1 lg:border-l lg:border-[#496C8A] lg:pl-10">
-              <h1 className="max-w-[22ch] text-[37px] font-normal leading-[1.12] tracking-[-0.016em] text-white sm:text-[43px] lg:text-[46px]" style={{ fontFamily: 'var(--font-playfair)' }}>
+          <div className="mt-8 grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+            <div className="max-w-xl">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#C7D9E8]">{t.eyebrow}</p>
+              <h1 className="mt-4 text-[36px] font-normal leading-[1.13] tracking-[-0.012em] text-white sm:text-[42px] lg:text-[44px]" style={{ fontFamily: 'var(--font-playfair)' }}>
                 {hub.titles[lang]}
               </h1>
-            </div>
-            <div className="lg:col-start-1 lg:row-start-1">
-              <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-[#C7D9E8]">{t.eyebrow}</p>
-              <p className="mt-4 max-w-xl text-[17px] leading-7 text-[#EAF0F6]">{hub.intro[lang]}</p>
+              <p className="mt-5 text-[16px] leading-7 text-[#EAF0F6]">{hub.intro[lang]}</p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <a href="#specialist-services" className="inline-flex items-center gap-2 bg-white px-5 py-3 text-[14px] font-semibold text-[#0D1B2A] transition-colors hover:bg-[#EAF0F6]">
                   {t.explore} <span aria-hidden="true">→</span>
@@ -99,17 +97,19 @@ export default function ServiceHubPage({ hubKey, directory }: { hubKey: ServiceH
                 </Link>
               </div>
             </div>
+            <div className="border-t border-[#496C8A] pt-6 lg:border-l lg:border-t-0 lg:py-2 lg:pl-11">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#C7D9E8]">{t.overviewLabel}</p>
+              <h2 className="mt-4 max-w-[24ch] text-[30px] font-normal leading-[1.2] text-white sm:text-[35px] lg:text-[38px]" style={{ fontFamily: 'var(--font-playfair)' }}>
+                {t.overview}
+              </h2>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="border-b border-slate-300 bg-white">
         <div className="site-container py-11 md:py-14">
-          <div className="mx-auto max-w-[780px] border-y border-slate-300 py-5 text-center">
-            <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-[#254A66]">{t.overviewLabel}</p>
-            <h2 className="mt-2 text-[30px] font-normal leading-[1.15] sm:text-[37px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.overview}</h2>
-          </div>
-          <div className="mt-9 grid gap-7 md:grid-cols-2 md:gap-12">
+          <div className="grid gap-8 md:grid-cols-2 md:gap-12">
             <div>
               <h3 className="text-[22px] font-normal leading-tight" style={{ fontFamily: 'var(--font-playfair)' }}>{t.context}</h3>
               <p className="mt-3 text-[16px] leading-[1.8] text-slate-700">{editorial.context}</p>
