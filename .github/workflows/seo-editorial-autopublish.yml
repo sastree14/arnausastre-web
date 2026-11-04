@@ -5,9 +5,13 @@ on:
     paths:
       - 'scripts/seo_visual_qa.py'
       - 'scripts/seo_editorial_autopublish.py'
+      - 'scripts/seo_knowledge_autopublish.py'
+      - 'scripts/seo_knowledge_qa.py'
       - 'scripts/requirements-visual-qa.txt'
       - 'scripts/tests/test_seo_visual_qa.py'
       - 'scripts/tests/test_seo_editorial_autopublish.py'
+      - 'scripts/tests/test_seo_knowledge_autopublish.py'
+      - 'app/internal/seo-preview/**'
       - '.github/workflows/seo-editorial-autopublish.yml'
   workflow_dispatch:
   push:
@@ -42,7 +46,7 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Synthetic page browser tests
         run: |
-          python -m py_compile scripts/seo_editorial_autopublish.py scripts/seo_visual_qa.py
+          python -m py_compile scripts/seo_editorial_autopublish.py scripts/seo_visual_qa.py scripts/seo_knowledge_autopublish.py scripts/seo_knowledge_qa.py
           python -m unittest discover -s scripts/tests -p 'test_seo_*.py' -v
       - name: Read-only test against the real website
         run: |
@@ -52,6 +56,27 @@ jobs:
             --url https://www.sc-analytics.io/services/inventory-optimization \
             --draft "$RUNNER_TEMP/seo-visual-qa/draft.json" \
             --out "$RUNNER_TEMP/seo-visual-qa/output"
+
+      - name: Read-only responsive check on an existing Knowledge article
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0,'scripts')
+          import seo_knowledge_qa as qa
+          from playwright.sync_api import sync_playwright
+          url=qa.article_url('direct-vs-recursive-multi-step-forecasting','en')
+          with sync_playwright() as pw:
+              browser=pw.chromium.launch(headless=True)
+              for name,(w,h) in qa.SIZES.items():
+                  page=browser.new_page(viewport={'width':w,'height':h},reduced_motion='reduce')
+                  try:
+                      measured=qa.load(page,url)
+                      qa.assert_layout(measured)
+                      assert measured['lang']=='en',(name,measured.get('lang'))
+                  finally:
+                      page.close()
+              browser.close()
+          PY
 
   publish-existing-pages:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && github.repository == 'sastree14/arnausastre-web'
@@ -73,3 +98,8 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
         run: python scripts/seo_editorial_autopublish.py
+      - name: Claim a Knowledge draft and publish only after browser gate
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        run: python scripts/seo_knowledge_autopublish.py
