@@ -338,8 +338,8 @@ export default function ContactPage() {
         <div className="site-container py-10 md:py-12">
           <h2 className="text-center text-[30px] leading-tight sm:text-[36px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.expectLabel}</h2>
           <div className="mt-7 grid border-l border-t border-slate-300 md:grid-cols-3">
-            {t.expect.map(([value, body]) => (
-              <div key={value} className="border-b border-r border-slate-300 bg-white p-7 text-center">
+            {t.expect.map(([value, body], index) => (
+              <div key={value} className={'border-b border-r border-slate-300 p-7 text-center ' + (index === 1 ? 'bg-[#EAF0F6]' : 'bg-white')}>
                 <h3 className="text-[24px] font-semibold text-[#0D1B2A]">{value}</h3>
                 <p className="mt-3 text-[17px] leading-7 text-slate-700">{body}</p>
               </div>
