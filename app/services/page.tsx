@@ -265,12 +265,9 @@ export default function ServicesPage() {
                   className={'group flex min-h-[212px] flex-col border-b border-r border-slate-300 p-6 text-[#0D1B2A] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#496C8A] md:p-7 ' +
                     ((index % 2 === 1) ? 'bg-[#EAF0F6] hover:bg-[#DFEAF3]' : 'bg-white hover:bg-[#F7F9FC]')}
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="max-w-[23ch] text-[26px] font-normal leading-[1.17] text-[#0D1B2A]" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>{title}</h3>
-                    <span aria-hidden="true" className="text-xl text-[#496C8A] transition-transform group-hover:translate-x-1">→</span>
-                  </div>
+                  <h3 className="max-w-[23ch] text-[26px] font-normal leading-[1.17] text-[#0D1B2A]" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>{title}</h3>
                   <p className="mt-6 max-w-[38ch] text-[16px] font-normal leading-7 text-slate-700">{t.businessCases[index]}</p>
-                  <div className="mt-auto flex items-center justify-between gap-4 border-t border-slate-300 pt-4 text-[14px] font-semibold text-[#254A66]">
+                  <div className="mt-auto flex items-center justify-between gap-4 pt-6 text-[14px] font-semibold text-[#254A66]">
                     <span>{t.exploreService}</span>
                     <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
                   </div>
