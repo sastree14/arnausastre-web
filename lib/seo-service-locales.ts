@@ -5,7 +5,7 @@
  *
  * The public page component and CSS are shared by every language.
  */
-import { isServiceHubSlug } from './service-hubs'
+import { isServiceHubSlug } from './service-hubs.ts'
 
 export const SERVICE_LANGUAGE_GROUPS = {
   'consulting': {en:'data-science-consulting',es:'consultoria-datos',ca:'consultoria-dades'},
