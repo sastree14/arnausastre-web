@@ -8,6 +8,8 @@ import { validateSerpSubmission } from '@/lib/seo-serp-evidence'
 type Row=Record<string,unknown>
 const text=(form:FormData,name:string)=>String(form.get(name)||'').trim()
 const jsonArray=(value:string)=>{try{const parsed=JSON.parse(value);return Array.isArray(parsed)?parsed:[]}catch{return []}}
+const validLocale=(value:string)=>value==='en'||value==='es'||value==='ca'
+const validHub=(value:string)=>!value||['ai','forecasting','optimisation','ml','analytics','simulation'].includes(value)
 
 export async function POST(request:Request){
   if(!(await isGrowthAdminAuthenticated()))return new NextResponse('Unauthorized',{status:401})
@@ -55,8 +57,12 @@ export async function POST(request:Request){
     })
     if(problems.length)return new NextResponse('SEO publication blocked: '+problems.join('; '),{status:422})
     const existing=(await queryGrowthTable<Row>('seo_pages',{tenant_id:'eq.sc-analytics',slug:`eq.${slug}`,limit:'1'},{cacheSeconds:0}))[0]
+    const contentLocale=String(payload.content_locale||payload.language||existing?.content_locale||'').trim()
+    const hubKey=String(payload.hub_key||existing?.hub_key||'').trim()
+    if(!validLocale(contentLocale))return new NextResponse('SEO publication blocked: set a reviewed content language (en/es/ca) before publishing',{status:422})
+    if(!validHub(hubKey))return new NextResponse('Invalid service category',{status:422})
     const pageId=String(existing?.seo_page_id||`seo_page_${randomUUID().replaceAll('-','').slice(0,14)}`)
-    await upsertGrowthRow('seo_pages',{seo_page_id:pageId,tenant_id:'sc-analytics',slug,primary_keyword:String(payload.primary_keyword||''),secondary_keywords:payload.secondary_keywords||[],search_intent:String(payload.search_intent||'commercial'),title:String(payload.title||''),meta_description:String(payload.meta_description||''),h1:String(payload.h1||''),intro:String(payload.intro||''),sections:payload.sections||[],cta_title:String(payload.cta_title||''),cta_body:String(payload.cta_body||''),internal_links:payload.internal_links||[],status:'published',source:'seo_agent_approved',version:Number(existing?.version||0)+1,created_at:existing?.created_at||now,updated_at:now,published_at:now},'tenant_id,slug')
+    await upsertGrowthRow('seo_pages',{seo_page_id:pageId,tenant_id:'sc-analytics',slug,content_locale:contentLocale,hub_key:hubKey||null,primary_keyword:String(payload.primary_keyword||''),secondary_keywords:payload.secondary_keywords||[],search_intent:String(payload.search_intent||'commercial'),title:String(payload.title||''),meta_description:String(payload.meta_description||''),h1:String(payload.h1||''),intro:String(payload.intro||''),sections:payload.sections||[],cta_title:String(payload.cta_title||''),cta_body:String(payload.cta_body||''),internal_links:payload.internal_links||[],status:'published',source:'seo_agent_approved',version:Number(existing?.version||0)+1,created_at:existing?.created_at||now,updated_at:now,published_at:now},'tenant_id,slug')
     await updateGrowthRow('seo_recommendations','recommendation_id',recommendationId,{status:'applied',updated_at:now,applied_at:now})
     return NextResponse.redirect(new URL(`/growth-admin/seo?applied=${encodeURIComponent(slug)}#pages`,request.url),303)
   }
@@ -68,6 +74,11 @@ export async function POST(request:Request){
     if(!slug)return new NextResponse('Missing slug',{status:400})
     const existing=(await queryGrowthTable<Row>('seo_pages',{tenant_id:'eq.sc-analytics',slug:`eq.${slug}`,limit:'1'},{cacheSeconds:0}))[0]
     const status=text(form,'status')||String(existing?.status||'draft')
+    const contentLocale=text(form,'content_locale')||String(existing?.content_locale||'')
+    const hubKey=text(form,'hub_key')
+    if(contentLocale&&!validLocale(contentLocale))return new NextResponse('Invalid content language',{status:422})
+    if(!validHub(hubKey))return new NextResponse('Invalid service category',{status:422})
+    if(status==='published'&&!validLocale(contentLocale))return new NextResponse('A published SEO page requires a reviewed language',{status:422})
     const sections=jsonArray(text(form,'sections_json'))
     const internalLinks=jsonArray(text(form,'internal_links_json'))
     if(status==='published'){
@@ -78,7 +89,7 @@ export async function POST(request:Request){
       })
       if(problems.length)return new NextResponse('SEO publication blocked: '+problems.join('; '),{status:422})
     }
-    await upsertGrowthRow('seo_pages',{seo_page_id:String(existing?.seo_page_id||pageId),tenant_id:'sc-analytics',slug,primary_keyword:text(form,'primary_keyword'),secondary_keywords:text(form,'secondary_keywords').split(',').map(v=>v.trim()).filter(Boolean),search_intent:text(form,'search_intent')||'commercial',title:text(form,'title'),meta_description:text(form,'meta_description'),h1:text(form,'h1'),intro:text(form,'intro'),sections,cta_title:text(form,'cta_title'),cta_body:text(form,'cta_body'),internal_links:internalLinks,status,source:'manual_crm',version:Number(existing?.version||0)+1,created_at:existing?.created_at||now,updated_at:now,published_at:status==='published'?(existing?.published_at||now):null},'tenant_id,slug')
+    await upsertGrowthRow('seo_pages',{seo_page_id:String(existing?.seo_page_id||pageId),tenant_id:'sc-analytics',slug,content_locale:contentLocale||null,hub_key:hubKey||null,primary_keyword:text(form,'primary_keyword'),secondary_keywords:text(form,'secondary_keywords').split(',').map(v=>v.trim()).filter(Boolean),search_intent:text(form,'search_intent')||'commercial',title:text(form,'title'),meta_description:text(form,'meta_description'),h1:text(form,'h1'),intro:text(form,'intro'),sections,cta_title:text(form,'cta_title'),cta_body:text(form,'cta_body'),internal_links:internalLinks,status,source:'manual_crm',version:Number(existing?.version||0)+1,created_at:existing?.created_at||now,updated_at:now,published_at:status==='published'?(existing?.published_at||now):null},'tenant_id,slug')
     return NextResponse.redirect(new URL(`/growth-admin/seo?saved=${encodeURIComponent(slug)}#pages`,request.url),303)
   }
   if(action==='archive_page'){
