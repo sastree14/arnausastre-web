@@ -153,7 +153,7 @@ export default async function SeoServicePage({params}:{params:Promise<{slug:stri
 
       <section className="border-t border-[#CBD5E1] bg-[#F7F9FC]">
         <div className="site-container py-12 md:py-16">
-          <div className="mx-auto max-w-3xl border-y border-[#CBD5E1] py-5 text-center">
+          <div className="mx-auto max-w-3xl text-center">
             <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#254A66]">{text.exploreLabel}</p>
             <h2 className="mt-2 text-[31px] font-normal leading-[1.2] md:text-[37px]" style={{fontFamily:'var(--font-playfair)'}}>{text.exploreTitle}</h2>
           </div>
@@ -165,10 +165,7 @@ export default async function SeoServicePage({params}:{params:Promise<{slug:stri
                 className={'group flex min-h-[230px] flex-col border border-[#CBD5E1] p-6 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#496C8A] '+
                   (index===1?'bg-[#EAF0F6] hover:bg-[#DFEAF3]':'bg-white hover:bg-[#F0F5FA]')}
               >
-                <div className="flex items-center justify-between text-[#496C8A]">
-                  <span className="font-mono text-xs font-semibold">{card.number}</span>
-                  <span aria-hidden="true" className="text-lg transition-transform group-hover:translate-x-1">→</span>
-                </div>
+                <span className="font-mono text-xs font-semibold text-[#496C8A]">{card.number}</span>
                 <h3 className="mt-6 text-[25px] font-normal leading-tight" style={{fontFamily:'var(--font-playfair)'}}>{card.title}</h3>
                 <p className="mt-3 text-[15px] leading-7 text-slate-700">{card.body}</p>
                 <span className="mt-auto pt-5 text-sm font-semibold text-[#254A66]">{text.visit} <span aria-hidden="true">→</span></span>
