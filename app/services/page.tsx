@@ -211,7 +211,7 @@ const COPY = {
 } as const
 
 const CAPABILITY_ORDER = [3, 0, 1, 2, 4, 5] as const
-const CAPABILITY_SURFACES = ['bg-[#F5F0EB]', 'bg-[#EAF0F6]', 'bg-[#EDF3EC]', 'bg-[#F3F0F8]', 'bg-[#F8F4E9]', 'bg-[#EEF4F5]'] as const
+
 
 export default function ServicesPage() {
   const { lang } = useSiteLanguage()
@@ -253,7 +253,7 @@ export default function ServicesPage() {
             <h2 className="max-w-4xl text-[34px] leading-[1.06] sm:text-[40px]" style={{ fontFamily: 'var(--font-playfair)' }}>{t.capabilitiesTitle}</h2>
           </div>
 
-          <div className="mt-9 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid border-l border-t border-slate-300 md:grid-cols-2 lg:grid-cols-3">
             {CAPABILITY_ORDER.map((capabilityIndex, index) => {
               const [title, body] = t.capabilities[capabilityIndex]
               const hub = SERVICE_HUBS[SERVICE_HUB_ORDER[index]]
@@ -262,22 +262,18 @@ export default function ServicesPage() {
                   key={hub.slug}
                   href={'/services/' + hub.slug}
                   aria-label={t.exploreService + ': ' + title}
-                  className={[
-                    'group flex min-h-[270px] flex-col border border-[#CBD5E1] p-7 text-[#0D1B2A] transition-all duration-200',
-                    'hover:-translate-y-1 hover:border-[#496C8A] hover:shadow-[0_12px_28px_rgba(13,27,42,0.09)]',
-                    'focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#496C8A] md:p-8',
-                    CAPABILITY_SURFACES[index]
-                  ].join(' ')}
+                  className={'group flex min-h-[245px] flex-col border-b border-r border-slate-300 p-6 text-[#0D1B2A] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#496C8A] md:p-7 ' +
+                    ((index % 4 === 1 || index % 4 === 2) ? 'bg-[#EAF0F6] hover:bg-[#DFEAF3]' : 'bg-white hover:bg-[#F7F9FC]')}
                 >
                   <div className="flex items-start justify-between gap-4">
-                    <h3 className="max-w-[22ch] text-[26px] font-semibold leading-[1.18] tracking-[-0.035em]">{title}</h3>
-                    <span aria-hidden="true" className="text-2xl font-medium text-[#254A66] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+                    <h3 className="max-w-[23ch] text-[27px] font-normal leading-[1.14] text-[#0D1B2A]" style={{ fontFamily: 'var(--font-playfair)' }}>{title}</h3>
+                    <span aria-hidden="true" className="text-xl text-[#496C8A] transition-transform group-hover:translate-x-1">→</span>
                   </div>
-                  <p className="mt-5 text-base font-semibold leading-6 text-[#254A66]">{t.businessCases[index]}</p>
-                  <p className="mt-3 text-[15px] leading-7 text-slate-700">{body}</p>
-                  <div className="mt-auto flex items-center justify-between gap-4 border-t border-[#CBD5E1] pt-5 text-[15px] font-semibold text-[#254A66]">
+                  <p className="mt-5 text-[15px] font-semibold leading-6 text-[#254A66]">{t.businessCases[index]}</p>
+                  <p className="mt-2 text-[15px] leading-6 text-slate-700">{body}</p>
+                  <div className="mt-auto flex items-center justify-between gap-4 border-t border-slate-300 pt-4 text-[15px] font-semibold text-[#254A66]">
                     <span>{t.exploreService}</span>
-                    <span aria-hidden="true" className="text-xl transition-transform group-hover:translate-x-1">→</span>
+                    <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
                   </div>
                 </Link>
               )
