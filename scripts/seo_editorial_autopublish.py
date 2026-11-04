@@ -63,6 +63,7 @@ def verify_dom(page,expected):
     }""")
     for name in ('h1','intro','sections','cta_title','cta_body','meta_description'):
         target=expected.get(name)
+        if name=='cta_title' and not target:continue  # public template shows locale fallback
         if name=='cta_body' and target is None:target=''
         if actual.get(name)!=target:raise RuntimeError('Published DOM mismatch: '+name)
     if not actual.get('title','').startswith(expected['title']):
