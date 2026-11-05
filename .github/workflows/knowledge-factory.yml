@@ -91,6 +91,6 @@ jobs:
           git add content/article-bank
           git commit -m "[knowledge-factory] materialize publish-ready Knowledge articles"
           git push origin "HEAD:refs/heads/$branch"
-          gh pr create --base main --head "$branch" \\
-            --title "Knowledge Factory: review generated article bank" \\
+          gh pr create --base main --head "$branch" \
+            --title "Knowledge Factory: review generated article bank" \
             --body "Automated draft: materialized Knowledge articles. Please review text, sources and CI results before merging. Generated from workflow run ${GITHUB_RUN_ID}."
