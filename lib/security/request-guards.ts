@@ -31,6 +31,10 @@ export function safeAdminReturnPath(input: unknown, fallback='/growth-admin'): s
   } catch { return fallback }
 }
 
+export function safeAdminRedirectUrl(input:unknown,requestUrl:string,fallback='/growth-admin'):URL {
+  return new URL(safeAdminReturnPath(input,fallback),requestUrl)
+}
+
 export function hasExcessiveContentLength(request: {headers:Headers},maxBytes:number): boolean {
   const raw=request.headers.get('content-length')
   if(!raw)return false
