@@ -303,7 +303,7 @@ export function createGrowthAdminSession():{value:string;maxAge:number}{
 
 function validSession(value:string):boolean{
   const [version,expires,nonce,signature,...rest]=value.split('.')
-  if(rest.length||version!=='v2'||!/^\\d{10}$/.test(expires||'')||
+  if(rest.length||version!=='v2'||!/^[0-9]{10}$/.test(expires||'')||
      !/^[a-zA-Z0-9_-]{32}$/.test(nonce||'')||
      !/^[a-zA-Z0-9_-]{43}$/.test(signature||''))return false
   const expiry=Number(expires)
