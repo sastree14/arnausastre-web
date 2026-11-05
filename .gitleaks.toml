@@ -16,4 +16,4 @@ regexes = ['''FALLBACK_PUBLISHABLE_KEY\s*=\s*['"]sb_publishable_[A-Za-z0-9_-]+['
 description = "Nonsecret localStorage namespace for operator tracker"
 targetRules = ["generic-api-key"]
 regexTarget = "line"
-regexes = ['''\bKEY\s*=\s*['"]sc-growth-operator-runs-v3['"]''']
+regexes = ['''\bKEY\s*=\s*['"]sc-growth-operator-runs-v[0-9]+['"]''']
