@@ -7,11 +7,12 @@ export const dynamic='force-dynamic'
 
 export async function GET(request:Request){
   const origin=new URL(request.url).origin
-  // The provider callback is configured for the apex production domain.
-  // Keep the state cookie on the same host as the eventual callback.
-  const canonical='https://sc-analytics.io'
-  if(process.env.NODE_ENV==='production'&&origin!==canonical)
-    return NextResponse.redirect(new URL('/api/growth-admin/identity/start',canonical),302)
+  // Vercel permanently redirects the apex to www.sc-analytics.io.
+  // Do not redirect the login start back to the apex: that creates a loop.
+  // Set the __Host- OAuth nonce cookie on the actual browser-facing host (www).
+  // Google's previously registered apex redirect URI is preserved by
+  // googleOAuthConfig(); Vercel forwards its callback to www, where the
+  // host-only nonce cookie can be read and verified by identity/callback.
   const config=googleOAuthConfig(origin)
   if(!config.clientId||!config.clientSecret||!config.redirectUri)
     return new NextResponse('Corporate sign-in temporarily unavailable',{status:503})
