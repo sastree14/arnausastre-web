@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { NextResponse } from 'next/server'
+import { safeAdminReturnPath } from '@/lib/security/request-guards'
 import { insertGrowthRow, isGrowthAdminAuthenticated, queryGrowthTable, updateGrowthRow } from '@/lib/growth-admin'
 import { calculateInvoiceAmounts, suggestTaxTreatment } from '@/lib/finance-tax'
 import { postExpenseAccounting, postPaymentAccounting } from '@/lib/finance-accounting'
@@ -52,7 +53,7 @@ export async function POST(request: Request) {
   if (!(await isGrowthAdminAuthenticated())) return new NextResponse('Unauthorized', { status: 401 })
   const form = await request.formData()
   const type = text(form, 'type')
-  const returnTo = text(form, 'return_to') || '/growth-admin/finance'
+  const returnTo = safeAdminReturnPath(text(form, 'return_to'), '/growth-admin/finance')
   const now = new Date().toISOString()
 
   if (type === 'settings') {
