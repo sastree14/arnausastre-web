@@ -1,6 +1,7 @@
 import { createHash, createHmac, timingSafeEqual } from 'node:crypto'
 import { NextResponse } from 'next/server'
 import { createGrowthAdminSession, growthAdminCookieName } from '@/lib/growth-admin'
+import { googleOnlyMode } from '@/lib/security/admin-identity'
 import { insertGrowthRow, queryGrowthTable } from '@/lib/supabase-growth'
 
 const WINDOW_MINUTES=15
@@ -13,6 +14,7 @@ function clientFingerprint(request:Request,secret:string):string{
 }
 
 export async function POST(request: Request) {
+  if(googleOnlyMode())return new NextResponse('Legacy admin login disabled',{status:403})
   const expected=(process.env.GROWTH_ADMIN_TOKEN||'').trim()
   if(!expected)return new NextResponse('Service not configured',{status:503})
   const fingerprint=clientFingerprint(request,expected)
