@@ -53,7 +53,7 @@ test('code enforces admin rate limits and unique, shorter signed sessions',()=>{
 test('public forms are bounded and all admin mutation paths pass through proxy origin check',()=>{
   const proxy=load('proxy.ts')
   assert.match(proxy,/isCrossOriginMutation\(request\)/)
-  assert.match(proxy,/\/'\/api\/growth-admin\/:path\*\'/)
+  assert.ok(proxy.includes("'/api/growth-admin/:path*'"))
   for(const p of ['app/api/contact/route.ts','app/api/newsletter/subscribe/route.ts']){
     const c=load(p)
     assert.match(c,/readLimitedJson/)
