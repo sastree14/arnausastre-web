@@ -6,6 +6,7 @@ import { getTasks, isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/gr
 import { getLinkedInConnection, linkedInConnectionStatus } from '@/lib/growth-integrations'
 import { getMetricsBundle } from '@/lib/growth-admin-performance'
 import { gmailOAuthReadiness } from '@/lib/google-oauth-finance'
+import { getIdentitySession, googleOnlyMode } from '@/lib/security/admin-identity'
 
 export const dynamic='force-dynamic'
 export const revalidate=0
@@ -14,6 +15,7 @@ type IntegrationConnection={connection_id:string;provider:string;display_name?:s
 
 export default async function SystemPage(){
   if(!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
+  const googleSession=await getIdentitySession()
   const [connection,tasks,metrics,calendlyRows,brave]=await Promise.all([
     getLinkedInConnection(),
     getTasks(),
@@ -34,6 +36,28 @@ export default async function SystemPage(){
 
   return <AdminShell active="system">
     <PageHeader eyebrow="CRM · System" title="Integraciones" description="La infraestructura técnica pertenece al mismo Operating System. Aquí solo marcamos una integración como conectada cuando existe evidencia real de autorización o sincronización; configuración y conexión no se confunden."/>
+    <section className="mb-6 rounded-xl border border-slate-200 bg-white p-5">
+      <div className="flex flex-wrap items-start justify-between gap-5">
+        <div className="max-w-3xl">
+          <h2 className="text-lg font-semibold text-slate-900">Seguridad de acceso al CMI</h2>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            {googleSession
+              ? 'Sesión individual de Google corporativo verificada. La sesión se puede revocar en el servidor.'
+              : 'Acceso temporal anterior. Inicia sesión con Google corporativo y activa la verificación en dos pasos en tu cuenta antes del cambio definitivo.'}
+          </p>
+          <p className="mt-2 text-xs text-slate-500">
+            Modo: {googleOnlyMode()?'Google corporativo exclusivo':'Transición con acceso anterior disponible'}.
+            {googleSession?' Identidad: '+googleSession.email+'.':''}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          {!googleSession&&<a className="rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-100" href="/api/growth-admin/identity/start">Probar acceso con Google</a>}
+          {googleSession&&<form method="post" action="/api/growth-admin/identity/revoke-all">
+            <button className="rounded-lg border border-rose-300 bg-white px-4 py-3 text-sm font-semibold text-rose-700 hover:bg-rose-50" type="submit">Revocar todas mis sesiones</button>
+          </form>}
+        </div>
+      </div>
+    </section>
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5"><StatCard label="LinkedIn" value={linkedin.connected?'Conectado':linkedin.expired?'Expirado':'Atención'} tone={linkedin.connected?'green':'amber'}/><StatCard label="Google / GA4" value={googleConnected?'Conectado':googleReadiness.configured?'OAuth pendiente':'Pendiente'} tone={googleConnected?'green':'amber'}/><StatCard label="Apollo" value={apolloConfigured?'Credencial presente':'Pendiente'} note={apolloConfigured?'La clave existe; el proveedor todavía debe validarse desde un flujo operativo.':'Sin credencial configurada.'} tone="amber"/><StatCard label="Calendly" value={calendlyConnected?'Conectado':calendlyTokenConfigured?'Listo para sync':'Pendiente'} tone={calendlyConnected?'green':'amber'}/><StatCard label="Brave Search" value={braveValue} note={brave.monthlyLimit!==null?`${brave.monthlyUsed||0} usadas de ${brave.monthlyLimit}`:'La primera búsqueda válida captura la cuota reportada por Brave.'} tone={braveTone==='green'?'green':braveTone==='rose'?'amber':'amber'} href="/growth-admin/research"/></div>
 
     <section className="mt-12"><SectionHeading eyebrow="CRM · Data sources & actions" title="Conectores" description="Cada integración indica qué está realmente operativo, qué falta y qué módulo alimenta."/><div className="grid gap-5 xl:grid-cols-2">
