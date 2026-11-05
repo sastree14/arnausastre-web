@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { gmailAuthorizationUrl } from '@/lib/google-oauth-finance'
+import { safeAdminReturnPath } from '@/lib/security/request-guards'
 
 export async function GET(request: Request) {
   if (!(await isGrowthAdminAuthenticated())) return new NextResponse('Unauthorized', { status: 401 })
   const url = new URL(request.url)
   const account = url.searchParams.get('account') === 'personal' ? 'personal' : 'corporate'
   const requested = url.searchParams.get('return_to') || ''
-  const returnTo = requested.startsWith('/growth-admin/') ? requested : ''
+  const returnTo = requested ? safeAdminReturnPath(requested,'/growth-admin/finance/integrations') : ''
   try {
     return NextResponse.redirect(gmailAuthorizationUrl(account, returnTo, url.origin))
   } catch (error) {
