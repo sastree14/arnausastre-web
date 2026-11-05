@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto'
 import { NextResponse } from 'next/server'
+import { safeAdminRedirectUrl } from '@/lib/security/request-guards'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { mutateGrowthRpc, queryGrowthTable, updateGrowthRow } from '@/lib/supabase-growth'
 import { generateInvoiceDriveArtifacts, syncFinanceRegisters } from '@/lib/finance-documents'
@@ -14,20 +15,25 @@ export async function POST(request: Request) {
   const form = await request.formData()
   const invoiceId = String(form.get('invoice_id') || '').trim()
   const returnTo = String(form.get('return_to') || '/growth-admin/finance/invoices')
+  const redirectWith=(key:string,value:string)=>{
+    const url=safeAdminRedirectUrl(returnTo,request.url,'/growth-admin/finance/invoices')
+    url.searchParams.set(key,value)
+    return NextResponse.redirect(url,303)
+  }
   if (!invoiceId) return new NextResponse('Missing invoice_id', { status: 400 })
 
   const invoices = await queryGrowthTable<Row>('finance_invoices', { tenant_id: 'eq.sc-analytics', invoice_id: `eq.${invoiceId}`, limit: '1' }, { cacheSeconds: 0 })
   const invoice = invoices[0]
   if (!invoice) return new NextResponse('Invoice not found', { status: 404 })
-  if (invoice.status === 'issued' || invoice.issued_at) return NextResponse.redirect(new URL(`${returnTo}?invoice_already_issued=1`, request.url), 303)
-  if (invoice.review_status !== 'reviewed' && invoice.review_status !== 'confirmed') return NextResponse.redirect(new URL(`${returnTo}?invoice_error=review_required`, request.url), 303)
+  if (invoice.status === 'issued' || invoice.issued_at) return redirectWith('invoice_already_issued','1')
+  if (invoice.review_status !== 'reviewed' && invoice.review_status !== 'confirmed') return redirectWith('invoice_error','review_required')
 
   const settingsRows = await queryGrowthTable<Row>('finance_settings', { tenant_id: 'eq.sc-analytics', limit: '1' }, { cacheSeconds: 0 })
   const settings = settingsRows[0] || {}
   const missingIssuer = ['legal_name','tax_id','billing_address'].filter((key) => !String(settings[key] || '').trim())
-  if (missingIssuer.length) return NextResponse.redirect(new URL(`${returnTo}?invoice_error=issuer_settings`, request.url), 303)
+  if (missingIssuer.length) return redirectWith('invoice_error','issuer_settings')
   const googleReady = financeGoogleReadiness()
-  if (!googleReady.configured) return NextResponse.redirect(new URL(`${returnTo}?invoice_error=google_not_configured`, request.url), 303)
+  if (!googleReady.configured) return redirectWith('invoice_error','google_not_configured')
 
   try {
     let invoiceNumber = String(invoice.invoice_number || '').trim()
@@ -72,10 +78,10 @@ export async function POST(request: Request) {
     })
     await recordFinanceAudit({ entityType: 'invoice', entityId: invoiceId, action: 'issued', actor: 'arnau', before: invoice, after: { invoice_number: invoiceNumber, immutable_hash: immutableHash, artifacts } })
     await syncFinanceRegisters(Number(String(invoice.issue_date || now).slice(0,4))).catch((error) => console.error('Finance register sync after issue failed', error))
-    return NextResponse.redirect(new URL(`${returnTo}?invoice_issued=${encodeURIComponent(invoiceNumber)}`, request.url), 303)
+    return redirectWith('invoice_issued',invoiceNumber)
   } catch (error) {
     console.error('Invoice issuance failed', error)
     await recordFinanceAudit({ entityType: 'invoice', entityId: invoiceId, action: 'issue_failed', actor: 'system', notes: error instanceof Error ? error.message : String(error) }).catch(() => undefined)
-    return NextResponse.redirect(new URL(`${returnTo}?invoice_error=generation_failed`, request.url), 303)
+    return redirectWith('invoice_error','generation_failed')
   }
 }
