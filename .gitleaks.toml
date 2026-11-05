@@ -1,0 +1,19 @@
+title = "SC-Analytics secret detection"
+[extend]
+useDefault = true
+
+# Public Supabase *publishable* keys (not service-role/secret keys) were
+# deliberately embedded in a historical version of the Realtime frontend.
+# Keep the allowlist limited to the exact variable and pattern.
+[[allowlists]]
+description = "Known public Supabase publishable key in legacy Realtime config"
+targetRules = ["generic-api-key"]
+regexTarget = "line"
+regexes = ['''FALLBACK_PUBLISHABLE_KEY\s*=\s*['"]sb_publishable_[A-Za-z0-9_-]+['"]''']
+
+# Local browser storage label is a deterministic namespace, not a password.
+[[allowlists]]
+description = "Nonsecret localStorage namespace for operator tracker"
+targetRules = ["generic-api-key"]
+regexTarget = "line"
+regexes = ['''\b(?:STORAGE_)?KEY\s*=\s*['"]sc-growth-operator-runs-v[0-9]+['"]''']

@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto'
+import { getIdentitySession, googleOnlyMode } from '@/lib/security/admin-identity'
 import { cookies } from 'next/headers'
 import { insertGrowthRow, queryGrowthTable, updateGrowthRow } from '@/lib/supabase-growth'
 import type { PublicationMode } from '@/lib/brand-system'
@@ -316,10 +317,10 @@ function validSession(value:string):boolean{
 }
 
 export async function isGrowthAdminAuthenticated(): Promise<boolean> {
-  if (!env('GROWTH_ADMIN_TOKEN')) return false
-  const store = await cookies()
-  const value = store.get(COOKIE_NAME)?.value || ''
-  return validSession(value)
+  if(await getIdentitySession())return true
+  if(googleOnlyMode()||!env('GROWTH_ADMIN_TOKEN'))return false
+  const store=await cookies()
+  return validSession(store.get(COOKIE_NAME)?.value||'')
 }
 
 export function growthAdminCookieName(): string {

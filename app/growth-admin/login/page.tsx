@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export default function GrowthAdminLoginPage() {
+  const googleOnly=process.env.GROWTH_ADMIN_AUTH_MODE==='google'
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#050816] px-6 text-slate-100">
       <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/80 p-8 shadow-2xl shadow-black/20">
@@ -21,11 +22,20 @@ export default function GrowthAdminLoginPage() {
         <h1 className="mt-8 text-3xl font-semibold">Control Center</h1>
         <p className="mt-2 text-sm leading-6 text-slate-400">Approve content, review agents, schedule publication and manage the operating queue from one place.</p>
 
-        <form action="/api/growth-admin/login" method="post" className="mt-8 space-y-4">
-          <label className="block text-sm text-slate-300" htmlFor="token">Admin access token</label>
-          <input id="token" name="token" type="password" required autoComplete="current-password" className="w-full rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition focus:border-violet-500" />
-          <button className="w-full rounded-lg bg-white py-3 font-semibold text-slate-950 transition hover:bg-slate-100" type="submit">Open Control Center</button>
-        </form>
+        <Link href="/api/growth-admin/identity/start" className="mt-8 flex w-full items-center justify-center rounded-lg bg-white px-5 py-3 text-center text-sm font-semibold text-slate-950 transition hover:bg-slate-100">
+          Iniciar sesión con Google corporativo
+        </Link>
+        <p className="mt-3 text-xs leading-5 text-slate-400">Acceso individual verificado. No concede permisos de Gmail, Drive ni Calendar.</p>
+        {!googleOnly && (
+          <details className="mt-8 border-t border-slate-700 pt-5">
+            <summary className="cursor-pointer text-sm font-medium text-slate-300">Acceso anterior — transición</summary>
+            <form action="/api/growth-admin/login" method="post" className="mt-4 space-y-4">
+              <label className="block text-sm text-slate-300" htmlFor="token">Admin access token</label>
+              <input id="token" name="token" type="password" required autoComplete="current-password" className="w-full rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition focus:border-violet-500" />
+              <button className="w-full rounded-lg border border-slate-600 bg-slate-800 py-3 text-sm font-semibold text-white transition hover:bg-slate-700" type="submit">Acceder temporalmente</button>
+            </form>
+          </details>
+        )}
 
         <Link href="/" className="mt-6 block text-center text-xs text-slate-600 transition hover:text-slate-400">← Return to public website</Link>
       </div>
