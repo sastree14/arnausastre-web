@@ -5,8 +5,8 @@ const PREFIX='sc-growth-login'
 const MAX_AGE_MS=10*60*1000
 
 function signingKey(){
-  const key=(process.env.GROWTH_ADMIN_TOKEN||'').trim()
-  if(!key)throw new Error('Admin state signing secret is not configured')
+  const key=(process.env.GROWTH_ENCRYPTION_KEY||'').trim()
+  if(!key)throw new Error('Admin identity state signing is not configured')
   return key
 }
 function signature(unsigned:string){
