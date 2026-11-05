@@ -33,6 +33,8 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: Run editorial SEO unit tests (no external API)
         run: npm run seo:test
+      - name: Audit production dependencies for high and critical advisories
+        run: npm audit --omit=dev --audit-level=high
       - name: Compile web without changing production
         run: npm run build
 
