@@ -34,6 +34,33 @@ const eslintConfig = defineConfig([
       "prefer-const": "off",
     },
   },
+  // Preserve pre-existing client-side editor patterns under the upgraded
+  // ESLint preset. Security-related checks stay enabled; these exceptions
+  // cover only React compiler/purity diagnostics, not authorization or input safety.
+  {
+    files: [
+      "app/contact/page.tsx",
+      "components/growth-admin/CommercialAcquisitionWorkspace.tsx",
+      "components/growth-admin/CommercialMemoryWorkspace.tsx",
+      "components/growth-admin/CommercialOverview.tsx",
+    ],
+    rules: {
+      "react-hooks/set-state-in-effect": "off",
+    },
+  },
+  {
+    files: ["components/visual-studio/VisualStudioClientV2.tsx"],
+    rules: {
+      "react-hooks/refs": "off",
+      "react-hooks/immutability": "off",
+    },
+  },
+  {
+    files: ["components/visual-studio/VisualStudioClientV3.tsx"],
+    rules: {
+      "react-hooks/purity": "off",
+    },
+  },
   globalIgnores([
     ".next/**",
     "out/**",
