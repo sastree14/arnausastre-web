@@ -21,6 +21,15 @@ export async function GET(request: NextRequest) {
   // Unified Google Workspace/Gmail OAuth uses a signed state payload. Google
   // still returns to this legacy callback URL so existing Google Cloud OAuth
   // configuration remains valid; we then hand the code to the unified handler.
+  if (returnedState.startsWith('sc-growth-login.')) {
+    // Corporate identity login must not create or overwrite a Gmail connection.
+    const target=new URL('/api/growth-admin/identity/callback',request.url)
+    for(const key of ['code','state','error']){
+      const value=request.nextUrl.searchParams.get(key)
+      if(value)target.searchParams.set(key,value)
+    }
+    return NextResponse.redirect(target,302)
+  }
   if (returnedState.includes('.')) {
     const target = new URL('/api/growth-admin/google/callback', request.url)
     for (const key of ['code', 'state', 'error', 'error_description', 'scope', 'authuser', 'prompt']) {
