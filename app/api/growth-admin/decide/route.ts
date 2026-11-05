@@ -1,12 +1,13 @@
 import { randomUUID } from 'node:crypto'
 import { NextResponse } from 'next/server'
+import { safeAdminReturnPath } from '@/lib/security/request-guards'
 import { getContentItem, insertGrowthRow, isGrowthAdminAuthenticated, queryGrowthTable, updateGrowthRow, type GrowthApproval } from '@/lib/growth-admin'
 import { getContentPublicationReadiness } from '@/lib/growth-approval'
 
 function approvalAction(contentType:string){if(contentType==='linkedin_article')return'publish_linkedin_article';if(contentType==='article'||contentType==='web_article')return'publish_article';return'publish_post'}
 export async function POST(request:Request){
   if(!(await isGrowthAdminAuthenticated()))return new NextResponse('Unauthorized',{status:401})
-  const form=await request.formData(),approvalId=String(form.get('approval_id')||'').trim(),contentIdInput=String(form.get('content_id')||'').trim(),decision=String(form.get('decision')||''),manualOverride=['1','true','on','yes'].includes(String(form.get('manual_override')||'').toLowerCase()),returnTo=String(form.get('return_to')||'/growth-admin/content?filter=review')
+  const form=await request.formData(),approvalId=String(form.get('approval_id')||'').trim(),contentIdInput=String(form.get('content_id')||'').trim(),decision=String(form.get('decision')||''),manualOverride=['1','true','on','yes'].includes(String(form.get('manual_override')||'').toLowerCase()),returnTo=safeAdminReturnPath(String(form.get('return_to')||''),'/growth-admin/content?filter=review')
   if(!['approved','rejected'].includes(decision)||(!approvalId&&!contentIdInput))return new NextResponse('Invalid approval request',{status:400})
   let approval=approvalId?(await queryGrowthTable<GrowthApproval>('approvals',{approval_id:`eq.${approvalId}`,limit:'1'},{cacheSeconds:0}))[0]:undefined
   const contentId=contentIdInput||approval?.target_id||''

@@ -2,22 +2,25 @@ import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 import { randomUUID } from 'node:crypto'
 import { insertGrowthRow } from '@/lib/supabase-growth'
+import { readLimitedJson, RequestSizeError } from '@/lib/security/request-guards'
+import { enforcePublicRateLimit, RateLimitExceeded } from '@/lib/security/public-throttle'
 
 const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL || 'arnau.sastre@sc-analytics.io'
 const PRIVACY_NOTICE_VERSION = '2026-10-21-v1'
 
 export async function POST(req: NextRequest) {
-  let body: { name?: string; company?: string; email?: string; message?: string; language?: string; sourcePath?: string; privacyNoticeAcknowledged?: boolean }
+  let body: Record<string,unknown>
   try {
-    body = await req.json()
-  } catch {
-    return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
+    body = await readLimitedJson(req,24*1024)
+  } catch(error) {
+    return NextResponse.json({error:error instanceof RequestSizeError?'Request too large':'Invalid request body'},
+      {status:error instanceof RequestSizeError?413:400})
   }
 
-  const name = (body.name || '').trim()
-  const company = (body.company || '').trim()
-  const email = (body.email || '').trim()
-  const message = (body.message || '').trim()
+  const name = typeof body.name==='string'?body.name.trim():''
+  const company = typeof body.company==='string'?body.company.trim():''
+  const email = typeof body.email==='string'?body.email.trim():''
+  const message = typeof body.message==='string'?body.message.trim():''
   const language = ['es','ca','en'].includes(String(body.language)) ? String(body.language) : 'es'
   const sourcePath = String(body.sourcePath || '/contact').trim().slice(0,500)
 
@@ -34,6 +37,16 @@ export async function POST(req: NextRequest) {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailPattern.test(email)) {
     return NextResponse.json({ error: 'Invalid email address' }, { status: 400 })
+  }
+
+  if(name.length>120||company.length>160||email.length>254||message.length>8000)
+    return NextResponse.json({error:'Input exceeds maximum length'},{status:422})
+
+  try { await enforcePublicRateLimit(req,'contact',12,3600) } catch(error) {
+    if(error instanceof RateLimitExceeded)
+      return NextResponse.json({error:'Too many requests, please try again later'},{status:429,headers:{'Retry-After':String(error.retryAfter)}})
+    console.error('Contact rate limit unavailable',error)
+    return NextResponse.json({error:'Contact service temporarily unavailable'},{status:503})
   }
 
   const now = new Date().toISOString()

@@ -1,12 +1,12 @@
 import 'server-only'
 
-import { createHmac, timingSafeEqual } from 'node:crypto'
+import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto'
 import { cookies } from 'next/headers'
 import { insertGrowthRow, queryGrowthTable, updateGrowthRow } from '@/lib/supabase-growth'
 import type { PublicationMode } from '@/lib/brand-system'
 
-const COOKIE_NAME = 'sc_growth_admin'
-const SESSION_SECONDS = 60 * 60 * 24 * 14
+const COOKIE_NAME = '__Host-sc_growth_admin'
+const SESSION_SECONDS = 60 * 60 * 12
 
 export interface GrowthPerson {
   person_id: string
@@ -291,23 +291,28 @@ function sessionSecret(): string {
   return token
 }
 
-function sessionSignature(expires: string): string {
-  return createHmac('sha256', sessionSecret()).update(`growth-admin:${expires}`).digest('base64url')
+function sessionSignature(expires:string,nonce:string):string{
+  return createHmac('sha256',sessionSecret()).update(`growth-admin:v2:${expires}:${nonce}`).digest('base64url')
 }
 
-export function createGrowthAdminSession(): { value: string; maxAge: number } {
-  const expires = String(Math.floor(Date.now() / 1000) + SESSION_SECONDS)
-  return { value: `v1.${expires}.${sessionSignature(expires)}`, maxAge: SESSION_SECONDS }
+export function createGrowthAdminSession():{value:string;maxAge:number}{
+  const expires=String(Math.floor(Date.now()/1000)+SESSION_SECONDS)
+  const nonce=randomBytes(24).toString('base64url')
+  return {value:`v2.${expires}.${nonce}.${sessionSignature(expires,nonce)}`,maxAge:SESSION_SECONDS}
 }
 
-function validSession(value: string): boolean {
-  const [version, expires, signature] = value.split('.')
-  if (version !== 'v1' || !expires || !signature) return false
-  const expiresNumber = Number(expires)
-  if (!Number.isFinite(expiresNumber) || expiresNumber <= Math.floor(Date.now() / 1000)) return false
-  const expected = Buffer.from(sessionSignature(expires))
-  const actual = Buffer.from(signature)
-  return actual.length === expected.length && timingSafeEqual(actual, expected)
+function validSession(value:string):boolean{
+  const [version,expires,nonce,signature,...rest]=value.split('.')
+  if(rest.length||version!=='v2'||!/^[0-9]{10}$/.test(expires||'')||
+     !/^[a-zA-Z0-9_-]{32}$/.test(nonce||'')||
+     !/^[a-zA-Z0-9_-]{43}$/.test(signature||''))return false
+  const expiry=Number(expires)
+  const now=Math.floor(Date.now()/1000)
+  // An old/stolen cookie must not carry a lifetime beyond the current policy.
+  if(expiry<=now||expiry>now+SESSION_SECONDS+60)return false
+  const expected=Buffer.from(sessionSignature(expires,nonce))
+  const actual=Buffer.from(signature)
+  return expected.length===actual.length&&timingSafeEqual(actual,expected)
 }
 
 export async function isGrowthAdminAuthenticated(): Promise<boolean> {

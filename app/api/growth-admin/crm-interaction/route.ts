@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { NextResponse } from 'next/server'
+import { safeAdminReturnPath } from '@/lib/security/request-guards'
 import { insertGrowthRow, isGrowthAdminAuthenticated, queryGrowthTable, updateGrowthRow } from '@/lib/growth-admin'
 
 type PersonRow = { person_id: string; company_id?: string | null; name?: string }
@@ -166,7 +167,7 @@ export async function POST(request: Request) {
     }
   }
 
-  const returnTo = String(form.get('return_to') || '/growth-admin/crm')
+  const returnTo = safeAdminReturnPath(String(form.get('return_to')||''), '/growth-admin/crm')
   const url = new URL(returnTo.startsWith('/') ? returnTo : '/growth-admin/crm', request.url)
   url.searchParams.set('interaction_saved', kind)
   return NextResponse.redirect(url, 303)

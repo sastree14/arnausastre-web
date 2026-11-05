@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createHash, randomUUID } from 'node:crypto'
 import { NextResponse } from 'next/server'
+import { safeAdminRedirectUrl } from '@/lib/security/request-guards'
 import { isGrowthAdminAuthenticated } from '@/lib/growth-admin'
 import { queryGrowthTable, insertGrowthRow, updateGrowthRow } from '@/lib/supabase-growth'
 import { postExpenseAccounting } from '@/lib/finance-accounting'
@@ -17,6 +18,11 @@ export async function POST(request: Request) {
   const candidateId = text(form,'candidate_id')
   const action = text(form,'action','confirm')
   const returnTo = text(form,'return_to','/growth-admin/finance/expenses')
+  const redirectWith=(key:string)=>{
+    const url=safeAdminRedirectUrl(returnTo,request.url,'/growth-admin/finance/expenses')
+    url.searchParams.set(key,'1')
+    return NextResponse.redirect(url,303)
+  }
   if (!candidateId) return new NextResponse('Missing candidate_id', { status: 400 })
 
   const rows = await queryGrowthTable<Row>('finance_import_candidates', { tenant_id: 'eq.sc-analytics', candidate_id: `eq.${candidateId}`, limit: '1' }, { cacheSeconds: 0 })
@@ -25,7 +31,7 @@ export async function POST(request: Request) {
   if (action === 'discard') {
     await updateGrowthRow('finance_import_candidates','candidate_id',candidateId,{status:'discarded',reviewed_at:new Date().toISOString(),updated_at:new Date().toISOString()})
     await recordFinanceAudit({entityType:'import_candidate',entityId:candidateId,action:'discarded',before:candidate})
-    return NextResponse.redirect(new URL(`${returnTo}?candidate_discarded=1`,request.url),303)
+    return redirectWith('candidate_discarded')
   }
 
   const original = candidate.extracted_data || {}
@@ -68,5 +74,5 @@ export async function POST(request: Request) {
 
   await updateGrowthRow('finance_import_candidates','candidate_id',candidateId,{status:'accepted',extracted_data:data,duplicate_key:duplicateKey,reviewed_at:new Date().toISOString(),updated_at:new Date().toISOString()})
   await syncFinanceRegisters().catch((error)=>console.error('Register sync after Gmail candidate failed',error))
-  return NextResponse.redirect(new URL(`${returnTo}?candidate_accepted=1`,request.url),303)
+  return redirectWith('candidate_accepted')
 }
