@@ -15,6 +15,7 @@ on:
         type: string
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: sc-analytics-knowledge-factory-${{ github.ref }}
@@ -72,15 +73,24 @@ jobs:
             --output content/article-bank \
             --validate-only
 
-      - name: Commit materialized bank
+      - name: Create reviewable Knowledge Factory pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           if git diff --quiet -- content/article-bank && [ -z "$(git status --porcelain -- content/article-bank)" ]; then
-            echo "Knowledge bank already materialized; nothing to commit."
+            echo "Knowledge bank already materialized; nothing to propose."
             exit 0
           fi
+          # Never push directly to protected main. Publish generated content
+          # on a new branch, then let the usual CI + security checks run.
+          branch="automation/knowledge-factory-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           git config user.name "SC-Analytics Knowledge Factory"
           git config user.email "knowledge-factory@users.noreply.github.com"
+          git switch -c "$branch"
           git add content/article-bank
-          git commit -m "[knowledge-factory] materialize 200 publish-ready Knowledge articles"
-          git pull --rebase origin "$GITHUB_REF_NAME"
-          git push origin "HEAD:$GITHUB_REF_NAME"
+          git commit -m "[knowledge-factory] materialize publish-ready Knowledge articles"
+          git push origin "HEAD:refs/heads/$branch"
+          gh pr create --base main --head "$branch" \\
+            --title "Knowledge Factory: review generated article bank" \\
+            --body "Automated draft: materialized Knowledge articles. Please review text, sources and CI results before merging. Generated from workflow run ${GITHUB_RUN_ID}."
