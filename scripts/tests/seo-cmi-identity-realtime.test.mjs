@@ -46,3 +46,17 @@ test('legacy shared token can be disabled after the owner tests Google 2FA',()=>
   assert.match(page,/googleOnly/)
   assert.match(page,/api\/growth-admin\/identity\/start/)
 })
+
+test('corporate Google login never redirects from www to apex (Vercel redirects apex to www)',()=>{
+  const loginStart=code('app/api/growth-admin/identity/start/route.ts')
+  const config=code('lib/google-oauth-finance.ts')
+  const state=code('lib/security/admin-identity.ts')
+  assert.doesNotMatch(loginStart,/const canonical='https:\/\/sc-analytics\.io'/)
+  assert.doesNotMatch(loginStart,/NextResponse\.redirect\(new URL\('\/api\/growth-admin\/identity\/start',canonical\)/)
+  assert.match(loginStart,/const origin=new URL\(request\.url\)\.origin/)
+  assert.match(loginStart,/response\.cookies\.set\(IDENTITY_STATE_COOKIE,nonce/)
+  assert.match(state,/__Host-sc_growth_login_state/)
+  // The existing Google Cloud redirect URI remains unchanged; only the
+  // initiating request is now kept on Vercel's browser-facing www hostname.
+  assert.match(config,/const productionRedirect = 'https:\/\/sc-analytics\.io\/api\/google\/gmail\/callback'/)
+})
