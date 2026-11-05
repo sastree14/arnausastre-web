@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { NextResponse } from 'next/server'
+import { safeAdminReturnPath } from '@/lib/security/request-guards'
 import { CORPORATE_GOOGLE_EMAIL, exchangeGoogleCode, gmailProfile, verifyGoogleOAuthState, encryptGoogleToken } from '@/lib/google-oauth-finance'
 import { queryGrowthTable, insertGrowthRow, updateGrowthRow } from '@/lib/supabase-growth'
 
@@ -44,7 +45,7 @@ export async function GET(request: Request) {
     if (existing[0]) await updateGrowthRow('integration_connections', 'connection_id', String(existing[0].connection_id), changes)
     else await insertGrowthRow('integration_connections', { connection_id: randomUUID(), tenant_id: 'sc-analytics', provider: 'gmail', connected_at: now, ...changes })
     const returnTo = String(stateData.returnTo || '')
-    const destination = returnTo.startsWith('/growth-admin/') ? returnTo : '/growth-admin/finance/integrations'
+    const destination = safeAdminReturnPath(returnTo,'/growth-admin/finance/integrations')
     const next = new URL(destination, request.url)
     next.searchParams.set('google_connected', '1')
     next.searchParams.set('account', email)
