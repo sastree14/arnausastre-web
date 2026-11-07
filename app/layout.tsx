@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     default: 'SC-Analytics | Data & AI for Better Business Decisions',
     template: '%s | SC-Analytics',
   },
-  description: 'Data & AI consulting for forecasting, optimisation, machine learning, intelligent automation, analytics and decision-support systems. Understand before building.',
+  description: 'Specialist data science for predictive modelling, mathematical optimisation and tailored decision systems, integrated with the client’s existing software.',
   keywords: [
     'data and AI consulting',
     'forecasting consulting',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'SC-Analytics | Better Decisions. Better Business Outcomes.',
-    description: 'We help companies improve decisions, planning and operations with data, mathematics, automation and AI — only where it creates real value.',
+    description: 'Specialist data science, predictive modelling and mathematical optimisation tailored to complex business decisions and client systems.',
     url: 'https://www.sc-analytics.io',
     siteName: 'SC-Analytics',
     locale: 'en_US',
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'SC-Analytics | Better Decisions. Better Business Outcomes.',
-    description: 'Data & AI consulting built around business value, rigor and proportionate solutions.',
+    description: 'Specialist data science and mathematical optimisation tailored to real business decisions and existing systems.',
     images: ['/og/web.jpg'],
   },
   icons: { icon: '/brand/Monograma-simple.png' },
