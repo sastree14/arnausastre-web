@@ -7,15 +7,15 @@ import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
 const COPY = {
   es: {
-    eyebrow: 'SC-ANALYTICS · CONSULTORÍA CUANTITATIVA Y TECNOLÓGICA',
+    eyebrow: 'SC-ANALYTICS · DATA SCIENCE Y OPTIMIZACIÓN A MEDIDA',
     title: 'Mejores decisiones. Mejores resultados empresariales.',
-    intro: 'Ayudamos a empresas a planificar mejor, optimizar operaciones y automatizar decisiones cuando los datos pueden generar impacto real.',
+    intro: 'Resolvemos decisiones empresariales complejas con Data Science, modelos predictivos y optimización matemática. Diseñamos cada solución a medida de tus datos, sistemas y restricciones.',
     primary: 'Contacta con nosotros',
     secondary: 'Conoce cómo trabajamos',
-    note: 'Datos · Matemáticas · Inteligencia artificial · Automatización',
+    note: 'Data Science · Predicción · Optimización matemática · Modelización',
 
     snapshotLabel: 'QUÉ HACEMOS',
-    snapshotTitle: 'De la necesidad a una solución operativa.',
+    snapshotTitle: 'Especialización técnica. Soluciones a medida.',
     snapshotRows: [
       ['Comprender', 'Definimos qué debe mejorar.'],
       ['Diseñar', 'Elegimos el enfoque adecuado.'],
@@ -29,7 +29,7 @@ const COPY = {
       {
         number: '01',
         title: 'Servicios',
-        hook: 'Previsión, optimización, datos e inteligencia artificial.',
+        hook: 'Modelos predictivos, optimización y soluciones cuantitativas a medida.',
         href: '/services',
         cta: 'Ver cómo trabajamos',
       },
@@ -77,15 +77,15 @@ const COPY = {
   },
 
   ca: {
-    eyebrow: 'SC-ANALYTICS · CONSULTORIA QUANTITATIVA I TECNOLÒGICA',
+    eyebrow: 'SC-ANALYTICS · DATA SCIENCE I OPTIMITZACIÓ A MIDA',
     title: 'Millors decisions. Millors resultats empresarials.',
-    intro: 'Ajudem empreses a planificar millor, optimitzar operacions i automatitzar decisions quan les dades poden generar impacte real.',
+    intro: 'Resolem decisions empresarials complexes amb Data Science, models predictius i optimització matemàtica. Dissenyem cada solució a mida de les dades, els sistemes i les restriccions de cada empresa.',
     primary: 'Contacta amb nosaltres',
     secondary: 'Coneix com treballem',
-    note: 'Dades · Matemàtiques · Intel·ligència artificial · Automatització',
+    note: 'Data Science · Predicció · Optimització matemàtica · Modelització',
 
     snapshotLabel: 'QUÈ FEM',
-    snapshotTitle: 'De la necessitat a una solució operativa.',
+    snapshotTitle: 'Especialització tècnica. Solucions a mida.',
     snapshotRows: [
       ['Comprendre', 'Definim què ha de millorar.'],
       ['Dissenyar', 'Escollim l’enfocament adequat.'],
@@ -99,7 +99,7 @@ const COPY = {
       {
         number: '01',
         title: 'Serveis',
-        hook: 'Previsió, optimització, dades i intel·ligència artificial.',
+        hook: 'Models predictius, optimització i solucions quantitatives a mida.',
         href: '/services',
         cta: 'Veure com treballem',
       },
@@ -147,15 +147,15 @@ const COPY = {
   },
 
   en: {
-    eyebrow: 'SC-ANALYTICS · QUANTITATIVE & TECHNOLOGY CONSULTING',
+    eyebrow: 'SC-ANALYTICS · BESPOKE DATA SCIENCE & OPTIMISATION',
     title: 'Better decisions. Better business outcomes.',
-    intro: 'We help companies plan better, improve operations and automate decisions when data can create real business impact.',
+    intro: 'We tackle complex business decisions through data science, predictive modelling and mathematical optimisation. Every solution is tailored to the client’s data, systems and constraints.',
     primary: 'Contact us',
     secondary: 'See how we work',
-    note: 'Data · Mathematics · Artificial intelligence · Automation',
+    note: 'Data Science · Prediction · Mathematical Optimisation · Modelling',
 
     snapshotLabel: 'WHAT WE DO',
-    snapshotTitle: 'From a business need to a working solution.',
+    snapshotTitle: 'Technical depth. Solutions built to fit.',
     snapshotRows: [
       ['Understand', 'Define what needs to improve.'],
       ['Design', 'Choose the right approach.'],
@@ -169,7 +169,7 @@ const COPY = {
       {
         number: '01',
         title: 'Services',
-        hook: 'Forecasting, optimisation, data and artificial intelligence.',
+        hook: 'Predictive models, optimisation and tailored quantitative solutions.',
         href: '/services',
         cta: 'See how we work',
       },
