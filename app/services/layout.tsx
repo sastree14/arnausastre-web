@@ -6,7 +6,7 @@ export const revalidate = 0
 export const metadata: Metadata = {
   title: 'Services | Data, AI, Forecasting & Optimization',
   description:
-    'From business problem to working system: forecasting, optimisation, machine learning, AI automation, analytics and simulation selected around the decision that needs to improve.',
+    'Specialist data science: predictive modelling, mathematical optimisation, simulation and tailored decision systems integrated with existing business software.',
   alternates: { canonical: '/services' },
   keywords: [
     'demand forecasting',

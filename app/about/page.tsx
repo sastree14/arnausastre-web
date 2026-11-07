@@ -7,16 +7,16 @@ import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 const COPY = {
   es: {
     eyebrow: 'POR QUÉ SC-ANALYTICS',
-    title: 'Capacidad técnica con criterio de negocio y responsabilidad sobre el resultado.',
-    intro: 'Combinamos capacidad técnica, criterio de negocio y una forma de trabajar pensada para generar confianza y resultados.',
+    title: 'Especialización cuantitativa para decisiones empresariales complejas.',
+    intro: 'Nuestro núcleo es el Data Science: predicción, modelización y optimización matemática. Construimos soluciones a medida de los datos, las restricciones y los sistemas de cada empresa.',
 
     reasonsLabel: 'POR QUÉ CONSTRUIR CON NOSOTROS',
     reasonsTitle: 'Por qué trabajar con SC-Analytics.',
     reasons: [
       ['Comprender antes de construir', 'Empezamos por la decisión y el negocio. La tecnología viene después.'],
-      ['La solución adecuada', 'Usamos la complejidad que aporta valor, no la que impresiona.'],
+      ['Modelos a medida', 'Diseñamos la solución matemática adecuada a cada problema y sus restricciones.'],
       ['Comunicación directa', 'Hablas directamente con quienes entienden y desarrollan el proyecto.'],
-      ['Contexto que se acumula', 'Cada proyecto hace que la siguiente decisión pueda resolverse mejor y más rápido.'],
+      ['Integración con tus sistemas', 'Partimos de las herramientas existentes; desarrollamos infraestructura propia solo cuando es necesaria.'],
     ],
 
     proofLabel: 'NUESTRO ESTÁNDAR',
@@ -53,16 +53,16 @@ const COPY = {
 
   ca: {
     eyebrow: 'PER QUÈ SC-ANALYTICS',
-    title: 'Capacitat tècnica amb criteri de negoci i responsabilitat sobre el resultat.',
-    intro: 'Combinem capacitat tècnica, criteri de negoci i una manera de treballar pensada per generar confiança i resultats.',
+    title: 'Especialització quantitativa per a decisions empresarials complexes.',
+    intro: 'El nostre nucli és el Data Science: predicció, modelització i optimització matemàtica. Construïm solucions a mida de les dades, les restriccions i els sistemes de cada empresa.',
 
     reasonsLabel: 'PER QUÈ CONSTRUIR AMB NOSALTRES',
     reasonsTitle: 'Per què treballar amb SC-Analytics.',
     reasons: [
       ['Comprendre abans de construir', 'Comencem per la decisió i el negoci. La tecnologia ve després.'],
-      ['La solució adequada', 'Utilitzem la complexitat que aporta valor, no la que impressiona.'],
+      ['Models a mida', 'Dissenyem la solució matemàtica adequada a cada problema i les seves restriccions.'],
       ['Comunicació directa', 'Parles directament amb qui entén i desenvolupa el projecte.'],
-      ['Context que s’acumula', 'Cada projecte fa que la següent decisió es pugui resoldre millor i més ràpid.'],
+      ['Integració amb els teus sistemes', 'Partim de les eines existents; desenvolupem infraestructura pròpia només quan cal.'],
     ],
 
     proofLabel: 'EL NOSTRE ESTÀNDARD',
@@ -99,16 +99,16 @@ const COPY = {
 
   en: {
     eyebrow: 'WHY SC-ANALYTICS',
-    title: 'Technical capability with business judgment and accountability for the outcome.',
-    intro: 'We combine technical capability, business judgment and a way of working designed to create trust and results.',
+    title: 'Quantitative specialisation for complex business decisions.',
+    intro: 'Data science is our core discipline: forecasting, modelling and mathematical optimisation. We build solutions tailored to each company’s data, constraints and existing systems.',
 
     reasonsLabel: 'WHY BUILD WITH US',
     reasonsTitle: 'Why work with SC-Analytics.',
     reasons: [
       ['Understand before building', 'We start with the decision and the business. Technology comes afterwards.'],
-      ['The right solution', 'We use the complexity that creates value, not the complexity that impresses.'],
+      ['Models tailored to the problem', 'We design each quantitative approach around the actual decision and constraints.'],
       ['Direct communication', 'Speak directly with the people who understand and deliver the project.'],
-      ['Context compounds', 'Every project makes the next decision faster and better informed.'],
+      ['Fits your software', 'We use existing tools first and build custom infrastructure only when needed.'],
     ],
 
     proofLabel: 'OUR STANDARD',
