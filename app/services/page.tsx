@@ -10,8 +10,8 @@ import { SERVICE_HUBS, SERVICE_HUB_ORDER } from '@/lib/service-hubs'
 const COPY = {
   es: {
     eyebrow: 'SERVICIOS',
-    title: 'Comprender antes de construir.',
-    intro: 'Previsión, optimización, datos e IA para resolver necesidades concretas de tu empresa.',
+    title: 'Data Science especializado. Soluciones a medida.',
+    intro: 'Modelos predictivos, optimización matemática, simulación y sistemas de decisión diseñados para tus datos, operaciones y herramientas existentes.',
     primary: 'Háblanos de tu problema',
     secondary: 'Ver casos de éxito',
 
@@ -22,7 +22,7 @@ const COPY = {
     exploreService: 'Explorar servicio',
     capabilities: [
       ['Forecasting y planning', 'Previsiones de variables y escenarios para anticipar su evolución.'],
-      ['Optimización', 'Modelos para elegir la mejor alternativa según objetivos y restricciones.'],
+      ['Optimización matemática', 'Asignación, rutas, precios y planificación bajo objetivos y restricciones reales.'],
       ['Machine learning', 'Modelos que aprenden de los datos para predecir y detectar patrones.'],
       ['IA y automatización', 'Soluciones de IA y automatización adaptadas a tus procesos y herramientas.'],
       ['Analytics y BI', 'Visibilidad clara para seguir operaciones, rendimiento y decisiones.'],
@@ -77,8 +77,8 @@ const COPY = {
 
   ca: {
     eyebrow: 'SERVEIS',
-    title: 'Comprendre abans de construir.',
-    intro: 'Previsió, optimització, dades i IA per resoldre necessitats concretes de la teva empresa.',
+    title: 'Data Science especialitzat. Solucions a mida.',
+    intro: 'Models predictius, optimització matemàtica, simulació i sistemes de decisió dissenyats per a les teves dades, operacions i eines existents.',
     primary: 'Parla’ns del teu problema',
     secondary: 'Veure casos d’èxit',
 
@@ -89,7 +89,7 @@ const COPY = {
     exploreService: 'Explorar el servei',
     capabilities: [
       ['Forecasting i planning', 'Previsions de variables i escenaris per anticipar-ne l’evolució.'],
-      ['Optimització', 'Models per escollir la millor alternativa segons objectius i restriccions.'],
+      ['Optimització matemàtica', 'Assignació, rutes, preus i planificació sota objectius i restriccions reals.'],
       ['Machine learning', 'Models que aprenen de les dades per predir i detectar patrons.'],
       ['IA i automatització', 'Solucions d’IA i automatització adaptades als teus processos i eines.'],
       ['Analytics i BI', 'Visibilitat clara per seguir operacions, rendiment i decisions.'],
@@ -144,8 +144,8 @@ const COPY = {
 
   en: {
     eyebrow: 'SERVICES',
-    title: 'Understand before building.',
-    intro: 'Forecasting, optimisation, data and AI for concrete business needs.',
+    title: 'Specialist data science. Built for your business.',
+    intro: 'Predictive modelling, mathematical optimisation, simulation and decision systems designed around your data, operations and existing tools.',
     primary: 'Tell us about your problem',
     secondary: 'See success stories',
 
@@ -156,7 +156,7 @@ const COPY = {
     exploreService: 'Explore service',
     capabilities: [
       ['Forecasting and planning', 'Forecasts of variables and scenarios to anticipate how they evolve.'],
-      ['Optimisation', 'Models for selecting the best alternative given objectives and constraints.'],
+      ['Mathematical optimisation', 'Allocation, routing, pricing and planning under real objectives and constraints.'],
       ['Machine learning', 'Models that learn from data to predict outcomes and detect patterns.'],
       ['AI & automation', 'AI and automation solutions tailored to your processes and tools.'],
       ['Analytics and BI', 'Clear visibility into operations, performance and decisions.'],
