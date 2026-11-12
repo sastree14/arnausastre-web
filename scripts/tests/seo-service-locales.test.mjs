@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { SERVICE_LANGUAGE_GROUPS,serviceLocaleForSlug,serviceGroupForSlug,languageAlternatesForPublishedSlugs } from '../../lib/seo-service-locales.ts'
+import { SERVICE_LANGUAGE_GROUPS,serviceLocaleForSlug,serviceGroupForSlug,languageAlternatesForPublishedSlugs,explicitLanguageForPath } from '../../lib/seo-service-locales.ts'
 
 test('all commercial locale group slugs are unique and language assignment is stable',()=>{
  const slugs=new Set()
@@ -27,4 +27,19 @@ test('published ES/CA/EN service pages have reciprocal hreflang maps',()=>{
  const published=new Set(['demand-forecasting','prediccion-demanda','previsio-demanda'])
  const expected=languageAlternatesForPublishedSlugs('demand-forecasting',published)
  for(const slug of published) assert.deepEqual(languageAlternatesForPublishedSlugs(slug,published),expected)
+})
+
+test('multilingual partner page keeps the visitor’s selected language',()=>{
+ assert.equal(explicitLanguageForPath('/partner-analitico'),null)
+ assert.equal(explicitLanguageForPath('/partner-analitico/'),null)
+ assert.equal(explicitLanguageForPath('/services'),null)
+ assert.equal(explicitLanguageForPath('/knowledge'),null)
+})
+test('explicitly localized SEO URLs continue to select their own language',()=>{
+ assert.equal(explicitLanguageForPath('/knowledge/example/en'),'en')
+ assert.equal(explicitLanguageForPath('/knowledge/example/es'),'es')
+ assert.equal(explicitLanguageForPath('/knowledge/example/ca'),'ca')
+ assert.equal(explicitLanguageForPath('/services/demand-forecasting'),'en')
+ assert.equal(explicitLanguageForPath('/services/consultoria-datos'),'es')
+ assert.equal(explicitLanguageForPath('/services/previsio-demanda'),'ca')
 })
