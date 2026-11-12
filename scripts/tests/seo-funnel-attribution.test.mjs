@@ -5,13 +5,13 @@ import {
 } from '../../lib/seo-booking-attribution.ts'
 import { explicitLanguageForPath } from '../../lib/seo-service-locales.ts'
 
-test('SSR language is determined by explicit route, not browser preference',()=>{
+test('localized SEO routes force their language but multilingual routes use the site preference',()=>{
  assert.equal(explicitLanguageForPath('/services/consultoria-datos'),'es')
  assert.equal(explicitLanguageForPath('/services/consultoria-dades'),'ca')
  assert.equal(explicitLanguageForPath('/services/data-science-consulting'),'en')
  assert.equal(explicitLanguageForPath('/knowledge/a-public-article/ca'),'ca')
  assert.equal(explicitLanguageForPath('/knowledge/a-public-article/es'),'es')
- assert.equal(explicitLanguageForPath('/partner-analitico'),'es')
+ assert.equal(explicitLanguageForPath('/partner-analitico'),null)
  assert.equal(explicitLanguageForPath('/contact'),null)
  assert.equal(explicitLanguageForPath('/services'),null)
 })
