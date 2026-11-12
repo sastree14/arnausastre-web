@@ -60,6 +60,5 @@ export function explicitLanguageForPath(pathname:string):CommercialLocale|null{
     if(isServiceHubSlug(pieces[1]))return null
     return serviceLocaleForSlug(pieces[1])
   }
-  if(pieces.length===1 && pieces[0]==='partner-analitico')return 'es'
   return null
 }
