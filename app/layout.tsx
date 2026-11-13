@@ -75,7 +75,22 @@ const jsonLd = {
       name: 'SC-Analytics',
       url: 'https://www.sc-analytics.io/',
       description: 'Independent consultancy for forecasting, optimisation, business analytics, data science and AI automation.',
-      founder: { '@type': 'Person', name: 'Arnau Sastre', jobTitle: 'Founder' },
+      // Verified public identifiers and location help disambiguate the company in search.
+      // Do not add unverified addresses, customer counts or review ratings.
+      logo: 'https://www.sc-analytics.io/brand/Monograma-simple.png',
+      sameAs: ['https://www.linkedin.com/company/sc-analytics/'],
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Barcelona',
+        addressRegion: 'Catalonia',
+        addressCountry: 'ES',
+      },
+      founder: {
+        '@type': 'Person',
+        name: 'Arnau Sastre',
+        jobTitle: 'Founder',
+        sameAs: 'https://www.linkedin.com/in/arnausastre/',
+      },
       contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'business enquiries',
