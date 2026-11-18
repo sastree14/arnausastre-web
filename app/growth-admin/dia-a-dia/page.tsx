@@ -129,6 +129,7 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
   const done=taskRows.filter(t=>t.status==='done').sort((a,b)=>String(b.completed_at||'').localeCompare(String(a.completed_at||''))).slice(0,8)
   const meetings=(agendaResult?.meetings||[]).filter(m=>m.response!=='declined'&&localDay(m.starts_at)>=date&&localDay(m.starts_at)<=weekEnd)
     .sort((a,b)=>a.starts_at.localeCompare(b.starts_at))
+  const meetingsToday = meetings.filter(m=>localDay(m.starts_at)===date)
   const meetingCountByDay = meetings.reduce<Record<string,number>>((acc,m)=>{const key=localDay(m.starts_at);acc[key]=(acc[key]||0)+1;return acc},{})
   const activeContacts=Array.from(new Map(taskRows.filter(t=>t.metadata?.active_conversation===true&&t.status!=='archived'&&t.contact_email).map(t=>[t.contact_email,t])).values())
   const gmailState=connections.filter(c=>c.provider_subject&&c.provider_subject.includes('@')).map(c=>{
@@ -160,6 +161,13 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
       <div className="space-y-8">
         <section>
           <div className="mb-3 flex items-end justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">{date}</p><h2 className="mt-1 text-2xl font-semibold text-slate-950">Hoy</h2></div><Badge tone={overflow.length?'amber':'green'}>{focus.length}/{settings.max_tasks_per_day} tareas en foco</Badge></div>
+          {meetingsToday.length>0&&<div className="mb-3 space-y-2">
+            <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Reuniones de hoy · {meetingsToday.length}</p>
+            {meetingsToday.map(m=><div key={m.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-indigo-200 bg-indigo-50 p-3">
+              <div><p className="text-sm font-semibold text-indigo-950">{localTime(m.starts_at)} · {m.title}</p><p className="mt-1 text-xs text-indigo-700">{m.source==='google_calendar'?'Verificada en Google Calendar':'Anotada en CMI (verificar)'}</p></div>
+              {safeLink(m.url)&&<a href={m.url} className="text-xs font-semibold text-indigo-700 underline">Abrir convocatoria</a>}
+            </div>)}
+          </div>}
           <div className="space-y-2">{focus.length?focus.map(t=><TaskCard key={t.id} task={t} today={date}/>):<Empty>No hay tareas urgentes. Añade una tarea o registra los compromisos de tu última reunión.</Empty>}</div>
           {overflow.length>0&&<div className="mt-3 space-y-2"><p className="text-xs font-semibold text-amber-800">Exceso de capacidad · {overflow.length} tareas más. No se pierden; puedes aplazarlas al siguiente día.</p>{overflow.map(t=><TaskCard key={t.id} task={t} today={date}/>)}</div>}
         </section>
