@@ -28,6 +28,22 @@ const stateLabels:Record<string,string> = Object.fromEntries(statuses)
 const datePlus=(date:string,n:number)=>{const d=new Date(date+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)}
 const safeLink=(v?:string|null)=>{if(!v)return '';try{return new URL(v).protocol==='https:'?v:''}catch{return ''}}
 const sourceLabel:Record<string,string>={manual:'Manual',gmail:'Correo',calendar:'Calendario',chat:'Chat',meeting_note:'Nota',automation:'Automatización'}
+function isUrgent(task:DailyTask,today:string,tomorrow:string){
+  const bucket=task.metadata?.task_bucket
+  const hardDeadlineSoon=Boolean(task.due_on&&task.due_on<=tomorrow)
+  if(bucket==='pending')return hardDeadlineSoon
+  // Never turn a preparation for a far-away meeting into today's urgent work
+  // merely because its scheduled_on was accidentally moved forward.
+  if(task.source==='calendar'&&typeof task.metadata?.meeting==='string'){
+    const meetingDay=task.metadata.meeting.slice(0,10)
+    if(meetingDay>datePlus(today,2)&&!hardDeadlineSoon)return false
+  }
+  const plannedSoon=Boolean(task.scheduled_on&&task.scheduled_on<=tomorrow)
+  if(bucket==='urgent')return hardDeadlineSoon||plannedSoon||!task.scheduled_on
+  if(hardDeadlineSoon)return true
+  if(task.source==='manual'||task.source==='meeting_note')return task.priority===1&&(plannedSoon||!task.scheduled_on)
+  return plannedSoon
+}
 function TaskItem({task,onUpdate,today}:{task:DailyTask;onUpdate:(next:DailyTask)=>void;today:string}) {
   const [selection,setSelection]=useState(task.status)
   const [workDay,setWorkDay]=useState(task.scheduled_on||'')
@@ -59,6 +75,7 @@ function TaskItem({task,onUpdate,today}:{task:DailyTask;onUpdate:(next:DailyTask
   const reason=typeof task.metadata?.reason==='string'?task.metadata.reason:(typeof task.metadata?.evidence==='string'?task.metadata.evidence:'')
   const expandedDetailsId='task-details-'+task.id
   const isCompleted=task.status==='done'||task.status==='archived'
+  const urgency=isUrgent(task,today,datePlus(today,1))
   return <article className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 shadow-sm">
     <div className="flex flex-wrap items-center gap-2">
       <button type="button" onClick={()=>setExpanded(value=>!value)} aria-expanded={expanded}
@@ -72,7 +89,8 @@ function TaskItem({task,onUpdate,today}:{task:DailyTask;onUpdate:(next:DailyTask
         {task.status==='in_progress'&&<span className="font-semibold text-indigo-700">En curso</span>}
         {isCompleted&&<span className="font-semibold text-emerald-700">{stateLabels[task.status]}</span>}
         {!isCompleted&&task.scheduled_on&&task.scheduled_on<today&&<span className="font-medium text-violet-700">Arrastrada</span>}
-        {task.due_on&&!isCompleted&&<span className="text-rose-700">Límite {task.due_on}</span>}
+        {task.scheduled_on&&!isCompleted&&<span className="text-slate-500">Trabajar: {task.scheduled_on.slice(8,10)}/{task.scheduled_on.slice(5,7)}</span>}
+        {task.due_on&&!isCompleted&&<span className="text-rose-700">Límite {task.due_on.slice(8,10)}/{task.due_on.slice(5,7)}</span>}
         {!isCompleted&&<button type="button" onClick={()=>send({action:'status_change',status:'done'})} disabled={saving}
           className="rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-800 hover:bg-emerald-100 disabled:opacity-50">
           {saving?'Guardando…':'✓ Hecha'}
@@ -115,6 +133,11 @@ function TaskItem({task,onUpdate,today}:{task:DailyTask;onUpdate:(next:DailyTask
           <button type="button" onClick={()=>send({action:'status_change',status:selection})} disabled={saving||!changed} className="rounded-lg bg-slate-950 px-3 py-2 text-xs font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">
             {saving?'Guardando…':'Guardar estado'}
           </button>
+          {!isCompleted&&<button type="button" disabled={saving}
+            onClick={()=>send({action:'classification_change',task_bucket:urgency?'pending':'urgent'})}
+            className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-xs font-semibold text-indigo-800 disabled:opacity-40">
+            {urgency?'Pasar a pendientes':'Marcar urgente'}
+          </button>}
         </div>
       </div>
     </div>}
@@ -128,36 +151,44 @@ function Section({title,description,items,today,onUpdate}:{title:string;descript
 }
 export default function DailyTaskBoard({initialTasks,today,maxTasks}:{initialTasks:DailyTask[];today:string;maxTasks:number}){
   const [tasks,setTasks]=useState(initialTasks)
-  const weekEnd=datePlus(today,7)
-  const onUpdate=(next:DailyTask)=>setTasks(old=>old.map(t=>t.id===next.id?next:t))
   const tomorrow=datePlus(today,1)
+  const onUpdate=(next:DailyTask)=>setTasks(old=>old.map(t=>t.id===next.id?next:t))
   const ordered=useMemo(()=>{
     const active=tasks.filter(t=>t.status==='open'||t.status==='in_progress')
-    const todayWork=active.filter(t=>(t.scheduled_on&&t.scheduled_on<=today)||(t.due_on&&t.due_on<=today)||(t.lane==='today'&&!t.scheduled_on&&!t.due_on))
-    const todayRows=[...todayWork].sort((a,b)=>Number(a.priority)-Number(b.priority)||(a.scheduled_on||a.waiting_until||'').localeCompare(b.scheduled_on||b.waiting_until||''))
-    const todayIds=new Set(todayRows.map(t=>t.id))
-    const tomorrowRows=[...active.filter(t=>!todayIds.has(t.id)&&((t.scheduled_on&&t.scheduled_on===tomorrow)||(!t.scheduled_on&&t.due_on===tomorrow)))]
-      .sort((a,b)=>Number(a.priority)-Number(b.priority))
-    const already=new Set([...todayRows,...tomorrowRows].map(t=>t.id))
-    const weekly=active.filter(t=>!already.has(t.id)&&((t.scheduled_on&&t.scheduled_on<=weekEnd)||(t.due_on&&t.due_on<=weekEnd)||t.lane==='week'&&!t.scheduled_on&&!t.due_on))
-      .sort((a,b)=>(a.scheduled_on||a.due_on||'').localeCompare(b.scheduled_on||b.due_on||''))
-    const later=active.filter(t=>!already.has(t.id)&&!weekly.some(w=>w.id===t.id)).sort((a,b)=>(a.scheduled_on||a.due_on||'').localeCompare(b.scheduled_on||b.due_on||''))
-    const done=tasks.filter(t=>(t.status==='done'||t.status==='archived')&&!t.metadata?.excluded_as_non_task).sort((a,b)=>(b.completed_at||'').localeCompare(a.completed_at||'')).slice(0,12)
-    return {todayRows,tomorrowRows,weekly,later,done}
-  },[tasks,today,tomorrow,weekEnd])
+    const urgent=active.filter(t=>isUrgent(t,today,tomorrow))
+    const sortByPriority=(a:DailyTask,b:DailyTask)=>a.priority-b.priority||(a.due_on||a.scheduled_on||'').localeCompare(b.due_on||b.scheduled_on||'')
+    const todayRows=urgent.filter(t=>!t.scheduled_on||t.scheduled_on<=today||Boolean(t.due_on&&t.due_on<=today)).sort(sortByPriority)
+    const todaySet=new Set(todayRows.map(t=>t.id))
+    const tomorrowRows=urgent.filter(t=>!todaySet.has(t.id)).sort(sortByPriority)
+    const urgentSet=new Set(urgent.map(t=>t.id))
+    const pending=active.filter(t=>!urgentSet.has(t.id)).sort((a,b)=>{
+      const aDate=a.scheduled_on||a.due_on||'9999-12-31'
+      const bDate=b.scheduled_on||b.due_on||'9999-12-31'
+      return aDate.localeCompare(bDate)||a.priority-b.priority
+    })
+    const done=tasks.filter(t=>(t.status==='done'||t.status==='archived')&&!t.metadata?.excluded_as_non_task)
+      .sort((a,b)=>(b.completed_at||'').localeCompare(a.completed_at||'')).slice(0,25)
+    return {todayRows,tomorrowRows,pending,done}
+  },[tasks,today,tomorrow])
   return <div className="space-y-7">
-    <div className="flex flex-wrap gap-2 text-xs">
-      <a className="rounded-full border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-700" href="#tareas-hoy">Hoy · {ordered.todayRows.length}</a>
-      <a className="rounded-full border border-indigo-200 bg-indigo-50 px-3 py-2 font-semibold text-indigo-800" href="#tareas-manana">Mañana · {ordered.tomorrowRows.length}</a>
-      <a className="rounded-full border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-700" href="#tareas-semana">Semana · {ordered.weekly.length}</a>
-    </div>
-    <div className="grid gap-5 lg:grid-cols-2">
-      <div id="tareas-hoy"><Section title="Hoy" description={'Acciones del '+today+'. Máximo '+maxTasks+' en foco. Las atrasadas siguen aquí hasta completarlas.'} items={ordered.todayRows.slice(0,maxTasks)} today={today} onUpdate={onUpdate}/></div>
-      <div id="tareas-manana" className="rounded-2xl border border-indigo-200 bg-indigo-50/40 p-4"><Section title="Mañana" description={'Planificadas para '+tomorrow+'. Puedes adelantar una tarea o moverla de día desde su ficha.'} items={ordered.tomorrowRows} today={today} onUpdate={onUpdate}/></div>
-    </div>
-    {ordered.todayRows.length>maxTasks&&<Section title="Cola de hoy" description="Exceso de capacidad, visible pero no perdido." items={ordered.todayRows.slice(maxTasks)} today={today} onUpdate={onUpdate}/>}
-    <div id="tareas-semana"><Section title="Resto de la semana" description="Tareas con fecha de trabajo, límite o planificación en los próximos siete días." items={ordered.weekly} today={today} onUpdate={onUpdate}/></div>
-    {ordered.later.length>0&&<Section title="Más adelante" description="Pendientes con fechas futuras o todavía sin día concreto; ninguna se pierde." items={ordered.later} today={today} onUpdate={onUpdate}/>}
-    {ordered.done.length>0&&<Section title="Realizadas y archivadas" description="Historial reciente. Solo se reabren por decisión explícita." items={ordered.done} today={today} onUpdate={onUpdate}/>}
+    <nav className="flex flex-wrap gap-2 text-xs" aria-label="Ir a grupo de tareas">
+      <a href="#tareas-urgentes" className="rounded-full border border-indigo-200 bg-indigo-50 px-3 py-2 font-semibold text-indigo-800">Urgentes · {ordered.todayRows.length+ordered.tomorrowRows.length}</a>
+      <a href="#tareas-pendientes" className="rounded-full border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-700">Pendientes adicionales · {ordered.pending.length}</a>
+      <a href="#tareas-historial" className="rounded-full border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-700">Realizadas · {ordered.done.length}</a>
+    </nav>
+    <section id="tareas-urgentes" className="space-y-4">
+      <div><h2 className="text-lg font-semibold text-slate-950">Tareas urgentes</h2>
+        <p className="mt-1 text-xs text-slate-500">Acciones que requieren atención hoy o mañana. Foco recomendado: {maxTasks} por jornada. Las demás siguen visibles.</p>
+      </div>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div id="tareas-hoy" className="rounded-2xl border border-slate-200 bg-white p-3"><Section title={'Hoy · '+today.slice(8,10)+'/'+today.slice(5,7)} description="Acciones inmediatas, vencimientos y conversaciones que requieren respuesta." items={ordered.todayRows} today={today} onUpdate={onUpdate}/></div>
+        <div id="tareas-manana" className="rounded-2xl border border-indigo-200 bg-indigo-50/40 p-3"><Section title={'Mañana · '+tomorrow.slice(8,10)+'/'+tomorrow.slice(5,7)} description="Acciones programadas para el siguiente día. No adelantar trabajo por recibir un correo." items={ordered.tomorrowRows} today={today} onUpdate={onUpdate}/></div>
+      </div>
+    </section>
+    <div id="tareas-pendientes"><Section title="Pendientes adicionales" description="Ideas, tareas manuales, preparación de reuniones futuras y revisiones de relaciones. No son interrupciones de hoy." items={ordered.pending} today={today} onUpdate={onUpdate}/></div>
+    {ordered.done.length>0&&<details id="tareas-historial" className="rounded-xl border border-slate-200 bg-white p-4">
+      <summary className="cursor-pointer text-sm font-semibold text-slate-900">Realizadas y archivadas ({ordered.done.length})</summary>
+      <div className="mt-4"><Section title="Historial reciente" description="Las tareas resueltas se conservan sin volver a abrirse automáticamente." items={ordered.done} today={today} onUpdate={onUpdate}/></div>
+    </details>}
   </div>
 }
