@@ -119,7 +119,7 @@ function Group({title,description,rows,onSave,tasks,notes,today}:{title:string;d
     {rows.length?<div className="space-y-2">{rows.map(r=><RelationCard key={r.id} initial={r} onSave={onSave} tasks={linkedTasks(r)} notes={linkedNotes(r)} today={today}/>)}</div>:<p className="rounded-lg border border-dashed border-slate-200 p-4 text-xs text-slate-500">No hay relaciones en esta sección.</p>}
   </section>
 }
-export default function DailyRelationships({initialRelations,initialTasks=[],initialNotes=[],today}:{initialRelations:DailyRelation[];initialTasks?:DailyRelationTask[];initialNotes?:DailyRelationNote[];today:string}){
+export default function DailyRelationships({initialRelations,initialTasks=[],initialNotes=[],today,view='commercial'}:{initialRelations:DailyRelation[];initialTasks?:DailyRelationTask[];initialNotes?:DailyRelationNote[];today:string;view?:'commercial'|'editorial'}){
   const [relations,setRelations]=useState(initialRelations)
   const [showDormant,setShowDormant]=useState(false)
   const [showEditorialWaiting,setShowEditorialWaiting]=useState(false)
@@ -134,16 +134,16 @@ export default function DailyRelationships({initialRelations,initialTasks=[],ini
       dormant:relations.filter(r=>r.status==='dormant'||r.status==='closed')
     }
   },[relations])
+  if(view==='editorial')return <div className="space-y-4">
+    <Group title="Editorial y medios" description="Periodistas, redacciones y artículos, separados de clientes y colaboradores comerciales. Colaboraciones verificadas." rows={groups.editorialActive} onSave={change} tasks={initialTasks} notes={initialNotes} today={today}/>
+    <button type="button" className={button} onClick={()=>setShowEditorialWaiting(v=>!v)} aria-expanded={showEditorialWaiting}>
+      {showEditorialWaiting?'Ocultar':'Mostrar'} propuestas editoriales y contactos en espera ({groups.editorialWaiting.length})
+    </button>
+    {showEditorialWaiting&&<Group title="Propuestas editoriales en curso" description="Propuestas enviadas y decisiones pendientes de la redacción. No generar tareas por el mero hecho de esperar." rows={groups.editorialWaiting} onSave={change} tasks={initialTasks} notes={initialNotes} today={today}/>}
+  </div>
   return <div className="space-y-6">
     <Group title="Clientes y colaboradores" description="Primero el nombre. El indicador muestra si existe una tarea real pendiente; abre + para consultar la relación." rows={groups.companies} onSave={change} tasks={initialTasks} notes={initialNotes} today={today}/>
     <Group title="Trabajadores y técnicos" description="Colaboración y ejecución, separadas de las relaciones comerciales." rows={groups.workers} onSave={change} tasks={initialTasks} notes={initialNotes} today={today}/>
-    <div className="space-y-3 border-t border-slate-200 pt-5" id="relaciones-editoriales">
-      <Group title="Editorial y medios" description="Redacciones y periodistas por separado de clientes, partners y personal técnico. Colaboraciones activas." rows={groups.editorialActive} onSave={change} tasks={initialTasks} notes={initialNotes} today={today}/>
-      <button type="button" className={button} onClick={()=>setShowEditorialWaiting(v=>!v)} aria-expanded={showEditorialWaiting}>
-        {showEditorialWaiting?'Ocultar':'Ver'} propuestas editoriales pendientes / en espera ({groups.editorialWaiting.length})
-      </button>
-      {showEditorialWaiting&&<Group title="Propuestas y contactos editoriales" description="Envíos y respuestas en espera, sin convertirlos automáticamente en oportunidades comerciales ni tareas de seguimiento." rows={groups.editorialWaiting} onSave={change} tasks={initialTasks} notes={initialNotes} today={today}/>}
-    </div>
     <div><button type="button" className={button} onClick={()=>setShowDormant(v=>!v)}>{showDormant?'Ocultar':'Mostrar'} relaciones inactivas y cerradas ({groups.dormant.length})</button>
       {showDormant&&<div className="mt-4"><Group title="Fuera del circuito activo" description="Solo se reactivan con evidencia o decisión explícita." rows={groups.dormant} onSave={change} tasks={initialTasks} notes={initialNotes} today={today}/></div>}
     </div>
