@@ -66,20 +66,6 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
     queryGrowthTable<DailyRelation>('day_relationships',{tenant_id:'eq.sc-analytics',order:'display_name.asc',limit:'120'},{cacheSeconds:0}).catch(()=>[] as DailyRelation[]),
   ])
   const settings=settingRows[0]||{max_meetings_per_day:3,default_meeting_minutes:30,max_tasks_per_day:6,timezone:'Europe/Madrid'}
-  const active=taskRows.filter(t=>t.status==='open'||t.status==='in_progress')
-  const waits=taskRows.filter(t=>t.status==='waiting')
-  const dueFollowups=waits.filter(t=>Boolean(t.waiting_until)&&String(t.waiting_until)<=date&&Number(t.followup_count||0)<2)
-  const dueWork=active.filter(t=>
-    (t.scheduled_on && t.scheduled_on<=date)
-    ||(t.due_on&&t.due_on<=date)
-    ||(t.lane==='today'&&!t.scheduled_on&&!t.due_on)
-  )
-  const todayTasks=[...dueFollowups,...dueWork].sort((a,b)=>
-    Number(a.priority)-Number(b.priority)
-    || String(a.scheduled_on||a.waiting_until||'').localeCompare(String(b.scheduled_on||b.waiting_until||''))
-  )
-  const week=active.filter(t=>!todayTasks.some(x=>x.id===t.id)&&((t.scheduled_on&&t.scheduled_on<=weekEnd)||(t.due_on&&t.due_on<=weekEnd)||t.lane==='week'))
-  const waiting=waits.filter(t=>!dueFollowups.some(x=>x.id===t.id)).sort((a,b)=>String(a.waiting_until||'').localeCompare(String(b.waiting_until||'')))
   // Calendar-authorized live items take precedence, otherwise use a verified snapshot.
   // A stale CRM meeting never overrides the most recent authenticated calendar observation.
   const liveCalendar=(agendaResult?.meetings||[]).filter(m=>m.source==='google_calendar'&&m.response!=='declined')
@@ -113,14 +99,6 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
     <PageHeader eyebrow="Trabajo diario · SC-Analytics" title="Día a día" description="Trabajo diario sin ruido: las reuniones, las tareas, las relaciones profesionales y el buzón tienen sus propios espacios." actions={<Link href="/growth-admin/inbox" className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-950">Buzón</Link>}/>
     {typeof params.result==='string'&&<p className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">Cambio guardado correctamente.</p>}
     {typeof params.error==='string'&&<p className="mb-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">No se ha podido completar la acción: {params.error}</p>}
-    <section className="mb-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-      {[
-        ['Para hoy',todayTasks.length,'Incluye tareas de días anteriores'],
-        ['Esta semana',week.length,'Preparación y trabajo planificado'],
-        ['Esperando',waiting.length,'Sin presión hasta su fecha'],
-        ['Reuniones 7 días',meetings.length,'Según las fuentes de agenda disponibles'],
-      ].map(([label,count,sub])=><div key={String(label)} className={adminPanel+' p-4'}><p className="text-xs font-semibold text-slate-500">{label}</p><p className="mt-1 text-3xl font-semibold text-slate-950">{count}</p><p className="mt-1 text-xs text-slate-500">{sub}</p></div>)}
-    </section>
     {(gmailState.some(c=>c.stale)||!gmailState.length)&&<section className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-4">
       <p className="text-sm font-semibold text-amber-900">El correo del CMI no está actualizado</p>
       <p className="mt-1 text-xs leading-5 text-amber-800">No generamos seguimientos automáticos a partir de mensajes antiguos. Puedes consultar Gmail directamente mientras se restablece la sincronización.</p>
