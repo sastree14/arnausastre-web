@@ -32,14 +32,14 @@ function isUrgent(task:DailyTask,today:string,tomorrow:string){
   const bucket=task.metadata?.task_bucket
   const hardDeadlineSoon=Boolean(task.due_on&&task.due_on<=tomorrow)
   if(bucket==='pending')return hardDeadlineSoon
-  // Never turn a preparation for a far-away meeting into today's urgent work
-  // merely because its scheduled_on was accidentally moved forward.
+  const plannedSoon=Boolean(task.scheduled_on&&task.scheduled_on<=tomorrow)
+  if(bucket==='urgent')return hardDeadlineSoon||plannedSoon||!task.scheduled_on
+  // Far-away meetings do not become urgent if an automated run accidentally
+  // schedules their preparation for today. An explicit user override wins.
   if(task.source==='calendar'&&typeof task.metadata?.meeting==='string'){
     const meetingDay=task.metadata.meeting.slice(0,10)
     if(meetingDay>datePlus(today,2)&&!hardDeadlineSoon)return false
   }
-  const plannedSoon=Boolean(task.scheduled_on&&task.scheduled_on<=tomorrow)
-  if(bucket==='urgent')return hardDeadlineSoon||plannedSoon||!task.scheduled_on
   if(hardDeadlineSoon)return true
   if(task.source==='manual'||task.source==='meeting_note')return task.priority===1&&(plannedSoon||!task.scheduled_on)
   return plannedSoon
