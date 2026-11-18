@@ -28,6 +28,7 @@ type DayTask = {
   metadata?: Record<string,unknown>|null
   completed_at?: string|null
 }
+type DayMeetingSnapshot = {id:string;title:string;starts_at:string;ends_at:string;status:string;calendar_url:string;source_checked_at:string;notes?:string}
 type DayNote = {id:string;title:string;body:string;contact_email?:string|null;audio_path?:string|null;transcription_state?:string;created_at:string}
 type DaySettings = {max_meetings_per_day:number;default_meeting_minutes:number;max_tasks_per_day:number;timezone:string}
 type GmailConnection = {provider_subject:string;account_type?:string;metadata?:Record<string,unknown>}
@@ -102,12 +103,13 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
   const params=await searchParams
   const date=todayInMadrid(), weekEnd=addDays(date,7)
-  const [taskRows,noteRows,settingRows,agendaResult,connections]=await Promise.all([
+  const [taskRows,noteRows,settingRows,agendaResult,connections,snapshotRows]=await Promise.all([
     queryGrowthTable<DayTask>('day_tasks',{tenant_id:'eq.sc-analytics',order:'created_at.desc',limit:'500'},{cacheSeconds:0}).catch(()=>[] as DayTask[]),
     queryGrowthTable<DayNote>('day_notes',{tenant_id:'eq.sc-analytics',order:'created_at.desc',limit:'16'},{cacheSeconds:0}).catch(()=>[] as DayNote[]),
     queryGrowthTable<DaySettings>('day_settings',{tenant_id:'eq.sc-analytics',limit:'1'},{cacheSeconds:0}).catch(()=>[] as DaySettings[]),
     getMeetingAgenda().catch(()=>null),
     getGmailConnections().catch(()=>[] as GmailConnection[]),
+    queryGrowthTable<DayMeetingSnapshot>('day_meetings',{tenant_id:'eq.sc-analytics',order:'starts_at.asc',limit:'200'},{cacheSeconds:0}).catch(()=>[] as DayMeetingSnapshot[]),
   ])
   const settings=settingRows[0]||{max_meetings_per_day:3,default_meeting_minutes:30,max_tasks_per_day:6,timezone:'Europe/Madrid'}
   const active=taskRows.filter(t=>t.status==='open')
@@ -127,10 +129,29 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
   const week=active.filter(t=>!todayTasks.some(x=>x.id===t.id)&&((t.scheduled_on&&t.scheduled_on<=weekEnd)||(t.due_on&&t.due_on<=weekEnd)||t.lane==='week'))
   const waiting=waits.filter(t=>!dueFollowups.some(x=>x.id===t.id)).sort((a,b)=>String(a.waiting_until||'').localeCompare(String(b.waiting_until||'')))
   const done=taskRows.filter(t=>t.status==='done').sort((a,b)=>String(b.completed_at||'').localeCompare(String(a.completed_at||''))).slice(0,8)
-  const meetings=(agendaResult?.meetings||[]).filter(m=>m.response!=='declined'&&localDay(m.starts_at)>=date&&localDay(m.starts_at)<=weekEnd)
+  // Calendar-authorized live items take precedence, otherwise use a verified snapshot.
+  // A stale CRM meeting never overrides the most recent authenticated calendar observation.
+  const liveCalendar=(agendaResult?.meetings||[]).filter(m=>m.source==='google_calendar'&&m.response!=='declined')
+  const liveIds=new Set(liveCalendar.map(m=>m.calendar_event_id).filter(Boolean))
+  const snapshots=snapshotRows.filter(s=>s.status!=='cancelled'&&!liveIds.has(s.id)).map(s=>({
+    id:'snapshot:'+s.id, title:s.title, starts_at:s.starts_at, ends_at:s.ends_at,
+    url:s.calendar_url, account:'Agenda verificada', source:'google_calendar' as const,
+    status:s.status, calendar_event_id:s.id,
+    response:(s.status==='needs_reschedule'?'tentative':'accepted') as BusinessMeeting['response'],
+  }))
+  const snapshotIds=new Set(snapshotRows.map(s=>s.id))
+  const snapshotTimes=new Set(snapshots.map(s=>s.starts_at+'|'+s.title.toLowerCase()))
+  const crmOnly=(agendaResult?.meetings||[]).filter(m=>
+    m.source==='crm'&&m.response!=='declined'
+    &&(!m.calendar_event_id||!snapshotIds.has(m.calendar_event_id))
+    &&!snapshotTimes.has(m.starts_at+'|'+m.title.toLowerCase())
+  )
+  const meetings=[...liveCalendar,...snapshots,...crmOnly].filter(m=>localDay(m.starts_at)>=date&&localDay(m.starts_at)<=weekEnd)
     .sort((a,b)=>a.starts_at.localeCompare(b.starts_at))
+  const newestSnapshot=snapshotRows.reduce((latest,s)=>s.source_checked_at>latest?s.source_checked_at:latest,'')
+  const snapshotsStale=!newestSnapshot||!Number.isFinite(Date.parse(newestSnapshot))||Date.now()-Date.parse(newestSnapshot)>36*60*60*1000
   const meetingsToday = meetings.filter(m=>localDay(m.starts_at)===date)
-  const meetingCountByDay = meetings.reduce<Record<string,number>>((acc,m)=>{const key=localDay(m.starts_at);acc[key]=(acc[key]||0)+1;return acc},{})
+  const meetingCountByDay = meetings.reduce<Record<string,number>>((acc,m)=>{const key=localDay(m.starts_at);if(m.status!=='needs_reschedule')acc[key]=(acc[key]||0)+1;return acc},{})
   const activeContacts=Array.from(new Map(taskRows.filter(t=>t.metadata?.active_conversation===true&&t.status!=='archived'&&t.contact_email).map(t=>[t.contact_email,t])).values())
   const gmailState=connections.filter(c=>c.provider_subject&&c.provider_subject.includes('@')).map(c=>{
     const meta=(c.metadata?.gmail_sync||{}) as Record<string,unknown>
@@ -164,7 +185,7 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
           {meetingsToday.length>0&&<div className="mb-3 space-y-2">
             <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Reuniones de hoy · {meetingsToday.length}</p>
             {meetingsToday.map(m=><div key={m.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-indigo-200 bg-indigo-50 p-3">
-              <div><p className="text-sm font-semibold text-indigo-950">{localTime(m.starts_at)} · {m.title}</p><p className="mt-1 text-xs text-indigo-700">{m.source==='google_calendar'?'Verificada en Google Calendar':'Anotada en CMI (verificar)'}</p></div>
+              <div><p className="text-sm font-semibold text-indigo-950">{localTime(m.starts_at)} · {m.title}</p><p className="mt-1 text-xs text-indigo-700">{m.status==='needs_reschedule'?'Pendiente de cambiar la fecha':m.source==='google_calendar'?'Cita verificada en Calendar':'Anotada en CMI (verificar)'}</p></div>
               {safeLink(m.url)&&<a href={m.url} className="text-xs font-semibold text-indigo-700 underline">Abrir convocatoria</a>}
             </div>)}
           </div>}
@@ -206,10 +227,11 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
         <section className={adminPanel+' p-5'}>
           <div className="flex items-center justify-between gap-2"><h2 className="text-lg font-semibold text-slate-950">Reuniones</h2><Badge tone="blue">Máx. {settings.max_meetings_per_day} al día</Badge></div>
           <p className="mb-3 mt-1 text-xs leading-5 text-slate-500">La agenda se consulta desde tus integraciones. Las citas de CRM sin verificación de Calendar no equivalen a una reserva confirmada.</p>
-          {agendaResult&&agendaResult.calendar_authorized===0&&<p className="mb-3 text-xs font-semibold text-amber-700">El CMI no puede verificar ahora mismo el calendario directamente. Comprueba la invitación en Google Calendar antes de actuar.</p>}
+          {agendaResult&&agendaResult.calendar_authorized===0&&<p className="mb-3 text-xs font-semibold text-amber-700">La conexión de Calendar del CMI no tiene permisos de lectura. Se muestran copias verificadas desde ChatGPT; confirma directamente las citas si hay cambios recientes.</p>}
+          {snapshotsStale&&<p className="mb-3 text-xs font-semibold text-amber-700">Las copias de reuniones llevan más de 36 horas sin revisarse: comprueba Google Calendar.</p>}
           <div className="space-y-3">
             {meetings.slice(0,12).map((m:BusinessMeeting)=><div key={m.id} className="rounded-xl border border-slate-200 p-3">
-              <div className="flex flex-wrap items-start justify-between gap-2"><p className="text-sm font-semibold text-slate-900">{m.title}</p><Badge tone={m.source==='google_calendar'?'green':'amber'}>{m.source==='google_calendar'?'Calendar':'CMI'}</Badge></div>
+              <div className="flex flex-wrap items-start justify-between gap-2"><p className="text-sm font-semibold text-slate-900">{m.title}</p><Badge tone={m.status==='needs_reschedule'?'amber':m.source==='google_calendar'?'green':'amber'}>{m.status==='needs_reschedule'?'Reprogramar':m.source==='google_calendar'?'Calendar':'CMI'}</Badge></div>
               <p className="mt-1 text-xs text-slate-500">{localDate(m.starts_at)} · {localTime(m.starts_at)} · {m.account}</p>
               {meetingCountByDay[localDay(m.starts_at)]>=settings.max_meetings_per_day&&<p className="mt-1 text-xs font-medium text-amber-700">Límite diario alcanzado: no proponer más reuniones este día.</p>}
               <div className="mt-2 flex flex-wrap gap-2">
