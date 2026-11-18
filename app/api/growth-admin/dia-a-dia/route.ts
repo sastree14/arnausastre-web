@@ -9,6 +9,8 @@ type DayTask = {
   status: 'open' | 'waiting' | 'done' | 'archived'
   lane: 'today' | 'week' | 'waiting'
   followup_count: number
+  waiting_until?: string|null
+  contact_email?: string|null
   metadata?: Record<string, unknown> | null
 }
 
@@ -40,10 +42,76 @@ function numberIn(raw: FormDataEntryValue | null, fallback: number, min: number,
   return Number.isInteger(n) && n >= min && n <= max ? n : fallback
 }
 
+
+type JsonAction = {
+  id?:string
+  action?:string
+  status?:string
+  waiting_until?:string|null
+}
+async function handleInlineChange(request:Request, todayDate:string) {
+  const input=await request.json().catch(()=>null) as JsonAction|null
+  if(!input||!input.id||!/^[0-9a-f-]{36}$/i.test(input.id))return NextResponse.json({error:'Identificador de tarea inválido'},{status:400})
+  const match=await queryGrowthTable<DayTask>('day_tasks',{id:'eq.'+input.id,tenant_id:'eq.'+TENANT,limit:'1'},{cacheSeconds:0})
+  const task=match[0]
+  if(!task)return NextResponse.json({error:'No se ha encontrado la tarea'},{status:404})
+  const now=new Date().toISOString()
+  const changes:Record<string,unknown>={updated_at:now}
+  if(input.action==='status_change') {
+    const status=String(input.status||'')
+    if(!['open','in_progress','waiting','done','archived'].includes(status))return NextResponse.json({error:'Estado no permitido'},{status:400})
+    changes.status=status
+    changes.completed_at=['done','archived'].includes(status)?now:null
+    if(status==='waiting') {
+      changes.lane='waiting'
+      changes.scheduled_on=null
+      changes.waiting_until=input.waiting_until&&isDay(input.waiting_until)?input.waiting_until:(task.status==='waiting'&&'waiting_until' in task&&typeof task.waiting_until==='string'?task.waiting_until:daysAfter(todayDate,7))
+    } else if(status==='open'||status==='in_progress') {
+      if(task.status==='waiting'||task.status==='done'||task.status==='archived') {
+        changes.lane='today'
+        changes.scheduled_on=todayDate
+      }
+      changes.waiting_until=null
+    }
+  } else if(input.action==='followup_sent') {
+    if(task.status!=='waiting'||task.followup_count>=2) return NextResponse.json({error:'No se puede registrar otro seguimiento'},{status:409})
+    if(!('waiting_until' in task)||!task.waiting_until||String(task.waiting_until)>todayDate) return NextResponse.json({error:'Todavía no ha vencido esta espera'},{status:409})
+    const next=task.followup_count+1
+    changes.followup_count=next
+    changes.last_outbound_at=now
+    changes.waiting_until=next>=2?null:(input.waiting_until&&isDay(input.waiting_until)?input.waiting_until:daysAfter(todayDate,7))
+    if(next>=2){changes.status='archived';changes.completed_at=now}
+    changes.metadata={...(task.metadata||{}),last_followup_at:now,closed_after_two_followups:next>=2}
+    if(next>=2&&'contact_email' in task&&task.contact_email) {
+      const matches=await queryGrowthTable<{id:string}>('day_relationships',{tenant_id:'eq.'+TENANT,contact_email:'eq.'+String(task.contact_email),limit:'4'},{cacheSeconds:0})
+      await Promise.all(matches.map(m=>updateGrowthRow('day_relationships','id',m.id,{status:'dormant',followup_count:2,next_review_on:null,updated_at:now})))
+    }
+  } else if(input.action==='reply_received') {
+    if(task.status!=='waiting')return NextResponse.json({error:'Esta tarea no está en espera'},{status:409})
+    changes.status='open';changes.lane='today';changes.scheduled_on=todayDate;changes.waiting_until=null
+    changes.followup_count=0;changes.last_inbound_at=now;changes.completed_at=null
+    changes.metadata={...(task.metadata||{}),active_conversation:true,last_reply_at:now}
+    if('contact_email' in task&&task.contact_email){
+      const matches=await queryGrowthTable<{id:string}>('day_relationships',{tenant_id:'eq.'+TENANT,contact_email:'eq.'+String(task.contact_email),limit:'4'},{cacheSeconds:0})
+      await Promise.all(matches.map(m=>updateGrowthRow('day_relationships','id',m.id,{
+        status:'active',followup_count:0,last_interaction_on:todayDate,last_interaction_kind:'email',
+        last_interaction_summary:'Respuesta registrada desde Día a día',next_review_on:null,updated_at:now,
+      })))
+    }
+  }else return NextResponse.json({error:'Acción no permitida'},{status:400})
+  const updated=await updateGrowthRow<DayTask>('day_tasks','id',input.id,changes)
+  if(!updated)return NextResponse.json({error:'No se ha podido guardar la tarea'},{status:503})
+  return NextResponse.json({ok:true,task:updated})
+}
+
 export async function POST(request: Request) {
   if (!(await isGrowthAdminAuthenticated())) return new NextResponse('Unauthorized', { status: 401 })
   const origin = request.headers.get('origin')
   if (origin && origin !== new URL(request.url).origin) return new NextResponse('Forbidden origin', { status: 403 })
+  if((request.headers.get('content-type')||'').includes('application/json')){
+    try{return await handleInlineChange(request,today())}
+    catch(error){console.error('Daily inline update failed',error);return NextResponse.json({error:'Error al guardar el cambio'},{status:503})}
+  }
   const data = await request.formData()
   const action = String(data.get('action') || '').trim()
   const date = today()
