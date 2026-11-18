@@ -34,6 +34,7 @@ type DayMeetingSnapshot = {id:string;title:string;starts_at:string;ends_at:strin
 type DayNote = {id:string;title:string;body:string;contact_email?:string|null;audio_path?:string|null;transcription_state?:string;created_at:string}
 type DaySettings = {max_meetings_per_day:number;default_meeting_minutes:number;max_tasks_per_day:number;timezone:string}
 type GmailConnection = {provider_subject:string;account_type?:string;metadata?:Record<string,unknown>}
+const button = 'rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50'
 const input = 'w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400'
 const primary = 'rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800'
 const action = '/api/growth-admin/dia-a-dia'
