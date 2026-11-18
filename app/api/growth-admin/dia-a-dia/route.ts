@@ -71,7 +71,7 @@ async function handleInlineChange(request:Request, todayDate:string) {
     changes.lane=plan?(plan<=todayDate?'today':'week'):'week'
   } else   if(input.action==='status_change') {
     const status=String(input.status||'')
-    if(!['open','in_progress','waiting','done','archived'].includes(status))return NextResponse.json({error:'Estado no permitido'},{status:400})
+    if(!['open','in_progress','done','archived'].includes(status))return NextResponse.json({error:'Estado no permitido'},{status:400})
     changes.status=status
     changes.completed_at=['done','archived'].includes(status)?now:null
     if(status==='waiting') {
@@ -145,17 +145,16 @@ export async function POST(request: Request) {
       const title = String(data.get('title') || '').trim().slice(0, 240)
       if (!title) return errorRedirect(request, 'Introduce un título')
       const laneRaw = String(data.get('lane') || 'today')
-      const lane = laneRaw === 'week' || laneRaw === 'waiting' ? laneRaw : 'today'
+      const lane = laneRaw === 'week' ? 'week' : 'today'
       const scheduledRaw = String(data.get('scheduled_on') || '').trim()
       const dueRaw = String(data.get('due_on') || '').trim()
-      const waitRaw = String(data.get('waiting_until') || '').trim()
       const scheduled_on = isDay(scheduledRaw) ? scheduledRaw : lane === 'today' ? date : null
       const due_on = isDay(dueRaw) ? dueRaw : null
-      const waiting_until = lane === 'waiting' ? (isDay(waitRaw) ? waitRaw : daysAfter(date, 7)) : null
+      const waiting_until = null
       await insertGrowthRow('day_tasks', {
         id: randomUUID(), tenant_id: TENANT, title,
         details: String(data.get('details') || '').trim().slice(0, 6000),
-        status: lane === 'waiting' ? 'waiting' : 'open', lane,
+        status: 'open', lane,
         priority: numberIn(data.get('priority'), 2, 1, 3),
         scheduled_on, due_on, waiting_until,
         contact_email: String(data.get('contact_email') || '').trim().slice(0, 320) || null,
