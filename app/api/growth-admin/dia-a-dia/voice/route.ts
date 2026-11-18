@@ -36,11 +36,17 @@ export async function POST(request:Request) {
   const title = String(form.get('title')||'').trim().slice(0,240)
   const body = String(form.get('body')||'').trim().slice(0,20000)
   const contactEmail = String(form.get('contact_email')||'').trim().slice(0,320)
+  const relationId = String(form.get('relation_id')||'').trim().slice(0,80)
   const meetingDate = String(form.get('meeting_date')||'')
   const taskTitle = String(form.get('task_title')||'').trim().slice(0,240)
   const taskDate = String(form.get('task_date')||'')
   const file = form.get('audio')
   if (!title) return NextResponse.json({error:'Pon un título a la nota'},{status:400})
+  if (relationId && !/^[a-z0-9-]{2,80}$/.test(relationId)) return NextResponse.json({error:'Relación no válida'},{status:400})
+  if (relationId) {
+    const linked=await queryGrowthTable<{id:string}>('day_relationships',{tenant_id:'eq.'+TENANT,id:'eq.'+relationId,limit:'1'},{cacheSeconds:0})
+    if (!linked.length) return NextResponse.json({error:'No se ha encontrado la relación'},{status:404})
+  }
   const isAudio = file instanceof File && file.size>0
   if (!isAudio && !body) return NextResponse.json({error:'Graba audio o escribe una nota'},{status:400})
   if (isAudio && file.size>MAX_BYTES) return NextResponse.json({error:'Audio demasiado largo (máximo 12 MB)'},{status:413})
@@ -62,29 +68,30 @@ export async function POST(request:Request) {
       id:noteId,tenant_id:TENANT,title,body,
       meeting_date:/^\d{4}-\d{2}-\d{2}$/.test(meetingDate)?meetingDate:null,
       contact_email:contactEmail||null,
+      relation_id:relationId||null,
       audio_path:audioPath,
       transcription_state:isAudio?(body?'transcribed':'needs_text'):'none',
     })
-    // A written, attributable post-meeting note is a verified interaction.
-    // Audio without text stays a recording only; never infer commitments from it.
-    if (contactEmail && body.trim()) {
-      const eventDay=/^\d{4}-\d{2}-\d{2}$/.test(meetingDate)&&meetingDate<=dateKey()?meetingDate:dateKey()
-      const relations=await queryGrowthTable<{id:string}>('day_relationships',{
+    // Personal notes do not prove a new interaction. Update the relationship's
+    // last meeting only if a real past meeting date and written details were supplied.
+    if (body.trim() && /^\d{4}-\d{2}-\d{2}$/.test(meetingDate) && meetingDate<=dateKey() && (relationId||contactEmail)) {
+      const relations=relationId?[{id:relationId}]:await queryGrowthTable<{id:string}>('day_relationships',{
         tenant_id:'eq.'+TENANT,contact_email:'eq.'+contactEmail.toLowerCase(),limit:'5'
       },{cacheSeconds:0}).catch(()=>[] as Array<{id:string}>)
       await Promise.all(relations.map(r=>updateGrowthRow('day_relationships','id',r.id,{
-        status:'active',followup_count:0,last_interaction_on:eventDay,
+        status:'active',followup_count:0,last_interaction_on:meetingDate,
         last_interaction_kind:'meeting',last_interaction_summary:body.slice(0,1200),
         last_verified_at:new Date().toISOString(),updated_at:new Date().toISOString(),
       })))
     }
     if (taskTitle) {
+      const nextBusinessDay=()=>{const d=new Date(dateKey()+'T12:00:00Z');do{d.setUTCDate(d.getUTCDate()+1)}while([0,6].includes(d.getUTCDay()));return d.toISOString().slice(0,10)}
       await insertGrowthRow('day_tasks',{
         id:randomUUID(),tenant_id:TENANT,title:taskTitle,source:'meeting_note',source_key:noteId,
         details:body.slice(0,6000),status:'open',lane:'today',priority:2,
-        scheduled_on:/^\d{4}-\d{2}-\d{2}$/.test(taskDate)?taskDate:dateKey(),
+        scheduled_on:/^\d{4}-\d{2}-\d{2}$/.test(taskDate)?taskDate:nextBusinessDay(),
         contact_email:contactEmail||null,
-        metadata:{note_id:noteId,created_from:'voice_note'},
+        metadata:{note_id:noteId,relation_id:relationId||null,created_from:'voice_note'},
       })
     }
     return NextResponse.json({ok:true,id:noteId,audio_saved:Boolean(audioPath),text_saved:Boolean(body),task_created:Boolean(taskTitle)})
