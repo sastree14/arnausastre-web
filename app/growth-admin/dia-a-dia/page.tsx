@@ -105,11 +105,11 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
       {gmailState.map(c=><p key={c.account} className="mt-1 text-xs text-amber-800">{c.account}: {c.last?'última revisión '+localDate(c.last):'sin revisión confirmada'} {c.error?'· error en conexión':''}</p>)}
       <Link href="/growth-admin/inbox" className="mt-2 inline-block text-xs font-semibold text-amber-900 underline">Revisar conexiones de Gmail</Link>
     </section>}
-    <div className="grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_minmax(340px,1fr)]">
+    <div className="space-y-6">
       <div><DailyTaskBoard initialTasks={taskRows} today={date} maxTasks={settings.max_tasks_per_day}/></div>
-      <aside className="space-y-6">
-        <section className={adminPanel+' p-5'}>
-          <h2 className="text-lg font-semibold text-slate-950">Crear una tarea</h2>
+      <aside className="grid gap-4 lg:grid-cols-2">
+        <details id="crear-tarea" className={adminPanel+' p-5'}>
+          <summary className="cursor-pointer text-sm font-semibold text-slate-950">+ Crear una tarea</summary>
           <p className="mb-4 mt-1 text-xs text-slate-500">Solo lo que requiere acción. Las esperas se programan sin cargar el día de mañana.</p>
           <form action={action} method="post" className="space-y-3">
             <input type="hidden" name="action" value="create"/>
@@ -127,9 +127,9 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
             <input type="url" name="related_document_url" placeholder="Enlace a presentación o documento" className={input}/>
             <button className={primary}>Añadir tarea</button>
           </form>
-        </section>
-        <section className={adminPanel+' p-5'}>
-          <h2 className="text-lg font-semibold text-slate-950">Preferencias de agenda</h2>
+        </details>
+        <details id="preferencias-dia" className={adminPanel+' p-5'}>
+          <summary className="cursor-pointer text-sm font-semibold text-slate-950">+ Preferencias de agenda</summary>
           <form action={action} method="post" className="mt-3 space-y-3">
             <input type="hidden" name="action" value="settings"/>
             <div className="grid grid-cols-3 gap-2">
@@ -140,7 +140,7 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
             <p className="text-xs text-slate-500">Estas preferencias regulan el planificador y las recomendaciones. No modifican todavía las restricciones nativas de Calendly.</p>
             <button className={button}>Guardar preferencias</button>
           </form>
-        </section>
+        </details>
       </aside>
     </div>
       </>}
