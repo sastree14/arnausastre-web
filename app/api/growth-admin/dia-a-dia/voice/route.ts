@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { NextResponse } from 'next/server'
-import { insertGrowthRow, isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
+import { insertGrowthRow, isGrowthAdminAuthenticated, queryGrowthTable, updateGrowthRow } from '@/lib/growth-admin'
 import { deleteGrowthAsset, growthSupabaseHeaders, growthSupabaseUrl } from '@/lib/supabase-growth'
 
 export const runtime = 'nodejs'
@@ -65,6 +65,19 @@ export async function POST(request:Request) {
       audio_path:audioPath,
       transcription_state:isAudio?(body?'transcribed':'needs_text'):'none',
     })
+    // A written, attributable post-meeting note is a verified interaction.
+    // Audio without text stays a recording only; never infer commitments from it.
+    if (contactEmail && body.trim()) {
+      const eventDay=/^\d{4}-\d{2}-\d{2}$/.test(meetingDate)&&meetingDate<=dateKey()?meetingDate:dateKey()
+      const relations=await queryGrowthTable<{id:string}>('day_relationships',{
+        tenant_id:'eq.'+TENANT,contact_email:'eq.'+contactEmail.toLowerCase(),limit:'5'
+      },{cacheSeconds:0}).catch(()=>[] as Array<{id:string}>)
+      await Promise.all(relations.map(r=>updateGrowthRow('day_relationships','id',r.id,{
+        status:'active',followup_count:0,last_interaction_on:eventDay,
+        last_interaction_kind:'meeting',last_interaction_summary:body.slice(0,1200),
+        last_verified_at:new Date().toISOString(),updated_at:new Date().toISOString(),
+      })))
+    }
     if (taskTitle) {
       await insertGrowthRow('day_tasks',{
         id:randomUUID(),tenant_id:TENANT,title:taskTitle,source:'meeting_note',source_key:noteId,
