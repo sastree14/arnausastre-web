@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
 import DailyWorkspaceTabs from '@/components/growth-admin/DailyWorkspaceTabs'
 import DailyTaskBoard from '@/components/growth-admin/DailyTaskBoard'
+import DailyWorkspaceAutoRefresh from '@/components/growth-admin/DailyWorkspaceAutoRefresh'
 import DailyRelationships, { type DailyRelation, type DailyRelationNote } from '@/components/growth-admin/DailyRelationships'
 import { PageHeader, adminPanel } from '@/components/growth-admin/AdminUi'
 import { isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
@@ -98,6 +99,7 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
   })
 
   return <AdminShell active="day-to-day">
+    <DailyWorkspaceAutoRefresh/>
     <PageHeader eyebrow="Trabajo diario · SC-Analytics" title="Día a día" description="Urgentes para hoy y mañana, pendientes adicionales y relaciones actualizadas. Solo aparece trabajo que requiere una acción." actions={<Link href="/growth-admin/inbox" className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-950">Buzón</Link>}/>
     {typeof params.result==='string'&&<p className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">Cambio guardado correctamente.</p>}
     {typeof params.error==='string'&&<p className="mb-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">No se ha podido completar la acción: {params.error}</p>}
