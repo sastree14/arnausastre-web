@@ -151,7 +151,7 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
       {snapshotsStale&&<p className="mt-1 text-xs text-amber-700">La copia de Calendar tiene más de 36 horas: comprueba los posibles cambios.</p>}
       <div className="mt-4 space-y-5">
         {meetingDays.map(({day,index,rows})=><section key={day} className="space-y-2">
-          <h3 className="text-sm font-semibold text-slate-900">{index===0?'Hoy':index===1?'Mañana':localDate(day+'T12:00:00Z')} · {localDate(day+'T12:00:00Z')}</h3>
+          <h3 className="text-sm font-semibold text-slate-900">{index===0?'Hoy · '+localDate(day+'T12:00:00Z'):index===1?'Mañana · '+localDate(day+'T12:00:00Z'):localDate(day+'T12:00:00Z')}</h3>
           {rows.length?rows.map(m=><div key={m.id} className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 px-3 py-2.5">
             <div className="min-w-0">
               <p className="text-sm font-medium text-slate-900">{m.title}</p>
