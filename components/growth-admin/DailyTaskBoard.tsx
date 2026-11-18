@@ -142,7 +142,7 @@ export default function DailyTaskBoard({initialTasks,today,maxTasks}:{initialTas
     const weekly=active.filter(t=>!already.has(t.id)&&((t.scheduled_on&&t.scheduled_on<=weekEnd)||(t.due_on&&t.due_on<=weekEnd)||t.lane==='week'&&!t.scheduled_on&&!t.due_on))
       .sort((a,b)=>(a.scheduled_on||a.due_on||'').localeCompare(b.scheduled_on||b.due_on||''))
     const later=active.filter(t=>!already.has(t.id)&&!weekly.some(w=>w.id===t.id)).sort((a,b)=>(a.scheduled_on||a.due_on||'').localeCompare(b.scheduled_on||b.due_on||''))
-    const done=tasks.filter(t=>t.status==='done'||t.status==='archived').sort((a,b)=>(b.completed_at||'').localeCompare(a.completed_at||'')).slice(0,12)
+    const done=tasks.filter(t=>(t.status==='done'||t.status==='archived')&&!t.metadata?.excluded_as_non_task).sort((a,b)=>(b.completed_at||'').localeCompare(a.completed_at||'')).slice(0,12)
     return {todayRows,tomorrowRows,weekly,later,done}
   },[tasks,today,tomorrow,weekEnd])
   return <div className="space-y-7">
