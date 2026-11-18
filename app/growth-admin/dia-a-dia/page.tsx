@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
-import DailyVoiceNote from '@/components/growth-admin/DailyVoiceNote'
+import DailyWorkspaceTabs from '@/components/growth-admin/DailyWorkspaceTabs'
 import DailyTaskBoard from '@/components/growth-admin/DailyTaskBoard'
 import DailyRelationships, { type DailyRelation } from '@/components/growth-admin/DailyRelationships'
 import { Badge, PageHeader, adminPanel } from '@/components/growth-admin/AdminUi'
@@ -31,7 +31,6 @@ type DayTask = {
   completed_at?: string|null
 }
 type DayMeetingSnapshot = {id:string;title:string;starts_at:string;ends_at:string;status:string;calendar_url:string;source_checked_at:string;notes?:string}
-type DayNote = {id:string;title:string;body:string;contact_email?:string|null;audio_path?:string|null;transcription_state?:string;created_at:string}
 type DaySettings = {max_meetings_per_day:number;default_meeting_minutes:number;max_tasks_per_day:number;timezone:string}
 type GmailConnection = {provider_subject:string;account_type?:string;metadata?:Record<string,unknown>}
 const button = 'rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50'
@@ -56,9 +55,8 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
   if (!(await isGrowthAdminAuthenticated())) redirect('/growth-admin/login')
   const params=await searchParams
   const date=todayInMadrid(), weekEnd=addDays(date,7)
-  const [taskRows,noteRows,settingRows,agendaResult,connections,snapshotRows,relationRows]=await Promise.all([
+  const [taskRows,settingRows,agendaResult,connections,snapshotRows,relationRows]=await Promise.all([
     queryGrowthTable<DayTask>('day_tasks',{tenant_id:'eq.sc-analytics',order:'created_at.desc',limit:'500'},{cacheSeconds:0}).catch(()=>[] as DayTask[]),
-    queryGrowthTable<DayNote>('day_notes',{tenant_id:'eq.sc-analytics',order:'created_at.desc',limit:'16'},{cacheSeconds:0}).catch(()=>[] as DayNote[]),
     queryGrowthTable<DaySettings>('day_settings',{tenant_id:'eq.sc-analytics',limit:'1'},{cacheSeconds:0}).catch(()=>[] as DaySettings[]),
     getMeetingAgenda().catch(()=>null),
     getGmailConnections().catch(()=>[] as GmailConnection[]),
@@ -96,38 +94,17 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
   })
 
   return <AdminShell active="day-to-day">
-    <PageHeader eyebrow="Trabajo diario · SC-Analytics" title="Día a día" description="Trabajo diario sin ruido: las reuniones, las tareas, las relaciones profesionales y el buzón tienen sus propios espacios." actions={<Link href="/growth-admin/inbox" className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-950">Buzón</Link>}/>
+    <PageHeader eyebrow="Trabajo diario · SC-Analytics" title="Día a día" description="Selecciona Tareas, Reuniones o Clientes. El trabajo de mañana y los plazos aparecen directamente en el planificador." actions={<Link href="/growth-admin/inbox" className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-950">Buzón</Link>}/>
     {typeof params.result==='string'&&<p className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">Cambio guardado correctamente.</p>}
     {typeof params.error==='string'&&<p className="mb-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">No se ha podido completar la acción: {params.error}</p>}
+    <DailyWorkspaceTabs
+      tasks={<>
     {(gmailState.some(c=>c.stale)||!gmailState.length)&&<section className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-4">
       <p className="text-sm font-semibold text-amber-900">El correo del CMI no está actualizado</p>
       <p className="mt-1 text-xs leading-5 text-amber-800">No generamos seguimientos automáticos a partir de mensajes antiguos. Puedes consultar Gmail directamente mientras se restablece la sincronización.</p>
       {gmailState.map(c=><p key={c.account} className="mt-1 text-xs text-amber-800">{c.account}: {c.last?'última revisión '+localDate(c.last):'sin revisión confirmada'} {c.error?'· error en conexión':''}</p>)}
       <Link href="/growth-admin/inbox" className="mt-2 inline-block text-xs font-semibold text-amber-900 underline">Revisar conexiones de Gmail</Link>
     </section>}
-    <section id="reuniones" className="mb-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div><p className="text-xs font-semibold uppercase tracking-wider text-indigo-600">Agenda · Independiente de las tareas</p><h2 className="mt-1 text-2xl font-semibold text-slate-950">Reuniones</h2></div>
-        <Badge tone="blue">Límite preferido: {settings.max_meetings_per_day}/día</Badge>
-      </div>
-      <p className="mt-2 text-xs text-slate-500">Aquí solo se muestra cuándo y con quién tienes una reunión, sin enlaces de acceso ni casillas de tareas. Para conectarte, utiliza Google Calendar.</p>
-      {agendaResult?.calendar_authorized===0&&<p className="mt-2 text-xs text-amber-700">El CMI usa reuniones verificadas desde ChatGPT porque su conexión propia no tiene aún permiso de Calendar.</p>}
-      {snapshotsStale&&<p className="mt-1 text-xs text-amber-700">La copia de Google Calendar tiene más de 36 horas: verifica cualquier cambio directamente en tu calendario.</p>}
-      <div className="mt-5 grid gap-6 lg:grid-cols-2">
-        <div><h3 className="mb-3 text-sm font-semibold text-slate-900">Hoy · {meetingsToday.length}</h3>
-          <div className="space-y-2">{meetingsToday.length?meetingsToday.map(m=><div key={m.id} className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 p-3">
-            <p className="text-sm font-medium text-slate-900">{m.title}</p>
-            <span className="shrink-0 text-sm font-semibold tabular-nums text-indigo-700">{localTime(m.starts_at)}</span>
-          </div>):<Empty>No hay reuniones registradas hoy.</Empty>}</div>
-        </div>
-        <div><h3 className="mb-3 text-sm font-semibold text-slate-900">Próximos siete días</h3>
-          <div className="space-y-2">{meetings.filter(m=>localDay(m.starts_at)>date).length?meetings.filter(m=>localDay(m.starts_at)>date).map(m=><div key={m.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-200 p-3">
-            <div><p className="text-sm font-medium text-slate-900">{m.title}</p><p className="mt-1 text-xs text-slate-500">{localDate(m.starts_at)}{m.status==='needs_reschedule'?' · Fecha pendiente de reprogramar':''}</p></div>
-            <span className="shrink-0 text-sm font-semibold tabular-nums text-indigo-700">{localTime(m.starts_at)}</span>
-          </div>):<Empty>No hay reuniones próximas verificadas.</Empty>}</div>
-        </div>
-      </div>
-    </section>
     <div className="grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_minmax(340px,1fr)]">
       <div><DailyTaskBoard initialTasks={taskRows} today={date} maxTasks={settings.max_tasks_per_day}/></div>
       <aside className="space-y-6">
@@ -166,22 +143,33 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
         </section>
       </aside>
     </div>
-    <section className="mt-10 border-t border-slate-200 pt-8"><DailyRelationships initialRelations={relationRows}/></section>
-    <section className="mt-8 grid gap-5 xl:grid-cols-2">
-      <div className={adminPanel+' p-5'}>
-        <h2 className="mb-3 text-xl font-semibold text-slate-950">Notas después de una reunión</h2>
-        <DailyVoiceNote/>
+      </>}
+      meetings={<>
+    <section id="reuniones" className="mb-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div><p className="text-xs font-semibold uppercase tracking-wider text-indigo-600">Agenda · Independiente de las tareas</p><h2 className="mt-1 text-2xl font-semibold text-slate-950">Reuniones</h2></div>
+        <Badge tone="blue">Límite preferido: {settings.max_meetings_per_day}/día</Badge>
       </div>
-      <div className={adminPanel+' p-5'}>
-        <h2 className="mb-3 text-xl font-semibold text-slate-950">Historial de notas</h2>
-        <div className="space-y-3">{noteRows.length?noteRows.map(note=><article key={note.id} className="rounded-xl border border-slate-200 p-3">
-          <p className="text-sm font-semibold text-slate-900">{note.title}</p>
-          <p className="mt-1 text-xs text-slate-500">{localDate(note.created_at)} {note.contact_email&&'· '+note.contact_email}</p>
-          {note.body&&<p className="mt-2 whitespace-pre-wrap text-xs leading-5 text-slate-600">{note.body}</p>}
-          {note.audio_path&&<audio controls preload="none" className="mt-3 w-full" src={'/api/growth-admin/dia-a-dia/voice?id='+encodeURIComponent(note.id)}/>}
-          {note.transcription_state==='needs_text'&&<p className="mt-1 text-xs text-amber-700">Audio guardado. Para extraer compromisos hace falta una transcripción o resumen.</p>}
-        </article>):<Empty>Todavía no se han guardado notas.</Empty>}</div>
+      <p className="mt-2 text-xs text-slate-500">Aquí solo se muestra cuándo y con quién tienes una reunión, sin enlaces de acceso ni casillas de tareas. Para conectarte, utiliza Google Calendar.</p>
+      {agendaResult?.calendar_authorized===0&&<p className="mt-2 text-xs text-amber-700">El CMI usa reuniones verificadas desde ChatGPT porque su conexión propia no tiene aún permiso de Calendar.</p>}
+      {snapshotsStale&&<p className="mt-1 text-xs text-amber-700">La copia de Google Calendar tiene más de 36 horas: verifica cualquier cambio directamente en tu calendario.</p>}
+      <div className="mt-5 grid gap-6 lg:grid-cols-2">
+        <div><h3 className="mb-3 text-sm font-semibold text-slate-900">Hoy · {meetingsToday.length}</h3>
+          <div className="space-y-2">{meetingsToday.length?meetingsToday.map(m=><div key={m.id} className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 p-3">
+            <p className="text-sm font-medium text-slate-900">{m.title}</p>
+            <span className="shrink-0 text-sm font-semibold tabular-nums text-indigo-700">{localTime(m.starts_at)}</span>
+          </div>):<Empty>No hay reuniones registradas hoy.</Empty>}</div>
+        </div>
+        <div><h3 className="mb-3 text-sm font-semibold text-slate-900">Próximos siete días</h3>
+          <div className="space-y-2">{meetings.filter(m=>localDay(m.starts_at)>date).length?meetings.filter(m=>localDay(m.starts_at)>date).map(m=><div key={m.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-200 p-3">
+            <div><p className="text-sm font-medium text-slate-900">{m.title}</p><p className="mt-1 text-xs text-slate-500">{localDate(m.starts_at)}{m.status==='needs_reschedule'?' · Fecha pendiente de reprogramar':''}</p></div>
+            <span className="shrink-0 text-sm font-semibold tabular-nums text-indigo-700">{localTime(m.starts_at)}</span>
+          </div>):<Empty>No hay reuniones próximas verificadas.</Empty>}</div>
+        </div>
       </div>
     </section>
+      </>}
+      clients={<DailyRelationships initialRelations={relationRows}/>}
+    />
   </AdminShell>
 }
