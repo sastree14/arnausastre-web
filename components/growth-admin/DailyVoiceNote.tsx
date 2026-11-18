@@ -55,6 +55,7 @@ export default function DailyVoiceNote({relationId,initialContact='',initialTitl
   const [contact, setContact] = useState(initialContact)
   const [taskTitle, setTaskTitle] = useState('')
   const [taskDate, setTaskDate] = useState('')
+  const [taskUrgency,setTaskUrgency] = useState('pending')
   const [meetingDate, setMeetingDate] = useState('')
   const [browserDictation, setBrowserDictation] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -156,6 +157,7 @@ export default function DailyVoiceNote({relationId,initialContact='',initialTitl
       form.set('meeting_date', meetingDate)
       form.set('task_title', taskTitle)
       form.set('task_date', taskDate)
+      form.set('task_urgency',taskUrgency)
       if (blob) {
         const extension=(Object.entries(AUDIO_BY_EXTENSION).find(([,mime])=>mime===blob.type)?.[0]||'webm')
         form.set('audio',blob,blob instanceof File?blob.name:'nota.'+extension)
@@ -163,7 +165,7 @@ export default function DailyVoiceNote({relationId,initialContact='',initialTitl
       const response = await fetch('/api/growth-admin/dia-a-dia/voice', {method:'POST',body:form,credentials:'same-origin'})
       const result = await response.json()
       if (!response.ok) throw new Error(result.error || 'No se ha guardado')
-      setTitle(initialTitle);setBody('');setBlob(null);setTaskTitle('');setTaskDate('');setMeetingDate('');setContact(initialContact)
+      setTitle(initialTitle);setBody('');setBlob(null);setTaskTitle('');setTaskDate('');setTaskUrgency('pending');setMeetingDate('');setContact(initialContact)
       setNotice('Nota guardada en el CMI privado.' + (result.task_created?' Compromiso añadido a tareas.':''))
       router.refresh()
     } catch (e) {
@@ -196,8 +198,14 @@ export default function DailyVoiceNote({relationId,initialContact='',initialTitl
     <div className="grid gap-2 sm:grid-cols-3">
       <label className="text-xs text-slate-600">Fecha de reunión (opcional)<input type="date" value={meetingDate} onChange={e=>setMeetingDate(e.target.value)} className={panel + ' mt-1 w-full'}/></label>
       <input value={taskTitle} onChange={e=>setTaskTitle(e.target.value)} placeholder="Tarea real acordada (opcional)" className={panel + ' self-end'}/>
-      <label className="text-xs text-slate-600">Trabajar (por defecto, siguiente día hábil)<input type="date" value={taskDate} onChange={e=>setTaskDate(e.target.value)} className={panel + ' mt-1 w-full'}/></label>
+      <label className="text-xs text-slate-600">Trabajar el (opcional)<input type="date" value={taskDate} onChange={e=>setTaskDate(e.target.value)} className={panel + ' mt-1 w-full'}/></label>
     </div>
+    <label className="flex items-center gap-2 text-xs text-slate-700">Clasificación del compromiso
+      <select value={taskUrgency} onChange={e=>setTaskUrgency(e.target.value)} className={panel}>
+        <option value="pending">Pendiente adicional</option>
+        <option value="urgent">Urgente</option>
+      </select>
+    </label>
     <button disabled={saving || recording} className="rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50">{saving?'Guardando…':'Guardar nota y compromiso'}</button>
     {notice && <p role="status" className="text-sm text-emerald-700">{notice}</p>}
     {error && <p role="alert" className="text-sm leading-6 text-rose-700">{error}</p>}
