@@ -23,6 +23,8 @@ function formatted(date:string|null|undefined){
   const d=new Date(date+'T12:00:00Z')
   return Number.isNaN(d.getTime())?'Sin fecha':new Intl.DateTimeFormat('es-ES',{day:'numeric',month:'short',year:'numeric'}).format(d)
 }
+function isRecentReview(value:string,hours:number){const stamp=Date.parse(value);return Number.isFinite(stamp)&&Date.now()-stamp<=hours*60*60*1000}
+
 export default async function InboxPage({searchParams}:{searchParams:Promise<Record<string,string|string[]|undefined>>}){
   if(!(await isGrowthAdminAuthenticated()))redirect('/growth-admin/login')
   const params=await searchParams
@@ -48,7 +50,7 @@ export default async function InboxPage({searchParams}:{searchParams:Promise<Rec
   }
   const visible=[...distinct.values()].filter(x=>!account||x.account_email===account)
   const latest=messages.reduce((max,row)=>row.reviewed_at>max?row.reviewed_at:max,'')
-  const fresh=Boolean(latest)&&Date.now()-Date.parse(latest)<=36*60*60*1000
+  const fresh=Boolean(latest)&&isRecentReview(latest,36)
   const states=connections.filter(c=>c.provider_subject?.includes('@')).map(c=>{
     const sync=(c.metadata?.gmail_sync||{}) as Record<string,unknown>
     const error=String(sync.last_error||'')
