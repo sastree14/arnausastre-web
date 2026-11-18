@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import DailyVoiceNote from './DailyVoiceNote'
 
 export type DailyRelation={
-  id:string;display_name:string;role:'client'|'collaborator'|'worker';status:string;user_curated:boolean;
+  id:string;display_name:string;role:'client'|'collaborator'|'worker'|'editorial';status:string;user_curated:boolean;
   contact_email?:string|null;last_interaction_on?:string|null;last_interaction_kind?:string|null;
   last_interaction_summary:string;last_interaction_url?:string|null;next_meeting_on?:string|null;
   next_review_on?:string|null;followup_count:number;followup_policy:string;notes?:string;
@@ -45,7 +45,7 @@ function RelationCard({initial,onSave,tasks,notes,today}:{initial:DailyRelation;
   const detailsId='relationship-'+initial.id
   const daysSince=initial.last_interaction_on?
     Math.max(0,Math.floor((Date.parse(today+'T12:00:00Z')-Date.parse(initial.last_interaction_on+'T12:00:00Z'))/86400000)):null
-  const reviewFlag=initial.status==='active'&&initial.role!=='worker'&&daysSince!==null&&daysSince>=7
+  const reviewFlag=initial.status==='active'&&initial.role!=='worker'&&initial.role!=='editorial'&&daysSince!==null&&daysSince>=7
     &&!initial.next_meeting_on&&!initial.next_review_on&&currentTasks.length===0
   return <article className="rounded-xl border border-slate-200 bg-white px-3 py-2.5">
     <div className="flex flex-wrap items-center gap-2">
@@ -64,7 +64,7 @@ function RelationCard({initial,onSave,tasks,notes,today}:{initial:DailyRelation;
     {err&&<p role="alert" className="mt-1 text-xs text-rose-700">{err}</p>}
     {expanded&&<div id={detailsId} className="mt-3 space-y-4 border-t border-slate-100 pt-3">
       <div className="grid gap-3 text-xs text-slate-600 sm:grid-cols-2">
-        <div><span className="font-semibold">Tipo:</span> {initial.role==='worker'?'Trabajador':initial.role==='client'?'Cliente':'Colaborador'}</div>
+        <div><span className="font-semibold">Tipo:</span> {initial.role==='worker'?'Trabajador':initial.role==='client'?'Cliente':initial.role==='editorial'?'Editorial / medio':'Colaborador'}</div>
         <div><span className="font-semibold">Última interacción:</span> {last}{initial.last_interaction_kind?' · '+(kind[initial.last_interaction_kind]||initial.last_interaction_kind):''}</div>
         {initial.last_interaction_summary&&<p className="sm:col-span-2 whitespace-pre-line">{initial.last_interaction_summary}</p>}
         {initial.next_meeting_on&&<p>Próxima reunión: {dateEs(initial.next_meeting_on)}</p>}
@@ -119,18 +119,28 @@ function Group({title,description,rows,onSave,tasks,notes,today}:{title:string;d
     {rows.length?<div className="space-y-2">{rows.map(r=><RelationCard key={r.id} initial={r} onSave={onSave} tasks={linkedTasks(r)} notes={linkedNotes(r)} today={today}/>)}</div>:<p className="rounded-lg border border-dashed border-slate-200 p-4 text-xs text-slate-500">No hay relaciones en esta sección.</p>}
   </section>
 }
-export default function DailyRelationships({initialRelations,initialTasks=[],initialNotes=[],today}:{initialRelations:DailyRelation[];initialTasks?:DailyRelationTask[];initialNotes?:DailyRelationNote[];today:string}){
+export default function DailyRelationships({initialRelations,initialTasks=[],initialNotes=[],today,view='commercial'}:{initialRelations:DailyRelation[];initialTasks?:DailyRelationTask[];initialNotes?:DailyRelationNote[];today:string;view?:'commercial'|'editorial'}){
   const [relations,setRelations]=useState(initialRelations)
   const [showDormant,setShowDormant]=useState(false)
+  const [showEditorialWaiting,setShowEditorialWaiting]=useState(false)
   const change=(next:DailyRelation)=>setRelations(prev=>prev.map(r=>r.id===next.id?next:r))
   const groups=useMemo(()=>{
     const current=relations.filter(r=>r.status==='active'||r.status==='waiting')
     return {
-      companies:current.filter(r=>r.role!=='worker').sort((a,b)=>a.display_name.localeCompare(b.display_name,'es')),
+      companies:current.filter(r=>r.role==='client'||r.role==='collaborator').sort((a,b)=>a.display_name.localeCompare(b.display_name,'es')),
       workers:current.filter(r=>r.role==='worker').sort((a,b)=>a.display_name.localeCompare(b.display_name,'es')),
+      editorialActive:current.filter(r=>r.role==='editorial'&&r.status==='active').sort((a,b)=>a.display_name.localeCompare(b.display_name,'es')),
+      editorialWaiting:current.filter(r=>r.role==='editorial'&&r.status==='waiting').sort((a,b)=>a.display_name.localeCompare(b.display_name,'es')),
       dormant:relations.filter(r=>r.status==='dormant'||r.status==='closed')
     }
   },[relations])
+  if(view==='editorial')return <div className="space-y-4">
+    <Group title="Editorial y medios" description="Periodistas, redacciones y artículos, separados de clientes y colaboradores comerciales. Colaboraciones verificadas." rows={groups.editorialActive} onSave={change} tasks={initialTasks} notes={initialNotes} today={today}/>
+    <button type="button" className={button} onClick={()=>setShowEditorialWaiting(v=>!v)} aria-expanded={showEditorialWaiting}>
+      {showEditorialWaiting?'Ocultar':'Mostrar'} propuestas editoriales y contactos en espera ({groups.editorialWaiting.length})
+    </button>
+    {showEditorialWaiting&&<Group title="Propuestas editoriales en curso" description="Propuestas enviadas y decisiones pendientes de la redacción. No generar tareas por el mero hecho de esperar." rows={groups.editorialWaiting} onSave={change} tasks={initialTasks} notes={initialNotes} today={today}/>}
+  </div>
   return <div className="space-y-6">
     <Group title="Clientes y colaboradores" description="Primero el nombre. El indicador muestra si existe una tarea real pendiente; abre + para consultar la relación." rows={groups.companies} onSave={change} tasks={initialTasks} notes={initialNotes} today={today}/>
     <Group title="Trabajadores y técnicos" description="Colaboración y ejecución, separadas de las relaciones comerciales." rows={groups.workers} onSave={change} tasks={initialTasks} notes={initialNotes} today={today}/>

@@ -2,17 +2,18 @@
 
 import { useState, type ReactNode } from 'react'
 
-type Section = 'tareas' | 'reuniones' | 'clientes'
+type Section = 'tareas' | 'reuniones' | 'clientes' | 'editorial'
 
-export default function DailyWorkspaceTabs({tasks,meetings,clients}:{tasks:ReactNode;meetings:ReactNode;clients:ReactNode}) {
+export default function DailyWorkspaceTabs({tasks,meetings,clients,editorial}:{tasks:ReactNode;meetings:ReactNode;clients:ReactNode;editorial:ReactNode}) {
   const [selected,setSelected] = useState<Section>('tareas')
   const tabs: {id:Section;label:string;hint:string}[] = [
     {id:'tareas',label:'Tareas',hint:'Hoy, mañana y próximos días'},
     {id:'reuniones',label:'Reuniones',hint:'Agenda y horarios'},
-    {id:'clientes',label:'Clientes y colaboradores',hint:'Última interacción y seguimientos'},
+    {id:'clientes',label:'Clientes y colaboradores',hint:'Relaciones comerciales y equipo'},
+    {id:'editorial',label:'Editorial y medios',hint:'Redacciones, artículos y propuestas'},
   ]
   return <div>
-    <div className="mb-6 grid gap-2 sm:grid-cols-3" role="tablist" aria-label="Secciones del día a día">
+    <div className="mb-6 grid gap-2 sm:grid-cols-4" role="tablist" aria-label="Secciones del día a día">
       {tabs.map(t=><button key={t.id} id={'tab-day-'+t.id} type="button" role="tab"
         aria-selected={selected===t.id}
         aria-controls={'panel-day-'+t.id}
@@ -25,5 +26,6 @@ export default function DailyWorkspaceTabs({tasks,meetings,clients}:{tasks:React
     <section id="panel-day-tareas" role="tabpanel" aria-labelledby="tab-day-tareas" hidden={selected!=='tareas'}>{tasks}</section>
     <section id="panel-day-reuniones" role="tabpanel" aria-labelledby="tab-day-reuniones" hidden={selected!=='reuniones'}>{meetings}</section>
     <section id="panel-day-clientes" role="tabpanel" aria-labelledby="tab-day-clientes" hidden={selected!=='clientes'}>{clients}</section>
+    <section id="panel-day-editorial" role="tabpanel" aria-labelledby="tab-day-editorial" hidden={selected!=='editorial'}>{editorial}</section>
   </div>
 }
