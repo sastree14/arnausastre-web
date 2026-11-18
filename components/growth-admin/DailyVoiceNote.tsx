@@ -17,11 +17,34 @@ type BrowserRecognition = {
 type SpeechConstructor = new () => BrowserRecognition
 
 const panel = 'rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900'
-const button = 'rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50'
+const MAX_AUDIO_BYTES = 12 * 1024 * 1024
+const SUPPORTED_AUDIO = new Set(['audio/webm','audio/ogg','audio/mp4','audio/mpeg','audio/wav','audio/x-m4a','audio/aac'])
+const AUDIO_BY_EXTENSION:Record<string,string> = {webm:'audio/webm',ogg:'audio/ogg',m4a:'audio/mp4',mp4:'audio/mp4',mp3:'audio/mpeg',wav:'audio/wav',aac:'audio/aac'}
+
+function microphoneErrorMessage(error:unknown):string {
+  const name=error instanceof DOMException?error.name:(error&&typeof error==='object'&&'name' in error?String(error.name):'')
+  switch(name){
+    case 'NotAllowedError':
+    case 'PermissionDeniedError':
+    case 'SecurityError':
+      return 'El micrófono está bloqueado para este sitio. En Chrome, abre el icono de ajustes junto a la dirección → Configuración del sitio → Micrófono → Permitir; recarga la página y vuelve a probar. Comprueba también el permiso de micrófono en Privacidad de Windows. Si no puedes habilitarlo, adjunta un audio grabado en tu dispositivo.'
+    case 'NotFoundError':
+    case 'DevicesNotFoundError':
+      return 'El navegador no encuentra ningún micrófono conectado. Comprueba el dispositivo de entrada de Windows o adjunta un audio grabado en otro dispositivo.'
+    case 'NotReadableError':
+    case 'TrackStartError':
+      return 'No se puede abrir el micrófono: puede estar ocupado por otra aplicación. Cierra la aplicación que lo utiliza y vuelve a intentarlo, o adjunta un audio.'
+    case 'AbortError':
+      return 'La grabación se interrumpió antes de empezar. Vuelve a intentarlo o adjunta un archivo de audio.'
+    default:
+      return 'No se pudo iniciar el micrófono. Comprueba los permisos del sitio y el dispositivo de entrada; también puedes adjuntar un archivo de audio.'
+  }
+}
 
 export default function DailyVoiceNote({relationId,initialContact='',initialTitle=''}:{relationId?:string;initialContact?:string;initialTitle?:string} = {}) {
   const router = useRouter()
   const recorder = useRef<MediaRecorder | null>(null)
+  const uploadInput = useRef<HTMLInputElement | null>(null)
   const stream = useRef<MediaStream | null>(null)
   const recognition = useRef<BrowserRecognition | null>(null)
   const recordedChunks = useRef<Blob[]>([])
@@ -39,11 +62,27 @@ export default function DailyVoiceNote({relationId,initialContact='',initialTitl
   const [notice, setNotice] = useState('')
   const [speechAvailable, setSpeechAvailable] = useState<boolean | null>(null)
 
+  function selectAudio(file:File|undefined){
+    if(!file)return
+    setError('');setNotice('')
+    if(recording){setError('Detén primero la grabación en curso.');return}
+    if(file.size>MAX_AUDIO_BYTES){setError('El archivo supera los 12 MB permitidos.');return}
+    const extension=file.name.split('.').pop()?.toLowerCase()||''
+    const mime=SUPPORTED_AUDIO.has(file.type.toLowerCase())?file.type.toLowerCase():AUDIO_BY_EXTENSION[extension]
+    if(!mime){setError('Formato no compatible. Usa WebM, OGG, M4A, MP4, MP3, WAV o AAC.');return}
+    setBlob(file.type.toLowerCase()===mime?file:new File([file],file.name,{type:mime}))
+    setNotice('Archivo de audio adjuntado. Se guardará de forma privada al pulsar Guardar.')
+  }
+
   async function begin() {
     setError('')
     setNotice('')
-    if (typeof window === 'undefined' || !navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
-      setError('Este navegador no permite grabar audio. Puedes escribir una nota igualmente.')
+    if (typeof window === 'undefined' || !window.isSecureContext) {
+      setError('El micrófono necesita una conexión segura HTTPS. Abre la web original con https:// o adjunta un audio grabado.') 
+      return
+    }
+    if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
+      setError('Este navegador no admite grabación directa. Puedes adjuntar un audio desde el dispositivo o escribir la nota.')
       return
     }
     try {
@@ -89,8 +128,8 @@ export default function DailyVoiceNote({relationId,initialContact='',initialTitl
           } catch { setNotice('No se ha podido iniciar el dictado; el audio se seguirá guardando.') }
         } else setNotice('El navegador no admite dictado automático. Puedes redactar un resumen tras grabar.')
       }
-    } catch {
-      setError('No se ha podido acceder al micrófono. Revisa el permiso del navegador.')
+    } catch (error) {
+      setError(microphoneErrorMessage(error))
       stream.current?.getTracks().forEach(track => track.stop())
       stream.current = null
     }
@@ -117,7 +156,10 @@ export default function DailyVoiceNote({relationId,initialContact='',initialTitl
       form.set('meeting_date', meetingDate)
       form.set('task_title', taskTitle)
       form.set('task_date', taskDate)
-      if (blob) form.set('audio', blob, blob.type.startsWith('audio/mp4') ? 'reunion.m4a' : 'reunion.webm')
+      if (blob) {
+        const extension=(Object.entries(AUDIO_BY_EXTENSION).find(([,mime])=>mime===blob.type)?.[0]||'webm')
+        form.set('audio',blob,blob instanceof File?blob.name:'nota.'+extension)
+      }
       const response = await fetch('/api/growth-admin/dia-a-dia/voice', {method:'POST',body:form,credentials:'same-origin'})
       const result = await response.json()
       if (!response.ok) throw new Error(result.error || 'No se ha guardado')
@@ -137,14 +179,16 @@ export default function DailyVoiceNote({relationId,initialContact='',initialTitl
       <input value={contact} onChange={e=>setContact(e.target.value)} placeholder="Correo del contacto (opcional)" type="email" readOnly={Boolean(relationId)} className={panel}/>
     </div>
     <div className="flex flex-wrap items-center gap-3">
+      <input ref={uploadInput} type="file" accept=".webm,.ogg,.m4a,.mp4,.mp3,.wav,.aac,audio/*" className="sr-only" aria-label="Adjuntar archivo de audio" onChange={event=>{selectAudio(event.target.files?.[0]);event.target.value=''}}/>
       {recording ? <button type="button" onClick={stop} className="rounded-xl bg-rose-600 px-4 py-2 text-sm font-semibold text-white">■ Detener grabación</button> :
         <button type="button" onClick={begin} disabled={saving} className="rounded-xl bg-slate-950 px-4 py-2 text-sm font-semibold text-white">🎙 Grabar nota de voz</button>}
+      <button type="button" onClick={()=>uploadInput.current?.click()} disabled={saving||recording} className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-800 disabled:opacity-50">Adjuntar audio</button>
       <label className="flex items-center gap-2 text-xs text-slate-600">
         <input type="checkbox" checked={browserDictation} disabled={recording} onChange={e=>setBrowserDictation(e.target.checked)}/>
         Activar dictado del navegador (opcional)
       </label>
       {recording && <span className="text-xs font-semibold text-rose-700">● Grabando…</span>}
-      {blob && !recording && <span className="text-xs text-emerald-700">Audio listo · {Math.round(blob.size/1024)} KB</span>}
+      {blob && !recording && <span className="text-xs text-emerald-700">Audio listo · {Math.round(blob.size/1024)} KB <button type="button" onClick={()=>setBlob(null)} className="ml-2 underline">Quitar</button></span>}
     </div>
     {browserDictation && <p className="text-xs text-amber-700">El reconocimiento de voz puede utilizar servicios externos del navegador. No lo actives para información confidencial si no tienes autorización.</p>}
     {speechAvailable===false && <p className="text-xs text-amber-700">Tu navegador no admite transcripción integrada.</p>}
@@ -156,6 +200,6 @@ export default function DailyVoiceNote({relationId,initialContact='',initialTitl
     </div>
     <button disabled={saving || recording} className="rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50">{saving?'Guardando…':'Guardar nota y compromiso'}</button>
     {notice && <p role="status" className="text-sm text-emerald-700">{notice}</p>}
-    {error && <p role="alert" className="text-sm text-rose-700">{error}</p>}
+    {error && <p role="alert" className="text-sm leading-6 text-rose-700">{error}</p>}
   </form>
 }
