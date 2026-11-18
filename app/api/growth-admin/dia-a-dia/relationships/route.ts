@@ -52,6 +52,22 @@ export async function POST(request:Request){
     }else return NextResponse.json({error:'Acción desconocida'},{status:400})
     const result=await updateGrowthRow<Relation>('day_relationships','id',relation.id,changes)
     if(!result)return NextResponse.json({error:'No se ha podido guardar'},{status:503})
+    // Closing a relationship also resolves its "review whether to continue"
+    // bookkeeping task, but not independent delivery commitments.
+    if(data.action==='status'&&['closed','dormant'].includes(String(data.status||''))) {
+      try {
+        const candidates=await queryGrowthTable<{id:string;status:string;metadata?:Record<string,unknown>}>('day_tasks',{
+          tenant_id:'eq.'+TENANT,limit:'250'
+        },{cacheSeconds:0})
+        const reviews=candidates.filter(t=>
+          (t.status==='open'||t.status==='in_progress')&&
+          t.metadata?.relation_id===relation.id&&t.metadata?.review_relationship===true)
+        await Promise.all(reviews.map(t=>updateGrowthRow('day_tasks','id',t.id,{
+          status:'archived',completed_at:now,updated_at:now,
+          metadata:{...(t.metadata||{}),review_resolution:'relationship_closed_by_user',review_resolved_on:now}
+        })))
+      }catch(error){console.error('Could not archive inactive relationship review tasks',error)}
+    }
     return NextResponse.json({ok:true,relationship:result})
   }catch(error){
     console.error('Relationship update failed',error)

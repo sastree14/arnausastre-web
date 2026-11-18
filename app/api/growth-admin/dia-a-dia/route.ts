@@ -50,6 +50,7 @@ type JsonAction = {
   waiting_until?:string|null
   scheduled_on?:string|null
   due_on?:string|null
+  task_bucket?:string
 }
 async function handleInlineChange(request:Request, todayDate:string) {
   const input=await request.json().catch(()=>null) as JsonAction|null
@@ -69,7 +70,18 @@ async function handleInlineChange(request:Request, todayDate:string) {
     changes.scheduled_on=plan||null
     changes.due_on=deadline||null
     changes.lane=plan?(plan<=todayDate?'today':'week'):'week'
-  } else   if(input.action==='status_change') {
+  } else if(input.action==='classification_change') {
+    if(task.status==='done'||task.status==='archived')return NextResponse.json({error:'No se puede cambiar la prioridad de una tarea cerrada'},{status:409})
+    const bucket=String(input.task_bucket||'')
+    if(bucket!=='urgent'&&bucket!=='pending')return NextResponse.json({error:'Clasificación no válida'},{status:400})
+    changes.metadata={...(task.metadata||{}),task_bucket:bucket,classified_manually_at:now}
+    if(bucket==='urgent') {
+      changes.scheduled_on=todayDate
+      changes.lane='today'
+    } else if(!('scheduled_on' in task)||!task.scheduled_on) {
+      changes.lane='week'
+    }
+  } else if(input.action==='status_change') {
     const status=String(input.status||'')
     if(!['open','in_progress','done','archived'].includes(status))return NextResponse.json({error:'Estado no permitido'},{status:400})
     changes.status=status
@@ -144,11 +156,12 @@ export async function POST(request: Request) {
     if (action === 'create') {
       const title = String(data.get('title') || '').trim().slice(0, 240)
       if (!title) return errorRedirect(request, 'Introduce un título')
-      const laneRaw = String(data.get('lane') || 'today')
-      const lane = laneRaw === 'week' ? 'week' : 'today'
+      const bucket=String(data.get('task_bucket')||'pending')==='urgent'?'urgent':'pending'
+      const laneRaw = String(data.get('lane') || 'week')
       const scheduledRaw = String(data.get('scheduled_on') || '').trim()
       const dueRaw = String(data.get('due_on') || '').trim()
-      const scheduled_on = isDay(scheduledRaw) ? scheduledRaw : lane === 'today' ? date : null
+      const scheduled_on = isDay(scheduledRaw) ? scheduledRaw : bucket==='urgent'?date:null
+      const lane = scheduled_on&&scheduled_on<=date?'today':laneRaw==='today'&&bucket==='urgent'?'today':'week'
       const due_on = isDay(dueRaw) ? dueRaw : null
       const waiting_until = null
       await insertGrowthRow('day_tasks', {
@@ -161,7 +174,7 @@ export async function POST(request: Request) {
         related_url: safeUrl(String(data.get('related_url') || '')),
         related_document_url: safeUrl(String(data.get('related_document_url') || '')),
         source: 'manual',
-        metadata: { created_from: 'day_to_day_dashboard' },
+        metadata: { created_from: 'day_to_day_dashboard', task_bucket: bucket },
       })
       return resultRedirect(request, 'created')
     }

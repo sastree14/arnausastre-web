@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
 import DailyWorkspaceTabs from '@/components/growth-admin/DailyWorkspaceTabs'
 import DailyTaskBoard from '@/components/growth-admin/DailyTaskBoard'
+import DailyWorkspaceAutoRefresh from '@/components/growth-admin/DailyWorkspaceAutoRefresh'
 import DailyRelationships, { type DailyRelation, type DailyRelationNote } from '@/components/growth-admin/DailyRelationships'
 import { PageHeader, adminPanel } from '@/components/growth-admin/AdminUi'
 import { isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
@@ -29,6 +30,7 @@ type DayTask = {
   related_document_url?: string|null
   metadata?: Record<string,unknown>|null
   completed_at?: string|null
+  updated_at?: string|null
 }
 type DayMeetingSnapshot = {id:string;title:string;starts_at:string;ends_at:string;status:string;calendar_url:string;source_checked_at:string;notes?:string}
 type DaySettings = {max_meetings_per_day:number;default_meeting_minutes:number;max_tasks_per_day:number;timezone:string}
@@ -97,7 +99,8 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
   })
 
   return <AdminShell active="day-to-day">
-    <PageHeader eyebrow="Trabajo diario · SC-Analytics" title="Día a día" description="Selecciona Tareas, Reuniones o Clientes. El trabajo de mañana y los plazos aparecen directamente en el planificador." actions={<Link href="/growth-admin/inbox" className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-950">Buzón</Link>}/>
+    <DailyWorkspaceAutoRefresh/>
+    <PageHeader eyebrow="Trabajo diario · SC-Analytics" title="Día a día" description="Urgentes para hoy y mañana, pendientes adicionales y relaciones actualizadas. Solo aparece trabajo que requiere una acción." actions={<Link href="/growth-admin/inbox" className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-950">Buzón</Link>}/>
     {typeof params.result==='string'&&<p className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">Cambio guardado correctamente.</p>}
     {typeof params.error==='string'&&<p className="mb-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">No se ha podido completar la acción: {params.error}</p>}
     <DailyWorkspaceTabs
@@ -109,7 +112,7 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
       <Link href="/growth-admin/inbox" className="mt-2 inline-block underline">Revisar sincronización</Link>
     </details>}
     <div className="space-y-6">
-      <div><DailyTaskBoard initialTasks={taskRows} today={date} maxTasks={settings.max_tasks_per_day}/></div>
+      <div><DailyTaskBoard key={taskRows.reduce((latest,t)=>t.updated_at&&t.updated_at>latest?t.updated_at:latest,'')+':'+taskRows.length} initialTasks={taskRows} today={date} maxTasks={settings.max_tasks_per_day}/></div>
       <aside className="grid gap-4 lg:grid-cols-2">
         <details id="crear-tarea" className={adminPanel+' p-5'}>
           <summary className="cursor-pointer text-sm font-semibold text-slate-950">+ Crear una tarea</summary>
@@ -119,7 +122,12 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
             <input name="title" required maxLength={240} placeholder="¿Qué tengo que hacer?" className={input}/>
             <textarea name="details" rows={2} placeholder="Contexto, siguiente paso, compromiso…" className={input}/>
             <div className="grid grid-cols-2 gap-2">
-              <label className="text-xs text-slate-600">Dónde aparece<select name="lane" defaultValue="today" className={input+' mt-1'}><option value="today">Hoy</option><option value="week">Semana</option></select></label>
+              <label className="text-xs text-slate-600">Tipo de tarea
+                <select name="task_bucket" defaultValue="pending" className={input+' mt-1'}>
+                  <option value="pending">Pendiente adicional</option>
+                  <option value="urgent">Urgente / priorizar hoy</option>
+                </select>
+              </label>
               <label className="text-xs text-slate-600">Prioridad<select name="priority" defaultValue="2" className={input+' mt-1'}><option value="1">Alta</option><option value="2">Normal</option><option value="3">Baja</option></select></label>
               <label className="text-xs text-slate-600">Trabajar el<input name="scheduled_on" type="date" className={input+' mt-1'}/></label>
               <label className="text-xs text-slate-600">Fecha límite<input name="due_on" type="date" className={input+' mt-1'}/></label>
@@ -165,7 +173,7 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
       </div>
     </section>
       </>}
-      clients={<DailyRelationships initialRelations={relationRows} initialTasks={taskRows} initialNotes={noteRows}/>}
+      clients={<DailyRelationships key={relationRows.reduce((s,r)=>s+':'+r.id+':'+r.last_interaction_on+':'+r.status,'')+':'+noteRows.length+':'+taskRows.reduce((s,t)=>s+':'+t.id+':'+t.status,'')} initialRelations={relationRows} initialTasks={taskRows} initialNotes={noteRows} today={date}/>}
     />
   </AdminShell>
 }
