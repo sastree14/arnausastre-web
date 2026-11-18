@@ -34,6 +34,9 @@ function RelationCard({initial,onSave}:{initial:DailyRelation;onSave:(r:DailyRel
   }
   const last=initial.last_interaction_on?dateEs(initial.last_interaction_on):'Pendiente de verificar'
   const review=initial.next_review_on?dateEs(initial.next_review_on):'Sin fecha asignada'
+  const nowMadrid=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Madrid',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())
+  const daysSince=initial.last_interaction_on?Math.max(0,Math.round((Date.parse(nowMadrid+'T12:00:00Z')-Date.parse(initial.last_interaction_on+'T12:00:00Z'))/86400000)):null
+  const reviewOverdue=Boolean(initial.next_review_on&&initial.next_review_on<=nowMadrid)
   return <article className="rounded-xl border border-slate-200 bg-white p-4">
     <div className="flex flex-col justify-between gap-3 md:flex-row md:items-start">
       <div className="min-w-0 flex-1">
@@ -42,10 +45,10 @@ function RelationCard({initial,onSave}:{initial:DailyRelation;onSave:(r:DailyRel
           <span className="rounded-lg bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600">{initial.role==='worker'?'Trabajador':initial.role==='client'?'Cliente':'Colaborador'}</span>
           {initial.status==='waiting'&&<span className="text-[11px] text-amber-700">Esperando respuesta</span>}
         </div>
-        <p className="mt-1 text-xs leading-5 text-slate-600"><b>Última interacción:</b> {last}{initial.last_interaction_kind?' · '+(kind[initial.last_interaction_kind]||initial.last_interaction_kind):''}</p>
+        <p className="mt-1 text-xs leading-5 text-slate-600"><b>Última interacción:</b> {last}{initial.last_interaction_kind?' · '+(kind[initial.last_interaction_kind]||initial.last_interaction_kind):''}{daysSince!==null&&<span className="ml-1 font-semibold text-indigo-700">· Hace {daysSince} {daysSince===1?'día':'días'}</span>}</p>
         {initial.last_interaction_summary&&<p className="mt-1 text-xs leading-5 text-slate-600">{initial.last_interaction_summary}</p>}
         {initial.next_meeting_on&&<p className="mt-2 text-xs font-semibold text-indigo-700">Próxima reunión: {dateEs(initial.next_meeting_on)}</p>}
-        {initial.status==='waiting'&&<p className="mt-1 text-xs text-slate-500">Revisar el: {review}</p>}
+        {initial.next_review_on&&<p className={'mt-1 text-xs '+(reviewOverdue?'font-semibold text-amber-700':'text-slate-500')}>{reviewOverdue?'Revisión prevista vencida: ':'Próxima revisión: '}{review}</p>}
         {initial.contact_email&&<p className="mt-1 text-xs text-slate-400">{initial.contact_email}</p>}
         {initial.id==='tim'&&<p className="mt-1 text-xs font-medium text-indigo-700">Seguimiento por Slack (sin comprobación automática de mensajes)</p>}
         {initial.followup_count>0&&<p className="mt-1 text-xs text-slate-500">Seguimientos enviados: {initial.followup_count}/2</p>}

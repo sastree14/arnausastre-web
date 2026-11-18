@@ -48,6 +48,8 @@ type JsonAction = {
   action?:string
   status?:string
   waiting_until?:string|null
+  scheduled_on?:string|null
+  due_on?:string|null
 }
 async function handleInlineChange(request:Request, todayDate:string) {
   const input=await request.json().catch(()=>null) as JsonAction|null
@@ -57,7 +59,17 @@ async function handleInlineChange(request:Request, todayDate:string) {
   if(!task)return NextResponse.json({error:'No se ha encontrado la tarea'},{status:404})
   const now=new Date().toISOString()
   const changes:Record<string,unknown>={updated_at:now}
-  if(input.action==='status_change') {
+  if(input.action==='schedule_change') {
+    if(task.status==='done'||task.status==='archived')return NextResponse.json({error:'No se pueden mover tareas completadas'},{status:409})
+    if(task.status==='waiting')return NextResponse.json({error:'Para una espera modifica su fecha de revisión'},{status:409})
+    const plan=typeof input.scheduled_on==='string'?input.scheduled_on:''
+    const deadline=typeof input.due_on==='string'?input.due_on:''
+    if((plan&&!isDay(plan))||(deadline&&!isDay(deadline)))return NextResponse.json({error:'La fecha no es válida'},{status:400})
+    if(plan&&deadline&&deadline<plan)return NextResponse.json({error:'La fecha de trabajo no puede ser posterior al límite'},{status:400})
+    changes.scheduled_on=plan||null
+    changes.due_on=deadline||null
+    changes.lane=plan?(plan<=todayDate?'today':'week'):'week'
+  } else   if(input.action==='status_change') {
     const status=String(input.status||'')
     if(!['open','in_progress','waiting','done','archived'].includes(status))return NextResponse.json({error:'Estado no permitido'},{status:400})
     changes.status=status
