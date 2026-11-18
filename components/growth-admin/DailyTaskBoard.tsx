@@ -128,13 +128,14 @@ export default function DailyTaskBoard({initialTasks,today,maxTasks}:{initialTas
     const todayWork=active.filter(t=>(t.scheduled_on&&t.scheduled_on<=today)||(t.due_on&&t.due_on<=today)||(t.lane==='today'&&!t.scheduled_on&&!t.due_on))
     const todayRows=[...due,...todayWork].sort((a,b)=>Number(a.priority)-Number(b.priority)||(a.scheduled_on||a.waiting_until||'').localeCompare(b.scheduled_on||b.waiting_until||''))
     const todayIds=new Set(todayRows.map(t=>t.id))
-    const tomorrowRows=active.filter(t=>!todayIds.has(t.id)&&((t.scheduled_on&&t.scheduled_on===tomorrow)||(!t.scheduled_on&&t.due_on===tomorrow)))
+    const tomorrowDue=tasks.filter(t=>t.status==='waiting'&&t.waiting_until===tomorrow&&t.followup_count<2)
+    const tomorrowRows=[...tomorrowDue,...active.filter(t=>!todayIds.has(t.id)&&((t.scheduled_on&&t.scheduled_on===tomorrow)||(!t.scheduled_on&&t.due_on===tomorrow)))]
       .sort((a,b)=>Number(a.priority)-Number(b.priority))
     const already=new Set([...todayRows,...tomorrowRows].map(t=>t.id))
     const weekly=active.filter(t=>!already.has(t.id)&&((t.scheduled_on&&t.scheduled_on<=weekEnd)||(t.due_on&&t.due_on<=weekEnd)||t.lane==='week'&&!t.scheduled_on&&!t.due_on))
       .sort((a,b)=>(a.scheduled_on||a.due_on||'').localeCompare(b.scheduled_on||b.due_on||''))
     const later=active.filter(t=>!already.has(t.id)&&!weekly.some(w=>w.id===t.id)).sort((a,b)=>(a.scheduled_on||a.due_on||'').localeCompare(b.scheduled_on||b.due_on||''))
-    const waiting=tasks.filter(t=>t.status==='waiting'&&!todayIds.has(t.id)).sort((a,b)=>(a.waiting_until||'').localeCompare(b.waiting_until||''))
+    const waiting=tasks.filter(t=>t.status==='waiting'&&!already.has(t.id)).sort((a,b)=>(a.waiting_until||'').localeCompare(b.waiting_until||''))
     const done=tasks.filter(t=>t.status==='done'||t.status==='archived').sort((a,b)=>(b.completed_at||'').localeCompare(a.completed_at||'')).slice(0,12)
     return {todayRows,tomorrowRows,weekly,later,waiting,done}
   },[tasks,today,tomorrow,weekEnd])
