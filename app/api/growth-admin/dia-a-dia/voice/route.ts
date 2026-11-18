@@ -40,6 +40,7 @@ export async function POST(request:Request) {
   const meetingDate = String(form.get('meeting_date')||'')
   const taskTitle = String(form.get('task_title')||'').trim().slice(0,240)
   const taskDate = String(form.get('task_date')||'')
+  const taskUrgency = String(form.get('task_urgency')||'pending')==='urgent'?'urgent':'pending'
   const file = form.get('audio')
   if (!title) return NextResponse.json({error:'Pon un título a la nota'},{status:400})
   if (relationId && !/^[a-z0-9-]{2,80}$/.test(relationId)) return NextResponse.json({error:'Relación no válida'},{status:400})
@@ -85,13 +86,12 @@ export async function POST(request:Request) {
       })))
     }
     if (taskTitle) {
-      const nextBusinessDay=()=>{const d=new Date(dateKey()+'T12:00:00Z');do{d.setUTCDate(d.getUTCDate()+1)}while([0,6].includes(d.getUTCDay()));return d.toISOString().slice(0,10)}
       await insertGrowthRow('day_tasks',{
         id:randomUUID(),tenant_id:TENANT,title:taskTitle,source:'meeting_note',source_key:noteId,
-        details:body.slice(0,6000),status:'open',lane:'today',priority:2,
-        scheduled_on:/^\d{4}-\d{2}-\d{2}$/.test(taskDate)?taskDate:nextBusinessDay(),
+        details:body.slice(0,6000),status:'open',lane:taskUrgency==='urgent'?'today':'week',priority:taskUrgency==='urgent'?1:2,
+        scheduled_on:/^\d{4}-\d{2}-\d{2}$/.test(taskDate)?taskDate:(taskUrgency==='urgent'?dateKey():null),
         contact_email:contactEmail||null,
-        metadata:{note_id:noteId,relation_id:relationId||null,created_from:'voice_note'},
+        metadata:{note_id:noteId,relation_id:relationId||null,created_from:'voice_note',task_bucket:taskUrgency},
       })
     }
     return NextResponse.json({ok:true,id:noteId,audio_saved:Boolean(audioPath),text_saved:Boolean(body),task_created:Boolean(taskTitle)})
