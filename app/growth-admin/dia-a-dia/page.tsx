@@ -49,6 +49,8 @@ function localDay(datetime:string) {return new Intl.DateTimeFormat('sv-SE',{time
 function localTime(datetime:string){return new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(datetime))}
 function localDate(datetime:string){return new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',weekday:'short',day:'numeric',month:'short'}).format(new Date(datetime))}
 
+function isSnapshotOlderThan(value:string,hours:number){const stamp=Date.parse(value);return !Number.isFinite(stamp)||Date.now()-stamp>hours*60*60*1000}
+
 function Empty({children}:{children:React.ReactNode}) {return <div className="rounded-xl border border-dashed border-slate-300 bg-white p-5 text-sm text-slate-500">{children}</div>}
 
 export default async function DayToDayPage({searchParams}:{searchParams:Promise<Record<string,string|string[]|undefined>>}) {
@@ -85,12 +87,12 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
   const meetings=[...liveCalendar,...snapshots,...crmOnly].filter(m=>localDay(m.starts_at)>=date&&localDay(m.starts_at)<=weekEnd)
     .sort((a,b)=>a.starts_at.localeCompare(b.starts_at))
   const newestSnapshot=snapshotRows.reduce((latest,s)=>s.source_checked_at>latest?s.source_checked_at:latest,'')
-  const snapshotsStale=!newestSnapshot||!Number.isFinite(Date.parse(newestSnapshot))||Date.now()-Date.parse(newestSnapshot)>36*60*60*1000
+  const snapshotsStale=!newestSnapshot||isSnapshotOlderThan(newestSnapshot,36)
   const meetingDays=Array.from({length:8},(_,index)=>{const day=addDays(date,index);return {day,index,rows:meetings.filter(m=>localDay(m.starts_at)===day)}}).filter(d=>d.index===0||d.rows.length>0)
   const gmailState=connections.filter(c=>c.provider_subject&&c.provider_subject.includes('@')).map(c=>{
     const meta=(c.metadata?.gmail_sync||{}) as Record<string,unknown>
     const success=String(meta.last_success_at||'')
-    const stale=!success||Date.now()-Date.parse(success)>24*60*60*1000
+    const stale=!success||isSnapshotOlderThan(success,24)
     return {account:c.provider_subject,last:success,stale,error:String(meta.last_error||'')}
   })
 
