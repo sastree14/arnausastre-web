@@ -173,7 +173,8 @@ export default async function DayToDayPage({searchParams}:{searchParams:Promise<
       </div>
     </section>
       </>}
-      clients={<DailyRelationships key={relationRows.reduce((s,r)=>s+':'+r.id+':'+r.last_interaction_on+':'+r.status,'')+':'+noteRows.length+':'+taskRows.reduce((s,t)=>s+':'+t.id+':'+t.status,'')} initialRelations={relationRows} initialTasks={taskRows} initialNotes={noteRows} today={date}/>}
+      clients={<DailyRelationships view="commercial" key={'commercial-'+relationRows.reduce((s,r)=>s+':'+r.id+':'+r.last_interaction_on+':'+r.status,'')+':'+noteRows.length+':'+taskRows.reduce((s,t)=>s+':'+t.id+':'+t.status,'')} initialRelations={relationRows} initialTasks={taskRows} initialNotes={noteRows} today={date}/>}
+      editorial={<DailyRelationships view="editorial" key={'editorial-'+relationRows.reduce((s,r)=>s+':'+r.id+':'+r.last_interaction_on+':'+r.status,'')+':'+noteRows.length} initialRelations={relationRows} initialTasks={taskRows} initialNotes={noteRows} today={date}/>}
     />
   </AdminShell>
 }
