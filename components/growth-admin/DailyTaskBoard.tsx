@@ -22,7 +22,7 @@ export type DailyTask = {
   metadata?:Record<string,unknown>|null
 }
 const statuses = [
-  ['open','Pendiente'],['in_progress','En curso'],['waiting','En espera'],['done','Realizada'],['archived','Archivada']
+  ['open','Pendiente'],['in_progress','En curso'],['done','Realizada'],['archived','Archivada']
 ] as const
 const stateLabels:Record<string,string> = Object.fromEntries(statuses)
 const datePlus=(date:string,n:number)=>{const d=new Date(date+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)}
@@ -30,16 +30,14 @@ const safeLink=(v?:string|null)=>{if(!v)return '';try{return new URL(v).protocol
 const sourceLabel:Record<string,string>={manual:'Manual',gmail:'Correo',calendar:'Calendario',chat:'Chat',meeting_note:'Nota',automation:'Automatización'}
 function TaskItem({task,onUpdate,today}:{task:DailyTask;onUpdate:(next:DailyTask)=>void;today:string}) {
   const [selection,setSelection]=useState(task.status)
-  const [waitUntil,setWaitUntil]=useState(task.waiting_until||datePlus(today,7))
   const [workDay,setWorkDay]=useState(task.scheduled_on||'')
   const [hardDeadline,setHardDeadline]=useState(task.due_on||'')
   const [saving,setSaving]=useState(false)
   const [error,setError]=useState('')
   const [saved,setSaved]=useState('')
   const [expanded,setExpanded]=useState(false)
-  const changed=selection!==task.status||(selection==='waiting'&&waitUntil!==task.waiting_until)
+  const changed=selection!==task.status
   const changedDates=workDay!==(task.scheduled_on||'')||hardDeadline!==(task.due_on||'')
-  const eligibleFollowup=task.status==='waiting'&&Boolean(task.waiting_until)&&task.waiting_until!<=today&&task.followup_count<2
   async function send(payload:Record<string,unknown>){
     setSaving(true);setError('');setSaved('')
     try{
@@ -51,7 +49,6 @@ function TaskItem({task,onUpdate,today}:{task:DailyTask;onUpdate:(next:DailyTask
       if(!res.ok||!data.ok||!data.task)throw new Error(data.error||'No se ha guardado el cambio')
       onUpdate(data.task)
       setSelection(data.task.status)
-      setWaitUntil(data.task.waiting_until||datePlus(today,7))
       setWorkDay(data.task.scheduled_on||'')
       setHardDeadline(data.task.due_on||'')
       setSaved('Guardado')
@@ -72,13 +69,11 @@ function TaskItem({task,onUpdate,today}:{task:DailyTask;onUpdate:(next:DailyTask
       </button>
       <div className="flex shrink-0 flex-wrap items-center gap-x-2 gap-y-1 text-[11px]">
         {task.priority===1&&!isCompleted&&<span className="font-semibold text-amber-700">Prioritaria</span>}
-        {task.status==='waiting'&&<span className="font-semibold text-amber-700">En espera</span>}
         {task.status==='in_progress'&&<span className="font-semibold text-indigo-700">En curso</span>}
         {isCompleted&&<span className="font-semibold text-emerald-700">{stateLabels[task.status]}</span>}
         {!isCompleted&&task.scheduled_on&&task.scheduled_on<today&&<span className="font-medium text-violet-700">Arrastrada</span>}
         {task.due_on&&!isCompleted&&<span className="text-rose-700">Límite {task.due_on}</span>}
-        {task.status==='waiting'&&task.waiting_until&&<span className="text-slate-500">Revisar {task.waiting_until}</span>}
-        {!isCompleted&&task.status!=='waiting'&&<button type="button" onClick={()=>send({action:'status_change',status:'done'})} disabled={saving}
+        {!isCompleted&&<button type="button" onClick={()=>send({action:'status_change',status:'done'})} disabled={saving}
           className="rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-800 hover:bg-emerald-100 disabled:opacity-50">
           {saving?'Guardando…':'✓ Hecha'}
         </button>}
@@ -95,9 +90,7 @@ function TaskItem({task,onUpdate,today}:{task:DailyTask;onUpdate:(next:DailyTask
           <div className="flex flex-wrap gap-x-3 gap-y-1 text-slate-500">
             {task.scheduled_on&&<span>Trabajar: {task.scheduled_on}</span>}
             {task.due_on&&<span>Fecha límite: {task.due_on}</span>}
-            {task.waiting_until&&task.status==='waiting'&&<span>Revisar: {task.waiting_until}</span>}
             {task.contact_email&&<span>{task.contact_email}</span>}
-            {task.status==='waiting'&&<span>Seguimientos: {task.followup_count}/2</span>}
           </div>
           {(link||doc)&&<p className="flex flex-wrap gap-3 font-semibold text-indigo-700">
             {link&&<a href={link} target="_blank" rel="noreferrer">Origen de la tarea</a>}
@@ -110,7 +103,7 @@ function TaskItem({task,onUpdate,today}:{task:DailyTask;onUpdate:(next:DailyTask
               {statuses.map(([value,label])=><option key={value} value={value}>{label}</option>)}
             </select>
           </label>
-          {selection!=='waiting'&&task.status!=='done'&&task.status!=='archived'&&<div className="grid grid-cols-2 gap-2">
+          {task.status!=='done'&&task.status!=='archived'&&<div className="grid grid-cols-2 gap-2">
             <label className="text-xs text-slate-600">Trabajar el
               <input type="date" value={workDay} onChange={e=>{setWorkDay(e.target.value);setSaved('')}} className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs"/>
             </label>
@@ -119,14 +112,9 @@ function TaskItem({task,onUpdate,today}:{task:DailyTask;onUpdate:(next:DailyTask
             </label>
           </div>}
           {changedDates&&task.status!=='done'&&task.status!=='archived'&&<button type="button" onClick={()=>send({action:'schedule_change',scheduled_on:workDay||null,due_on:hardDeadline||null})} disabled={saving} className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-xs font-semibold text-indigo-700">Guardar fechas</button>}
-          {selection==='waiting'&&<label className="text-xs text-slate-600">Próxima revisión
-            <input type="date" value={waitUntil} onChange={e=>setWaitUntil(e.target.value)} className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs"/>
-          </label>}
-          <button type="button" onClick={()=>send({action:'status_change',status:selection,waiting_until:selection==='waiting'?waitUntil:null})} disabled={saving||!changed} className="rounded-lg bg-slate-950 px-3 py-2 text-xs font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">
+          <button type="button" onClick={()=>send({action:'status_change',status:selection})} disabled={saving||!changed} className="rounded-lg bg-slate-950 px-3 py-2 text-xs font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">
             {saving?'Guardando…':'Guardar estado'}
           </button>
-          {eligibleFollowup&&<button type="button" onClick={()=>send({action:'followup_sent'})} disabled={saving} className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">Registrar follow-up enviado</button>}
-          {task.status==='waiting'&&<button type="button" onClick={()=>send({action:'reply_received'})} disabled={saving} className="text-xs font-semibold text-indigo-700 underline">Han respondido</button>}
         </div>
       </div>
     </div>}
@@ -145,27 +133,23 @@ export default function DailyTaskBoard({initialTasks,today,maxTasks}:{initialTas
   const tomorrow=datePlus(today,1)
   const ordered=useMemo(()=>{
     const active=tasks.filter(t=>t.status==='open'||t.status==='in_progress')
-    const due=tasks.filter(t=>t.status==='waiting'&&t.waiting_until&&t.waiting_until<=today&&t.followup_count<2)
     const todayWork=active.filter(t=>(t.scheduled_on&&t.scheduled_on<=today)||(t.due_on&&t.due_on<=today)||(t.lane==='today'&&!t.scheduled_on&&!t.due_on))
-    const todayRows=[...due,...todayWork].sort((a,b)=>Number(a.priority)-Number(b.priority)||(a.scheduled_on||a.waiting_until||'').localeCompare(b.scheduled_on||b.waiting_until||''))
+    const todayRows=[...todayWork].sort((a,b)=>Number(a.priority)-Number(b.priority)||(a.scheduled_on||a.waiting_until||'').localeCompare(b.scheduled_on||b.waiting_until||''))
     const todayIds=new Set(todayRows.map(t=>t.id))
-    const tomorrowDue=tasks.filter(t=>t.status==='waiting'&&t.waiting_until===tomorrow&&t.followup_count<2)
-    const tomorrowRows=[...tomorrowDue,...active.filter(t=>!todayIds.has(t.id)&&((t.scheduled_on&&t.scheduled_on===tomorrow)||(!t.scheduled_on&&t.due_on===tomorrow)))]
+    const tomorrowRows=[...active.filter(t=>!todayIds.has(t.id)&&((t.scheduled_on&&t.scheduled_on===tomorrow)||(!t.scheduled_on&&t.due_on===tomorrow)))]
       .sort((a,b)=>Number(a.priority)-Number(b.priority))
     const already=new Set([...todayRows,...tomorrowRows].map(t=>t.id))
     const weekly=active.filter(t=>!already.has(t.id)&&((t.scheduled_on&&t.scheduled_on<=weekEnd)||(t.due_on&&t.due_on<=weekEnd)||t.lane==='week'&&!t.scheduled_on&&!t.due_on))
       .sort((a,b)=>(a.scheduled_on||a.due_on||'').localeCompare(b.scheduled_on||b.due_on||''))
     const later=active.filter(t=>!already.has(t.id)&&!weekly.some(w=>w.id===t.id)).sort((a,b)=>(a.scheduled_on||a.due_on||'').localeCompare(b.scheduled_on||b.due_on||''))
-    const waiting=tasks.filter(t=>t.status==='waiting'&&!already.has(t.id)).sort((a,b)=>(a.waiting_until||'').localeCompare(b.waiting_until||''))
     const done=tasks.filter(t=>t.status==='done'||t.status==='archived').sort((a,b)=>(b.completed_at||'').localeCompare(a.completed_at||'')).slice(0,12)
-    return {todayRows,tomorrowRows,weekly,later,waiting,done}
+    return {todayRows,tomorrowRows,weekly,later,done}
   },[tasks,today,tomorrow,weekEnd])
   return <div className="space-y-7">
     <div className="flex flex-wrap gap-2 text-xs">
       <a className="rounded-full border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-700" href="#tareas-hoy">Hoy · {ordered.todayRows.length}</a>
       <a className="rounded-full border border-indigo-200 bg-indigo-50 px-3 py-2 font-semibold text-indigo-800" href="#tareas-manana">Mañana · {ordered.tomorrowRows.length}</a>
       <a className="rounded-full border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-700" href="#tareas-semana">Semana · {ordered.weekly.length}</a>
-      <a className="rounded-full border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-700" href="#tareas-espera">En espera · {ordered.waiting.length}</a>
     </div>
     <div className="grid gap-5 lg:grid-cols-2">
       <div id="tareas-hoy"><Section title="Hoy" description={'Acciones del '+today+'. Máximo '+maxTasks+' en foco. Las atrasadas siguen aquí hasta completarlas.'} items={ordered.todayRows.slice(0,maxTasks)} today={today} onUpdate={onUpdate}/></div>
@@ -174,7 +158,6 @@ export default function DailyTaskBoard({initialTasks,today,maxTasks}:{initialTas
     {ordered.todayRows.length>maxTasks&&<Section title="Cola de hoy" description="Exceso de capacidad, visible pero no perdido." items={ordered.todayRows.slice(maxTasks)} today={today} onUpdate={onUpdate}/>}
     <div id="tareas-semana"><Section title="Resto de la semana" description="Tareas con fecha de trabajo, límite o planificación en los próximos siete días." items={ordered.weekly} today={today} onUpdate={onUpdate}/></div>
     {ordered.later.length>0&&<Section title="Más adelante" description="Pendientes con fechas futuras o todavía sin día concreto; ninguna se pierde." items={ordered.later} today={today} onUpdate={onUpdate}/>}
-    <div id="tareas-espera"><Section title="En espera" description="Las respuestas sin acción no ocupan la agenda diaria. Cada una tiene su fecha de próxima revisión." items={ordered.waiting} today={today} onUpdate={onUpdate}/></div>
     {ordered.done.length>0&&<Section title="Realizadas y archivadas" description="Historial reciente. Solo se reabren por decisión explícita." items={ordered.done} today={today} onUpdate={onUpdate}/>}
   </div>
 }
