@@ -173,7 +173,7 @@ export default function DailyVoiceNote({relationId,initialContact='',initialTitl
     } finally { setSaving(false) }
   }
 
-  return <form onSubmit={save} className="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+  return <form onSubmit={save} data-active-recording={recording} className="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-4">
     <p className="text-sm font-semibold text-slate-900">{relationId?'Añadir actualización de esta relación':'Registrar lo que acaba de pasar'}</p>
     <p className="text-xs leading-5 text-slate-500">Puedes grabar una nota de voz o escribir un resumen de cambios. Se vinculará a esta relación sin inventar interacciones ni tareas. Solo se crea una tarea si escribes expresamente su título.</p>
     <div className="grid gap-2 sm:grid-cols-2">
