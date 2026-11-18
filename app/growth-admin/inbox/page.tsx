@@ -1,66 +1,91 @@
 import { redirect } from 'next/navigation'
 import AdminShell from '@/components/growth-admin/AdminShell'
-import CommercialViewRefresh from '@/components/growth-admin/CommercialViewRefresh'
-import { Badge, EmptyState, PageHeader, SectionHeading, adminPanel, formatDate } from '@/components/growth-admin/AdminUi'
+import { PageHeader, adminPanel } from '@/components/growth-admin/AdminUi'
 import { getGmailConnections } from '@/lib/growth-integrations'
-import { getInteractions, isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
-import { CORPORATE_GOOGLE_EMAIL } from '@/lib/google-oauth-finance'
+import { isGrowthAdminAuthenticated, queryGrowthTable } from '@/lib/growth-admin'
 
 export const dynamic='force-dynamic'
 export const revalidate=0
-
-type InboxMessage={message_key:string;account_email:string;sender_name?:string;sender_email?:string;subject:string;snippet:string;received_at?:string;unread:boolean;relevance_score:number|string;category:string;relevance_reason?:string;summary?:string;recommended_action?:string;status:string}
-const categoryLabel:Record<string,string>={client:'Cliente',lead:'Lead',partner:'Partner',finance:'Finanzas',legal:'Legal',operations:'Operaciones',team:'Equipo',calendar:'Calendario',account:'Cuenta',other:'Otros',low_value:'Baja prioridad'}
-
+type Favourite={
+  id:string;account_email:string;thread_id:string;relationship_id?:string|null;
+  contact_email:string;contact_name:string;subject:string;last_message_on:string|null;
+  has_star:boolean;has_user_reply:boolean;is_business:boolean;eligible:boolean;
+  last_direction:string;thread_url:string|null;reviewed_at:string
+}
+type Relationship={id:string;status:string;role:string}
+type Connection={provider_subject:string;metadata?:Record<string,unknown>}
+const safeLink=(raw:string|null|undefined)=>{
+  if(!raw)return ''
+  try{const u=new URL(raw);return u.protocol==='https:'&&u.hostname==='mail.google.com'?raw:''}catch{return ''}
+}
+function formatted(date:string|null|undefined){
+  if(!date)return 'Sin fecha'
+  const d=new Date(date+'T12:00:00Z')
+  return Number.isNaN(d.getTime())?'Sin fecha':new Intl.DateTimeFormat('es-ES',{day:'numeric',month:'short',year:'numeric'}).format(d)
+}
 export default async function InboxPage({searchParams}:{searchParams:Promise<Record<string,string|string[]|undefined>>}){
   if(!(await isGrowthAdminAuthenticated()))redirect('/growth-admin/login')
   const params=await searchParams
-  const filter=typeof params.filter==='string'?params.filter:'relevant'
   const account=typeof params.account==='string'?params.account:''
-  const [connections,messages,interactions]=await Promise.all([
-    getGmailConnections(),
-    queryGrowthTable<InboxMessage>('crm_inbox_messages',{tenant_id:'eq.sc-analytics',order:'received_at.desc',limit:'250'},{cacheSeconds:0}),
-    getInteractions(),
+  const [messages,relationships,connections]=await Promise.all([
+    queryGrowthTable<Favourite>('day_favorite_threads',{tenant_id:'eq.sc-analytics',order:'last_message_on.desc',limit:'500'},{cacheSeconds:0}).catch(()=>[] as Favourite[]),
+    queryGrowthTable<Relationship>('day_relationships',{tenant_id:'eq.sc-analytics',limit:'100'},{cacheSeconds:0}).catch(()=>[] as Relationship[]),
+    getGmailConnections().catch(()=>[] as Connection[]),
   ])
-  const visible=messages.filter(row=>{if(account&&row.account_email!==account)return false;if(filter==='all')return true;if(filter==='low')return Number(row.relevance_score)<5;return Number(row.relevance_score)>=5})
-  const relevant=messages.filter(row=>Number(row.relevance_score)>=5).length
-  const urgent=messages.filter(row=>Number(row.relevance_score)>=8).length
-  const unread=messages.filter(row=>row.unread&&Number(row.relevance_score)>=5).length
-  const connectedEmails=new Set(connections.map(row=>String(row.provider_subject||'').toLowerCase()))
-  const personalConnected=connectedEmails.has('arnau.sastre@gmail.com')
-  const corporateConnected=connectedEmails.has(CORPORATE_GOOGLE_EMAIL)
-
+  const related=new Map(relationships.map(x=>[x.id,x]))
+  const isEligible=(row:Favourite)=>{
+    if(!row.has_star||!row.has_user_reply||!row.is_business||!row.eligible)return false
+    const r=row.relationship_id?related.get(row.relationship_id):null
+    return !r||((r.status==='active'||r.status==='waiting')&&r.role!=='worker')
+  }
+  const eligible=messages.filter(isEligible).sort((a,b)=>
+    (b.last_message_on||'').localeCompare(a.last_message_on||'')||
+    (b.reviewed_at||'').localeCompare(a.reviewed_at||''))
+  const distinct=new Map<string,Favourite>()
+  for(const row of eligible){
+    const key=(row.relationship_id||row.contact_email||row.id).toLowerCase()
+    if(!distinct.has(key))distinct.set(key,row)
+  }
+  const visible=[...distinct.values()].filter(x=>!account||x.account_email===account)
+  const latest=messages.reduce((max,row)=>row.reviewed_at>max?row.reviewed_at:max,'')
+  const fresh=Boolean(latest)&&Date.now()-Date.parse(latest)<=36*60*60*1000
+  const states=connections.filter(c=>c.provider_subject?.includes('@')).map(c=>{
+    const sync=(c.metadata?.gmail_sync||{}) as Record<string,unknown>
+    const error=String(sync.last_error||'')
+    const last=String(sync.last_success_at||'')
+    return {account:c.provider_subject,error,last}
+  })
   return <AdminShell active="inbox">
-    <PageHeader eyebrow="Operaciones · Communication Hub" title="Inbox relevante" description="Unifica correo personal y corporativo, prioriza trabajo real y separa newsletters/promociones de mensajes que requieren decisión o seguimiento." actions={<><a href="/api/growth-admin/google/connect?account=personal&return_to=/growth-admin/inbox" className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">{personalConnected?'Reautorizar personal':'Conectar personal'}</a><a href="/api/growth-admin/google/connect?account=corporate&return_to=/growth-admin/inbox" className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950">{corporateConnected?'Reautorizar empresa':'Conectar empresa'}</a></>}/>
-
-    <section className="mb-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4"><div className={`${adminPanel} p-4`}><p className="text-xs uppercase tracking-wide text-slate-400">Relevantes</p><p className="mt-2 text-3xl font-semibold">{relevant}</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase tracking-wide text-slate-400">Alta prioridad</p><p className="mt-2 text-3xl font-semibold">{urgent}</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase tracking-wide text-slate-400">Sin leer</p><p className="mt-2 text-3xl font-semibold">{unread}</p></div><div className={`${adminPanel} p-4`}><p className="text-xs uppercase tracking-wide text-slate-400">Cuentas</p><p className="mt-2 text-3xl font-semibold">{connections.length}/2</p></div></section>
-
-    <CommercialViewRefresh/>
-    <section className="mb-8 rounded-2xl border border-slate-200 bg-white p-5">
-      <div className="grid gap-4 lg:grid-cols-2">{connections.map(connection => {
-        const sync = (connection.metadata?.gmail_sync || {}) as Record<string, unknown>
-        const error = String(sync.last_error || '')
-        const success = String(sync.last_success_at || '')
-        const lastRun = String(sync.last_run_at || '')
-        const partial = Boolean(sync.next_page_token)
-        const needsConsent = error.includes('invalid_grant')
-        const state = needsConsent ? 'Reautorizar' : error ? 'Error de sincronización' : partial ? 'Sincronización parcial' : success ? 'Sincronizado' : 'Pendiente de sincronizar'
-        return <div key={connection.connection_id} className={`rounded-xl border p-4 ${success && !error && !partial ? 'border-emerald-200 bg-emerald-50' : 'border-amber-200 bg-amber-50'}`}>
-          <div className="flex flex-wrap items-center justify-between gap-3"><p className="text-sm font-semibold">{connection.display_name || connection.provider_subject}</p><Badge tone={success && !error && !partial ? 'green' : 'amber'}>{state}</Badge></div>
-          <p className="mt-2 text-xs text-slate-600">Última ejecución: {lastRun ? formatDate(lastRun, true) : 'sin registrar'}.</p>
-          <p className="mt-1 text-xs text-slate-600">Última revisión completa: {success ? formatDate(success, true) : 'sin registrar'}.</p>
-          {needsConsent && <p className="mt-3 text-xs leading-5 text-amber-900">Google ha rechazado la autorización guardada. Utiliza «Reautorizar personal» para volver a conectar esta cuenta.</p>}
-          {error && !needsConsent && <p className="mt-3 text-xs leading-5 text-amber-900">La última ejecución no pudo completarse. El correo pendiente se conserva para el siguiente intento.</p>}
-          {partial && !error && <p className="mt-3 text-xs text-slate-600">El proceso continuará desde la página pendiente sin duplicar mensajes.</p>}
-        </div>
-      })}</div>
-      <p className="mt-4 text-xs text-slate-500">El proceso periódico sincroniza Gmail con Supabase. «Actualizar sección» recarga los datos del CMI; los correos y las respuestas se trabajan desde el chat.</p>
+    <PageHeader eyebrow="Operaciones · Clientes y colaboradores" title="Conversaciones favoritas" description="Solo hilos destacados en Gmail, con respuesta tuya y relación profesional real. Un único hilo —el más reciente— por interlocutor. Sin alertas, prospectos ignorados ni contactos rechazados."/>
+    {!fresh&&<div className="mb-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+      <p className="font-semibold">Revisión de favoritos pendiente de actualizar</p>
+      <p className="mt-1 text-xs leading-5">Mostramos únicamente conversaciones contrastadas en la última revisión. No se añaden mensajes sin verificar y las estrellas nuevas o retiradas no serán visibles hasta la siguiente sincronización real. El buzón general antiguo queda oculto.</p>
+    </div>}
+    <div className="mb-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+      <div className={adminPanel+' p-4'}><p className="text-xs text-slate-500">Conversaciones elegibles</p><p className="mt-1 text-3xl font-semibold text-slate-950">{distinct.size}</p></div>
+      <div className={adminPanel+' p-4'}><p className="text-xs text-slate-500">Cuentas</p><p className="mt-1 text-lg font-semibold text-slate-950">Personal y corporativa</p></div>
+      <div className={adminPanel+' p-4'}><p className="text-xs text-slate-500">Última comprobación</p><p className="mt-1 text-sm font-semibold text-slate-950">{latest?new Intl.DateTimeFormat('es-ES',{dateStyle:'short',timeStyle:'short',timeZone:'Europe/Madrid'}).format(new Date(latest)):'Sin revisión'}</p></div>
+    </div>
+    <div className="mb-5 flex flex-wrap gap-2">
+      {[['','Ambas cuentas'],['arnau.sastre@sc-analytics.io','SC-Analytics'],['arnau.sastre@gmail.com','Gmail personal']].map(([value,label])=><a key={value} href={'/growth-admin/inbox'+(value?'?account='+encodeURIComponent(value):'')} className={'rounded-full border px-3 py-2 text-xs font-semibold '+(account===value?'border-slate-900 bg-slate-950 text-white':'border-slate-200 bg-white text-slate-700')}>{label}</a>)}
+    </div>
+    <section className="grid gap-3 lg:grid-cols-2">
+      {visible.length?visible.map(m=><article key={m.id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="flex flex-wrap items-start justify-between gap-2"><h2 className="text-base font-semibold text-slate-950">{m.contact_name||m.contact_email}</h2><span className="text-xs text-slate-500">{formatted(m.last_message_on)}</span></div>
+        <p className="mt-1 text-xs text-slate-500">{m.contact_email} · {m.account_email=== 'arnau.sastre@gmail.com'?'Personal':'Corporativo'}</p>
+        <p className="mt-3 text-sm text-slate-700">{m.subject}</p>
+        <p className="mt-2 text-xs text-slate-500">Último mensaje: {m.last_direction==='inbound'?'Recibido':m.last_direction==='outbound'?'Enviado':'Sin dirección verificada'}</p>
+        {safeLink(m.thread_url)&&<a href={m.thread_url||''} target="_blank" rel="noreferrer" className="mt-3 inline-block text-sm font-semibold text-indigo-700 underline">Abrir conversación en Gmail</a>}
+      </article>):<div className="col-span-full rounded-xl border border-dashed border-slate-300 bg-white p-8 text-sm text-slate-500">No hay conversaciones favoritas y respondidas verificadas para esta selección. No mostramos mensajes generales para rellenar el buzón.</div>}
     </section>
-
-    <div className="mb-5 flex flex-wrap gap-2"><a href="/growth-admin/inbox?filter=relevant" className={`rounded-full border px-4 py-2 text-xs font-semibold ${filter==='relevant'?'border-indigo-300 bg-indigo-50 text-indigo-700':'border-slate-200 bg-white text-slate-600'}`}>Relevantes</a><a href="/growth-admin/inbox?filter=all" className={`rounded-full border px-4 py-2 text-xs font-semibold ${filter==='all'?'border-indigo-300 bg-indigo-50 text-indigo-700':'border-slate-200 bg-white text-slate-600'}`}>Todos</a><a href="/growth-admin/inbox?filter=low" className={`rounded-full border px-4 py-2 text-xs font-semibold ${filter==='low'?'border-indigo-300 bg-indigo-50 text-indigo-700':'border-slate-200 bg-white text-slate-600'}`}>Ruido filtrado</a>{connections.map(row=><a key={row.connection_id} href={`/growth-admin/inbox?filter=${filter}&account=${encodeURIComponent(row.provider_subject)}`} className="rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-600">{row.provider_subject}</a>)}</div>
-
-    <SectionHeading eyebrow="Correo" title="Mensajes clasificados" description="Prioridad basada en remitente, asunto y contexto disponible; no se ejecuta ninguna acción sobre el correo sin tu decisión." count={visible.length}/><div className="space-y-3">{visible.length===0&&<EmptyState>{connections.length===0?'No hay mensajes porque todavía no hay cuentas Gmail conectadas.':'No hay mensajes en esta vista para el filtro actual.'}</EmptyState>}{visible.map(row=><article key={row.message_key} className={`${adminPanel} p-5`}><div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between"><div className="min-w-0"><div className="flex flex-wrap gap-2"><Badge tone={Number(row.relevance_score)>=8?'rose':Number(row.relevance_score)>=5?'blue':'slate'}>{Number(row.relevance_score).toFixed(1)}/10</Badge><Badge>{categoryLabel[row.category]||row.category}</Badge>{row.unread&&<Badge tone="amber">sin leer</Badge>}<Badge>{row.account_email}</Badge></div><h2 className="mt-3 text-base font-semibold text-slate-950">{row.subject||'(sin asunto)'}</h2><p className="mt-1 text-xs text-slate-500">{row.sender_name||row.sender_email} {row.sender_email&&row.sender_name?`<${row.sender_email}>`:''}</p><p className="mt-3 text-sm leading-6 text-slate-600">{row.summary||row.snippet}</p>{row.relevance_reason&&<p className="mt-2 text-xs text-slate-400">Por qué aparece: {row.relevance_reason}</p>}</div>{row.recommended_action&&<div className="shrink-0 rounded-xl border border-indigo-100 bg-indigo-50 px-4 py-3 text-xs text-indigo-800 lg:max-w-xs"><strong>Siguiente acción:</strong> {row.recommended_action}</div>}</div></article>)}</div>
-
-    <section className="mt-10"><SectionHeading eyebrow="CRM" title="Conversaciones registradas" description="Interacciones comerciales guardadas para que correo y conversaciones vivan en el mismo centro." count={Math.min(10,interactions.length)}/><div className="grid gap-3 lg:grid-cols-2">{interactions.slice(0,10).map(row=><div key={row.interaction_id} className={`${adminPanel} p-4`}><div className="flex gap-2"><Badge>{row.channel||'CRM'}</Badge><Badge>{row.direction||'—'}</Badge></div><p className="mt-3 text-sm text-slate-700">{row.content||row.kind||'Interacción registrada'}</p></div>)}</div></section>
+    <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-4">
+      <h2 className="text-sm font-semibold text-slate-950">Sincronización del CMI</h2>
+      <p className="mt-1 text-xs text-slate-500">Esta pantalla usa la lista curada de conversaciones, no la bandeja histórica de 2026. La conexión directa de ChatGPT puede revisar Gmail; la sincronización del CMI requiere autorización válida.</p>
+      {states.map(s=><p key={s.account} className="mt-2 text-xs text-slate-600">{s.account}: última sincronización {s.last?new Date(s.last).toLocaleDateString('es-ES'):'no disponible'}{s.error?' · hay una incidencia pendiente':''}</p>)}
+      <div className="mt-3 flex flex-wrap gap-2">
+        <a href="/api/growth-admin/google/connect?account=personal&return_to=/growth-admin/inbox" className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700">Reautorizar Gmail personal</a>
+        <a href="/api/growth-admin/google/connect?account=corporate&return_to=/growth-admin/inbox" className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700">Reautorizar SC-Analytics</a>
+      </div>
+    </section>
   </AdminShell>
 }
