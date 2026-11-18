@@ -36,6 +36,7 @@ function TaskItem({task,onUpdate,today}:{task:DailyTask;onUpdate:(next:DailyTask
   const [saving,setSaving]=useState(false)
   const [error,setError]=useState('')
   const [saved,setSaved]=useState('')
+  const [expanded,setExpanded]=useState(false)
   const changed=selection!==task.status||(selection==='waiting'&&waitUntil!==task.waiting_until)
   const changedDates=workDay!==(task.scheduled_on||'')||hardDeadline!==(task.due_on||'')
   const eligibleFollowup=task.status==='waiting'&&Boolean(task.waiting_until)&&task.waiting_until!<=today&&task.followup_count<2
@@ -59,56 +60,76 @@ function TaskItem({task,onUpdate,today}:{task:DailyTask;onUpdate:(next:DailyTask
   }
   const link=safeLink(task.related_url),doc=safeLink(task.related_document_url)
   const reason=typeof task.metadata?.reason==='string'?task.metadata.reason:(typeof task.metadata?.evidence==='string'?task.metadata.evidence:'')
-  return <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-    <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_230px]">
-      <div className="min-w-0">
-        <div className="mb-1 flex flex-wrap items-center gap-2 text-[11px]">
-          {task.priority===1&&<span className="rounded bg-amber-50 px-2 py-0.5 font-semibold text-amber-700">Prioridad alta</span>}
-          {task.status!=='done'&&task.status!=='archived'&&task.scheduled_on&&task.scheduled_on<today&&<span className="text-violet-700">Arrastrada</span>}
-          <span className="text-slate-500">{sourceLabel[task.source]||task.source}</span>
-        </div>
-        <p className="text-sm font-semibold leading-5 text-slate-950">{task.title}</p>
-        {task.details&&<p className="mt-1 whitespace-pre-line text-xs leading-5 text-slate-600">{task.details}</p>}
-        {reason&&<p className="mt-2 rounded-lg bg-slate-50 px-3 py-2 text-xs leading-5 text-slate-600"><b>Por qué aparece:</b> {reason}</p>}
-        <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
-          {task.scheduled_on&&<span className="font-medium text-indigo-700">Trabajar: {task.scheduled_on}</span>}
-          {task.due_on&&<span className="font-semibold text-rose-700">Fecha límite: {task.due_on}</span>}
-          {task.waiting_until&&task.status==='waiting'&&<span>Revisar: {task.waiting_until}</span>}
-          {task.contact_email&&<span>{task.contact_email}</span>}
-          {task.status==='waiting'&&<span>Follow-ups: {task.followup_count}/2</span>}
-        </div>
-        {(link||doc)&&<p className="mt-2 flex flex-wrap gap-3 text-xs font-semibold text-indigo-700">
-          {link&&<a href={link} target="_blank" rel="noreferrer">Origen de la tarea</a>}
-          {doc&&<a href={doc} target="_blank" rel="noreferrer">Documento relacionado</a>}
-        </p>}
-      </div>
-      <div className="flex flex-col gap-2 lg:border-l lg:border-slate-100 lg:pl-3">
-        <label className="text-xs font-semibold text-slate-600">Estado
-          <select aria-label={'Estado de '+task.title} value={selection} disabled={saving} onChange={e=>{setSelection(e.target.value);setSaved('')}} className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900">
-            {statuses.map(([value,label])=><option key={value} value={value}>{label}</option>)}
-          </select>
-        </label>
-        {selection!=='waiting'&&task.status!=='done'&&task.status!=='archived'&&<div className="grid grid-cols-2 gap-2">
-          <label className="text-xs text-slate-600">Trabajar el
-            <input type="date" value={workDay} onChange={e=>{setWorkDay(e.target.value);setSaved('')}} className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs"/>
-          </label>
-          <label className="text-xs text-slate-600">Límite
-            <input type="date" value={hardDeadline} onChange={e=>{setHardDeadline(e.target.value);setSaved('')}} className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs"/>
-          </label>
-        </div>}
-        {changedDates&&task.status!=='done'&&task.status!=='archived'&&<button type="button" onClick={()=>send({action:'schedule_change',scheduled_on:workDay||null,due_on:hardDeadline||null})} disabled={saving} className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-xs font-semibold text-indigo-700">Guardar fechas</button>}
-        {selection==='waiting'&&<label className="text-xs text-slate-600">Próxima revisión
-          <input type="date" value={waitUntil} onChange={e=>setWaitUntil(e.target.value)} className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs"/>
-        </label>}
-        <button type="button" onClick={()=>send({action:'status_change',status:selection,waiting_until:selection==='waiting'?waitUntil:null})} disabled={saving||!changed} className="rounded-lg bg-slate-950 px-3 py-2 text-xs font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">
-          {saving?'Guardando…':'Guardar estado'}
-        </button>
-        {eligibleFollowup&&<button type="button" onClick={()=>send({action:'followup_sent'})} disabled={saving} className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">Registrar follow-up enviado</button>}
-        {task.status==='waiting'&&<button type="button" onClick={()=>send({action:'reply_received'})} disabled={saving} className="text-xs font-semibold text-indigo-700 underline">Han respondido</button>}
-        {saved&&<span role="status" className="text-xs text-emerald-700">{saved} · {stateLabels[task.status]||task.status}</span>}
-        {error&&<span role="alert" className="text-xs text-rose-700">{error}</span>}
+  const expandedDetailsId='task-details-'+task.id
+  const isCompleted=task.status==='done'||task.status==='archived'
+  return <article className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 shadow-sm">
+    <div className="flex flex-wrap items-center gap-2">
+      <button type="button" onClick={()=>setExpanded(value=>!value)} aria-expanded={expanded}
+        aria-controls={expandedDetailsId} aria-label={(expanded?'Ocultar':'Mostrar')+' detalles de '+task.title}
+        className="group flex min-w-0 flex-1 items-center gap-2 rounded-md py-1 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600">
+        <span aria-hidden="true" className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-base font-semibold text-slate-600 group-hover:bg-slate-100">{expanded?'−':'+'}</span>
+        <span className={'min-w-0 text-sm font-semibold leading-5 '+(isCompleted?'text-slate-500 line-through':'text-slate-950')}>{task.title}</span>
+      </button>
+      <div className="flex shrink-0 flex-wrap items-center gap-x-2 gap-y-1 text-[11px]">
+        {task.priority===1&&!isCompleted&&<span className="font-semibold text-amber-700">Prioritaria</span>}
+        {task.status==='waiting'&&<span className="font-semibold text-amber-700">En espera</span>}
+        {task.status==='in_progress'&&<span className="font-semibold text-indigo-700">En curso</span>}
+        {isCompleted&&<span className="font-semibold text-emerald-700">{stateLabels[task.status]}</span>}
+        {!isCompleted&&task.scheduled_on&&task.scheduled_on<today&&<span className="font-medium text-violet-700">Arrastrada</span>}
+        {task.due_on&&!isCompleted&&<span className="text-rose-700">Límite {task.due_on}</span>}
+        {task.status==='waiting'&&task.waiting_until&&<span className="text-slate-500">Revisar {task.waiting_until}</span>}
+        {!isCompleted&&task.status!=='waiting'&&<button type="button" onClick={()=>send({action:'status_change',status:'done'})} disabled={saving}
+          className="rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-800 hover:bg-emerald-100 disabled:opacity-50">
+          {saving?'Guardando…':'✓ Hecha'}
+        </button>}
       </div>
     </div>
+    {error&&<p role="alert" className="mt-2 text-xs text-rose-700">{error}</p>}
+    {saved&&<p role="status" className="mt-1 text-xs text-emerald-700">{saved}</p>}
+    {expanded&&<div id={expandedDetailsId} className="mt-3 border-t border-slate-100 pt-3">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_230px]">
+        <div className="min-w-0 space-y-2 text-xs leading-5 text-slate-600">
+          <p className="font-medium text-slate-500">Origen: {sourceLabel[task.source]||task.source}</p>
+          {task.details?<p className="whitespace-pre-line">{task.details}</p>:<p className="text-slate-400">Sin descripción adicional.</p>}
+          {reason&&<p className="rounded-lg bg-slate-50 px-3 py-2"><b>Por qué aparece:</b> {reason}</p>}
+          <div className="flex flex-wrap gap-x-3 gap-y-1 text-slate-500">
+            {task.scheduled_on&&<span>Trabajar: {task.scheduled_on}</span>}
+            {task.due_on&&<span>Fecha límite: {task.due_on}</span>}
+            {task.waiting_until&&task.status==='waiting'&&<span>Revisar: {task.waiting_until}</span>}
+            {task.contact_email&&<span>{task.contact_email}</span>}
+            {task.status==='waiting'&&<span>Seguimientos: {task.followup_count}/2</span>}
+          </div>
+          {(link||doc)&&<p className="flex flex-wrap gap-3 font-semibold text-indigo-700">
+            {link&&<a href={link} target="_blank" rel="noreferrer">Origen de la tarea</a>}
+            {doc&&<a href={doc} target="_blank" rel="noreferrer">Documento relacionado</a>}
+          </p>}
+        </div>
+        <div className="flex flex-col gap-2 lg:border-l lg:border-slate-100 lg:pl-3">
+          <label className="text-xs font-semibold text-slate-600">Estado
+            <select aria-label={'Estado de '+task.title} value={selection} disabled={saving} onChange={e=>{setSelection(e.target.value);setSaved('')}} className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900">
+              {statuses.map(([value,label])=><option key={value} value={value}>{label}</option>)}
+            </select>
+          </label>
+          {selection!=='waiting'&&task.status!=='done'&&task.status!=='archived'&&<div className="grid grid-cols-2 gap-2">
+            <label className="text-xs text-slate-600">Trabajar el
+              <input type="date" value={workDay} onChange={e=>{setWorkDay(e.target.value);setSaved('')}} className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs"/>
+            </label>
+            <label className="text-xs text-slate-600">Límite
+              <input type="date" value={hardDeadline} onChange={e=>{setHardDeadline(e.target.value);setSaved('')}} className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs"/>
+            </label>
+          </div>}
+          {changedDates&&task.status!=='done'&&task.status!=='archived'&&<button type="button" onClick={()=>send({action:'schedule_change',scheduled_on:workDay||null,due_on:hardDeadline||null})} disabled={saving} className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-xs font-semibold text-indigo-700">Guardar fechas</button>}
+          {selection==='waiting'&&<label className="text-xs text-slate-600">Próxima revisión
+            <input type="date" value={waitUntil} onChange={e=>setWaitUntil(e.target.value)} className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs"/>
+          </label>}
+          <button type="button" onClick={()=>send({action:'status_change',status:selection,waiting_until:selection==='waiting'?waitUntil:null})} disabled={saving||!changed} className="rounded-lg bg-slate-950 px-3 py-2 text-xs font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">
+            {saving?'Guardando…':'Guardar estado'}
+          </button>
+          {eligibleFollowup&&<button type="button" onClick={()=>send({action:'followup_sent'})} disabled={saving} className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">Registrar follow-up enviado</button>}
+          {task.status==='waiting'&&<button type="button" onClick={()=>send({action:'reply_received'})} disabled={saving} className="text-xs font-semibold text-indigo-700 underline">Han respondido</button>}
+        </div>
+      </div>
+    </div>}
   </article>
 }
 function Section({title,description,items,today,onUpdate}:{title:string;description:string;items:DailyTask[];today:string;onUpdate:(next:DailyTask)=>void}){
