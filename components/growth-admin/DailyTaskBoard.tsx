@@ -133,7 +133,7 @@ function TaskItem({task,onUpdate,today}:{task:DailyTask;onUpdate:(next:DailyTask
           <button type="button" onClick={()=>send({action:'status_change',status:selection})} disabled={saving||!changed} className="rounded-lg bg-slate-950 px-3 py-2 text-xs font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">
             {saving?'Guardando…':'Guardar estado'}
           </button>
-          {!isCompleted&&<button type="button" disabled={saving}
+          {!isCompleted&&(!task.due_on||task.due_on>datePlus(today,1))&&<button type="button" disabled={saving}
             onClick={()=>send({action:'classification_change',task_bucket:urgency?'pending':'urgent'})}
             className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-xs font-semibold text-indigo-800 disabled:opacity-40">
             {urgency?'Pasar a pendientes':'Marcar urgente'}
@@ -157,7 +157,7 @@ export default function DailyTaskBoard({initialTasks,today,maxTasks}:{initialTas
     const active=tasks.filter(t=>t.status==='open'||t.status==='in_progress')
     const urgent=active.filter(t=>isUrgent(t,today,tomorrow))
     const sortByPriority=(a:DailyTask,b:DailyTask)=>a.priority-b.priority||(a.due_on||a.scheduled_on||'').localeCompare(b.due_on||b.scheduled_on||'')
-    const todayRows=urgent.filter(t=>!t.scheduled_on||t.scheduled_on<=today||Boolean(t.due_on&&t.due_on<=today)).sort(sortByPriority)
+    const todayRows=urgent.filter(t=>Boolean(t.scheduled_on&&t.scheduled_on<=today)||Boolean(t.due_on&&t.due_on<=today)||(!t.scheduled_on&&!t.due_on)).sort(sortByPriority)
     const todaySet=new Set(todayRows.map(t=>t.id))
     const tomorrowRows=urgent.filter(t=>!todaySet.has(t.id)).sort(sortByPriority)
     const urgentSet=new Set(urgent.map(t=>t.id))
