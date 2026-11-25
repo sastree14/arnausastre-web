@@ -118,10 +118,13 @@ export default async function SeoServicePage({params}:{params:Promise<{slug:stri
       cta:'Contact SC-Analytics'
     }
   }[locale]
-  // Only render existing, local links. Keep extra editorial links as text links,
-  // rather than losing them when replacing the former row of pill buttons.
+  // Keep external editorial references inside the public Solutions Lab catalogue.
+  const demoBase = 'https://sastree14.github.io/demos-sc_analytics/'
+  const demoPaths = ['predictive-models/', 'optimization/', 'optimization/inventory.html',
+    'bi-reporting/', 'automation-ai/', 'modelling-scenarios/', 'simulations/', 'custom-apps/']
+  const allowedDemos = new Set(demoPaths.map(path => demoBase + path))
   const internalLinks=(row.internal_links||[]).filter((link):link is {href:string;label:string} =>
-    typeof link.href==='string' && /^\/(?!\/)[a-z0-9/_?=&#%-]*$/i.test(link.href) &&
+    typeof link.href==='string' && (/^\/(?!\/)[a-z0-9/_?=&#%-]*$/i.test(link.href) || allowedDemos.has(link.href)) &&
     typeof link.label==='string' && link.label.trim().length>0
   )
   const related=internalLinks.find(link=>

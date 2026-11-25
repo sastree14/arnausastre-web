@@ -170,7 +170,9 @@ async function main() {
                   'Move inLanguage from Service to a WebPage node')
               }
               if (kind === 'WebPage' && item.mainEntity?.['@id']?.endsWith('#service')
-                  && !['en', 'es', 'ca'].includes(item.inLanguage)) {
+                  && !(Array.isArray(item.inLanguage)
+                    ? item.inLanguage.length > 0 && item.inLanguage.every(lang => ['en', 'es', 'ca'].includes(lang))
+                    : ['en', 'es', 'ca'].includes(item.inLanguage))) {
                 report('error', 'SERVICE_WEBPAGE_LANGUAGE', url,
                   'Commercial service WebPage needs a valid language')
               }
