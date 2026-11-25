@@ -39,7 +39,30 @@ export default async function SeoServicePage({params}:{params:Promise<{slug:stri
   const serviceHub=getServiceHubBySlug(slug);
   if(serviceHub) {
     const directory=await getPublicServiceHubDirectory();
-    return <ServiceHubPage hubKey={serviceHub.key} directory={directory}/>;
+    // The six navigation hubs are public service pages too. Reuse the same
+    // validated Service/WebPage/BreadcrumbList graph as specialised landings.
+    // Hub content is switchable between en/es/ca in the browser, so describe
+    // all supported languages rather than claiming the page is English-only.
+    const hubSchema=commercialServiceStructuredData({
+      slug,
+      headline:serviceHub.hub.titles.en,
+      description:serviceHub.hub.intro.en,
+      primaryKeyword:serviceHub.hub.titles.en,
+      locale:'en',
+    });
+    const multilingualHubSchema={
+      ...hubSchema,
+      '@graph':hubSchema['@graph'].map(node=>node['@type']==='WebPage'
+        ? {...node,inLanguage:['en','es','ca']}
+        : node),
+    };
+    return <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{__html:JSON.stringify(multilingualHubSchema).replace(/</g,'\\u003c')}}
+      />
+      <ServiceHubPage hubKey={serviceHub.key} directory={directory}/>
+    </>;
   }
   const row=await getPage(slug);if(!row)notFound();const locale=row.content_locale==='es'||row.content_locale==='ca'||row.content_locale==='en'?row.content_locale:serviceLocaleForSlug(row.slug);const structuredData=commercialServiceStructuredData({slug:row.slug,headline:row.h1,description:row.meta_description,primaryKeyword:row.primary_keyword,locale});
   const text = {
