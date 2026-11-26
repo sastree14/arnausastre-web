@@ -10,7 +10,7 @@ type Company = {
   relationship_type?: string; commercial_status?: string; contact_status?: string; email_status?: string
   score?: number | string; exclude_from_discovery?: boolean
 }
-type Person = { id: string; company_id?: string; name: string; role?: string; email?: string; linkedin_url?: string }
+type Person = { id: string; company_id?: string; name: string; role?: string; email?: string; linkedin_url?: string; linkedin_status?: string }
 type Event = { id: string; company_id?: string; event_type?: string; channel?: string; summary?: string; occurred_at?: string }
 type Opportunity = { opportunity_id: string; company_id?: string; source_signal_id?: string; name?: string; stage?: string; source?: string; metadata?: Record<string,unknown> }
 type Signal = {
@@ -108,6 +108,11 @@ export default function CommercialAcquisitionWorkspace(){
       <div className={`${adminPanel} p-4`}><p className="text-xs text-slate-500">Sin contacto registrado</p><p className="mt-1 text-2xl font-semibold">{data.companies.filter(c=>!['contacted','replied'].includes(c.contact_status||'')).length}</p></div>
       <div className={`${adminPanel} p-4`}><p className="text-xs text-slate-500">Última consulta al CMI</p><p className="mt-2 text-xs font-medium">{updated?new Date(updated).toLocaleString('es-ES',{timeZone:'Europe/Madrid'}):'Pendiente'}</p></div>
     </div>
+    <a href="/growth-admin/network" className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-3 text-sm text-indigo-900 hover:border-indigo-300">
+      <span><strong>Red profesional · {data.totals?.people ?? data.people.length} perfiles registrados</strong>
+        <span className="ml-2 text-xs text-indigo-700">{data.people.filter(p=>p.linkedin_status==='invitation_sent').length} invitaciones enviadas · {data.people.filter(p=>p.linkedin_status==='connected').length} conexiones registradas</span></span>
+      <span className="text-xs font-semibold">Ver todos los perfiles →</span>
+    </a>
     {error&&<div role="alert" className="mb-4 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-800">{error}</div>}
     {notice&&<div role="status" className="mb-4 rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-700">{notice}</div>}
     {data.signals_error&&<div className="mb-4 text-xs text-amber-700">Las señales están temporalmente incompletas. El historial de empresas sigue disponible.</div>}
