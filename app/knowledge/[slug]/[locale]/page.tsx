@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import GeneratedKnowledgeArticleGoldStandard from '@/components/GeneratedKnowledgeArticleGoldStandard'
 import KnowledgeArticleGoldStandard from '@/components/KnowledgeArticleGoldStandard'
 import { getArticleBySlug } from '@/lib/content'
@@ -17,6 +17,18 @@ function staticVariant(article:ReturnType<typeof getArticleBySlug>,locale:Locale
   if(locale==='en')return{title:article.titleEn,description:article.excerptEn||summary(article.bodyEn),body:article.bodyEn,tags:article.tagsEn}
   if(locale==='ca')return{title:article.titleCa||article.titleEs,description:article.excerptCa||article.excerptEs||summary(article.bodyCa||article.bodyEs),body:article.bodyCa||article.bodyEs,tags:article.tagsCa||article.tagsEs}
   return{title:article.titleEs,description:article.excerptEs||summary(article.bodyEs),body:article.bodyEs,tags:article.tagsEs}
+}
+
+async function publishedVariant(slug: string, locale: Locale) {
+  const variants = await getPublicGeneratedArticleVariants(slug)
+  const article = variants.find(item => item.language === locale)
+  if (article) return { article, variants }
+
+  const fallback = variants.find(item => item.language === 'es')
+    || variants.find(item => item.language === 'en')
+    || variants.find(item => SUPPORTED.has(item.language as Locale))
+  if (fallback) redirect('/knowledge/' + slug + '/' + fallback.language)
+  notFound()
 }
 
 export const dynamic='force-dynamic'
@@ -42,9 +54,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
     }
   }
 
-  const variants=await getPublicGeneratedArticleVariants(slug)
-  const article=variants.find(item=>item.language===locale)||variants.find(item=>item.language==='es')||variants.find(item=>item.language==='en')||variants[0]
-  if(!article)return{}
+  const { article, variants } = await publishedVariant(slug, locale)
   const articleMeta=(article.critique && typeof article.critique==='object' ? (article.critique as Record<string,unknown>).article_meta : null) as Record<string,unknown>|null
   // Avoid duplicate SEO titles across localized siblings when the editorial
   // metadata accidentally repeats the same SEO title in multiple languages.
@@ -98,9 +108,7 @@ export default async function LocalizedArticle({params}:Props){
     return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><KnowledgeArticleGoldStandard article={staticArticle} forcedLanguage={locale}/></>
   }
 
-  const variants=await getPublicGeneratedArticleVariants(slug)
-  const article=variants.find(item=>item.language===locale)||variants.find(item=>item.language==='es')||variants.find(item=>item.language==='en')||variants[0]
-  if(!article)notFound()
+  const { article, variants } = await publishedVariant(slug, locale)
   const schema={
     '@context':'https://schema.org',
     '@type':'Article',
