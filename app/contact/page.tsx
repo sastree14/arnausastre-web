@@ -277,7 +277,17 @@ export default function ContactPage() {
     setError(false)
 
     try {
-      const message = `${t.intentLabel}: ${selectedIntent[1]}\n\n${form.message}`
+      const origin = new URLSearchParams(window.location.search)
+      const sector = origin.get('sector') || ''
+      const selectedCase = origin.get('case') || ''
+      const family = origin.get('demo') || ''
+      let demoContext = ''
+      if (/^SC(0[1-9]|1[0-8])$/.test(sector)) {
+        demoContext = selectedCase.startsWith(sector+'-') && /^SC\d{2}-P0[1-6]$/.test(selectedCase) ? selectedCase : sector
+      } else if (['predictive-models','optimization','automation-ai','modelling-scenarios','simulations','bi-reporting','custom-apps'].includes(family) && /^[a-zA-Z0-9_-]{1,70}$/.test(selectedCase)) {
+        demoContext = family+' / '+selectedCase
+      }
+      const message = `${t.intentLabel}: ${selectedIntent[1]}\n\n${form.message}` + (demoContext ? "\n\nDemo · "+demoContext : "")
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

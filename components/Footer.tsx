@@ -65,6 +65,7 @@ export default function Footer() {
           <nav className="flex flex-wrap gap-x-5 gap-y-2 text-[14px] text-[#A8BACB]">
             <Link href="/services" className="transition hover:text-white">{t.work}</Link>
             <Link href="/projects" className="transition hover:text-white">{t.cases}</Link>
+            <Link href="/demos" className="transition hover:text-white">Demos</Link>
             <Link href="/knowledge" className="transition hover:text-white">{t.knowledge}</Link>
             <Link href="/partner-analitico" className="transition hover:text-white">{t.partner}</Link>
             <Link href="/about" className="transition hover:text-white">{t.why}</Link>
