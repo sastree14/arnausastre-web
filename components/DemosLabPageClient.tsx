@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useSiteLanguage } from '@/components/SiteLanguageProvider'
 
@@ -86,6 +86,16 @@ export default function DemosLabPageClient() {
   const { lang } = useSiteLanguage()
   const t = content[lang]
   const [mode,setMode] = useState<'industries'|'services'>('industries')
+  const [released,setReleased] = useState<string[]>([])
+  useEffect(() => {
+    const controller = new AbortController()
+    fetch(hub+'/industry-lab/releases.json',{signal:controller.signal})
+      .then(response => response.ok ? response.json() : null)
+      .then(data => { if (Array.isArray(data?.publicSectors)) setReleased(data.publicSectors) })
+      .catch(() => {})
+    return () => controller.abort()
+  },[])
+  const request = {es:'Solicitar una demo de este sector',ca:'Demanar una demo d’aquest sector',en:'Request a sector walkthrough'}[lang]
   const ix = lang === 'es' ? 1 : lang === 'ca' ? 2 : 3
   const descIx = lang === 'es' ? 4 : lang === 'ca' ? 5 : 6
   return (
@@ -114,8 +124,8 @@ export default function DemosLabPageClient() {
                   <span className="text-xs font-bold tracking-wider text-[#44856A]">{s[0]}</span>
                   <h3 className="mt-2 text-lg font-semibold leading-6">{s[ix]}</h3>
                   <p className="mt-2 text-sm text-slate-600">{s[descIx]}</p>
-                  <span className="mt-auto pt-5 text-xs font-semibold text-slate-500">{pilot?t.pilot:t.upcoming}</span>
-                  {pilot && <a href={hub+'/optimization/'} target="_blank" rel="noopener noreferrer" className="mt-3 text-xs font-semibold text-[#24644E] underline underline-offset-4">{t.related}</a>}
+                  <span className="mt-auto pt-5 text-xs font-semibold text-slate-500">{released.includes(s[0])?t.open:t.upcoming}</span>
+                  {released.includes(s[0]) ? <a href={hub+'/industry-lab/experience.html?sector='+s[0]+'&lang='+lang} target="_blank" rel="noopener noreferrer" className="mt-3 text-xs font-semibold text-[#24644E] underline underline-offset-4">{t.open}</a> : <Link className="mt-3 text-xs font-semibold text-[#24644E] underline underline-offset-4" href={'/contact?intent=problem&sector='+s[0]}>{request}</Link>}
                 </article>
               })}
             </div>
